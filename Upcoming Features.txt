@@ -1,0 +1,58 @@
+This is a starting list of all the planned features and whatnot that will be going into the very early stages of "Dust"
+(I am not necessarially open to ideas or suggestions but I will take them into consideration as I continue to work on "Dust")
+
+
+==================
+Version 0.010
+==================
+
+Add in the crystal shard items/models
+- As worldgen will come later the basic recipie for now will be: iron ingot + dye color = shard type
+
+Add in basic crystal tool sets for each, and possibly armor sets as well.
+- These will be basic items at first but I would like to do custom models for each.
+
+Basic shard usability will be added in the form of recipies
+
+
+
+==================
+Version 0.020
+==================
+
+Add crystal shard clusters, these will have 4 different models.
+- Clusters will be based on 4 "Growth" states thus why 4 models for eash are required
+
+Add pretty blocks that can be fun to build with.
+- I will be taking suggestions for what kind of "pretty" blocks to add as im not a creative thinker when it comes to doing that sort of thing.
+- In this version all clusters will give off light, this may change a bit in the future ;)
+
+Possibly get some basic world gen for clusters in the game. The goal is to have the clusters generate, if all else fails and I get frusterated I will make an ore and revisit it later
+- Clusters will gen based on biome/ tempature, also there are a few types that will become more scarse then the others for balancing reasons for future versions.
+- Add a config option to enable recipies from last version even with the worldgen. Default will be false.
+
+
+
+==================
+Version 0.030
+==================
+
+I will make an attempt at adding crystal cluster growth.
+- To prevent farming I will try to add in "when was the last time I grew" checks along with exponential time to get to the next growth stage, ex. stage 1-2 short:stage 14-15 24 hours???
+* The reason for this type of growth will make sense later on with some of the utility items, blocks, and their properties.
+
+Add properties to shards (other then from v0.010) also add in cluster special properties.
+
+Add in the obtainability of dust and some basic uses.
+- ex recipie: shard + hammer = dust
+* I may try to use some api stuff to see about adding macerator/pulveriser/sagmill recipie for them as an automatic alt to the hammer.
+
+==============================================================
+I have more version ideas but this is good enough for now
+===============================================================
+
+
+
+
+
+
