@@ -1,6 +1,6 @@
 I would call this a "Museum Policy" you can look but you cant touch/take.
 
-If you want to use this code for any reason you mush have written(or typed) permission to do so, unless you are a contributor for the mod who is listed in this document.
+If you want to use this code for any reason you must have written(or typed) permission to do so, unless you are a contributor for the mod who is listed in this document.
 
 If you would like to get permission to use this code shoot me an, 
 Email:  mowmaster@outlook.com  
@@ -8,10 +8,10 @@ Subject Line: Permission to use Dust Code
 
 I will try to reply within 24-28 hours, unless you get lucky enough to catch me the week(s) I am on vacation, in which case you will have to wait a bit longer.
 
-I can be found in #minecraftforge irc and sometimes in streams on beam.pro (Tlove and BluSunrise usually)
+I can be found in #minecraftforge irc, and sometimes in streams on beam.pro (Tlove and BluSunrise usually)
 
 
 -----------------------------------------
 List of Contributers to the mod "Dust"
 -----------------------------------------
-Mowmaster ( I mean its my mod to I would be one,right? )
+Mowmaster ( I mean its my mod so I would be one,right? )
