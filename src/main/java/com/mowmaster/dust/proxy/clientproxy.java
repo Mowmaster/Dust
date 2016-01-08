@@ -1,10 +1,12 @@
 package com.mowmaster.dust.proxy;
 
-import com.mowmaster.dust.init.items;
+import com.mowmaster.dust.init.ModItems;
 
-public class clientproxy extends commonproxy{
+/**
+ * Created by KingMowmaster on 12/26/2015.
+ */
+public class ClientProxy extends CommonProxy {
     @Override
     public void registerRenders(){
-        items.registerRenders();
     }
 }
