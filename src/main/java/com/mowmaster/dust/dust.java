@@ -28,15 +28,14 @@ public class dust {
     public void preInit(FMLPreInitializationEvent event){
 
         ModItems.init();
-        ModItems.register();
 
 
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event){
-        clientProxy.registerRenders();
+    public void onFMLInitialization(FMLInitializationEvent event) {
     }
+
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event){
