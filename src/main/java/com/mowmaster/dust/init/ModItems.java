@@ -7,10 +7,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
 public final class ModItems{
-    // *******
-    // * NOTE: @GameRegistry.ObjectHolder requires these fields to have the same name as the unlocalized name of the
-    // *       object.
-    // *
+
     public static final ItemDust crystalred = new ItemCrystalRed();
 
     private ModItems()

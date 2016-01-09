@@ -1,9 +1,17 @@
 package com.mowmaster.dust.proxy;
 
-import com.mowmaster.dust.init.ModItems;
+import com.mowmaster.dust.item.ItemRenderRegistry;
 
-/**
- * Created by KingMowmaster on 12/26/2015.
- */
+
 public class ClientProxy extends CommonProxy {
+
+    public void registerPostObjects(){
+
+    }
+
+    public void registerRenders()
+    {
+        ItemRenderRegistry.registerItemRenders();
+    }
+
 }

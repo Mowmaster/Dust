@@ -1,7 +1,6 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.proxy.ClientProxy;
-import com.mowmaster.dust.proxy.CommonProxy;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
 import com.mowmaster.dust.init.*;
@@ -29,6 +28,8 @@ public class dust {
 
         ModItems.init();
 
+        ModItems.registerItems();
+
 
     }
 
@@ -39,6 +40,8 @@ public class dust {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event){
+
+
 
     }
 }
