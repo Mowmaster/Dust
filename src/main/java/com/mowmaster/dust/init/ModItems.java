@@ -10,11 +10,6 @@ public final class ModItems{
 
     public static final ItemDust crystalred = new ItemCrystalRed();
 
-    private ModItems()
-    {
-        throw new AssertionError();
-    }
-
     public static void init(){
 
         registerItems();

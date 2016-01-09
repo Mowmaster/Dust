@@ -5,9 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 
-/**
- * Created by KingMowmaster on 1/9/2016.
- */
+
 public class ItemRenderRegistry {
 
     public static void registerItemRenders()

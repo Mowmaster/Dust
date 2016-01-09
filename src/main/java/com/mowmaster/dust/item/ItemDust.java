@@ -20,7 +20,7 @@ public class ItemDust extends Item {
 
     @Override
     public String getUnlocalizedName(){
-        return String.format("item.%s%s", reference.ITEM_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
+        return String.format("items.%s%s", reference.ITEM_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
 
     @Override
