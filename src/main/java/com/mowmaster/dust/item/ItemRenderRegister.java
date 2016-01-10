@@ -6,14 +6,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 
-/**
- * Created by KingMowmaster on 1/10/2016.
- */
+
+
 public final class ItemRenderRegister {
 
     public static void registerItemRenderer()
     {
         reg(ModItems.ItemCrystalRed);
+        reg(ModItems.ItemCrystalBlue);
+        reg(ModItems.ItemCrystalYellow);
     }
 
     public static void reg(Item item){

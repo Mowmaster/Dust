@@ -1,6 +1,5 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.item.ItemDust;
 import com.mowmaster.dust.item.ItemRenderRegister;
 import com.mowmaster.dust.proxy.ClientProxy;
 import com.mowmaster.dust.proxy.IProxy;
