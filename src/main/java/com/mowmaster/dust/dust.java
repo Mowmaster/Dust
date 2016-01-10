@@ -1,6 +1,7 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.item.ItemDust;
+import com.mowmaster.dust.item.ItemRenderRegister;
 import com.mowmaster.dust.proxy.ClientProxy;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
@@ -25,22 +26,22 @@ public class dust {
     public static IProxy proxy;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event){
-
-        ModItems.init();
-
-
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        ModItems.dustItems();
     }
 
     @Mod.EventHandler
-    public void onFMLInitialization(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event)
+    {
+        ItemRenderRegister.registerItemRenderer();
+        craftingCrystals.init();
     }
 
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event){
-
-
+    public void postInit(FMLPostInitializationEvent event)
+    {
 
     }
 }

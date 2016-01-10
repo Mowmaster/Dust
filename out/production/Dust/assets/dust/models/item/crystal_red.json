@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "dust:items/crystalred"
+    "layer0": "dust:items/crystal_red"
   },
   "display": {
     "thirdperson": {
