@@ -15,6 +15,21 @@ public final class ItemRenderRegister {
         reg(ModItems.ItemCrystalRed);
         reg(ModItems.ItemCrystalBlue);
         reg(ModItems.ItemCrystalYellow);
+        reg(ModItems.ItemCrystalGreen);
+        reg(ModItems.ItemCrystalOrange);
+        reg(ModItems.ItemCrystalPurple);
+        reg(ModItems.ItemCrystalBlack);
+        reg(ModItems.ItemCrystalWhite);
+
+        reg(ModItems.crystalSwordRed);
+        reg(ModItems.crystalSwordBlue);
+        reg(ModItems.crystalSwordYellow);
+        reg(ModItems.crystalSwordGreen);
+        reg(ModItems.crystalSwordOrange);
+        reg(ModItems.crystalSwordPurple);
+        reg(ModItems.crystalSwordBlack);
+        reg(ModItems.crystalSwordWhite);
+
     }
 
     public static void reg(Item item){

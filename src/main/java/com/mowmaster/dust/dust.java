@@ -28,6 +28,7 @@ public class dust {
     public void preInit(FMLPreInitializationEvent event)
     {
         ModItems.dustItems();
+        ModItems.dustTools();
     }
 
     @Mod.EventHandler
