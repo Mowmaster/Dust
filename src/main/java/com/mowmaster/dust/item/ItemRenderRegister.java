@@ -30,6 +30,33 @@ public final class ItemRenderRegister {
         reg(ModItems.crystalSwordBlack);
         reg(ModItems.crystalSwordWhite);
 
+        reg(ModItems.crystalAxeRed);
+        reg(ModItems.crystalAxeBlue);
+        reg(ModItems.crystalAxeYellow);
+        reg(ModItems.crystalAxeGreen);
+        reg(ModItems.crystalAxeOrange);
+        reg(ModItems.crystalAxePurple);
+        reg(ModItems.crystalAxeBlack);
+        reg(ModItems.crystalAxeWhite);
+
+        reg(ModItems.crystalPickaxeRed);
+        reg(ModItems.crystalPickaxeBlue);
+        reg(ModItems.crystalPickaxeYellow);
+        reg(ModItems.crystalPickaxeGreen);
+        reg(ModItems.crystalPickaxeOrange);
+        reg(ModItems.crystalPickaxePurple);
+        reg(ModItems.crystalPickaxeBlack);
+        reg(ModItems.crystalPickaxeWhite);
+
+        reg(ModItems.crystalShovelRed);
+        reg(ModItems.crystalShovelBlue);
+        reg(ModItems.crystalShovelYellow);
+        reg(ModItems.crystalShovelGreen);
+        reg(ModItems.crystalShovelOrange);
+        reg(ModItems.crystalShovelPurple);
+        reg(ModItems.crystalShovelBlack);
+        reg(ModItems.crystalShovelWhite);
+
     }
 
     public static void reg(Item item){

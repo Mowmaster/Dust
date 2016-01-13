@@ -1,6 +1,9 @@
 package com.mowmaster.dust.init;
 
 import com.mowmaster.dust.item.ItemDust;
+import com.mowmaster.dust.item.Tools.Axes.*;
+import com.mowmaster.dust.item.Tools.Shovel.*;
+import com.mowmaster.dust.item.Tools.Pickaxes.*;
 import com.mowmaster.dust.item.Tools.Swords.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
@@ -59,6 +62,33 @@ public final class ModItems
     public static Item crystalSwordBlack;
     public static Item crystalSwordWhite;
 
+    public static Item crystalAxeRed;
+    public static Item crystalAxeBlue;
+    public static Item crystalAxeYellow;
+    public static Item crystalAxeGreen;
+    public static Item crystalAxeOrange;
+    public static Item crystalAxePurple;
+    public static Item crystalAxeBlack;
+    public static Item crystalAxeWhite;
+
+    public static Item crystalPickaxeRed;
+    public static Item crystalPickaxeBlue;
+    public static Item crystalPickaxeYellow;
+    public static Item crystalPickaxeGreen;
+    public static Item crystalPickaxeOrange;
+    public static Item crystalPickaxePurple;
+    public static Item crystalPickaxeBlack;
+    public static Item crystalPickaxeWhite;
+
+    public static Item crystalShovelRed;
+    public static Item crystalShovelBlue;
+    public static Item crystalShovelYellow;
+    public static Item crystalShovelGreen;
+    public static Item crystalShovelOrange;
+    public static Item crystalShovelPurple;
+    public static Item crystalShovelBlack;
+    public static Item crystalShovelWhite;
+
     public static void dustTools()
     {
         GameRegistry.registerItem(crystalSwordRed = new CrystalSwordRed("crystalsword_red",RedCrystal), "crystalsword_red");
@@ -69,6 +99,35 @@ public final class ModItems
         GameRegistry.registerItem(crystalSwordPurple = new CrystalSwordPurple("crystalsword_purple",PurpleCrystal), "crystalsword_purple");
         GameRegistry.registerItem(crystalSwordBlack = new CrystalSwordBlack("crystalsword_black",BlackCrystal), "crystalsword_black");
         GameRegistry.registerItem(crystalSwordWhite = new CrystalSwordWhite("crystalsword_white",WhiteCrystal), "crystalsword_white");
+
+
+        GameRegistry.registerItem(crystalAxeRed = new CrystalAxeRed("crystalaxe_red",RedCrystal), "crystalaxe_red");
+        GameRegistry.registerItem(crystalAxeBlue = new CrystalAxeBlue("crystalaxe_blue",BlueCrystal), "crystalaxe_blue");
+        GameRegistry.registerItem(crystalAxeYellow = new CrystalAxeYellow("crystalaxe_yellow",YellowCrystal), "crystalaxe_yellow");
+        GameRegistry.registerItem(crystalAxeGreen = new CrystalAxeGreen("crystalaxe_green",GreenCrystal), "crystalaxe_green");
+        GameRegistry.registerItem(crystalAxeOrange = new CrystalAxeOrange("crystalaxe_orange",OrangeCrystal), "crystalaxe_orange");
+        GameRegistry.registerItem(crystalAxePurple = new CrystalAxePurple("crystalaxe_purple",PurpleCrystal), "crystalaxe_purple");
+        GameRegistry.registerItem(crystalAxeBlack = new CrystalAxeBlack("crystalaxe_black",BlackCrystal), "crystalaxe_black");
+        GameRegistry.registerItem(crystalAxeWhite = new CrystalAxeWhite("crystalaxe_white",WhiteCrystal), "crystalaxe_white");
+
+
+        GameRegistry.registerItem(crystalPickaxeRed = new CrystalPickaxeRed("crystalpickaxe_red",RedCrystal), "crystalpickaxe_red");
+        GameRegistry.registerItem(crystalPickaxeBlue = new CrystalPickaxeBlue("crystalpickaxe_blue",BlueCrystal), "crystalpickaxe_blue");
+        GameRegistry.registerItem(crystalPickaxeYellow = new CrystalPickaxeYellow("crystalpickaxe_yellow",YellowCrystal), "crystalpickaxe_yellow");
+        GameRegistry.registerItem(crystalPickaxeGreen = new CrystalPickaxeGreen("crystalpickaxe_green",GreenCrystal), "crystalpickaxe_green");
+        GameRegistry.registerItem(crystalPickaxeOrange = new CrystalPickaxeOrange("crystalpickaxe_orange",OrangeCrystal), "crystalpickaxe_orange");
+        GameRegistry.registerItem(crystalPickaxePurple = new CrystalPickaxePurple("crystalpickaxe_purple",PurpleCrystal), "crystalpickaxe_purple");
+        GameRegistry.registerItem(crystalPickaxeBlack = new CrystalPickaxeBlack("crystalpickaxe_black",BlackCrystal), "crystalpickaxe_black");
+        GameRegistry.registerItem(crystalPickaxeWhite = new CrystalPickaxeWhite("crystalpickaxe_white",WhiteCrystal), "crystalpickaxe_white");
+
+        GameRegistry.registerItem(crystalShovelRed = new CrystalShovelRed("crystalshovel_red",RedCrystal), "crystalshovel_red");
+        GameRegistry.registerItem(crystalShovelBlue = new CrystalShovelBlue("crystalshovel_blue",BlueCrystal), "crystalshovel_blue");
+        GameRegistry.registerItem(crystalShovelYellow = new CrystalShovelYellow("crystalshovel_yellow",YellowCrystal), "crystalshovel_yellow");
+        GameRegistry.registerItem(crystalShovelGreen = new CrystalShovelGreen("crystalshovel_green",GreenCrystal), "crystalshovel_green");
+        GameRegistry.registerItem(crystalShovelOrange = new CrystalShovelOrange("crystalshovel_orange",OrangeCrystal), "crystalshovel_orange");
+        GameRegistry.registerItem(crystalShovelPurple = new CrystalShovelPurple("crystalshovel_purple",PurpleCrystal), "crystalshovel_purple");
+        GameRegistry.registerItem(crystalShovelBlack = new CrystalShovelBlack("crystalshovel_black",BlackCrystal), "crystalshovel_black");
+        GameRegistry.registerItem(crystalShovelWhite = new CrystalShovelWhite("crystalshovel_white",WhiteCrystal), "crystalshovel_white");
     }
 
 }

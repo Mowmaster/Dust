@@ -25,4 +25,31 @@ item.crystalsword_purple.name=Purple Crystal Sword
 item.crystalsword_black.name=Black Crystal Sword
 item.crystalsword_white.name=White Crystal Sword
 
+item.crystalaxe_red.name=Red Crystal Axe
+item.crystalaxe_blue.name=Blue Crystal Axe
+item.crystalaxe_yellow.name=Yellow Crystal Axe
+item.crystalaxe_green.name=Green Crystal Axe
+item.crystalaxe_orange.name=Orange Crystal Axe
+item.crystalaxe_purple.name=Purple Crystal Axe
+item.crystalaxe_black.name=Black Crystal Axe
+item.crystalaxe_white.name=White Crystal Axe
+
+item.crystalpickaxe_red.name=Red Crystal Pickaxe
+item.crystalpickaxe_blue.name=Blue Crystal Pickaxe
+item.crystalpickaxe_yellow.name=Yellow Crystal Pickaxe
+item.crystalpickaxe_green.name=Green Crystal Pickaxe
+item.crystalpickaxe_orange.name=Orange Crystal Pickaxe
+item.crystalpickaxe_purple.name=Purple Crystal Pickaxe
+item.crystalpickaxe_black.name=Black Crystal Pickaxe
+item.crystalpickaxe_white.name=White Crystal Pickaxe
+
+item.crystalshovel_red.name=Red Crystal Shovel
+item.crystalshovel_blue.name=Blue Crystal Shovel
+item.crystalshovel_yellow.name=Yellow Crystal Shovel
+item.crystalshovel_green.name=Green Crystal Shovel
+item.crystalshovel_orange.name=Orange Crystal Shovel
+item.crystalshovel_purple.name=Purple Crystal Shovel
+item.crystalshovel_black.name=Black Crystal Shovel
+item.crystalshovel_white.name=White Crystal Shovel
+
 
