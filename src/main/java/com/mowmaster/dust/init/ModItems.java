@@ -1,11 +1,13 @@
 package com.mowmaster.dust.init;
 
+import com.mowmaster.dust.item.Armor.*;
 import com.mowmaster.dust.item.ItemDust;
 import com.mowmaster.dust.item.Tools.Axes.*;
 import com.mowmaster.dust.item.Tools.Shovel.*;
 import com.mowmaster.dust.item.Tools.Pickaxes.*;
 import com.mowmaster.dust.item.Tools.Swords.*;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -35,7 +37,9 @@ public final class ModItems
         // Dust Types
     }
 
-// Material name
+// Tool Material
+
+// "Material name"
 // Harvest Level: Wood/Gold: 0 Stone: 1 Iron: 2 Diamond: 3
 // Durability: Gold 32 Wood 59 Stone 131 Iron 250 Diamond 1561
 // Mining Speed: No Tool 1.0F - Wood 2.0F - Stone 4.0F - Iron 6.0F - Diamond 8.0F - Gold 12.0F
@@ -128,6 +132,53 @@ public final class ModItems
         GameRegistry.registerItem(crystalShovelPurple = new CrystalShovelPurple("crystalshovel_purple",PurpleCrystal), "crystalshovel_purple");
         GameRegistry.registerItem(crystalShovelBlack = new CrystalShovelBlack("crystalshovel_black",BlackCrystal), "crystalshovel_black");
         GameRegistry.registerItem(crystalShovelWhite = new CrystalShovelWhite("crystalshovel_white",WhiteCrystal), "crystalshovel_white");
+
     }
 
+
+    // Armor Material
+
+// "Material Name"
+// next is a texture name for the armor
+// Each type has a value and each piece has a multiplier. Leather 5, Gold 7, Chain/Iron 15, Diamond 33 ~~~ Helmet *11, Chestplate *16, Leggings *15, Boots *13
+// damageReduction (Array) int values for the armor protection (shows on armor bar in game) 0-25 (0-20 render) at 25 the player is invulnerable...
+    //  Leather - new int[]{1,3,2,1} (7 Total)
+    //  Gold - new int[]{2,5,3,1} (11 Total)
+    //  Chain - new int[]{2,5,4,1} (12 Total)
+    //  Iron - new int[]{2,6,5,2} (15 Total)
+    //  Diamond - new int[]{3,8,6,3} (20 Total)
+// enchantability Iron - 9, Diamond - 10, Chain - 12, Leather - 15, Gold - 25
+
+    public static ItemArmor.ArmorMaterial RedArmorCrystal = EnumHelper.addArmorMaterial("RedCrystal", "dust:RedCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    //public static ItemArmor.ArmorMaterial BlueArmorCrystal = EnumHelper.addArmorMaterial("BlueCrystal", "dust:BlueCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    //public static ItemArmor.ArmorMaterial YellowArmorCrystal = EnumHelper.addArmorMaterial("YellowCrystal", "dust:YellowCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    //public static ItemArmor.ArmorMaterial GreenArmorCrystal = EnumHelper.addArmorMaterial("GreenCrystal", "dust:GreenCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    //public static ItemArmor.ArmorMaterial OrangeArmorCrystal = EnumHelper.addArmorMaterial("OrangeCrystal", "dust:OrangeCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    //public static ItemArmor.ArmorMaterial PurpleArmorCrystal = EnumHelper.addArmorMaterial("PurpleCrystal", "dust:PurpleCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+
+    // White and Black are rarer and thus better tool materials
+    //public static ItemArmor.ArmorMaterial BlackArmorCrystal = EnumHelper.addArmorMaterial("BlackCrystal", BlackCrystalArmor, 33, new int[]{3,8,6,4}, 20);
+    //public static ItemArmor.ArmorMaterial WhiteArmorCrystal = EnumHelper.addArmorMaterial("WhiteCrystal", WhiteCrystalArmor, 33, new int[]{3,8,6,4}, 20);
+
+
+
+    public static Item RedCrystalHelmet;
+    //public static Item RedCrystalChestplate;
+    //public static Item RedCrystalLeggings;
+    //public static Item RedCrystalBoots;
+
+
+
+    public static void dustArmors()
+    {
+
+        //GameRegistry.registerItem( ItemName = new ArmorMaterialName("nameof_item", ArmorClassFile, #1, #2));
+        //#1 is the texture layer Default values --> Helm = 1, Chest = 1, Leggs = 2, Boots = 1
+        //#2 is the value that tells the game what type of armor it is --> Helm = 0, Chest = 1, Leggs = 2, Boots = 3
+        GameRegistry.registerItem(RedCrystalHelmet = new RedCrystalArmor("crystalhelmet_red", RedArmorCrystal, 1, 0));
+        //GameRegistry.registerItem(RedCrystalChestplate = new RedCrystalArmor("crystalchestplate_red", RedArmorCrystal, 1, 1));
+        //GameRegistry.registerItem(RedCrystalLeggings = new RedCrystalArmor("crystalleggings_red", RedArmorCrystal, 1, 2));
+        //GameRegistry.registerItem(RedCrystalBoots = new RedCrystalArmor("crystalboots_red", RedArmorCrystal, 1, 3));
+
+    }
 }

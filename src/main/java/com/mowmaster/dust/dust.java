@@ -29,6 +29,8 @@ public class dust {
     {
         ModItems.dustItems();
         ModItems.dustTools();
+        ModItems.dustArmors();
+
     }
 
     @Mod.EventHandler

@@ -57,6 +57,11 @@ public final class ItemRenderRegister {
         reg(ModItems.crystalShovelBlack);
         reg(ModItems.crystalShovelWhite);
 
+        reg(ModItems.RedCrystalHelmet);
+        //reg(ModItems.RedCrystalChestplate);
+        //reg(ModItems.RedCrystalLeggings);
+        //reg(ModItems.RedCrystalBoots);
+
     }
 
     public static void reg(Item item){
