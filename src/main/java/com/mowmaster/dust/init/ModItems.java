@@ -6,6 +6,7 @@ import com.mowmaster.dust.item.Tools.Axes.*;
 import com.mowmaster.dust.item.Tools.Shovel.*;
 import com.mowmaster.dust.item.Tools.Pickaxes.*;
 import com.mowmaster.dust.item.Tools.Swords.*;
+import com.mowmaster.dust.reference.reference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraftforge.common.util.EnumHelper;
@@ -162,6 +163,8 @@ public final class ModItems
 
 
 
+
+
     public static Item RedCrystalHelmet;
     //public static Item RedCrystalChestplate;
     //public static Item RedCrystalLeggings;
@@ -175,10 +178,10 @@ public final class ModItems
         //GameRegistry.registerItem( ItemName = new ArmorMaterialName("nameof_item", ArmorClassFile, #1, #2));
         //#1 is the texture layer Default values --> Helm = 1, Chest = 1, Leggs = 2, Boots = 1
         //#2 is the value that tells the game what type of armor it is --> Helm = 0, Chest = 1, Leggs = 2, Boots = 3
-        GameRegistry.registerItem(RedCrystalHelmet = new RedCrystalArmor("crystalhelmet_red", RedArmorCrystal, 1, 0));
-        //GameRegistry.registerItem(RedCrystalChestplate = new RedCrystalArmor("crystalchestplate_red", RedArmorCrystal, 1, 1));
-        //GameRegistry.registerItem(RedCrystalLeggings = new RedCrystalArmor("crystalleggings_red", RedArmorCrystal, 1, 2));
-        //GameRegistry.registerItem(RedCrystalBoots = new RedCrystalArmor("crystalboots_red", RedArmorCrystal, 1, 3));
+        GameRegistry.registerItem(RedCrystalHelmet = new RedCrystalArmor("crystalhelmet_red", RedArmorCrystal, 1, 0), "crystalhelmet_red");
+        //GameRegistry.registerItem(RedCrystalChestplate = new RedCrystalArmor("crystalchestplate_red", RedArmorCrystal, 1, 1), "crystalchestplate_red");
+        //GameRegistry.registerItem(RedCrystalLeggings = new RedCrystalArmor("crystalleggings_red", RedArmorCrystal, 1, 2), "crystalleggings_red");
+        //GameRegistry.registerItem(RedCrystalBoots = new RedCrystalArmor("crystalboots_red", RedArmorCrystal, 1, 3), "crystalboots_red");
 
     }
 }
