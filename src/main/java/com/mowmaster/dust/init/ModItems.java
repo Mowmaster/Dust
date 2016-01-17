@@ -151,24 +151,59 @@ public final class ModItems
 // enchantability Iron - 9, Diamond - 10, Chain - 12, Leather - 15, Gold - 25
 
     public static ItemArmor.ArmorMaterial RedArmorCrystal = EnumHelper.addArmorMaterial("RedCrystal", "dust:RedCrystalArmor", 15, new int[]{2,6,5,3}, 15);
-    //public static ItemArmor.ArmorMaterial BlueArmorCrystal = EnumHelper.addArmorMaterial("BlueCrystal", "dust:BlueCrystalArmor", 15, new int[]{2,6,5,3}, 15);
-    //public static ItemArmor.ArmorMaterial YellowArmorCrystal = EnumHelper.addArmorMaterial("YellowCrystal", "dust:YellowCrystalArmor", 15, new int[]{2,6,5,3}, 15);
-    //public static ItemArmor.ArmorMaterial GreenArmorCrystal = EnumHelper.addArmorMaterial("GreenCrystal", "dust:GreenCrystalArmor", 15, new int[]{2,6,5,3}, 15);
-    //public static ItemArmor.ArmorMaterial OrangeArmorCrystal = EnumHelper.addArmorMaterial("OrangeCrystal", "dust:OrangeCrystalArmor", 15, new int[]{2,6,5,3}, 15);
-    //public static ItemArmor.ArmorMaterial PurpleArmorCrystal = EnumHelper.addArmorMaterial("PurpleCrystal", "dust:PurpleCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    public static ItemArmor.ArmorMaterial BlueArmorCrystal = EnumHelper.addArmorMaterial("BlueCrystal", "dust:BlueCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    public static ItemArmor.ArmorMaterial YellowArmorCrystal = EnumHelper.addArmorMaterial("YellowCrystal", "dust:YellowCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    public static ItemArmor.ArmorMaterial GreenArmorCrystal = EnumHelper.addArmorMaterial("GreenCrystal", "dust:GreenCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    public static ItemArmor.ArmorMaterial OrangeArmorCrystal = EnumHelper.addArmorMaterial("OrangeCrystal", "dust:OrangeCrystalArmor", 15, new int[]{2,6,5,3}, 15);
+    public static ItemArmor.ArmorMaterial PurpleArmorCrystal = EnumHelper.addArmorMaterial("PurpleCrystal", "dust:PurpleCrystalArmor", 15, new int[]{2,6,5,3}, 15);
 
     // White and Black are rarer and thus better tool materials
-    //public static ItemArmor.ArmorMaterial BlackArmorCrystal = EnumHelper.addArmorMaterial("BlackCrystal", BlackCrystalArmor, 33, new int[]{3,8,6,4}, 20);
-    //public static ItemArmor.ArmorMaterial WhiteArmorCrystal = EnumHelper.addArmorMaterial("WhiteCrystal", WhiteCrystalArmor, 33, new int[]{3,8,6,4}, 20);
+    public static ItemArmor.ArmorMaterial BlackArmorCrystal = EnumHelper.addArmorMaterial("BlackCrystal", "dust:BlackCrystalArmor", 33, new int[]{3,8,6,4}, 20);
+    public static ItemArmor.ArmorMaterial WhiteArmorCrystal = EnumHelper.addArmorMaterial("WhiteCrystal", "dust:WhiteCrystalArmor", 33, new int[]{3,8,6,4}, 20);
 
 
 
 
 
     public static Item RedCrystalHelmet;
-    //public static Item RedCrystalChestplate;
-    //public static Item RedCrystalLeggings;
-    //public static Item RedCrystalBoots;
+    public static Item RedCrystalChestplate;
+    public static Item RedCrystalLeggings;
+    public static Item RedCrystalBoots;
+
+    public static Item BlueCrystalHelmet;
+    public static Item BlueCrystalChestplate;
+    public static Item BlueCrystalLeggings;
+    public static Item BlueCrystalBoots;
+
+    public static Item YellowCrystalHelmet;
+    public static Item YellowCrystalChestplate;
+    public static Item YellowCrystalLeggings;
+    public static Item YellowCrystalBoots;
+
+    public static Item GreenCrystalHelmet;
+    public static Item GreenCrystalChestplate;
+    public static Item GreenCrystalLeggings;
+    public static Item GreenCrystalBoots;
+
+    public static Item OrangeCrystalHelmet;
+    public static Item OrangeCrystalChestplate;
+    public static Item OrangeCrystalLeggings;
+    public static Item OrangeCrystalBoots;
+
+    public static Item PurpleCrystalHelmet;
+    public static Item PurpleCrystalChestplate;
+    public static Item PurpleCrystalLeggings;
+    public static Item PurpleCrystalBoots;
+
+    public static Item BlackCrystalHelmet;
+    public static Item BlackCrystalChestplate;
+    public static Item BlackCrystalLeggings;
+    public static Item BlackCrystalBoots;
+
+    public static Item WhiteCrystalHelmet;
+    public static Item WhiteCrystalChestplate;
+    public static Item WhiteCrystalLeggings;
+    public static Item WhiteCrystalBoots;
 
 
 
@@ -178,10 +213,46 @@ public final class ModItems
         //GameRegistry.registerItem( ItemName = new ArmorMaterialName("nameof_item", ArmorClassFile, #1, #2));
         //#1 is the texture layer Default values --> Helm = 1, Chest = 1, Leggs = 2, Boots = 1
         //#2 is the value that tells the game what type of armor it is --> Helm = 0, Chest = 1, Leggs = 2, Boots = 3
+
         GameRegistry.registerItem(RedCrystalHelmet = new RedCrystalArmor("crystalhelmet_red", RedArmorCrystal, 1, 0), "crystalhelmet_red");
-        //GameRegistry.registerItem(RedCrystalChestplate = new RedCrystalArmor("crystalchestplate_red", RedArmorCrystal, 1, 1), "crystalchestplate_red");
-        //GameRegistry.registerItem(RedCrystalLeggings = new RedCrystalArmor("crystalleggings_red", RedArmorCrystal, 1, 2), "crystalleggings_red");
-        //GameRegistry.registerItem(RedCrystalBoots = new RedCrystalArmor("crystalboots_red", RedArmorCrystal, 1, 3), "crystalboots_red");
+        GameRegistry.registerItem(RedCrystalChestplate = new RedCrystalArmor("crystalchestplate_red", RedArmorCrystal, 1, 1), "crystalchestplate_red");
+        GameRegistry.registerItem(RedCrystalLeggings = new RedCrystalArmor("crystalleggings_red", RedArmorCrystal, 2, 2), "crystalleggings_red");
+        GameRegistry.registerItem(RedCrystalBoots = new RedCrystalArmor("crystalboots_red", RedArmorCrystal, 1, 3), "crystalboots_red");
+
+        GameRegistry.registerItem(BlueCrystalHelmet = new BlueCrystalArmor("crystalhelmet_blue", BlueArmorCrystal, 1, 0), "crystalhelmet_blue");
+        GameRegistry.registerItem(BlueCrystalChestplate = new BlueCrystalArmor("crystalchestplate_blue", BlueArmorCrystal, 1, 1), "crystalchestplate_blue");
+        GameRegistry.registerItem(BlueCrystalLeggings = new BlueCrystalArmor("crystalleggings_blue", BlueArmorCrystal, 2, 2), "crystalleggings_blue");
+        GameRegistry.registerItem(BlueCrystalBoots = new BlueCrystalArmor("crystalboots_blue", BlueArmorCrystal, 1, 3), "crystalboots_blue");
+
+        GameRegistry.registerItem(YellowCrystalHelmet = new YellowCrystalArmor("crystalhelmet_yellow", YellowArmorCrystal, 1, 0), "crystalhelmet_yellow");
+        GameRegistry.registerItem(YellowCrystalChestplate = new YellowCrystalArmor("crystalchestplate_yellow", YellowArmorCrystal, 1, 1), "crystalchestplate_yellow");
+        GameRegistry.registerItem(YellowCrystalLeggings = new YellowCrystalArmor("crystalleggings_yellow", YellowArmorCrystal, 2, 2), "crystalleggings_yellow");
+        GameRegistry.registerItem(YellowCrystalBoots = new YellowCrystalArmor("crystalboots_yellow", YellowArmorCrystal, 1, 3), "crystalboots_yellow");
+
+        GameRegistry.registerItem(GreenCrystalHelmet = new GreenCrystalArmor("crystalhelmet_green", GreenArmorCrystal, 1, 0), "crystalhelmet_green");
+        GameRegistry.registerItem(GreenCrystalChestplate = new GreenCrystalArmor("crystalchestplate_green", GreenArmorCrystal, 1, 1), "crystalchestplate_green");
+        GameRegistry.registerItem(GreenCrystalLeggings = new GreenCrystalArmor("crystalleggings_green", GreenArmorCrystal, 2, 2), "crystalleggings_green");
+        GameRegistry.registerItem(GreenCrystalBoots = new GreenCrystalArmor("crystalboots_green", GreenArmorCrystal, 1, 3), "crystalboots_green");
+
+        GameRegistry.registerItem(OrangeCrystalHelmet = new OrangeCrystalArmor("crystalhelmet_orange", OrangeArmorCrystal, 1, 0), "crystalhelmet_orange");
+        GameRegistry.registerItem(OrangeCrystalChestplate = new OrangeCrystalArmor("crystalchestplate_orange", OrangeArmorCrystal, 1, 1), "crystalchestplate_orange");
+        GameRegistry.registerItem(OrangeCrystalLeggings = new OrangeCrystalArmor("crystalleggings_orange", OrangeArmorCrystal, 2, 2), "crystalleggings_orange");
+        GameRegistry.registerItem(OrangeCrystalBoots = new OrangeCrystalArmor("crystalboots_orange", OrangeArmorCrystal, 1, 3), "crystalboots_orange");
+
+        GameRegistry.registerItem(PurpleCrystalHelmet = new PurpleCrystalArmor("crystalhelmet_purple", PurpleArmorCrystal, 1, 0), "crystalhelmet_purple");
+        GameRegistry.registerItem(PurpleCrystalChestplate = new PurpleCrystalArmor("crystalchestplate_purple", PurpleArmorCrystal, 1, 1), "crystalchestplate_purple");
+        GameRegistry.registerItem(PurpleCrystalLeggings = new PurpleCrystalArmor("crystalleggings_purple", PurpleArmorCrystal, 2, 2), "crystalleggings_purple");
+        GameRegistry.registerItem(PurpleCrystalBoots = new PurpleCrystalArmor("crystalboots_purple", PurpleArmorCrystal, 1, 3), "crystalboots_purple");
+
+        GameRegistry.registerItem(BlackCrystalHelmet = new BlackCrystalArmor("crystalhelmet_black", BlackArmorCrystal, 1, 0), "crystalhelmet_black");
+        GameRegistry.registerItem(BlackCrystalChestplate = new BlackCrystalArmor("crystalchestplate_black", BlackArmorCrystal, 1, 1), "crystalchestplate_black");
+        GameRegistry.registerItem(BlackCrystalLeggings = new BlackCrystalArmor("crystalleggings_black", BlackArmorCrystal, 2, 2), "crystalleggings_black");
+        GameRegistry.registerItem(BlackCrystalBoots = new BlackCrystalArmor("crystalboots_black", BlackArmorCrystal, 1, 3), "crystalboots_black");
+
+        GameRegistry.registerItem(WhiteCrystalHelmet = new WhiteCrystalArmor("crystalhelmet_white", WhiteArmorCrystal, 1, 0), "crystalhelmet_white");
+        GameRegistry.registerItem(WhiteCrystalChestplate = new WhiteCrystalArmor("crystalchestplate_white", WhiteArmorCrystal, 1, 1), "crystalchestplate_white");
+        GameRegistry.registerItem(WhiteCrystalLeggings = new WhiteCrystalArmor("crystalleggings_white", WhiteArmorCrystal, 2, 2), "crystalleggings_white");
+        GameRegistry.registerItem(WhiteCrystalBoots = new WhiteCrystalArmor("crystalboots_white", WhiteArmorCrystal, 1, 3), "crystalboots_white");
 
     }
 }

@@ -53,6 +53,44 @@ item.crystalshovel_black.name=Black Crystal Shovel
 item.crystalshovel_white.name=White Crystal Shovel
 
 item.crystalhelmet_red.name=Red Crystal Helmet
+item.crystalchestplate_red.name=Red Crystal Chestplate
+item.crystalleggings_red.name=Red Crystal Leggings
+item.crystalboots_red.name=Red Crystal Boots
+
+item.crystalhelmet_blue.name=Blue Crystal Helmet
+item.crystalchestplate_blue.name=Blue Crystal Chestplate
+item.crystalleggings_blue.name=Blue Crystal Leggings
+item.crystalboots_blue.name=Blue Crystal Boots
+
+item.crystalhelmet_yellow.name=Yellow Crystal Helmet
+item.crystalchestplate_yellow.name=Yellow Crystal Chestplate
+item.crystalleggings_yellow.name=Yellow Crystal Leggings
+item.crystalboots_yellow.name=Yellow Crystal Boots
+
+item.crystalhelmet_green.name=Green Crystal Helmet
+item.crystalchestplate_green.name=Green Crystal Chestplate
+item.crystalleggings_green.name=Green Crystal Leggings
+item.crystalboots_green.name=Green Crystal Boots
+
+item.crystalhelmet_orange.name=Orange Crystal Helmet
+item.crystalchestplate_orange.name=Orange Crystal Chestplate
+item.crystalleggings_orange.name=Orange Crystal Leggings
+item.crystalboots_orange.name=Orange Crystal Boots
+
+item.crystalhelmet_purple.name=Purple Crystal Helmet
+item.crystalchestplate_purple.name=Purple Crystal Chestplate
+item.crystalleggings_purple.name=Purple Crystal Leggings
+item.crystalboots_purple.name=Purple Crystal Boots
+
+item.crystalhelmet_black.name=Black Crystal Helmet
+item.crystalchestplate_black.name=Black Crystal Chestplate
+item.crystalleggings_black.name=Black Crystal Leggings
+item.crystalboots_black.name=Black Crystal Boots
+
+item.crystalhelmet_white.name=White Crystal Helmet
+item.crystalchestplate_white.name=White Crystal Chestplate
+item.crystalleggings_white.name=White Crystal Leggings
+item.crystalboots_white.name=White Crystal Boots
 
 
 

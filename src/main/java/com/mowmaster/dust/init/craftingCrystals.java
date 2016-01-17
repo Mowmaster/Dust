@@ -65,6 +65,63 @@ public class craftingCrystals {
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.crystalShovelPurple, 1), new Object[]{" X "," Y "," Y ", 'X', ModItems.ItemCrystalPurple, 'Y', Items.stick});
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.crystalShovelBlack, 1), new Object[]{" X "," Y "," Y ", 'X', ModItems.ItemCrystalBlack, 'Y', Items.stick});
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.crystalShovelWhite, 1), new Object[]{" X "," Y "," Y ", 'X', ModItems.ItemCrystalWhite, 'Y', Items.stick});
+// Armor Sets
+// Red Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.RedCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalRed});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.RedCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalRed});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.RedCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalRed});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.RedCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalRed});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.RedCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalRed});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.RedCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalRed});
+// Blue Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlueCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalBlue});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlueCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalBlue});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlueCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalBlue});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlueCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalBlue});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlueCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalBlue});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlueCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalBlue});
+// Yellow Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.YellowCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalYellow});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.YellowCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalYellow});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.YellowCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalYellow});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.YellowCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalYellow});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.YellowCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalYellow});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.YellowCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalYellow});
+// Green Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.GreenCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalGreen});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.GreenCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalGreen});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.GreenCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalGreen});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.GreenCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalGreen});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.GreenCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalGreen});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.GreenCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalGreen});
+// Orange Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.OrangeCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalOrange});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.OrangeCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalOrange});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.OrangeCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalOrange});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.OrangeCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalOrange});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.OrangeCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalOrange});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.OrangeCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalOrange});
+// Purple Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.PurpleCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalPurple});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.PurpleCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalPurple});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.PurpleCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalPurple});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.PurpleCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalPurple});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.PurpleCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalPurple});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.PurpleCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalPurple});
+// Black Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlackCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalBlack});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlackCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalBlack});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlackCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalBlack});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlackCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalBlack});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlackCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalBlack});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.BlackCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalBlack});
+// White Crystal
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalHelmet, 1), new Object[]{"XXX","X X","   ", 'X', ModItems.ItemCrystalWhite});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalHelmet, 1), new Object[]{"   ","XXX","X X", 'X', ModItems.ItemCrystalWhite});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalChestplate, 1), new Object[]{"X X","XXX","XXX", 'X', ModItems.ItemCrystalWhite});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalWhite});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalWhite});
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalWhite});
 
 
 

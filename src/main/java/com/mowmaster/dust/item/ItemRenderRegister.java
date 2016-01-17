@@ -21,6 +21,7 @@ public final class ItemRenderRegister {
         reg(ModItems.ItemCrystalBlack);
         reg(ModItems.ItemCrystalWhite);
 
+// Tools
         reg(ModItems.crystalSwordRed);
         reg(ModItems.crystalSwordBlue);
         reg(ModItems.crystalSwordYellow);
@@ -57,10 +58,46 @@ public final class ItemRenderRegister {
         reg(ModItems.crystalShovelBlack);
         reg(ModItems.crystalShovelWhite);
 
+// Armor
         reg(ModItems.RedCrystalHelmet);
-        //reg(ModItems.RedCrystalChestplate);
-        //reg(ModItems.RedCrystalLeggings);
-        //reg(ModItems.RedCrystalBoots);
+        reg(ModItems.RedCrystalChestplate);
+        reg(ModItems.RedCrystalLeggings);
+        reg(ModItems.RedCrystalBoots);
+
+        reg(ModItems.BlueCrystalHelmet);
+        reg(ModItems.BlueCrystalChestplate);
+        reg(ModItems.BlueCrystalLeggings);
+        reg(ModItems.BlueCrystalBoots);
+
+        reg(ModItems.YellowCrystalHelmet);
+        reg(ModItems.YellowCrystalChestplate);
+        reg(ModItems.YellowCrystalLeggings);
+        reg(ModItems.YellowCrystalBoots);
+
+        reg(ModItems.GreenCrystalHelmet);
+        reg(ModItems.GreenCrystalChestplate);
+        reg(ModItems.GreenCrystalLeggings);
+        reg(ModItems.GreenCrystalBoots);
+
+        reg(ModItems.OrangeCrystalHelmet);
+        reg(ModItems.OrangeCrystalChestplate);
+        reg(ModItems.OrangeCrystalLeggings);
+        reg(ModItems.OrangeCrystalBoots);
+
+        reg(ModItems.PurpleCrystalHelmet);
+        reg(ModItems.PurpleCrystalChestplate);
+        reg(ModItems.PurpleCrystalLeggings);
+        reg(ModItems.PurpleCrystalBoots);
+
+        reg(ModItems.BlackCrystalHelmet);
+        reg(ModItems.BlackCrystalChestplate);
+        reg(ModItems.BlackCrystalLeggings);
+        reg(ModItems.BlackCrystalBoots);
+
+        reg(ModItems.WhiteCrystalHelmet);
+        reg(ModItems.WhiteCrystalChestplate);
+        reg(ModItems.WhiteCrystalLeggings);
+        reg(ModItems.WhiteCrystalBoots);
 
     }
 
