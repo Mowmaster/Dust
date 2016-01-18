@@ -1,11 +1,13 @@
 package com.mowmaster.dust;
 
+import com.mowmaster.dust.block.BlockRenderRegister;
 import com.mowmaster.dust.item.ItemRenderRegister;
 import com.mowmaster.dust.proxy.ClientProxy;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
 import com.mowmaster.dust.init.*;
 import net.minecraftforge.client.model.ISmartItemModel;
+import net.minecraftforge.client.model.b3d.B3DLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -26,27 +28,25 @@ public class dust {
     public static IProxy proxy;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         ModItems.dustItems();
         ModItems.dustTools();
         ModItems.dustArmors();
 
+        ModBlocks.dustBlocks();
+
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         ItemRenderRegister.registerItemRenderer();
+        BlockRenderRegister.registerBlockRenderer();
         craftingCrystals.init();
     }
 
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
 
     }
-
-    ISmartItemModel
 }
