@@ -59,7 +59,38 @@
     <favorites_list name="Dust" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="dust.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="50" column="19" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ISmartItemModel.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraftforge/client/model/ISmartItemModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="5" column="52" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IBakedModel.java" pinned="false" current-in-tab="true">
+        <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraft/client/resources/model/IBakedModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.09259259">
+              <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -82,7 +113,6 @@
         <option value="$PROJECT_DIR$/src/main/resources/assets/dust/models/item/crystal_black.json" />
         <option value="$PROJECT_DIR$/src/main/resources/assets/dust/models/item/crystal_red.json" />
         <option value="$PROJECT_DIR$/src/main/resources/assets/dust/models/item/crystalhelmet_red.json" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Armor/RedCrystalArmors.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Armor/RedCrystalArmor.java" />
         <option value="$PROJECT_DIR$/src/main/resources/assets/dust/models/item/crystalchestplate_red.json" />
@@ -130,6 +160,7 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/reference/reference.java" />
         <option value="$PROJECT_DIR$/src/main/resources/mcmod.info" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java" />
       </list>
     </option>
   </component>
@@ -183,7 +214,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -322,8 +354,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -653,26 +684,26 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20930232" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17970401" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39957717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20930232" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17970401" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39957717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -698,23 +729,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/resources/assets/dust/textures/models/armor/RedCrystalArmor_layer_1.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraft/item/ItemArmor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75">
-          <caret line="56" column="13" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/assets/dust/models/item/crystalleggings_red.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -722,7 +740,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09418283">
           <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -730,7 +747,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="43" selection-start-line="3" selection-start-column="43" selection-end-line="3" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -738,7 +754,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -746,7 +761,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="46" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -754,7 +768,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="43" selection-start-line="3" selection-start-column="43" selection-end-line="3" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -762,7 +775,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -770,7 +782,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -778,7 +789,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="46" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -786,7 +796,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14166667">
           <caret line="6" column="42" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -794,7 +803,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2361111">
           <caret line="10" column="41" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -802,7 +810,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -810,7 +817,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -818,7 +824,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="46" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -826,7 +831,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -834,7 +838,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09090909">
           <caret line="4" column="50" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -842,7 +845,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18181819">
           <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -850,7 +852,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22727273">
           <caret line="10" column="43" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -858,7 +859,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.20454545">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -866,7 +866,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18181819">
           <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -874,7 +873,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -882,7 +880,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -890,7 +887,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -898,7 +894,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -906,7 +901,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -914,7 +908,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="49" selection-start-line="3" selection-start-column="49" selection-end-line="3" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -922,7 +915,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -930,7 +922,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -938,7 +929,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="49" selection-start-line="3" selection-start-column="49" selection-end-line="3" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -946,7 +936,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="49" selection-start-line="3" selection-start-column="49" selection-end-line="3" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -954,7 +943,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -962,7 +950,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="46" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -970,7 +957,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="46" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -978,7 +964,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -986,7 +971,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -994,7 +978,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1002,7 +985,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1010,7 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="48" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1018,7 +999,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1026,7 +1006,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07063712">
           <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1034,7 +1013,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1042,9 +1020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.0681819">
           <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1052,9 +1027,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.06818182">
           <caret line="217" column="61" selection-start-line="217" selection-start-column="61" selection-end-line="217" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1070,7 +1042,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1078,7 +1049,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18181819">
           <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1086,7 +1056,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5681818">
           <caret line="31" column="40" selection-start-line="31" selection-start-column="40" selection-end-line="31" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1094,14 +1063,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13636364">
           <caret line="6" column="52" selection-start-line="6" selection-start-column="52" selection-end-line="6" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5">
-          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="50" column="19" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraftforge/client/model/ISmartItemModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="52" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraft/client/resources/model/IBakedModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09259259">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
           <folding />
         </state>
       </provider>

@@ -5,6 +5,7 @@ import com.mowmaster.dust.proxy.ClientProxy;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
 import com.mowmaster.dust.init.*;
+import net.minecraftforge.client.model.ISmartItemModel;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -46,4 +47,6 @@ public class dust {
     {
 
     }
+
+    ISmartItemModel
 }
