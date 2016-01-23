@@ -6,8 +6,11 @@ import com.mowmaster.dust.proxy.ClientProxy;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
 import com.mowmaster.dust.init.*;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.model.ISmartItemModel;
 import net.minecraftforge.client.model.b3d.B3DLoader;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -34,6 +37,11 @@ public class dust {
         ModItems.dustArmors();
 
         ModBlocks.dustBlocks();
+
+
+        ModEvents handler = new ModEvents();
+        MinecraftForge.EVENT_BUS.register(handler);
+        FMLCommonHandler.instance().bus().register(handler);
 
     }
 
