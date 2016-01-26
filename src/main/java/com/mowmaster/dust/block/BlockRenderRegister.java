@@ -12,7 +12,14 @@ public final class BlockRenderRegister
 {
     public static void registerBlockRenderer()
     {
-       reg(ModBlocks.RedCrystalOre);
+        reg(ModBlocks.RedCrystalOre);
+        reg(ModBlocks.BlueCrystalOre);
+        reg(ModBlocks.YellowCrystalOre);
+        reg(ModBlocks.GreenCrystalOre);
+        reg(ModBlocks.OrangeCrystalOre);
+        reg(ModBlocks.PurpleCrystalOre);
+        reg(ModBlocks.BlackCrystalOre);
+        reg(ModBlocks.WhiteCrystalOre);
     }
 
     public static void reg(Block block)

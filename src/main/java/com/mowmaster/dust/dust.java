@@ -6,6 +6,7 @@ import com.mowmaster.dust.proxy.ClientProxy;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
 import com.mowmaster.dust.init.*;
+import com.mowmaster.dust.world.CrystalOreGen;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.model.ISmartItemModel;
 import net.minecraftforge.client.model.b3d.B3DLoader;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
 @Mod(modid = reference.MOD_ID, name = reference.MOD_NAME, version = reference.VERSION)
@@ -39,9 +41,9 @@ public class dust {
         ModBlocks.dustBlocks();
 
 
-        ModEvents handler = new ModEvents();
-        MinecraftForge.EVENT_BUS.register(handler);
-        FMLCommonHandler.instance().bus().register(handler);
+        //ModEvents handler = new ModEvents();
+        //MinecraftForge.EVENT_BUS.register(handler);
+        //FMLCommonHandler.instance().bus().register(handler);
 
     }
 
@@ -50,6 +52,7 @@ public class dust {
         ItemRenderRegister.registerItemRenderer();
         BlockRenderRegister.registerBlockRenderer();
         craftingCrystals.init();
+        GameRegistry.registerWorldGenerator(new CrystalOreGen(),0);
     }
 
 

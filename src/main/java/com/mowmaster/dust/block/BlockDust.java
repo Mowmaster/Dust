@@ -31,7 +31,7 @@ public class BlockDust extends Block
 
     public BlockDust(String unlocalizedName)
     {
-        this(unlocalizedName, 2.0f, 10.0f, 1.0f);
+        this(unlocalizedName, 2.0f, 10.0f, 0.0f);
     }
 
 

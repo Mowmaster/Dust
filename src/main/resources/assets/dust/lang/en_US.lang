@@ -93,4 +93,14 @@ item.crystalleggings_white.name=White Crystal Leggings
 item.crystalboots_white.name=White Crystal Boots
 
 
+tile.crystalore_red.name= Red Crystal Ore
+tile.crystalore_blue.name= Blue Crystal Ore
+tile.crystalore_yellow.name= Yellow Crystal Ore
+tile.crystalore_green.name= Green Crystal Ore
+tile.crystalore_orange.name= Orange Crystal Ore
+tile.crystalore_purple.name= Purple Crystal Ore
+tile.crystalore_black.name= Black Crystal Ore
+tile.crystalore_white.name= White Crystal Ore
+
+
 
