@@ -3,7 +3,7 @@ This is a starting list of all the planned features and whatnot that will be goi
 
 
 ==================
-Version 0.010
+Version 0.1.0
 ==================
 
 Add in the crystal shard items/models
@@ -15,13 +15,18 @@ Add in basic crystal tool sets for each, and possibly armor sets as well.
 Basic shard usability will be added in the form of recipies
 
 
+==================
+Version 0.1.5
+==================
+
+Basic Oregen in the form of ores, Will be revised if i figure out clusters and ther're multimine/growth features
 
 ==================
-Version 0.020
+Version 0.2.0
 ==================
 
-Add crystal shard clusters, these will have 4 different models.
-- Clusters will be based on 4 "Growth" states thus why 4 models for eash are required
+[Pushed to a Later Version]  Add crystal shard clusters, these will have 4 different models.
+[Pushed to a Later Version]  - Clusters will be based on 4 "Growth" states thus why 4 models for eash are required
 
 Add pretty blocks that can be fun to build with.
 - I will be taking suggestions for what kind of "pretty" blocks to add as im not a creative thinker when it comes to doing that sort of thing.
@@ -34,7 +39,7 @@ Possibly get some basic world gen for clusters in the game. The goal is to have 
 
 
 ==================
-Version 0.030
+Version 0.3.0
 ==================
 
 I will make an attempt at adding crystal cluster growth.
