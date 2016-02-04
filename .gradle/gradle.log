@@ -1,7 +1,7 @@
 This set of MCP mappings was designed for MC 1.8.8. Use at your own peril.This set of MCP mappings was designed for MC 1.8.8. Use at your own peril.
 
 #################################################
-         ForgeGradle 2.1-SNAPSHOT-b9904dd        
+         ForgeGradle 2.1-SNAPSHOT-8267717        
   https://github.com/MinecraftForge/ForgeGradle  
 #################################################
                Powered by MCP unknown               
@@ -11,20 +11,18 @@ This set of MCP mappings was designed for MC 1.8.8. Use at your own peril.This s
 #################################################
 :deobfCompileDummyTask
 :deobfProvidedDummyTask
-:sourceApiJava
+:sourceApiJava UP-TO-DATE
 :compileApiJava UP-TO-DATE
 :processApiResources UP-TO-DATE
 :apiClasses UP-TO-DATE
 :sourceMainJava
-:compileJava
-Download https://libraries.minecraft.net/com/mojang/realms/1.7.56/realms-1.7.56.pom
-Download https://libraries.minecraft.net/com/mojang/realms/1.7.56/realms-1.7.56.jar
-warning: [options] bootstrap class path not set in conjunction with -source 1.6
+:compileJavawarning: [options] bootstrap class path not set in conjunction with -source 1.6
 1 warning
+
 :processResources
 :classes
 :jar
-:sourceTestJava
+:sourceTestJava UP-TO-DATE
 :compileTestJava UP-TO-DATE
 :processTestResources UP-TO-DATE
 :testClasses UP-TO-DATE
@@ -32,7 +30,7 @@ warning: [options] bootstrap class path not set in conjunction with -source 1.6
 :extractMcpData SKIPPED
 :extractMcpMappings SKIPPED
 :getVersionJson
-:extractUserdev
+:extractUserdev UP-TO-DATE
 :genSrgs SKIPPED
 :reobfJar
 :extractRangemapReplacedMain
@@ -46,4 +44,4 @@ remapping source...
 
 BUILD SUCCESSFUL
 
-Total time: 1 mins 14.158 secs
+Total time: 43.899 secs
