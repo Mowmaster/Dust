@@ -1,6 +1,7 @@
 package com.mowmaster.dust.block;
 
 
+import com.mowmaster.dust.init.dustCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,7 +17,7 @@ public class BlockDust extends Block
     {
         super(material);
         this.setUnlocalizedName(unlocalizedName);
-        this.setCreativeTab(CreativeTabs.tabBlock);
+        this.setCreativeTab(dustCreativeTabs.dustItems);
         this.setHardness(hardness);
         this.setResistance(resistance);
         this.setLightLevel(lightlevel);

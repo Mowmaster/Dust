@@ -1,5 +1,6 @@
 package com.mowmaster.dust.item.Tools.Swords;
 
+import com.mowmaster.dust.init.dustCreativeTabs;
 import net.minecraft.item.ItemSword;
 
 
@@ -9,10 +10,12 @@ public class CrystalSwordRed extends ItemSword {
 
         super(material);
 
+
     }
 
     public CrystalSwordRed(String crystalsword_red, ToolMaterial material){
         super(material);
         this.setUnlocalizedName(crystalsword_red);
+        this.setCreativeTab(dustCreativeTabs.dustTool);
     }
 }

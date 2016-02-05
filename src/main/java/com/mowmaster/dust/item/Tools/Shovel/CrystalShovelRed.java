@@ -4,6 +4,7 @@ package com.mowmaster.dust.item.Tools.Shovel;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import com.mowmaster.dust.init.dustCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
@@ -24,11 +25,13 @@ public class CrystalShovelRed extends ItemSpade {
 
         super(material);
 
+
     }
 
     public CrystalShovelRed(String crystalshovel_red, ToolMaterial material){
         super(material);
         this.setUnlocalizedName(crystalshovel_red);
+        this.setCreativeTab(dustCreativeTabs.dustTool);
     }
 
     @Override

@@ -19,7 +19,7 @@ Basic shard usability will be added in the form of recipies
 Version 0.1.5
 ==================
 
-Basic Oregen in the form of ores, Will be revised if i figure out clusters and ther're multimine/growth features
+Basic Oregen in the form of ores, Will be revised if I figure out clusters and ther're multimine/growth features
 
 ==================
 Version 0.2.0

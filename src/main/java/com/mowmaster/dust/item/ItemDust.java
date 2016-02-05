@@ -2,6 +2,7 @@ package com.mowmaster.dust.item;
 
 
 
+import com.mowmaster.dust.init.dustCreativeTabs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -14,6 +15,6 @@ public class ItemDust extends Item
         super();
 
         this.setUnlocalizedName(unloc);
-        this.setCreativeTab(CreativeTabs.tabMaterials);
+        this.setCreativeTab(dustCreativeTabs.dustItems);
     }
 }
