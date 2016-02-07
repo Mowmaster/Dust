@@ -102,5 +102,12 @@ tile.crystalore_purple.name= Purple Crystal Ore
 tile.crystalore_black.name= Black Crystal Ore
 tile.crystalore_white.name= White Crystal Ore
 
+tile.crystalnetherore_red.name= Red Crystal Nether Ore
+tile.crystalnetherore_yellow.name= Yellow Crystal Nether Ore
+tile.crystalnetherore_orange.name= Orange Crystal Nether Ore
+
+tile.crystalendore_black.name= Black Crystal End Ore
+
+
 
 

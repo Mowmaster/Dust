@@ -32,7 +32,7 @@ public class CrystalOreGen implements IWorldGenerator
                 this.runGenerator(this.gen_BlockOreOrange, world, random, chunkX, chunkZ, 2,0,32);
                 this.runGenerator(this.gen_BlockOrePurple, world, random, chunkX, chunkZ, 4,0,32);
 
-
+                this.runGenerator(this.gen_BlockOreBlack, world, random, chunkX, chunkZ, 2,240,256);
                 this.runGenerator(this.gen_BlockOreWhite, world, random, chunkX, chunkZ, 2,128,256);// should be rare enough ;)
                 break;
             // Quartz spawns as 13 size by 16 per chunk between 10 and 118
@@ -43,7 +43,7 @@ public class CrystalOreGen implements IWorldGenerator
                 break;
 
             case 1: //End
-                this.runGenerator(this.gen_BlockOreBlack, world, random, chunkX, chunkZ, 8,0,128);/* Until 1.9 the end doesn't get bigger so the limit is end island*/
+                this.runGenerator(this.gen_BlockEndOreBlack, world, random, chunkX, chunkZ, 8,0,128);/* Until 1.9 the end doesn't get bigger so the limit is end island*/
                 break;
 
         }
@@ -62,6 +62,8 @@ public class CrystalOreGen implements IWorldGenerator
     private WorldGenerator gen_BlockOreYellowNether;
     private WorldGenerator gen_BlockOreOrangeNether;
 
+    private WorldGenerator gen_BlockEndOreBlack;
+
     public CrystalOreGen()
     {
         this.gen_BlockOreRed = new WorldGenMinable(ModBlocks.RedCrystalOre.getDefaultState(), 4/* vein size */);
@@ -70,16 +72,16 @@ public class CrystalOreGen implements IWorldGenerator
         this.gen_BlockOreGreen = new WorldGenMinable(ModBlocks.GreenCrystalOre.getDefaultState(), 8);
         this.gen_BlockOreOrange = new WorldGenMinable(ModBlocks.OrangeCrystalOre.getDefaultState(), 4);
         this.gen_BlockOrePurple = new WorldGenMinable(ModBlocks.PurpleCrystalOre.getDefaultState(), 8);
-        /* this.gen_BlockOreBlack = new WorldGenMinable(ModBlocks.BlackCrystalOre.getDefaultState(), 3); */
+        this.gen_BlockOreBlack = new WorldGenMinable(ModBlocks.BlackCrystalOre.getDefaultState(), 3);
         this.gen_BlockOreWhite = new WorldGenMinable(ModBlocks.WhiteCrystalOre.getDefaultState(), 6);
 
 
-        this.gen_BlockOreRedNether = new WorldGenMinable(ModBlocks.RedCrystalOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
-        this.gen_BlockOreYellowNether = new WorldGenMinable(ModBlocks.YellowCrystalOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
-        this.gen_BlockOreOrangeNether = new WorldGenMinable(ModBlocks.OrangeCrystalOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
+        this.gen_BlockOreRedNether = new WorldGenMinable(ModBlocks.RedCrystalNetherOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
+        this.gen_BlockOreYellowNether = new WorldGenMinable(ModBlocks.YellowCrystalNetherOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
+        this.gen_BlockOreOrangeNether = new WorldGenMinable(ModBlocks.OrangeCrystalNetherOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
 
 
-        this.gen_BlockOreBlack = new WorldGenMinable(ModBlocks.BlackCrystalOre.getDefaultState(), 6, BlockHelper.forBlock(Blocks.end_stone));
+        this.gen_BlockEndOreBlack = new WorldGenMinable(ModBlocks.BlackCrystalEndOre.getDefaultState(), 6, BlockHelper.forBlock(Blocks.end_stone));
     }
 
     private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chanceToSpawn, int minHeight, int maxHeight)

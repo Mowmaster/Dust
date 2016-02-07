@@ -20,6 +20,13 @@ public final class BlockRenderRegister
         reg(ModBlocks.PurpleCrystalOre);
         reg(ModBlocks.BlackCrystalOre);
         reg(ModBlocks.WhiteCrystalOre);
+
+        reg(ModBlocks.YellowCrystalNetherOre);
+        reg(ModBlocks.OrangeCrystalNetherOre);
+        reg(ModBlocks.RedCrystalNetherOre);
+
+        reg(ModBlocks.BlackCrystalEndOre);
+
     }
 
     public static void reg(Block block)

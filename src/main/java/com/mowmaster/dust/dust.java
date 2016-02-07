@@ -40,6 +40,8 @@ public class dust {
 
         ModBlocks.dustBlocks();
 
+        fuelHandlers.fuelHandles();
+
 
         //ModEvents handler = new ModEvents();
         //MinecraftForge.EVENT_BUS.register(handler);

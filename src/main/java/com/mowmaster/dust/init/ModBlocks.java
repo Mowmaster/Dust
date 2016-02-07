@@ -16,6 +16,12 @@ public final class ModBlocks
     public static Block BlackCrystalOre;
     public static Block WhiteCrystalOre;
 
+    public static Block YellowCrystalNetherOre;
+    public static Block OrangeCrystalNetherOre;
+    public static Block RedCrystalNetherOre;
+
+    public static Block BlackCrystalEndOre;
+
     public static void dustBlocks()
     {
         GameRegistry.registerBlock(RedCrystalOre = new BlockOreRed("crystalore_red"), "crystalore_red");
@@ -26,6 +32,12 @@ public final class ModBlocks
         GameRegistry.registerBlock(PurpleCrystalOre = new BlockOrePurple("crystalore_purple"), "crystalore_purple");
         GameRegistry.registerBlock(BlackCrystalOre = new BlockOreBlack("crystalore_black"), "crystalore_black");
         GameRegistry.registerBlock(WhiteCrystalOre = new BlockOreWhite("crystalore_white"), "crystalore_white");
+
+        GameRegistry.registerBlock(YellowCrystalNetherOre = new BlockNetherOreYellow("crystalnetherore_yellow"), "crystalnetherore_yellow");
+        GameRegistry.registerBlock(OrangeCrystalNetherOre = new BlockNetherOreOrange("crystalnetherore_orange"), "crystalnetherore_orange");
+        GameRegistry.registerBlock(RedCrystalNetherOre = new BlockNetherOreRed("crystalnetherore_red"), "crystalnetherore_red");
+
+        GameRegistry.registerBlock(BlackCrystalEndOre = new BlockEndOreBlack("crystalendore_black"), "crystalendore_black");
 
     }
 
