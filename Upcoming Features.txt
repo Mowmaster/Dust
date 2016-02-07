@@ -16,7 +16,7 @@ Basic shard usability will be added in the form of recipies
 
 
 ==================
-Version 0.1.5
+Version 0.1.5 (Alpha Build)
 ==================
 
 Basic Oregen in the form of ores, Will be revised if I figure out clusters and ther're multimine/growth features
@@ -28,12 +28,12 @@ Version 0.2.0
 [Pushed to a Later Version]  Add crystal shard clusters, these will have 4 different models.
 [Pushed to a Later Version]  - Clusters will be based on 4 "Growth" states thus why 4 models for eash are required
 
-Add pretty blocks that can be fun to build with.
-- I will be taking suggestions for what kind of "pretty" blocks to add as im not a creative thinker when it comes to doing that sort of thing.
-- In this version all clusters will give off light, this may change a bit in the future ;)
+[Pushed to a Later Version] Add pretty blocks that can be fun to build with.
+[Pushed to a Later Version] - I will be taking suggestions for what kind of "pretty" blocks to add as im not a creative thinker when it comes to doing that sort of thing.
+[Pushed to a Later Version] - In this version all clusters will give off light, this may change a bit in the future ;)
 
-Possibly get some basic world gen for clusters in the game. The goal is to have the clusters generate, if all else fails and I get frusterated I will make an ore and revisit it later
-- Clusters will gen based on biome/ tempature, also there are a few types that will become more scarse then the others for balancing reasons for future versions.
+Possibly get some basic world gen for clusters in the game. The goal is to have the clusters generate, if all else fails and I get pissed off, I will make an ore and revisit it later
+- Clusters will gen based on biome/ tempature,(Tempature...meh, Ill just use a mod specific biome to gen them in) also there are a few types that will become more scarse then the others for balancing reasons for future versions.
 - Add a config option to enable recipies from last version even with the worldgen. Default will be false.
 
 
