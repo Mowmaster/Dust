@@ -47,7 +47,7 @@ public class dust {
 
         Crystal = new biomeCrystal(117).setTopFillerBlock(Blocks.grass.getDefaultState(),Blocks.stone.getDefaultState()).setMinMaxHeight(0.5F,1.0F).setBiomeName("Crystal").setTemperatureRainfall(0.1F, 1.0F);
 
-        BiomeManager.addBiome(BiomeManager.BiomeType.COOL,new BiomeManager.BiomeEntry(Crystal,5));
+        BiomeManager.addBiome(BiomeManager.BiomeType.WARM,new BiomeManager.BiomeEntry(Crystal,5));
 
         //ModEvents handler = new ModEvents();
         //MinecraftForge.EVENT_BUS.register(handler);

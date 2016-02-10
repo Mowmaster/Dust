@@ -2,10 +2,12 @@ package com.mowmaster.dust.world;
 
 
 import com.mowmaster.dust.init.ModBlocks;
+import com.mowmaster.dust.world.biomes.biomeCrystal;
 import net.minecraft.block.state.pattern.BlockHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -66,14 +68,17 @@ public class CrystalOreGen implements IWorldGenerator
 
     public CrystalOreGen()
     {
-        this.gen_BlockOreRed = new WorldGenMinable(ModBlocks.RedCrystalOre.getDefaultState(), 4/* vein size */);
-        this.gen_BlockOreBlue = new WorldGenMinable(ModBlocks.BlueCrystalOre.getDefaultState(), 8);
-        this.gen_BlockOreYellow = new WorldGenMinable(ModBlocks.YellowCrystalOre.getDefaultState(), 4);
-        this.gen_BlockOreGreen = new WorldGenMinable(ModBlocks.GreenCrystalOre.getDefaultState(), 8);
-        this.gen_BlockOreOrange = new WorldGenMinable(ModBlocks.OrangeCrystalOre.getDefaultState(), 4);
-        this.gen_BlockOrePurple = new WorldGenMinable(ModBlocks.PurpleCrystalOre.getDefaultState(), 8);
-        this.gen_BlockOreBlack = new WorldGenMinable(ModBlocks.BlackCrystalOre.getDefaultState(), 3);
-        this.gen_BlockOreWhite = new WorldGenMinable(ModBlocks.WhiteCrystalOre.getDefaultState(), 6);
+        //this.gen_BlockOreRed = new WorldGenMinable(ModBlocks.RedCrystalOre.getDefaultState(), 8/* vein size */);
+        // ^Add back in later when i get biome specific per type
+        this.gen_BlockOreBlue = new WorldGenMinable(ModBlocks.BlueCrystalOre.getDefaultState(), 16);
+        //this.gen_BlockOreYellow = new WorldGenMinable(ModBlocks.YellowCrystalOre.getDefaultState(), 30);
+        // ^Add back in later when i get biome specific per type
+        this.gen_BlockOreGreen = new WorldGenMinable(ModBlocks.GreenCrystalOre.getDefaultState(), 16);
+        //this.gen_BlockOreOrange = new WorldGenMinable(ModBlocks.OrangeCrystalOre.getDefaultState(), 30);
+        // ^Add back in later when i get biome specific per type
+        this.gen_BlockOrePurple = new WorldGenMinable(ModBlocks.PurpleCrystalOre.getDefaultState(), 16);
+        this.gen_BlockOreBlack = new WorldGenMinable(ModBlocks.BlackCrystalOre.getDefaultState(), 6);
+        this.gen_BlockOreWhite = new WorldGenMinable(ModBlocks.WhiteCrystalOre.getDefaultState(), 12);
 
 
         this.gen_BlockOreRedNether = new WorldGenMinable(ModBlocks.RedCrystalNetherOre.getDefaultState(), 12, BlockHelper.forBlock(Blocks.netherrack));
@@ -86,17 +91,26 @@ public class CrystalOreGen implements IWorldGenerator
 
     private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chanceToSpawn, int minHeight, int maxHeight)
     {
-        if(minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
-            throw new IllegalArgumentException("FUUUUUUUUUCK YOU STEVEN!!!");
+
+
+
+
+            if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+                throw new IllegalArgumentException("FUUUUUUUUUCK YOU STEVEN!!!");
             /*"Illegal Height Arguments for WorldGenerator" side note: who's steven?*/
 
-        int heightDiff = maxHeight - minHeight + 1;
-        for (int i =0; i < chanceToSpawn; i ++)
-        {
-            int x = chunk_X * 16 + rand.nextInt(16);
-            int y = minHeight + rand.nextInt(heightDiff);
-            int z = chunk_Z * 16 + rand.nextInt(16);
-            generator.generate(world,rand, new BlockPos(x, y, z));
-        }
+            int heightDiff = maxHeight - minHeight + 1;
+            for (int i = 0; i < chanceToSpawn; i++)
+            {
+                int x = chunk_X * 16 + rand.nextInt(16);
+                int y = minHeight + rand.nextInt(heightDiff);
+                int z = chunk_Z * 16 + rand.nextInt(16);
+                if (world.getBiomeGenForCoords(new BlockPos(x, y, z)).equals(biomeCrystal.getBiome(117))) {
+                    generator.generate(world, rand, new BlockPos(x, y, z));
+                }
+            }
+
     }
+
+
 }
