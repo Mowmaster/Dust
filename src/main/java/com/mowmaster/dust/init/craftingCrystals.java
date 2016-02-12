@@ -1,5 +1,6 @@
 package com.mowmaster.dust.init;
 
+import com.mowmaster.dust.configuration.configFile;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -8,18 +9,25 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class craftingCrystals {
 
     public static void init(){
-/*
+
 // Recipies for the Crystals, Will be removed when Ore Gen is a thing... Maybe #Config?
-// Removed in Beta 0.2.0 as no config exists yet to enable crafting of crystals
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalRed, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 1));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlue, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 4));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalYellow, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 11));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalGreen, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 2));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalOrange, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 14));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalPurple, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 5));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlack, 1), new ItemStack(Items.diamond), new ItemStack(Items.dye, 1, 0));
-        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalWhite, 1), new ItemStack(Items.diamond), new ItemStack(Items.dye, 1, 15));
-*/
+// Removed in Beta 0.2.0 as no configFile exists yet to enable crafting of crystals
+
+            if (configFile.craftableCrystals)
+            {
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalRed, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 1));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlue, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 4));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalYellow, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 11));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalGreen, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 2));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalOrange, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 14));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalPurple, 1), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 5));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlack, 1), new ItemStack(Items.diamond), new ItemStack(Items.dye, 1, 0));
+                GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalWhite, 1), new ItemStack(Items.diamond), new ItemStack(Items.dye, 1, 15));
+            }
+        else
+            {
+                return;
+            }
 // Recipies for Swords and Tools
 // Swords
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.crystalSwordRed, 1), new Object[]{" X "," X "," Y ", 'X', ModItems.ItemCrystalRed, 'Y', Items.stick});

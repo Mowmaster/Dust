@@ -45,7 +45,7 @@ public class CrystalOreGenOtherWorld implements IWorldGenerator
                 break;
 
             case 1: //End
-                 this.runGenerator(this.gen_BlockEndOreBlack, world, random, chunkX, chunkZ, 8,0,128);/* Until 1.9 the end doesn't get bigger so the limit is end island*/
+                 this.runGenerator(this.gen_BlockEndOreBlack, world, random, chunkX, chunkZ, 16,0,256);/* Until 1.9 the end doesn't get bigger so the limit is end island*/
                 break;
 
         }

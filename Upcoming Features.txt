@@ -38,9 +38,9 @@ Added Burn time values to some crystals Red (lowest) Orange (mid) Yellow (highes
 
 Added Biomes for the Ores to spawn(overworld), There is technically a biome for each ore and a biome that has all ore types (rare-ish)
 
-
-[Yet to Impliment]
-- Add a config option to enable recipies from last version even with the worldgen. Default will be false.
+Added a config option to enable recipies from last version even with the worldgen. Default will be false.
+Also config option for choosing between default scarse biome gen or the gen I use when dev testing. Default should be false. (May allow for configuring biome gen rates later if i see a reason to)
+Lastly an option to change Biome Id's (Because I am a nice person...I think...)
 
 
 
@@ -48,15 +48,17 @@ Added Biomes for the Ores to spawn(overworld), There is technically a biome for 
 Version 0.3.0
 ==================
 
-I will make an attempt at adding crystal cluster growth.
-- To prevent farming I will try to add in "when was the last time I grew" checks along with exponential time to get to the next growth stage, ex. stage 1-2 short:stage 14-15 24 hours???
-* The reason for this type of growth will make sense later on with some of the utility items, blocks, and their properties.
-
-Add properties to shards (other then from v0.010) also add in cluster special properties.
+Add properties to shards (have done some of this already).
 
 Add in the obtainability of dust and some basic uses.
 - ex recipie: shard + hammer = dust
 * I may try to use some api stuff to see about adding macerator/pulveriser/sagmill recipie for them as an automatic alt to the hammer.
+
+Hopefully some basic synergies with full armor sets. (Event handler stuffs)
+
+Possibly the addition of some crystal/dust storage options??? (Dunno yet)
+
+
 
 ==========================
 Pushed to later versions
@@ -73,6 +75,9 @@ Pushed to later versions
 
 [No clusters yet] Clusters will gen based on biome/ tempature,(Tempature...meh, Ill just use a mod specific biome to gen them in) also there are a few types that will become more scarse then the others for balancing reasons for future versions.
 
+[No clusters yet]I will make an attempt at adding crystal cluster growth. Also add in cluster special properties.
+[No clusters yet]- To prevent farming I will try to add in "when was the last time I grew" checks along with exponential time to get to the next growth stage, ex. stage 1-2 short:stage 14-15 24 hours???
+[No clusters yet]* The reason for this type of growth will make sense later on with some of the utility items, blocks, and their properties.
 
 
 ==============================================================
