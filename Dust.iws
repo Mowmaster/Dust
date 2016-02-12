@@ -64,17 +64,19 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="49" column="95" selection-start-line="49" selection-start-column="95" selection-end-line="49" selection-end-column="95" />
-              <folding />
+              <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CrystalOreGen.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/CrystalOreGen.java">
+      <file leaf-file-name="Upcoming Features.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Upcoming Features.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6296296">
-              <caret line="32" column="97" selection-start-line="32" selection-start-column="97" selection-end-line="32" selection-end-column="97" />
+            <state vertical-scroll-proportion="0.55925924">
+              <caret line="34" column="65" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
               <folding />
             </state>
           </provider>
@@ -100,20 +102,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Pickaxes/CrystalPickaxeRed.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Pickaxes/CrystalPickaxeWhite.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Pickaxes/CrystalPickaxeYellow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordYellow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordWhite.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordRed.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordPurple.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordOrange.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordGreen.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordBlue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordBlack.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelBlack.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelBlue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelGreen.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelOrange.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelPurple.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelRed.java" />
@@ -142,15 +130,29 @@
         <option value="$PROJECT_DIR$/src/main/resources/assets/dust/models/item/crystalnetherore_orange.json" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/init/fuelHandlers.java" />
         <option value="$PROJECT_DIR$/src/main/resources/assets/dust/models/block/crystalore_red.json" />
-        <option value="$PROJECT_DIR$/Upcoming Features.txt" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/CrystalBiome.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/CrystalBiome.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/BiomeGenCrystal.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/typeCrystal.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/biomeRegistry.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/biomeCrystal.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/proxy/clientproxy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/proxy/commonproxy.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/CrystalOreGen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenOtherWorld.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenRegistry.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/biomeRegistration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenYellow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenWhite.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenRed.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenPurple.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenOrange.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenGreen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenBlue.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenBlack.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGen.java" />
+        <option value="$PROJECT_DIR$/Upcoming Features.txt" />
       </list>
     </option>
   </component>
@@ -205,7 +207,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -327,6 +329,10 @@
               <option name="myItemId" value="world" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oregeneration" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -388,13 +394,57 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dust" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dust" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dust" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="item" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dust" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Dust" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="run" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -411,24 +461,25 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="P:\programming\development\Minecraft\1.8\1.8.8\Dust\src\main\resources\assets\dust\textures\blocks" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.mowmaster.dust.world.oregeneration" />
       <recent name="assets.dust.models" />
       <recent name="assets.dust.textures" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.mowmaster.dust.block" />
-      <recent name="com.mowmaster.dust.item.Armor" />
-      <recent name="com.mowmaster.dust.item.Tools.Shovel" />
-      <recent name="com.mowmaster.dust.item.Tools.Hovels" />
-      <recent name="com.mowmaster.dust.item.Tools.Pickaxes" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="P:\programming\development\Minecraft\1.8\1.8.8\Dust\src\main\resources\assets\dust\models\item" />
       <recent name="P:\programming\development\Minecraft\1.8\1.8.8\Dust\src\main\resources\assets\dust\models\block" />
       <recent name="P:\programming\development\Minecraft\1.8\1.8.8\Dust\src\main\resources\assets\dust\blockstates" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.mowmaster.dust.world.oregeneration" />
+      <recent name="com.mowmaster.dust.block" />
+      <recent name="com.mowmaster.dust.item.Armor" />
+      <recent name="com.mowmaster.dust.item.Tools.Shovel" />
+      <recent name="com.mowmaster.dust.item.Tools.Hovels" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="P:\programming\development\Minecraft\1.8\1.8.8\Dust\src\main\resources\assets\dust\textures\blocks" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Minecraft Client">
@@ -728,7 +779,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -780,97 +831,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordRed.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordPurple.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordOrange.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordGreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordBlue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelBlue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelPurple.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelRed.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelWhite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelYellow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14814815">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelOrange.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14814815">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelGreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14814815">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Shovel/CrystalShovelBlack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25925925">
-          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/Tools/Swords/CrystalSwordBlack.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -1078,13 +1038,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Upcoming Features.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.912963">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/item/ItemDust.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25185186">
@@ -1107,36 +1060,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraft/world/biome/BiomeGenBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="52" column="22" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="95" selection-start-line="49" selection-start-column="95" selection-end-line="49" selection-end-column="95" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraft/world/World.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="164" column="24" selection-start-line="164" selection-start-column="24" selection-end-line="164" selection-end-column="24" />
           <folding>
-            <element signature="e#7665#7666#0" expanded="true" />
-            <element signature="e#7727#7728#0" expanded="true" />
+            <element signature="e#7665#7666#0" expanded="false" />
+            <element signature="e#7727#7728#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/proxy/ClientProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14166667">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/proxy/CommonProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16527778">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.0.1691/stable/20/forgeSrc-1.8.9-11.15.0.1691-sources.jar!/net/minecraft/world/biome/BiomeGenBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="37" selection-start-line="85" selection-start-column="37" selection-end-line="85" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenOtherWorld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.8018517">
+          <caret line="101" column="48" selection-start-line="101" selection-start-column="48" selection-end-line="101" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/biomeCrystal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12592593">
+        <state vertical-scroll-proportion="0.25185186">
           <caret line="8" column="46" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1144,10 +1113,110 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/CrystalOreGen.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/biomes/biomeRegistration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6296296">
-          <caret line="32" column="97" selection-start-line="32" selection-start-column="97" selection-end-line="32" selection-end-column="97" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="152" selection-start-line="28" selection-start-column="152" selection-end-line="28" selection-end-column="152" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenYellow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="92" selection-start-line="24" selection-start-column="92" selection-end-line="24" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenPurple.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="92" selection-start-line="24" selection-start-column="92" selection-end-line="24" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenOrange.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="92" selection-start-line="24" selection-start-column="92" selection-end-line="24" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenGreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="91" selection-start-line="24" selection-start-column="91" selection-end-line="24" selection-end-column="91" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenBlue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="90" selection-start-line="22" selection-start-column="90" selection-end-line="22" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenBlack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="91" selection-start-line="24" selection-start-column="91" selection-end-line="24" selection-end-column="91" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75555557">
+          <caret line="33" column="90" selection-start-line="33" selection-start-column="90" selection-end-line="33" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenRed.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28333333">
+          <caret line="27" column="89" selection-start-line="27" selection-start-column="89" selection-end-line="27" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenWhite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27592593">
+          <caret line="24" column="91" selection-start-line="24" selection-start-column="91" selection-end-line="24" selection-end-column="91" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/world/oregeneration/CrystalOreGenRegistry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3462963">
+          <caret line="11" column="66" selection-start-line="11" selection-start-column="66" selection-end-line="11" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mowmaster/dust/dust.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Upcoming Features.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.55925924">
+          <caret line="34" column="65" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
           <folding />
         </state>
       </provider>
