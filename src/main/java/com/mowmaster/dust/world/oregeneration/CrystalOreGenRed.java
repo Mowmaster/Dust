@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world.oregeneration;
 
 
+import com.mowmaster.dust.configuration.configFile;
 import com.mowmaster.dust.init.ModBlocks;
 import com.mowmaster.dust.world.biomes.biomeCrystal;
 import net.minecraft.block.state.pattern.BlockHelper;
@@ -98,7 +99,7 @@ public class CrystalOreGenRed implements IWorldGenerator
                 int y = minHeight + rand.nextInt(heightDiff);
                 int z = chunk_Z * 16 + rand.nextInt(16);
                 //generator.generate(world, rand, new BlockPos(x, y, z));
-                if (world.getBiomeGenForCoords(new BlockPos(x, y, z)).equals(biomeCrystal.getBiome(118))) {
+                if (world.getBiomeGenForCoords(new BlockPos(x, y, z)).equals(biomeCrystal.getBiome(configFile.BIOMECRYSTALRED))) {
                     generator.generate(world, rand, new BlockPos(x, y, z));
                 }
             }
