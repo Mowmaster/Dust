@@ -23,6 +23,15 @@ public final class ModItems
     public static Item ItemCrystalBlack;
     public static Item ItemCrystalWhite;
 
+    public static Item ItemCrystalRedDust;
+    public static Item ItemCrystalBlueDust;
+    public static Item ItemCrystalYellowDust;
+    public static Item ItemCrystalGreenDust;
+    public static Item ItemCrystalOrangeDust;
+    public static Item ItemCrystalPurpleDust;
+    public static Item ItemCrystalBlackDust;
+    public static Item ItemCrystalWhiteDust;
+
     public static void dustItems()
     {
         // Crystal Types
@@ -36,7 +45,17 @@ public final class ModItems
         GameRegistry.registerItem(ItemCrystalWhite = new ItemDust("crystal_white"), "crystal_white");
 
         // Dust Types
+        GameRegistry.registerItem(ItemCrystalRedDust = new ItemDust("crystaldust_red"), "crystaldust_red");
+        GameRegistry.registerItem(ItemCrystalBlueDust = new ItemDust("crystaldust_blue"), "crystaldust_blue");
+        GameRegistry.registerItem(ItemCrystalYellowDust = new ItemDust("crystaldust_yellow"), "crystaldust_yellow");
+        GameRegistry.registerItem(ItemCrystalGreenDust = new ItemDust("crystaldust_green"), "crystaldust_green");
+        GameRegistry.registerItem(ItemCrystalOrangeDust = new ItemDust("crystaldust_orange"), "crystaldust_orange");
+        GameRegistry.registerItem(ItemCrystalPurpleDust = new ItemDust("crystaldust_purple"), "crystaldust_purple");
+        GameRegistry.registerItem(ItemCrystalBlackDust = new ItemDust("crystaldust_black"), "crystaldust_black");
+        GameRegistry.registerItem(ItemCrystalWhiteDust = new ItemDust("crystaldust_white"), "crystaldust_white");
     }
+
+
 
 // Tool Material
 

@@ -48,11 +48,11 @@ Lastly an option to change Biome Id's (Because I am a nice person...I think...)
 Version 0.3.0
 ==================
 
-Add properties to shards (have done some of this already).
-
 Add in the obtainability of dust and some basic uses.
 - ex recipie: shard + hammer = dust
 * I may try to use some api stuff to see about adding macerator/pulveriser/sagmill recipie for them as an automatic alt to the hammer.
+
+Add properties to shards (have done some of this already).
 
 Hopefully some basic synergies with full armor sets. (Event handler stuffs)
 

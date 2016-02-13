@@ -17,8 +17,8 @@ This set of MCP mappings was designed for MC 1.8.8. Use at your own peril.This s
 :apiClasses UP-TO-DATE
 :sourceMainJava
 :compileJava
-Download https://libraries.minecraft.net/com/mojang/realms/1.7.57/realms-1.7.57.pom
-Download https://libraries.minecraft.net/com/mojang/realms/1.7.57/realms-1.7.57.jar
+Download https://libraries.minecraft.net/com/mojang/realms/1.7.59/realms-1.7.59.pom
+Download https://libraries.minecraft.net/com/mojang/realms/1.7.59/realms-1.7.59.jar
 warning: [options] bootstrap class path not set in conjunction with -source 1.6
 Note: P:\programming\development\Minecraft\1.8\1.8.8\Dust\build\sources\main\java\com\mowmaster\dust\configuration\configFile.java uses or overrides a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
@@ -48,4 +48,4 @@ remapping source...
 
 BUILD SUCCESSFUL
 
-Total time: 35.708 secs
+Total time: 20.034 secs
