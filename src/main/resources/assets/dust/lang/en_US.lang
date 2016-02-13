@@ -7,6 +7,15 @@ item.crystal_purple.name=Purple Crystal
 item.crystal_black.name=Black Crystal
 item.crystal_white.name=White Crystal
 
+item.crystaldust_red.name=Red Crystal Dust
+item.crystaldust_blue.name=Blue Crystal Dust
+item.crystaldust_yellow.name=Yellow Crystal Dust
+item.crystaldust_green.name=Green Crystal Dust
+item.crystaldust_orange.name=Orange Crystal Dust
+item.crystaldust_purple.name=Purple Crystal Dust
+item.crystaldust_black.name=Black Crystal Dust
+item.crystaldust_white.name=White Crystal Dust
+
 item.dust_red.name=Red Dust
 item.dust_blue.name=Blue Dust
 item.dust_yellow.name=Yellow Dust
@@ -51,6 +60,8 @@ item.crystalshovel_orange.name=Orange Crystal Shovel
 item.crystalshovel_purple.name=Purple Crystal Shovel
 item.crystalshovel_black.name=Black Crystal Shovel
 item.crystalshovel_white.name=White Crystal Shovel
+
+item.toolDustHammer.name=Hammer
 
 item.crystalhelmet_red.name=Red Crystal Helmet
 item.crystalchestplate_red.name=Red Crystal Chestplate

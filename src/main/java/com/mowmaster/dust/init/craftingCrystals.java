@@ -1,6 +1,7 @@
 package com.mowmaster.dust.init;
 
 import com.mowmaster.dust.configuration.configFile;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -24,10 +25,7 @@ public class craftingCrystals {
                 GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlack, 1), new ItemStack(Items.diamond), new ItemStack(Items.dye, 1, 0));
                 GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalWhite, 1), new ItemStack(Items.diamond), new ItemStack(Items.dye, 1, 15));
             }
-        else
-            {
-                return;
-            }
+
 // Recipies for Swords and Tools
 // Swords
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.crystalSwordRed, 1), new Object[]{" X "," X "," Y ", 'X', ModItems.ItemCrystalRed, 'Y', Items.stick});
@@ -131,6 +129,18 @@ public class craftingCrystals {
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalLeggings, 1), new Object[]{"XXX","X X","X X", 'X', ModItems.ItemCrystalWhite});
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalBoots, 1), new Object[]{"   ","X X","X X", 'X', ModItems.ItemCrystalWhite});
         GameRegistry.addShapedRecipe(new ItemStack(ModItems.WhiteCrystalBoots, 1), new Object[]{"X X","X X","   ", 'X', ModItems.ItemCrystalWhite});
+
+
+        GameRegistry.addShapedRecipe(new ItemStack(ModItems.toolDustHammer, 1), new Object[]{"XYY","XZY"," Z ", 'X', Blocks.iron_block, 'Y', Items.iron_ingot, 'Z', Items.stick});
+
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalRedDust, 1), new ItemStack(ModItems.ItemCrystalRed), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlueDust, 1), new ItemStack(ModItems.ItemCrystalBlue), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalYellowDust, 1), new ItemStack(ModItems.ItemCrystalYellow), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalGreenDust, 1), new ItemStack(ModItems.ItemCrystalGreen), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalOrangeDust, 1), new ItemStack(ModItems.ItemCrystalOrange), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalPurpleDust, 1), new ItemStack(ModItems.ItemCrystalPurple), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalBlackDust, 1), new ItemStack(ModItems.ItemCrystalBlack), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ItemCrystalWhiteDust, 1), new ItemStack(ModItems.ItemCrystalWhite), new ItemStack(ModItems.toolDustHammer.setContainerItem(ModItems.toolDustHammer)));
 
 
 

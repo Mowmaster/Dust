@@ -3,6 +3,7 @@ package com.mowmaster.dust.init;
 import com.mowmaster.dust.item.Armor.*;
 import com.mowmaster.dust.item.ItemDust;
 import com.mowmaster.dust.item.Tools.Axes.*;
+import com.mowmaster.dust.item.Tools.Misc.toolHammer;
 import com.mowmaster.dust.item.Tools.Shovel.*;
 import com.mowmaster.dust.item.Tools.Pickaxes.*;
 import com.mowmaster.dust.item.Tools.Swords.*;
@@ -113,6 +114,8 @@ public final class ModItems
     public static Item crystalShovelBlack;
     public static Item crystalShovelWhite;
 
+    public static Item toolDustHammer;
+
     public static void dustTools()
     {
         GameRegistry.registerItem(crystalSwordRed = new CrystalSwordRed("crystalsword_red",RedCrystal), "crystalsword_red");
@@ -152,6 +155,8 @@ public final class ModItems
         GameRegistry.registerItem(crystalShovelPurple = new CrystalShovelPurple("crystalshovel_purple",PurpleCrystal), "crystalshovel_purple");
         GameRegistry.registerItem(crystalShovelBlack = new CrystalShovelBlack("crystalshovel_black",BlackCrystal), "crystalshovel_black");
         GameRegistry.registerItem(crystalShovelWhite = new CrystalShovelWhite("crystalshovel_white",WhiteCrystal), "crystalshovel_white");
+
+        GameRegistry.registerItem(toolDustHammer = new toolHammer(), "toolDustHammer");
 
     }
 
@@ -274,4 +279,7 @@ public final class ModItems
         GameRegistry.registerItem(WhiteCrystalBoots = new WhiteCrystalArmor("crystalboots_white", WhiteArmorCrystal, 1, 3), "crystalboots_white");
 
     }
+
+
+
 }

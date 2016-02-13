@@ -67,6 +67,9 @@ public final class ItemRenderRegister {
         reg(ModItems.crystalShovelBlack);
         reg(ModItems.crystalShovelWhite);
 
+
+        reg(ModItems.toolDustHammer);
+
 // Armor
         reg(ModItems.RedCrystalHelmet);
         reg(ModItems.RedCrystalChestplate);
