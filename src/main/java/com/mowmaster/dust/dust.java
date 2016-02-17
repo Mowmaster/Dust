@@ -22,9 +22,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod(modid = reference.MOD_ID, name = reference.MOD_NAME, version = reference.VERSION)
 public class dust {
 
-    @SidedProxy(clientSide = reference.CLIENT_PROXY_CLASS, serverSide = reference.SERVER_PROXY_CLASS)
-    public static ClientProxy clientProxy;
-
     @Mod.Instance(reference.MOD_ID)
     public static dust instance;
 
