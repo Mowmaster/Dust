@@ -2,14 +2,16 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.block.BlockRenderRegister;
 import com.mowmaster.dust.configuration.configFile;
+import com.mowmaster.dust.init.*;
 import com.mowmaster.dust.item.ItemRenderRegister;
 import com.mowmaster.dust.proxy.IProxy;
 import com.mowmaster.dust.reference.reference;
-import com.mowmaster.dust.init.*;
 import com.mowmaster.dust.world.biomes.biomeRegistration;
 import com.mowmaster.dust.world.oregeneration.CrystalOreGenRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -31,10 +33,8 @@ public class dust {
     public static Configuration config;
 
     @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
-    {
-        if (event.modID.equals(reference.MOD_ID))
-        {
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.modID.equals(reference.MOD_ID)) {
             configFile.syncConfig();
 
         }
@@ -57,12 +57,6 @@ public class dust {
         biomeRegistration.biomeReg();
 
 
-
-
-        //ModEvents handler = new ModEvents();
-        //MinecraftForge.EVENT_BUS.register(handler);
-        //FMLCommonHandler.instance().bus().register(handler);
-
     }
 
 
@@ -72,9 +66,12 @@ public class dust {
         BlockRenderRegister.registerBlockRenderer();
         craftingCrystals.init();
 
-
         CrystalOreGenRegistry.OreGenReg();
 
+
+        ModEvents handler = new ModEvents();
+        MinecraftForge.EVENT_BUS.register(handler);
+        FMLCommonHandler.instance().bus().register(handler);
 
     }
 

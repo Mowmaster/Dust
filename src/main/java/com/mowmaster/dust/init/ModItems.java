@@ -7,7 +7,6 @@ import com.mowmaster.dust.item.Tools.Misc.toolHammer;
 import com.mowmaster.dust.item.Tools.Shovel.*;
 import com.mowmaster.dust.item.Tools.Pickaxes.*;
 import com.mowmaster.dust.item.Tools.Swords.*;
-import com.mowmaster.dust.reference.reference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraftforge.common.util.EnumHelper;
@@ -58,24 +57,7 @@ public final class ModItems
 
 
 
-// Tool Material
 
-// "Material name"
-// Harvest Level: Wood/Gold: 0 Stone: 1 Iron: 2 Diamond: 3
-// Durability: Gold 32 Wood 59 Stone 131 Iron 250 Diamond 1561
-// Mining Speed: No Tool 1.0F - Wood 2.0F - Stone 4.0F - Iron 6.0F - Diamond 8.0F - Gold 12.0F
-// Damage to Entities: Wood/Gold 0.0F - Stone 1.0F - Iron 2.0F - Diamond 3.0F  ** All Swords add 4.0 to Base Damage ~ ex. Iron Sword does 2.0+4.0 = 6.0 damage
-// Enchant ability: Stone 5 - Diamond 10 - Iron 14 - Wood 15 - Gold 22
-    public static Item.ToolMaterial RedCrystal = EnumHelper.addToolMaterial("RedCrystal", 2, 250, 6.0F, 2.0F, 14);
-    public static Item.ToolMaterial BlueCrystal = EnumHelper.addToolMaterial("BlueCrystal", 2, 250, 6.0F, 2.0F, 14);
-    public static Item.ToolMaterial YellowCrystal = EnumHelper.addToolMaterial("YellowCrystal", 2, 250, 6.0F, 2.0F, 14);
-    public static Item.ToolMaterial GreenCrystal = EnumHelper.addToolMaterial("GreenCrystal", 2, 250, 6.0F, 2.0F, 14);
-    public static Item.ToolMaterial OrangeCrystal = EnumHelper.addToolMaterial("OrangeCrystal", 2, 250, 6.0F, 2.0F, 14);
-    public static Item.ToolMaterial PurpleCrystal = EnumHelper.addToolMaterial("PurpleCrystal", 2, 250, 6.0F, 2.0F, 14);
-
-// White and Black are rarer and thus better tool materials
-    public static Item.ToolMaterial BlackCrystal = EnumHelper.addToolMaterial("BlackCrystal", 3, 1600, 9.0F, 3.0F, 16);
-    public static Item.ToolMaterial WhiteCrystal = EnumHelper.addToolMaterial("WhiteCrystal", 3, 1600, 9.0F, 3.0F, 25);
 
 
     public static Item crystalSwordRed;
@@ -115,6 +97,25 @@ public final class ModItems
     public static Item crystalShovelWhite;
 
     public static Item toolDustHammer;
+
+    // Tool Material
+
+    // "Material name"
+// Harvest Level: Wood/Gold: 0 Stone: 1 Iron: 2 Diamond: 3
+// Durability: Gold 32 Wood 59 Stone 131 Iron 250 Diamond 1561
+// Mining Speed: No Tool 1.0F - Wood 2.0F - Stone 4.0F - Iron 6.0F - Diamond 8.0F - Gold 12.0F
+// Damage to Entities: Wood/Gold 0.0F - Stone 1.0F - Iron 2.0F - Diamond 3.0F  ** All Swords add 4.0 to Base Damage ~ ex. Iron Sword does 2.0+4.0 = 6.0 damage
+// Enchant ability: Stone 5 - Diamond 10 - Iron 14 - Wood 15 - Gold 22
+    public static Item.ToolMaterial RedCrystal = EnumHelper.addToolMaterial("RedCrystal", 2, 250, 6.0F, 2.0F, 14);
+    public static Item.ToolMaterial BlueCrystal = EnumHelper.addToolMaterial("BlueCrystal", 2, 250, 6.0F, 2.0F, 14);
+    public static Item.ToolMaterial YellowCrystal = EnumHelper.addToolMaterial("YellowCrystal", 2, 250, 6.0F, 2.0F, 14);
+    public static Item.ToolMaterial GreenCrystal = EnumHelper.addToolMaterial("GreenCrystal", 2, 250, 6.0F, 2.0F, 14);
+    public static Item.ToolMaterial OrangeCrystal = EnumHelper.addToolMaterial("OrangeCrystal", 2, 250, 6.0F, 2.0F, 14);
+    public static Item.ToolMaterial PurpleCrystal = EnumHelper.addToolMaterial("PurpleCrystal", 2, 250, 6.0F, 2.0F, 14);
+
+    // White and Black are rarer and thus better tool materials
+    public static Item.ToolMaterial BlackCrystal = EnumHelper.addToolMaterial("BlackCrystal", 3, 1600, 9.0F, 3.0F, 16);
+    public static Item.ToolMaterial WhiteCrystal = EnumHelper.addToolMaterial("WhiteCrystal", 3, 1600, 9.0F, 3.0F, 25);
 
     public static void dustTools()
     {
