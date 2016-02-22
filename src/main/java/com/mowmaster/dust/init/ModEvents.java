@@ -13,16 +13,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class ModEvents {
 
 
-    @SubscribeEvent
-    public void xp(PlayerPickupXpEvent event) {
-        if (event.entityPlayer.getCurrentArmor(3) != null && event.entityPlayer.getCurrentArmor(2) != null && event.entityPlayer.getCurrentArmor(1) != null && event.entityPlayer.getCurrentArmor(0) != null) {
-            if (event.entityPlayer.getCurrentArmor(3).getItem().equals(ModItems.GreenCrystalHelmet) && event.entityPlayer.getCurrentArmor(2).getItem().equals(ModItems.GreenCrystalChestplate) && event.entityPlayer.getCurrentArmor(1).getItem().equals(ModItems.GreenCrystalLeggings) && event.entityPlayer.getCurrentArmor(0).getItem().equals(ModItems.GreenCrystalBoots)) {
-                event.orb.xpValue *= 2;
-                //System.out.println("BLARG!");
-            }
-        }
-    }
-
+    // Red Suite
     @SubscribeEvent
     public void fire(TickEvent.PlayerTickEvent event) {
 
@@ -37,6 +28,7 @@ public class ModEvents {
       }
     }
 
+    // Blue Suite
     @SubscribeEvent
     public void water(TickEvent.PlayerTickEvent event) {
 
@@ -51,6 +43,29 @@ public class ModEvents {
         }
     }
 
+    // Yellow Suite
+
+
+
+    // Green Suite
+    @SubscribeEvent
+    public void xp(PlayerPickupXpEvent event) {
+        if (event.entityPlayer.getCurrentArmor(3) != null && event.entityPlayer.getCurrentArmor(2) != null && event.entityPlayer.getCurrentArmor(1) != null && event.entityPlayer.getCurrentArmor(0) != null) {
+            if (event.entityPlayer.getCurrentArmor(3).getItem().equals(ModItems.GreenCrystalHelmet) && event.entityPlayer.getCurrentArmor(2).getItem().equals(ModItems.GreenCrystalChestplate) && event.entityPlayer.getCurrentArmor(1).getItem().equals(ModItems.GreenCrystalLeggings) && event.entityPlayer.getCurrentArmor(0).getItem().equals(ModItems.GreenCrystalBoots)) {
+                event.orb.xpValue *= 2;
+                //System.out.println("BLARG!");
+            }
+        }
+    }
+
+    // Orange Suite
+
+
+
+    // Purple Suite
+
+
+    // Black Suite
     @SubscribeEvent
     public void sneaking(TickEvent.PlayerTickEvent event) {
 
@@ -63,5 +78,18 @@ public class ModEvents {
             }
         }
     }
+
+    //White Suite
+
+
+    //Crystal Despawn Events???
+    //Red makes fire?
+    //Blue makes water?
+    //Yellow turns into glowstone dust? or...
+    //Green acts like a bonemeal use??? maybe turns into xp???
+    //Orange ...
+    //Purple ...
+    //Black time set night???
+    //White time set day???
 
 }

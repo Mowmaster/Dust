@@ -54,7 +54,17 @@ Add in the obtainability of dust and some basic uses.
 
 Add properties to shards (have done some of this already).
 
-Hopefully some basic synergies with full armor sets. (Event handler stuffs)
+Hopefully some BASIC synergies with full armor sets. (Event handler stuffs)
+Red: Fire Resistant
+Blue: Drowning Immune
+Yellow:
+Green: XP Boost
+Orange:
+Purple:
+Black: Sneaky
+White:
+
+
 
 Possibly the addition of some crystal/dust storage options??? (Dunno yet)
 
