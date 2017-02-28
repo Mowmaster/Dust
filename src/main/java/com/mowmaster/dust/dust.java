@@ -25,15 +25,14 @@ public class Dust {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        //ItemRegistry.init();
-        //ItemRegistry.register();
-        ItemRegistry.RegisterItems();
-
+        ItemRegistry.init();
+        ItemRegistry.register();
+        proxy.PreInit();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.PreInit();
+
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
     }

@@ -16,7 +16,8 @@ public class CrystalItems
         GREEN("green",4),
         ORANGE("orange",5),
         WHITE("white",6),
-        BLACK("black",7);
+        BLACK("black",7),
+        CLEAR("clear",8);
 
 
 
