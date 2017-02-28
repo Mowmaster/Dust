@@ -2,7 +2,6 @@ package com.mowmaster.dust;
 
 
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.proxies.ClientProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -26,14 +25,15 @@ public class Dust {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        ItemRegistry.init();
-        ItemRegistry.register();
-        proxy.PreInit();
+        //ItemRegistry.init();
+        //ItemRegistry.register();
+        ItemRegistry.RegisterItems();
+
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-
+        proxy.PreInit();
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
     }
