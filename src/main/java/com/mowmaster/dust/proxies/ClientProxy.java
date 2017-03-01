@@ -14,7 +14,7 @@ public class ClientProxy extends CommonProxy
     @SideOnly(Side.CLIENT)
     public void PreInit()
     {
-       ItemRegistry.registerRenders();
+        ItemRegistry.registerRenders();
     }
 
     @Override
@@ -30,6 +30,18 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(Reference.MODID,"crystal_white"),
                 new ResourceLocation(Reference.MODID,"crystal_black"),
                 new ResourceLocation(Reference.MODID,"crystal_clear")
+        );
+
+        ModelBakery.registerItemVariants(ItemRegistry.dust,
+                new ResourceLocation(Reference.MODID,"dust_red"),
+                new ResourceLocation(Reference.MODID,"dust_blue"),
+                new ResourceLocation(Reference.MODID,"dust_yellow"),
+                new ResourceLocation(Reference.MODID,"dust_purple"),
+                new ResourceLocation(Reference.MODID,"dust_green"),
+                new ResourceLocation(Reference.MODID,"dust_orange"),
+                new ResourceLocation(Reference.MODID,"dust_white"),
+                new ResourceLocation(Reference.MODID,"dust_black"),
+                new ResourceLocation(Reference.MODID,"dust_clear")
         );
     }
 

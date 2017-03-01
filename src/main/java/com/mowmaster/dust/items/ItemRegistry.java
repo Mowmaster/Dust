@@ -14,7 +14,7 @@ public class ItemRegistry
 {
 
 
-    public static Item redcrystal;
+    public static Item dust;
     public static Item crystal;
 
 
@@ -22,26 +22,29 @@ public class ItemRegistry
 
     public static void init()
     {
-        redcrystal = new ItemBasic("crystal_red","crystal_red");
+        dust = new ItemCrystal("dust");
         crystal = new ItemCrystal("crystal");
 
     }
 
     public static void register()
     {
-        registerItem(redcrystal);
+        registerItem(dust);
         registerItem(crystal);
     }
 
     public static void registerRenders()
     {
 
-        registerRender(redcrystal);
+        for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
+        {
+            registerRender(crystal,i,"crystal_" + CrystalItems.CrystalTypes.values()[i].getName());
+        }
 
-       for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
-       {
-           registerRender(crystal,i,"crystal_" + CrystalItems.CrystalTypes.values()[i].getName());
-       }
+        for(int i = 0; i < CrystalItems.DustTypes.values().length; i++)
+        {
+            registerRender(dust,i,"dust_" + CrystalItems.DustTypes.values()[i].getName());
+        }
     }
 
     public static void registerItem(Item item)

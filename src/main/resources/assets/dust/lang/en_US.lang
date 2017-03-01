@@ -12,3 +12,15 @@ item.crystal.white.name=White Crystal
 item.crystal.black.name=Black Crystal
 item.crystal.clear.name=Depleted Crystal
 
+item.dust.stone.name=Dust
+item.dust.red.name=Red Dust
+item.dust.blue.name=Blue Dust
+item.dust.yellow.name=Yellow Dust
+item.dust.purple.name=Purple Dust
+item.dust.green.name=Green Dust
+item.dust.orange.name=Orange Dust
+item.dust.white.name=White Dust
+item.dust.black.name=Black Dust
+item.dust.clear.name=Depleted Dust
+
+
