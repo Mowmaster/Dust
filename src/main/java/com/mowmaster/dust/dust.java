@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.recipes.CraftingRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -35,6 +36,7 @@ public class Dust {
 
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
+        CraftingRecipes.ICraftingRecipes();
     }
 
     @Mod.EventHandler
