@@ -1,6 +1,7 @@
 package com.mowmaster.dust;
 
 
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,6 +27,8 @@ public class Dust {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        BlockRegistry.init();
+        BlockRegistry.register();
         ItemRegistry.init();
         ItemRegistry.register();
         proxy.PreInit();

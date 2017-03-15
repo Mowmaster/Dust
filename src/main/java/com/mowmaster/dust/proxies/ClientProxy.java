@@ -1,5 +1,6 @@
 package com.mowmaster.dust.proxies;
 
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -15,6 +16,7 @@ public class ClientProxy extends CommonProxy
     public void PreInit()
     {
         ItemRegistry.registerRenders();
+        BlockRegistry.registerRenders();
     }
 
     @Override

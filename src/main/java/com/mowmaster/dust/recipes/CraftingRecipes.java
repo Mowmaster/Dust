@@ -19,6 +19,7 @@ public class CraftingRecipes
         for(int i =0; i < CrystalItems.DustTypes.values().length; i++)
         {
             GameRegistry.addShapelessRecipe(new ItemStack(dust,1,i),new ItemStack(crystal,1,i));
+
         }
     }
 
