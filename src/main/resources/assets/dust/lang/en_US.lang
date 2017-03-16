@@ -25,4 +25,12 @@ item.dust.clear.name=Depleted Dust
 
 tile.redore.name=Red Crystal Ore
 
+tile.ore_red.ore.name=Red Crystal Ore (Ore)
+tile.ore_red.five.name=Red Crystal (5)
+tile.ore_red.four.name=Red Crystal (4)
+tile.ore_red.three.name=Red Crystal (3)
+tile.ore_red.two.name=Red Crystal (2)
+tile.ore_red.one.name=Red Crystal (1)
+tile.ore_red.base.name=Red Crystal (0)
+
 

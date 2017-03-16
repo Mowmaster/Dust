@@ -4,6 +4,7 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,6 +46,19 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(Reference.MODID,"dust_black"),
                 new ResourceLocation(Reference.MODID,"dust_clear")
         );
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.orered),
+                new ResourceLocation(Reference.MODID, "ore_red_ore"),
+                new ResourceLocation(Reference.MODID, "ore_red_five"),
+                new ResourceLocation(Reference.MODID, "ore_red_four"),
+                new ResourceLocation(Reference.MODID, "ore_red_three"),
+                new ResourceLocation(Reference.MODID, "ore_red_two"),
+                new ResourceLocation(Reference.MODID, "ore_red_one"),
+                new ResourceLocation(Reference.MODID, "ore_red_base")
+        );
+
+
+
     }
 
 }
