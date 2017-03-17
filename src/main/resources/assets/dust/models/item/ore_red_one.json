@@ -3,7 +3,7 @@
     "textures": {
         "0": "dust:items/crystal_cores",
         "1": "dust:items/crystal_sides",
-        "2": "blocks/stone""minecraft:blocks/stone"
+        "2": "minecraft:blocks/stone"
     },
     "elements": [
         {

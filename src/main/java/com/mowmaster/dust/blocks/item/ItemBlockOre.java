@@ -24,7 +24,7 @@ public class ItemBlockOre extends ItemBlock
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {
-        return super.getUnlocalizedName() + ((IMetaBlockName) this.block).getSpecialName(stack);
+        return super.getUnlocalizedName() + "_" + ((IMetaBlockName) this.block).getSpecialName(stack);
     }
 
     public int getMetadata(int damage) {

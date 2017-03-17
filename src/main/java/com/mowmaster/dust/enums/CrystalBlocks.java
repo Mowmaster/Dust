@@ -11,7 +11,7 @@ public class CrystalBlocks
     {
         ORE("ore",0),
         FIFTH("five",1),
-        FOOURTH("four",2),
+        FOURTH("four",2),
         THIRD("three",3),
         SECOND("two",4),
         FIRST("one",5),
