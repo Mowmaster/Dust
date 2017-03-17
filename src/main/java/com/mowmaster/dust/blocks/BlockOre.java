@@ -102,30 +102,29 @@ public class BlockOre extends Block implements IMetaBlockName
     }
 
     //AxisAlignedBB(min x1, mix y1, min z1, max x2, max y2, max z2)
-    protected static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(1.0D, 1.0D, 1.0D, 1.0D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB CRYSTAL_BOX = new AxisAlignedBB(
-            0.4000000059604645D, 0.0D, 0.4000000059604645D,
-            0.6000000238418579D, 0.9000000238418579D, 0.6000000238418579D);
-    protected static final AxisAlignedBB BASE_BOX = new AxisAlignedBB(1.0D, 1.0D, 1.0D, 1.0D, 1.0D, 1.0D);
+    private static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(
+            0.0D, 0.0D, 0.0D,
+            1.0D, 1.0D, 1.0D);
+    private static AxisAlignedBB CRYSTAL_BOX = new AxisAlignedBB(
+            0.25D, 0.0D, 0.25D,
+            0.75D, 0.90D, 0.75D);
+    private static final AxisAlignedBB BASE_BOX = new AxisAlignedBB(
+            0.25D, 0.0D, 0.25D,
+            0.75D, 0.125D, 0.75D);
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
 
         switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE))
         {
-            case ORE:
-                return ORE_BOX;
             case FIFTH:
-                return CRYSTAL_BOX;
             case FOURTH:
-                return CRYSTAL_BOX;
             case THIRD:
-                return CRYSTAL_BOX;
             case SECOND:
-                return CRYSTAL_BOX;
             case FIRST:
                 return CRYSTAL_BOX;
             case BASE:
                 return BASE_BOX;
+            case ORE:
             default:
                 return ORE_BOX;
         }
@@ -140,4 +139,5 @@ public class BlockOre extends Block implements IMetaBlockName
     {
         return false;
     }
+
 }
