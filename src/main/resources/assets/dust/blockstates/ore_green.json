@@ -1,0 +1,11 @@
+{
+  "variants":{
+    "greenstate=ore": {"model": "dust:ore_green_ore"},
+    "greenstate=five": {"model": "dust:ore_green_five"},
+    "greenstate=four": {"model": "dust:ore_green_four"},
+    "greenstate=three": {"model": "dust:ore_green_three"},
+    "greenstate=two": {"model": "dust:ore_green_two"},
+    "greenstate=one": {"model": "dust:ore_green_one"},
+    "greenstate=base": {"model": "dust:ore_base"}
+  }
+}

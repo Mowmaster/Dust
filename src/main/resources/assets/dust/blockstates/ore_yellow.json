@@ -1,0 +1,11 @@
+{
+  "variants":{
+    "yellowstate=ore": {"model": "dust:ore_yellow_ore"},
+    "yellowstate=five": {"model": "dust:ore_yellow_five"},
+    "yellowstate=four": {"model": "dust:ore_yellow_four"},
+    "yellowstate=three": {"model": "dust:ore_yellow_three"},
+    "yellowstate=two": {"model": "dust:ore_yellow_two"},
+    "yellowstate=one": {"model": "dust:ore_yellow_one"},
+    "yellowstate=base": {"model": "dust:ore_base"}
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "variants":{
+    "orangestate=ore": {"model": "dust:ore_orange_ore"},
+    "orangestate=five": {"model": "dust:ore_orange_five"},
+    "orangestate=four": {"model": "dust:ore_orange_four"},
+    "orangestate=three": {"model": "dust:ore_orange_three"},
+    "orangestate=two": {"model": "dust:ore_orange_two"},
+    "orangestate=one": {"model": "dust:ore_orange_one"},
+    "orangestate=base": {"model": "dust:ore_base"}
+  }
+}

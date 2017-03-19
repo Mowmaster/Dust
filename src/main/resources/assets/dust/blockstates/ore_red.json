@@ -8,6 +8,4 @@
     "redstate=one": {"model": "dust:ore_red_one"},
     "redstate=base": {"model": "dust:ore_base"}
   }
-
-
 }

@@ -35,36 +35,36 @@ import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
 import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 
 
-public class BlockOre extends Block implements IMetaBlockName
+public class BlockYellowOre extends Block implements IMetaBlockName
 {
 
-    public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
-	
-    public BlockOre(String unloc)
+    public static final PropertyEnum YELLOWSTATE = PropertyEnum.create("yellowstate",CrystalBlocks.CrystalOres.class);
+
+    public BlockYellowOre(String unloc)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(YELLOWSTATE, CrystalBlocks.CrystalOres.ORE));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this,new IProperty[]{REDSTATE});
+        return new BlockStateContainer(this,new IProperty[]{YELLOWSTATE});
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        CrystalBlocks.CrystalOres ores = (CrystalBlocks.CrystalOres) state.getValue(REDSTATE);
+        CrystalBlocks.CrystalOres ores = (CrystalBlocks.CrystalOres) state.getValue(YELLOWSTATE);
         return ores.getID();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.values()[meta]);
+        return this.getDefaultState().withProperty(YELLOWSTATE, CrystalBlocks.CrystalOres.values()[meta]);
     }
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
@@ -99,18 +99,18 @@ public class BlockOre extends Block implements IMetaBlockName
 
     //AxisAlignedBB(min x1, mix y1, min z1, max x2, max y2, max z2)
     private static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(
-            0.0D, 0.0D, 0.0D,
-            1.0D, 1.0D, 1.0D);
+		0.0D, 0.0D, 0.0D,
+		1.0D, 1.0D, 1.0D);
     private static AxisAlignedBB CRYSTAL_BOX = new AxisAlignedBB(
-            0.25D, 0.0D, 0.25D,
-            0.75D, 0.90D, 0.75D);
+		0.25D, 0.0D, 0.25D,
+		0.75D, 0.90D, 0.75D);
     private static final AxisAlignedBB BASE_BOX = new AxisAlignedBB(
-            0.25D, 0.0D, 0.25D,
-            0.75D, 0.125D, 0.75D);
+		0.25D, 0.0D, 0.25D,
+		0.75D, 0.125D, 0.75D);
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
 
-        switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE))
+        switch ((CrystalBlocks.CrystalOres)state.getValue(YELLOWSTATE))
         {
             case FIFTH:
             case FOURTH:

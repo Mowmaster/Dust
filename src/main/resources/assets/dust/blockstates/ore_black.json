@@ -1,0 +1,11 @@
+{
+  "variants":{
+    "blackstate=ore": {"model": "dust:ore_black_ore"},
+    "blackstate=five": {"model": "dust:ore_black_five"},
+    "blackstate=four": {"model": "dust:ore_black_four"},
+    "blackstate=three": {"model": "dust:ore_black_three"},
+    "blackstate=two": {"model": "dust:ore_black_two"},
+    "blackstate=one": {"model": "dust:ore_black_one"},
+    "blackstate=base": {"model": "dust:ore_base"}
+  }
+}
