@@ -33,4 +33,11 @@ tile.ore_red_two.name=Red Crystal (2)
 tile.ore_red_one.name=Red Crystal (1)
 tile.ore_red_base.name=Red Crystal (0)
 
+tile.ore_blue_ore.name=Blue Crystal Ore (Ore)
+tile.ore_blue_five.name=Blue Crystal (5)
+tile.ore_blue_four.name=Blue Crystal (4)
+tile.ore_blue_three.name=Blue Crystal (3)
+tile.ore_blue_two.name=Blue Crystal (2)
+tile.ore_blue_one.name=Blue Crystal (1)
+tile.ore_blue_base.name=Blue Crystal (0)
 

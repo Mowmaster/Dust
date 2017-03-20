@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.item;
 
-import com.mowmaster.dust.blocks.BlockOre;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

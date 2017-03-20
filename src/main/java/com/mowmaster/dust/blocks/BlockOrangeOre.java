@@ -2,23 +2,18 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
-
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,45 +21,41 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
-import static net.minecraft.util.BlockRenderLayer.CUTOUT;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
-import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 
 
-public class BlockOre extends Block implements IMetaBlockName
+public class BlockOrangeOre extends Block implements IMetaBlockName
 {
 
-    public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
-	
-    public BlockOre(String unloc)
+    public static final PropertyEnum ORANGESTATE = PropertyEnum.create("orangestate",CrystalBlocks.CrystalOres.class);
+
+    public BlockOrangeOre(String unloc)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ORANGESTATE, CrystalBlocks.CrystalOres.ORE));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this,new IProperty[]{REDSTATE});
+        return new BlockStateContainer(this,new IProperty[]{ORANGESTATE});
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        CrystalBlocks.CrystalOres ores = (CrystalBlocks.CrystalOres) state.getValue(REDSTATE);
+        CrystalBlocks.CrystalOres ores = (CrystalBlocks.CrystalOres) state.getValue(ORANGESTATE);
         return ores.getID();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.values()[meta]);
+        return this.getDefaultState().withProperty(ORANGESTATE, CrystalBlocks.CrystalOres.values()[meta]);
     }
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
@@ -110,7 +101,7 @@ public class BlockOre extends Block implements IMetaBlockName
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
 
-        switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE))
+        switch ((CrystalBlocks.CrystalOres)state.getValue(ORANGESTATE))
         {
             case FIFTH:
             case FOURTH:
