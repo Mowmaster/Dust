@@ -21,7 +21,16 @@ item.dust.green.name=Green Dust
 item.dust.orange.name=Orange Dust
 item.dust.white.name=White Dust
 item.dust.black.name=Black Dust
-item.dust.clear.name=Depleted Dust
+item.dust.stone.name=Stone Dust
+
+item.bit.red.name=Red Bit
+item.bit.blue.name=Blue Bit
+item.bit.yellow.name=Yellow Bit
+item.bit.purple.name=Purple Bit
+item.bit.green.name=Green Bit
+item.bit.orange.name=Orange Bit
+item.bit.white.name=White Bit
+item.bit.black.name=Black Bit
 
 tile.redore.name=Red Crystal Ore
 

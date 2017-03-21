@@ -1,11 +1,11 @@
 {
   "variants":{
-    "whitestate=ore": {"model": "dust:ore_white_ore"},
-    "whitestate=five": {"model": "dust:ore_white_five"},
-    "whitestate=four": {"model": "dust:ore_white_four"},
-    "whitestate=three": {"model": "dust:ore_white_three"},
-    "whitestate=two": {"model": "dust:ore_white_two"},
-    "whitestate=one": {"model": "dust:ore_white_one"},
+    "whitestate=ore": {"model": "dust:white/ore_white_ore"},
+    "whitestate=five": {"model": "dust:white/ore_white_five"},
+    "whitestate=four": {"model": "dust:white/ore_white_four"},
+    "whitestate=three": {"model": "dust:white/ore_white_three"},
+    "whitestate=two": {"model": "dust:white/ore_white_two"},
+    "whitestate=one": {"model": "dust:white/ore_white_one"},
     "whitestate=base": {"model": "dust:ore_base"}
   }
 }

@@ -1,0 +1,20 @@
+{
+"__comment": "Designed by Mowmaster with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+"textures": {
+    "crystal_cores": "dust:items/crystal_cores"
+},
+"elements": [ 
+{
+    "from": [ 7, 1, 8 ],
+    "to": [ 8, 2, 9 ],
+    "faces": {
+        "down":  { "uv": [ 9, 1, 8, 0 ], "texture": "#crystal_cores" },
+        "up":    { "uv": [ 8, 0, 9, 1 ], "texture": "#crystal_cores" },
+        "north": { "uv": [ 8, 0, 9, 1 ], "texture": "#crystal_cores" },
+        "south": { "uv": [ 8, 0, 9, 1 ], "texture": "#crystal_cores" },
+        "west":  { "uv": [ 8, 0, 9, 1 ], "texture": "#crystal_cores" },
+        "east":  { "uv": [ 8, 0, 9, 1 ], "texture": "#crystal_cores" }
+    }
+}
+]
+}

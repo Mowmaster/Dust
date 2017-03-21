@@ -1,11 +1,11 @@
 {
   "variants":{
-    "redstate=ore": {"model": "dust:ore_red_ore"},
-    "redstate=five": {"model": "dust:ore_red_five"},
-    "redstate=four": {"model": "dust:ore_red_four"},
-    "redstate=three": {"model": "dust:ore_red_three"},
-    "redstate=two": {"model": "dust:ore_red_two"},
-    "redstate=one": {"model": "dust:ore_red_one"},
+    "redstate=ore": {"model": "dust:red/ore_red_ore"},
+    "redstate=five": {"model": "dust:red/ore_red_five"},
+    "redstate=four": {"model": "dust:red/ore_red_four"},
+    "redstate=three": {"model": "dust:red/ore_red_three"},
+    "redstate=two": {"model": "dust:red/ore_red_two"},
+    "redstate=one": {"model": "dust:red/ore_red_one"},
     "redstate=base": {"model": "dust:ore_base"}
   }
 }

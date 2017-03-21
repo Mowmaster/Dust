@@ -1,11 +1,11 @@
 {
   "variants":{
-    "bluestate=ore": {"model": "dust:ore_blue_ore"},
-    "bluestate=five": {"model": "dust:ore_blue_five"},
-    "bluestate=four": {"model": "dust:ore_blue_four"},
-    "bluestate=three": {"model": "dust:ore_blue_three"},
-    "bluestate=two": {"model": "dust:ore_blue_two"},
-    "bluestate=one": {"model": "dust:ore_blue_one"},
+    "bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+    "bluestate=five": {"model": "dust:blue/ore_blue_five"},
+    "bluestate=four": {"model": "dust:blue/ore_blue_four"},
+    "bluestate=three": {"model": "dust:blue/ore_blue_three"},
+    "bluestate=two": {"model": "dust:blue/ore_blue_two"},
+    "bluestate=one": {"model": "dust:blue/ore_blue_one"},
     "bluestate=base": {"model": "dust:ore_base"}
   }
 }

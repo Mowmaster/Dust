@@ -56,13 +56,13 @@ public class CrystalItems
         ORANGE("orange",5),
         WHITE("white",6),
         BLACK("black",7),
-        CLEAR("clear",8);
+        STONE("stone",8);
 
 
 
         private int ID;
         private String name;
-        private DustTypes(String name, int ID)
+        private DustTypes(String name, int AID)
         {
             this.ID = ID;
             this.name = name;
@@ -96,8 +96,7 @@ public class CrystalItems
         GREEN("green",4),
         ORANGE("orange",5),
         WHITE("white",6),
-        BLACK("black",7),
-        CLEAR("clear",8);
+        BLACK("black",7);
 
 
 

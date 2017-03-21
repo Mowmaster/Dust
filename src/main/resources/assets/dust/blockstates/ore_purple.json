@@ -1,11 +1,11 @@
 {
   "variants":{
-    "purplestate=ore": {"model": "dust:ore_purple_ore"},
-    "purplestate=five": {"model": "dust:ore_purple_five"},
-    "purplestate=four": {"model": "dust:ore_purple_four"},
-    "purplestate=three": {"model": "dust:ore_purple_three"},
-    "purplestate=two": {"model": "dust:ore_purple_two"},
-    "purplestate=one": {"model": "dust:ore_purple_one"},
+    "purplestate=ore": {"model": "dust:purple/ore_purple_ore"},
+    "purplestate=five": {"model": "dust:purple/ore_purple_five"},
+    "purplestate=four": {"model": "dust:purple/ore_purple_four"},
+    "purplestate=three": {"model": "dust:purple/ore_purple_three"},
+    "purplestate=two": {"model": "dust:purple/ore_purple_two"},
+    "purplestate=one": {"model": "dust:purple/ore_purple_one"},
     "purplestate=base": {"model": "dust:ore_base"}
   }
 }
