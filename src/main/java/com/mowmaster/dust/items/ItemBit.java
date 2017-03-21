@@ -12,9 +12,9 @@ import java.util.List;
 import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
 
 
-public class ItemDust extends Item
+public class ItemBit extends Item
 {
-    public ItemDust(String unlocName)
+    public ItemBit(String unlocName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unlocName));
@@ -24,7 +24,7 @@ public class ItemDust extends Item
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> items)
     {
-        for(int i = 0; i < CrystalItems.DustTypes.values().length; i++)
+        for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)
         {
             items.add(new ItemStack(item,1,i));
         }
@@ -33,16 +33,16 @@ public class ItemDust extends Item
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {
-        for(int i = 0; i <CrystalItems.DustTypes.values().length; i++)
+        for(int i = 0; i <CrystalItems.BitTypes.values().length; i++)
         {
             if(stack.getItemDamage() == i)
             {
-                return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.values()[i].getName();
+                return this.getUnlocalizedName() + "." + CrystalItems.BitTypes.values()[i].getName();
             }
             else {
                 continue;
             }
         }
-        return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.RED.getName();
+        return this.getUnlocalizedName() + "." + CrystalItems.BitTypes.RED.getName();
     }
 }
