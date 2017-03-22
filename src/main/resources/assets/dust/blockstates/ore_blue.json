@@ -1,11 +1,52 @@
 {
   "variants":{
-    "bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
-    "bluestate=five": {"model": "dust:blue/ore_blue_five"},
-    "bluestate=four": {"model": "dust:blue/ore_blue_four"},
-    "bluestate=three": {"model": "dust:blue/ore_blue_three"},
-    "bluestate=two": {"model": "dust:blue/ore_blue_two"},
-    "bluestate=one": {"model": "dust:blue/ore_blue_one"},
-    "bluestate=base": {"model": "dust:ore_base"}
+    "facing=down,bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+    "facing=up,bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+    "facing=north,bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+    "facing=south,bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+    "facing=east,bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+    "facing=west,bluestate=ore": {"model": "dust:blue/ore_blue_ore"},
+
+    "facing=up,bluestate=five": {"model": "dust:blue/ore_blue_five"},
+    "facing=down,bluestate=five": {"model": "dust:blue/ore_blue_five","x": 180},
+    "facing=north,bluestate=five": {"model": "dust:blue/ore_blue_five","x": 90},
+    "facing=east,bluestate=five": {"model": "dust:blue/ore_blue_five","x": 90,"y":90},
+    "facing=south,bluestate=five": {"model": "dust:blue/ore_blue_five","x": 90,"y":180},
+    "facing=west,bluestate=five": {"model": "dust:blue/ore_blue_five","x": 90,"y":270},
+
+    "facing=up,bluestate=four": {"model": "dust:blue/ore_blue_four"},
+    "facing=down,bluestate=four": {"model": "dust:blue/ore_blue_four","x": 180},
+    "facing=north,bluestate=four": {"model": "dust:blue/ore_blue_four","x": 90},
+    "facing=east,bluestate=four": {"model": "dust:blue/ore_blue_four","x": 90,"y":90},
+    "facing=south,bluestate=four": {"model": "dust:blue/ore_blue_four","x": 90,"y":180},
+    "facing=west,bluestate=four": {"model": "dust:blue/ore_blue_four","x": 90,"y":270},
+
+    "facing=up,bluestate=three": {"model": "dust:blue/ore_blue_three"},
+    "facing=down,bluestate=three": {"model": "dust:blue/ore_blue_three","x": 180},
+    "facing=north,bluestate=three": {"model": "dust:blue/ore_blue_three","x": 90},
+    "facing=east,bluestate=three": {"model": "dust:blue/ore_blue_three","x": 90,"y":90},
+    "facing=south,bluestate=three": {"model": "dust:blue/ore_blue_three","x": 90,"y":180},
+    "facing=west,bluestate=three": {"model": "dust:blue/ore_blue_three","x": 90,"y":270},
+
+    "facing=up,bluestate=two": {"model": "dust:blue/ore_blue_two"},
+    "facing=down,bluestate=two": {"model": "dust:blue/ore_blue_two","x": 180},
+    "facing=north,bluestate=two": {"model": "dust:blue/ore_blue_two","x": 90},
+    "facing=east,bluestate=two": {"model": "dust:blue/ore_blue_two","x": 90,"y":90},
+    "facing=south,bluestate=two": {"model": "dust:blue/ore_blue_two","x": 90,"y":180},
+    "facing=west,bluestate=two": {"model": "dust:blue/ore_blue_two","x": 90,"y":270},
+
+    "facing=up,bluestate=one": {"model": "dust:blue/ore_blue_one"},
+    "facing=down,bluestate=one": {"model": "dust:blue/ore_blue_one","x": 180},
+    "facing=north,bluestate=one": {"model": "dust:blue/ore_blue_one","x": 90},
+    "facing=east,bluestate=one": {"model": "dust:blue/ore_blue_one","x": 90,"y":90},
+    "facing=south,bluestate=one": {"model": "dust:blue/ore_blue_one","x": 90,"y":180},
+    "facing=west,bluestate=one": {"model": "dust:blue/ore_blue_one","x": 90,"y":270},
+
+    "facing=up,bluestate=base": {"model": "dust:ore_base"},
+    "facing=down,bluestate=base": {"model": "dust:ore_base","x": 180},
+    "facing=north,bluestate=base": {"model": "dust:ore_base","x": 90},
+    "facing=east,bluestate=base": {"model": "dust:ore_base","x": 90,"y":90},
+    "facing=south,bluestate=base": {"model": "dust:ore_base","x": 90,"y":180},
+    "facing=west,bluestate=base": {"model": "dust:ore_base","x": 90,"y":270}
   }
 }

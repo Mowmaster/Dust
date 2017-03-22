@@ -11,6 +11,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -24,6 +25,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -79,10 +83,11 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-
-
-        return getDefaultState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.values()[meta]).withProperty(FACING,EnumFacing.UP);
+        //EnumFacing enumfacing = EnumFacing.UP;
+        //).withProperty(FACING, enumfacing
+        return this.getDefaultState().withProperty(REDSTATE,CrystalBlocks.CrystalOres.values()[meta]);
     }
+
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
@@ -128,76 +133,49 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
     }
 
     //AxisAlignedBB(min x1, mix y1, min z1, max x2, max y2, max z2)
-    private static AxisAlignedBB CDOWN = new AxisAlignedBB(
-            0.25D, 1.0D, 0.25D,
-            0.75D, 0.1D, 0.75D);
-    private static AxisAlignedBB CUP = new AxisAlignedBB(
-            0.25D, 0.0D, 0.25D,
-            0.75D, 0.9D, 0.75D);
-    private static AxisAlignedBB CNORTH = new AxisAlignedBB(
-            0.25D, 0.75D, 0.1D,
-            0.75D, 0.25D, 1.0D);
-    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(
-            0.25D, 0.75D, 0.0D,
-            0.75D, 0.25D, 0.9D);
-    private static AxisAlignedBB CWEST = new AxisAlignedBB(
-            0.1D, 0.75D, 0.25D,
-            1.0D, 0.25D, 0.75D);
-    private static AxisAlignedBB CEAST = new AxisAlignedBB(
-            0.0D, 0.75D, 0.25D,
-            0.9D, 0.25D, 0.75D);
+    private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.1D, 0.75D);
+    private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
+    private static AxisAlignedBB CNORTH = new AxisAlignedBB(0.25D, 0.75D, 0.1D, 0.75D, 0.25D, 1.0D);
+    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, 0.9D);
+    private static AxisAlignedBB CWEST = new AxisAlignedBB(0.1D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
+    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.9D, 0.25D, 0.75D);
 
-    private static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(
-            0.0D, 0.0D, 0.0D,
-            1.0D, 1.0D, 1.0D);
-    private static final AxisAlignedBB BASE_BOX_DOWN = new AxisAlignedBB(
-            0.25D, 0.0D, 0.25D,
-            0.75D, 0.125D, 0.75D);
+    private static final AxisAlignedBB BUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.125D, 0.75D);
+    private static final AxisAlignedBB BDOWN = new AxisAlignedBB(0.25D, 0.875D, 0.25D, 0.75D, 1.0D, 0.75D);
+    private static final AxisAlignedBB BSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.125D, 0.75D, 0.25D, 0.0D);
+    private static final AxisAlignedBB BWEST = new AxisAlignedBB(0.875D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
+    private static final AxisAlignedBB BNORTH = new AxisAlignedBB(0.25D, 0.75D, 0.875D, 0.75D, 0.25D, 1.0D);
+    private static final AxisAlignedBB BEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.125D, 0.25D, 0.75D);
 
+    private static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         EnumFacing enumFacing = state.getValue(FACING);
-            switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE)) {
-                case FIFTH:
-
-                case FOURTH:
-                case THIRD:
-                case SECOND:
-                case FIRST:
-                    if (enumFacing == EnumFacing.UP)
-                    {
-                        return CUP;
-                    }
-                    else if (enumFacing == EnumFacing.DOWN)
-                    {
-                        return CDOWN;
-                    }
-                    else if(enumFacing == EnumFacing.NORTH)
-                    {
-                        return CNORTH;
-                    }
-                    else if(enumFacing == EnumFacing.EAST)
-                    {
-                        return CEAST;
-                    }
-                    else if(enumFacing == EnumFacing.SOUTH)
-                    {
-                        return CSOUTH;
-                    }
-                    else if(enumFacing == EnumFacing.WEST)
-                    {
-                        return CWEST;
-                    }
-                case BASE:
-                    return BASE_BOX_DOWN;
-                case ORE:
-                default:
-                    return ORE_BOX;
+        switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE)) {
+            case FIFTH:
+            case FOURTH:
+            case THIRD:
+            case SECOND:
+            case FIRST:
+                if (enumFacing == EnumFacing.UP) {return CUP;}
+                else if (enumFacing == EnumFacing.DOWN) {return CDOWN;}
+                else if(enumFacing == EnumFacing.NORTH) {return CNORTH;}
+                else if(enumFacing == EnumFacing.EAST) {return CEAST;}
+                else if(enumFacing == EnumFacing.SOUTH) {return CSOUTH;}
+                else if(enumFacing == EnumFacing.WEST)  {return CWEST;}
+            case BASE:
+                if (enumFacing == EnumFacing.UP) {return BUP;}
+                else if (enumFacing == EnumFacing.DOWN) {return BDOWN;}
+                else if(enumFacing == EnumFacing.NORTH) {return BNORTH;}
+                else if(enumFacing == EnumFacing.EAST) {return BEAST;}
+                else if(enumFacing == EnumFacing.SOUTH) {return BSOUTH;}
+                else if(enumFacing == EnumFacing.WEST) {return BWEST;}
+            case ORE:
+            default:
+                return ORE_BOX;
             }
-
-
     }
     public boolean isOpaqueCube(IBlockState state)
     {
@@ -208,5 +186,7 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
     {
         return false;
     }
+
+
 
 }
