@@ -1,6 +1,11 @@
 {
   "variants":{
-    "redstate=ore": {"model": "dust:red/ore_red_ore"},
+    "facing=down,redstate=ore": {"model": "dust:red/ore_red_ore", "x": 90},
+    "facing=up,redstate=ore": {"model": "dust:red/ore_red_ore", "x": 270},
+    "facing=north,redstate=ore": {"model": "dust:red/ore_red_ore"},
+    "facing=south,redstate=ore": {"model": "dust:red/ore_red_ore", "y": 180},
+    "facing=east,redstate=ore": {"model": "dust:red/ore_red_ore", "y": 90},
+    "facing=west,redstate=ore": {"model": "dust:red/ore_red_ore", "y": 270},
     "redstate=five": {"model": "dust:red/ore_red_five"},
     "redstate=four": {"model": "dust:red/ore_red_four"},
     "redstate=three": {"model": "dust:red/ore_red_three"},

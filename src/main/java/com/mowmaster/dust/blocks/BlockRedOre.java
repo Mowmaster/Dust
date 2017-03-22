@@ -39,21 +39,34 @@ public class BlockRedOre extends Block implements IMetaBlockName
 {
 
     public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+	
 	
     public BlockRedOre(String unloc)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE.withProperty(FACING, EnumFacing.DOWN)));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this,new IProperty[]{REDSTATE});
+        return new BlockStateContainer(this,new IProperty[]{REDSTATE,FACING});
     }
 
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+
+	{
+		return super.onBlockPlaced(worldIn,pos,BlockPistonBase.getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
+	}
+	
+	public IBlockState onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
+	{
+		worldIn.setBlockState(pos,state.withPropertyFacing(FACING, BlockPistonBase.getFacingFromEntity(pos,placer)),2);
+	}
+	
     @Override
     public int getMetaFromState(IBlockState state)
     {
