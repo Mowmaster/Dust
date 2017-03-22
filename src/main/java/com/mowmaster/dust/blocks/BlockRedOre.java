@@ -4,22 +4,21 @@ import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
 
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockTorch;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -30,16 +29,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 import static net.minecraft.util.BlockRenderLayer.CUTOUT;
+import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
 import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 
 
-public class BlockRedOre extends Block implements IMetaBlockName
+public class BlockRedOre extends BlockDirectional implements IMetaBlockName
 {
-
+    //the string text is what you use in your json file
     public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
-	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+
 	
 	
     public BlockRedOre(String unloc)
@@ -47,7 +48,7 @@ public class BlockRedOre extends Block implements IMetaBlockName
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE.withProperty(FACING, EnumFacing.DOWN)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE).withProperty(FACING, EnumFacing.UP));
     }
 
     @Override
@@ -59,12 +60,13 @@ public class BlockRedOre extends Block implements IMetaBlockName
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 
 	{
-		return super.onBlockPlaced(worldIn,pos,BlockPistonBase.getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
+		return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
 	}
 	
-	public IBlockState onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
+	public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
 	{
-		worldIn.setBlockState(pos,state.withPropertyFacing(FACING, BlockPistonBase.getFacingFromEntity(pos,placer)),2);
+        worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
+        EntityPlayer player = (EntityPlayer) placer;
 	}
 	
     @Override
@@ -77,7 +79,9 @@ public class BlockRedOre extends Block implements IMetaBlockName
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.values()[meta]);
+
+
+        return getDefaultState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.values()[meta]).withProperty(FACING,EnumFacing.UP);
     }
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
@@ -105,38 +109,94 @@ public class BlockRedOre extends Block implements IMetaBlockName
         return getMetaFromState(state);
     }
 
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return TRANSLUCENT;
-    }
 
-    //AxisAlignedBB(min x1, mix y1, min z1, max x2, max y2, max z2)
-    private static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(
-            0.0D, 0.0D, 0.0D,
-            1.0D, 1.0D, 1.0D);
-    private static AxisAlignedBB CRYSTAL_BOX = new AxisAlignedBB(
-            0.25D, 0.0D, 0.25D,
-            0.75D, 0.90D, 0.75D);
-    private static final AxisAlignedBB BASE_BOX = new AxisAlignedBB(
-            0.25D, 0.0D, 0.25D,
-            0.75D, 0.125D, 0.75D);
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-
-        switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE))
+    public BlockRenderLayer getBlockLayer(IBlockState state) {
+        switch((CrystalBlocks.CrystalOres)state.getValue(REDSTATE))
         {
             case FIFTH:
             case FOURTH:
             case THIRD:
             case SECOND:
             case FIRST:
-                return CRYSTAL_BOX;
             case BASE:
-                return BASE_BOX;
+                return TRANSLUCENT;
             case ORE:
             default:
-                return ORE_BOX;
+                return SOLID ;
         }
+
+    }
+
+    //AxisAlignedBB(min x1, mix y1, min z1, max x2, max y2, max z2)
+    private static AxisAlignedBB CDOWN = new AxisAlignedBB(
+            0.25D, 1.0D, 0.25D,
+            0.75D, 0.1D, 0.75D);
+    private static AxisAlignedBB CUP = new AxisAlignedBB(
+            0.25D, 0.0D, 0.25D,
+            0.75D, 0.9D, 0.75D);
+    private static AxisAlignedBB CNORTH = new AxisAlignedBB(
+            0.25D, 0.75D, 0.1D,
+            0.75D, 0.25D, 1.0D);
+    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(
+            0.25D, 0.75D, 0.0D,
+            0.75D, 0.25D, 0.9D);
+    private static AxisAlignedBB CWEST = new AxisAlignedBB(
+            0.1D, 0.75D, 0.25D,
+            1.0D, 0.25D, 0.75D);
+    private static AxisAlignedBB CEAST = new AxisAlignedBB(
+            0.0D, 0.75D, 0.25D,
+            0.9D, 0.25D, 0.75D);
+
+    private static final AxisAlignedBB ORE_BOX = new AxisAlignedBB(
+            0.0D, 0.0D, 0.0D,
+            1.0D, 1.0D, 1.0D);
+    private static final AxisAlignedBB BASE_BOX_DOWN = new AxisAlignedBB(
+            0.25D, 0.0D, 0.25D,
+            0.75D, 0.125D, 0.75D);
+
+
+
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        EnumFacing enumFacing = state.getValue(FACING);
+            switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE)) {
+                case FIFTH:
+
+                case FOURTH:
+                case THIRD:
+                case SECOND:
+                case FIRST:
+                    if (enumFacing == EnumFacing.UP)
+                    {
+                        return CUP;
+                    }
+                    else if (enumFacing == EnumFacing.DOWN)
+                    {
+                        return CDOWN;
+                    }
+                    else if(enumFacing == EnumFacing.NORTH)
+                    {
+                        return CNORTH;
+                    }
+                    else if(enumFacing == EnumFacing.EAST)
+                    {
+                        return CEAST;
+                    }
+                    else if(enumFacing == EnumFacing.SOUTH)
+                    {
+                        return CSOUTH;
+                    }
+                    else if(enumFacing == EnumFacing.WEST)
+                    {
+                        return CWEST;
+                    }
+                case BASE:
+                    return BASE_BOX_DOWN;
+                case ORE:
+                default:
+                    return ORE_BOX;
+            }
+
 
     }
     public boolean isOpaqueCube(IBlockState state)
