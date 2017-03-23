@@ -43,7 +43,7 @@ import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 public class BlockBlackOre extends BlockDirectional implements IMetaBlockName
 {
     //the string text is what you use in your json file
-    public static final PropertyEnum BLACKSTATE = PropertyEnum.create("BLACKSTATE",CrystalBlocks.CrystalOres.class);
+    public static final PropertyEnum BLACKSTATE = PropertyEnum.create("blackstate",CrystalBlocks.CrystalOres.class);
 
 	
 	
