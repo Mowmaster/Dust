@@ -1,8 +1,11 @@
 package com.mowmaster.dust.world;
+import net.minecraftforge.fml.common.IWorldGenerator;
+
 import java.util.*;
 
-public class OreGeneration implements IWorldGenerator
+public class OreGeneration// implements IWorldGenerator
 {
+	/*
 	//World Generators
 	private WorldGenerator overworld_red;
 	private WorldGenerator overworld_blue;
@@ -19,4 +22,5 @@ public class OreGeneration implements IWorldGenerator
 	{
 
 	}
+	*/
 }

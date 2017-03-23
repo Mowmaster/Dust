@@ -61,17 +61,17 @@ public class BlockPurpleOre extends BlockDirectional implements IMetaBlockName
         return new BlockStateContainer(this,new IProperty[]{PURPLESTATE,FACING});
     }
 
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 
-	{
-		return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
-	}
+    {
+        return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
+    }
 
-	public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
-	{
+    public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
+    {
         worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
         EntityPlayer player = (EntityPlayer) placer;
-	}
+    }
 
     @Override
     public int getMetaFromState(IBlockState state)
@@ -83,11 +83,39 @@ public class BlockPurpleOre extends BlockDirectional implements IMetaBlockName
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        //EnumFacing enumfacing = EnumFacing.UP;
-        //).withProperty(FACING, enumfacing
         return this.getDefaultState().withProperty(PURPLESTATE,CrystalBlocks.CrystalOres.values()[meta]);
     }
 
+
+/*
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        CrystalBlocks.CrystalOres redstate = (CrystalBlocks.CrystalOres) state.getValue(PURPLESTATE);
+        EnumFacing facing = (EnumFacing) state.getValue(FACING);
+        int meta = redstate.getID() * EnumFacing.values().length + facing.ordinal(); //Stores the type the EnumFacing in the meta
+        return meta;
+    }
+*/
+    /**
+     * Gets the block state from the meta
+     */
+    /*
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        CrystalBlocks.CrystalOres redstate = CrystalBlocks.CrystalOres.values()[(int)(meta / EnumFacing.values().length) % CrystalBlocks.CrystalOres.values().length]; //Gets the type from the meta
+        EnumFacing facing = EnumFacing.values()[meta % EnumFacing.values().length]; //Gets the EnumFacing from the meta
+        return this.getDefaultState().withProperty(PURPLESTATE,redstate).withProperty(FACING, facing); //Returns the correct state
+    }
+*/
+    /**
+     * Makes sure that when you pick block you get the right version of the block
+     *
+     @Override
+     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
+     EntityPlayer player) {
+     return new ItemStack(Item.getItemFromBlock(this), 1, (int) (getMetaFromState(world.getBlockState(pos)) / EnumFacing.values().length));
+     }
+     */
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
@@ -175,7 +203,7 @@ public class BlockPurpleOre extends BlockDirectional implements IMetaBlockName
             case ORE:
             default:
                 return ORE_BOX;
-		}
+        }
     }
     public boolean isOpaqueCube(IBlockState state)
     {

@@ -2,51 +2,41 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
-
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockProperties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
-import static net.minecraft.util.BlockRenderLayer.CUTOUT;
 import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
-import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 
 
 public class BlockBlackOre extends BlockDirectional implements IMetaBlockName
 {
     //the string text is what you use in your json file
-    public static final PropertyEnum BLACKSTATE = PropertyEnum.create("blackstate",CrystalBlocks.CrystalOres.class);
+    public static final PropertyEnum BLACKSTATE = PropertyEnum.create("state",CrystalBlocks.CrystalOres.class);
 
-	
-	
+
+
     public BlockBlackOre(String unloc)
     {
         super(Material.ROCK);
@@ -66,13 +56,13 @@ public class BlockBlackOre extends BlockDirectional implements IMetaBlockName
 	{
 		return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
 	}
-	
+
 	public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
 	{
         worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
         EntityPlayer player = (EntityPlayer) placer;
 	}
-	
+
     @Override
     public int getMetaFromState(IBlockState state)
     {
@@ -175,7 +165,7 @@ public class BlockBlackOre extends BlockDirectional implements IMetaBlockName
             case ORE:
             default:
                 return ORE_BOX;
-            }
+		}
     }
     public boolean isOpaqueCube(IBlockState state)
     {
