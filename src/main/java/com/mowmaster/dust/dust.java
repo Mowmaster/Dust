@@ -32,7 +32,6 @@ public class Dust {
         ItemRegistry.init();
         ItemRegistry.register();
         proxy.PreInit();
-        proxy.registerTile();
     }
 
     @Mod.EventHandler
