@@ -9,6 +9,7 @@ public class CrystalBlocks
 {
     public static enum CrystalOres implements IStringSerializable
     {
+
         ORE("ore",0),
         FIFTH("five",1),
         FOURTH("four",2),
@@ -16,6 +17,7 @@ public class CrystalBlocks
         SECOND("two",4),
         FIRST("one",5),
         BASE("base",6);
+
 
 
 

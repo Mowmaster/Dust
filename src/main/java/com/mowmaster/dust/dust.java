@@ -36,7 +36,7 @@ public class Dust {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-
+        proxy.init();
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
         CraftingRecipes.ICraftingRecipes();

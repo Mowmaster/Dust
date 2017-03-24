@@ -58,13 +58,11 @@ public class ClientProxy extends CommonProxy
         );
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.orered),
-                new ResourceLocation(Reference.MODID, "ore_red_ore"),
                 new ResourceLocation(Reference.MODID, "ore_red_five"),
                 new ResourceLocation(Reference.MODID, "ore_red_four"),
                 new ResourceLocation(Reference.MODID, "ore_red_three"),
                 new ResourceLocation(Reference.MODID, "ore_red_two"),
-                new ResourceLocation(Reference.MODID, "ore_red_one"),
-                new ResourceLocation(Reference.MODID, "ore_red_base")
+                new ResourceLocation(Reference.MODID, "ore_red_one")
         );
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.oreblue),
