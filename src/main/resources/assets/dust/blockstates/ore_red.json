@@ -1,52 +1,11 @@
 {
   "variants":{
-    "facing=down,redstate=ore": {"model": "dust:red/ore_red_ore"},
-    "facing=up,redstate=ore": {"model": "dust:red/ore_red_ore"},
-    "facing=north,redstate=ore": {"model": "dust:red/ore_red_ore"},
-    "facing=south,redstate=ore": {"model": "dust:red/ore_red_ore"},
-    "facing=east,redstate=ore": {"model": "dust:red/ore_red_ore"},
-    "facing=west,redstate=ore": {"model": "dust:red/ore_red_ore"},
-
-    "facing=up,redstate=five": {"model": "dust:red/ore_red_five"},
-    "facing=down,redstate=five": {"model": "dust:red/ore_red_five","x": 180},
-    "facing=north,redstate=five": {"model": "dust:red/ore_red_five","x": 90},
-    "facing=east,redstate=five": {"model": "dust:red/ore_red_five","x": 90,"y":90},
-    "facing=south,redstate=five": {"model": "dust:red/ore_red_five","x": 90,"y":180},
-    "facing=west,redstate=five": {"model": "dust:red/ore_red_five","x": 90,"y":270},
-
-    "facing=up,redstate=four": {"model": "dust:red/ore_red_four"},
-    "facing=down,redstate=four": {"model": "dust:red/ore_red_four","x": 180},
-    "facing=north,redstate=four": {"model": "dust:red/ore_red_four","x": 90},
-    "facing=east,redstate=four": {"model": "dust:red/ore_red_four","x": 90,"y":90},
-    "facing=south,redstate=four": {"model": "dust:red/ore_red_four","x": 90,"y":180},
-    "facing=west,redstate=four": {"model": "dust:red/ore_red_four","x": 90,"y":270},
-
-    "facing=up,redstate=three": {"model": "dust:red/ore_red_three"},
-    "facing=down,redstate=three": {"model": "dust:red/ore_red_three","x": 180},
-    "facing=north,redstate=three": {"model": "dust:red/ore_red_three","x": 90},
-    "facing=east,redstate=three": {"model": "dust:red/ore_red_three","x": 90,"y":90},
-    "facing=south,redstate=three": {"model": "dust:red/ore_red_three","x": 90,"y":180},
-    "facing=west,redstate=three": {"model": "dust:red/ore_red_three","x": 90,"y":270},
-
-    "facing=up,redstate=two": {"model": "dust:red/ore_red_two"},
-    "facing=down,redstate=two": {"model": "dust:red/ore_red_two","x": 180},
-    "facing=north,redstate=two": {"model": "dust:red/ore_red_two","x": 90},
-    "facing=east,redstate=two": {"model": "dust:red/ore_red_two","x": 90,"y":90},
-    "facing=south,redstate=two": {"model": "dust:red/ore_red_two","x": 90,"y":180},
-    "facing=west,redstate=two": {"model": "dust:red/ore_red_two","x": 90,"y":270},
-
-    "facing=up,redstate=one": {"model": "dust:red/ore_red_one"},
-    "facing=down,redstate=one": {"model": "dust:red/ore_red_one","x": 180},
-    "facing=north,redstate=one": {"model": "dust:red/ore_red_one","x": 90},
-    "facing=east,redstate=one": {"model": "dust:red/ore_red_one","x": 90,"y":90},
-    "facing=south,redstate=one": {"model": "dust:red/ore_red_one","x": 90,"y":180},
-    "facing=west,redstate=one": {"model": "dust:red/ore_red_one","x": 90,"y":270},
-
-    "facing=up,redstate=base": {"model": "dust:ore_base"},
-    "facing=down,redstate=base": {"model": "dust:ore_base","x": 180},
-    "facing=north,redstate=base": {"model": "dust:ore_base","x": 90},
-    "facing=east,redstate=base": {"model": "dust:ore_base","x": 90,"y":90},
-    "facing=south,redstate=base": {"model": "dust:ore_base","x": 90,"y":180},
-    "facing=west,redstate=base": {"model": "dust:ore_base","x": 90,"y":270}
+    "state=ore": {"model": "dust:red/ore_red_ore"},
+    "state=five": {"model": "dust:red/ore_red_five"},
+    "state=four": {"model": "dust:red/ore_red_four"},
+    "state=three": {"model": "dust:red/ore_red_three"},
+    "state=two": {"model": "dust:red/ore_red_two"},
+    "state=one": {"model": "dust:red/ore_red_one"},
+    "state=base": {"model": "dust:ore_base"}
   }
 }

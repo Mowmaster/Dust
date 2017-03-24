@@ -29,7 +29,7 @@ public class OreGeneration implements IWorldGenerator
 
     public OreGeneration()
     {
-        int count = 1;
+        int count = 3;
         red_ore = new WorldGenMinable(orered.getDefaultState().withProperty(BlockRedOre.REDSTATE, CrystalBlocks.CrystalOres.ORE),count);
         blue_ore = new WorldGenMinable(oreblue.getDefaultState().withProperty(BlockBlueOre.BLUESTATE, CrystalBlocks.CrystalOres.ORE),count);
         yellow_ore = new WorldGenMinable(oreyellow.getDefaultState().withProperty(BlockYellowOre.YELLOWSTATE, CrystalBlocks.CrystalOres.ORE),count);
