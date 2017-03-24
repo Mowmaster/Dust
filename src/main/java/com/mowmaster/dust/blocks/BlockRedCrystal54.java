@@ -3,10 +3,7 @@ package com.mowmaster.dust.blocks;
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TileRedOre;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -28,31 +25,30 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static com.mowmaster.dust.tiles.TileRedOre.TEFACING;
 import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
 
 
-public class BlockRedOre extends Block implements IMetaBlockName
+public class BlockRedCrystal54 extends BlockDirectional implements IMetaBlockName
 {
     //the string text is what you use in your json file
     public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
 
 
 
-    public BlockRedOre(String unloc)
+    public BlockRedCrystal54(String unloc)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE).withProperty(TEFACING, EnumFacing.UP));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE).withProperty(FACING, EnumFacing.UP));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this,new IProperty[]{REDSTATE,TEFACING});
+        return new BlockStateContainer(this,new IProperty[]{REDSTATE,FACING});
     }
 
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
@@ -63,18 +59,9 @@ public class BlockRedOre extends Block implements IMetaBlockName
 
 	public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
 	{
-        worldIn.setBlockState(pos, state.withProperty(TEFACING, getFacingFromEntity(pos, placer)), 2);
+        worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
         EntityPlayer player = (EntityPlayer) placer;
 	}
-
-    /*but you have an EnumFacing facing = EnumFacing.UP; at the start of your TileEntity
-and then you use getActualState() in the block to grab the tile (world.getTileEntity(pos)) and then state.withProperty(YOURFACINGPROPERTY, tile.facing);*/
-
-    @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        return REDSTATE = getActualState(state.withProperty(TEFACING, TileRedOre.WHatGoesHere),worldIn.getTileEntity(pos));
-    }
-
 
     @Override
     public int getMetaFromState(IBlockState state)
@@ -86,6 +73,8 @@ and then you use getActualState() in the block to grab the tile (world.getTileEn
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
+        //EnumFacing enumfacing = EnumFacing.UP;
+        //).withProperty(FACING, enumfacing
         return this.getDefaultState().withProperty(REDSTATE,CrystalBlocks.CrystalOres.values()[meta]);
     }
 
@@ -153,7 +142,7 @@ and then you use getActualState() in the block to grab the tile (world.getTileEn
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumFacing enumFacing = state.getValue(TEFACING);
+        EnumFacing enumFacing = state.getValue(FACING);
         switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE)) {
             case FIFTH:
             case FOURTH:

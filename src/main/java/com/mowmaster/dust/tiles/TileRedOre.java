@@ -5,22 +5,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 
-/**
- * Created by KingMowmaster on 3/24/2017.
- */
 public class TileRedOre extends TileEntity
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
-
+    public static final PropertyDirection TEFACING = PropertyDirection.create("tefacing");
+    EnumFacing tefacing = EnumFacing.UP;
     int growth;
 
 
     public TileRedOre()
     {
-        EnumFacing facing = EnumFacing.UP;
         growth = 0;
+    }
+
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
     }
 
     @Override
@@ -28,13 +31,10 @@ public class TileRedOre extends TileEntity
         return super.writeToNBT(compound);
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-    }
 
 
-    
+
+
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound nbt = new NBTTagCompound();
