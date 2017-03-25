@@ -1,5 +1,7 @@
 package com.mowmaster.dust.proxies;
 
+import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileRedOre;
 import com.mowmaster.dust.world.OreGeneration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -16,6 +18,11 @@ public class CommonProxy
     public void PreInit()
     {
 
+    }
+
+    public void registerTile()
+    {
+        GameRegistry.registerTileEntity(TileRedOre.class, Reference.MODID + ":red_ore");
     }
 
     public void registerModelBakeryVarients()

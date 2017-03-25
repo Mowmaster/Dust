@@ -3,6 +3,8 @@ package com.mowmaster.dust.blocks;
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileRedOre;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -14,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -25,12 +28,13 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import static com.mowmaster.dust.tiles.TileRedOre.TEFACING;
 import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
 
 
-public class BlockRedOre extends BlockDirectional implements IMetaBlockName
+public class BlockRedOre extends Block implements IMetaBlockName
 {
     //the string text is what you use in your json file
     public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
@@ -42,13 +46,13 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE).withProperty(FACING, EnumFacing.UP));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REDSTATE, CrystalBlocks.CrystalOres.ORE).withProperty(TEFACING, EnumFacing.UP));
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this,new IProperty[]{REDSTATE,FACING});
+        return new BlockStateContainer(this,new IProperty[]{REDSTATE,TEFACING});
     }
 
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
@@ -59,24 +63,39 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
 
 	public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
 	{
-        worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
+        worldIn.setBlockState(pos, state.withProperty(TEFACING, getFacingFromEntity(pos, placer)), 2);
         EntityPlayer player = (EntityPlayer) placer;
 	}
+    /*
+        @Override
+        public int getMetaFromState(IBlockState state) {
+            CrystalBlocks.CrystalOres type = (CrystalBlocks.CrystalOres) state.getValue(REDSTATE);
+            EnumFacing facing = (EnumFacing) state.getValue(TEFACING);
+            int meta = type.getID() * EnumFacing.values().length + facing.ordinal(); //Stores the type the EnumFacing in the meta
+            return meta;
+        }
 
-    @Override
-    public int getMetaFromState(IBlockState state)
-    {
-        CrystalBlocks.CrystalOres ores = (CrystalBlocks.CrystalOres) state.getValue(REDSTATE);
-        return ores.getID();
-    }
+        @Override
+        public IBlockState getStateFromMeta(int meta) {
+            CrystalBlocks.CrystalOres type = CrystalBlocks.CrystalOres.values()[(int)(meta / EnumFacing.values().length) % CrystalBlocks.CrystalOres.values().length]; //Gets the type from the meta
+            EnumFacing facing = EnumFacing.values()[meta % EnumFacing.values().length]; //Gets the EnumFacing from the meta
+            return this.getDefaultState().withProperty(REDSTATE, type).withProperty(TEFACING, facing); //Returns the correct state
+        }
+ */
+        @Override
+        public int getMetaFromState(IBlockState state)
+        {
+            CrystalBlocks.CrystalOres ores = (CrystalBlocks.CrystalOres) state.getValue(REDSTATE);
+            return ores.getID();
+        }
 
-    @Override
-    public IBlockState getStateFromMeta(int meta)
-    {
-        //EnumFacing enumfacing = EnumFacing.UP;
-        //).withProperty(FACING, enumfacing
-        return this.getDefaultState().withProperty(REDSTATE,CrystalBlocks.CrystalOres.values()[meta]);
-    }
+        @Override
+        public IBlockState getStateFromMeta(int meta)
+        {
+            //EnumFacing enumfacing = EnumFacing.UP;
+            //).withProperty(FACING, enumfacing
+            return this.getDefaultState().withProperty(REDSTATE,CrystalBlocks.CrystalOres.values()[meta]);
+        }
 
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
@@ -142,7 +161,7 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumFacing enumFacing = state.getValue(FACING);
+        EnumFacing enumFacing = state.getValue(TEFACING);
         switch ((CrystalBlocks.CrystalOres)state.getValue(REDSTATE)) {
             case FIFTH:
             case FOURTH:
@@ -175,6 +194,16 @@ public class BlockRedOre extends BlockDirectional implements IMetaBlockName
     public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileRedOre();
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileRedOre();
     }
 
 
