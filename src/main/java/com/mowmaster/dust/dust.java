@@ -41,6 +41,7 @@ public class Dust {
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
         CraftingRecipes.ICraftingRecipes();
+
     }
 
     @Mod.EventHandler

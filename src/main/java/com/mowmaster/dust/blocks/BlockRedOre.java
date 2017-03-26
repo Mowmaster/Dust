@@ -6,6 +6,7 @@ import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileRedOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -34,7 +35,7 @@ import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
 
 
-public class BlockRedOre extends Block implements IMetaBlockName
+public class BlockRedOre extends Block implements IMetaBlockName, ITileEntityProvider
 {
     //the string text is what you use in your json file
     public static final PropertyEnum REDSTATE = PropertyEnum.create("redstate",CrystalBlocks.CrystalOres.class);
