@@ -1,5 +1,5 @@
 {
   "variants": {
-    "normal": { "model": "dust:redore" }
+    "normal": { "model": "dust:red/ore_red_ore" }
   }
 }

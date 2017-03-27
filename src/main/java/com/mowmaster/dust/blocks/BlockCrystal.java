@@ -62,9 +62,9 @@ public class BlockCrystal extends BlockDirectional
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setHardness(20);
         this.setResistance(20);
-        this.setLightOpacity(10);
+        this.setLightLevel(5);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
-        this.setCreativeTab(DUSTTABS);
+        //this.setCreativeTab(DUSTTABS);
     }
 
     @Override
