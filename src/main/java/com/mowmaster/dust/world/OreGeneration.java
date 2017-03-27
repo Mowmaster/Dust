@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.*;
 
-import static com.mowmaster.dust.blocks.BlockRedOre.REDSTATE;
 import static com.mowmaster.dust.blocks.BlockRegistry.*;
 
 public class OreGeneration implements IWorldGenerator
@@ -30,14 +29,7 @@ public class OreGeneration implements IWorldGenerator
     public OreGeneration()
     {
         int count = 3;
-        red_ore = new WorldGenMinable(orered.getDefaultState().withProperty(BlockRedOre.REDSTATE, CrystalBlocks.CrystalOres.ORE),count);
-        blue_ore = new WorldGenMinable(oreblue.getDefaultState().withProperty(BlockBlueOre.BLUESTATE, CrystalBlocks.CrystalOres.ORE),count);
-        yellow_ore = new WorldGenMinable(oreyellow.getDefaultState().withProperty(BlockYellowOre.YELLOWSTATE, CrystalBlocks.CrystalOres.ORE),count);
-        purple_ore = new WorldGenMinable(orepurple.getDefaultState().withProperty(BlockPurpleOre.PURPLESTATE, CrystalBlocks.CrystalOres.ORE),count);
-        orange_ore = new WorldGenMinable(oreorange.getDefaultState().withProperty(BlockOrangeOre.ORANGESTATE, CrystalBlocks.CrystalOres.ORE),count);
-        green_ore = new WorldGenMinable(oregreen.getDefaultState().withProperty(BlockGreenOre.GREENSTATE, CrystalBlocks.CrystalOres.ORE),count);
-        white_ore = new WorldGenMinable(orewhite.getDefaultState().withProperty(BlockWhiteOre.WHITESTATE, CrystalBlocks.CrystalOres.ORE),count);
-        black_ore = new WorldGenMinable(oreblack.getDefaultState().withProperty(BlockBlackOre.BLACKSTATE, CrystalBlocks.CrystalOres.ORE),count);
+        //red_ore = new WorldGenMinable(orered.getDefaultState().withProperty(BlockRedOre.REDSTATE, CrystalBlocks.CrystalOres.ORE),count);
 
     }
 

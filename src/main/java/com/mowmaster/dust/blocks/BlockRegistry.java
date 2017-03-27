@@ -16,27 +16,15 @@ public class BlockRegistry
 {
 
     //public static Block redore;
+    public static Block redCrystalFive;
 
-    public static Block orered;
-    public static Block oreblue;
-    public static Block oreyellow;
-    public static Block orepurple;
-    public static Block oreorange;
-    public static Block oregreen;
-    public static Block orewhite;
-    public static Block oreblack;
 
     public static void init()
     {
+        redCrystalFive = new BlockCrystal("blockCrystalFive","blockCrystalFive");
+
         //redore = new BlockBasic("redore","redore");
-        orered = new BlockRedOre("ore_red");
-        oreblue = new BlockBlueOre("ore_blue");
-        oreyellow = new BlockYellowOre("ore_yellow");
-        orepurple = new BlockPurpleOre("ore_purple");
-        oreorange = new BlockOrangeOre("ore_orange");
-        oregreen = new BlockGreenOre("ore_green");
-        orewhite = new BlockWhiteOre("ore_white");
-        oreblack = new BlockBlackOre("ore_black");
+        //oreyellow = new BlockWithMultipleStates("ore_yellow");
 
 
 
@@ -44,34 +32,18 @@ public class BlockRegistry
 
     public static void register()
     {
+        registerBlock(redCrystalFive);
         //registerBlock(redore);
-
-        registerBlock(orered, new ItemBlockOre(orered));
-        registerBlock(oreblue, new ItemBlockOre(oreblue));
-        registerBlock(oreyellow, new ItemBlockOre(oreyellow));
-        registerBlock(orepurple, new ItemBlockOre(orepurple));
-        registerBlock(oreorange, new ItemBlockOre(oreorange));
-        registerBlock(oregreen, new ItemBlockOre(oregreen));
-        registerBlock(orewhite, new ItemBlockOre(orewhite));
-        registerBlock(oreblack, new ItemBlockOre(oreblack));
+        //registerBlock(oreyellow, new ItemBlockOre(oreyellow));
     }
 
     public static void registerRenders()
     {
         //registerRender(redore);
+        registerRender(redCrystalFive);
 
-        for (int i = 0; i < CrystalBlocks.CrystalOres.values().length; i++)
-        {
-            registerRender(orered,i,"ore_red_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(oreblue,i,"ore_blue_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(oreyellow,i,"ore_yellow_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(orepurple,i,"ore_purple_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(oreorange,i,"ore_orange_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(oregreen,i,"ore_green_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(orewhite,i,"ore_white_" + CrystalBlocks.CrystalOres.values()[i].getName());
-            registerRender(oreblack,i,"ore_black_" + CrystalBlocks.CrystalOres.values()[i].getName());
-        }
 
+        //for (int i = 0; i < CrystalBlocks.CrystalOres.values().length; i++){registerRender(oreyellow,i,"ore_yellow_" + CrystalBlocks.CrystalOres.values()[i].getName());}
     }
 
     public static void registerBlock(Block block)
