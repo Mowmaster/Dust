@@ -29,8 +29,14 @@ public class OreGeneration implements IWorldGenerator
     public OreGeneration()
     {
         int count = 3;
-        //red_ore = new WorldGenMinable(orered.getDefaultState().withProperty(BlockRedOre.REDSTATE, CrystalBlocks.CrystalOres.ORE),count);
-
+        red_ore = new WorldGenMinable(redOre.getDefaultState(),count);
+        blue_ore = new WorldGenMinable(blueOre.getDefaultState(),count);
+        yellow_ore = new WorldGenMinable(yellowOre.getDefaultState(),count);
+        purple_ore = new WorldGenMinable(purpleOre.getDefaultState(),count);
+        orange_ore = new WorldGenMinable(orangeOre.getDefaultState(),count);
+        green_ore = new WorldGenMinable(greenOre.getDefaultState(),count);
+        white_ore = new WorldGenMinable(whiteOre.getDefaultState(),count);
+        black_ore = new WorldGenMinable(blackOre.getDefaultState(),count);
     }
 
     private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
@@ -48,6 +54,8 @@ public class OreGeneration implements IWorldGenerator
 
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
+
+
         switch(world.provider.getDimension())
         {
             case 0: //Overworld
