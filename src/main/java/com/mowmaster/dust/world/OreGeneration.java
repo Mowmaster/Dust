@@ -15,7 +15,8 @@ import static com.mowmaster.dust.blocks.BlockRegistry.*;
 
 public class OreGeneration implements IWorldGenerator
 {
-
+    int randomnum = 9;
+    int count = 3;
     private WorldGenerator red_ore;
     private WorldGenerator blue_ore;
     private WorldGenerator yellow_ore;
@@ -28,7 +29,7 @@ public class OreGeneration implements IWorldGenerator
 
     public OreGeneration()
     {
-        int count = 3;
+
         red_ore = new WorldGenMinable(redOre.getDefaultState(),count);
         blue_ore = new WorldGenMinable(blueOre.getDefaultState(),count);
         yellow_ore = new WorldGenMinable(yellowOre.getDefaultState(),count);
@@ -39,16 +40,19 @@ public class OreGeneration implements IWorldGenerator
         black_ore = new WorldGenMinable(blackOre.getDefaultState(),count);
     }
 
+
     private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        int heightDiff = maxHeight - minHeight + 1;
-        for (int i = 0; i < chancesToSpawn; i ++) {
-            int x = chunk_X * 16 + rand.nextInt(16);
-            int y = minHeight + rand.nextInt(heightDiff);
-            int z = chunk_Z * 16 + rand.nextInt(16);
-            generator.generate(world, rand, new BlockPos(x, y, z));
+        if (rand.nextInt(randomnum) == 1) {
+            int heightDiff = maxHeight - minHeight + 1;
+            for (int i = 0; i < chancesToSpawn; i++) {
+                int x = chunk_X * 16 + rand.nextInt(16);
+                int y = minHeight + rand.nextInt(heightDiff);
+                int z = chunk_Z * 16 + rand.nextInt(16);
+                generator.generate(world, rand, new BlockPos(x, y, z));
+            }
         }
     }
 
