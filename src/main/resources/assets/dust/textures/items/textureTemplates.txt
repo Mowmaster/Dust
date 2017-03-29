@@ -1,0 +1,19 @@
+leaves are made from the crystal core colors
+noise values of:
+25Intensity
+100ColorSat
+100.0Coverage
+
+Wood uses crystal sides main color(fill the square) and the cores color for the stripes following the guide
+noise values of:
+25Intensity
+50Colorsaturation
+100.0Coverage
+then take a 10 value of black and every 2 blocks shade it from right to left
+
+wood top uses core color for rings and sides main color for background
+noise vaules of:
+20Intensity
+50Colorsaturation
+100.0Coverage
+then take a 10 value of black and every 2 blocks shade it from right to left
