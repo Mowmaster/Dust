@@ -23,6 +23,17 @@ public class BlockRegistry
     public static Block whiteOre;
     public static Block blackOre;
 
+    public static Block logred;
+    public static Block logblue;
+    public static Block logyellow;
+    public static Block logpurple;
+    public static Block logorange;
+    public static Block loggreen;
+    public static Block logwhite;
+    public static Block logblack;
+
+    public static Block leaf;
+
     public static Block redCrystalFive;
     public static Block redCrystalFour;
     public static Block redCrystalThree;
@@ -85,6 +96,15 @@ public class BlockRegistry
         whiteOre = new BlockBasic("whiteOre","whiteOre");
         blackOre = new BlockBasic("blackOre","blackOre");
 
+        logred = new BlockLog("log_red","red/log_red");
+        logblue = new BlockLog("log_blue","blue/log_blue");
+        logyellow = new BlockLog("log_yellow","yellow/log_yellow");
+        logpurple = new BlockLog("log_purple","purple/log_purple");
+        logorange = new BlockLog("log_orange","orange/log_orange");
+        loggreen = new BlockLog("log_green","green/log_green");
+        logwhite = new BlockLog("log_white","white/log_white");
+        logblack = new BlockLog("log_black","black/log_black");
+
         redCrystalFive = new BlockCrystal("blockRedCrystalFive","red/blockRedCrystalFive");
         redCrystalFour = new BlockCrystal("blockRedCrystalFour","red/blockRedCrystalFour");
         redCrystalThree = new BlockCrystal("blockRedCrystalThree","red/blockRedCrystalThree");
@@ -133,7 +153,7 @@ public class BlockRegistry
         blackCrystalTwo = new BlockCrystal("blockBlackCrystalTwo","black/blockBlackCrystalTwo");
         blackCrystalOne = new BlockCrystal("blockBlackCrystalOne","black/blockBlackCrystalOne");
 
-        //oreyellow = new BlockWithMultipleStates("ore_yellow");
+        leaf = new BlockLeaf("leaves");
 
 
 
@@ -149,7 +169,16 @@ public class BlockRegistry
         registerBlock(greenOre);
         registerBlock(whiteOre);
         registerBlock(blackOre);
-        
+
+        registerBlock(logred);
+        registerBlock(logblue);
+        registerBlock(logyellow);
+        registerBlock(logpurple);
+        registerBlock(logorange);
+        registerBlock(loggreen);
+        registerBlock(logwhite);
+        registerBlock(logblack);
+
         registerBlock(redCrystalFive);
         registerBlock(redCrystalFour);
         registerBlock(redCrystalThree);
@@ -200,7 +229,7 @@ public class BlockRegistry
 
 
 
-        //registerBlock(oreyellow, new ItemBlockOre(oreyellow));
+        registerBlock(leaf, new ItemBlockOre(leaf));
     }
 
     public static void registerRenders()
@@ -213,6 +242,15 @@ public class BlockRegistry
         registerRender(greenOre);
         registerRender(whiteOre);
         registerRender(blackOre);
+
+        registerRenderLog(logred);
+        registerRenderLog(logblue);
+        registerRenderLog(logyellow);
+        registerRenderLog(logpurple);
+        registerRenderLog(logorange);
+        registerRenderLog(loggreen);
+        registerRenderLog(logwhite);
+        registerRenderLog(logblack);
         
         registerRenderCrystal(redCrystalFive);
         registerRenderCrystal(redCrystalFour);
@@ -264,7 +302,10 @@ public class BlockRegistry
         
 
 
-        //for (int i = 0; i < CrystalBlocks.CrystalOres.values().length; i++){registerRender(oreyellow,i,"ore_yellow_" + CrystalBlocks.CrystalOres.values()[i].getName());}
+        for (int i = 0; i < CrystalBlocks.CrystalLeaves.values().length; i++)
+        {
+            registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
+        }
     }
 
     public static void registerBlock(Block block)
@@ -291,6 +332,12 @@ public class BlockRegistry
     {
         //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID,"crystals/" + block.getUnlocalizedName().substring(5)), "inventory"));
+    }
+    //Special Package for Crystal Item Renders
+    public static void registerRenderLog(Block block)
+    {
+        //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID,"logs/" + block.getUnlocalizedName().substring(5)), "inventory"));
     }
 
     public static void registerRender(Block block, int meta, String fileName)

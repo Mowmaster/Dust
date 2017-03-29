@@ -7,23 +7,24 @@ import net.minecraft.util.IStringSerializable;
  */
 public class CrystalBlocks
 {
-    public static enum CrystalOres implements IStringSerializable
+    public static enum CrystalLeaves implements IStringSerializable
     {
 
-        ORE("ore",0),
-        FIFTH("five",1),
-        FOURTH("four",2),
-        THIRD("three",3),
-        SECOND("two",4),
-        FIRST("one",5),
-        BASE("base",6);
+        RED("red",0),
+        BLUE("blue",1),
+        YELLOW("yellow",2),
+        PURPLE("purple",3),
+        GREEN("green",4),
+        ORANGE("orange",5),
+        WHITE("white",6),
+        BLACK("black",7);
 
 
 
 
         private int ID;
         private String name;
-        private CrystalOres(String name, int ID)
+        private CrystalLeaves(String name, int ID)
         {
             this.ID = ID;
             this.name = name;
