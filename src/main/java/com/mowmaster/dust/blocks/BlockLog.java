@@ -1,9 +1,11 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,10 +26,12 @@ import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 
 
-public class BlockLog extends BlockDirectional
+public class BlockLog extends Block
 {
     //Covers all crystals
     //Using BlockEndRod as an "example"
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+
 
     public BlockLog(String unloc, String registryName)
     {

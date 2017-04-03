@@ -34,6 +34,7 @@ public class BlockRegistry
 
     public static Block leaf;
 
+
     public static Block redCrystalFive;
     public static Block redCrystalFour;
     public static Block redCrystalThree;
@@ -157,6 +158,8 @@ public class BlockRegistry
 
 
 
+
+
     }
 
     public static void register()
@@ -230,6 +233,8 @@ public class BlockRegistry
 
 
         registerBlock(leaf, new ItemBlockOre(leaf));
+
+
     }
 
     public static void registerRenders()
@@ -306,6 +311,7 @@ public class BlockRegistry
         {
             registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
         }
+
     }
 
     public static void registerBlock(Block block)
