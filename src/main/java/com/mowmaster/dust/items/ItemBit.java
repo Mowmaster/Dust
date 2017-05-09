@@ -21,7 +21,7 @@ public class ItemBit extends Item
         this.setHasSubtypes(true);
         this.setCreativeTab(DUSTTABS);
     }
-    @Override
+    //@Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> items)
     {
         for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)

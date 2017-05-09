@@ -27,7 +27,7 @@ public class TileCrystalCluster extends TileEntity
 
     public boolean addCrystal()
     {
-        if(!worldObj.isRemote)
+        if(!world.isRemote)
         {
             if (crystalCount < 5) {
                 crystalCount++;
@@ -40,9 +40,9 @@ public class TileCrystalCluster extends TileEntity
 
 
     public void removeCrystal() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (crystalCount > 0) {
-                worldObj.spawnEntityInWorld(new EntityItem(worldObj, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(crystal, 1, 0)));
+                world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(crystal, 1, 0)));
                 crystalCount--;
             }
         }
@@ -61,6 +61,6 @@ public class TileCrystalCluster extends TileEntity
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        this.crystalCount = compound.getInteger("CrackerCount");
+        this.crystalCount = compound.getInteger("CrystalCount");
     }
 }

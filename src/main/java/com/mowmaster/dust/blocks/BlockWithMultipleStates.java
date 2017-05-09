@@ -33,7 +33,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
+//import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 import static net.minecraft.util.BlockRenderLayer.CUTOUT;
 import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;

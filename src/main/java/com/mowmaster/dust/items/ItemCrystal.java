@@ -24,7 +24,7 @@ public class ItemCrystal extends Item
         this.setHasSubtypes(true);
         this.setCreativeTab(DUSTTABS);
     }
-    @Override
+    //@Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> items)
     {
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)

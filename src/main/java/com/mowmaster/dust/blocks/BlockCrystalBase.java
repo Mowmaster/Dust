@@ -47,13 +47,15 @@ public class BlockCrystalBase extends Block implements ITileEntityProvider
         return new TileCrystalCluster();
     }
 
+    //@Override
+
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TileCrystalCluster)
-        {
-            TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
-        }
-        return true;
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if(tileEntity instanceof TileCrystalCluster)
+            {
+                TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
+            }
+            return true;
     }
 }

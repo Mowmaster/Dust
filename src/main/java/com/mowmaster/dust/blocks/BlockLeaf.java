@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
+//import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
 
 
@@ -65,11 +65,14 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         return new BlockStateContainer(this,new IProperty[]{LEAVES});
     }
 
+	/*
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 
 	{
 		return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
 	}
+
+	 */
 
     @Override
     public int getMetaFromState(IBlockState state)

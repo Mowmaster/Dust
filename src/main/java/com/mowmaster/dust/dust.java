@@ -16,9 +16,9 @@ import com.mowmaster.dust.references.Reference;
 
 
 @Mod(modid = Reference.MODID, name = Reference.MODNAME, version = Reference.VERSION)
-public class Dust {
+public class dust {
     @Mod.Instance(Reference.MODID)
-    public static Dust instance;
+    public static dust instance;
 
     @SidedProxy(serverSide = Reference.SERVER_SIDE, clientSide = Reference.CLIENT_SIDE)
     public static CommonProxy proxy;

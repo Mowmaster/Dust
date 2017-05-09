@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
-import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
+//import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 import static net.minecraft.util.BlockRenderLayer.CUTOUT;
 import static net.minecraft.util.BlockRenderLayer.SOLID;
 import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
@@ -84,17 +84,22 @@ public class BlockCrystal extends BlockDirectional
         return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
     }
 
+    /*
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 
     {
         return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
     }
+    */
+
+    /*
 
     public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
     {
         worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
         EntityPlayer player = (EntityPlayer) placer;
     }
+     */
 
     @Override
     public int getMetaFromState(IBlockState state)
