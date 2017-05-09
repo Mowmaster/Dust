@@ -1,0 +1,112 @@
+Symbol range map extraction starting
+Processing 35 files
+startProcessing "com\mowmaster\dust\Dust.java" md5: d6e9e90977bbb7591200aef4dea1167a
+endProcessing "com\mowmaster\dust\Dust.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockBasic.java" md5: eca44a28b21cd5de38d873b9313024e8
+Cache Hit!
+endProcessing "com\mowmaster\dust\blocks\BlockBasic.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockCrystal.java" md5: 527ca021d598a4ef21b175581e708931
+endProcessing "com\mowmaster\dust\blocks\BlockCrystal.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockCrystalBase.java" md5: 85f73f02d1ce941f014c99400a70eb68
+endProcessing "com\mowmaster\dust\blocks\BlockCrystalBase.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockLeaf.java" md5: 3506a34d0d80f02251f1f7b98dfdf5db
+endProcessing "com\mowmaster\dust\blocks\BlockLeaf.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockLog.java" md5: 98164855a5713aa35b92655edb955d73
+endProcessing "com\mowmaster\dust\blocks\BlockLog.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockRegistry.java" md5: 2243389053a4b762dfe46acab893d028
+endProcessing "com\mowmaster\dust\blocks\BlockRegistry.java"
+
+startProcessing "com\mowmaster\dust\blocks\BlockWithMultipleStates.java" md5: 78da262649e4a2743bde7d905f456eb3
+endProcessing "com\mowmaster\dust\blocks\BlockWithMultipleStates.java"
+
+startProcessing "com\mowmaster\dust\blocks\item\IMetaBlockName.java" md5: a4a55e21a26d4e86f70f42980a487434
+Cache Hit!
+endProcessing "com\mowmaster\dust\blocks\item\IMetaBlockName.java"
+
+startProcessing "com\mowmaster\dust\blocks\item\ItemBlockOre.java" md5: 51d3c80b0e978f253e81d225d3e0bcf2
+endProcessing "com\mowmaster\dust\blocks\item\ItemBlockOre.java"
+
+startProcessing "com\mowmaster\dust\configtabs\DustyTab.java" md5: 03aa9f38f44f60e6609636a32ff6f930
+endProcessing "com\mowmaster\dust\configtabs\DustyTab.java"
+
+startProcessing "com\mowmaster\dust\enums\CrystalBlocks.java" md5: 04e38d74dfd32b78bd1ceedb08e2cd73
+endProcessing "com\mowmaster\dust\enums\CrystalBlocks.java"
+
+startProcessing "com\mowmaster\dust\enums\CrystalItems.java" md5: 734b93ef8429d714cee6e659f23b130f
+endProcessing "com\mowmaster\dust\enums\CrystalItems.java"
+
+startProcessing "com\mowmaster\dust\enums\CrystalParticles.java" md5: ed21c2e1032a8349ad359944ff4ca48a
+endProcessing "com\mowmaster\dust\enums\CrystalParticles.java"
+
+startProcessing "com\mowmaster\dust\handlers\PlaceableCrystals.java" md5: bef202302df61470a85c0fad4c4137e3
+endProcessing "com\mowmaster\dust\handlers\PlaceableCrystals.java"
+
+startProcessing "com\mowmaster\dust\items\ItemBasic.java" md5: 942ba7e42a42c9833a984733a3061bef
+Cache Hit!
+endProcessing "com\mowmaster\dust\items\ItemBasic.java"
+
+startProcessing "com\mowmaster\dust\items\ItemBit.java" md5: 80acd72141fba0a70cc52431a91d7bbf
+endProcessing "com\mowmaster\dust\items\ItemBit.java"
+
+startProcessing "com\mowmaster\dust\items\ItemCrystal.java" md5: 3c01eb3902d216d4c244dd67ccc64c32
+Cache Hit!
+endProcessing "com\mowmaster\dust\items\ItemCrystal.java"
+
+startProcessing "com\mowmaster\dust\items\ItemDust.java" md5: 16c4841232fdca4d145ce576e2e3b4e9
+endProcessing "com\mowmaster\dust\items\ItemDust.java"
+
+startProcessing "com\mowmaster\dust\items\ItemRegistry.java" md5: d0f40e59fd9e4ce5f1cfbe1d3353aa9e
+endProcessing "com\mowmaster\dust\items\ItemRegistry.java"
+
+startProcessing "com\mowmaster\dust\particles\ParticleRedCrystal.java" md5: 125e3595c155465389c4778ef4e2d659
+endProcessing "com\mowmaster\dust\particles\ParticleRedCrystal.java"
+
+startProcessing "com\mowmaster\dust\proxies\ClientProxy.java" md5: 7d5db7dffea504badd5b7c2af0f9ac37
+endProcessing "com\mowmaster\dust\proxies\ClientProxy.java"
+
+startProcessing "com\mowmaster\dust\proxies\CommonProxy.java" md5: eab37e54d76b0617189f331111079b91
+endProcessing "com\mowmaster\dust\proxies\CommonProxy.java"
+
+startProcessing "com\mowmaster\dust\recipes\CraftingRecipes.java" md5: 7aecf5076b14788e1c63e3b2ee19b521
+endProcessing "com\mowmaster\dust\recipes\CraftingRecipes.java"
+
+startProcessing "com\mowmaster\dust\references\Reference.java" md5: 2ad0b099bfdf58953957313d579d1bdd
+Cache Hit!
+endProcessing "com\mowmaster\dust\references\Reference.java"
+
+startProcessing "com\mowmaster\dust\tiles\TileCrystalCluster.java" md5: 9e53b52ac40044e8c29dccb160c74551
+endProcessing "com\mowmaster\dust\tiles\TileCrystalCluster.java"
+
+startProcessing "com\mowmaster\dust\world\OreGeneration.java" md5: 56e5acbb56ef535cc0221af6dc187f9f
+endProcessing "com\mowmaster\dust\world\OreGeneration.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeBlack.java" md5: b8edd195ad75b6dfe9f3bc78709db4d6
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeBlack.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeBlue.java" md5: 308b2fee16665cb498393782a8c32857
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeBlue.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeGreen.java" md5: cc6004e77a4ad45ae4215b7fc0c1d02e
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeGreen.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeOrange.java" md5: 3ac4dd1281dbb89055a09bbb055965f7
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeOrange.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreePurple.java" md5: e81b895f6c76c216f84e904ca539f338
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreePurple.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeRed.java" md5: 71ba92646e78cc9988977dd8dac8bc9b
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeRed.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeWhite.java" md5: 47105fe3b1f3a40d050bcb9ba05a9d18
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeWhite.java"
+
+startProcessing "com\mowmaster\dust\world\TreeGeneration\TreeYellow.java" md5: 08977dc43f52b1f35ab2bc1b2c3a7217
+endProcessing "com\mowmaster\dust\world\TreeGeneration\TreeYellow.java"
+

@@ -1,0 +1,21 @@
+{
+"__comment": "Designed by Mowmaster with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+"textures": {
+    "1870236960": "dust:items/crystal_wood_logs",
+    "1974808378": "minecraft:blocks/stone"
+},
+"elements": [ 
+{
+    "from": [ 0, 0, 0 ],
+    "to": [ 16, 16, 16 ],
+    "faces": {
+        "down":  { "uv": [ 16, 4, 12, 0 ], "texture": "#1870236960" },
+        "up":    { "uv": [ 12, 0, 16, 4 ], "texture": "#1870236960" },
+        "north": { "uv": [ 12, 8, 16, 12 ], "texture": "#1870236960" },
+        "south": { "uv": [ 12, 8, 16, 12 ], "texture": "#1870236960" },
+        "west":  { "uv": [ 12, 8, 16, 12 ], "texture": "#1870236960" },
+        "east":  { "uv": [ 12, 8, 16, 12 ], "texture": "#1870236960" }
+    }
+}
+]
+}

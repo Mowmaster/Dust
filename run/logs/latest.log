@@ -1,0 +1,384 @@
+[14:19:44] [main/INFO]: Extra: []
+[14:19:44] [main/INFO]: Running with arguments: [--userProperties, {}, --assetsDir, C:/Users/KingMowmaster/.gradle/caches/minecraft/assets, --assetIndex, 1.10, --accessToken{REDACTED}, --version, 1.10.2, --tweakClass, net.minecraftforge.fml.common.launcher.FMLTweaker, --tweakClass, net.minecraftforge.gradle.tweakers.CoremodTweaker]
+[14:19:44] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[14:19:44] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[14:19:44] [main/INFO]: Loading tweak class name net.minecraftforge.gradle.tweakers.CoremodTweaker
+[14:19:44] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[14:19:44] [main/INFO]: Forge Mod Loader version 12.18.3.2221 for Minecraft 1.10.2 loading
+[14:19:44] [main/INFO]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_66, running on Windows 10:amd64:10.0, installed at C:\Program Files\Java\jdk1.8.0_66\jre
+[14:19:44] [main/INFO]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[14:19:44] [main/INFO]: Calling tweak class net.minecraftforge.gradle.tweakers.CoremodTweaker
+[14:19:44] [main/INFO]: Injecting location in coremod net.minecraftforge.fml.relauncher.FMLCorePlugin
+[14:19:44] [main/INFO]: Injecting location in coremod net.minecraftforge.classloading.FMLForgePlugin
+[14:19:44] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[14:19:44] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[14:19:44] [main/INFO]: Loading tweak class name net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[14:19:44] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[14:19:44] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[14:19:44] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[14:19:44] [main/ERROR]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
+[14:19:45] [main/ERROR]: FML appears to be missing any signature data. This is not a good thing
+[14:19:45] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[14:19:45] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[14:19:45] [main/INFO]: Calling tweak class net.minecraftforge.gradle.tweakers.AccessTransformerTweaker
+[14:19:46] [main/INFO]: Remapping AccessTransformer rules...
+[14:19:46] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[14:19:46] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[14:19:46] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[14:19:47] [Client thread/INFO]: Setting user: Player837
+[14:19:50] [Client thread/WARN]: Skipping bad option: lastServer:
+[14:19:50] [Client thread/INFO]: LWJGL Version: 2.9.4
+[14:19:51] [Client thread/INFO]: [net.minecraftforge.fml.client.SplashProgress:start:221]: ---- Minecraft Crash Report ----
+// Don't do that.
+
+Time: 4/17/17 2:19 PM
+Description: Loading screen debug info
+
+This is just a prompt for computer specs to be printed. THIS IS NOT A ERROR
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.10.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_66, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 505872768 bytes (482 MB) / 731906048 bytes (698 MB) up to 3801088000 bytes (3625 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: 
+	Loaded coremods (and transformers): 
+	GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.5.0 NVIDIA 376.53' Renderer: 'GeForce GTX 970/PCIe/SSE2'
+[14:19:51] [Client thread/INFO]: MinecraftForge v12.18.3.2221 Initialized
+[14:19:51] [Client thread/INFO]: Replaced 231 ore recipes
+[14:19:51] [Client thread/INFO]: Found 0 mods from the command line. Injecting into mod discoverer
+[14:19:51] [Client thread/INFO]: Searching P:\programming\development\Minecraft\1.10.2\Dust\run\mods for mods
+[14:19:52] [Client thread/WARN]: ****************************************
+[14:19:52] [Client thread/WARN]: * The modid JEI is not the same as it's lowercase version. Lowercasing will be enforced in 1.11
+[14:19:52] [Client thread/WARN]: *  at net.minecraftforge.fml.common.FMLModContainer.sanityCheckModId(FMLModContainer.java:145)
+[14:19:52] [Client thread/WARN]: *  at net.minecraftforge.fml.common.FMLModContainer.<init>(FMLModContainer.java:130)
+[14:19:52] [Client thread/WARN]: *  at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+[14:19:52] [Client thread/WARN]: *  at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+[14:19:52] [Client thread/WARN]: *  at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+[14:19:52] [Client thread/WARN]: *  at java.lang.reflect.Constructor.newInstance(Constructor.java:422)...
+[14:19:52] [Client thread/WARN]: ****************************************
+[14:19:52] [Client thread/INFO]: Forge Mod Loader has identified 6 mods to load
+[14:19:52] [Client thread/INFO]: Attempting connection with missing mods [mcp, FML, Forge, dust, chiselsandbits, JEI] at CLIENT
+[14:19:52] [Client thread/INFO]: Attempting connection with missing mods [mcp, FML, Forge, dust, chiselsandbits, JEI] at SERVER
+[14:19:53] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Dust, FMLFileResourcePack:Chisels & Bits, FMLFileResourcePack:Just Enough Items
+[14:19:53] [Client thread/INFO]: Processing ObjectHolder annotations
+[14:19:53] [Client thread/INFO]: Found 423 ObjectHolder annotations
+[14:19:53] [Client thread/INFO]: Identifying ItemStackHolder annotations
+[14:19:53] [Client thread/INFO]: Found 0 ItemStackHolder annotations
+[14:19:53] [Client thread/INFO]: Applying holder lookups
+[14:19:53] [Client thread/INFO]: Holder lookups applied
+[14:19:53] [Client thread/INFO]: Applying holder lookups
+[14:19:53] [Client thread/INFO]: Holder lookups applied
+[14:19:53] [Client thread/INFO]: Applying holder lookups
+[14:19:53] [Client thread/INFO]: Holder lookups applied
+[14:19:53] [Client thread/INFO]: Configured a dormant chunk cache size of 0
+[14:19:53] [Forge Version Check/INFO]: [Forge] Starting version check at http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[14:19:53] [Forge Version Check/INFO]: [Forge] Found status: OUTDATED Target: 12.18.3.2281
+[14:19:54] [Client thread/INFO]: Applying holder lookups
+[14:19:54] [Client thread/INFO]: Holder lookups applied
+[14:19:54] [Client thread/INFO]: Injecting itemstacks
+[14:19:54] [Client thread/INFO]: Itemstack injection complete
+[14:19:56] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[14:19:56] [Thread-9/INFO]: Initializing LWJGL OpenAL
+[14:19:56] [Thread-9/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[14:19:56] [Thread-9/INFO]: OpenAL initialized.
+[14:19:56] [Sound Library Loader/INFO]: Sound engine started
+[14:19:59] [Client thread/INFO]: Max texture size: 16384
+[14:19:59] [Client thread/INFO]: Created: 16x16 textures-atlas
+[14:19:59] [Client thread/ERROR]: Exception loading model for variant chiselsandbits:debug#inventory for item "chiselsandbits:debug", normal location exception: 
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model chiselsandbits:item/debug with loader VanillaLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:328) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:170) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:148) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:122) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:540) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:386) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(Main.java:118) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144) [idea_rt.jar:?]
+Caused by: java.io.FileNotFoundException: chiselsandbits:models/item/debug.json
+	at net.minecraft.client.resources.FallbackResourceManager.getResource(FallbackResourceManager.java:68) ~[FallbackResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.getResource(SimpleReloadableResourceManager.java:65) ~[SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadModel(ModelBakery.java:311) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.access$1100(ModelLoader.java:118) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaLoader.loadModel(ModelLoader.java:879) ~[ModelLoader$VanillaLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 25 more
+[14:19:59] [Client thread/ERROR]: Exception loading model for variant chiselsandbits:debug#inventory for item "chiselsandbits:debug", blockstate location exception: 
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model chiselsandbits:debug#inventory with loader VariantLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:336) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:170) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:148) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.registerReloadListener(SimpleReloadableResourceManager.java:122) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:540) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:386) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(Main.java:118) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144) [idea_rt.jar:?]
+Caused by: net.minecraft.client.renderer.block.model.ModelBlockDefinition$MissingVariantException
+	at net.minecraft.client.renderer.block.model.ModelBlockDefinition.getVariant(ModelBlockDefinition.java:78) ~[ModelBlockDefinition.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1195) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 25 more
+[14:19:59] [Client thread/INFO]: Injecting itemstacks
+[14:19:59] [Client thread/INFO]: Itemstack injection complete
+[14:19:59] [Client thread/INFO]: Starting JEI...
+[14:20:00] [Client thread/INFO]: Registering plugin: mezz.jei.plugins.vanilla.VanillaPlugin ...
+[14:20:00] [Client thread/INFO]: Registered  plugin: mezz.jei.plugins.vanilla.VanillaPlugin in 110 ms
+[14:20:00] [Client thread/INFO]: Registering plugin: mod.chiselsandbits.integration.mods.JustEnoughItems ...
+[14:20:00] [Client thread/INFO]: Registered  plugin: mod.chiselsandbits.integration.mods.JustEnoughItems in 5 ms
+[14:20:00] [Client thread/INFO]: Registering plugin: mezz.jei.plugins.jei.JEIInternalPlugin ...
+[14:20:00] [Client thread/INFO]: Registered  plugin: mezz.jei.plugins.jei.JEIInternalPlugin in 3 ms
+[14:20:00] [Client thread/INFO]: Building recipe registry...
+[14:20:00] [Client thread/INFO]: Built    recipe registry in 67 ms
+[14:20:00] [Client thread/INFO]: Building item filter...
+[14:20:00] [Client thread/INFO]: Built	item filter in 222 ms
+[14:20:00] [Client thread/INFO]: Building runtime...
+[14:20:00] [Client thread/INFO]: Built    runtime in 44 ms
+[14:20:00] [Client thread/INFO]: Sending runtime to plugin: mezz.jei.plugins.vanilla.VanillaPlugin ...
+[14:20:00] [Client thread/INFO]: Sending runtime to plugin: mod.chiselsandbits.integration.mods.JustEnoughItems ...
+[14:20:00] [Client thread/INFO]: Sending runtime to plugin: mezz.jei.plugins.jei.JEIInternalPlugin ...
+[14:20:00] [Client thread/INFO]: Finished Starting JEI in 832 ms
+[14:20:00] [Client thread/INFO]: Forge Mod Loader has successfully loaded 6 mods
+[14:20:00] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Dust, FMLFileResourcePack:Chisels & Bits, FMLFileResourcePack:Just Enough Items
+[14:20:02] [Client thread/INFO]: SoundSystem shutting down...
+[14:20:02] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
+[14:20:02] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[14:20:02] [Thread-11/INFO]: Initializing LWJGL OpenAL
+[14:20:02] [Thread-11/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[14:20:02] [Thread-11/INFO]: OpenAL initialized.
+[14:20:03] [Sound Library Loader/INFO]: Sound engine started
+[14:20:05] [Client thread/INFO]: Max texture size: 16384
+[14:20:05] [Client thread/INFO]: Created: 512x512 textures-atlas
+[14:20:05] [Client thread/ERROR]: Exception loading model for variant chiselsandbits:debug#inventory for item "chiselsandbits:debug", normal location exception: 
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model chiselsandbits:item/debug with loader VanillaLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:328) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:170) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:148) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.notifyReloadListeners(SimpleReloadableResourceManager.java:132) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.reloadResources(SimpleReloadableResourceManager.java:113) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.refreshResources(Minecraft.java:799) [Minecraft.class:?]
+	at net.minecraftforge.fml.client.FMLClientHandler.finishMinecraftLoading(FMLClientHandler.java:350) [FMLClientHandler.class:?]
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:561) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:386) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(Main.java:118) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144) [idea_rt.jar:?]
+Caused by: java.io.FileNotFoundException: chiselsandbits:models/item/debug.json
+	at net.minecraft.client.resources.FallbackResourceManager.getResource(FallbackResourceManager.java:68) ~[FallbackResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.getResource(SimpleReloadableResourceManager.java:65) ~[SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadModel(ModelBakery.java:311) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.access$1100(ModelLoader.java:118) ~[ModelLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VanillaLoader.loadModel(ModelLoader.java:879) ~[ModelLoader$VanillaLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 28 more
+[14:20:05] [Client thread/ERROR]: Exception loading model for variant chiselsandbits:debug#inventory for item "chiselsandbits:debug", blockstate location exception: 
+net.minecraftforge.client.model.ModelLoaderRegistry$LoaderException: Exception loading model chiselsandbits:debug#inventory with loader VariantLoader.INSTANCE, skipping
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:153) ~[ModelLoaderRegistry.class:?]
+	at net.minecraftforge.client.model.ModelLoader.loadItemModels(ModelLoader.java:336) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelBakery.loadVariantItemModels(ModelBakery.java:170) ~[ModelBakery.class:?]
+	at net.minecraftforge.client.model.ModelLoader.setupModelRegistry(ModelLoader.java:148) ~[ModelLoader.class:?]
+	at net.minecraft.client.renderer.block.model.ModelManager.onResourceManagerReload(ModelManager.java:28) [ModelManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.notifyReloadListeners(SimpleReloadableResourceManager.java:132) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.resources.SimpleReloadableResourceManager.reloadResources(SimpleReloadableResourceManager.java:113) [SimpleReloadableResourceManager.class:?]
+	at net.minecraft.client.Minecraft.refreshResources(Minecraft.java:799) [Minecraft.class:?]
+	at net.minecraftforge.fml.client.FMLClientHandler.finishMinecraftLoading(FMLClientHandler.java:350) [FMLClientHandler.class:?]
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:561) [Minecraft.class:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:386) [Minecraft.class:?]
+	at net.minecraft.client.main.Main.main(Main.java:118) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at net.minecraftforge.gradle.GradleStartCommon.launch(GradleStartCommon.java:97) [start/:?]
+	at GradleStart.main(GradleStart.java:26) [start/:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_66]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_66]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_66]
+	at java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_66]
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144) [idea_rt.jar:?]
+Caused by: net.minecraft.client.renderer.block.model.ModelBlockDefinition$MissingVariantException
+	at net.minecraft.client.renderer.block.model.ModelBlockDefinition.getVariant(ModelBlockDefinition.java:78) ~[ModelBlockDefinition.class:?]
+	at net.minecraftforge.client.model.ModelLoader$VariantLoader.loadModel(ModelLoader.java:1195) ~[ModelLoader$VariantLoader.class:?]
+	at net.minecraftforge.client.model.ModelLoaderRegistry.getModel(ModelLoaderRegistry.java:149) ~[ModelLoaderRegistry.class:?]
+	... 28 more
+[14:20:05] [Client thread/WARN]: Skipping bad option: lastServer:
+[14:20:07] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
+[14:22:31] [Server thread/INFO]: Starting integrated minecraft server version 1.10.2
+[14:22:31] [Server thread/INFO]: Generating keypair
+[14:22:31] [Server thread/INFO]: Injecting existing block and item data into this server instance
+[14:22:31] [Server thread/INFO]: Applying holder lookups
+[14:22:31] [Server thread/INFO]: Holder lookups applied
+[14:22:32] [Server thread/INFO]: Loading dimension 0 (Testing World) (net.minecraft.server.integrated.IntegratedServer@11f5892e)
+[14:22:32] [Server thread/INFO]: Loading dimension 1 (Testing World) (net.minecraft.server.integrated.IntegratedServer@11f5892e)
+[14:22:32] [Server thread/INFO]: Loading dimension -1 (Testing World) (net.minecraft.server.integrated.IntegratedServer@11f5892e)
+[14:22:32] [Server thread/INFO]: Preparing start region for level 0
+[14:22:33] [Server thread/INFO]: Preparing spawn area: 93%
+[14:22:33] [Server thread/INFO]: Changing view distance to 14, from 10
+[14:22:34] [Netty Local Client IO #0/INFO]: Server protocol version 2
+[14:22:34] [Netty Server IO #1/INFO]: Client protocol version 2
+[14:22:34] [Netty Server IO #1/INFO]: Client attempting to join with 6 mods : FML@8.0.99.99,Forge@12.18.3.2221,chiselsandbits@12.12,mcp@9.19,dust@0.0.0.2,JEI@3.14.7.415
+[14:22:34] [Netty Local Client IO #0/INFO]: [Netty Local Client IO #0] Client side modded connection established
+[14:22:34] [Server thread/INFO]: [Server thread] Server side modded connection established
+[14:22:34] [Server thread/INFO]: Player837[local:E:ae0af656] logged in with entity id 224 at (-47.05313773768082, 98.99313604000233, 324.8246834109659)
+[14:22:34] [Server thread/INFO]: Player837 joined the game
+[14:22:35] [Server thread/INFO]: Saving and pausing game...
+[14:22:35] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:22:35] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:22:35] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:22:50] [Server thread/INFO]: Player837 has just earned the achievement [Taking Inventory]
+[14:22:50] [Client thread/INFO]: [CHAT] Player837 has just earned the achievement [Taking Inventory]
+[14:22:50] [pool-2-thread-1/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@5a300028[id=74c27658-bdbf-3735-92e3-d4cbb89f0350,name=Player837,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationException: The client has sent too many requests within a certain amount of time
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:65) ~[YggdrasilAuthenticationService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:175) [YggdrasilMinecraftSessionService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:59) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:56) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3524) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2317) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2280) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2195) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache.get(LocalCache.java:3934) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:3938) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:4821) [guava-17.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:4827) [guava-17.0.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:165) [YggdrasilMinecraftSessionService.class:?]
+	at net.minecraft.client.Minecraft.getProfileProperties(Minecraft.java:3060) [Minecraft.class:?]
+	at net.minecraft.client.resources.SkinManager$3.run(SkinManager.java:131) [SkinManager$3.class:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_66]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_66]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [?:1.8.0_66]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [?:1.8.0_66]
+	at java.lang.Thread.run(Thread.java:745) [?:1.8.0_66]
+[14:23:03] [Server thread/INFO]: Saving and pausing game...
+[14:23:03] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:23:03] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:23:03] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:23:05] [Client thread/INFO]: Building item filter...
+[14:23:05] [Client thread/INFO]: Built	item filter in 10 ms
+[14:23:10] [Server thread/INFO]: [Player837: Given [Iron Ore] * 64 to Player837]
+[14:23:10] [Client thread/INFO]: [CHAT] Given [Iron Ore] * 64 to Player837
+[14:23:10] [Server thread/INFO]: [Player837: Given [Iron Ore] * 64 to Player837]
+[14:23:10] [Client thread/INFO]: [CHAT] Given [Iron Ore] * 64 to Player837
+[14:23:12] [Server thread/INFO]: [Player837: Given [Green Wool] * 64 to Player837]
+[14:23:12] [Client thread/INFO]: [CHAT] Given [Green Wool] * 64 to Player837
+[14:23:32] [Server thread/INFO]: [Player837: Given [Chiseled Bit Bag] * 1 to Player837]
+[14:23:32] [Client thread/INFO]: [CHAT] Given [Chiseled Bit Bag] * 1 to Player837
+[14:23:32] [Server thread/INFO]: [Player837: Given [Chiseled Bit Bag] * 1 to Player837]
+[14:23:32] [Client thread/INFO]: [CHAT] Given [Chiseled Bit Bag] * 1 to Player837
+[14:23:34] [Server thread/INFO]: [Player837: Given [Diamond Chisel] * 1 to Player837]
+[14:23:34] [Client thread/INFO]: [CHAT] Given [Diamond Chisel] * 1 to Player837
+[14:23:42] [Server thread/INFO]: [Player837: Given [Red Hardened Clay] * 64 to Player837]
+[14:23:42] [Client thread/INFO]: [CHAT] Given [Red Hardened Clay] * 64 to Player837
+[14:23:42] [Server thread/INFO]: [Player837: Given [Red Hardened Clay] * 64 to Player837]
+[14:23:42] [Client thread/INFO]: [CHAT] Given [Red Hardened Clay] * 64 to Player837
+[14:23:47] [Server thread/INFO]: [Player837: Set own game mode to Creative Mode]
+[14:23:47] [Client thread/INFO]: [CHAT] Your game mode has been updated to Creative Mode
+[14:23:54] [Server thread/INFO]: Saving and pausing game...
+[14:23:54] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:23:54] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:23:54] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:23:56] [Server thread/INFO]: Saving and pausing game...
+[14:23:56] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:23:56] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:23:56] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:24:43] [Client thread/INFO]: [CHAT] Unknown command. Try /help for a list of commands
+[14:24:46] [Server thread/INFO]: [Player837: Set own game mode to Survival Mode]
+[14:24:46] [Client thread/INFO]: [CHAT] Your game mode has been updated to Survival Mode
+[14:28:34] [Server thread/INFO]: [Player837: Given [Stone] * 64 to Player837]
+[14:28:34] [Client thread/INFO]: [CHAT] Given [Stone] * 64 to Player837
+[14:28:34] [Server thread/INFO]: [Player837: Given [Stone] * 64 to Player837]
+[14:28:34] [Client thread/INFO]: [CHAT] Given [Stone] * 64 to Player837
+[14:32:50] [Server thread/INFO]: [Player837: Set own game mode to Creative Mode]
+[14:32:50] [Client thread/INFO]: [CHAT] Your game mode has been updated to Creative Mode
+[14:32:58] [Server thread/INFO]: Saving and pausing game...
+[14:32:58] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:32:58] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:32:58] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:35:58] [Client thread/INFO]: [CHAT] Json Posted to Clipboard
+[14:38:03] [Server thread/INFO]: Saving and pausing game...
+[14:38:03] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:38:03] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:38:03] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:38:48] [Client thread/INFO]: Stopping!
+[14:38:48] [Client thread/INFO]: SoundSystem shutting down...
+[14:38:48] [Server thread/INFO]: Stopping server
+[14:38:48] [Server thread/INFO]: Saving players
+[14:38:48] [Server thread/INFO]: Saving worlds
+[14:38:48] [Server thread/INFO]: Saving chunks for level 'Testing World'/Overworld
+[14:38:48] [Server thread/INFO]: Saving chunks for level 'Testing World'/Nether
+[14:38:48] [Server thread/INFO]: Saving chunks for level 'Testing World'/The End
+[14:38:48] [Server thread/INFO]: Unloading dimension 0
+[14:38:48] [Server thread/INFO]: Unloading dimension -1
+[14:38:48] [Server thread/INFO]: Unloading dimension 1
+[14:38:48] [Server thread/INFO]: Applying holder lookups
+[14:38:48] [Server thread/INFO]: Holder lookups applied
+[14:38:49] [Client thread/WARN]: Author: Paul Lamb, www.paulscode.com
+[14:38:49] [Client Shutdown Thread/INFO]: Stopping server
+[14:38:49] [Client Shutdown Thread/INFO]: Saving players
+[14:38:49] [Client Shutdown Thread/INFO]: Saving worlds

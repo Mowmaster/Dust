@@ -1,0 +1,83 @@
+{
+"__comment": "Designed by Mowmaster with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+"textures": {
+    "crystal_cores": "dust:items/crystal_cores",
+    "crystal_sides": "dust:items/crystal_sides"
+},
+"elements": [ 
+{
+    "__comment": "dust_core",
+    "from": [ 7, 5, 6.5 ],
+    "to": [ 9, 9.5, 8.5 ],
+    "faces": {
+        "down":  { "uv": [ 4, 2, 2, 0 ], "texture": "#crystal_cores" },
+        "up":    { "uv": [ 2, 0, 4, 2 ], "texture": "#crystal_cores" },
+        "north": { "uv": [ 2, 0, 4, 16 ], "texture": "#crystal_cores" },
+        "south": { "uv": [ 2, 0, 4, 16 ], "texture": "#crystal_cores" },
+        "west":  { "uv": [ 2, 0, 4, 16 ], "texture": "#crystal_cores" },
+        "east":  { "uv": [ 2, 0, 4, 16 ], "texture": "#crystal_cores" }
+    }
+},
+{
+    "__comment": "dust_north",
+    "from": [ 7, 5.5, 5 ],
+    "to": [ 9, 8, 6.5 ],
+    "faces": {
+        "down":  { "uv": [ 4, 16, 2, 15 ], "texture": "#crystal_sides" },
+        "up":    { "uv": [ 2, 15, 4, 16 ], "texture": "#crystal_sides" },
+        "north": { "uv": [ 2, 12, 4, 14 ], "texture": "#crystal_sides" },
+        "west":  { "uv": [ 2, 14, 3, 16 ], "texture": "#crystal_sides" },
+        "east":  { "uv": [ 3, 14, 4, 16 ], "texture": "#crystal_sides" }
+    }
+},
+{
+    "__comment": "dust_south",
+    "from": [ 7, 5.5, 8.5 ],
+    "to": [ 9, 8, 10 ],
+    "faces": {
+        "down":  { "uv": [ 4, 15, 2, 14 ], "texture": "#crystal_sides" },
+        "up":    { "uv": [ 2, 14, 4, 15 ], "texture": "#crystal_sides" },
+        "south": { "uv": [ 2, 12, 4, 14 ], "texture": "#crystal_sides" },
+        "west":  { "uv": [ 3, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "east":  { "uv": [ 2, 14, 3, 16 ], "texture": "#crystal_sides" }
+    }
+},
+{
+    "__comment": "dust_west",
+    "from": [ 5.5, 5.5, 6.5 ],
+    "to": [ 7, 8, 8.5 ],
+    "faces": {
+        "down":  { "uv": [ 4, 16, 3, 14 ], "texture": "#crystal_sides" },
+        "up":    { "uv": [ 3, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "north": { "uv": [ 3, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "south": { "uv": [ 2, 14, 3, 16 ], "texture": "#crystal_sides" },
+        "west":  { "uv": [ 2, 12, 4, 14 ], "texture": "#crystal_sides" }
+    }
+},
+{
+    "__comment": "dust_east",
+    "from": [ 9, 5.5, 6.5 ],
+    "to": [ 10.5, 8, 8.5 ],
+    "faces": {
+        "down":  { "uv": [ 3, 16, 2, 14 ], "texture": "#crystal_sides" },
+        "up":    { "uv": [ 2, 14, 3, 16 ], "texture": "#crystal_sides" },
+        "north": { "uv": [ 2, 14, 3, 16 ], "texture": "#crystal_sides" },
+        "south": { "uv": [ 3, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "east":  { "uv": [ 2, 12, 4, 14 ], "texture": "#crystal_sides" }
+    }
+},
+{
+    "__comment": "dust_bottom",
+    "from": [ 6, 6, 5.5 ],
+    "to": [ 10, 7.5, 9.5 ],
+    "faces": {
+        "down":  { "uv": [ 4, 16, 2, 14 ], "texture": "#crystal_sides" },
+        "up":    { "uv": [ 2, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "north": { "uv": [ 2, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "south": { "uv": [ 2, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "west":  { "uv": [ 2, 14, 4, 16 ], "texture": "#crystal_sides" },
+        "east":  { "uv": [ 2, 14, 4, 16 ], "texture": "#crystal_sides" }
+    }
+}
+]
+}

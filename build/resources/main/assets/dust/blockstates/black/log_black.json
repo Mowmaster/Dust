@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=up": {"model": "dust:black/log_black"},
+    "facing=down": {"model": "dust:black/log_black","x": 180},
+    "facing=north": {"model": "dust:black/log_black","x": 90},
+    "facing=east": {"model": "dust:black/log_black","x": 90,"y":90},
+    "facing=south": {"model": "dust:black/log_black","x": 90,"y":180},
+    "facing=west": {"model": "dust:black/log_black","x": 90,"y":270}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=up": {"model": "dust:purple/ore_purple_one"},
+    "facing=down": {"model": "dust:purple/ore_purple_one","x": 180},
+    "facing=north": {"model": "dust:purple/ore_purple_one","x": 90},
+    "facing=east": {"model": "dust:purple/ore_purple_one","x": 90,"y":90},
+    "facing=south": {"model": "dust:purple/ore_purple_one","x": 90,"y":180},
+    "facing=west": {"model": "dust:purple/ore_purple_one","x": 90,"y":270}
+  }
+}

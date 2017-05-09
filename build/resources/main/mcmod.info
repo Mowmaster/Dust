@@ -1,0 +1,16 @@
+[
+{
+  "modid": "dust",
+  "name": "Dust",
+  "description": "Crystals spawn naturally in the world,they can be used for all manner of things.",
+  "version": "0.0.0.2",
+  "mcversion": "1.10.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Mowmaster"],
+  "credits": "Thanks to all the guys/gals that have helped me learn along the way :)",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,74 @@
+---- Minecraft Crash Report ----
+// I just don't know what went wrong :(
+
+Time: 3/29/17 4:35 PM
+Description: Exception ticking world
+
+java.lang.IllegalArgumentException: Cannot get property PropertyBool{name=check_decay, clazz=class java.lang.Boolean, values=[true, false]} as it does not exist in BlockStateContainer{block=dust:leaves, properties=[leaves]}
+	at net.minecraft.block.state.BlockStateContainer$StateImplementation.getValue(BlockStateContainer.java:196)
+	at net.minecraft.block.BlockLeaves.updateTick(BlockLeaves.java:74)
+	at net.minecraft.block.Block.randomTick(Block.java:582)
+	at net.minecraft.world.WorldServer.updateBlocks(WorldServer.java:491)
+	at net.minecraft.world.WorldServer.tick(WorldServer.java:228)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:772)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:687)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:536)
+	at java.lang.Thread.run(Thread.java:745)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at net.minecraft.block.state.BlockStateContainer$StateImplementation.getValue(BlockStateContainer.java:196)
+	at net.minecraft.block.BlockLeaves.updateTick(BlockLeaves.java:74)
+	at net.minecraft.block.Block.randomTick(Block.java:582)
+	at net.minecraft.world.WorldServer.updateBlocks(WorldServer.java:491)
+	at net.minecraft.world.WorldServer.tick(WorldServer.java:228)
+
+-- Affected level --
+Details:
+	Level name: testingWorldMain
+	All players: 1 total; [EntityPlayerMP['Player598'/415, l='testingWorldMain', x=-52.14, y=69.17, z=-432.57]]
+	Chunk stats: ServerChunkCache: 625 Drop: 0
+	Level seed: -2518720076594253009
+	Level generator: ID 00 - default, ver 1. Features enabled: true
+	Level generator options: 
+	Level spawn location: World: (-50,64,-424), Chunk: (at 14,4,8 in -4,-27; contains blocks -64,0,-432 to -49,255,-417), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)
+	Level time: 170141 game time, 1178 day time
+	Level dimension: 0
+	Level storage version: 0x04ABD - Anvil
+	Level weather: Rain time: 51570 (now: false), thunder time: 92811 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: true
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:772)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:687)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:156)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:536)
+	at java.lang.Thread.run(Thread.java:745)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.10.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_66, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 530289808 bytes (505 MB) / 1510998016 bytes (1441 MB) up to 3801088000 bytes (3625 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP 9.32 Powered by Forge 12.18.3.2221 5 mods loaded, 5 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+	UCHIJAAAA	mcp{9.19} [Minecraft Coder Pack] (minecraft.jar) 
+	UCHIJAAAA	FML{8.0.99.99} [Forge Mod Loader] (forgeSrc-1.10.2-12.18.3.2221.jar) 
+	UCHIJAAAA	Forge{12.18.3.2221} [Minecraft Forge] (forgeSrc-1.10.2-12.18.3.2221.jar) 
+	UCHIJAAAA	dust{0.0.0.2} [Dust] (Dust) 
+	UCHIJAAAA	JEI{3.14.7.415} [Just Enough Items] (jei_1.10.2-3.14.7.415.jar) 
+	Loaded coremods (and transformers): 
+	GL info: ~~ERROR~~ RuntimeException: No OpenGL context found in the current thread.
+	Profiler Position: N/A (disabled)
+	Player Count: 1 / 8; [EntityPlayerMP['Player598'/415, l='testingWorldMain', x=-52.14, y=69.17, z=-432.57]]
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
