@@ -62,19 +62,22 @@ public class BlockLog extends Block
         return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
     }
 
-    /*
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
-    }
+        IBlockState iblockstate = worldIn.getBlockState(pos.offset(facing.getOpposite()));
 
-    public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
-    {
-        worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
-        EntityPlayer player = (EntityPlayer) placer;
+        if (iblockstate.getBlock() == this)
+        {
+            EnumFacing enumfacing = (EnumFacing)iblockstate.getValue(FACING);
+
+            if (enumfacing == facing)
+            {
+                return this.getDefaultState().withProperty(FACING, facing.getOpposite());
+            }
+        }
+
+        return this.getDefaultState().withProperty(FACING, facing);
     }
-     */
 
     @Override
     public int getMetaFromState(IBlockState state)

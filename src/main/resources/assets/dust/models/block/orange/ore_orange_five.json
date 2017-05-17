@@ -1,4 +1,4 @@
-{
+{"parent": "block/cube_all",
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
         "0": "dust:items/crystalcore_orange",

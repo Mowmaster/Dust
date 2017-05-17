@@ -57,6 +57,7 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setSoundType(SoundType.PLANT);
+        //this.setSoundType(SoundType.WOOD);
     }
 
     @Override
@@ -65,14 +66,13 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         return new BlockStateContainer(this,new IProperty[]{LEAVES});
     }
 
-	/*
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 
-	{
-		return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
-	}
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        return this.getDefaultState();
+    }
 
-	 */
+
 
     @Override
     public int getMetaFromState(IBlockState state)

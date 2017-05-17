@@ -1,4 +1,4 @@
-{
+{"parent": "block/cube_all",
     "display": {
     "fixed": {
         "rotation": [ 0, 90, 0 ],

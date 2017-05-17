@@ -17,6 +17,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -64,7 +65,7 @@ public class BlockCrystal extends BlockDirectional
         this.setResistance(20);
         this.setLightLevel(5);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
-        //this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTTABS);
     }
 
     @Override
@@ -84,22 +85,24 @@ public class BlockCrystal extends BlockDirectional
         return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
     }
 
-    /*
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return super.onBlockPlaced(worldIn,pos, getFacingFromEntity(pos,placer),hitX,hitY,hitZ,meta,placer);
-    }
-    */
+        IBlockState iblockstate = worldIn.getBlockState(pos.offset(facing.getOpposite()));
 
-    /*
+        if (iblockstate.getBlock() == this)
+        {
+            EnumFacing enumfacing = (EnumFacing)iblockstate.getValue(FACING);
 
-    public void onBlockPlacedBy(World worldIn,BlockPos pos,IBlockState state,EntityLivingBase placer,ItemStack stack)
-    {
-        worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(pos, placer)), 2);
-        EntityPlayer player = (EntityPlayer) placer;
+            if (enumfacing == facing)
+            {
+                return this.getDefaultState().withProperty(FACING, facing.getOpposite());
+            }
+        }
+
+        return this.getDefaultState().withProperty(FACING, facing);
     }
-     */
+
+
 
     @Override
     public int getMetaFromState(IBlockState state)

@@ -1,4 +1,4 @@
-{
+{"parent": "block/cube_all",
 "__comment": "Designed by Mowmaster with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
 "textures": {
     "1870236960": "dust:items/crystal_wood_logs",

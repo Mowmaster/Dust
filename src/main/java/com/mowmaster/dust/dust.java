@@ -4,6 +4,7 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.recipes.CraftingRecipes;
+import com.mowmaster.dust.tiles.TileRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -31,6 +32,7 @@ public class dust {
         BlockRegistry.register();
         ItemRegistry.init();
         ItemRegistry.register();
+        TileRegistry.registerTile();
         proxy.PreInit();
         proxy.registerTile();
     }
