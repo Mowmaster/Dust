@@ -10,6 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+
 import java.util.Random;
 
 import static com.mowmaster.dust.blocks.BlockLeaf.LEAVES;
@@ -48,7 +49,7 @@ public class TreeRed extends WorldGenAbstractTree
                 for (int i = pos.getX() - leafMaxRadius; i <= pos.getX() + leafMaxRadius && isValidPlantingSpot; i++){
                     for (int k = pos.getZ() - leafMaxRadius; k <= pos.getZ() + leafMaxRadius && isValidPlantingSpot; k++){
                         if (j >= 0 && j < 256){
-                            if (!this.isReplaceable(world, new BlockPos (i, j, k))){
+                            if (!this.isReplaceable(world, new BlockPos(i, j, k))){
                                 isValidPlantingSpot = false;
                             }
                         }
@@ -65,7 +66,7 @@ public class TreeRed extends WorldGenAbstractTree
             else{
                 Block block2 = world.getBlockState(pos.down()).getBlock();
 
-                boolean isSoil = block2.canSustainPlant(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP, (BlockSapling)Blocks.SAPLING);
+                boolean isSoil = block2.canSustainPlant(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP, (BlockSapling) Blocks.SAPLING);
                 if (isSoil && pos.getY() < 256 - height - 1){
                     block2.onPlantGrow(world.getBlockState(pos.down()),world, pos.down(), pos);
                     leafMaxRadius = 3;
