@@ -1,15 +1,8 @@
 package com.mowmaster.dust.world;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.sapling.SaplingBase;
-import com.mowmaster.dust.blocks.sapling.TreeGenerator;
-import com.mowmaster.dust.enums.CrystalBlocks;
-import com.mowmaster.dust.enums.TreeTypes;
-import com.mowmaster.dust.world.TreeGeneration.*;
-import net.minecraft.block.state.IBlockState;
+import com.mowmaster.dust.world.treegeneration.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeForestMutated;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -18,9 +11,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockLeaf.LEAVES;
 import static com.mowmaster.dust.blocks.BlockRegistry.*;
-import static com.mowmaster.dust.enums.TreeTypes.*;
 
 public class OreGeneration implements IWorldGenerator
 {

@@ -17,8 +17,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,8 +33,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDesert;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -51,6 +59,8 @@ import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 
 public class BlockCrystal extends BlockDirectional
 {
+
+
     //Covers all crystals
     //Using BlockEndRod as an "example"
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
@@ -65,8 +75,8 @@ public class BlockCrystal extends BlockDirectional
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(20);
-        this.setResistance(20);
+        this.setHardness(10);
+        this.setResistance(5);
         this.setLightLevel(5);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setCreativeTab(DUSTTABS);
@@ -177,15 +187,72 @@ public class BlockCrystal extends BlockDirectional
         }
     }
 
-/*
-            String[] colors= new String[] {"dyeWhite","dyeOrange","dyeMagenta","dyeLightBlue","dyeYellow","dyeLime","dyePink","dyeGray","dyeLightGray","dyeCyan","dyePurple","dyeBlue","dyeBrown","dyeGreen","dyeRed","dyeBlack"};
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        if (!worldIn.isRemote && entityIn instanceof EntityArrow)
+        {
+            EntityArrow entityarrow = (EntityArrow)entityIn;
 
-            for(int x = 0; x < color.length; x++) {
-                GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(QBeds, 1, x), color[x], new ItemStack(QBeds, 1, OreDictionary.WILDCARD_VALUE)));
-                GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(QBeds, 1, x), color[x], new ItemStack(Items.BED)));
+            if (entityarrow.isBurning() )
+            {
+                if(this.equals(BlockRegistry.redCrystalFive) || this.equals(BlockRegistry.blueCrystalFive) || this.equals(BlockRegistry.yellowCrystalFive) || this.equals(BlockRegistry.purpleCrystalFive) || this.equals(BlockRegistry.orangeCrystalFive) || this.equals(BlockRegistry.greenCrystalFive) || this.equals(BlockRegistry.whiteCrystalFive) || this.equals(BlockRegistry.blackCrystalFive))
+                {
+                    worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,7.0F, true);
+                }
+
+                if(this.equals(BlockRegistry.redCrystalFour) || this.equals(BlockRegistry.blueCrystalFour) || this.equals(BlockRegistry.yellowCrystalFour) || this.equals(BlockRegistry.purpleCrystalFour) || this.equals(BlockRegistry.orangeCrystalFour) || this.equals(BlockRegistry.greenCrystalFour) || this.equals(BlockRegistry.whiteCrystalFour) || this.equals(BlockRegistry.blackCrystalFour))
+                {
+                    worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,6.0F, true);
+                }
+
+                if(this.equals(BlockRegistry.redCrystalThree) || this.equals(BlockRegistry.blueCrystalThree) || this.equals(BlockRegistry.yellowCrystalThree) || this.equals(BlockRegistry.purpleCrystalThree) || this.equals(BlockRegistry.orangeCrystalThree) || this.equals(BlockRegistry.greenCrystalThree) || this.equals(BlockRegistry.whiteCrystalThree) || this.equals(BlockRegistry.blackCrystalThree))
+                {
+                    worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,5.0F, true);
+                }
+
+                if(this.equals(BlockRegistry.redCrystalTwo) || this.equals(BlockRegistry.blueCrystalTwo) || this.equals(BlockRegistry.yellowCrystalTwo) || this.equals(BlockRegistry.purpleCrystalTwo) || this.equals(BlockRegistry.orangeCrystalTwo) || this.equals(BlockRegistry.greenCrystalTwo) || this.equals(BlockRegistry.whiteCrystalTwo) || this.equals(BlockRegistry.blackCrystalTwo))
+                {
+                    worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,4.0F, true);
+                }
+
+                if(this.equals(BlockRegistry.redCrystalOne) || this.equals(BlockRegistry.blueCrystalOne) || this.equals(BlockRegistry.yellowCrystalOne) || this.equals(BlockRegistry.purpleCrystalOne) || this.equals(BlockRegistry.orangeCrystalOne) || this.equals(BlockRegistry.greenCrystalOne) || this.equals(BlockRegistry.whiteCrystalOne) || this.equals(BlockRegistry.blackCrystalOne))
+                {
+                    worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,3.0F, true);
+                }
             }
- */
+        }
+    }
 
+    @Override
+    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+        if (!worldIn.isRemote)
+        {
+            if(this.equals(BlockRegistry.redCrystalFive) || this.equals(BlockRegistry.blueCrystalFive) || this.equals(BlockRegistry.yellowCrystalFive) || this.equals(BlockRegistry.purpleCrystalFive) || this.equals(BlockRegistry.orangeCrystalFive) || this.equals(BlockRegistry.greenCrystalFive) || this.equals(BlockRegistry.whiteCrystalFive) || this.equals(BlockRegistry.blackCrystalFive))
+            {
+                worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,7.0F, true);
+            }
+
+            if(this.equals(BlockRegistry.redCrystalFour) || this.equals(BlockRegistry.blueCrystalFour) || this.equals(BlockRegistry.yellowCrystalFour) || this.equals(BlockRegistry.purpleCrystalFour) || this.equals(BlockRegistry.orangeCrystalFour) || this.equals(BlockRegistry.greenCrystalFour) || this.equals(BlockRegistry.whiteCrystalFour) || this.equals(BlockRegistry.blackCrystalFour))
+            {
+                worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,6.0F, true);
+            }
+
+            if(this.equals(BlockRegistry.redCrystalThree) || this.equals(BlockRegistry.blueCrystalThree) || this.equals(BlockRegistry.yellowCrystalThree) || this.equals(BlockRegistry.purpleCrystalThree) || this.equals(BlockRegistry.orangeCrystalThree) || this.equals(BlockRegistry.greenCrystalThree) || this.equals(BlockRegistry.whiteCrystalThree) || this.equals(BlockRegistry.blackCrystalThree))
+            {
+                worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,5.0F, true);
+            }
+
+            if(this.equals(BlockRegistry.redCrystalTwo) || this.equals(BlockRegistry.blueCrystalTwo) || this.equals(BlockRegistry.yellowCrystalTwo) || this.equals(BlockRegistry.purpleCrystalTwo) || this.equals(BlockRegistry.orangeCrystalTwo) || this.equals(BlockRegistry.greenCrystalTwo) || this.equals(BlockRegistry.whiteCrystalTwo) || this.equals(BlockRegistry.blackCrystalTwo))
+            {
+                worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,4.0F, true);
+            }
+
+            if(this.equals(BlockRegistry.redCrystalOne) || this.equals(BlockRegistry.blueCrystalOne) || this.equals(BlockRegistry.yellowCrystalOne) || this.equals(BlockRegistry.purpleCrystalOne) || this.equals(BlockRegistry.orangeCrystalOne) || this.equals(BlockRegistry.greenCrystalOne) || this.equals(BlockRegistry.whiteCrystalOne) || this.equals(BlockRegistry.blackCrystalOne))
+            {
+                worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,3.0F, true);
+            }
+        }
+    }
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {

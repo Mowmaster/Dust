@@ -1,4 +1,4 @@
-package com.mowmaster.dust.world.TreeGeneration;
+package com.mowmaster.dust.world.treegeneration;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.enums.CrystalBlocks;

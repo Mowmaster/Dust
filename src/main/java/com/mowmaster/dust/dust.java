@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
+import com.mowmaster.dust.world.biome.BiomeRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -35,6 +36,7 @@ public class dust {
         TileRegistry.registerTile();
         proxy.PreInit();
         proxy.registerTile();
+        BiomeRegistry.BiomeReg();
     }
 
     @Mod.EventHandler
