@@ -64,7 +64,7 @@ public class BlockLog extends Block
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        IBlockState iblockstate = worldIn.getBlockState(pos.offset(facing.getOpposite()));
+        IBlockState iblockstate = worldIn.getBlockState(pos.offset(facing));
 
         if (iblockstate.getBlock() == this)
         {
@@ -72,7 +72,7 @@ public class BlockLog extends Block
 
             if (enumfacing == facing)
             {
-                return this.getDefaultState().withProperty(FACING, facing.getOpposite());
+                return this.getDefaultState().withProperty(FACING, facing);
             }
         }
 
