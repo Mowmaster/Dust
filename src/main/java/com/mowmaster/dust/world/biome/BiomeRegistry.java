@@ -5,6 +5,7 @@ import net.minecraft.world.biome.BiomeDesert;
 import net.minecraft.world.biome.BiomeSavanna;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Created by KingMowmaster on 5/20/2017.
@@ -29,5 +30,6 @@ public class BiomeRegistry
     {
         BiomeDictionary.hasType(crystal_hot,BiomeDictionary.Type.HOT);
         BiomeManager.addSpawnBiome(crystal_hot);
+
     }
 }

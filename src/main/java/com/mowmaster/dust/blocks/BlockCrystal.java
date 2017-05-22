@@ -38,6 +38,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDesert;
+import net.minecraft.world.biome.BiomeHills;
+import net.minecraft.world.biome.BiomePlains;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -60,7 +62,6 @@ import static net.minecraftforge.client.ForgeHooksClient.setRenderLayer;
 public class BlockCrystal extends BlockDirectional
 {
 
-
     //Covers all crystals
     //Using BlockEndRod as an "example"
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
@@ -77,11 +78,12 @@ public class BlockCrystal extends BlockDirectional
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setHardness(10);
         this.setResistance(5);
-        this.setLightLevel(5);
+        this.setLightLevel(2.0F);
+        this.setSoundType(SoundType.GLASS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setCreativeTab(DUSTTABS);
-    }
 
+    }
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
@@ -470,4 +472,131 @@ public class BlockCrystal extends BlockDirectional
         }
     }
 
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+        super.randomTick(worldIn, pos, state, random);
+        final int CHANCE1_2 = 100;
+        final int CHANCE2_3 = 50;
+        final int CHANCE3_4 = 25;
+        final int CHANCE4_5 = 13;
+        final int CHANCE5_ORE = 100;
+        final int MULTIPLIER = 3;
+
+            if(random.nextInt(1000)<999)
+            {
+                if(this.equals(BlockRegistry.redCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.redOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.blueOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.yellowOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.purpleOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.orangeOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.greenOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.whiteOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.blackOre.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE4_5)
+            {
+                if(this.equals(BlockRegistry.redCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalFive.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE3_4)
+            {
+                if(this.equals(BlockRegistry.redCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalFour.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE2_3)
+            {
+                if(this.equals(BlockRegistry.redCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalThree.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE1_2)
+            {
+                if(this.equals(BlockRegistry.redCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalTwo.getDefaultState());}
+            }
+        /*
+        if(worldIn.getBiome(pos) == BiomeHills.getBiome(3))//checks for extream hills(will change to crystal biomes later)
+        {
+            if(random.nextInt(1000)<CHANCE5_ORE*MULTIPLIER)
+            {
+                if(this.equals(BlockRegistry.redCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.redOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.blueOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.yellowOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.purpleOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.orangeOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.greenOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.whiteOre.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.blackOre.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE4_5*MULTIPLIER)
+            {
+                if(this.equals(BlockRegistry.redCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFive.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalFive.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE3_4*MULTIPLIER)
+            {
+                if(this.equals(BlockRegistry.redCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFour.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalFour.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE2_3*MULTIPLIER)
+            {
+                if(this.equals(BlockRegistry.redCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalThree.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalThree.getDefaultState());}
+            }
+            if(random.nextInt(1000)<CHANCE1_2*MULTIPLIER)
+            {
+                if(this.equals(BlockRegistry.redCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.blueCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.yellowCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.purpleCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.orangeCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.greenCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.whiteCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalTwo.getDefaultState());}
+                else if(this.equals(BlockRegistry.blackCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalTwo.getDefaultState());}
+            }
+
+        }
+        */
+    }
 }
