@@ -3,9 +3,11 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -37,6 +39,8 @@ public class dust {
         proxy.PreInit();
         proxy.registerTile();
         BiomeRegistry.BiomeReg();
+
+        AchievementHandler.registerAchievement();
     }
 
     @Mod.EventHandler

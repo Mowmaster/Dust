@@ -1,6 +1,6 @@
 package com.mowmaster.dust.blocks.sapling;
 
-import com.mowmaster.dust.configtabs.DustyTab;
+import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.enums.TreeTypes;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;

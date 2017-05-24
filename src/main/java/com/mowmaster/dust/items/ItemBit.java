@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
 public class ItemBit extends Item

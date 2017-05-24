@@ -1,9 +1,7 @@
-package com.mowmaster.dust.configtabs;
+package com.mowmaster.dust.misc;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**

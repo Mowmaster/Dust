@@ -1,12 +1,16 @@
 package com.mowmaster.dust.recipes;
 
 import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.misc.AchievementHandler;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+import static com.mowmaster.dust.blocks.BlockRegistry.redOre;
 import static com.mowmaster.dust.items.ItemRegistry.bit;
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
 import static com.mowmaster.dust.items.ItemRegistry.dust;
@@ -26,10 +30,15 @@ public class CraftingRecipes
                     new ItemStack(bit,1,i),new ItemStack(bit,1,i),new ItemStack(bit,1,i),
                     new ItemStack(bit,1,i),new ItemStack(bit,1,i),new ItemStack(bit,1,i));
 
+
+
         }
+
     }
 
 
 
 
 }
+
+

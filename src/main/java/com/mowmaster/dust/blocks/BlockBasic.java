@@ -1,13 +1,11 @@
 package com.mowmaster.dust.blocks;
 
-import com.mowmaster.dust.configtabs.DustyTab;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +14,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 /**
  * Created by KingMowmaster on 3/15/2017.

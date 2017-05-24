@@ -6,10 +6,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import java.util.List;
 
-import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
 public class ItemDust extends Item
@@ -45,4 +46,5 @@ public class ItemDust extends Item
         }
         return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.RED.getName();
     }
+
 }

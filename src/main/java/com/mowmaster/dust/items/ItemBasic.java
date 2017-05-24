@@ -4,7 +4,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 /**
  * Created by KingMowmaster on 2/25/2017.

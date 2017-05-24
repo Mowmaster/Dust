@@ -1,6 +1,5 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.configtabs.DustyTab;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-import static com.mowmaster.dust.configtabs.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 /**
  * Created by KingMowmaster on 2/25/2017.

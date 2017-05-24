@@ -106,4 +106,7 @@ tile.leaves_green.name=Green Crystal Leaves
 tile.leaves_white.name=White Crystal Leaves
 tile.leaves_black.name=Black Crystal Leaves
 
+achievement.minecrystal=Gotta Start Somewhere
+achievement.minecrystal.desc=Obtain a Crystal from breaking a Crystal Ore
+
 
