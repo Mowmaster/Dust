@@ -32,6 +32,8 @@ item.bit.orange.name=Orange Bit
 item.bit.white.name=White Bit
 item.bit.black.name=Black Bit
 
+item.scroll.name=Ancient Scroll
+
 tile.redore.name=Red Crystal Ore (Ore)
 tile.blockredcrystalfive.name=Red Crystal (5)
 tile.blockredcrystalfour.name=Red Crystal (4)
@@ -108,5 +110,12 @@ tile.leaves_black.name=Black Crystal Leaves
 
 achievement.minecrystal=Gotta Start Somewhere
 achievement.minecrystal.desc=Obtain a Crystal from breaking a Crystal Ore
+achievement.scrollfirst=Habba Jarba Hoo!
+achievement.scrollfirst.desc=Your First Scroll of Ancient Knowledge
+achievement.scrollvowels=Kclaa Ther Eaanh Barj Lfoop!!!
+achievement.scrollvowels.desc=Collect all the scrolls with vowels
+achievement.scrollall=Knowledge of the Ancients
+achievement.scrollall.desc=Collect 26 scrolls of Ancient Writing
+
 
 

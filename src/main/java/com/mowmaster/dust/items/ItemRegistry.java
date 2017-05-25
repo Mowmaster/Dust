@@ -17,6 +17,7 @@ public class ItemRegistry
     public static Item dust;
     public static Item crystal;
     public static Item bit;
+    public static Item scroll;
 
 
 
@@ -26,6 +27,7 @@ public class ItemRegistry
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
+        scroll = new ItemScroll("scroll","scroll");
 
     }
 
@@ -34,6 +36,7 @@ public class ItemRegistry
         registerItem(dust);
         registerItem(crystal);
         registerItem(bit);
+        registerItem(scroll);
     }
 
     public static void registerRenders()
@@ -52,6 +55,8 @@ public class ItemRegistry
         {
             registerRender(bit,i,"bit_" + CrystalItems.BitTypes.values()[i].getName());
         }
+
+        registerRender(scroll);
     }
 
     public static void registerItem(Item item)
