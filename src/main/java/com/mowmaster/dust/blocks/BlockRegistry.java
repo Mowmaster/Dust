@@ -1,12 +1,16 @@
 package com.mowmaster.dust.blocks;
 
+import com.mowmaster.dust.blocks.ancientblocks.BlockAncientSlabs;
 import com.mowmaster.dust.blocks.item.ItemBlockOre;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -82,6 +86,10 @@ public class BlockRegistry
     public static Block blackCrystalThree;
     public static Block blackCrystalTwo;
     public static Block blackCrystalOne;
+
+
+    public static Block ancientstone1;
+    public static Block ancientstoneslab1;
 
     public static Block crystalCluster;
     public static Block machineBase;
@@ -159,6 +167,8 @@ public class BlockRegistry
 
 
 
+        ancientstone1 = new BlockBasic("ancientstone1","ancientstone1");
+        ancientstoneslab1 = new BlockAncientSlabs("ancientstoneslab1","ancientstoneslab1");
 
         crystalCluster = new BlockCrystalBase("crystalcluster","crystalcluster");
         machineBase = new BlockMachineBase("machinebase","machinebase");
@@ -236,6 +246,10 @@ public class BlockRegistry
 
         registerBlock(leaf, new ItemBlockOre(leaf));
 
+
+
+        registerBlock(ancientstone1);
+        registerBlock(ancientstoneslab1);
 
         registerBlock(crystalCluster);
         registerBlock(machineBase);
@@ -315,6 +329,12 @@ public class BlockRegistry
         {
             registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
         }
+
+
+
+
+        registerRender(ancientstone1);
+        registerRender(ancientstoneslab1);
 
         registerRender(crystalCluster);
         registerRender(machineBase);

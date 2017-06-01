@@ -5,20 +5,18 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
+import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by KingMowmaster on 5/24/2017.
- */
 public class AchievementHandler
 {
     private static List<Achievement> achievements = new ArrayList<Achievement>();
-
 
     public static Achievement achievementCrystal = createAchievement("minecrystal",0,0, ItemRegistry.crystal);
 
@@ -88,4 +86,7 @@ public class AchievementHandler
         Achievement achievement = new Achievement("achievement." + name,name,posX,posY,iconItemStack,(Achievement)null);
         achievements.add(achievement);
         return achievement;    }
+
+
+
 }
