@@ -83,7 +83,8 @@ public class BlockRegistry
     public static Block blackCrystalTwo;
     public static Block blackCrystalOne;
 
-
+    public static Block crystalCluster;
+    public static Block machineBase;
 
 
     public static void init()
@@ -159,7 +160,8 @@ public class BlockRegistry
 
 
 
-
+        crystalCluster = new BlockCrystalBase("crystalcluster","crystalcluster");
+        machineBase = new BlockMachineBase("machinebase","machinebase");
     }
 
     public static void register()
@@ -235,6 +237,8 @@ public class BlockRegistry
         registerBlock(leaf, new ItemBlockOre(leaf));
 
 
+        registerBlock(crystalCluster);
+        registerBlock(machineBase);
     }
 
     public static void registerRenders()
@@ -311,6 +315,9 @@ public class BlockRegistry
         {
             registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
         }
+
+        registerRender(crystalCluster);
+        registerRender(machineBase);
 
     }
 

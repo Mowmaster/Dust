@@ -9,11 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -39,9 +42,20 @@ public class BlockCrystalBase extends Block implements ITileEntityProvider
         return Item.getItemFromBlock(this);
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileCrystalCluster();
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
     }
 
     @Override
@@ -52,5 +66,10 @@ public class BlockCrystalBase extends Block implements ITileEntityProvider
                 TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
             }
             return true;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileCrystalCluster();
     }
 }
