@@ -35,6 +35,7 @@ public class BlockMachineBase extends Block
         this.setResistance(20);
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTTABS);
+        this.useNeighborBrightness = true;
     }
 
     @Override

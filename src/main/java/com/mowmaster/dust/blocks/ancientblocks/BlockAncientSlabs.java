@@ -42,17 +42,17 @@ public class BlockAncientSlabs extends BlockDirectional
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setSoundType(SoundType.STONE);
         this.setCreativeTab(DUSTTABS);
+        this.useNeighborBrightness = true;
     }
 
     //Covers all crystals
     //Using BlockEndRod as an "example"
     private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
-
     private static AxisAlignedBB CNORTH = new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
-    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
-    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
-    private static AxisAlignedBB CWEST = new AxisAlignedBB(0.0D, 0.0D, 0.5D, 1.0D, 1.0D, 1.0D);
+    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.5D);
+    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D);
+    private static AxisAlignedBB CWEST = new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune)
@@ -132,13 +132,13 @@ public class BlockAncientSlabs extends BlockDirectional
 
         }
     }
-    public boolean isOpaqueCube(IBlockState state)
-    {
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state)
-    {
+    @Override
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 

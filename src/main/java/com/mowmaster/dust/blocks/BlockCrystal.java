@@ -48,6 +48,7 @@ public class BlockCrystal extends BlockDirectional
         this.setResistance(5);
         this.setLightLevel(2.0F);
         this.setSoundType(SoundType.GLASS);
+        this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setCreativeTab(DUSTTABS);
 
@@ -370,16 +371,17 @@ public class BlockCrystal extends BlockDirectional
     }
 
 
-
-
-
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
         super.randomTick(worldIn, pos, state, random);
-        final int CHANCE = 900;
+        final int CHANCE = 999;
         final int MULTIPLIER = 3;
 
-        if (random.nextInt(1000) < CHANCE) {
+        int rand = random.nextInt(1000);
+
+        //System.out.println(rand);
+
+        if (rand < CHANCE) {
             if (this.equals(BlockRegistry.redCrystalFive)) {
                 worldIn.setBlockState(pos, BlockRegistry.redOre.getDefaultState());
             } else if (this.equals(BlockRegistry.blueCrystalFive)) {
