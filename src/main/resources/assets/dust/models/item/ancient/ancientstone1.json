@@ -1,5 +1,5 @@
 {
-  "parent" : "dust:block/ancientobsidian1",
+  "parent" : "dust:block/ancient/ancientstone1",
   "display" : {
     "thirdperson" : {
       "rotation" : [10, -45, 170],

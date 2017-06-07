@@ -104,6 +104,7 @@ public class BlockRegistry
     public static Block ancientobsidianfence1;
 
     public static Block ancientstone4;
+    public static Block ancientstonebricks2;
 
     public static Block crystalCluster;
     public static Block machineBase;
@@ -181,19 +182,20 @@ public class BlockRegistry
 
 
 
-        ancientstone1 = new BlockBasic("ancientstone1","ancientstone1");
-        ancientstoneslab1 = new BlockAncientSlabs("ancientstoneslab1","ancientstoneslab1");
-        ancientstair1 = new BlockAncientStairs("ancientstairs1", "ancientstairs1", ancientstone1);
-        ancientwall1 = new BlockAncientWalls("ancientwalls1","ancientwalls1", ancientstone1);
-        ancientfence1 = new BlockAncientFences("ancientfences1","ancientfences1");
+        ancientstone1 = new BlockBasic("ancientstone1","ancient/ancientstone1");
+        ancientstoneslab1 = new BlockAncientSlabs("ancientstoneslab1","ancient/ancientstoneslab1");
+        ancientstair1 = new BlockAncientStairs("ancientstairs1", "ancient/ancientstairs1", ancientstone1);
+        ancientwall1 = new BlockAncientWalls("ancientwalls1","ancient/ancientwalls1", ancientstone1);
+        ancientfence1 = new BlockAncientFences("ancientfences1","ancient/ancientfences1");
 
-        ancientobsidian1 = new BlockBasic("ancientobsidian1","ancientobsidian1");
-        ancientobsidianslab1 = new BlockAncientSlabs("ancientobsidianslab1","ancientobsidianslab1");
-        ancientobsidianstair1 = new BlockAncientStairs("ancientobsidianstairs1", "ancientobsidianstairs1", ancientobsidian1);
-        ancientobsidianwall1 = new BlockAncientWalls("ancientobsidianwalls1","ancientobsidianwalls1", ancientobsidian1);
-        ancientobsidianfence1 = new BlockAncientFences("ancientobsidianences1","ancientobsidianfences1");
+        ancientobsidian1 = new BlockBasic("ancientobsidian1","ancient/ancientobsidian1");
+        ancientobsidianslab1 = new BlockAncientSlabs("ancientobsidianslab1","ancient/ancientobsidianslab1");
+        ancientobsidianstair1 = new BlockAncientStairs("ancientobsidianstairs1", "ancient/ancientobsidianstairs1", ancientobsidian1);
+        ancientobsidianwall1 = new BlockAncientWalls("ancientobsidianwalls1","ancient/ancientobsidianwalls1", ancientobsidian1);
+        ancientobsidianfence1 = new BlockAncientFences("ancientobsidianfences1","ancient/ancientobsidianfences1");
 
-        ancientstone4 = new BlockBasic("ancientstone4","ancientstone4");
+        ancientstone4 = new BlockBasic("ancientstone4","ancient/ancientstone4");
+        ancientstonebricks2 = new BlockBasic("ancientstonebricks2","ancient/ancientstonebricks2");
 
         crystalCluster = new BlockCrystalBase("crystalcluster","crystalcluster");
         machineBase = new BlockMachineBase("machinebase","machinebase");
@@ -286,6 +288,7 @@ public class BlockRegistry
         registerBlock(ancientobsidianfence1);
 
         registerBlock(ancientstone4);
+        registerBlock(ancientstonebricks2);
 
         registerBlock(crystalCluster);
         registerBlock(machineBase);
@@ -369,19 +372,20 @@ public class BlockRegistry
 
 
 
-        registerRender(ancientstone1);
-        registerRender(ancientstoneslab1);
-        registerRender(ancientstair1);
-        registerRender(ancientwall1);
-        registerRender(ancientfence1);
+        registerRenderAncient(ancientstone1);
+        registerRenderAncient(ancientstoneslab1);
+        registerRenderAncient(ancientstair1);
+        registerRenderAncient(ancientwall1);
+        registerRenderAncient(ancientfence1);
 
-        registerRender(ancientobsidian1);
-        registerRender(ancientobsidianslab1);
-        registerRender(ancientobsidianstair1);
-        registerRender(ancientobsidianwall1);
-        registerRender(ancientobsidianfence1);
+        registerRenderAncient(ancientobsidian1);
+        registerRenderAncient(ancientobsidianslab1);
+        registerRenderAncient(ancientobsidianstair1);
+        registerRenderAncient(ancientobsidianwall1);
+        registerRenderAncient(ancientobsidianfence1);
 
-        registerRender(ancientstone4);
+        registerRenderAncient(ancientstone4);
+        registerRenderAncient(ancientstonebricks2);
 
         registerRender(crystalCluster);
         registerRender(machineBase);
@@ -418,6 +422,12 @@ public class BlockRegistry
     {
         //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID,"logs/" + block.getUnlocalizedName().substring(5)), "inventory"));
+    }
+    //Special Package for Ancient Item Renders
+    public static void registerRenderAncient(Block block)
+    {
+        //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID,"ancient/" + block.getUnlocalizedName().substring(5)), "inventory"));
     }
 
     public static void registerRender(Block block, int meta, String fileName)
