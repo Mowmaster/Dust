@@ -31,11 +31,6 @@ public class BlockAncientStairs extends BlockStairs
         this.useNeighborBrightness = true;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void initModel(){
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(),"inventory"));
-    }
-
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;

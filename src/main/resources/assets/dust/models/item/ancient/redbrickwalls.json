@@ -1,6 +1,6 @@
 {
   "parent": "block/wall_inventory",
   "textures": {
-    "wall": "dust:blocks/ancient/ancientobsidian1"
+    "wall": "dust:blocks/ancient/redbricks"
   }
 }

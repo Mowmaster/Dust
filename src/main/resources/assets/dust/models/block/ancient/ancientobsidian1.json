@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/ancientobsidian1"
+    "all": "dust:blocks/ancient/ancientobsidian1"
   }
 }

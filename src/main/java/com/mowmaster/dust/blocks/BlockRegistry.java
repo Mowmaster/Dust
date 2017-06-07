@@ -106,6 +106,22 @@ public class BlockRegistry
     public static Block ancientstone4;
     public static Block ancientstonebricks2;
 
+    public static Block redbricks;
+    public static Block redbrickstairs;
+    public static Block redbrickslabs;
+    public static Block redbrickfences;
+    public static Block redbrickwalls;
+
+
+    public static Block bluebricks;
+    public static Block yellowbricks;
+    public static Block purplebricks;
+    public static Block orangebricks;
+    public static Block greenbricks;
+    public static Block whitebricks;
+    public static Block blackbricks;
+
+
     public static Block crystalCluster;
     public static Block machineBase;
 
@@ -197,6 +213,21 @@ public class BlockRegistry
         ancientstone4 = new BlockBasic("ancientstone4","ancient/ancientstone4");
         ancientstonebricks2 = new BlockBasic("ancientstonebricks2","ancient/ancientstonebricks2");
 
+        redbricks = new BlockBasic("redbricks","ancient/redbricks");
+        redbrickstairs = new BlockAncientStairs("redbrickstairs","ancient/redbrickstairs",redbricks);
+        redbrickslabs = new BlockAncientSlabs("redbrickslabs","ancient/redbrickslabs");
+        redbrickfences = new BlockAncientFences("redbrickfences","ancient/redbrickfences");
+        redbrickwalls = new BlockAncientWalls("redbrickwalls","ancient/redbrickwalls",redbricks);
+
+
+        bluebricks = new BlockBasic("bluebricks","ancient/bluebricks");
+        yellowbricks = new BlockBasic("yellowbricks","ancient/yellowbricks");
+        purplebricks = new BlockBasic("purplebricks","ancient/purplebricks");
+        orangebricks = new BlockBasic("orangebricks","ancient/orangebricks");
+        greenbricks = new BlockBasic("greenbricks","ancient/greenbricks");
+        whitebricks = new BlockBasic("whitebricks","ancient/whitebricks");
+        blackbricks = new BlockBasic("blackbricks","ancient/blackbricks");
+
         crystalCluster = new BlockCrystalBase("crystalcluster","crystalcluster");
         machineBase = new BlockMachineBase("machinebase","machinebase");
     }
@@ -282,13 +313,27 @@ public class BlockRegistry
         registerBlock(ancientfence1);
 
         registerBlock(ancientobsidian1);
-        registerBlock(ancientobsidianslab1);
         registerBlock(ancientobsidianstair1);
-        registerBlock(ancientobsidianwall1);
+        registerBlock(ancientobsidianslab1);
         registerBlock(ancientobsidianfence1);
+        registerBlock(ancientobsidianwall1);
 
         registerBlock(ancientstone4);
         registerBlock(ancientstonebricks2);
+
+        registerBlock(redbricks);
+        registerBlock(redbrickstairs);
+        registerBlock(redbrickslabs);
+        registerBlock(redbrickfences);
+        registerBlock(redbrickwalls);
+
+        registerBlock(bluebricks);
+        registerBlock(yellowbricks);
+        registerBlock(purplebricks);
+        registerBlock(orangebricks);
+        registerBlock(greenbricks);
+        registerBlock(whitebricks);
+        registerBlock(blackbricks);
 
         registerBlock(crystalCluster);
         registerBlock(machineBase);
@@ -386,6 +431,20 @@ public class BlockRegistry
 
         registerRenderAncient(ancientstone4);
         registerRenderAncient(ancientstonebricks2);
+
+        registerRenderAncient(redbricks);
+        registerRenderAncient(redbrickstairs);
+        registerRenderAncient(redbrickslabs);
+        registerRenderAncient(redbrickfences);
+        registerRenderAncient(redbrickwalls);
+
+        registerRenderAncient(bluebricks);
+        registerRenderAncient(yellowbricks);
+        registerRenderAncient(purplebricks);
+        registerRenderAncient(orangebricks);
+        registerRenderAncient(greenbricks);
+        registerRenderAncient(whitebricks);
+        registerRenderAncient(blackbricks);
 
         registerRender(crystalCluster);
         registerRender(machineBase);

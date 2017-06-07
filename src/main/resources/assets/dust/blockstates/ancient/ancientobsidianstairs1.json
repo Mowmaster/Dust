@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancientobsidian1",
-      "top": "dust:blocks/ancientobsidian1",
-      "side": "dust:blocks/ancientobsidian1",
-      "particle": "dust:blocks/ancientobsidian1"
+      "bottom": "dust:blocks/ancient/ancientobsidian1",
+      "top": "dust:blocks/ancient/ancientobsidian1",
+      "side": "dust:blocks/ancient/ancientobsidian1",
+      "particle": "dust:blocks/ancient/ancientobsidian1"
     }
   },
 
