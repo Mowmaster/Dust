@@ -374,7 +374,7 @@ public class BlockCrystal extends BlockDirectional
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
         super.randomTick(worldIn, pos, state, random);
-        final int CHANCE = 999;
+        final int CHANCE = 100;
         final int MULTIPLIER = 3;
 
         int rand = random.nextInt(1000);
@@ -382,6 +382,7 @@ public class BlockCrystal extends BlockDirectional
         //System.out.println(rand);
 
         if (rand < CHANCE) {
+            /*
             if (this.equals(BlockRegistry.redCrystalFive)) {
                 worldIn.setBlockState(pos, BlockRegistry.redOre.getDefaultState());
             } else if (this.equals(BlockRegistry.blueCrystalFive)) {
@@ -398,7 +399,7 @@ public class BlockCrystal extends BlockDirectional
                 worldIn.setBlockState(pos, BlockRegistry.whiteOre.getDefaultState());
             } else if (this.equals(BlockRegistry.blackCrystalFive)) {
                 worldIn.setBlockState(pos, BlockRegistry.blackOre.getDefaultState());
-            } else if (this.equals(BlockRegistry.redCrystalFour)) {
+            } else */ if (this.equals(BlockRegistry.redCrystalFour)) {
                 worldIn.setBlockState(pos, BlockRegistry.redCrystalFive.getDefaultState());
             } else if (this.equals(BlockRegistry.blueCrystalFour)) {
                 worldIn.setBlockState(pos, BlockRegistry.blueCrystalFive.getDefaultState());

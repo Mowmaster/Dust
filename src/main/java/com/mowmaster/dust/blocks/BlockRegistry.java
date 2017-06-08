@@ -112,6 +112,12 @@ public class BlockRegistry
     public static Block redbrickfences;
     public static Block redbrickwalls;
 
+    public static Block redbricks2;
+    public static Block redbrickstairs2;
+    public static Block redbrickslabs2;
+    public static Block redbrickfences2;
+    public static Block redbrickwalls2;
+
 
     public static Block bluebricks;
     public static Block yellowbricks;
@@ -128,14 +134,14 @@ public class BlockRegistry
 
     public static void init()
     {
-        redOre = new BlockBasic("redore","redore");
-        blueOre = new BlockBasic("blueore","blueore");
-        yellowOre = new BlockBasic("yellowore","yellowore");
-        purpleOre = new BlockBasic("purpleore","purpleore");
-        orangeOre = new BlockBasic("orangeore","orangeore");
-        greenOre = new BlockBasic("greenore","greenore");
-        whiteOre = new BlockBasic("whiteore","whiteore");
-        blackOre = new BlockBasic("blackore","blackore");
+        redOre = new BlockBasic("redore","red/redore");
+        blueOre = new BlockBasic("blueore","blue/blueore");
+        yellowOre = new BlockBasic("yellowore","yellow/yellowore");
+        purpleOre = new BlockBasic("purpleore","purple/purpleore");
+        orangeOre = new BlockBasic("orangeore","orange/orangeore");
+        greenOre = new BlockBasic("greenore","green/greenore");
+        whiteOre = new BlockBasic("whiteore","white/whiteore");
+        blackOre = new BlockBasic("blackore","black/blackore");
 
         logred = new BlockLog("log_red","red/log_red");
         logblue = new BlockLog("log_blue","blue/log_blue");
@@ -218,6 +224,12 @@ public class BlockRegistry
         redbrickslabs = new BlockAncientSlabs("redbrickslabs","ancient/redbrickslabs");
         redbrickfences = new BlockAncientFences("redbrickfences","ancient/redbrickfences");
         redbrickwalls = new BlockAncientWalls("redbrickwalls","ancient/redbrickwalls",redbricks);
+
+        redbricks2 = new BlockBasic("redbricks2","ancient/redbricks2");
+        redbrickstairs2 = new BlockAncientStairs("redbrickstairs2","ancient/redbrickstairs2",redbricks2);
+        redbrickslabs2 = new BlockAncientSlabs("redbrickslabs2","ancient/redbrickslabs2");
+        redbrickfences2 = new BlockAncientFences("redbrickfences2","ancient/redbrickfences2");
+        redbrickwalls2 = new BlockAncientWalls("redbrickwalls2","ancient/redbrickwalls2",redbricks2);
 
 
         bluebricks = new BlockBasic("bluebricks","ancient/bluebricks");
