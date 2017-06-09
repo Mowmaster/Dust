@@ -5,10 +5,8 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-
-import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
@@ -22,12 +20,14 @@ public class ItemDust extends Item
         this.setHasSubtypes(true);
         this.setCreativeTab(DUSTTABS);
     }
+
+
     //@Override
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> items)
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for(int i = 0; i < CrystalItems.DustTypes.values().length; i++)
         {
-            items.add(new ItemStack(item,1,i));
+            list.add(new ItemStack(item,1,i));
         }
     }
 

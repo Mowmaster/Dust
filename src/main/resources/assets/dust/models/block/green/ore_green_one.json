@@ -1,6 +1,7 @@
-{"parent": "block/cube_all",
+{"parent": "block/cube",
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
+        "particle": "dust:blocks/crystalcore_green",
         "0": "dust:items/crystalcore_green",
         "1": "dust:items/crystal_green",
         "2": "minecraft:blocks/stone"

@@ -5,6 +5,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
@@ -22,11 +23,11 @@ public class ItemBit extends Item
         this.setCreativeTab(DUSTTABS);
     }
     //@Override
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> items)
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)
         {
-            items.add(new ItemStack(item,1,i));
+            list.add(new ItemStack(item,1,i));
         }
     }
 

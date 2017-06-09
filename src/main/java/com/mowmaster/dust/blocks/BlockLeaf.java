@@ -3,39 +3,28 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
-import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
-//import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
-import static net.minecraft.util.BlockRenderLayer.TRANSLUCENT;
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
 
@@ -56,6 +45,7 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setSoundType(SoundType.PLANT);
+        this.setCreativeTab(DUSTTABS);
         //this.setSoundType(SoundType.WOOD);
     }
 
@@ -68,7 +58,8 @@ public class BlockLeaf  extends Block implements IMetaBlockName
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState();
+        int blockmeta = placer.getHeldItem(EnumHand.MAIN_HAND).getMetadata();
+        return getStateFromMeta(blockmeta);
     }
 
 
@@ -87,7 +78,8 @@ public class BlockLeaf  extends Block implements IMetaBlockName
     }
 
 
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < CrystalBlocks.CrystalLeaves.values().length; i++)
         {
@@ -100,13 +92,13 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         return CrystalBlocks.CrystalLeaves.values()[stack.getItemDamage()].getName();
     }
 
-    /*
+
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Item.getItemFromBlock(this),1,getMetaFromState(world.getBlockState(pos)));
     }
-     */
+
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)

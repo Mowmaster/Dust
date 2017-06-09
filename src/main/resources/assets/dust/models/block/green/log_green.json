@@ -1,6 +1,7 @@
-{"parent": "block/cube_all",
+{"parent": "block/cube",
 "__comment": "Designed by Mowmaster with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
 "textures": {
+    "particle": "dust:blocks/crystalcore_green",
     "1870236960": "dust:items/crystal_wood_logs",
     "1974808378": "minecraft:blocks/stone"
 },
