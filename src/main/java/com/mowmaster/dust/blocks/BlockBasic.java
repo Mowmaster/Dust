@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 /**
@@ -29,7 +30,7 @@ public class BlockBasic extends Block
         this.setHardness(20);
         this.setResistance(20);
         this.setLightOpacity(10);
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
     }
 
     @Override

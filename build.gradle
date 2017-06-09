@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = "0.0.0.2"
-group= "com.yourname.Dust" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "com.mowmaster.Dust" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Dust"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.

@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=up": {"model": "dust:ancient/purplebrickslabs"},
+    "facing=down": {"model": "dust:ancient/purplebrickslabs","x": 180},
+    "facing=north": {"model": "dust:ancient/purplebrickslabs","x": 90},
+    "facing=east": {"model": "dust:ancient/purplebrickslabs","x": 90,"y":90},
+    "facing=south": {"model": "dust:ancient/purplebrickslabs","x": 270},
+    "facing=west": {"model": "dust:ancient/purplebrickslabs","x": 90,"y":270}
+  }
+}

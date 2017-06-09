@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks.ancientblocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,6 +17,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 /**
@@ -31,7 +33,8 @@ public class BlockAncientWalls extends BlockWall
         this.setHardness(20);
         this.setResistance(20);
         this.setLightOpacity(10);
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
+        this.setSoundType(SoundType.STONE);
         this.useNeighborBrightness = true;
     }
 

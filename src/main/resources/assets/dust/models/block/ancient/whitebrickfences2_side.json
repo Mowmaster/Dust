@@ -1,0 +1,6 @@
+{
+  "parent": "dust:block/fence_side",
+  "textures": {
+    "slats": "dust:blocks/ancient/whitebricks2"
+  }
+}

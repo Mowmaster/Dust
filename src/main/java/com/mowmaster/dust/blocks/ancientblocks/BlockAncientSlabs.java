@@ -25,6 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
@@ -41,7 +42,7 @@ public class BlockAncientSlabs extends BlockDirectional
         this.setLightOpacity(10);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setSoundType(SoundType.STONE);
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
         this.useNeighborBrightness = true;
     }
 
