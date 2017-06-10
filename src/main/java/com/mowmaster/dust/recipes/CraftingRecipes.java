@@ -46,6 +46,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(redbrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(redbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(redbrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(redbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(redbrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(redbricks), 'Y', new ItemStack(redbrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(redplanks,4),new ItemStack(logred,1));
+            GameRegistry.addShapedRecipe(new ItemStack(redplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(redplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(redplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(redplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(redplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(redplanks), 'Y', new ItemStack(redplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(bluestone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,1)});
             GameRegistry.addShapedRecipe(new ItemStack(bluestonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(bluestone)});
@@ -62,6 +66,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(bluebrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(bluebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(bluebrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(bluebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(bluebrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(bluebricks), 'Y', new ItemStack(bluebrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(blueplanks,4),new ItemStack(logblue,1));
+            GameRegistry.addShapedRecipe(new ItemStack(blueplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(blueplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(blueplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(blueplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(blueplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(blueplanks), 'Y', new ItemStack(blueplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(yellowstone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,2)});
             GameRegistry.addShapedRecipe(new ItemStack(yellowstonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(yellowstone)});
@@ -78,6 +86,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(yellowbrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(yellowbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(yellowbrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(yellowbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(yellowbrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(yellowbricks), 'Y', new ItemStack(yellowbrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(yellowplanks,4),new ItemStack(logyellow,1));
+            GameRegistry.addShapedRecipe(new ItemStack(yellowplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(yellowplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(yellowplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(yellowplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(yellowplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(yellowplanks), 'Y', new ItemStack(yellowplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(purplestone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,3)});
             GameRegistry.addShapedRecipe(new ItemStack(purplestonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(purplestone)});
@@ -94,6 +106,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(purplebrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(purplebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(purplebrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(purplebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(purplebrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(purplebricks), 'Y', new ItemStack(purplebrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(purpleplanks,4),new ItemStack(logpurple,1));
+            GameRegistry.addShapedRecipe(new ItemStack(purpleplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(purpleplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(purpleplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(purpleplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(purpleplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(purpleplanks), 'Y', new ItemStack(purpleplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(greenstone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,4)});
             GameRegistry.addShapedRecipe(new ItemStack(greenstonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(greenstone)});
@@ -110,6 +126,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(greenbrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(greenbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(greenbrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(greenbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(greenbrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(greenbricks), 'Y', new ItemStack(greenbrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(greenplanks,4),new ItemStack(loggreen,1));
+            GameRegistry.addShapedRecipe(new ItemStack(greenplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(greenplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(greenplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(greenplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(greenplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(greenplanks), 'Y', new ItemStack(greenplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(orangestone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,5)});
             GameRegistry.addShapedRecipe(new ItemStack(orangestonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(orangestone)});
@@ -126,6 +146,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(orangebrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(orangebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(orangebrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(orangebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(orangebrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(orangebricks), 'Y', new ItemStack(orangebrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(orangeplanks,4),new ItemStack(logorange,1));
+            GameRegistry.addShapedRecipe(new ItemStack(orangeplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(orangeplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(orangeplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(orangeplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(orangeplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(orangeplanks), 'Y', new ItemStack(orangeplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(whitestone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,6)});
             GameRegistry.addShapedRecipe(new ItemStack(whitestonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(whitestone)});
@@ -142,6 +166,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(whitebrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(whitebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(whitebrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(whitebricks)});
             GameRegistry.addShapedRecipe(new ItemStack(whitebrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(whitebricks), 'Y', new ItemStack(whitebrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(whiteplanks,4),new ItemStack(logwhite,1));
+            GameRegistry.addShapedRecipe(new ItemStack(whiteplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(whiteplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(whiteplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(whiteplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(whiteplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(whiteplanks), 'Y', new ItemStack(whiteplankslabs)});
 
             GameRegistry.addShapedRecipe(new ItemStack(blackstone,8),new Object[]{"XXX","XYX", "XXX", 'X', new ItemStack(Blocks.STONE), 'Y', new ItemStack(dust,1,7)});
             GameRegistry.addShapedRecipe(new ItemStack(blackstonestairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(blackstone)});
@@ -158,6 +186,10 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ItemStack(blackbrickslabs,6),new Object[]{"XXX", 'X', new ItemStack(blackbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(blackbrickwalls,6),new Object[]{"XXX","XXX", 'X', new ItemStack(blackbricks)});
             GameRegistry.addShapedRecipe(new ItemStack(blackbrickfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(blackbricks), 'Y', new ItemStack(blackbrickslabs)});
+            GameRegistry.addShapelessRecipe(new ItemStack(blackplanks,4),new ItemStack(logblack,1));
+            GameRegistry.addShapedRecipe(new ItemStack(blackplankstairs,4),new Object[]{"X  ","XX ", "XXX", 'X', new ItemStack(blackplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(blackplankslabs,6),new Object[]{"XXX", 'X', new ItemStack(blackplanks)});
+            GameRegistry.addShapedRecipe(new ItemStack(blackplankfences,5),new Object[]{"XYX","XYX", 'X', new ItemStack(blackplanks), 'Y', new ItemStack(blackplankslabs)});
 
 
 
