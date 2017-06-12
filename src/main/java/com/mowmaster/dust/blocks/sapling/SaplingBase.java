@@ -2,19 +2,33 @@ package com.mowmaster.dust.blocks.sapling;
 
 import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.enums.TreeTypes;
+import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 
 public abstract class SaplingBase extends BlockBush implements IGrowable
 {
+    private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
+
+
     public SaplingBase(){
         super();
+        this.setTickRandomly(true);
+        this.setSoundType(SoundType.PLANT);
         setCreativeTab(DustyTab.DUSTTABS);
     }
 
@@ -47,5 +61,26 @@ public abstract class SaplingBase extends BlockBush implements IGrowable
     @Override
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return CUP;
+    }
+
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
     }
 }
