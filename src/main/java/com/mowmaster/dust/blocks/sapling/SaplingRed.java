@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class SaplingRed extends SaplingBase
 {
+
+
     public SaplingRed(String unloc, String registryName)
     {
         this.setUnlocalizedName(unloc);

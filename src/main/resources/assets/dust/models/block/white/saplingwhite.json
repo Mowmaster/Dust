@@ -1,0 +1,9 @@
+{
+  "parent": "dust:block/block_sapling",
+  "textures": {
+    "break": "dust:items/crystalcore_white",
+    "logside": "dust:blocks/logside_white",
+    "logtop": "dust:blocks/logtop_white",
+    "leaves": "dust:blocks/leaves/leaves_white"
+  }
+}

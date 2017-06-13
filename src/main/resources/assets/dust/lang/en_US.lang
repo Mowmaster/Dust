@@ -289,6 +289,16 @@ tile.blackplankstairs.name=Black Plank Stairs
 tile.blackplankslabs.name=Black Plank Slabs
 tile.blackplankfences.name=Black Plank Fences
 
+tile.saplingred.name=Red Crystal Sapling
+tile.saplingblue.name=Blue Crystal Sapling
+tile.saplingyellow.name=Yellow Crystal Sapling
+tile.saplingpurple.name=Purple Crystal Sapling
+tile.saplingorange.name=Orange Crystal Sapling
+tile.saplinggreen.name=Green Crystal Sapling
+tile.saplingwhite.name=White Crystal Sapling
+tile.saplingblack.name=Black Crystal Sapling
+
+
 
 
 

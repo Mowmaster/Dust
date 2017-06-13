@@ -5,8 +5,7 @@ import com.mowmaster.dust.blocks.ancientblocks.BlockAncientSlabs;
 import com.mowmaster.dust.blocks.ancientblocks.BlockAncientStairs;
 import com.mowmaster.dust.blocks.ancientblocks.BlockAncientWalls;
 import com.mowmaster.dust.blocks.item.ItemBlockOre;
-import com.mowmaster.dust.blocks.sapling.SaplingBase;
-import com.mowmaster.dust.blocks.sapling.SaplingRed;
+import com.mowmaster.dust.blocks.sapling.*;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.enums.TreeTypes;
 import com.mowmaster.dust.references.Reference;
@@ -265,7 +264,14 @@ public class BlockRegistry
     public static Block blackplankfences;
 
     public static Block saplingred;
-    
+    public static Block saplingblue;
+    public static Block saplingyellow;
+    public static Block saplingpurple;
+    public static Block saplingorange;
+    public static Block saplinggreen;
+    public static Block saplingwhite;
+    public static Block saplingblack;
+
     public static Block crystalCluster;
     public static Block machineBase;
 
@@ -510,7 +516,15 @@ public class BlockRegistry
 
         crystalCluster = new BlockCrystalBase("crystalcluster", "crystalcluster");
         machineBase = new BlockMachineBase("machinebase", "machinebase");
-        saplingred = new SaplingRed("saplingred","saplingred");
+
+        saplingred = new SaplingRed("saplingred","red/saplingred");
+        saplingblue = new SaplingBlue("saplingblue","blue/saplingblue");
+        saplingyellow = new SaplingYellow("saplingyellow","yellow/saplingyellow");
+        saplingpurple = new SaplingPurple("saplingpurple","purple/saplingpurple");
+        saplingorange = new SaplingOrange("saplingorange","orange/saplingorange");
+        saplinggreen = new SaplingGreen("saplinggreen","green/saplinggreen");
+        saplingwhite = new SaplingWhite("saplingwhite","white/saplingwhite");
+        saplingblack = new SaplingBlack("saplingblack","black/saplingblack");
     }
 
     public static void register()
@@ -759,6 +773,13 @@ public class BlockRegistry
         registerBlock(machineBase);
 
         registerBlock(saplingred);
+        registerBlock(saplingblue);
+        registerBlock(saplingyellow);
+        registerBlock(saplingpurple);
+        registerBlock(saplingorange);
+        registerBlock(saplinggreen);
+        registerBlock(saplingwhite);
+        registerBlock(saplingblack);
     }
 
     public static void registerRenders()
@@ -1010,6 +1031,13 @@ public class BlockRegistry
         registerRender(machineBase);
 
         registerRender(saplingred);
+        registerRender(saplingblue);
+        registerRender(saplingyellow);
+        registerRender(saplingpurple);
+        registerRender(saplingorange);
+        registerRender(saplinggreen);
+        registerRender(saplingwhite);
+        registerRender(saplingblack);
 
     }
 

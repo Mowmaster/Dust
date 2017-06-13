@@ -1,5 +1,5 @@
 {
-    "parent" : "dust:block/red/saplingred",
+    "parent" : "dust:block/green/saplinggreen",
     "display" : {
         "thirdperson" : {
             "rotation" : [10, -45, 170],
