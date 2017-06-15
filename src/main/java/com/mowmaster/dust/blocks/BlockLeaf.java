@@ -145,7 +145,7 @@ public class BlockLeaf  extends Block implements IMetaBlockName
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         int meta = this.getMetaFromState(state);
         Random rn = new Random();
-        int drop = rn.nextInt(20);
+        int drop = rn.nextInt(10);
         if(!worldIn.isRemote)
         {
             if(drop == 0)
@@ -160,49 +160,49 @@ public class BlockLeaf  extends Block implements IMetaBlockName
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
         Random rn = new Random();
-        int drop = rn.nextInt(20);
+        int drop = rn.nextInt(30);
         Item dropped;
         dropped = null;
         if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
         {
 
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingred);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingred);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblue);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblue);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingyellow);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingyellow);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingpurple);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingpurple);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingorange);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingorange);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplinggreen);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplinggreen);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingwhite);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingwhite);}
         }
         else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
         {
-            if(drop <= 18) {dropped = null;}
-            else if(drop==19) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblack);}
+            if(drop != 0) {dropped = null;}
+            else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblack);}
         }
         return dropped;
     }

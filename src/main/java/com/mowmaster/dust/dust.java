@@ -7,6 +7,7 @@ import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
+import net.minecraft.block.BlockLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

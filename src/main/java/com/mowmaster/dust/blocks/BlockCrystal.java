@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
 
 public class BlockCrystal extends BlockDirectional
@@ -222,142 +223,142 @@ public class BlockCrystal extends BlockDirectional
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         if (!worldIn.isRemote) {
-            if (this.equals(BlockRegistry.redCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
-            } else if (this.equals(BlockRegistry.redCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
-            } else if (this.equals(BlockRegistry.redCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
-            } else if (this.equals(BlockRegistry.redCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
-            } else if (this.equals(BlockRegistry.redCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
-                return;
-            }
+                if (this.equals(BlockRegistry.redCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
+                } else if (this.equals(BlockRegistry.redCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
+                } else if (this.equals(BlockRegistry.redCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
+                } else if (this.equals(BlockRegistry.redCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
+                } else if (this.equals(BlockRegistry.redCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 0)));
+                    return;
+                }
 
-            if (this.equals(BlockRegistry.blueCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
-            } else if (this.equals(BlockRegistry.blueCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
-            } else if (this.equals(BlockRegistry.blueCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
-            } else if (this.equals(BlockRegistry.blueCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
-            } else if (this.equals(BlockRegistry.blueCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
-                return;
-            }
+                if (this.equals(BlockRegistry.blueCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
+                } else if (this.equals(BlockRegistry.blueCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
+                } else if (this.equals(BlockRegistry.blueCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
+                } else if (this.equals(BlockRegistry.blueCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
+                } else if (this.equals(BlockRegistry.blueCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 1)));
+                    return;
+                }
 
-            if (this.equals(BlockRegistry.yellowCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
-            } else if (this.equals(BlockRegistry.yellowCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
-            } else if (this.equals(BlockRegistry.yellowCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
-            } else if (this.equals(BlockRegistry.yellowCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
-            } else if (this.equals(BlockRegistry.yellowCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
-                return;
-            }
+                if (this.equals(BlockRegistry.yellowCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
+                } else if (this.equals(BlockRegistry.yellowCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
+                } else if (this.equals(BlockRegistry.yellowCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
+                } else if (this.equals(BlockRegistry.yellowCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
+                } else if (this.equals(BlockRegistry.yellowCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 2)));
+                    return;
+                }
 
-            if (this.equals(BlockRegistry.purpleCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
-            } else if (this.equals(BlockRegistry.purpleCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
-            } else if (this.equals(BlockRegistry.purpleCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
-            } else if (this.equals(BlockRegistry.purpleCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
-            } else if (this.equals(BlockRegistry.purpleCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
-                return;
-            }
+                if (this.equals(BlockRegistry.purpleCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
+                } else if (this.equals(BlockRegistry.purpleCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
+                } else if (this.equals(BlockRegistry.purpleCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
+                } else if (this.equals(BlockRegistry.purpleCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
+                } else if (this.equals(BlockRegistry.purpleCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 3)));
+                    return;
+                }
 
-            if (this.equals(BlockRegistry.greenCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
-            } else if (this.equals(BlockRegistry.greenCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
-            } else if (this.equals(BlockRegistry.greenCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
-            } else if (this.equals(BlockRegistry.greenCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
-            } else if (this.equals(BlockRegistry.greenCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
-                return;
-            }
+                if (this.equals(BlockRegistry.greenCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
+                } else if (this.equals(BlockRegistry.greenCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
+                } else if (this.equals(BlockRegistry.greenCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
+                } else if (this.equals(BlockRegistry.greenCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
+                } else if (this.equals(BlockRegistry.greenCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.crystal, 1, 4)));
+                    return;
+                }
 
-            if (this.equals(BlockRegistry.orangeCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
-            } else if (this.equals(BlockRegistry.orangeCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
-            } else if (this.equals(BlockRegistry.orangeCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
-            } else if (this.equals(BlockRegistry.orangeCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
-            } else if (this.equals(BlockRegistry.orangeCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
-                return;
-            }
+                if (this.equals(BlockRegistry.orangeCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
+                } else if (this.equals(BlockRegistry.orangeCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
+                } else if (this.equals(BlockRegistry.orangeCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
+                } else if (this.equals(BlockRegistry.orangeCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
+                } else if (this.equals(BlockRegistry.orangeCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1, 5)));
+                    return;
+                }
 
 
-            if (this.equals(BlockRegistry.whiteCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
-            } else if (this.equals(BlockRegistry.whiteCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
-            } else if (this.equals(BlockRegistry.whiteCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
-            } else if (this.equals(BlockRegistry.whiteCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
-            } else if (this.equals(BlockRegistry.whiteCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
-                return;
-            }
+                if (this.equals(BlockRegistry.whiteCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
+                } else if (this.equals(BlockRegistry.whiteCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
+                } else if (this.equals(BlockRegistry.whiteCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
+                } else if (this.equals(BlockRegistry.whiteCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
+                } else if (this.equals(BlockRegistry.whiteCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.6, new ItemStack(ItemRegistry.crystal, 1, 6)));
+                    return;
+                }
 
-            if (this.equals(BlockRegistry.blackCrystalFive)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalFour.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
-            } else if (this.equals(BlockRegistry.blackCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalThree.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
-            } else if (this.equals(BlockRegistry.blackCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalTwo.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
-            } else if (this.equals(BlockRegistry.blackCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalOne.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
-            } else if (this.equals(BlockRegistry.blackCrystalOne)) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
-                return;
-            }
+                if (this.equals(BlockRegistry.blackCrystalFive)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalFour.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
+                } else if (this.equals(BlockRegistry.blackCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalThree.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
+                } else if (this.equals(BlockRegistry.blackCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalTwo.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
+                } else if (this.equals(BlockRegistry.blackCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalOne.getDefaultState());
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
+                } else if (this.equals(BlockRegistry.blackCrystalOne)) {
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.7, pos.getY() + 1.0, pos.getZ() + 0.7, new ItemStack(ItemRegistry.crystal, 1, 7)));
+                    return;
+                }
         }
     }
 
@@ -366,13 +367,11 @@ public class BlockCrystal extends BlockDirectional
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
         super.randomTick(worldIn, pos, state, random);
         final int CHANCE = 100;
-        final int MULTIPLIER = 3;
 
         int rand = random.nextInt(1000);
 
-        //System.out.println(rand);
-
-        if (rand < CHANCE) {
+        if(worldIn.getBiome(pos).equals(crystal_hot) || worldIn.getBiome(pos).equals(crystal_warm) || worldIn.getBiome(pos).equals(crystal_cold) || worldIn.getBiome(pos).equals(crystal_crystal)) {
+            if (rand < CHANCE) {
             /*
             if (this.equals(BlockRegistry.redCrystalFive)) {
                 worldIn.setBlockState(pos, BlockRegistry.redOre.getDefaultState());
@@ -390,133 +389,74 @@ public class BlockCrystal extends BlockDirectional
                 worldIn.setBlockState(pos, BlockRegistry.whiteOre.getDefaultState());
             } else if (this.equals(BlockRegistry.blackCrystalFive)) {
                 worldIn.setBlockState(pos, BlockRegistry.blackOre.getDefaultState());
-            } else */ if (this.equals(BlockRegistry.redCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.blueCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.yellowCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.purpleCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.orangeCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.greenCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.whiteCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.blackCrystalFour)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalFive.getDefaultState());
-            } else if (this.equals(BlockRegistry.redCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.blueCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.yellowCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.purpleCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.orangeCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.greenCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.whiteCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.blackCrystalThree)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalFour.getDefaultState());
-            } else if (this.equals(BlockRegistry.redCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.blueCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.yellowCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.purpleCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.orangeCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.greenCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.whiteCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.blackCrystalTwo)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalThree.getDefaultState());
-            } else if (this.equals(BlockRegistry.redCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.redCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.blueCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.blueCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.yellowCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.yellowCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.purpleCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.purpleCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.orangeCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.orangeCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.greenCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.greenCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.whiteCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.whiteCrystalTwo.getDefaultState());
-            } else if (this.equals(BlockRegistry.blackCrystalOne)) {
-                worldIn.setBlockState(pos, BlockRegistry.blackCrystalTwo.getDefaultState());
+            } else */
+                if (this.equals(BlockRegistry.redCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.blueCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.yellowCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.purpleCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.orangeCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.greenCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.whiteCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.blackCrystalFour)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalFive.getDefaultState());
+                } else if (this.equals(BlockRegistry.redCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.blueCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.yellowCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.purpleCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.orangeCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.greenCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.whiteCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.blackCrystalThree)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalFour.getDefaultState());
+                } else if (this.equals(BlockRegistry.redCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.blueCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.yellowCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.purpleCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.orangeCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.greenCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.whiteCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.blackCrystalTwo)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalThree.getDefaultState());
+                } else if (this.equals(BlockRegistry.redCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.redCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.blueCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blueCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.yellowCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.yellowCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.purpleCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.purpleCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.orangeCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.orangeCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.greenCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.greenCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.whiteCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.whiteCrystalTwo.getDefaultState());
+                } else if (this.equals(BlockRegistry.blackCrystalOne)) {
+                    worldIn.setBlockState(pos, BlockRegistry.blackCrystalTwo.getDefaultState());
+                }
             }
         }
-        /*
-        if(worldIn.getBiome(pos) == BiomeHills.getBiome(3))//checks for extream hills(will change to crystal biomes later)
-        {
-            if(random.nextInt(1000)<CHANCE5_ORE*MULTIPLIER)
-            {
-                if(this.equals(BlockRegistry.redCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.redOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.blueCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.blueOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.yellowCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.yellowOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.purpleCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.purpleOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.orangeCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.orangeOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.greenCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.greenOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.whiteCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.whiteOre.getDefaultState());}
-                else if(this.equals(BlockRegistry.blackCrystalFive)) {worldIn.setBlockState(pos,BlockRegistry.blackOre.getDefaultState());}
-            }
-            if(random.nextInt(1000)<CHANCE4_5*MULTIPLIER)
-            {
-                if(this.equals(BlockRegistry.redCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.blueCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.yellowCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.purpleCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.orangeCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.greenCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.whiteCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFive.getDefaultState());}
-                else if(this.equals(BlockRegistry.blackCrystalFour)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalFive.getDefaultState());}
-            }
-            if(random.nextInt(1000)<CHANCE3_4*MULTIPLIER)
-            {
-                if(this.equals(BlockRegistry.redCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.blueCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.yellowCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.purpleCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.orangeCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.greenCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.whiteCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFour.getDefaultState());}
-                else if(this.equals(BlockRegistry.blackCrystalThree)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalFour.getDefaultState());}
-            }
-            if(random.nextInt(1000)<CHANCE2_3*MULTIPLIER)
-            {
-                if(this.equals(BlockRegistry.redCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.blueCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.yellowCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.purpleCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.orangeCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.greenCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.whiteCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalThree.getDefaultState());}
-                else if(this.equals(BlockRegistry.blackCrystalTwo)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalThree.getDefaultState());}
-            }
-            if(random.nextInt(1000)<CHANCE1_2*MULTIPLIER)
-            {
-                if(this.equals(BlockRegistry.redCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.redCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.blueCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.blueCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.yellowCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.yellowCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.purpleCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.purpleCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.orangeCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.orangeCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.greenCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.greenCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.whiteCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.whiteCrystalTwo.getDefaultState());}
-                else if(this.equals(BlockRegistry.blackCrystalOne)) {worldIn.setBlockState(pos,BlockRegistry.blackCrystalTwo.getDefaultState());}
-            }
-
-        }
-        */
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import java.util.Random;
 
 import static com.mowmaster.dust.blocks.BlockRegistry.*;
+import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
 public class OreGeneration implements IWorldGenerator
 {
@@ -61,36 +62,40 @@ public class OreGeneration implements IWorldGenerator
     }
 
 
-    private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
-        if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
-            throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        if (rand.nextInt(randomnum) == 1) {
-            int heightDiff = maxHeight - minHeight + 1;
-            for (int i = 0; i < chancesToSpawn; i++) {
-                int x = chunk_X * 16 + rand.nextInt(16);
-                int y = minHeight + rand.nextInt(heightDiff);
-                int z = chunk_Z * 16 + rand.nextInt(16);
-                generator.generate(world, rand, new BlockPos(x, y, z));
+    private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
+
+            if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+                throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
+
+            if (rand.nextInt(randomnum) == 1) {
+                int heightDiff = maxHeight - minHeight + 1;
+                for (int i = 0; i < chancesToSpawn; i++) {
+                    int x = chunk_X * 16 + rand.nextInt(16);
+                    int y = minHeight + rand.nextInt(heightDiff);
+                    int z = chunk_Z * 16 + rand.nextInt(16);
+                    generator.generate(world, rand, new BlockPos(x, y, z));
+                }
             }
-        }
+
     }
 
     private void runTreeGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
-        if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
-            throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        if (rand.nextInt(randomnum) == 1) {
-            for (int i = 0; i < chancesToSpawn; i++) {
-                int x = chunk_X * 16 + rand.nextInt(16);
-                int y = world.getHeight();
-                int z = chunk_Z * 16 + rand.nextInt(16);
-                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
+            if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+                throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
+            if (rand.nextInt(randomnum) == 1) {
+                for (int i = 0; i < chancesToSpawn; i++) {
+                    int x = chunk_X * 16 + rand.nextInt(16);
+                    int y = world.getHeight();
+                    int z = chunk_Z * 16 + rand.nextInt(16);
+                    generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
+
+                }
             }
-        }
-    }
 
+    }
 
 /*
     private void generateTree(WorldGenerator trees, World world, Random rand, int chunkX, int chunkZ){
@@ -122,24 +127,24 @@ public class OreGeneration implements IWorldGenerator
         {
 
             case 0: //Overworld
-                this.runGenerator(red_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(blue_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(yellow_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(purple_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(orange_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(green_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(white_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(black_ore,world,random,chunkX,chunkZ,1,0,20);
 
+                    this.runGenerator(red_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(blue_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(yellow_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(purple_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(orange_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(green_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(white_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runGenerator(black_ore,world,random,chunkX,chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreered, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreeblue, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreeyellow, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreepurple, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreeorange, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
+                    this.runTreeGenerator(smalltreeblack, world, random, chunkX, chunkZ,1,0,20);
 
-                this.runTreeGenerator(smalltreered, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreeblue, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreeyellow, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreepurple, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreeorange, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGenerator(smalltreeblack, world, random, chunkX, chunkZ,1,0,20);
 
 
 

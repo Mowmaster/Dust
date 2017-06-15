@@ -8,9 +8,9 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 /**
  * Created by KingMowmaster on 5/20/2017.
  */
-public class CrystalHot extends Biome
+public class Crystal extends Biome
 {
-    public CrystalHot(BiomeProperties properties)
+    public Crystal(BiomeProperties properties)
     {
         super(properties);
         this.topBlock = Blocks.SAND.getDefaultState();
@@ -19,13 +19,13 @@ public class CrystalHot extends Biome
 
         this.theBiomeDecorator.coalGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),8);
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.redOre.getDefaultState(),9);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blueOre.getDefaultState(),1);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.yellowOre.getDefaultState(),6);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.purpleOre.getDefaultState(),1);
+        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blueOre.getDefaultState(),9);
+        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.yellowOre.getDefaultState(),9);
+        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.purpleOre.getDefaultState(),9);
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.orangeOre.getDefaultState(),9);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.greenOre.getDefaultState(),1);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.whiteOre.getDefaultState(),1);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blackOre.getDefaultState(),1);
+        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.greenOre.getDefaultState(),9);
+        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.whiteOre.getDefaultState(),3);
+        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blackOre.getDefaultState(),3);
 
         this.theBiomeDecorator.grassPerChunk = 5;
         this.theBiomeDecorator.treesPerChunk = 1;
