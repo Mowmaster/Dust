@@ -1,6 +1,7 @@
 item.crystal_red.name=Red Crystal
 
-itemGroup.dusttabs=Dust
+itemGroup.dusttabs=Dust Crystals and Items
+itemGroup.dustblockstabs=Dust Blocks
 
 item.crystal.red.name=Red Crystal
 item.crystal.blue.name=Blue Crystal

@@ -7,9 +7,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-/**
- * Created by KingMowmaster on 5/20/2017.
- */
+
 public class BiomeRegistry
 {
     public static void BiomeReg()
@@ -40,10 +38,10 @@ public class BiomeRegistry
     }
     public static void regBiome()
     {
-        BiomeDictionary.hasType(crystal_hot,BiomeDictionary.Type.HOT);
-        BiomeDictionary.hasType(crystal_warm,BiomeDictionary.Type.PLAINS);
-        BiomeDictionary.hasType(crystal_cold,BiomeDictionary.Type.COLD);
-        BiomeDictionary.hasType(crystal_crystal,BiomeDictionary.Type.MAGICAL);
+        BiomeDictionary.addTypes(crystal_hot,BiomeDictionary.Type.MAGICAL,BiomeDictionary.Type.HOT);
+        BiomeDictionary.addTypes(crystal_warm,BiomeDictionary.Type.MAGICAL,BiomeDictionary.Type.PLAINS);
+        BiomeDictionary.addTypes(crystal_cold,BiomeDictionary.Type.MAGICAL,BiomeDictionary.Type.COLD);
+        BiomeDictionary.addTypes(crystal_crystal,BiomeDictionary.Type.MAGICAL,BiomeDictionary.Type.MOUNTAIN);
         BiomeManager.addSpawnBiome(crystal_hot);
         BiomeManager.addSpawnBiome(crystal_warm);
         BiomeManager.addSpawnBiome(crystal_cold);
@@ -52,6 +50,9 @@ public class BiomeRegistry
         BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_warm,50));
         BiomeManager.addBiome(BiomeManager.BiomeType.COOL, new BiomeManager.BiomeEntry(crystal_cold,50));
         BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_crystal,50));
+
+        BiomeManager.addVillageBiome(crystal_crystal,true);
+
 
     }
 }

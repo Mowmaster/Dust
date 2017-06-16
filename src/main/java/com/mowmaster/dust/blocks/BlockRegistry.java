@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -271,6 +272,15 @@ public class BlockRegistry
     public static Block saplinggreen;
     public static Block saplingwhite;
     public static Block saplingblack;
+
+    public static Block redDust;
+    public static Block blueDust;
+    public static Block yellowDust;
+    public static Block purpleDust;
+    public static Block orangeDust;
+    public static Block greenDust;
+    public static Block whiteDust;
+    public static Block blackDust;
 
     public static Block crystalCluster;
     public static Block machineBase;
@@ -525,6 +535,15 @@ public class BlockRegistry
         saplinggreen = new SaplingGreen("saplinggreen","green/saplinggreen");
         saplingwhite = new SaplingWhite("saplingwhite","white/saplingwhite");
         saplingblack = new SaplingBlack("saplingblack","black/saplingblack");
+
+        redDust = new BlockDust("reddust","red/reddust");
+        blueDust = new BlockDust("bluedust","blue/bluedust");
+        yellowDust = new BlockDust("yellowdust","yellow/yellowdust");
+        purpleDust = new BlockDust("purpledust","purple/purpledust");
+        orangeDust = new BlockDust("orangedust","orange/orangedust");
+        greenDust = new BlockDust("greendust","green/greendust");
+        whiteDust = new BlockDust("whitedust","white/whitedust");
+        blackDust = new BlockDust("blackdust","black/blackdust");
     }
 
     public static void register()
@@ -780,6 +799,16 @@ public class BlockRegistry
         registerBlock(saplinggreen);
         registerBlock(saplingwhite);
         registerBlock(saplingblack);
+
+        registerBlock(redDust);
+        registerBlock(blueDust);
+        registerBlock(yellowDust);
+        registerBlock(purpleDust);
+        registerBlock(orangeDust);
+        registerBlock(greenDust);
+        registerBlock(whiteDust);
+        registerBlock(blackDust);
+
     }
 
     public static void registerRenders()
@@ -1038,6 +1067,15 @@ public class BlockRegistry
         registerRender(saplinggreen);
         registerRender(saplingwhite);
         registerRender(saplingblack);
+
+        registerRender(redDust);
+        registerRender(blueDust);
+        registerRender(yellowDust);
+        registerRender(purpleDust);
+        registerRender(orangeDust);
+        registerRender(greenDust);
+        registerRender(whiteDust);
+        registerRender(blackDust);
 
     }
 
