@@ -1,6 +1,7 @@
 package com.mowmaster.dust;
 
 
+import com.mowmaster.dust.blocks.BlockDust;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
