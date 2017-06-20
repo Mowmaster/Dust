@@ -13,8 +13,8 @@ public class Crystal extends Biome
     public Crystal(BiomeProperties properties)
     {
         super(properties);
-        this.topBlock = Blocks.SAND.getDefaultState();
-        this.fillerBlock = Blocks.SAND.getDefaultState();
+        this.topBlock = Blocks.GRASS.getDefaultState();
+        this.fillerBlock = Blocks.DIRT.getDefaultState();
         this.spawnableCreatureList.clear();
 
         this.theBiomeDecorator.coalGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),8);
@@ -29,6 +29,10 @@ public class Crystal extends Biome
 
         this.theBiomeDecorator.grassPerChunk = 5;
         this.theBiomeDecorator.treesPerChunk = 1;
+        this.theBiomeDecorator.bigMushroomsPerChunk = 1;
+        this.theBiomeDecorator.generateLakes = true;
+        this.theBiomeDecorator.reedsPerChunk = 2;
+        this.theBiomeDecorator.extraTreeChance = 0.25F;
     }
 
 

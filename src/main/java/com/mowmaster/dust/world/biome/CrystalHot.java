@@ -19,16 +19,12 @@ public class CrystalHot extends Biome
 
         this.theBiomeDecorator.coalGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),8);
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.redOre.getDefaultState(),9);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blueOre.getDefaultState(),1);
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.yellowOre.getDefaultState(),6);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.purpleOre.getDefaultState(),1);
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.orangeOre.getDefaultState(),9);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.greenOre.getDefaultState(),1);
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.whiteOre.getDefaultState(),1);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blackOre.getDefaultState(),1);
 
-        this.theBiomeDecorator.grassPerChunk = 5;
-        this.theBiomeDecorator.treesPerChunk = 1;
+        this.theBiomeDecorator.cactiPerChunk = 2;
+        this.theBiomeDecorator.deadBushPerChunk = 1;
     }
 
 

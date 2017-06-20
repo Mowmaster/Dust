@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 //import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
 
@@ -39,7 +40,7 @@ public class BlockLog extends Block
         this.setResistance(20);
         this.setLightLevel(5);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
     }
 
     @Override

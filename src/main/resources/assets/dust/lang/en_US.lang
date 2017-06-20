@@ -1,7 +1,7 @@
 item.crystal_red.name=Red Crystal
 
-itemGroup.dusttabs=Dust Crystals and Items
-itemGroup.dustblockstabs=Dust Blocks
+itemGroup.dusttabs=Crystals, Dusts, & Items
+itemGroup.dustblockstabs=Crystal & Dust Blocks
 
 item.crystal.red.name=Red Crystal
 item.crystal.blue.name=Blue Crystal
@@ -299,6 +299,17 @@ tile.saplinggreen.name=Green Crystal Sapling
 tile.saplingwhite.name=White Crystal Sapling
 tile.saplingblack.name=Black Crystal Sapling
 
+tile.reddust.name=Red Dust Cloud
+tile.bluedust.name=Blue Dust Cloud
+tile.yellowdust.name=Yellow Dust Cloud
+tile.purpledust.name=Purple Dust Cloud
+tile.orangedust.name=Orange Dust Cloud
+tile.greendust.name=Green Dust Cloud
+tile.whitedust.name=White Dust Cloud
+tile.blackdust.name=Black Dust Cloud
+
+tile.crystalcluster.name=Crystal Cluster Base [WIP]
+tile.machinebase.name=Machine Base
 
 
 

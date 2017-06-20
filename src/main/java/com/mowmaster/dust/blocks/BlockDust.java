@@ -46,7 +46,7 @@ public class BlockDust extends BlockFalling {
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
 
-        final int CHANCE = 4;
+        final int CHANCE = 1;
         int rand = random.nextInt(100);
         if (rand <= CHANCE) {
             if (this.equals(BlockRegistry.redDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(redDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 0)));}}

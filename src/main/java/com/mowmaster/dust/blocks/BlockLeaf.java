@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 import static com.mowmaster.dust.items.ItemRegistry.dust;
+import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
@@ -52,7 +53,7 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setSoundType(SoundType.PLANT);
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
         //this.setSoundType(SoundType.WOOD);
     }
 
