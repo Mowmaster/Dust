@@ -18,6 +18,7 @@ public class ItemRegistry
     public static Item crystal;
     public static Item bit;
     public static Item scroll;
+    public static Item crushingcomponents;
 
 
 
@@ -28,6 +29,7 @@ public class ItemRegistry
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
         scroll = new ItemScroll("scroll","scroll");
+        crushingcomponents = new ItemBasic("crusheritems","crusheritems");
 
     }
 
@@ -37,6 +39,7 @@ public class ItemRegistry
         registerItem(crystal);
         registerItem(bit);
         registerItem(scroll);
+        registerItem(crushingcomponents);
     }
 
     public static void registerRenders()
@@ -57,6 +60,7 @@ public class ItemRegistry
         }
 
         registerRender(scroll);
+        registerRender(crushingcomponents);
     }
 
     public static void registerItem(Item item)

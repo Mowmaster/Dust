@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockDust;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
+import com.mowmaster.dust.misc.DustConfigurationFile;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
@@ -20,6 +21,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import com.mowmaster.dust.proxies.CommonProxy;
 import com.mowmaster.dust.references.Reference;
 
+import java.io.File;
+
 
 @Mod(modid = Reference.MODID, name = Reference.MODNAME, version = Reference.VERSION)
 public class dust {
@@ -30,9 +33,38 @@ public class dust {
     public static CommonProxy proxy;
 
 
+    public static File dustConfig;
+    public static File structureFiles;
+    public static File getDustConfig(){return dustConfig;}
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        //dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID );
+        dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID + "/" + "configs");
+        dustConfig.mkdirs();
+        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures");
+        structureFiles.mkdirs();
+        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"small");
+        structureFiles.mkdirs();
+        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"medium");
+        structureFiles.mkdirs();
+        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"large");
+        structureFiles.mkdirs();
+        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"stronghold" +"/"+"underbase");
+        structureFiles.mkdirs();
+        DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
+
+        File fileslister = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"small");
+        File[] listOfiles = fileslister.listFiles();
+        System.out.println("JHLHLKJHKLJHKIUJKHVMJHGLKJBKJHGLIHNBKJBGLIHKLJHBLIUH:LHNO:HO:H:OHHU:OHLIUYO:HLIUGUIFTYUFRO*IUTGIUYUITUKYFRUYGYFUTUIYGKYFUOGUKYGIUGUIOYGUIYUIGFUI");
+        System.out.println(listOfiles[0].getName());
+        System.out.println(listOfiles[1].getName());
+        System.out.println(listOfiles[2].getName());
+        //files found in structure folders, will be randomized and called when needing to generate.
+
+
+
         BlockRegistry.init();
         BlockRegistry.register();
         ItemRegistry.init();
