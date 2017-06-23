@@ -59,7 +59,6 @@ public class smallwell extends WorldGenerator
         Random rn = new Random();
         int lootblock = Math.abs(rn.nextInt(BlockLoot.size() - 1));
 
-
         while (!(worldIn.getBlockState(pos).equals(Blocks.GRASS.getDefaultState()) || worldIn.getBlockState(pos).equals(Blocks.SAND.getDefaultState()))&& pos.getY() > -50)
         {
             pos = pos.down();

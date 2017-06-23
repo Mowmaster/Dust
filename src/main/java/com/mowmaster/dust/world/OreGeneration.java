@@ -126,7 +126,7 @@ public class OreGeneration implements IWorldGenerator
         if (rand.nextInt(4) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(9)+ 3;
-                int y = world.getHeight()+1;
+                int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(9)+ 3;
                 generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
