@@ -1,5 +1,6 @@
 package com.mowmaster.dust.world;
 
+import com.mowmaster.dust.world.structures.smallwell;
 import com.mowmaster.dust.world.treegeneration.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,6 +42,8 @@ public class OreGeneration implements IWorldGenerator
     private TreeWhite smalltreewhite;
     private TreeBlack smalltreeblack;
 
+    private smallwell smallWell;
+
 
 
     public OreGeneration()
@@ -63,6 +66,8 @@ public class OreGeneration implements IWorldGenerator
         smalltreegreen = new TreeGreen(true);
         smalltreewhite = new TreeWhite(true);
         smalltreeblack = new TreeBlack(true);
+
+        smallWell = new smallwell();
     }
 
 
@@ -107,10 +112,26 @@ public class OreGeneration implements IWorldGenerator
                 int y = world.getHeight();
                 int z = chunk_Z*16 + rand.nextInt(9)+ 3;
 
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold))
-                {
-                    generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
-                }
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+            }
+        }
+    }
+
+
+    private void runStructureGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
+
+        if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+            throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
+
+        if (rand.nextInt(4) <= 1) {
+            for (int i = 0; i < chancesToSpawn; i++) {
+                int x = chunk_X*16 + rand.nextInt(9)+ 3;
+                int y = world.getHeight()+1;
+                int z = chunk_Z*16 + rand.nextInt(9)+ 3;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
+                //Once this is good the below is biome specific
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+
             }
         }
     }
@@ -191,6 +212,8 @@ public class OreGeneration implements IWorldGenerator
                 this.runTreeGenerator(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreeblack, world, random, chunkX, chunkZ,1,0,20);
+
+                this.runStructureGenerator(smallWell,world,random,chunkX,chunkZ,1,0,20);
 
 
 

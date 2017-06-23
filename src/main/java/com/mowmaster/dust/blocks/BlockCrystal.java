@@ -17,6 +17,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemStack;
@@ -187,14 +188,19 @@ public class BlockCrystal extends BlockDirectional
                 if (!(entityIn instanceof EntitySkeletonHorse)) {
                     if (this.equals(BlockRegistry.redCrystalFive) || this.equals(BlockRegistry.blueCrystalFive) || this.equals(BlockRegistry.yellowCrystalFive) || this.equals(BlockRegistry.purpleCrystalFive) || this.equals(BlockRegistry.orangeCrystalFive) || this.equals(BlockRegistry.greenCrystalFive) || this.equals(BlockRegistry.whiteCrystalFive) || this.equals(BlockRegistry.blackCrystalFive)) {
                         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 7.0F, true);
+                        worldIn.setBlockToAir(pos);
                     } else if (this.equals(BlockRegistry.redCrystalFour) || this.equals(BlockRegistry.blueCrystalFour) || this.equals(BlockRegistry.yellowCrystalFour) || this.equals(BlockRegistry.purpleCrystalFour) || this.equals(BlockRegistry.orangeCrystalFour) || this.equals(BlockRegistry.greenCrystalFour) || this.equals(BlockRegistry.whiteCrystalFour) || this.equals(BlockRegistry.blackCrystalFour)) {
                         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 6.0F, true);
+                        worldIn.setBlockToAir(pos);
                     } else if (this.equals(BlockRegistry.redCrystalThree) || this.equals(BlockRegistry.blueCrystalThree) || this.equals(BlockRegistry.yellowCrystalThree) || this.equals(BlockRegistry.purpleCrystalThree) || this.equals(BlockRegistry.orangeCrystalThree) || this.equals(BlockRegistry.greenCrystalThree) || this.equals(BlockRegistry.whiteCrystalThree) || this.equals(BlockRegistry.blackCrystalThree)) {
                         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 5.0F, true);
+                        worldIn.setBlockToAir(pos);
                     } else if (this.equals(BlockRegistry.redCrystalTwo) || this.equals(BlockRegistry.blueCrystalTwo) || this.equals(BlockRegistry.yellowCrystalTwo) || this.equals(BlockRegistry.purpleCrystalTwo) || this.equals(BlockRegistry.orangeCrystalTwo) || this.equals(BlockRegistry.greenCrystalTwo) || this.equals(BlockRegistry.whiteCrystalTwo) || this.equals(BlockRegistry.blackCrystalTwo)) {
                         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 4.0F, true);
+                        worldIn.setBlockToAir(pos);
                     } else if (this.equals(BlockRegistry.redCrystalOne) || this.equals(BlockRegistry.blueCrystalOne) || this.equals(BlockRegistry.yellowCrystalOne) || this.equals(BlockRegistry.purpleCrystalOne) || this.equals(BlockRegistry.orangeCrystalOne) || this.equals(BlockRegistry.greenCrystalOne) || this.equals(BlockRegistry.whiteCrystalOne) || this.equals(BlockRegistry.blackCrystalOne)) {
                         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 3.0F, true);
+                        worldIn.setBlockToAir(pos);
                     }
                 }
             }

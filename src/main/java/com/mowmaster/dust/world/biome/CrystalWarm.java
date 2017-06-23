@@ -25,7 +25,6 @@ public class CrystalWarm extends Biome
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blackOre.getDefaultState(),1);
 
         this.theBiomeDecorator.grassPerChunk = 5;
-        this.theBiomeDecorator.treesPerChunk = 1;
     }
 
 

@@ -28,11 +28,8 @@ public class Crystal extends Biome
         this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blackOre.getDefaultState(),3);
 
         this.theBiomeDecorator.grassPerChunk = 5;
-        this.theBiomeDecorator.treesPerChunk = 1;
-        this.theBiomeDecorator.bigMushroomsPerChunk = 1;
         this.theBiomeDecorator.generateLakes = true;
         this.theBiomeDecorator.reedsPerChunk = 2;
-        this.theBiomeDecorator.extraTreeChance = 0.25F;
     }
 
 

@@ -55,14 +55,6 @@ public class dust {
         structureFiles.mkdirs();
         DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
 
-        File fileslister = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"small");
-        File[] listOfiles = fileslister.listFiles();
-        System.out.println("JHLHLKJHKLJHKIUJKHVMJHGLKJBKJHGLIHNBKJBGLIHKLJHBLIUH:LHNO:HO:H:OHHU:OHLIUYO:HLIUGUIFTYUFRO*IUTGIUYUITUKYFRUYGYFUTUIYGKYFUOGUKYGIUGUIOYGUIYUIGFUI");
-        System.out.println(listOfiles[0].getName());
-        System.out.println(listOfiles[1].getName());
-        System.out.println(listOfiles[2].getName());
-        //files found in structure folders, will be randomized and called when needing to generate.
-
 
 
         BlockRegistry.init();
