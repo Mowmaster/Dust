@@ -1,7 +1,6 @@
 package com.mowmaster.dust;
 
 
-import com.mowmaster.dust.blocks.BlockDust;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
@@ -9,8 +8,7 @@ import com.mowmaster.dust.misc.DustConfigurationFile;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
-import net.minecraft.block.BlockLog;
-import net.minecraft.entity.player.EntityPlayer;
+import com.mowmaster.dust.world.structures.TestFile;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -55,7 +53,7 @@ public class dust {
         structureFiles.mkdirs();
         DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
 
-
+        TestFile.runFileGetter();
 
         BlockRegistry.init();
         BlockRegistry.register();

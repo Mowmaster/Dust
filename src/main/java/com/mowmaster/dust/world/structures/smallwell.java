@@ -3,10 +3,7 @@ package com.mowmaster.dust.world.structures;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.BlockSapling;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -220,6 +217,8 @@ public class smallwell extends WorldGenerator
         worldIn.setBlockState(pos.add(-2,2,-2),Blocks.SANDSTONE.getDefaultState().withProperty(TYPE,BlockSandStone.EnumType.CHISELED));
         //Layer y+2 Left Bottom
         worldIn.setBlockState(pos.add(2,2,-2),Blocks.SANDSTONE.getDefaultState().withProperty(TYPE,BlockSandStone.EnumType.CHISELED));
+
+
 
 
         return true;
