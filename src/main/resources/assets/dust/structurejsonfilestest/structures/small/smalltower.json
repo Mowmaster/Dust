@@ -1,0 +1,7 @@
+{
+  "layer": {"cords":[-2,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"},
+  "layer": {"cords":[-1,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"},
+  "layer": {"cords":[0,-1,2],"block":"Blocks.SANDSTONE.getDefaultState().withProperty(TYPE,BlockSandStone.EnumType.DEFAULT))"},
+  "layer": {"cords":[1,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"},
+  "layer": {"cords":[2,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"}
+}

@@ -1,0 +1,30 @@
+{
+
+
+  "layer": {"cords":[-2,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"},
+  "layer": {"cords":[-1,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"},
+  "layer": {"cords":[0,-1,2],"block":"Blocks.SANDSTONE.getDefaultState().withProperty(TYPE,BlockSandStone.EnumType.DEFAULT))"},
+  "layer": {"cords":[1,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"},
+  "layer": {"cords":[2,-1,2],"block":"Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND))"}
+
+
+  /*
+  "layer": {"cords":[0,0,0],"block":"Blocks.DIRT"},
+  "layer": {"cords":[0,0,1],"block":"Blocks.DIRT"},
+  "layer": {"cords":[0,0,0],"block":"Blocks.DIRT"},
+  "layer": {"cords":[0,0,-1],"block":"Blocks.DIRT"},
+  "layer": {"cords":[1,0,0],"block":"Blocks.DIRT"},
+  "layer": {"cords":[0,0,0],"block":"Blocks.DIRT"},
+  "layer": {"cords":[-1,0,0],"block":"Blocks.DIRT"},
+  "layer": {"cords":[1,0,1],"block":"Blocks.DIRT"},
+  "layer": {"cords":[-1,0,-1],"block":"Blocks.DIRT"},
+  "machine":{"cords":[0,1,0],"chance":4}
+  */
+}
+
+
+//[-2+2][-1+2][+0+2][+1+2][+2+2]
+//[-2+1][-1+1][+0+1][+1+1][+2+1]
+//[-2+0][-1+0][+0+0][+1+0][+2+0]
+//[-2-1][-1-1][+0-1][+1-1][+2-1]
+//[-2-2][-1-2][+0-2][+1-2][+2-2]

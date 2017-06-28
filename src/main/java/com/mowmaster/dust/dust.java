@@ -8,7 +8,6 @@ import com.mowmaster.dust.misc.DustConfigurationFile;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
-import com.mowmaster.dust.world.structures.TestFile;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -41,6 +40,8 @@ public class dust {
         //dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID );
         dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID + "/" + "configs");
         dustConfig.mkdirs();
+        DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
+        /*
         structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures");
         structureFiles.mkdirs();
         structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"small");
@@ -51,9 +52,8 @@ public class dust {
         structureFiles.mkdirs();
         structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"stronghold" +"/"+"underbase");
         structureFiles.mkdirs();
-        DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
+        */
 
-        TestFile.runFileGetter();
 
         BlockRegistry.init();
         BlockRegistry.register();

@@ -2,37 +2,29 @@ package com.mowmaster.dust.world.structures;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
+
+import static net.minecraft.block.Block.getBlockFromName;
 
 
-public class TestFile
+public class JsonParseTester
 {
-    private ArrayList<Integer> blockCords;
-    private Object blockType;
     //private File filename;
     //File filename = new File(getClass().getResource("").getPath());
 
-    public  TestFile()
+    public JsonParseTester()
     {
-
-
     }
-
-
-
 
     public static File runFileGetter()
     {
@@ -45,51 +37,38 @@ public class TestFile
         File file = new File("config" + "/" + Reference.MODID + "/" + "structures" + "/" + size + "/");
 
         Random rn = new Random();
-        int structure = rn.nextInt(file.listFiles().length - 1);
+        //int structure = rn.nextInt(file.listFiles().length - 1);
 
-        File filename = new File(file.listFiles()[structure].toString());
+        File filename = new File(file.listFiles()[0].toString());
 
-        System.out.println(file.listFiles()[structure].getPath());
-        System.out.println(file);
+        System.out.println(filename);
 
 
-        Gson gson = new Gson();
+
         try {
             JsonReader reader = new JsonReader(new FileReader(filename));
-
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = (JsonObject) jsonParser.parse(reader);
+            String block = jsonObject.get("block").getAsString();
+            JsonPrimitive getX = jsonObject.getAsJsonPrimitive("x");
+            JsonPrimitive getY = jsonObject.getAsJsonPrimitive("y");
+            JsonPrimitive getZ = jsonObject.getAsJsonPrimitive("z");
 
-            System.out.println(reader);// Line x Comumn y
-            System.out.println(jsonParser);//Dont Care
-            System.out.println(jsonObject);//Prints a line of json code
+            int x = getX.getAsInt();
+            int y = getY.getAsInt();
+            int z = getZ.getAsInt();
+            Block block2 = getBlockFromName(block);
+            IBlockState state = block2.getDefaultState();
 
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(z);
+            System.out.println(state);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
         System.out.println("jklfklfjbkhfkjhfkjhfjhfbjfbjfbfkjhglfhglfhjhfgfjhgfkjhgfjhfhjvjfkfhgfjhfjhfhjfhjfjkfhjhfjhfvjhvfjhfvhfhjffjkfhvbfkjhfjhfkfhgfhgfhfhfghfgflkjhfljkfjfhbfkljbfk");
         return Minecraft.getMinecraft().mcDataDir;
-
-
     }
-
-    /*
-    public void readFile(File file)
-    {
-        Gson gson = new Gson();
-        JsonReader reader = new JsonReader(new FileReader(file));
-    }
-     */
-
-
-
-    /*
-    this.filename = new File(".");
-        this.blockCords = Lists.newArrayList();
-        System.out.println(filename);
-        System.out.println("jkcnkljfbkhfgbkjhjufljfhlfkjhflhflkjfhkljfklfl;kfjf;lkjf;lkfj;lfjl;kfjlrhgukygdkfgkjhgfifhlkjfhklfjgfkjffkjlhfkjfdfffhbfkghfkfgjhgfkjgfkhfk");
-     */
 }
