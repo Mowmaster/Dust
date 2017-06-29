@@ -5,13 +5,14 @@ import com.mowmaster.dust.enums.CrystalBlocks;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.monster.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.fixes.EntityId;
 import net.minecraft.util.datafix.fixes.SpawnerEntityTypes;
 import net.minecraft.util.math.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.ArrayList;
@@ -42,14 +44,16 @@ public class smallwell extends WorldGenerator
     private final IBlockState sand = Blocks.SAND.getDefaultState().withProperty(VARIANT,BlockSand.EnumType.SAND);
 
 
+    private static final ResourceLocation[] SPAWNERTYPES = new ResourceLocation[] {EntityList.getKey(EntitySkeleton.class), EntityList.getKey(EntityZombie.class), EntityList.getKey(EntityZombie.class), EntityList.getKey(EntitySpider.class)};
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos pos) {
         //System.out.println(Blocks.GRASS.getDefaultState());
         //System.out.println(worldIn.getBlockState(pos));
+        IBlockState mobspawnerpicked = Blocks.MOB_SPAWNER.getDefaultState();
         ArrayList<IBlockState> BlockLoot = new ArrayList<>();
         BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
-        BlockLoot.add(Blocks.MOB_SPAWNER.getDefaultState());
+        BlockLoot.add(mobspawnerpicked);
         BlockLoot.add(BlockRegistry.redCrystalFive.getDefaultState());
         BlockLoot.add(BlockRegistry.blueCrystalFive.getDefaultState());
         BlockLoot.add(BlockRegistry.yellowCrystalFive.getDefaultState());
@@ -219,9 +223,25 @@ public class smallwell extends WorldGenerator
         worldIn.setBlockState(pos.add(2,2,-2),Blocks.SANDSTONE.getDefaultState().withProperty(TYPE,BlockSandStone.EnumType.CHISELED));
 
 
+        if(BlockLoot.get(lootblock).equals(mobspawnerpicked))
+        {
+            worldIn.setBlockState(pos.add(0,0,0), mobspawnerpicked, 2);
+            TileEntity tileentity = worldIn.getTileEntity(pos.add(0,0,0));
 
+            if (tileentity instanceof TileEntityMobSpawner)
+            {
+                ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(this.pickMobSpawner(rand));
+            }
+        }
 
         return true;
+
+
+    }
+
+    private ResourceLocation pickMobSpawner(Random rand)
+    {
+        return net.minecraftforge.common.DungeonHooks.getRandomDungeonMob(rand);
     }
 
 }
