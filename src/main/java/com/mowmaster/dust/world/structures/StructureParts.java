@@ -23,13 +23,44 @@ public class StructureParts
 {
 
     public static void clearArea(World worldIn,BlockPos pos,int heightmin,int heightmax, int zmin, int zmax, int xmin, int xmax)
+{
+    for(int y=heightmin;y<=heightmax;y++)
     {
-        for(int y=heightmin;y<=heightmax;y++)
+        for(int z=zmin;z<=zmax;z++)
         {
-            for(int z=zmin;z<=zmax;z++)
-            {
-                for (int x=xmin;x<=xmax;x++)
+            for (int x=xmin;x<=xmax;x++)
                 worldIn.setBlockState(pos.add(x,y,z),Blocks.AIR.getDefaultState());
+        }
+    }
+}
+
+    public static void createSolidFloor(World worldIn,BlockPos pos,IBlockState blockState,int x, int y,int z, int zmin, int zmax, int xmin, int xmax)
+    {
+        for(int c=zmin;c<=zmax;c++) {
+            for (int a = xmin; a <= xmax; a++)
+                worldIn.setBlockState(pos.add(a+x, 0+y, c+z), blockState);
+        }
+    }
+
+    public static void createSolidWall(World worldIn, BlockPos pos,IBlockState blockState, int x, int y, int z, int wallHeight,int wallLength, Boolean isXDirection)
+    {
+        if(isXDirection.equals(true))
+        {
+            for (int a=0;a<=wallLength;a++)
+            {
+                for (int b=0;b<=wallHeight; b++)
+                {
+                    worldIn.setBlockState(pos.add(x+a,y+b,z),blockState);
+                }
+            }
+        }
+        else{
+            for (int c=0;c<=wallLength;c++)
+            {
+                for (int b=0;b<=wallHeight; b++)
+                {
+                    worldIn.setBlockState(pos.add(x,y+b,z+c),blockState);
+                }
             }
         }
     }

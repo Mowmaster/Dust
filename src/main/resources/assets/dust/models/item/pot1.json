@@ -1,0 +1,15 @@
+{
+    "parent" : "dust:block/pot1",
+    "display" : {
+        "thirdperson" : {
+            "rotation" : [10, -45, 170],
+            "translation" : [0, 1.5, -2.75],
+            "scale" : [0.50, 0.50, 0.50]
+        },
+        "firstperson" : {
+            "rotation" : [10, -45, 170],
+            "translation" : [0, 1.5, -2.75],
+            "scale" : [0.50, 0.50, 0.50]
+        }
+    }
+}

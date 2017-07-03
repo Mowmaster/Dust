@@ -282,6 +282,8 @@ public class BlockRegistry
     public static Block crystalCluster;
     public static Block machineBase;
 
+    public static Block crate1;
+    public static Block pot1;
 
     public static void init() {
         redOre = new BlockBasic("redore", "red/redore", Material.ROCK, SoundType.STONE, 10, 5, 10);
@@ -538,6 +540,9 @@ public class BlockRegistry
         greenDust = new BlockDust("greendust","green/greendust");
         whiteDust = new BlockDust("whitedust","white/whitedust");
         blackDust = new BlockDust("blackdust","black/blackdust");
+
+        crate1 = new BlockCrate("crate1","crate1");
+        pot1 = new BlockPot("pot1","pot1");
     }
 
     public static void register()
@@ -799,6 +804,9 @@ public class BlockRegistry
         registerBlock(greenDust);
         registerBlock(whiteDust);
         registerBlock(blackDust);
+
+        registerBlock(crate1);
+        registerBlock(pot1);
 
     }
 
@@ -1065,6 +1073,9 @@ public class BlockRegistry
         registerRender(greenDust);
         registerRender(whiteDust);
         registerRender(blackDust);
+
+        registerRender(crate1);
+        registerRender(pot1);
 
     }
 
