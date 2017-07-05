@@ -46,7 +46,7 @@ public class SmallPiller extends WorldGenerator
         int y = 0;
         int z = 0;
 
-        StructureParts.buildPiller(worldIn, rand,pos,0,0,0);
+        StructureParts.buildLootPiller(worldIn, rand,pos,0,0,0);
         worldIn.setBlockState(pos.add(x,y,z),BlockLoot.get(lootblock));
         worldIn.setBlockState(pos.add(0,3,0),Blocks.STONEBRICK.getDefaultState().withProperty(VARIANT, BlockStoneBrick.EnumType.CHISELED));
         StructureParts.spawnCrystal(worldIn,rand,pos,0,4,0,"UP");

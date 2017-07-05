@@ -6,7 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -17,9 +21,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 
-/**
- * Created by KingMowmaster on 3/15/2017.
- */
+
 public class BlockCrate extends Block
 {
     public BlockCrate(String unloc, String registryName)
@@ -38,12 +40,32 @@ public class BlockCrate extends Block
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+        Random rn = new Random();
         if(!worldIn.isRemote)
         {
             if(this.equals(BlockRegistry.crate1))
             {
-                worldIn.setBlockState(pos,BlockRegistry.redCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
+                int rand = rn.nextInt(5);
+                if(rand == 0)
+                {
+                    worldIn.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
+                }
+                else if (rand == 1)
+                {
+                    worldIn.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
+                }
+                else if (rand == 2)
+                {
+                    worldIn.setBlockState(pos, Blocks.IRON_ORE.getDefaultState());
+                }
+                else if (rand == 3)
+                {
+                    worldIn.setBlockState(pos, Blocks.REDSTONE_ORE.getDefaultState());
+                }
+                else if (rand == 4)
+                {
+                    worldIn.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
+                }
             }
         }
     }

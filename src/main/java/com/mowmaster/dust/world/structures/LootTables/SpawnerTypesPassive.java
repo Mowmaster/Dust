@@ -122,7 +122,7 @@ public class SpawnerTypesPassive
         addDungeonMob(new ResourceLocation("mooshroom"),   100);
 
         addDungeonMob(new ResourceLocation("villager"),   25);
-        addDungeonMob(new ResourceLocation("villager_golem"),   25);
+        addDungeonMob(new ResourceLocation("villager_golem"),   5);
 
         addDungeonMob(new ResourceLocation("xp_bottle"),   1);
     }

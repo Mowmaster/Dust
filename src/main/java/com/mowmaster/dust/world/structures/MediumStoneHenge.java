@@ -41,14 +41,14 @@ public class MediumStoneHenge extends WorldGenerator
 
         buildFloorThreeByThree(worldIn,rand,pos,0,0,0);
         worldIn.setBlockState(pos.add(0,1,0),BlockRegistry.machineBase.getDefaultState());
-        buildPiller(worldIn,rand,pos,0,0,3);
-        buildPiller(worldIn,rand,pos,0,0,-3);
-        buildPiller(worldIn,rand,pos,-4,0,0);
-        buildPiller(worldIn,rand,pos,4,0,0);
-        buildPiller(worldIn,rand,pos,-3,0,-2);
-        buildPiller(worldIn,rand,pos,3,0,-2);
-        buildPiller(worldIn,rand,pos,-3,0,2);
-        buildPiller(worldIn,rand,pos,3,0,2);
+        buildLootPiller(worldIn,rand,pos,0,0,3);
+        buildLootPiller(worldIn,rand,pos,0,0,-3);
+        buildLootPiller(worldIn,rand,pos,-4,0,0);
+        buildLootPiller(worldIn,rand,pos,4,0,0);
+        buildLootPiller(worldIn,rand,pos,-3,0,-2);
+        buildLootPiller(worldIn,rand,pos,3,0,-2);
+        buildLootPiller(worldIn,rand,pos,-3,0,2);
+        buildLootPiller(worldIn,rand,pos,3,0,2);
         spawnCrystal(worldIn,rand,pos,-2,1,0,"UP");
         spawnCrystal(worldIn,rand,pos,2,1,0,"UP");
 

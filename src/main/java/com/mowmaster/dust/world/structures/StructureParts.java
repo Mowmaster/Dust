@@ -65,7 +65,7 @@ public class StructureParts
         }
     }
 
-    public static void buildPiller(World worldIn, Random rand, BlockPos pos, int x, int y, int z)
+    public static void buildLootPiller(World worldIn, Random rand, BlockPos pos, int x, int y, int z)
     {
         ArrayList<IBlockState> PillarMaterial = new ArrayList<>();
         PillarMaterial.add(Blocks.STONEBRICK.getDefaultState().withProperty(VARIANT, BlockStoneBrick.EnumType.DEFAULT));

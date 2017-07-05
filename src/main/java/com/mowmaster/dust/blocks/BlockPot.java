@@ -7,21 +7,27 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
 
-/**
- * Created by KingMowmaster on 3/15/2017.
- */
+
 public class BlockPot extends Block
 {
+    private static AxisAlignedBB pot1 = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+
     public BlockPot(String unloc, String registryName)
     {
         super(Material.ROCK);
@@ -36,14 +42,56 @@ public class BlockPot extends Block
         return null;
     }
 
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return pot1;
+    }
+
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+        Random rn = new Random();
         if(!worldIn.isRemote)
         {
             if(this.equals(BlockRegistry.pot1))
             {
-                worldIn.setBlockState(pos,BlockRegistry.redCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
+                int rand = rn.nextInt(5);
+
+                if(rand == 0)
+                {
+                    worldIn.setBlockState(pos, Blocks.DIAMOND_ORE.getDefaultState());
+                }
+                else if (rand == 1)
+                {
+                    worldIn.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
+                }
+                else if (rand == 2)
+                {
+                    worldIn.setBlockState(pos, Blocks.COAL_BLOCK.getDefaultState());
+                }
+                else if (rand == 3)
+                {
+                    worldIn.setBlockState(pos, Blocks.LAPIS_ORE.getDefaultState());
+                }
+                else if (rand == 4)
+                {
+                    worldIn.setBlockState(pos, Blocks.EMERALD_ORE.getDefaultState());
+                }
             }
         }
     }

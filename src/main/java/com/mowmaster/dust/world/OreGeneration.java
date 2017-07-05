@@ -1,9 +1,6 @@
 package com.mowmaster.dust.world;
 
-import com.mowmaster.dust.world.structures.MediumCave;
-import com.mowmaster.dust.world.structures.MediumStoneHenge;
-import com.mowmaster.dust.world.structures.SmallPiller;
-import com.mowmaster.dust.world.structures.SmallWell;
+import com.mowmaster.dust.world.structures.*;
 import com.mowmaster.dust.world.treegeneration.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,7 +40,8 @@ public class OreGeneration implements IWorldGenerator
     private TreeBlack smalltreeblack;
 
     private SmallPiller smallpiller;
-    private SmallWell smallwell;
+    private SmallSandWell smallsandwell;
+    private SmallStoneWell smallstonewell;
     private MediumStoneHenge mediumStoneHenge;
     private MediumCave mediumCave;
 
@@ -71,7 +69,8 @@ public class OreGeneration implements IWorldGenerator
         smalltreeblack = new TreeBlack(true);
 
         smallpiller = new SmallPiller();
-        smallwell = new SmallWell();
+        smallsandwell = new SmallSandWell();
+        smallstonewell = new SmallStoneWell();
         mediumStoneHenge = new MediumStoneHenge();
         mediumCave = new MediumCave();
     }
@@ -305,9 +304,9 @@ public class OreGeneration implements IWorldGenerator
                 switch (getrando)
                 {
                     case 0: this.runStructureGeneratorOneByOne(smallpiller,world,random,chunkX,chunkZ,1,0,20);
-                    case 1: this.runStructureGeneratorFiveByFive(smallwell,world,random,chunkX,chunkZ,1,0,20);
+                    case 1: this.runStructureGeneratorFiveByFive(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
                     case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
-                    case 3: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
+                    case 3: this.runStructureGeneratorFiveByFive(smallstonewell,world,random,chunkX,chunkZ,1,0,20);//this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
                 }
 
 
