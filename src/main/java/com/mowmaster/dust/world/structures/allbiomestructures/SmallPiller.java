@@ -1,7 +1,8 @@
-package com.mowmaster.dust.world.structures;
+package com.mowmaster.dust.world.structures.allbiomestructures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.world.structures.LootTables.SpawnerTypesHostile;
+import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
+import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -20,11 +21,8 @@ public class SmallPiller extends WorldGenerator
 {
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos pos) {
-        //System.out.println(Blocks.GRASS.getDefaultState());
-        //System.out.println(worldIn.getBlockState(pos));
         IBlockState mobspawnerpicked = Blocks.MOB_SPAWNER.getDefaultState();
         ArrayList<IBlockState> BlockLoot = new ArrayList<>();
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
         BlockLoot.add(mobspawnerpicked);
         BlockLoot.add(Blocks.EMERALD_BLOCK.getDefaultState());
         BlockLoot.add(Blocks.DIAMOND_BLOCK.getDefaultState());

@@ -1,7 +1,7 @@
-package com.mowmaster.dust.world.structures;
+package com.mowmaster.dust.world.structures.allbiomestructures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import net.minecraft.block.BlockSand;
+import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -31,9 +31,16 @@ public class SmallStoneWell extends WorldGenerator
         IBlockState crystalblock = BlockRegistry.redCrystalFive.getDefaultState();
         ArrayList<IBlockState> BlockLoot = new ArrayList<>();
         BlockLoot.add(mobspawnerpicked);
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
+        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
+        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
+        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
+        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(crystalblock);
+        BlockLoot.add(crystalblock);
+        BlockLoot.add(crystalblock);
+        BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);

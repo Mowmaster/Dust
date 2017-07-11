@@ -1,4 +1,4 @@
-package com.mowmaster.dust.world.structures.LootTables;
+package com.mowmaster.dust.world.structures.structurebits;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityExpBottle;
@@ -12,9 +12,9 @@ import java.util.Random;
 /**
  * Created by KingMowmaster on 6/30/2017.
  */
-public class SpawnerTypesHostile
+public class SpawnerTypesPassive
 {
-    private static ArrayList<SpawnerTypesHostile.DungeonMob> dungeonMobs = new ArrayList<SpawnerTypesHostile.DungeonMob>();
+    private static ArrayList<SpawnerTypesPassive.DungeonMob> dungeonMobs = new ArrayList<SpawnerTypesPassive.DungeonMob>();
 
     /**
      * Adds a mob to the possible list of creatures the spawner will create.
@@ -37,7 +37,7 @@ public class SpawnerTypesHostile
             throw new IllegalArgumentException("Rarity must be greater then zero");
         }
 
-        for (SpawnerTypesHostile.DungeonMob mob : dungeonMobs)
+        for (SpawnerTypesPassive.DungeonMob mob : dungeonMobs)
         {
             if (name.equals(mob.type))
             {
@@ -45,7 +45,7 @@ public class SpawnerTypesHostile
             }
         }
 
-        dungeonMobs.add(new SpawnerTypesHostile.DungeonMob(rarity, name));
+        dungeonMobs.add(new SpawnerTypesPassive.DungeonMob(rarity, name));
         return rarity;
     }
 
@@ -65,7 +65,7 @@ public class SpawnerTypesHostile
      */
     public static int removeDungeonMob(ResourceLocation name)
     {
-        for (SpawnerTypesHostile.DungeonMob mob : dungeonMobs)
+        for (SpawnerTypesPassive.DungeonMob mob : dungeonMobs)
         {
             if (name.equals(mob.type))
             {
@@ -83,7 +83,7 @@ public class SpawnerTypesHostile
      */
     public static ResourceLocation getRandomDungeonMob(Random rand)
     {
-        SpawnerTypesHostile.DungeonMob mob = WeightedRandom.getRandomItem(rand, dungeonMobs);
+        SpawnerTypesPassive.DungeonMob mob = WeightedRandom.getRandomItem(rand, dungeonMobs);
         return mob.type;
     }
 
@@ -100,28 +100,29 @@ public class SpawnerTypesHostile
         @Override
         public boolean equals(Object target)
         {
-            return target instanceof SpawnerTypesHostile.DungeonMob && type.equals(((SpawnerTypesHostile.DungeonMob)target).type);
+            return target instanceof SpawnerTypesPassive.DungeonMob && type.equals(((SpawnerTypesPassive.DungeonMob)target).type);
         }
     }
 
     static
     {
-        addDungeonMob(new ResourceLocation("skeleton"), 1000);
-        addDungeonMob(new ResourceLocation("zombie"),   1000);
-        addDungeonMob(new ResourceLocation("spider"),   1000);
-        addDungeonMob(new ResourceLocation("cave_spider"),   1000);
-        addDungeonMob(new ResourceLocation("vex"),   1000);
+        addDungeonMob(new ResourceLocation("cow"), 1000);
+        addDungeonMob(new ResourceLocation("pig"),   1000);
+        addDungeonMob(new ResourceLocation("sheep"),   1000);
+        addDungeonMob(new ResourceLocation("rabbit"),   1000);
 
-        addDungeonMob(new ResourceLocation("witch"),   500);
-        addDungeonMob(new ResourceLocation("slime"),   500);
-        addDungeonMob(new ResourceLocation("creeper"),   500);
+        addDungeonMob(new ResourceLocation("horse"),   500);
+        addDungeonMob(new ResourceLocation("donkey"),   500);
+        addDungeonMob(new ResourceLocation("mule"),   500);
+        addDungeonMob(new ResourceLocation("llama"),   500);
 
-        addDungeonMob(new ResourceLocation("blaze"),   250);
-        addDungeonMob(new ResourceLocation("enderman"),   250);
-        addDungeonMob(new ResourceLocation("guardian"),   250);
+        addDungeonMob(new ResourceLocation("polar_bear"),   250);
+        addDungeonMob(new ResourceLocation("squid"),   250);
 
         addDungeonMob(new ResourceLocation("mooshroom"),   100);
-        addDungeonMob(new ResourceLocation("xp_orb"),   100);
+
+        addDungeonMob(new ResourceLocation("villager"),   25);
+        addDungeonMob(new ResourceLocation("villager_golem"),   5);
 
         addDungeonMob(new ResourceLocation("xp_bottle"),   1);
     }

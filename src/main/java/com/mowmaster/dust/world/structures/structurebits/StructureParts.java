@@ -1,9 +1,9 @@
-package com.mowmaster.dust.world.structures;
+package com.mowmaster.dust.world.structures.structurebits;
 
 import com.mowmaster.dust.blocks.BlockCrystal;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.world.structures.LootTables.SpawnerTypesHostile;
-import com.mowmaster.dust.world.structures.LootTables.SpawnerTypesPassive;
+import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
+import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesPassive;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -208,6 +208,45 @@ public class StructureParts
 
             if (tileentity instanceof TileEntityMobSpawner) {
                 ((TileEntityMobSpawner) tileentity).getSpawnerBaseLogic().setEntityId(SpawnerTypesPassive.getRandomDungeonMob(rand));
+            }
+        }
+    }
+
+    public static void generateFloorLoot(World worldIn,BlockPos pos,int x, int y, int z)
+    {
+        ArrayList<IBlockState> FloorLoot = new ArrayList<>();
+        FloorLoot.add(BlockRegistry.redCrystalFive.getDefaultState());
+        FloorLoot.add(BlockRegistry.blueCrystalFive.getDefaultState());
+        FloorLoot.add(BlockRegistry.yellowCrystalFive.getDefaultState());
+        FloorLoot.add(BlockRegistry.purpleCrystalFive.getDefaultState());
+        FloorLoot.add(BlockRegistry.orangeCrystalFive.getDefaultState());
+        FloorLoot.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        FloorLoot.add(BlockRegistry.pot1.getDefaultState());
+        FloorLoot.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+        FloorLoot.add(Blocks.AIR.getDefaultState());
+
+
+        Random random = new Random();
+        for(int c=-1;c<=1;c++) {
+            for (int a = -1; a <= 1; a++)
+            {
+                int randomStoneState = Math.abs(random.nextInt(FloorLoot.size() - 1));
+                worldIn.setBlockState(pos.add(a+x, y, c+z), FloorLoot.get(randomStoneState));
             }
         }
     }

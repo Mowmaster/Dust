@@ -1,15 +1,10 @@
-package com.mowmaster.dust.world.structures;
+package com.mowmaster.dust.world.structures.allbiomestructures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.world.structures.LootTables.SpawnerTypesPassive;
+import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.*;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -32,15 +27,20 @@ public class SmallSandWell extends WorldGenerator
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos pos) {
-        //System.out.println(Blocks.GRASS.getDefaultState());
-        //System.out.println(worldIn.getBlockState(pos));
         IBlockState mobspawnerpicked = Blocks.MOB_SPAWNER.getDefaultState();
         IBlockState crystalblock = BlockRegistry.redCrystalFive.getDefaultState();
         ArrayList<IBlockState> BlockLoot = new ArrayList<>();
         BlockLoot.add(mobspawnerpicked);
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
-        BlockLoot.add(BlockRegistry.machineBase.getDefaultState());
+        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
+        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
+        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
+        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(crystalblock);
+        BlockLoot.add(crystalblock);
+        BlockLoot.add(crystalblock);
+        BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);

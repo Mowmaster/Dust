@@ -1,4 +1,4 @@
-package com.mowmaster.dust.world.structures;
+package com.mowmaster.dust.world.structures.structurebits;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
