@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

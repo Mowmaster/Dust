@@ -8,7 +8,6 @@ import com.mowmaster.dust.misc.DustConfigurationFile;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
-import com.mowmaster.dust.world.structures.JsonParseTester;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;

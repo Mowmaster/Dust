@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStoneBrick;
