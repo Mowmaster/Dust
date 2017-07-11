@@ -44,6 +44,7 @@ public class OreGeneration implements IWorldGenerator
     private SmallStoneWell smallstonewell;
     private MediumStoneHenge mediumStoneHenge;
     private MediumCave mediumCave;
+    private LargeAuraMachineRoom largeAuraMachineRoom;
 
 
 
@@ -73,6 +74,7 @@ public class OreGeneration implements IWorldGenerator
         smallstonewell = new SmallStoneWell();
         mediumStoneHenge = new MediumStoneHenge();
         mediumCave = new MediumCave();
+        largeAuraMachineRoom = new LargeAuraMachineRoom();
     }
 
 
@@ -306,7 +308,9 @@ public class OreGeneration implements IWorldGenerator
                     case 0: this.runStructureGeneratorOneByOne(smallpiller,world,random,chunkX,chunkZ,1,0,20);
                     case 1: this.runStructureGeneratorFiveByFive(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
                     case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
-                    case 3: this.runStructureGeneratorFiveByFive(smallstonewell,world,random,chunkX,chunkZ,1,0,20);//this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
+                    case 3: this.runStructureGeneratorFiveByFive(smallstonewell,world,random,chunkX,chunkZ,1,0,20);
+                    //case 4: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
+                    //case 4: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
                 }
 
 
