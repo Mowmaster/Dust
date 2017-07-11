@@ -1,6 +1,9 @@
 package com.mowmaster.dust.world;
 
 import com.mowmaster.dust.world.structures.*;
+import com.mowmaster.dust.world.structures.allbiomestructures.SmallPiller;
+import com.mowmaster.dust.world.structures.allbiomestructures.SmallSandWell;
+import com.mowmaster.dust.world.structures.allbiomestructures.SmallStoneWell;
 import com.mowmaster.dust.world.treegeneration.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -45,6 +48,7 @@ public class OreGeneration implements IWorldGenerator
     private MediumStoneHenge mediumStoneHenge;
     private MediumCave mediumCave;
     private LargeAuraMachineRoom largeAuraMachineRoom;
+    private MediumObservatory mediumObservatory;
 
 
 
@@ -75,6 +79,7 @@ public class OreGeneration implements IWorldGenerator
         mediumStoneHenge = new MediumStoneHenge();
         mediumCave = new MediumCave();
         largeAuraMachineRoom = new LargeAuraMachineRoom();
+        mediumObservatory = new MediumObservatory();
     }
 
 
@@ -123,6 +128,25 @@ public class OreGeneration implements IWorldGenerator
             }
         }
     }
+
+    int OverWorldStructureChance = 100; //1 in 50 chunck chance
+    private void runAllBiomeStructures(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
+
+        if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+            throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
+
+        if (rand.nextInt(OverWorldStructureChance) <= 1) {
+            for (int i = 0; i < chancesToSpawn; i++) {
+                int x = chunk_X*16 + rand.nextInt(5)+ 5;
+                int y = world.getHeight(chunk_X,chunk_Z) + 1;
+                int z = chunk_Z*16 + rand.nextInt(5)+ 5;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
+            }
+        }
+    }
+
+
+
 
     private void runStructureGeneratorFiveteenByFiveteen(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
@@ -275,6 +299,7 @@ public class OreGeneration implements IWorldGenerator
         {
             case 0: //Overworld
                 //                         Chance to spawn,min height, max height
+                //Ore Generator All Biomes
                 this.runWorldGenerator(red_ore,world,random,chunkX,chunkZ,1,0,20);
                 this.runWorldGenerator(blue_ore,world,random,chunkX,chunkZ,1,0,20);
                 this.runWorldGenerator(yellow_ore,world,random,chunkX,chunkZ,1,0,20);
@@ -283,7 +308,7 @@ public class OreGeneration implements IWorldGenerator
                 this.runWorldGenerator(green_ore,world,random,chunkX,chunkZ,1,0,20);
                 this.runWorldGenerator(white_ore,world,random,chunkX,chunkZ,1,0,20);
                 this.runWorldGenerator(black_ore,world,random,chunkX,chunkZ,1,0,20);
-
+                //Ore Generator Crystal Biomes
                 this.runGenerator(red_ore,world,random,chunkX,chunkZ,5,0,60);
                 this.runGenerator(blue_ore,world,random,chunkX,chunkZ,5,0,60);
                 this.runGenerator(yellow_ore,world,random,chunkX,chunkZ,5,0,60);
@@ -292,7 +317,7 @@ public class OreGeneration implements IWorldGenerator
                 this.runGenerator(green_ore,world,random,chunkX,chunkZ,3,0,30);
                 this.runGenerator(white_ore,world,random,chunkX,chunkZ,1,0,10);
                 this.runGenerator(black_ore,world,random,chunkX,chunkZ,1,0,10);
-
+                //Tree Generator Crystal Biomes
                 this.runTreeGenerator(smalltreered, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreeblue, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreeyellow, world, random, chunkX, chunkZ,1,0,20);
@@ -301,16 +326,22 @@ public class OreGeneration implements IWorldGenerator
                 this.runTreeGenerator(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreeblack, world, random, chunkX, chunkZ,1,0,20);
+                //Overworld Structures All Biomes
+                this.runAllBiomeStructures(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
+                this.runAllBiomeStructures(smallstonewell,world,random,chunkX,chunkZ,1,0,20);
+                this.runAllBiomeStructures(smallpiller,world,random,chunkX,chunkZ,1,0,20);
 
+
+                //Random Chance given structures will be placed in Crystal Biomes [WIP]
                 int getrando = random.nextInt(3);
                 switch (getrando)
                 {
-                    case 0: this.runStructureGeneratorOneByOne(smallpiller,world,random,chunkX,chunkZ,1,0,20);
-                    case 1: this.runStructureGeneratorFiveByFive(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
+                    case 0: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
+                        //Start of Machine Specific Structures
+                    case 1: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
                     case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
-                    case 3: this.runStructureGeneratorFiveByFive(smallstonewell,world,random,chunkX,chunkZ,1,0,20);
-                    //case 4: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
-                    //case 4: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
+                    case 3: this.runStructureGeneratorDireBox(mediumObservatory,world,random,chunkX,chunkZ,1,0,20);
+
                 }
 
 
@@ -322,14 +353,6 @@ public class OreGeneration implements IWorldGenerator
             case 1://End
             case -1://Nether
             case 6://Aroma Mining Dim
-                this.runGenerator(red_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(blue_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(yellow_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(purple_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(orange_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(green_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(white_ore,world,random,chunkX,chunkZ,1,0,20);
-                this.runGenerator(black_ore,world,random,chunkX,chunkZ,1,0,20);
                 */
         }
     }
