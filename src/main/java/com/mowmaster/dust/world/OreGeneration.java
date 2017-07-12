@@ -49,6 +49,7 @@ public class OreGeneration implements IWorldGenerator
     private MediumCave mediumCave;
     private LargeAuraMachineRoom largeAuraMachineRoom;
     private MediumObservatory mediumObservatory;
+    private LargeHouseFireplace largeHouseFireplace;
 
 
 
@@ -80,6 +81,7 @@ public class OreGeneration implements IWorldGenerator
         mediumCave = new MediumCave();
         largeAuraMachineRoom = new LargeAuraMachineRoom();
         mediumObservatory = new MediumObservatory();
+        largeHouseFireplace = new LargeHouseFireplace();
     }
 
 
@@ -333,16 +335,17 @@ public class OreGeneration implements IWorldGenerator
 
 
                 //Random Chance given structures will be placed in Crystal Biomes [WIP]
-                int getrando = random.nextInt(3);
-                switch (getrando)
-                {
-                    case 0: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
+                //int getrando = random.nextInt(1);
+                //switch (getrando)
+                //{
+                    //case 0: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
                         //Start of Machine Specific Structures
-                    case 1: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
-                    case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
-                    case 3: this.runStructureGeneratorDireBox(mediumObservatory,world,random,chunkX,chunkZ,1,0,20);
+                    //case 1: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
+                    //case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
+                    //case 0: this.runStructureGeneratorDireBox(mediumObservatory,world,random,chunkX,chunkZ,1,0,20);
+                    this.runStructureGeneratorElevenByEleven(largeHouseFireplace,world,random,chunkX,chunkZ,1,0,20);
 
-                }
+                //}
 
 
 
