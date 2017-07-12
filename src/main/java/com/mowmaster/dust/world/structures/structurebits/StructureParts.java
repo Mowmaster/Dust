@@ -212,41 +212,132 @@ public class StructureParts
         }
     }
 
-    public static void generateFloorLoot(World worldIn,BlockPos pos,int x, int y, int z)
+    public static void generateFloorLoot(World worldIn,BlockPos pos,int x, int y, int z,int xmin, int xmax, int zmin, int zmax, String lootPoolType)
     {
-        ArrayList<IBlockState> FloorLoot = new ArrayList<>();
-        FloorLoot.add(BlockRegistry.redCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.greenCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.pot1.getDefaultState());
-        FloorLoot.add(BlockRegistry.crate1.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
-        FloorLoot.add(Blocks.AIR.getDefaultState());
+        //3air per 1 loot 25%
+        ArrayList<IBlockState> FloorLoot1 = new ArrayList<>();
+        FloorLoot1.add(BlockRegistry.redCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockRegistry.blueCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockRegistry.yellowCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockRegistry.purpleCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockRegistry.orangeCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockRegistry.pot1.getDefaultState());
+        FloorLoot1.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot1.add(BlockRegistry.pot1.getDefaultState());
+        FloorLoot1.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+        FloorLoot1.add(Blocks.AIR.getDefaultState());
+
+        //1/6 ~16.6%
+        ArrayList<IBlockState> FloorLoot2 = new ArrayList<>();
+        FloorLoot2.add(BlockRegistry.redCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockRegistry.blueCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockRegistry.yellowCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockRegistry.purpleCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockRegistry.orangeCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockRegistry.pot1.getDefaultState());
+        FloorLoot2.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot2.add(BlockRegistry.pot1.getDefaultState());
+        FloorLoot2.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+        FloorLoot2.add(Blocks.AIR.getDefaultState());
+
+
 
 
         Random random = new Random();
-        for(int c=-1;c<=1;c++) {
-            for (int a = -1; a <= 1; a++)
+        for(int c=zmin;c<=zmax;c++) {
+            for (int a = xmin; a <= xmax; a++)
             {
-                int randomStoneState = Math.abs(random.nextInt(FloorLoot.size() - 1));
-                worldIn.setBlockState(pos.add(a+x, y, c+z), FloorLoot.get(randomStoneState));
+                if(lootPoolType == "normal")
+                {
+                    int randomStoneState = Math.abs(random.nextInt(FloorLoot1.size() - 1));
+                    worldIn.setBlockState(pos.add(a+x, y, c+z), FloorLoot1.get(randomStoneState));
+                }
+                if(lootPoolType == "reduced")
+                {
+                    int randomStoneState = Math.abs(random.nextInt(FloorLoot2.size() - 1));
+                    worldIn.setBlockState(pos.add(a+x, y, c+z), FloorLoot2.get(randomStoneState));
+                }
+
             }
         }
     }

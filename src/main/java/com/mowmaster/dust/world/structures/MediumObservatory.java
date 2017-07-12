@@ -13,9 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-/**
- * Created by KingMowmaster on 7/11/2017.
- */
+
 public class MediumObservatory extends WorldGenerator
 {
     IBlockState colorWood;
@@ -179,9 +177,9 @@ public class MediumObservatory extends WorldGenerator
         StructureParts.createSolidWall(worldIn,pos,Blocks.AIR.getDefaultState(),-3,12,0,0,6,true);
         StructureParts.createSolidWall(worldIn,pos,Blocks.AIR.getDefaultState(),0,12,-3,0,6,false);
 
-        StructureParts.generateFloorLoot(worldIn,pos,0,0,0);
-        StructureParts.generateFloorLoot(worldIn,pos,0,5,0);
-        StructureParts.generateFloorLoot(worldIn,pos,0,10,0);
+        StructureParts.generateFloorLoot(worldIn,pos,0,0,0,-1,1,-1,1,"normal");
+        StructureParts.generateFloorLoot(worldIn,pos,0,5,0,-1,1,-1,1,"normal");
+        StructureParts.generateFloorLoot(worldIn,pos,0,10,0,-1,1,-1,1,"normal");
         worldIn.setBlockState(pos.add(0,10,0),BlockRegistry.machineBase.getDefaultState());
 
         StructureParts.createSolidWall(worldIn,pos, colorWood,-1,0,2,3,0,true);
