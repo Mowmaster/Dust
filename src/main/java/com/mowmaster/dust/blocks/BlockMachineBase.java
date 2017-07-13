@@ -18,7 +18,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
@@ -58,5 +61,12 @@ public class BlockMachineBase extends Block
 
         }
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        tooltip.add("[WIP] Mark this block on map for later.");
+        tooltip.add("It will turn into a machine in next beta release.");
     }
 }

@@ -36,13 +36,16 @@ public class BlockDust extends BlockFalling {
         this.setHardness(1);
         this.setResistance(1);
         this.setSoundType(SoundType.SAND);
-        this.setTickRandomly(true);
+        //this.setTickRandomly(true);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
+
+    //Only until the Crusher is implimented
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune) {
-        return null;
+        return Item.getItemFromBlock(this);
     }
+    /*
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
 
@@ -59,6 +62,7 @@ public class BlockDust extends BlockFalling {
             else if (this.equals(BlockRegistry.blackDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(blackDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 7)));}}
         }
     }
+    */
     @Override
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,3.0F, true);
@@ -83,6 +87,13 @@ public class BlockDust extends BlockFalling {
         if(entityIn instanceof EntityPlayer)
         {super.canCollideCheck(this.getDefaultState(),true);}
         else {super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, bool);}
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        tooltip.add("[WIP] Can only be gotten from Crushed Crystals,");
+        tooltip.add("in next beta release.");
     }
 }
 

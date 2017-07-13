@@ -15,9 +15,12 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.AchievementHandler.achievementScrollA;
@@ -193,6 +196,13 @@ public class ItemScroll extends Item
             }
         }
         return new ActionResult(EnumActionResult.SUCCESS, itemstack);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        tooltip.add("[WIP] Will randomly give you a letter of the Ancient Alphabet.");
+        tooltip.add("Not needed till next beta release(will also be reworked)");
     }
 }
 

@@ -10,6 +10,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BiomeRegistry
 {
+    private static int biomeWeight = 20;
+    private static int  biomeCrystalHot = 200;
+    private static int biomeCrystalWarm = 201;
+    private static int biomeCrystalCold = 202;
+    private static int biomeCrystal = 203;
+
     public static void BiomeReg()
     {
         initBiome();
@@ -17,13 +23,13 @@ public class BiomeRegistry
     }
 
     public static Biome crystal_hot;
-    public static final int biomeIdHot = 200;
+    public static final int biomeIdHot = biomeCrystalHot;
     public static Biome crystal_warm;
-    public static final int biomeIdWarm = 201;
+    public static final int biomeIdWarm = biomeCrystalWarm;
     public static Biome crystal_cold;
-    public static final int biomeIdCold = 202;
+    public static final int biomeIdCold = biomeCrystalCold;
     public static Biome crystal_crystal;
-    public static final int biomeIdCrystal = 203;
+    public static final int biomeIdCrystal = biomeCrystal;
 
     public static void initBiome()
     {
@@ -46,10 +52,11 @@ public class BiomeRegistry
         BiomeManager.addSpawnBiome(crystal_warm);
         BiomeManager.addSpawnBiome(crystal_cold);
         BiomeManager.addSpawnBiome(crystal_crystal);
-        BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(crystal_hot,10));//Number is Biome Weight
-        BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_warm,10));
-        BiomeManager.addBiome(BiomeManager.BiomeType.COOL, new BiomeManager.BiomeEntry(crystal_cold,10));
-        BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_crystal,5));
+
+        BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(crystal_hot,biomeWeight));//Number is Biome Weight
+        BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_warm,biomeWeight));
+        BiomeManager.addBiome(BiomeManager.BiomeType.COOL, new BiomeManager.BiomeEntry(crystal_cold,biomeWeight));
+        BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_crystal,(biomeWeight/2)));
 
         BiomeManager.addVillageBiome(crystal_crystal,true);
 

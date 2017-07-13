@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
@@ -71,5 +73,13 @@ public class BlockCrystalBase extends Block implements ITileEntityProvider
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileCrystalCluster();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        tooltip.add("[WIP] Will Allow for The creation of Mixed Crystal Clusters");
+        tooltip.add("Will replace craftable crystals and have effects at tier 2+");
+        tooltip.add("Will be in the Next Beta Release");
     }
 }

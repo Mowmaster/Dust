@@ -312,6 +312,9 @@ tile.crystalcluster.name=Crystal Cluster Base [WIP]
 tile.machinebase.name=Machine Base
 item.crusheritems.name=Crusher Machine Components
 
+tile.crate1.name=Ancient Crate
+tile.pot1.name=Ancient Pot
+
 
 
 
