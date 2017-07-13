@@ -22,9 +22,20 @@ import java.util.Random;
 
 public class LargeAuraMachineRoom extends WorldGenerator
 {
+    public static Boolean ignoreProgress = true;
+
     public static void generateLight(World worldIn, BlockPos pos, int x, int z)
     {
-        worldIn.setBlockState(pos.add(x+0, 3, z+0), Blocks.GLOWSTONE.getDefaultState());
+        if(ignoreProgress == true)
+        {
+            worldIn.setBlockState(pos.add(x+0, 3, z+0), Blocks.GLOWSTONE.getDefaultState());
+        }
+        else
+        {
+            worldIn.setBlockState(pos.add(x+0, 3, z+0), Blocks.GLASS.getDefaultState());
+            worldIn.setBlockState(pos.add(x+0, 4, z+0), Blocks.LAVA.getDefaultState());
+        }
+
         worldIn.setBlockState(pos.add(x-1, 3, z+1), Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP));
         worldIn.setBlockState(pos.add(x-1, 3, z), Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP));
         worldIn.setBlockState(pos.add(x-1, 3, z-1), Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP));

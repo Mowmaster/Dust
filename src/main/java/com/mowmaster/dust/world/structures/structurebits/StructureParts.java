@@ -212,8 +212,11 @@ public class StructureParts
         }
     }
 
-    public static void generateFloorLoot(World worldIn,BlockPos pos,int x, int y, int z,int xmin, int xmax, int zmin, int zmax, String lootPoolType)
+    public static void generateFloorLoot(World worldIn,BlockPos pos,int x, int y, int z,int xmin, int xmax, int ymin, int ymax, int zmin, int zmax, String lootPoolType)
     {
+        Random random = new Random();
+
+
         //3air per 1 loot 25%
         ArrayList<IBlockState> FloorLoot1 = new ArrayList<>();
         FloorLoot1.add(BlockRegistry.redCrystalFive.getDefaultState());
@@ -320,25 +323,48 @@ public class StructureParts
         FloorLoot2.add(Blocks.AIR.getDefaultState());
         FloorLoot2.add(Blocks.AIR.getDefaultState());
 
+        ArrayList<IBlockState> DustType = new ArrayList<>();
+        DustType.add(BlockRegistry.redDust.getDefaultState());
+        DustType.add(BlockRegistry.blueDust.getDefaultState());
+        DustType.add(BlockRegistry.yellowDust.getDefaultState());
+        DustType.add(BlockRegistry.purpleDust.getDefaultState());
+        DustType.add(BlockRegistry.orangeDust.getDefaultState());
+        DustType.add(BlockRegistry.greenDust.getDefaultState());
+        DustType.add(BlockRegistry.whiteDust.getDefaultState());
+        DustType.add(BlockRegistry.blackDust.getDefaultState());
+        int randomDust = Math.abs(random.nextInt(DustType.size() - 1));
+
+        ArrayList<IBlockState> FloorLoot3 = new ArrayList<>();
+        FloorLoot3.add(DustType.get(randomDust));
+        FloorLoot3.add(Blocks.AIR.getDefaultState());
+        FloorLoot3.add(Blocks.AIR.getDefaultState());
+        FloorLoot3.add(Blocks.AIR.getDefaultState());
 
 
-
-        Random random = new Random();
-        for(int c=zmin;c<=zmax;c++) {
-            for (int a = xmin; a <= xmax; a++)
-            {
-                if(lootPoolType == "normal")
+        for(int b=ymin;b<=ymax;b++)
+        {
+            for(int c=zmin;c<=zmax;c++) {
+                for (int a = xmin; a <= xmax; a++)
                 {
-                    int randomStoneState = Math.abs(random.nextInt(FloorLoot1.size() - 1));
-                    worldIn.setBlockState(pos.add(a+x, y, c+z), FloorLoot1.get(randomStoneState));
-                }
-                if(lootPoolType == "reduced")
-                {
-                    int randomStoneState = Math.abs(random.nextInt(FloorLoot2.size() - 1));
-                    worldIn.setBlockState(pos.add(a+x, y, c+z), FloorLoot2.get(randomStoneState));
-                }
+                    if(lootPoolType == "normal")
+                    {
+                        int randomStoneState = Math.abs(random.nextInt(FloorLoot1.size() - 1));
+                        worldIn.setBlockState(pos.add(a+x, b+y, c+z), FloorLoot1.get(randomStoneState));
+                    }
+                    if(lootPoolType == "reduced")
+                    {
+                        int randomStoneState = Math.abs(random.nextInt(FloorLoot2.size() - 1));
+                        worldIn.setBlockState(pos.add(a+x, b+y, c+z), FloorLoot2.get(randomStoneState));
+                    }
+                    if(lootPoolType == "dust")
+                    {
+                        int randomDustOrAir = Math.abs(random.nextInt(FloorLoot3.size() - 1));
+                        worldIn.setBlockState(pos.add(a+x, b+y, c+z), FloorLoot3.get(randomDustOrAir));
+                    }
 
+                }
             }
         }
+
     }
 }

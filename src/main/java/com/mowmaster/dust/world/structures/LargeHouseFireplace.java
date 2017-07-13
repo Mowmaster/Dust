@@ -90,7 +90,7 @@ public class LargeHouseFireplace extends WorldGenerator
         pos = pos.up();
 
 
-        StructureParts.clearArea(worldIn,pos,0,50,-3,3,-4,4);
+        StructureParts.clearArea(worldIn,pos,0,15,-3,3,-4,4);
         StructureParts.createSolidFloor(worldIn,pos,stoneBrick,0,-1,0,-3,3,-4,4);
         StructureParts.createSolidFloor(worldIn,pos,colorWood,0,-1,0,-1,1,-2,2);
         StructureParts.createSolidFloor(worldIn,pos,stoneBrick,0,0,0,-3,3,-4,4);
@@ -100,7 +100,7 @@ public class LargeHouseFireplace extends WorldGenerator
         StructureParts.createSolidFloor(worldIn,pos,stone,0,4,0,-3,3,-4,4);
         StructureParts.createSolidWall(worldIn,pos,stone,4,5,-1,0,2,false);
         StructureParts.createSolidWall(worldIn,pos,stone,-4,5,-1,0,2,false);
-        StructureParts.clearArea(worldIn,pos,0,50,-2,2,-3,3);
+        StructureParts.clearArea(worldIn,pos,0,15,-2,2,-3,3);
 
         //DoorWayBit
         //Brick 3x3
@@ -158,7 +158,7 @@ public class LargeHouseFireplace extends WorldGenerator
         worldIn.setBlockState(pos.add(-4,1,-1),stoneBrickStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(BlockStairs.FACING, EnumFacing.WEST));
         worldIn.setBlockState(pos.add(-4,2,-1),stoneBrick);
 
-        StructureParts.generateFloorLoot(worldIn,pos,0,0,0,-3,3,-2,2,"reduced");
+        StructureParts.generateFloorLoot(worldIn,pos,0,0,0,-3,3,0,0,-2,2,"reduced");
 
         return true;
     }
