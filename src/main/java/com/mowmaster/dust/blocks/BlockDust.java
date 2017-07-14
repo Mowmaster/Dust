@@ -106,6 +106,14 @@ public class BlockDust extends BlockFalling {
                 }
             }
     }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
+        if(playerIn.hasAchievement(AchievementHandler.achievementDust))
+        {
+            playerIn.addStat(AchievementHandler.achievementDust);
+        }
+    }
 }
 
 
