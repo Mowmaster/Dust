@@ -4,6 +4,7 @@ import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +37,7 @@ public class BlockCrystalBase extends Block implements ITileEntityProvider
         this.setResistance(20);
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTTABS);
+        this.setSoundType(SoundType.GLASS);
     }
 
     @Override

@@ -7,19 +7,14 @@ import com.mowmaster.dust.blocks.ancientblocks.BlockAncientWalls;
 import com.mowmaster.dust.blocks.item.ItemBlockOre;
 import com.mowmaster.dust.blocks.sapling.*;
 import com.mowmaster.dust.enums.CrystalBlocks;
-import com.mowmaster.dust.enums.TreeTypes;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -94,19 +89,6 @@ public class BlockRegistry
     public static Block blackCrystalThree;
     public static Block blackCrystalTwo;
     public static Block blackCrystalOne;
-
-
-    public static Block ancientstone1;
-    public static Block ancientstoneslab1;
-    public static Block ancientstair1;
-    public static Block ancientwall1;
-    public static Block ancientfence1;
-
-    public static Block ancientobsidian1;
-    public static Block ancientobsidianslab1;
-    public static Block ancientobsidianstair1;
-    public static Block ancientobsidianwall1;
-    public static Block ancientobsidianfence1;
 
     public static Block redstone;
     public static Block redstonestairs;
@@ -286,23 +268,14 @@ public class BlockRegistry
     public static Block pot1;
 
     public static void init() {
-        redOre = new BlockBasic("redore", "red/redore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        blueOre = new BlockBasic("blueore", "blue/blueore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        yellowOre = new BlockBasic("yellowore", "yellow/yellowore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        purpleOre = new BlockBasic("purpleore", "purple/purpleore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        orangeOre = new BlockBasic("orangeore", "orange/orangeore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        greenOre = new BlockBasic("greenore", "green/greenore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        whiteOre = new BlockBasic("whiteore", "white/whiteore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-        blackOre = new BlockBasic("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 10, 5, 10);
-
-        logred = new BlockLog("log_red", "red/log_red");
-        logblue = new BlockLog("log_blue", "blue/log_blue");
-        logyellow = new BlockLog("log_yellow", "yellow/log_yellow");
-        logpurple = new BlockLog("log_purple", "purple/log_purple");
-        logorange = new BlockLog("log_orange", "orange/log_orange");
-        loggreen = new BlockLog("log_green", "green/log_green");
-        logwhite = new BlockLog("log_white", "white/log_white");
-        logblack = new BlockLog("log_black", "black/log_black");
+        redOre = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        blueOre = new BlockCrystalOre("blueore", "blue/blueore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        yellowOre = new BlockCrystalOre("yellowore", "yellow/yellowore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        purpleOre = new BlockCrystalOre("purpleore", "purple/purpleore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        orangeOre = new BlockCrystalOre("orangeore", "orange/orangeore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        greenOre = new BlockCrystalOre("greenore", "green/greenore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        whiteOre = new BlockCrystalOre("whiteore", "white/whiteore", Material.ROCK, SoundType.STONE, 10, 5, 10);
+        blackOre = new BlockCrystalOre("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 10, 5, 10);
 
         redCrystalFive = new BlockCrystal("blockredcrystalfive", "red/blockredcrystalfive");
         redCrystalFour = new BlockCrystal("blockredcrystalfour", "red/blockredcrystalfour");
@@ -352,20 +325,34 @@ public class BlockRegistry
         blackCrystalTwo = new BlockCrystal("blockblackcrystaltwo", "black/blockblackcrystaltwo");
         blackCrystalOne = new BlockCrystal("blockblackcrystalone", "black/blockblackcrystalone");
 
+        redDust = new BlockDust("reddust","red/reddust");
+        blueDust = new BlockDust("bluedust","blue/bluedust");
+        yellowDust = new BlockDust("yellowdust","yellow/yellowdust");
+        purpleDust = new BlockDust("purpledust","purple/purpledust");
+        orangeDust = new BlockDust("orangedust","orange/orangedust");
+        greenDust = new BlockDust("greendust","green/greendust");
+        whiteDust = new BlockDust("whitedust","white/whitedust");
+        blackDust = new BlockDust("blackdust","black/blackdust");
+
         leaf = new BlockLeaf("leaves");
 
+        logred = new BlockLog("log_red", "red/log_red");
+        logblue = new BlockLog("log_blue", "blue/log_blue");
+        logyellow = new BlockLog("log_yellow", "yellow/log_yellow");
+        logpurple = new BlockLog("log_purple", "purple/log_purple");
+        logorange = new BlockLog("log_orange", "orange/log_orange");
+        loggreen = new BlockLog("log_green", "green/log_green");
+        logwhite = new BlockLog("log_white", "white/log_white");
+        logblack = new BlockLog("log_black", "black/log_black");
 
-        ancientstone1 = new BlockBasic("ancientstone1", "ancient/ancientstone1", Material.ROCK, SoundType.STONE, 20, 10, 10);
-        ancientstoneslab1 = new BlockAncientSlabs("ancientstoneslab1", "ancient/ancientstoneslab1");
-        ancientstair1 = new BlockAncientStairs("ancientstairs1", "ancient/ancientstairs1", ancientstone1);
-        ancientwall1 = new BlockAncientWalls("ancientwalls1", "ancient/ancientwalls1", ancientstone1);
-        ancientfence1 = new BlockAncientFences("ancientfences1", "ancient/ancientfences1");
-
-        ancientobsidian1 = new BlockBasic("ancientobsidian1", "ancient/ancientobsidian1", Material.ROCK, SoundType.STONE, 20, 10, 10);
-        ancientobsidianslab1 = new BlockAncientSlabs("ancientobsidianslab1", "ancient/ancientobsidianslab1");
-        ancientobsidianstair1 = new BlockAncientStairs("ancientobsidianstairs1", "ancient/ancientobsidianstairs1", ancientobsidian1);
-        ancientobsidianwall1 = new BlockAncientWalls("ancientobsidianwalls1", "ancient/ancientobsidianwalls1", ancientobsidian1);
-        ancientobsidianfence1 = new BlockAncientFences("ancientobsidianfences1", "ancient/ancientobsidianfences1");
+        saplingred = new SaplingRed("saplingred","red/saplingred");
+        saplingblue = new SaplingBlue("saplingblue","blue/saplingblue");
+        saplingyellow = new SaplingYellow("saplingyellow","yellow/saplingyellow");
+        saplingpurple = new SaplingPurple("saplingpurple","purple/saplingpurple");
+        saplingorange = new SaplingOrange("saplingorange","orange/saplingorange");
+        saplinggreen = new SaplingGreen("saplinggreen","green/saplinggreen");
+        saplingwhite = new SaplingWhite("saplingwhite","white/saplingwhite");
+        saplingblack = new SaplingBlack("saplingblack","black/saplingblack");
 
         redstone = new BlockBasic("redstone", "ancient/redstone", Material.ROCK, SoundType.STONE, 20, 10, 10);
         redstonestairs = new BlockAncientStairs("redstonestairs", "ancient/redstonestairs", redstone);
@@ -523,24 +510,6 @@ public class BlockRegistry
         crystalCluster = new BlockCrystalBase("crystalcluster", "crystalcluster");
         machineBase = new BlockMachineBase("machinebase", "machinebase");
 
-        saplingred = new SaplingRed("saplingred","red/saplingred");
-        saplingblue = new SaplingBlue("saplingblue","blue/saplingblue");
-        saplingyellow = new SaplingYellow("saplingyellow","yellow/saplingyellow");
-        saplingpurple = new SaplingPurple("saplingpurple","purple/saplingpurple");
-        saplingorange = new SaplingOrange("saplingorange","orange/saplingorange");
-        saplinggreen = new SaplingGreen("saplinggreen","green/saplinggreen");
-        saplingwhite = new SaplingWhite("saplingwhite","white/saplingwhite");
-        saplingblack = new SaplingBlack("saplingblack","black/saplingblack");
-
-        redDust = new BlockDust("reddust","red/reddust");
-        blueDust = new BlockDust("bluedust","blue/bluedust");
-        yellowDust = new BlockDust("yellowdust","yellow/yellowdust");
-        purpleDust = new BlockDust("purpledust","purple/purpledust");
-        orangeDust = new BlockDust("orangedust","orange/orangedust");
-        greenDust = new BlockDust("greendust","green/greendust");
-        whiteDust = new BlockDust("whitedust","white/whitedust");
-        blackDust = new BlockDust("blackdust","black/blackdust");
-
         crate1 = new BlockCrate("crate1","crate1");
         pot1 = new BlockPot("pot1","pot1");
     }
@@ -616,20 +585,6 @@ public class BlockRegistry
 
 
         registerBlock(leaf, new ItemBlockOre(leaf));
-
-
-
-        registerBlock(ancientstone1);
-        registerBlock(ancientstoneslab1);
-        registerBlock(ancientstair1);
-        registerBlock(ancientwall1);
-        registerBlock(ancientfence1);
-
-        registerBlock(ancientobsidian1);
-        registerBlock(ancientobsidianstair1);
-        registerBlock(ancientobsidianslab1);
-        registerBlock(ancientobsidianfence1);
-        registerBlock(ancientobsidianwall1);
 
         registerBlock(redstone);
         registerBlock(redstonestairs);
@@ -886,19 +841,6 @@ public class BlockRegistry
         }
 
 
-
-
-        registerRenderAncient(ancientstone1);
-        registerRenderAncient(ancientstoneslab1);
-        registerRenderAncient(ancientstair1);
-        registerRenderAncient(ancientwall1);
-        registerRenderAncient(ancientfence1);
-
-        registerRenderAncient(ancientobsidian1);
-        registerRenderAncient(ancientobsidianslab1);
-        registerRenderAncient(ancientobsidianstair1);
-        registerRenderAncient(ancientobsidianwall1);
-        registerRenderAncient(ancientobsidianfence1);
 
         registerRenderAncient(redstone);
         registerRenderAncient(redstonestairs);

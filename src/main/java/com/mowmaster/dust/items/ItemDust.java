@@ -47,4 +47,5 @@ public class ItemDust extends Item
         return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.RED.getName();
     }
 
+
 }

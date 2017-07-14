@@ -4,17 +4,9 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 

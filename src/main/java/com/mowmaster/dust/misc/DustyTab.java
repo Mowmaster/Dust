@@ -14,4 +14,12 @@ public class DustyTab
             return new ItemStack(BlockRegistry.redCrystalFive);
         }
     };
+
+    public static final CreativeTabs DUSTBLOCKSTABS = new CreativeTabs("dustblockstabs") {
+        @Override
+        public ItemStack getTabIconItem()
+        {
+            return new ItemStack(BlockRegistry.redbricks);
+        }
+    };
 }

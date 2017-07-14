@@ -1,15 +1,18 @@
 package com.mowmaster.dust.blocks.sapling;
 
-import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.enums.TreeTypes;
-import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.misc.AchievementHandler;
+import com.mowmaster.dust.misc.DustyTab;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,7 +32,7 @@ public abstract class SaplingBase extends BlockBush implements IGrowable
         super();
         this.setTickRandomly(true);
         this.setSoundType(SoundType.PLANT);
-        setCreativeTab(DustyTab.DUSTTABS);
+        setCreativeTab(DustyTab.DUSTBLOCKSTABS);
     }
 
     public abstract TreeTypes getTreeType();
@@ -82,5 +85,27 @@ public abstract class SaplingBase extends BlockBush implements IGrowable
     public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!playerIn.hasAchievement(AchievementHandler.achievementSapling))
+        {
+            playerIn.addStat(AchievementHandler.achievementSapling);
+        }
+        return false;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        if(placer instanceof EntityPlayer)
+        {
+            EntityPlayer playerIn = (EntityPlayer) placer;
+            if(!playerIn.hasAchievement(AchievementHandler.achievementSapling))
+            {
+                playerIn.addStat(AchievementHandler.achievementSapling);
+            }
+        }
     }
 }

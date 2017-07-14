@@ -2,19 +2,19 @@ package com.mowmaster.dust.recipes;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static com.mowmaster.dust.blocks.BlockRegistry.*;
-import static com.mowmaster.dust.items.ItemRegistry.bit;
-import static com.mowmaster.dust.items.ItemRegistry.crystal;
-import static com.mowmaster.dust.items.ItemRegistry.dust;
+import static com.mowmaster.dust.items.ItemRegistry.*;
 
 /**
  * Created by KingMowmaster on 3/1/2017.
@@ -45,6 +45,10 @@ public class CraftingRecipes
 
         //Use for Stone Dust
         GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE,1),new ItemStack(dust,1,8),new ItemStack(dust,1,8),new ItemStack(dust,1,8),new ItemStack(dust,1,8));
+        //Craftable Scrolls
+        GameRegistry.addShapelessRecipe(new ItemStack(ItemRegistry.scroll,1)
+                ,new ItemStack(Items.PAPER,1),new ItemStack(dust,1,0),new ItemStack(dust,1,1),new ItemStack(dust,1,2),new ItemStack(dust,1,3)
+                ,new ItemStack(dust,1,4),new ItemStack(dust,1,5),new ItemStack(dust,1,6),new ItemStack(dust,1,7));
         
         //Craftable Crystals
         GameRegistry.addShapelessRecipe(new ItemStack(BlockRegistry.redCrystalFive),new ItemStack(Blocks.STONE,1)
@@ -292,6 +296,12 @@ public class CraftingRecipes
         GameRegistry.addShapedRecipe(new ItemStack(blackplankstairs, 4), new Object[]{"X  ", "XX ", "XXX", 'X', new ItemStack(blackplanks)});
         GameRegistry.addShapedRecipe(new ItemStack(blackplankslabs, 6), new Object[]{"XXX", 'X', new ItemStack(blackplanks)});
         GameRegistry.addShapedRecipe(new ItemStack(blackplankfences, 5), new Object[]{"XYX", "XYX", 'X', new ItemStack(blackplanks), 'Y', new ItemStack(blackplankslabs)});
+
+        //Finnish'er
+        GameRegistry.addShapedRecipe(new ItemStack(finnisher,1), new Object[]{"ABC", "DZE","FGH",
+                'A', new ItemStack(redCrystalFive), 'B', new ItemStack(blueCrystalFive),'C', new ItemStack(yellowCrystalFive),
+                'D', new ItemStack(purpleCrystalFive),'Z', new ItemStack(Items.GLASS_BOTTLE),'E', new ItemStack(orangeCrystalFive),
+                'F', new ItemStack(greenCrystalFive),'G', new ItemStack(whiteCrystalFive),'H', new ItemStack(blackCrystalFive)});
     }
 }
 

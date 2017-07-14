@@ -1,31 +1,27 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
-
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 public class BlockMachineBase extends Block
@@ -40,6 +36,7 @@ public class BlockMachineBase extends Block
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.useNeighborBrightness = true;
+        this.setSoundType(SoundType.ANVIL);
     }
 
     @Override
@@ -51,6 +48,12 @@ public class BlockMachineBase extends Block
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        if (!playerIn.hasAchievement(AchievementHandler.achievementFindMachine))
+        {
+            playerIn.addStat(AchievementHandler.achievementFindMachine);
+        }
+
+
         if((playerIn.getHeldItem(hand) != null))
         {
             if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.crushingcomponents))) {

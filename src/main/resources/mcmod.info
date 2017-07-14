@@ -3,7 +3,7 @@
   "modid": "dust",
   "name": "Dust",
   "description": "Crystals spawn naturally in the world,they can be used for all manner of things.",
-  "version": "0.0.0.4",
+  "version": "0.1.0.0",
   "mcversion": "1.11.2",
   "url": "",
   "updateUrl": "",

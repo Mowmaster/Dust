@@ -1,5 +1,6 @@
 package com.mowmaster.dust.misc;
 
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
@@ -19,6 +20,10 @@ public class AchievementHandler
     private static List<Achievement> achievements = new ArrayList<Achievement>();
 
     public static Achievement achievementCrystal = createAchievement("minecrystal",0,0, ItemRegistry.crystal);
+    public static Achievement achievementDust = createAchievement("getdust",0,1, ItemRegistry.dust);
+    public static Achievement achievementSapling = createAchievement("plantatree",1,1, BlockRegistry.saplingpurple);
+    public static Achievement achievementFindMachine = createAchievement("machineblock",-2,-2, ItemRegistry.crushingcomponents);
+    public static Achievement achievementLoot = createAchievement("foundloot",-2,-1, BlockRegistry.pot1);
 
 
     public static Achievement achievementScrollA = createAchievement("scrolla",-2,1, ItemRegistry.scroll);

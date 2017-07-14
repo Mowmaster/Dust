@@ -2,6 +2,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -18,10 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
-
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
-//import static net.minecraft.block.BlockPistonBase.getFacingFromEntity;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 public class BlockLog extends Block
@@ -40,6 +38,7 @@ public class BlockLog extends Block
         this.setResistance(20);
         this.setLightLevel(5);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
+        this.setSoundType(SoundType.WOOD);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
 

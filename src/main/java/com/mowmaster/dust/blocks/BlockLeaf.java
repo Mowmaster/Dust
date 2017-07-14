@@ -3,8 +3,6 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.enums.CrystalBlocks;
-import com.mowmaster.dust.enums.CrystalItems;
-import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.*;
@@ -17,7 +15,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -29,10 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
-
-import static com.mowmaster.dust.items.ItemRegistry.dust;
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 

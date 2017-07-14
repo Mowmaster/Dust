@@ -16,16 +16,18 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import java.util.Random;
 
 import static com.mowmaster.dust.blocks.BlockRegistry.*;
+import static com.mowmaster.dust.misc.DustConfigurationFile.*;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
 public class OreGeneration implements IWorldGenerator
 {
 
-    int BiomeSpecificStructureChance = 100; //Biome Specific Structures
-    int OverWorldStructureChance = 200; //1 in 50 chunck chance
-    int randomnum = 9;//Biome Specific Specialized Biomes Tree Generation
-    int randomworld = 19; //All Overworld Biomes ore spawn rate
-    int count = 3;// How many in an ore cluster
+    int BiomeSpecificStructureChance = structuresInCrystal; //Biome Specific Structures
+    int OverWorldStructureChance = structuresInWorld; //1 in X chunck chance
+    int randomnum = treeGenChance;//Biome Specific Specialized Biomes Tree Generation
+    int randomworld = anyBiomeOreSpawnChance; //All Overworld Biomes ore spawn rate
+    int count = oreClusterSize;// How many in an ore cluster
+
     private WorldGenerator red_ore;
     private WorldGenerator blue_ore;
     private WorldGenerator yellow_ore;

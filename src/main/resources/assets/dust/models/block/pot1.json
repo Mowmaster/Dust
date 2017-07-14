@@ -1,4 +1,5 @@
 {
+    "parent": "block/cube",
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
         "0": "dust:blocks/ancient/greenstone",

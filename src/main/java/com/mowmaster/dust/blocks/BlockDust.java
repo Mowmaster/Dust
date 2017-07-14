@@ -1,6 +1,6 @@
 package com.mowmaster.dust.blocks;
 
-import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
@@ -24,8 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockRegistry.*;
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 //Result of the dust from a crusher
 public class BlockDust extends BlockFalling {
@@ -94,6 +93,18 @@ public class BlockDust extends BlockFalling {
     {
         tooltip.add("[WIP] Can only be gotten from Crushed Crystals,");
         tooltip.add("in next beta release.");
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+            if(entityIn instanceof EntityPlayer)
+            {
+                EntityPlayer playerIn = (EntityPlayer) entityIn;
+                if(playerIn.hasAchievement(AchievementHandler.achievementDust))
+                {
+                    playerIn.addStat(AchievementHandler.achievementDust);
+                }
+            }
     }
 }
 

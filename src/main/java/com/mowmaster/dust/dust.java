@@ -6,6 +6,7 @@ import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
 import com.mowmaster.dust.recipes.CraftingRecipes;
+import com.mowmaster.dust.recipes.OreDictDust;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -57,6 +58,7 @@ public class dust {
         BlockRegistry.register();
         ItemRegistry.init();
         ItemRegistry.register();
+        OreDictDust.addEntries();
         TileRegistry.registerTile();
         proxy.PreInit();
         proxy.registerTile();

@@ -7,14 +7,16 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import static com.mowmaster.dust.misc.DustConfigurationFile.*;
+
 
 public class BiomeRegistry
 {
-    private static int biomeWeight = 20;
-    private static int  biomeCrystalHot = 200;
-    private static int biomeCrystalWarm = 201;
-    private static int biomeCrystalCold = 202;
-    private static int biomeCrystal = 203;
+    private static int biomeWeight = biomeWeightChunks;
+    private static int  biomeCrystalHot = hotBiome;
+    private static int biomeCrystalWarm = warmBiome;
+    private static int biomeCrystalCold = coldBiome;
+    private static int biomeCrystal = crystalBiome;
 
     public static void BiomeReg()
     {

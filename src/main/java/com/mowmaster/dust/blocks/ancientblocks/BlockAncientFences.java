@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 /**

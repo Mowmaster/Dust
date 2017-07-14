@@ -1,6 +1,7 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 
-import static com.mowmaster.dust.misc.DustyBlockTab.DUSTBLOCKSTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 public class BlockCrate extends Block
@@ -34,6 +35,7 @@ public class BlockCrate extends Block
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setCreativeTab(DUSTBLOCKSTABS);
+        this.setSoundType(SoundType.WOOD);
     }
 
     @Override
@@ -71,6 +73,14 @@ public class BlockCrate extends Block
                     worldIn.setBlockState(pos, Blocks.COAL_ORE.getDefaultState());
                 }
             }
+        }
+    }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        if (!player.hasAchievement(AchievementHandler.achievementLoot))
+        {
+            player.addStat(AchievementHandler.achievementLoot);
         }
     }
 

@@ -1,10 +1,13 @@
 package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -19,6 +22,7 @@ public class ItemRegistry
     public static Item bit;
     public static Item scroll;
     public static Item crushingcomponents;
+    public static Item finnisher;
 
 
 
@@ -30,7 +34,10 @@ public class ItemRegistry
         bit = new ItemBit("bit");
         scroll = new ItemScroll("scroll","scroll");
         crushingcomponents = new ItemBasic("crusheritems","crusheritems");
-
+        finnisher = new ItemFinnisher("finnisher","finnisher",10,10.0F,false,
+                new PotionEffect(Potion.getPotionById(3),1200,10),
+                new PotionEffect(Potion.getPotionById(5),1200,10),
+        new PotionEffect(Potion.getPotionById(10),1200,5));
     }
 
     public static void register()
@@ -40,6 +47,7 @@ public class ItemRegistry
         registerItem(bit);
         registerItem(scroll);
         registerItem(crushingcomponents);
+        registerItem(finnisher);
     }
 
     public static void registerRenders()
@@ -61,6 +69,7 @@ public class ItemRegistry
 
         registerRender(scroll);
         registerRender(crushingcomponents);
+        registerRender(finnisher);
     }
 
     public static void registerItem(Item item)

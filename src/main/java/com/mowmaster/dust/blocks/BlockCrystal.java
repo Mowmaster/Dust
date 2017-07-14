@@ -27,6 +27,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
+
+import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
+import static com.mowmaster.dust.misc.DustConfigurationFile.oreRegrowthRate;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
@@ -34,7 +37,7 @@ import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 public class BlockCrystal extends BlockDirectional
 {
 
-    public static Boolean canPlayerExplode = true;
+    public static Boolean canPlayerExplode = funhaters;
     //Covers all crystals
     //Using BlockEndRod as an "example"
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
@@ -185,7 +188,7 @@ public class BlockCrystal extends BlockDirectional
             }
         }
 
-        if(canPlayerExplode == true)
+        if(canPlayerExplode == false)
         {
             if (!worldIn.isRemote && entityIn instanceof EntityAnimal || entityIn instanceof EntitySquid || entityIn instanceof EntityVillager || entityIn instanceof EntityBat || entityIn instanceof EntityPlayer)
             {
@@ -392,7 +395,7 @@ public class BlockCrystal extends BlockDirectional
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
         super.randomTick(worldIn, pos, state, random);
-        final int CHANCE = 100;
+        final int CHANCE = oreRegrowthRate;
 
         int rand = random.nextInt(1000);
 
