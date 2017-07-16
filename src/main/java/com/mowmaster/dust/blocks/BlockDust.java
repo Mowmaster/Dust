@@ -94,7 +94,7 @@ public class BlockDust extends BlockFalling {
         tooltip.add("[WIP] Can only be gotten from Crushed Crystals,");
         tooltip.add("in next beta release.");
     }
-
+/*
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
             if(entityIn instanceof EntityPlayer)
@@ -114,6 +114,7 @@ public class BlockDust extends BlockFalling {
             playerIn.addStat(AchievementHandler.achievementDust);
         }
     }
+    */
 }
 
 

@@ -16,15 +16,6 @@ public class CrystalWarm extends Biome
         this.topBlock = Blocks.GRASS.getDefaultState();
         this.fillerBlock = Blocks.DIRT.getDefaultState();
         this.spawnableCreatureList.clear();
-
-        this.theBiomeDecorator.coalGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),8);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blueOre.getDefaultState(),6);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.yellowOre.getDefaultState(),9);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.greenOre.getDefaultState(),9);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.whiteOre.getDefaultState(),1);
-        this.theBiomeDecorator.lapisGen = new WorldGenMinable(BlockRegistry.blackOre.getDefaultState(),1);
-
-        this.theBiomeDecorator.grassPerChunk = 5;
     }
 
 

@@ -498,7 +498,7 @@ public class BlockCrystal extends BlockDirectional
         }
         return 0;
     }
-
+/*
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
         if (!playerIn.hasAchievement(AchievementHandler.achievementCrystal))
@@ -506,7 +506,7 @@ public class BlockCrystal extends BlockDirectional
             playerIn.addStat(AchievementHandler.achievementCrystal);
         }
     }
-
+*/
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {

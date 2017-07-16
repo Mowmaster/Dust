@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.mowmaster.dust.misc.AchievementHandler.achievementScrollA;
+//import static com.mowmaster.dust.misc.AchievementHandler.achievementScrollA;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
@@ -36,6 +36,7 @@ public class ItemScroll extends Item
         this.maxStackSize = 1;
         this.setCreativeTab(DUSTTABS);
     }
+    /*
     //Make way to increese stacksize or on item pickup to paper if player has all notes, or alt to give research notes if player has more
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
@@ -195,15 +196,17 @@ public class ItemScroll extends Item
                 if (ScrollsDiscovered.get(scrollnum).equals("achievementScrollZ")) {playerIn.addStat(AchievementHandler.achievementScrollZ);}
             }
         }
+
         return new ActionResult(EnumActionResult.SUCCESS, itemstack);
     }
-
+ */
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
         tooltip.add("[WIP] Will randomly give you a letter of the Ancient Alphabet.");
         tooltip.add("Not needed till next beta release(will also be reworked)");
     }
+
 }
 
 

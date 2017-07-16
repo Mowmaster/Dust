@@ -3,20 +3,16 @@ package com.mowmaster.dust.misc;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
-import net.minecraftforge.common.AchievementPage;
-import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AchievementHandler
 {
+    /*
     private static List<Achievement> achievements = new ArrayList<Achievement>();
 
     public static Achievement achievementCrystal = createAchievement("minecrystal",0,0, ItemRegistry.crystal);
@@ -93,5 +89,5 @@ public class AchievementHandler
         return achievement;    }
 
 
-
+*/
 }

@@ -62,9 +62,9 @@ public class dust {
         TileRegistry.registerTile();
         proxy.PreInit();
         proxy.registerTile();
-        BiomeRegistry.BiomeReg();
+//        BiomeRegistry.BiomeReg();
 
-        AchievementHandler.registerAchievement();
+        //AchievementHandler.registerAchievement();
     }
 
     @Mod.EventHandler
@@ -72,7 +72,7 @@ public class dust {
         proxy.init();
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
-        CraftingRecipes.CraftingRecipes();
+        //CraftingRecipes.CraftingRecipes();
 
     }
 

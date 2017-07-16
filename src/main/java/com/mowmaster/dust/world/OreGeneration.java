@@ -7,8 +7,8 @@ import com.mowmaster.dust.world.structures.allbiomestructures.SmallStoneWell;
 import com.mowmaster.dust.world.treegeneration.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -166,8 +166,9 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + 8;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + 8;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -183,8 +184,9 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + rand.nextInt(1)+ 7;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(1)+ 7;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -200,8 +202,9 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + rand.nextInt(3)+ 6;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(3)+ 6;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -217,8 +220,9 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + rand.nextInt(5)+ 5;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(5)+ 5;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -234,8 +238,9 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + rand.nextInt(7)+ 4;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(7)+ 4;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+               // if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -251,8 +256,9 @@ public class OreGeneration implements IWorldGenerator
             int x = chunk_X*16 + rand.nextInt(9)+ 3;
             int y = world.getHeight(chunk_X,chunk_Z) + 1;
             int z = chunk_Z*16 + rand.nextInt(9)+ 3;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
             //Once this is good the below is biome specific
-            if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+            //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -268,8 +274,9 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + rand.nextInt(11)+2;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(11)+2;
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -285,16 +292,16 @@ public class OreGeneration implements IWorldGenerator
                 int x = chunk_X*16 + rand.nextInt(15);
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(15);
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                //if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
     }
 
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
-    {
-
+    @Override
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         switch(world.provider.getDimension())
         {
             case 0: //Overworld

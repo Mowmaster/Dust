@@ -19,9 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-/**
- * Created by KingMowmaster on 6/5/2017.
- */
 public class BlockAncientWalls extends BlockWall
 {
     public BlockAncientWalls(String unloc, String registryName, Block block)
@@ -47,9 +44,8 @@ public class BlockAncientWalls extends BlockWall
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tabs, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(itemIn, 1, 0));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(this));
     }
 }

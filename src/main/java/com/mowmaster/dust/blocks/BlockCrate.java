@@ -75,7 +75,7 @@ public class BlockCrate extends Block
             }
         }
     }
-
+/*
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
         if (!player.hasAchievement(AchievementHandler.achievementLoot))
@@ -83,7 +83,7 @@ public class BlockCrate extends Block
             player.addStat(AchievementHandler.achievementLoot);
         }
     }
-
+*/
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {

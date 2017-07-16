@@ -21,6 +21,7 @@ import static com.mowmaster.dust.items.ItemRegistry.*;
  */
 public class CraftingRecipes
 {
+    /*
     public static void CraftingRecipes() {
         for (int i = 0; i < 8; i++) {
             //[WIP] - Until the Crusher next Version-Crystals to Dust
@@ -303,6 +304,7 @@ public class CraftingRecipes
                 'D', new ItemStack(purpleCrystalFive),'Z', new ItemStack(Items.GLASS_BOTTLE),'E', new ItemStack(orangeCrystalFive),
                 'F', new ItemStack(greenCrystalFive),'G', new ItemStack(whiteCrystalFive),'H', new ItemStack(blackCrystalFive)});
     }
+    */
 }
 
 

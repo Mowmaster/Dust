@@ -10,6 +10,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
@@ -74,7 +75,7 @@ public class ItemRegistry
 
     public static void registerItem(Item item)
     {
-        GameRegistry.register(item);
+        ForgeRegistries.ITEMS.register(item);
     }
 
     public static void registerRender(Item item)
