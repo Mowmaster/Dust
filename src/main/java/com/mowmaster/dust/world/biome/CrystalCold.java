@@ -16,7 +16,6 @@ public class CrystalCold extends Biome
         this.topBlock = Blocks.GRASS.getDefaultState();
         this.fillerBlock = Blocks.DIRT.getDefaultState();
         this.spawnableCreatureList.clear();
-        this.
     }
 
 

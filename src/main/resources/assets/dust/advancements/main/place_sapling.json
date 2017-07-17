@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:red/saplingred"
+    },
+    "title": {
+      "translate": "advancement.dust:placeSapling"
+    },
+    "description": {
+      "translate": "advancement.dust:placeSapling.desc"
+    }
+  },
+  "parent": "dust:main/root",
+  "criteria": {
+    "red": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "dust:red/saplingred"
+      }
+    }
+  }
+}

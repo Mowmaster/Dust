@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:red/blockredcrystalfive"
+    },
+    "title": {
+      "translate": "advancement.dust:root"
+    },
+    "description": {
+      "translate": "advancement.dust:root.desc"
+    },
+    "background": "dust:textures/blocks/ancient/whiteplanks.png",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "pickup_crystal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "dust:crystal",
+            "data": 0
+          }
+        ]
+      }
+    }
+  }
+}
