@@ -6,16 +6,11 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.*;
-import static net.minecraft.world.biome.Biome.registerBiome;
 
 
 public class BiomeRegistry
 {
     private static int biomeWeight = biomeWeightChunks;
-    private static int  biomeCrystalHot = hotBiome;
-    private static int biomeCrystalWarm = warmBiome;
-    private static int biomeCrystalCold = coldBiome;
-    private static int biomeCrystal = crystalBiome;
 
     public static void BiomeReg()
     {
@@ -24,31 +19,23 @@ public class BiomeRegistry
     }
 
     public static Biome crystal_hot;
-    public static final int biomeIdHot = biomeCrystalHot;
     public static Biome crystal_warm;
-    public static final int biomeIdWarm = biomeCrystalWarm;
     public static Biome crystal_cold;
-    public static final int biomeIdCold = biomeCrystalCold;
     public static Biome crystal_crystal;
-    public static final int biomeIdCrystal = biomeCrystal;
-
     public static void initBiome()
     {
-
-        //registerBiome(biomeIdHot, "crystalHot", new CrystalHot(new Biome.BiomeProperties("CrystalHot").setWaterColor(0).setRainDisabled().setTemperature(3.0f).setBaseHeight(1.5f).setHeightVariation(0.75f)));
-        /*
-        crystal_hot = new CrystalHot(new Biome.BiomeProperties("CrystalHot").setWaterColor(0).setRainDisabled().setTemperature(3.0f).setBaseHeight(1.5f).setHeightVariation(0.75f));
-        //Biome.registerBiome(biomeIdHot,"CrystalHot",crystal_hot);
-        crystal_warm = new CrystalWarm(new Biome.BiomeProperties("CrystalWarm").setWaterColor(0).setRainDisabled().setTemperature(3.0f).setBaseHeight(1.5f).setHeightVariation(0.75f));
+        crystal_hot = new CrystalHot(new Biome.BiomeProperties("Crystal Hot").setWaterColor(0).setRainDisabled().setBaseHeight(0.125F).setHeightVariation(0.05F).setTemperature(2.0F));
+        crystal_hot.setRegistryName("crystalhot");
+        ForgeRegistries.BIOMES.register(crystal_hot);
+        crystal_warm = new CrystalWarm(new Biome.BiomeProperties("Crystal Warm").setWaterColor(0).setRainDisabled().setBaseHeight(0.125F).setHeightVariation(0.05F).setTemperature(0.8F));
+        crystal_warm.setRegistryName("crystalwarm");
         ForgeRegistries.BIOMES.register(crystal_warm);
-        //Biome.registerBiome(biomeIdWarm,"CrystalWarm",crystal_warm);
-        crystal_cold = new CrystalCold(new Biome.BiomeProperties("CrystalCold").setWaterColor(0).setRainDisabled().setTemperature(3.0f).setBaseHeight(1.5f).setHeightVariation(0.75f));
+        crystal_cold = new CrystalCold(new Biome.BiomeProperties("Crystal Cold").setWaterColor(0).setRainDisabled().setBaseHeight(0.2F).setHeightVariation(0.2F).setTemperature(0.25F));
+        crystal_cold.setRegistryName("crystalcold");
         ForgeRegistries.BIOMES.register(crystal_cold);
-        //Biome.registerBiome(biomeIdCold,"CrystalCold",crystal_cold);
-        crystal_crystal = new Crystal(new Biome.BiomeProperties("Crystal").setWaterColor(0).setRainDisabled().setTemperature(3.0f).setBaseHeight(1.5f).setHeightVariation(0.75f));
+        crystal_crystal = new Crystal(new Biome.BiomeProperties("Crystal").setWaterColor(0).setRainDisabled().setBaseHeight(2.0F).setHeightVariation(0.125F).setTemperature(0.8F));
+        crystal_crystal.setRegistryName("crystal");
         ForgeRegistries.BIOMES.register(crystal_crystal);
-        //Biome.registerBiome(biomeIdCrystal,"Crystal",crystal_crystal);
-        */
     }
     public static void regBiome()
     {

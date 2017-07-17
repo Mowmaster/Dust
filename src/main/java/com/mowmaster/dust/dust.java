@@ -62,7 +62,7 @@ public class dust {
         TileRegistry.registerTile();
         proxy.PreInit();
         proxy.registerTile();
-//        BiomeRegistry.BiomeReg();
+        BiomeRegistry.BiomeReg();
 
         //AchievementHandler.registerAchievement();
     }
