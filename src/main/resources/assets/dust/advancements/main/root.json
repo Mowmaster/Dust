@@ -11,7 +11,8 @@
     },
     "background": "dust:textures/blocks/ancient/whiteplanks.png",
     "show_toast": true,
-    "announce_to_chat": true
+    "announce_to_chat": true,
+    "hidden": true
   },
   "criteria": {
     "pickup_crystal": {
