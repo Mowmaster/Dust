@@ -20,6 +20,7 @@
     "green": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:green/saplinggreen"      }    },
     "white": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:white/saplingwhite"      }    },
     "black": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:black/saplingblack"      }    },
-    "requirements":[["red","blue","yellow","purple","orange","green","white","black"]]
+    "requirements":[["red","blue","yellow","purple","orange","green","white","black"]],
+    //"rewards":{"recipes":["dust: all wood plank recipes"]}
   }
 }
