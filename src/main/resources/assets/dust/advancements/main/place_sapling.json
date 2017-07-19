@@ -12,15 +12,16 @@
   },
   "parent": "dust:main/root",
   "criteria": {
-    "red": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:red/saplingred"      }    },
-    "blue": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:blue/saplingblue"      }    },
-    "yellow": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:yellow/saplingyellow"      }    },
-    "purple": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:purple/saplingpurple"      }    },
-    "orange": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:orange/saplingorange"      }    },
-    "green": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:green/saplinggreen"      }    },
-    "white": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:white/saplingwhite"      }    },
-    "black": {      "trigger": "minecraft:placed_block",      "conditions": {        "block": "dust:black/saplingblack"      }    },
-    "requirements":[["red","blue","yellow","purple","orange","green","white","black"]],
-    //"rewards":{"recipes":["dust: all wood plank recipes"]}
-  }
+    "red": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:red/saplingred"}},
+    "blue": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:blue/saplingblue"}},
+    "yellow": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:yellow/saplingyellow"}},
+    "purple": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:purple/saplingpurple"}},
+    "orange": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:orange/saplingorange"}},
+    "green": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:green/saplinggreen"}},
+    "white": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:white/saplingwhite"}},
+    "black": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:black/saplingblack"}}
+  },
+  "requirements": [
+    ["red", "blue","yellow", "purple","orange","green","white","black"]
+  ]
 }
