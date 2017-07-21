@@ -1,0 +1,18 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:machinebase"
+    },
+    "title": {
+      "translate": "Ouch, My Noggin!!!"
+    },
+    "description": {
+      "translate": "Accidentially have a Machine Base fall on you"
+    }
+
+  },
+  "parent": "dust:main/root",
+  "criteria": {
+    "machine": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:machinebase"}}
+  }
+}

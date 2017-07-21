@@ -4,27 +4,17 @@
       "item": "dust:red/blockredcrystalfive"
     },
     "title": {
-      "translate": "advancement.dust:root"
+      "translate": "Ohhhh, Sparkily!!!"
     },
     "description": {
-      "translate": "advancement.dust:root.desc"
+      "translate": "Obtain a Crystal for Yourself"
     },
     "background": "dust:textures/blocks/ancient/whiteplanks.png",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": true
+    "hidden": false
   },
   "criteria": {
-    "pickup_crystal": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "dust:crystal",
-            "data": 0
-          }
-        ]
-      }
-    }
+    "pickup_crystal": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:crystal"}]}}
   }
 }

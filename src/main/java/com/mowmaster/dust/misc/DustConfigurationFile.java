@@ -9,11 +9,6 @@ public class DustConfigurationFile
 {
     public static Configuration dustConfig;
 
-
-    public static int hotBiome;
-    public static int warmBiome;
-    public static int coldBiome;
-    public static int crystalBiome;
     public static int biomeWeightChunks;
 
     public static int structuresInCrystal;
@@ -37,12 +32,12 @@ public class DustConfigurationFile
 
         category = "Biome Generation";
         dustConfig.addCustomCategoryComment(category,"Biome Generation Tweaks");
-        biomeWeightChunks = dustConfig.getInt("5.Crystal Biome Weight", category,20,1,200,"Larger Number is less often");
+        biomeWeightChunks = dustConfig.getInt("5.Crystal Biome Weight", category,40,1,200,"Larger Number is less often");
 
         category = "World Generation";
         dustConfig.addCustomCategoryComment(category,"World Generation Tweaks");
-        structuresInCrystal = dustConfig.getInt("1.Crystal Structure Generation", category,200,1,9999,"Structures in Crystal Biomes");
-        structuresInWorld = dustConfig.getInt("2.Structure Generation", category,400,1,9999,"Structures in any biome");
+        structuresInCrystal = dustConfig.getInt("1.Crystal Structure Generation", category,400,1,9999,"Structures in Crystal Biomes");
+        structuresInWorld = dustConfig.getInt("2.Structure Generation", category,800,1,9999,"Structures in any biome");
         treeGenChance = dustConfig.getInt("3.Trees Generation", category,9,1,9999,"1 in X chunks a tree will spawn in a crystal biome");
         anyBiomeOreSpawnChance = dustConfig.getInt("4.Ore Spawn Rate", category,20,1,9999,"Specifically in Normal Biomes");
         oreClusterSize = dustConfig.getInt("5.Cluster Size", category,3,1,20,"Size of Crystal Ore CLusters");
@@ -51,10 +46,6 @@ public class DustConfigurationFile
         category = "Misc";
         dustConfig.addCustomCategoryComment(category,"Player Interaction");
         funhaters = dustConfig.getBoolean("1.Fun Hater?",category,false,"Do you hate fun and Explosions?");
-
-
-
-
 
         dustConfig.save();
     }

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:leaves"
+    },
+    "title": {
+      "translate": "Ooooh! Pretty Sapling"
+    },
+    "description": {
+      "translate": "Obtain a Dusty Sapling"
+    }
+
+  },
+  "parent": "dust:main/root",
+  "criteria": {
+    "red": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:red/saplingred"}]}},
+    "blue": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:blue/saplingblue"}]}},
+    "yellow": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:yellow/saplingyellow"}]}},
+    "purple": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:purple/saplingpurple"}]}},
+    "orange": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:orange/saplingorange"}]}},
+    "green": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:green/saplinggreen"}]}},
+    "white": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:white/saplingwhite"}]}},
+    "black": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:black/saplingblack"}]}}
+  },
+  "requirements": [
+    ["red", "blue","yellow", "purple","orange","green","white","black"]
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:dust"
+    },
+    "title": {
+      "translate": "Powdery Substance"
+    },
+    "description": {
+      "translate": "Obtain a Pile of Dust"
+    }
+
+  },
+  "parent": "dust:main/root",
+  "criteria": {
+    "dust": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:dust"}]}}
+  }
+}

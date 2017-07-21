@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:finnisher"
+    },
+    "title": {
+      "translate": "The Finnisher"
+    },
+    "description": {
+      "translate": "Imbue yourself with Finnish Powers!"
+    }
+  },
+  "frame": "challenge",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": true,
+  "parent": "dust:main/travel_biomes",
+  "criteria": {
+    "imbue": {"trigger": "minecraft:consume_item","conditions": {"items": [{"item": "dust:finnisher"}]}}
+  }
+}

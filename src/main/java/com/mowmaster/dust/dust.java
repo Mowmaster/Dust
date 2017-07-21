@@ -38,22 +38,9 @@ public class dust {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        //dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID );
         dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID + "/" + "configs");
         dustConfig.mkdirs();
         DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
-/*
-        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures");
-        structureFiles.mkdirs();
-        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"small");
-        structureFiles.mkdirs();
-        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"medium");
-        structureFiles.mkdirs();
-        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"large");
-        structureFiles.mkdirs();
-        structureFiles = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID+ "/" + "structures"+"/"+"stronghold" +"/"+"underbase");
-        structureFiles.mkdirs();
-*/
         BlockRegistry.init();
         BlockRegistry.register();
         ItemRegistry.init();
@@ -63,8 +50,6 @@ public class dust {
         proxy.PreInit();
         proxy.registerTile();
         BiomeRegistry.BiomeReg();
-
-        //AchievementHandler.registerAchievement();
     }
 
     @Mod.EventHandler
@@ -72,8 +57,6 @@ public class dust {
         proxy.init();
         proxy.registerModelBakeryVarients();
         MinecraftForge.EVENT_BUS.register(this);
-        //CraftingRecipes.CraftingRecipes();
-
     }
 
     @Mod.EventHandler

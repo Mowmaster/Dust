@@ -1,0 +1,41 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:black/blockblackcrystalfive"
+    },
+    "title": {
+      "translate": "BOOOM!!!"
+    },
+    "description": {
+      "translate": "Crafting Crystal Clusters Unlocked"
+    }
+
+  },
+  "show_toast": false,
+  "announce_to_chat": false,
+  "hidden": true,
+  "frame": "goal",
+  "parent": "dust:main/collide_dust",
+  "criteria": {
+    "red": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/redstone"}]}},
+    "blue": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/bluestone"}]}},
+    "yellow": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/yellowstone"}]}},
+    "purple": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/purplestone"}]}},
+    "orange": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/orangestone"}]}},
+    "green": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/greenstone"}]}},
+    "white": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/whitestone"}]}},
+    "black": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/blackstone"}]}},
+    "red1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:red/reddust"}},
+    "blue1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:blue/bluedust"}},
+    "yellow1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:yellow/yellowdust"}},
+    "purple1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:purple/purpledust"}},
+    "orange1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:orange/orangedust"}},
+    "green1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:green/greendust"}},
+    "white1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:white/whitedust"}},
+    "black1": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:black/blackdust"}}
+
+  },
+  "requirements": [
+    ["red", "blue","yellow", "purple","orange","green","white","black"],["red1", "blue1","yellow1", "purple1","orange1","green1","white1","black1"]
+  ]
+}

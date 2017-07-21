@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:ancient/purplestone"
+    },
+    "title": {
+      "translate": "Dusty Stone"
+    },
+    "description": {
+      "translate": "Craft Dust with Stone"
+    }
+
+  },
+  "parent": "dust:main/get_dust",
+  "criteria": {
+    "red": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/redstone"}]}},
+    "blue": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/bluestone"}]}},
+    "yellow": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/yellowstone"}]}},
+    "purple": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/purplestone"}]}},
+    "orange": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/orangestone"}]}},
+    "green": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/greenstone"}]}},
+    "white": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/whitestone"}]}},
+    "black": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:ancient/blackstone"}]}}
+
+  },
+  "requirements": [
+    ["red", "blue","yellow", "purple","orange","green","white","black"]
+  ]
+}

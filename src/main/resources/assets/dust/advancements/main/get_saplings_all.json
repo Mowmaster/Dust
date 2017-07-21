@@ -1,16 +1,17 @@
 {
   "display": {
     "icon": {
-      "item": "dust:red/saplingred"
+      "item": "dust:red/log_red"
     },
     "title": {
-      "translate": "advancement.dust:placeSapling"
+      "translate": "All Da Trees!!!"
     },
     "description": {
-      "translate": "advancement.dust:placeSapling.desc"
+      "translate": "Plant All the Dusty Tree Saplings"
     }
   },
-  "parent": "dust:main/root",
+  "frame": "goal",
+  "parent": "dust:main/get_sapling",
   "criteria": {
     "red": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:red/saplingred"}},
     "blue": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:blue/saplingblue"}},
@@ -21,7 +22,8 @@
     "white": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:white/saplingwhite"}},
     "black": {"trigger": "minecraft:placed_block","conditions": {"block": "dust:black/saplingblack"}}
   },
-  "requirements": [
-    ["red", "blue","yellow", "purple","orange","green","white","black"]
-  ]
+  "rewards": {
+    "experience": 500,
+    "loot": ["minecraft:chests/simple_dungeon"]
+  }
 }

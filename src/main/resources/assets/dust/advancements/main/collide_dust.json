@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "dust:blue/bluedust"
+    },
+    "title": {
+      "translate": "Achooo!!!"
+    },
+    "description": {
+      "translate": "Walk into a cloud of dust"
+    }
+
+  },
+  "parent": "dust:main/collide_machineblock",
+  "criteria": {
+    "red": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:red/reddust"}},
+    "blue": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:blue/bluedust"}},
+    "yellow": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:yellow/yellowdust"}},
+    "purple": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:purple/purpledust"}},
+    "orange": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:orange/orangedust"}},
+    "green": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:green/greendust"}},
+    "white": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:white/whitedust"}},
+    "black": {"trigger": "minecraft:enter_block", "conditions": {"block": "dust:black/blackdust"}}
+  },
+  "requirements": [
+    ["red", "blue","yellow", "purple","orange","green","white","black"]
+  ]
+}
