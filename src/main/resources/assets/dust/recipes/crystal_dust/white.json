@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:crystal", "data":6}
+  ],
+  "result": {
+    "item": "dust:dust",
+    "data":6,
+    "count":1
+  }
+}
