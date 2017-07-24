@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "dust:ancient/redbricks2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/redbricks",
+    "count": 4
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:red/redstone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/redbricks2",
+    "count": 4
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:yellow/log_yellow"}
+  ],
+  "result": {
+    "item": "dust:ancient/yellowplanks",
+    "count":4
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:black/log_black"}
+  ],
+  "result": {
+    "item": "dust:ancient/blackplanks",
+    "count":4
+  }
+}
