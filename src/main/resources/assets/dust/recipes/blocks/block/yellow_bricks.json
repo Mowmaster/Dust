@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "dust:ancient/yellowbricks2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/yellowbricks",
+    "count": 4
+  }
+}
