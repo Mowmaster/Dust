@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:purple/purplebricks2"
+    }
+  },
+  "key": {
+    "H": {
+      "item": "dust:purple/purplebrickslabs2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/purplebrickfences2",
+    "count": 5
+  }
+}

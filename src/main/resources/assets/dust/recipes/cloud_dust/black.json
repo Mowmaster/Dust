@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:black/blackdust"}
+  ],
+  "result": {
+    "item": "dust:dust",
+    "data":7,
+    "count":1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:black/blackbricks2"
+    }
+  },
+  "key": {
+    "H": {
+      "item": "dust:black/blackbrickslabs2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/blackbrickfences2",
+    "count": 5
+  }
+}

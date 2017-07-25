@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:yellow/yellowbricks2"
+    }
+  },
+  "key": {
+    "H": {
+      "item": "dust:yellow/yellowbrickslabs2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/yellowbrickfences2",
+    "count": 5
+  }
+}
