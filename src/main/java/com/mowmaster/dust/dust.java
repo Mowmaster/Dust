@@ -32,7 +32,6 @@ public class dust {
 
 
     public static File dustConfig;
-    public static File structureFiles;
     public static File getDustConfig(){return dustConfig;}
 
     @Mod.EventHandler

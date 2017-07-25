@@ -1,9 +1,0 @@
-{
-
-  "cords":[0,3,0],"block":"minecraft:diamond_block",
-  "cords":[0,2,0],"block":"minecraft:stonebrick",
-  "cords":[0,1,0],"block":"minecraft:stone",
-  "cords":[0,0,0],"block":"minecraft:cobblestone",
-  "cords":[0,-1,0],"block":"minecraft:mossy_cobblestone"
-}
-
