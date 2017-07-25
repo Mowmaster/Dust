@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:red/redplanks"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/redplankwalls",
+    "count": 6
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:purple/purplestone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/purplestoneslabs",
+    "count": 6
+  }
+}

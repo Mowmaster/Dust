@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:red/redstone"
+    }
+  },
+  "key": {
+    "H": {
+      "item": "dust:red/redstoneslabs"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/redstonefences",
+    "count": 5
+  }
+}

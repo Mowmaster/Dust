@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:green/greenstone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/greenstoneslabs",
+    "count": 6
+  }
+}
