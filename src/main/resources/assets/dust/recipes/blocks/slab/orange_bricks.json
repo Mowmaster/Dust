@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/orangebricks"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/orangebrickslabs",
+    "count": 6
+  }
+}

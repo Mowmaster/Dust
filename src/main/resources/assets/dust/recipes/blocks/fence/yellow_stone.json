@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/yellowstone"
+    },
+    "H": {
+      "item": "dust:ancient/yellowstoneslabs"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/yellowstonefences",
+    "count": 5
+  }
+}

@@ -6,12 +6,10 @@
   ],
   "key": {
     "S": {
-      "item": "dust:red/redbricks2"
-    }
-  },
-  "key": {
+      "item": "dust:ancient/redbricks2"
+    },
     "H": {
-      "item": "dust:red/redbrickslabs2"
+      "item": "dust:ancient/redbrickslabs2"
     }
   },
   "result": {

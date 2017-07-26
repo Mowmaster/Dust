@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/yellowstone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/yellowstonewalls",
+    "count": 6
+  }
+}

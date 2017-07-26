@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+  	"S  ",
+  	"SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/orangeplanks"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/orangeplankstairs",
+    "count": 4
+  }
+}

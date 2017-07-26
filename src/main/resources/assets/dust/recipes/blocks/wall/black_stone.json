@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/blackstone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/blackstonewalls",
+    "count": 6
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/purplestone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/purplestonewalls",
+    "count": 6
+  }
+}

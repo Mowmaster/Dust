@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/whiteplanks"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/whiteplankslabs",
+    "count": 6
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABC",
+    "DPE",
+    "FGH"
+  ],
+  "key": {
+    "A": {"item": "dust:red/blockredcrystalfive"},
+    "B": {"item": "dust:blue/blockbluecrystalfive"},
+    "C": {"item": "dust:yellow/blockyellowcrystalfive"},
+    "D": {"item": "dust:purple/blockpurplecrystalfive"},
+    "E": {"item": "dust:orange/blockorangecrystalfive"},
+    "F": {"item": "dust:green/blockgreencrystalfive"},
+    "G": {"item": "dust:white/blockwhitecrystalfive"},
+    "H": {"item": "dust:black/blockblackcrystalfive"},
+    "P": {"item": "minecraft:glass_bottle"}
+  },
+  "result": {
+    "item": "dust:scroll"
+  }
+}

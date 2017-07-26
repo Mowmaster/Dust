@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/bluestone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/bluestonewalls",
+    "count": 6
+  }
+}

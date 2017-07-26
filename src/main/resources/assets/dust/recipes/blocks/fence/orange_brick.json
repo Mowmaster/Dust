@@ -6,12 +6,10 @@
   ],
   "key": {
     "S": {
-      "item": "dust:orange/orangebricks2"
-    }
-  },
-  "key": {
+      "item": "dust:ancient/orangebricks2"
+    },
     "H": {
-      "item": "dust:orange/orangebrickslabs2"
+      "item": "dust:ancient/orangebrickslabs2"
     }
   },
   "result": {

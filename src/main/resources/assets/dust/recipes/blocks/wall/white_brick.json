@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/whitebricks2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/whitebrickwalls2",
+    "count": 6
+  }
+}

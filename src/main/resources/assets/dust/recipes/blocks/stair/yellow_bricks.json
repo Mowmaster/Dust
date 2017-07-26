@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+  	"S  ",
+  	"SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/yellowbricks"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/yellowbrickstairs",
+    "count": 4
+  }
+}

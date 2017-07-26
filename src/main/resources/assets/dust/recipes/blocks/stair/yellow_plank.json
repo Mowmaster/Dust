@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+  	"S  ",
+  	"SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/yellowplanks"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/yellowplankstairs",
+    "count": 4
+  }
+}

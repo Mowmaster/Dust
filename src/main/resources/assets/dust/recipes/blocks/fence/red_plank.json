@@ -6,12 +6,10 @@
   ],
   "key": {
     "S": {
-      "item": "dust:red/redplanks"
-    }
-  },
-  "key": {
+      "item": "dust:ancient/redplanks"
+    },
     "H": {
-      "item": "dust:red/redplankslabs"
+      "item": "dust:ancient/redplankslabs"
     }
   },
   "result": {

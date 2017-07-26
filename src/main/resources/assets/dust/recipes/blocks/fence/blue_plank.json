@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/blueplanks"
+    },
+    "H": {
+      "item": "dust:ancient/blueplankslabs"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/blueplankfences",
+    "count": 5
+  }
+}

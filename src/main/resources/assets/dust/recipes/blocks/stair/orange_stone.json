@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+  	"S  ",
+  	"SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/orangestone"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/orangestonestairs",
+    "count": 4
+  }
+}

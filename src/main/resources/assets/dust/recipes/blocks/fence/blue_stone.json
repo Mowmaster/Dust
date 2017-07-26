@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SHS",
+    "SHS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/bluestone"
+    },
+    "H": {
+      "item": "dust:ancient/bluestoneslabs"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/bluestonefences",
+    "count": 5
+  }
+}

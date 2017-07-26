@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DD",
+    "DD"
+  ],
+  "key": {
+    "D": {
+      "item": "dust:dust",
+      "data": 8
+    }
+  },
+  "result": {
+    "item": "minecraft:cobblestone"
+  }
+}

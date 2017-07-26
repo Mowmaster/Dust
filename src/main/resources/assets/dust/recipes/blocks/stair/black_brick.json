@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+  	"S  ",
+  	"SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:ancient/blackbricks2"
+    }
+  },
+  "result": {
+    "item": "dust:ancient/blackbrickstairs2",
+    "count": 4
+  }
+}

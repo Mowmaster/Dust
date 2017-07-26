@@ -6,12 +6,10 @@
   ],
   "key": {
     "S": {
-      "item": "dust:yellow/yellowbricks2"
-    }
-  },
-  "key": {
+      "item": "dust:ancient/yellowbricks2"
+    },
     "H": {
-      "item": "dust:yellow/yellowbrickslabs2"
+      "item": "dust:ancient/yellowbrickslabs2"
     }
   },
   "result": {
