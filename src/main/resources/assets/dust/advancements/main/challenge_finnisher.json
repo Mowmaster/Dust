@@ -7,15 +7,26 @@
       "translate": "The Finnisher"
     },
     "description": {
-      "translate": "Imbue yourself with Finnish Powers!"
+      "translate": "Travel to all Biomes and Be able to craft Crystal Clusters"
     }
   },
+  "hidden": true,
   "frame": "challenge",
   "show_toast": true,
   "announce_to_chat": true,
   "hidden": true,
   "parent": "dust:main/travel_biomes",
   "criteria": {
-    "imbue": {"trigger": "minecraft:consume_item","conditions": {"items": [{"item": "dust:finnisher"}]}}
+    "hot": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalhot"}},
+    "warm": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalwarm"}},
+    "cold": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalcold"}},
+    "crystal": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystal"}},
+    "has_the_recipe": {"trigger": "minecraft:recipe_unlocked", "conditions": {"recipe": "dust:clusters/red_five"}}
+  },
+  "requirements": [["hot"],["warm"],["cold"],["crystal"],["has_the_recipe"]],
+  "rewards": {
+    "recipes": [
+      "dust:patreon/finnisher"
+    ]
   }
 }

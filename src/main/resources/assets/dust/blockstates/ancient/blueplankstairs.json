@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/redplanks",
+      "bottom": "dust:blocks/ancient/blueplanks",
       "top": "dust:blocks/ancient/blueplanks",
       "side": "dust:blocks/ancient/blueplanks",
       "particle": "dust:blocks/ancient/blueplanks"

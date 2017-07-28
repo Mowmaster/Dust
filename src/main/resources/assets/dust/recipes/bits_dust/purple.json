@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "group":"bits_dust",
   "ingredients": [
     {"item": "dust:bit", "data":3},
     {"item": "dust:bit", "data":3},

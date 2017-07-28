@@ -16,5 +16,17 @@
   },
   "criteria": {
     "pickup_crystal": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "dust:crystal"}]}}
+  },
+  "rewards": {
+    "recipes": [
+      "dust:crystal_dust/red",
+      "dust:crystal_dust/blue",
+      "dust:crystal_dust/yellow",
+      "dust:crystal_dust/purple",
+      "dust:crystal_dust/orange",
+      "dust:crystal_dust/green",
+      "dust:crystal_dust/white",
+      "dust:crystal_dust/black"
+    ]
   }
 }

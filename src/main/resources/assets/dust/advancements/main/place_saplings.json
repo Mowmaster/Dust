@@ -23,5 +23,33 @@
   },
   "requirements": [
     ["red", "blue","yellow", "purple","orange","green","white","black"]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:blocks/fence/red_plank",
+      "dust:blocks/stair/red_plank",
+      "dust:blocks/slab/red_plank",
+      "dust:blocks/fence/blue_plank",
+      "dust:blocks/stair/blue_plank",
+      "dust:blocks/slab/blue_plank",
+      "dust:blocks/fence/yellow_plank",
+      "dust:blocks/stair/yellow_plank",
+      "dust:blocks/slab/yellow_plank",
+      "dust:blocks/fence/purple_plank",
+      "dust:blocks/stair/purple_plank",
+      "dust:blocks/slab/purple_plank",
+      "dust:blocks/fence/orange_plank",
+      "dust:blocks/stair/orange_plank",
+      "dust:blocks/slab/orange_plank",
+      "dust:blocks/fence/green_plank",
+      "dust:blocks/stair/green_plank",
+      "dust:blocks/slab/green_plank",
+      "dust:blocks/fence/white_plank",
+      "dust:blocks/stair/white_plank",
+      "dust:blocks/slab/white_plank",
+      "dust:blocks/fence/black_plank",
+      "dust:blocks/stair/black_plank",
+      "dust:blocks/slab/black_plank"
+    ]
+  }
 }

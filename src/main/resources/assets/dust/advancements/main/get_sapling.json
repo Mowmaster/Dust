@@ -24,5 +24,17 @@
   },
   "requirements": [
     ["red", "blue","yellow", "purple","orange","green","white","black"]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:blocks/block/red_plank",
+      "dust:blocks/block/blue_plank",
+      "dust:blocks/block/yellow_plank",
+      "dust:blocks/block/purple_plank",
+      "dust:blocks/block/orange_plank",
+      "dust:blocks/block/green_plank",
+      "dust:blocks/block/white_plank",
+      "dust:blocks/block/black_plank"
+    ]
+  }
 }

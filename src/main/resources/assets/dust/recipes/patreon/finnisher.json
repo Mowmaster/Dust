@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group":"dust_patreon",
   "pattern": [
     "ABC",
     "DPE",
@@ -17,6 +18,6 @@
     "P": {"item": "minecraft:glass_bottle"}
   },
   "result": {
-    "item": "dust:scroll"
+    "item": "dust:finnisher"
   }
 }

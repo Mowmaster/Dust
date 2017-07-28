@@ -24,5 +24,17 @@
   },
   "requirements": [
     ["red", "blue","yellow", "purple","orange","green","white","black"]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:cloud_dust/red",
+      "dust:cloud_dust/blue",
+      "dust:cloud_dust/yellow",
+      "dust:cloud_dust/purple",
+      "dust:cloud_dust/orange",
+      "dust:cloud_dust/green",
+      "dust:cloud_dust/white",
+      "dust:cloud_dust/black"
+    ]
+  }
 }
