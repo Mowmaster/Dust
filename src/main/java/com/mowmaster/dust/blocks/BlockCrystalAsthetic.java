@@ -2,6 +2,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -28,7 +29,7 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
-public class BlockCrystalBase extends BlockDirectional implements ITileEntityProvider
+public class BlockCrystalAsthetic extends BlockDirectional implements ITileEntityProvider
 {
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.125D, 0.75D);
     private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.875D, 0.75D);
@@ -37,7 +38,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
     private static AxisAlignedBB CWEST = new AxisAlignedBB(0.875D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
     private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.125D, 0.25D, 0.75D);
 
-    public BlockCrystalBase(String unloc, String registryName)
+    public BlockCrystalAsthetic(String unloc, String registryName)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
@@ -46,7 +47,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         this.setResistance(20);
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTTABS);
-        this.setSoundType(SoundType.GLASS);
+        this.setSoundType(SoundType.STONE);
     }
 
     @Override
