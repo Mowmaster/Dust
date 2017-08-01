@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,20 +23,31 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import static com.mowmaster.dust.blocks.BlockRegistry.crystalCluster;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
 public class BlockCrystalBase extends BlockDirectional implements ITileEntityProvider
 {
-    private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.125D, 0.75D);
-    private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.875D, 0.75D);
-    private static AxisAlignedBB CNORTH = new AxisAlignedBB(0.25D, 0.75D, 0.875D, 0.75D, 0.25D, 1.0D);
-    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, 0.125D);
-    private static AxisAlignedBB CWEST = new AxisAlignedBB(0.875D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
-    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.125D, 0.25D, 0.75D);
+    TileCrystalCluster te;
+    Boolean switchBounds = false;
+
+    private static AxisAlignedBB FUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.125D, 0.75D);
+    private static AxisAlignedBB FDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.875D, 0.75D);
+    private static AxisAlignedBB FNORTH = new AxisAlignedBB(0.25D, 0.75D, 0.875D, 0.75D, 0.25D, 1.0D);
+    private static AxisAlignedBB FSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, 0.125D);
+    private static AxisAlignedBB FWEST = new AxisAlignedBB(0.875D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
+    private static AxisAlignedBB FEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.125D, 0.25D, 0.75D);
+    private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
+    private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.1D, 0.75D);
+    private static AxisAlignedBB CNORTH = new AxisAlignedBB(0.25D, 0.75D, 0.1D, 0.75D, 0.25D, 1.0D);
+    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, 0.9D);
+    private static AxisAlignedBB CWEST = new AxisAlignedBB(0.1D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
+    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.9D, 0.25D, 0.75D);
 
     public BlockCrystalBase(String unloc, String registryName)
     {
@@ -46,7 +58,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         this.setResistance(20);
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTTABS);
-        this.setSoundType(SoundType.GLASS);
+        this.setSoundType(SoundType.STONE);
     }
 
     @Override
@@ -107,23 +119,44 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         return BlockRenderLayer.CUTOUT;
     }
 
+
+
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
+        if(this.equals(crystalCluster) && switchBounds==false)
+        {
+            switch (((EnumFacing)state.getValue(FACING)))
+            {
+                case UP:
+                default:
+                    return CUP;
+                case DOWN:
+                    return CDOWN;
+                case NORTH:
+                    return CNORTH;
+                case EAST:
+                    return CEAST;
+                case SOUTH:
+                    return CSOUTH;
+                case WEST:
+                    return CWEST;
+            }
+        }
         switch (((EnumFacing)state.getValue(FACING)))
         {
             case UP:
             default:
-                return CUP;
+                return FUP;
             case DOWN:
-                return CDOWN;
+                return FDOWN;
             case NORTH:
-                return CNORTH;
+                return FNORTH;
             case EAST:
-                return CEAST;
+                return FEAST;
             case SOUTH:
-                return CSOUTH;
+                return FSOUTH;
             case WEST:
-                return CWEST;
+                return FWEST;
         }
     }
     public boolean isOpaqueCube(IBlockState state)
@@ -147,6 +180,23 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
             if(tileEntity instanceof TileCrystalCluster)
             {
                 TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
+
+
+
+
+                if(!worldIn.isRemote && cluster.getCrystalCount()==0)
+                {
+                    switchBounds = false;
+                }
+                else{switchBounds = true;}
+
+
+                cluster.removeCrystal();
+
+                if(playerIn.isSneaking())
+                {
+                    cluster.addCrystal();
+                }
             }
             return true;
     }
@@ -156,9 +206,14 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         return new TileCrystalCluster();
     }
 
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileCrystalCluster();
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add("[WIP] Will Allow for The creation of Mixed Crystal Clusters");
         tooltip.add("Will replace craftable crystals and have effects at tier 2+");
         tooltip.add("Will be in the Next Beta Release");

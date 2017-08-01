@@ -1,14 +1,29 @@
 package com.mowmaster.dust.tiles;
 
+import com.mowmaster.dust.blocks.BlockCrystal;
+import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockSandStone;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
+import static com.mowmaster.dust.blocks.BlockRegistry.crystalCluster;
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
+import static net.minecraft.block.BlockDirectional.FACING;
 
 /**
  * Created by KingMowmaster on 3/26/2017.
@@ -25,14 +40,20 @@ public class TileCrystalCluster extends TileEntity
     private int crystalWhite = 0;
     private int crystalBlack = 0;
 
+
+
+
+    public int getCrystalCount()
+    {
+        return crystalCount;
+    }
+
     public boolean addCrystal()
     {
         if(!world.isRemote)
         {
-            if (crystalCount < 5) {
-                crystalCount++;
-                return true;
-            }
+            crystalCount++;
+            return true;
         }
         return false;
     }
@@ -63,4 +84,5 @@ public class TileCrystalCluster extends TileEntity
 
         this.crystalCount = compound.getInteger("CrystalCount");
     }
+
 }
