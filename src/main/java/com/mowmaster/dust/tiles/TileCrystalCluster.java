@@ -16,6 +16,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
@@ -40,9 +41,6 @@ public class TileCrystalCluster extends TileEntity
     private int crystalWhite = 0;
     private int crystalBlack = 0;
 
-
-
-
     public int getCrystalCount()
     {
         return crystalCount;
@@ -50,12 +48,16 @@ public class TileCrystalCluster extends TileEntity
 
     public boolean addCrystal()
     {
-        if(!world.isRemote)
-        {
+        if(!world.isRemote) {
             crystalCount++;
             return true;
         }
         return false;
+    }
+
+    public void getCrystalType(int type)
+    {
+        type = 0;
     }
 
 
@@ -63,7 +65,7 @@ public class TileCrystalCluster extends TileEntity
     public void removeCrystal() {
         if (!world.isRemote) {
             if (crystalCount > 0) {
-                world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(crystal, 1, 0)));
+                //world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(crystal, 1, 0)));
                 crystalCount--;
             }
         }
@@ -83,6 +85,37 @@ public class TileCrystalCluster extends TileEntity
         super.readFromNBT(compound);
 
         this.crystalCount = compound.getInteger("CrystalCount");
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        this.writeUpdateTag(tagCompound);
+        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
+
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        NBTTagCompound tagCompound = pkt.getNbtCompound();
+        this.readUpdateTag(tagCompound);
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tagCompound = super.getUpdateTag();
+        writeUpdateTag(tagCompound);
+        return tagCompound;
+    }
+
+    public void writeUpdateTag(NBTTagCompound tagCompound)
+    {
+        tagCompound.setInteger("crystalCount",crystalCount);
+    }
+
+    public void readUpdateTag(NBTTagCompound tagCompound)
+    {
+        this.crystalCount = tagCompound.getInteger("crystalCount");
     }
 
 }
