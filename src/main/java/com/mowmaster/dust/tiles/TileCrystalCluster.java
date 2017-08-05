@@ -5,6 +5,8 @@ import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.sun.jna.StringArray;
+import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.properties.IProperty;
@@ -22,6 +24,8 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
+import java.util.ArrayList;
+
 import static com.mowmaster.dust.blocks.BlockRegistry.crystalCluster;
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
 import static net.minecraft.block.BlockDirectional.FACING;
@@ -29,7 +33,7 @@ import static net.minecraft.block.BlockDirectional.FACING;
 /**
  * Created by KingMowmaster on 3/26/2017.
  */
-public class TileCrystalCluster extends TileEntity
+public class TileCrystalCluster extends TileEntity implements ITickable
 {
     private int crystalCount = 0;
     private int crystalRed = 0;
@@ -41,81 +45,104 @@ public class TileCrystalCluster extends TileEntity
     private int crystalWhite = 0;
     private int crystalBlack = 0;
 
+    @Override
+    public void update() {
+
+    }
+
     public int getCrystalCount()
     {
         return crystalCount;
     }
 
-    public boolean addCrystal()
+    ArrayList<Integer> CrystalList = new ArrayList<>();
+
+    public boolean addCrystal(int type)
     {
-        if(!world.isRemote) {
-            crystalCount++;
-            return true;
+
+        switch (type)
+        {
+            case 0:
+                crystalRed++;
+            case 1:
+                crystalBlue++;
+            case 2:
+                crystalYellow++;
+            case 3:
+                crystalPurple++;
+            case 4:
+                crystalGreen++;
+            case 5:
+                crystalOrange++;
+            case 6:
+                crystalWhite++;
+            case 7 :
+                crystalBlack++;
         }
-        return false;
-    }
-
-    public void getCrystalType(int type)
-    {
-        type = 0;
+            crystalCount++;
+            CrystalList.add(type);
+        return true;
     }
 
 
 
-    public void removeCrystal() {
-        if (!world.isRemote) {
+    public void removeCrystal(TileEntity tile) {
+        World worldIn = tile.getWorld();
             if (crystalCount > 0) {
-                //world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(crystal, 1, 0)));
+                switch (CrystalList.get(CrystalList.size()-1))
+                {
+                    case 0:
+                        crystalRed--;
+                    case 1:
+                        crystalBlue--;
+                    case 2:
+                        crystalYellow--;
+                    case 3:
+                        crystalPurple--;
+                    case 4:
+                        crystalGreen--;
+                    case 5:
+                        crystalOrange--;
+                    case 6:
+                        crystalWhite--;
+                    case 7 :
+                        crystalBlack--;
+                }
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,CrystalList.get(CrystalList.size()-1))));
+                CrystalList.remove(CrystalList.size()-1);
                 crystalCount--;
             }
-        }
+            if(crystalCount==0)
+            {
+                worldIn.setBlockToAir(pos);
+            }
     }
-
+//Make CrystalList use nbtTagList instead of to string and back
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
+
         compound.setInteger("CrystalCount",crystalCount);
+        compound.setString("CrystalList",CrystalList.toString());
 
         return compound;
     }
 
+
+    public String blah;
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
         this.crystalCount = compound.getInteger("CrystalCount");
+        this.blah = compound.getString("CrystalList");
+        String[] searilizedList = blah.replace("[","").replace("]","").split(",");
+        for(int i=0;i<searilizedList.length;i++)
+        {
+            CrystalList.add(Integer.parseInt(searilizedList[i].replace(" ","")));
+        }
+
+
     }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        this.writeUpdateTag(tagCompound);
-        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
-
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tagCompound = pkt.getNbtCompound();
-        this.readUpdateTag(tagCompound);
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tagCompound = super.getUpdateTag();
-        writeUpdateTag(tagCompound);
-        return tagCompound;
-    }
-
-    public void writeUpdateTag(NBTTagCompound tagCompound)
-    {
-        tagCompound.setInteger("crystalCount",crystalCount);
-    }
-
-    public void readUpdateTag(NBTTagCompound tagCompound)
-    {
-        this.crystalCount = tagCompound.getInteger("crystalCount");
-    }
-
 }

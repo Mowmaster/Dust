@@ -456,12 +456,18 @@ public class OreGeneration implements IWorldGenerator
                 switch (getrando)
                 {
                     case 0: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
+                        return;
                         //Start of Machine Specific Structures
                     case 1: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
+                        return;
                     case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
+                        return;
                     case 3: this.runStructureGeneratorDireBox(mediumObservatory,world,random,chunkX,chunkZ,1,0,20);
+                        return;
                     case 4: this.runStructureGeneratorElevenByEleven(largeHouseFireplace,world,random,chunkX,chunkZ,1,0,20);
+                        return;
                     case 5: this.runStructureGeneratorDireBox(mediumCrusherLab,world,random,chunkX,chunkZ,1,0,20);
+                        return;
 
                 }
 

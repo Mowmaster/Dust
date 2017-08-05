@@ -24,6 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.blocks.BlockRegistry.crystalCluster;
+import static com.mowmaster.dust.items.ItemRegistry.crushingcomponents;
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
@@ -59,8 +61,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTTABS);
         this.setSoundType(SoundType.STONE);
-
-        this.setTickRandomly(true);
+        this.setBlockUnbreakable();
     }
 
     @Override
@@ -155,19 +156,49 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         return true;
     }
 
+
+
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+        ItemStack redcrystal = new ItemStack(crystal,1,0);
+        ItemStack bluecrystal = new ItemStack(crystal,1,1);
+        ItemStack yellowcrystal = new ItemStack(crystal,1,2);
+        ItemStack purplecrystal = new ItemStack(crystal,1,3);
+        ItemStack orangecrystal = new ItemStack(crystal,1,4);
+        ItemStack greencrystal = new ItemStack(crystal,1,5);
+        ItemStack whitecrystal = new ItemStack(crystal,1,6);
+        ItemStack blackcrystal = new ItemStack(crystal,1,7);
+        if(!worldIn.isRemote)
+        {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if(tileEntity instanceof TileCrystalCluster)
-            {
+            if (tileEntity instanceof TileCrystalCluster) {
                 TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
 
-                if((playerIn.getHeldItem(hand) != null))
+                if (playerIn.isSneaking())
                 {
-                        System.out.println(playerIn.getHeldItem(hand).getMetadata());
+                    if (playerIn.getHeldItem(hand) !=null)
+                    {
+                        cluster.removeCrystal(cluster);
+                    }
                 }
+
+                if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),yellowcrystal)
+                        ||ItemStack.areItemsEqual(playerIn.getHeldItem(hand),purplecrystal) ||ItemStack.areItemsEqual(playerIn.getHeldItem(hand),orangecrystal) ||ItemStack.areItemsEqual(playerIn.getHeldItem(hand),greencrystal)
+                        || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),blackcrystal))
+                {
+                    if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+
+                }
+
+
             }
-            return true;
+        }
+
+        return true;
     }
 
     @Override

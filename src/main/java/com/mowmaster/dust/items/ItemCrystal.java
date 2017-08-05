@@ -24,12 +24,12 @@ public class ItemCrystal extends Item
         this.setHasSubtypes(true);
         this.setCreativeTab(DUSTTABS);
     }
-    //@Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
         {
-            list.add(new ItemStack(item,1,i));
+            list.add(new ItemStack(this,1,i));
         }
     }
 
