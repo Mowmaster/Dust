@@ -56,7 +56,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     {
         return crystalCount;
     }
-
+// Look into using Stack<> or Deque programming methods for queued arrays
     ArrayList<Integer> CrystalList = new ArrayList<>();
 
     public boolean addCrystal(int type)
