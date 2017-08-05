@@ -132,7 +132,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     }
 
 
-    public String crystals;
+    private String crystals;
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
