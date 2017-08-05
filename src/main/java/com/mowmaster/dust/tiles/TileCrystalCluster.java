@@ -1,5 +1,6 @@
 package com.mowmaster.dust.tiles;
 
+import com.google.common.collect.Lists;
 import com.mowmaster.dust.blocks.BlockCrystal;
 import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.enums.CrystalItems;
@@ -14,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -130,14 +132,14 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     }
 
 
-    public String blah;
+    public String crystals;
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
         this.crystalCount = compound.getInteger("CrystalCount");
-        this.blah = compound.getString("CrystalList");
-        String[] searilizedList = blah.replace("[","").replace("]","").split(",");
+        this.crystals = compound.getString("CrystalList");
+        String[] searilizedList = crystals.replace("[","").replace("]","").split(",");
         for(int i=0;i<searilizedList.length;i++)
         {
             CrystalList.add(Integer.parseInt(searilizedList[i].replace(" ","")));
