@@ -175,6 +175,12 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
             if (tileEntity instanceof TileCrystalCluster) {
                 TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
 
+
+
+
+                System.out.println(cluster.getCrystalCount());
+
+
                 if (playerIn.isSneaking())
                 {
                     if (playerIn.getHeldItem(hand) !=null)
