@@ -1,43 +1,23 @@
 package com.mowmaster.dust.tiles;
 
-import com.google.common.collect.Lists;
-import com.mowmaster.dust.blocks.BlockCrystal;
-import com.mowmaster.dust.blocks.BlockCrystalBase;
-import com.mowmaster.dust.enums.CrystalItems;
-import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.sun.jna.StringArray;
-import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 
-import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
-
-import static com.mowmaster.dust.blocks.BlockRegistry.crystalCluster;
-import static com.mowmaster.dust.items.ItemRegistry.crystal;
-import static net.minecraft.block.BlockDirectional.FACING;
 
 
 public class TileCrystalCluster extends TileEntity implements ITickable
 {
-    private int crystalCount = 0;
+    public int crystalCount = 0;
     private int crystalRed = 0;
     private int crystalBlue = 0;
     private int crystalYellow = 0;
@@ -61,8 +41,12 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     {
         return CrystalList.get(x);
     }
+    public int getCrystalInSize()
+    {
+        return CrystalList.size();
+    }
 // Look into using Stack<> or Deque programming methods for queued arrays
-    ArrayList<Integer> CrystalList = new ArrayList<>();
+    public ArrayList<Integer> CrystalList = new ArrayList<>();
 
     public boolean addCrystal(int type)
     {
@@ -88,6 +72,9 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         }
             crystalCount++;
             CrystalList.add(type);
+        markDirty();
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos,state,state,3);
         return true;
     }
 
@@ -118,6 +105,9 @@ public class TileCrystalCluster extends TileEntity implements ITickable
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,CrystalList.get(CrystalList.size()-1))));
                 CrystalList.remove(CrystalList.size()-1);
                 crystalCount--;
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
             }
             if(crystalCount==0)
             {
@@ -130,31 +120,25 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     {
         super.writeToNBT(compound);
 
-        compound.setInteger("CrystalCount",crystalCount);
-        compound.setString("CrystalList",CrystalList.toString());
+
 
         return compound;
     }
 
 
-    private String crystals;
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        this.crystalCount = compound.getInteger("CrystalCount");
-        this.crystals = compound.getString("CrystalList");
-        String[] searilizedList = crystals.replace("[","").replace("]","").split(",");
-        for(int i=0;i<searilizedList.length;i++)
-        {
-            CrystalList.add(Integer.parseInt(searilizedList[i].replace(" ","")));
-        }
+
+
 
 
     }
 
 
-/*
+
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
@@ -178,14 +162,24 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
     public void writeUpdateTag(NBTTagCompound tagCompound)
     {
-        tagCompound.setInteger("carboncount",carboncount);
+        //tagCompound.setInteger("carboncount",carboncount);
+        tagCompound.setInteger("CrystalCount",crystalCount);
+        tagCompound.setString("CrystalList",CrystalList.toString());
 
     }
 
+    private String crystals;
     public void readUpdateTag(NBTTagCompound tagCompound)
     {
-        this.carboncount = tagCompound.getInteger("carboncount");
+        //this.carboncount = tagCompound.getInteger("carboncount");
+        this.crystalCount = tagCompound.getInteger("CrystalCount");
+        this.crystals = tagCompound.getString("CrystalList");
+        String[] searilizedList = crystals.replace("[","").replace("]","").split(",");
+        for(int i=0;i<searilizedList.length;i++)
+        {
+            CrystalList.add(Integer.parseInt(searilizedList[i].replace(" ","")));
+        }
 
     }
-    */
+
 }

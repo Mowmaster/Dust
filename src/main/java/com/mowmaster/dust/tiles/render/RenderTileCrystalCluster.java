@@ -18,31 +18,40 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
     @Override
     public void render(TileCrystalCluster te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         super.render(te, x, y, z, partialTicks, destroyStage,alpha);
-        
+
         GlStateManager.pushMatrix();
         {
-                GlStateManager.translate(x,y,z);
-                GlStateManager.translate(0,0,0);
-                GlStateManager.rotate(0,0,0,0);
-                GlStateManager.translate(0.5,0.44,0.5);
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
-                GlStateManager.enableLighting();
+            GlStateManager.translate(x,y,z);
+            GlStateManager.translate(0,0,0);
+            GlStateManager.rotate(90f,1,0,0);
+            GlStateManager.translate(0.3,0.5,-0.2);
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
+            GlStateManager.enableLighting();
+
             if(te.getCrystalCount()==1)
             {
                 Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(0)), ItemCameraTransforms.TransformType.GROUND);
-                GlStateManager.translate(0,0.5,0);
+                GlStateManager.translate(0,0,-0.1);
             }
             else if(te.getCrystalCount()==2)
             {
                 Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(0)), ItemCameraTransforms.TransformType.GROUND);
-                GlStateManager.translate(0,0.5,0);
+                GlStateManager.translate(0,0,-0.1);
                 Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(1)), ItemCameraTransforms.TransformType.GROUND);
-                GlStateManager.translate(0,0.5,0);
+                GlStateManager.translate(0,0,-0.2);
+            }
+            else if(te.getCrystalCount()==3)
+            {
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(0)), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0,-0.1);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(1)), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0,-0.2);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(2)), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0,-0.3);
             }
         }
         GlStateManager.popMatrix();
         {}
-
     }
 }

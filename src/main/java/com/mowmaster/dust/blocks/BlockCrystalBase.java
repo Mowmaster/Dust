@@ -156,8 +156,6 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         return true;
     }
 
-
-
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
@@ -174,12 +172,6 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity instanceof TileCrystalCluster) {
                 TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
-
-
-
-
-                System.out.println(cluster.getCrystalCount());
-
 
                 if (playerIn.isSneaking())
                 {
