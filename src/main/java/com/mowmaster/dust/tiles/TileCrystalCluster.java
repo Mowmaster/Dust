@@ -70,12 +70,13 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             case 7 :
                 crystalBlack++;
         }
-            crystalCount++;
-            CrystalList.add(type);
+        crystalCount++;
+        CrystalList.add(type);
         markDirty();
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos,state,state,3);
         return true;
+
     }
 
 
@@ -166,6 +167,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         tagCompound.setInteger("CrystalCount",crystalCount);
         tagCompound.setString("CrystalList",CrystalList.toString());
 
+
     }
 
     private String crystals;
@@ -179,6 +181,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         {
             CrystalList.add(Integer.parseInt(searilizedList[i].replace(" ","")));
         }
+
 
     }
 
