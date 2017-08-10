@@ -30,7 +30,7 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
-            for(int j=0;j<te.crystalCount;j++)
+            for(int j=0;j<te.CrystalList.size();j++)
             {
                 //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Items.COAL), ItemCameraTransforms.TransformType.GROUND);
                 //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal), ItemCameraTransforms.TransformType.GROUND);

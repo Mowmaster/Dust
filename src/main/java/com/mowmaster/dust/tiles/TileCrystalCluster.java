@@ -13,19 +13,12 @@ import net.minecraft.world.World;
 
 
 import java.util.ArrayList;
+import java.util.*;
 
 
 public class TileCrystalCluster extends TileEntity implements ITickable
 {
-    public int crystalCount = 0;
-    private int crystalRed = 0;
-    private int crystalBlue = 0;
-    private int crystalYellow = 0;
-    private int crystalPurple = 0;
-    private int crystalOrange = 0;
-    private int crystalGreen = 0;
-    private int crystalWhite = 0;
-    private int crystalBlack = 0;
+ //crystal count is equal to the array size
 
     @Override
     public void update()
@@ -33,44 +26,25 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         getCrystalCount();
     }
 
+	
+	public int getCrystalColorCountColor(int color)
+	{
+		return Collections.frequency(CrystalList,color);
+	}
     public int getCrystalCount()
     {
-        return crystalCount;
+        return CrystalList.size();
     }
     public int getCrystalInList(int x)
     {
         return CrystalList.get(x);
     }
-    public int getCrystalInSize()
-    {
-        return CrystalList.size();
-    }
+    
 // Look into using Stack<> or Deque programming methods for queued arrays
     public ArrayList<Integer> CrystalList = new ArrayList<>();
 
     public boolean addCrystal(int type)
     {
-
-        switch (type)
-        {
-            case 0:
-                crystalRed++;
-            case 1:
-                crystalBlue++;
-            case 2:
-                crystalYellow++;
-            case 3:
-                crystalPurple++;
-            case 4:
-                crystalGreen++;
-            case 5:
-                crystalOrange++;
-            case 6:
-                crystalWhite++;
-            case 7 :
-                crystalBlack++;
-        }
-        crystalCount++;
         CrystalList.add(type);
         markDirty();
         IBlockState state = world.getBlockState(pos);
@@ -83,26 +57,8 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
     public void removeCrystal(TileEntity tile) {
         World worldIn = tile.getWorld();
-            if (crystalCount > 0) {
-                switch (CrystalList.get(CrystalList.size()-1))
-                {
-                    case 0:
-                        crystalRed--;
-                    case 1:
-                        crystalBlue--;
-                    case 2:
-                        crystalYellow--;
-                    case 3:
-                        crystalPurple--;
-                    case 4:
-                        crystalGreen--;
-                    case 5:
-                        crystalOrange--;
-                    case 6:
-                        crystalWhite--;
-                    case 7 :
-                        crystalBlack--;
-                }
+            if (CrystalList.size() > 0) {
+                
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,CrystalList.get(CrystalList.size()-1))));
                 CrystalList.remove(CrystalList.size()-1);
                 crystalCount--;
@@ -110,7 +66,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
                 IBlockState state = world.getBlockState(pos);
                 world.notifyBlockUpdate(pos,state,state,3);
             }
-            if(crystalCount==0)
+            if(CrystalList.size()==0)
             {
                 worldIn.setBlockToAir(pos);
             }
@@ -164,7 +120,6 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     public void writeUpdateTag(NBTTagCompound tagCompound)
     {
         //tagCompound.setInteger("carboncount",carboncount);
-        tagCompound.setInteger("CrystalCount",crystalCount);
         tagCompound.setString("CrystalList",CrystalList.toString());
 
 
@@ -174,7 +129,6 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     public void readUpdateTag(NBTTagCompound tagCompound)
     {
         //this.carboncount = tagCompound.getInteger("carboncount");
-        this.crystalCount = tagCompound.getInteger("CrystalCount");
         this.crystals = tagCompound.getString("CrystalList");
         String[] searilizedList = crystals.replace("[","").replace("]","").split(",");
         for(int i=0;i<searilizedList.length;i++)
