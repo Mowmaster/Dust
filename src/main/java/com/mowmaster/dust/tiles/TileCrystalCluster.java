@@ -18,7 +18,7 @@ import java.util.*;
 
 public class TileCrystalCluster extends TileEntity implements ITickable
 {
- //crystal count is equal to the array size
+    //crystal count is equal to the array size
 
     @Override
     public void update()
@@ -26,11 +26,11 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         getCrystalCount();
     }
 
-	
-	public int getCrystalColorCountColor(int color)
-	{
-		return Collections.frequency(CrystalList,color);
-	}
+
+    public int getCrystalColorCountColor(int color)
+    {
+        return Collections.frequency(CrystalList,color);
+    }
     public int getCrystalCount()
     {
         return CrystalList.size();
@@ -39,8 +39,8 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     {
         return CrystalList.get(x);
     }
-    
-// Look into using Stack<> or Deque programming methods for queued arrays
+
+    // Look into using Stack<> or Deque programming methods for queued arrays
     public ArrayList<Integer> CrystalList = new ArrayList<>();
 
     public boolean addCrystal(int type)
@@ -57,21 +57,21 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
     public void removeCrystal(TileEntity tile) {
         World worldIn = tile.getWorld();
-            if (CrystalList.size() > 0) {
-                
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,CrystalList.get(CrystalList.size()-1))));
-                CrystalList.remove(CrystalList.size()-1);
-                crystalCount--;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-            }
-            if(CrystalList.size()==0)
-            {
-                worldIn.setBlockToAir(pos);
-            }
+        if (CrystalList.size() > 0) {
+
+            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,CrystalList.get(CrystalList.size()-1))));
+            CrystalList.remove(CrystalList.size()-1);
+            crystalCount--;
+            markDirty();
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos,state,state,3);
+        }
+        if(CrystalList.size()==0)
+        {
+            worldIn.setBlockToAir(pos);
+        }
     }
-//Make CrystalList use nbtTagList instead of to string and back
+    //Make CrystalList use nbtTagList instead of to string and back
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
