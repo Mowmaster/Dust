@@ -1,6 +1,7 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.items.ItemRegistry;
+import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -9,9 +10,11 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.*;
 
@@ -61,7 +64,6 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,CrystalList.get(CrystalList.size()-1))));
             CrystalList.remove(CrystalList.size()-1);
-            crystalCount--;
             markDirty();
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos,state,state,3);
@@ -71,6 +73,12 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             worldIn.setBlockToAir(pos);
         }
     }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return  true;
+    }
+
     //Make CrystalList use nbtTagList instead of to string and back
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
@@ -121,6 +129,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     {
         //tagCompound.setInteger("carboncount",carboncount);
         tagCompound.setString("CrystalList",CrystalList.toString());
+
 
 
     }

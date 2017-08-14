@@ -30,12 +30,15 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
-            for(int j=0;j<te.CrystalList.size();j++)
+            for(int j=0;j<te.CrystalList.size()-1;j++)
             {
                 //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Items.COAL), ItemCameraTransforms.TransformType.GROUND);
                 //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.pushMatrix();
                 Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(j)), ItemCameraTransforms.TransformType.GROUND);
                 GlStateManager.translate(0,0,-0.25);
+                GlStateManager.popMatrix();
+
             }
         }
         GlStateManager.popMatrix();
