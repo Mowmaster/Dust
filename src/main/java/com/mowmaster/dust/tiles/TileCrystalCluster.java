@@ -53,10 +53,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         IBlockState state = world.getBlockState(pos);
         world.notifyBlockUpdate(pos,state,state,3);
         return true;
-
     }
-
-
 
     public void removeCrystal(TileEntity tile) {
         World worldIn = tile.getWorld();

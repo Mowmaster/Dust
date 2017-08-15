@@ -151,6 +151,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         return false;
     }
 
+
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return true;

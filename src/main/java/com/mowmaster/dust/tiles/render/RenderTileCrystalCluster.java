@@ -19,34 +19,38 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
     public void render(TileCrystalCluster te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         super.render(te, x, y, z, partialTicks, destroyStage,alpha);
 
-
-
+        GlStateManager.pushAttrib();
         GlStateManager.pushMatrix();
-        {
-            GlStateManager.translate(x,y,z);
-            GlStateManager.translate(0,0,0);
-            GlStateManager.rotate(90f,1,0,0);
-            GlStateManager.translate(0.3,0.5,-0.2);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            GlStateManager.enableLighting();
-            for(int j=0;j<te.CrystalList.size()-1;j++)
-            {
-                //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Items.COAL), ItemCameraTransforms.TransformType.GROUND);
-                //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal), ItemCameraTransforms.TransformType.GROUND);
-                GlStateManager.pushMatrix();
-                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(j)), ItemCameraTransforms.TransformType.GROUND);
-                GlStateManager.translate(0,0,-0.25);
-                GlStateManager.popMatrix();
 
-            }
-        }
+        // Translate to the location of our tile entity
+        GlStateManager.translate(x, y, z);
+        GlStateManager.rotate(90f,1,0,0);
+        GlStateManager.disableRescaleNormal();
+
+        renderCrystals(te);
+
         GlStateManager.popMatrix();
-        {}
+        GlStateManager.popAttrib();
+    }
 
+    private void renderCrystals(TileCrystalCluster te)
+    {
+        for(int j=0;j<te.CrystalList.size();j++)
+        {
+            GlStateManager.pushMatrix();
+            GlStateManager.enableLighting();
+            Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(j)), ItemCameraTransforms.TransformType.NONE);
+            GlStateManager.popMatrix();
+        }
 
-
-
-
+        /*
+        for(int j=1;j<te.CrystalList.size();j++)
+        {
+            Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Items.COAL), ItemCameraTransforms.TransformType.GROUND);
+            //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal), ItemCameraTransforms.TransformType.GROUND);
+            //Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(j)), ItemCameraTransforms.TransformType.GROUND);
+            GlStateManager.translate(0,0,-0.25);
+        }
+         */
     }
 }
