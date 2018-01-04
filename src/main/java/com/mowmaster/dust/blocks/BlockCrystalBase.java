@@ -1,5 +1,7 @@
 package com.mowmaster.dust.blocks;
 
+import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
@@ -22,6 +24,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
@@ -160,14 +164,6 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-        ItemStack redcrystal = new ItemStack(crystal,1,0);
-        ItemStack bluecrystal = new ItemStack(crystal,1,1);
-        ItemStack yellowcrystal = new ItemStack(crystal,1,2);
-        ItemStack purplecrystal = new ItemStack(crystal,1,3);
-        ItemStack orangecrystal = new ItemStack(crystal,1,4);
-        ItemStack greencrystal = new ItemStack(crystal,1,5);
-        ItemStack whitecrystal = new ItemStack(crystal,1,6);
-        ItemStack blackcrystal = new ItemStack(crystal,1,7);
         if(!worldIn.isRemote)
         {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -180,17 +176,15 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
                     {
                         cluster.removeCrystal(cluster);
                     }
+
                 }
 
-                if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),yellowcrystal)
-                        ||ItemStack.areItemsEqual(playerIn.getHeldItem(hand),purplecrystal) ||ItemStack.areItemsEqual(playerIn.getHeldItem(hand),orangecrystal) ||ItemStack.areItemsEqual(playerIn.getHeldItem(hand),greencrystal)
-                        || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),blackcrystal))
+                if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
                 {
                     if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
                     {
                         playerIn.getHeldItem(hand).shrink(1);
                     }
-
                 }
 
 

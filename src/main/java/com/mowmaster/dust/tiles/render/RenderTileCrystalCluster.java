@@ -35,11 +35,11 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
 
     private void renderCrystals(TileCrystalCluster te)
     {
-        for(int j=0;j<te.CrystalList.size();j++)
+        for(int j=0;j<te.getCrystalCount();j++)
         {
             GlStateManager.pushMatrix();
             GlStateManager.enableLighting();
-            Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalInList(j)), ItemCameraTransforms.TransformType.NONE);
+            Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(j)), ItemCameraTransforms.TransformType.GROUND);
             GlStateManager.popMatrix();
         }
 

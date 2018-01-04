@@ -3,6 +3,7 @@ package com.mowmaster.dust.handlers;
 import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import ibxm.Player;
 import net.minecraft.block.BlockDirectional;
@@ -55,9 +56,7 @@ public class PlaceableCrystals
                 {
                     if (!(state.getBlock()instanceof BlockCrystalBase))
                     {
-                        if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal) )
+                        if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal
                                 && event.getFace()==EnumFacing.UP) {
 
                             worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
