@@ -128,12 +128,6 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-        return  true;
-    }
-
-    //Make CrystalList use nbtTagList instead of to string and back
-    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
@@ -168,37 +162,25 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     }
 
 
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        this.writeUpdateTag(tagCompound);
-        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
-
-    }
-
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tagCompound = pkt.getNbtCompound();
-        this.readUpdateTag(tagCompound);
+        super.onDataPacket(net, pkt);
+        readFromNBT(pkt.getNbtCompound());
     }
 
     @Override
     public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tagCompound = super.getUpdateTag();
-        writeUpdateTag(tagCompound);
-        return tagCompound;
+        return writeToNBT(new NBTTagCompound());
     }
 
-    public void writeUpdateTag(NBTTagCompound tagCompound)
-    {
-
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
-    private String crystals;
-    public void readUpdateTag(NBTTagCompound tagCompound)
-    {
-
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return oldState.getBlock() != newSate.getBlock();
     }
 
 }
