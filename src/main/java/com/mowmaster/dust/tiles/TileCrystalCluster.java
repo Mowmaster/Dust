@@ -23,24 +23,13 @@ import java.util.*;
 public class TileCrystalCluster extends TileEntity implements ITickable
 {
 
-
-
-
-    //crystal count is equal to the array size
-
-    @Override
-    public void update()
-    {
-        getCrystalCount();
-    }
-
-    private int crystalCount = 0;
-    private int crystalMax = 3;
-    private float redCrystals = 0.0F;
-    private float blueCrystals = 0.0F;
-    private float yellowCrystals = 0.0F;
-    private float whiteCrystals = 0.0F;
-    private float blackCrystals = 0.0F;
+    public int crystalCount = 0;
+    public int crystalMax = 3;
+    public float redCrystals = 0.0F;
+    public float blueCrystals = 0.0F;
+    public float yellowCrystals = 0.0F;
+    public float whiteCrystals = 0.0F;
+    public float blackCrystals = 0.0F;
 
     public int slot1;
     public int slot2;
@@ -88,8 +77,6 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         if(crystalCount<crystalMax)
         {
             crystalCount++;
-            System.out.println(type);
-            System.out.println(crystalCount);
             if(crystalCount==1){slot1=type;}
             if(crystalCount==2){slot2=type;}
             if(crystalCount==3){slot3=type;}
@@ -129,6 +116,14 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             world.notifyBlockUpdate(pos,state,state,3);
             if(crystalCount==0) {worldIn.setBlockToAir(pos);}
         }
+
+    }
+
+    @Override
+    public void update()
+    {
+
+
 
     }
 
