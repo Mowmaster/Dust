@@ -6,6 +6,7 @@ import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
+import net.minecraft.block.BlockBeacon;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -13,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.tileentity.TileEntityBeaconRenderer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +23,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -53,6 +56,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
     private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, v1);
     private static AxisAlignedBB CWEST = new AxisAlignedBB(v2, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
     private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, v1, 0.25D, 0.75D);
+
 
 
     public BlockCrystalBase(String unloc, String registryName)
@@ -185,6 +189,11 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
                     {
                         playerIn.getHeldItem(hand).shrink(1);
                     }
+                }
+
+                if (playerIn.getHeldItem(hand) ==null)
+                {
+                    System.out.println(cluster.getCrystalsIn());
                 }
 
 

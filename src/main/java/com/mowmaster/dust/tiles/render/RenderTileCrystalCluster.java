@@ -30,118 +30,60 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
 
         IBlockState state = te.getWorld().getBlockState(te.getPos());
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-
         RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
+        ItemStack crystal1 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1));
+        ItemStack crystal2 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2));
+        ItemStack crystal3 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3));
+        float f0=1.0f;
+        float f1= 0.5f;
+        float f2= 0.45f;
+        float f3=0.65f;
+        float f4=11.25f;
+        float f5=0.35f;
+        float f6= 0.55f;
+        float f7=348.75f;
+        float f8=90.0f;
+        float f9=101.25f;
+        float f10=78.75f;
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
 
         if(enumfacing==EnumFacing.UP)//when placed on ground
         {
-            if(te.crystalCount==1)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);
-            }
-            if(te.crystalCount==2)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
-            }
-            if(te.crystalCount==3)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3)), 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);
-            }
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1 , f1, f2, f1, 0f, 0f, 0f, 0f);}
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f1, f2, f3,  f4 , f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f2, f5, f7, f0, 0f, 0f);}
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f1, f2, f3,  f4 , f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f2, f5, f7, f0, 0f, 0f);renderItem(itemRenderer, crystal3, f1, f2, f1, 0f, 0f, 0f, 0f);}
         }
         if(enumfacing==EnumFacing.DOWN)
         {
-            if(te.crystalCount==1)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.55f, 0.5f, 0f, 0f, 0f, 0f);
-            }
-            if(te.crystalCount==2)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.55f, 0.65f,  348.75f , 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.55f, 0.35f, 11.25f, 1.0f, 0f, 0f);
-            }
-            if(te.crystalCount==3)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.55f, 0.65f,  348.75f , 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.55f, 0.35f, 11.25f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3)), 0.5f, 0.55f, 0.5f, 0f, 0f, 0f, 0f);
-            }
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1, f1, f6, f1, 0f, 0f, 0f, 0f);}
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f1, f6, f3,  f7 , f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f6, f5, f4, f0, 0f, 0f);}
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f1, f6, f3,  f7 , f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f6, f5, f4, f0, 0f, 0f);renderItem(itemRenderer, crystal3, f1, f6, f1, 0f, 0f, 0f, 0f);}
         }
         if(enumfacing==EnumFacing.NORTH)
         {
-            if(te.crystalCount==1)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.5f, 0.55f, 90.0f, 1.0f, 0f, 0f);
-            }
-            if(te.crystalCount==2)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.35f, 0.55f, 78.75f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.65f, 0.55f, 101.25f, 1.0f, 0f, 0f);
-            }
-            if(te.crystalCount==3)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.35f, 0.55f, 78.75f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.65f, 0.55f, 101.25f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3)), 0.5f, 0.5f, 0.55f, 90.0f, 1.0f, 0f, 0f);
-            }
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1, f1, f1, f6, f8, f0, 0f, 0f);}
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f1, f5, f6, f10, f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f3, f6, f9, f0, 0f, 0f);}
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f1, f5, f6, f10, f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f3, f6, f9, f0, 0f, 0f);renderItem(itemRenderer, crystal3, f1, f1, f6, f8, f0, 0f, 0f);}
         }
         if(enumfacing==EnumFacing.EAST)
         {
-            if(te.crystalCount==1)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.45f, 0.5f, 0.5f, 90.0f, 0f, 0f, 1.0f);
-            }
-            if(te.crystalCount==2)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.45f, 0.35f, 0.5f,  78.75f , 0f, 0f, 1.0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.45f, 0.65f, 0.5f, 101.25f, 0f, 0f, 1.0f);
-            }
-            if(te.crystalCount==3)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.45f, 0.35f, 0.5f,  78.75f , 0f, 0f, 1.0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.45f, 0.65f, 0.5f, 101.25f, 0f, 0f, 1.0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3)), 0.45f, 0.5f, 0.5f, 90.0f, 0f, 0f, 1.0f);
-            }
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1, f2, f1, f1, f8, 0f, 0f, f0);}
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f2, f5, f1,  f10 , 0f, 0f, f0);renderItem(itemRenderer, crystal2, f2, f3, f1, f9, 0f, 0f, f0);}
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f2, f5, f1,  f10 , 0f, 0f, f0);renderItem(itemRenderer, crystal2, f2, f3, f1, f9, 0f, 0f, f0);renderItem(itemRenderer, crystal3, f2, f1, f1, f8, 0f, 0f, f0);}
         }
         if(enumfacing==EnumFacing.SOUTH)
         {
-            if(te.crystalCount==1)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.5f, 0.45f, 90.0f, 1.0f, 0f, 0f);
-            }
-            if(te.crystalCount==2)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.35f, 0.45f, 101.25f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.65f, 0.45f, 78.75f, 1.0f, 0f, 0f);
-            }
-            if(te.crystalCount==3)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.5f, 0.35f, 0.45f, 101.25f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.5f, 0.65f, 0.45f, 78.75f, 1.0f, 0f, 0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3)), 0.5f, 0.5f, 0.45f, 90.0f, 1.0f, 0f, 0f);
-            }
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1, f1, f1, f2, f8, f0, 0f, 0f);}
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f1, f5, f2, f9, f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f3, f2, f10, f0, 0f, 0f);}
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f1, f5, f2, f9, f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f3, f2, f10, f0, 0f, 0f);renderItem(itemRenderer, crystal3, f1, f1, f2, f8, f0, 0f, 0f);}
         }
         if(enumfacing==EnumFacing.WEST)
         {
-            if(te.crystalCount==1)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.65f, 0.5f, 0.5f, 90.0f, 0f, 0f, 1.0f);
-            }
-            if(te.crystalCount==2)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.65f, 0.35f, 0.5f,  101.25f , 0f, 0f, 1.0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.65f, 0.65f, 0.5f, 78.75f, 0f, 0f, 1.0f);
-            }
-            if(te.crystalCount==3)
-            {
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1)), 0.65f, 0.35f, 0.5f,  101.25f , 0f, 0f, 1.0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2)), 0.65f, 0.65f, 0.5f, 78.75f, 0f, 0f, 1.0f);
-                renderItem(itemRenderer, new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3)), 0.65f, 0.5f, 0.5f, 90.0f, 0f, 0f, 1.0f);
-            }
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1, f3, f1, f1, f8, 0f, 0f, f0);}
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f3, f5, f1,  f9 , 0f, 0f, f0);renderItem(itemRenderer, crystal2, f3, f3, f1, f10, 0f, 0f, f0);}
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f3, f5, f1,  f9 , 0f, 0f, f0);renderItem(itemRenderer, crystal2, f3, f3, f1, f10, 0f, 0f, f0);renderItem(itemRenderer, crystal3, f3, f1, f1, f8, 0f, 0f, f0);}
         }
         GlStateManager.popMatrix();
     }
@@ -151,9 +93,7 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         GlStateManager.rotate(angle, xr, yr, zr);
-        if (!itemRenderer.shouldRenderItemIn3D(itemStack)) {
-            GlStateManager.rotate(180f, 0f, 1f, 0f);
-        }
+        if (!itemRenderer.shouldRenderItemIn3D(itemStack)) {GlStateManager.rotate(180f, 0f, 1f, 0f);}
         GlStateManager.pushAttrib();
         RenderHelper.enableStandardItemLighting();
         itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED);
