@@ -6,10 +6,7 @@ import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.sun.org.apache.bcel.internal.generic.PUSH;
-import net.minecraft.block.BlockBeacon;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -66,7 +63,6 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setHardness(20);
         this.setResistance(20);
-        this.setLightOpacity(10);
         this.setCreativeTab(DUSTTABS);
         this.setSoundType(SoundType.STONE);
         this.setBlockUnbreakable();
@@ -185,15 +181,24 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
 
                 if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
                 {
-                    if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
+                    if (playerIn.getHeldItem(hand).getMetadata()==0 || playerIn.getHeldItem(hand).getMetadata()==1 || playerIn.getHeldItem(hand).getMetadata()==2)//restricts basic cluster to 3 primaries
                     {
-                        playerIn.getHeldItem(hand).shrink(1);
+                        if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
+                        {
+                            playerIn.getHeldItem(hand).shrink(1);
+                        }
                     }
                 }
 
-                if (playerIn.getHeldItem(hand) ==null)
+                ItemStack blockGlowstone = new ItemStack(Blocks.GLOWSTONE,1);
+                if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blockGlowstone))
                 {
-                    System.out.println(cluster.getCrystalsIn());
+                    if(cluster.addGlowstone()) {playerIn.getHeldItem(hand).shrink(1);}
+                }
+
+                if (playerIn.getHeldItem(hand).isEmpty())
+                {
+                    System.out.println(cluster.getLight());
                 }
 
 
@@ -201,6 +206,31 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         }
 
         return true;
+    }
+
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileCrystalCluster) {
+            TileCrystalCluster cluster = (TileCrystalCluster) tileEntity;
+
+            if(cluster.getLight()==true)
+            {
+                return 15;
+            }
+        }
+        return 0;
+
+    }
+
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+        this.getLightValue(state,worldIn,pos);
+
     }
 
     @Override

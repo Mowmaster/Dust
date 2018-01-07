@@ -2,10 +2,8 @@ package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
-import ibxm.Player;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,13 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.Sys;
-
-import javax.annotation.Nonnull;
 
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
 
@@ -42,90 +35,61 @@ public class PlaceableCrystals
     public void onItemRightClick(PlayerInteractEvent.RightClickBlock event)
     {
         World worldIn = event.getWorld();
+        EntityPlayer playerIn = event.getEntityPlayer();
+        EnumHand hand = event.getHand();
+        IBlockState state = worldIn.getBlockState(event.getPos());
+
+        if(event.getEntityPlayer().isSneaking())
+        {
+            if((playerIn.getHeldItem(hand) != null))
+            {
+                if (!(state.getBlock()instanceof BlockCrystalBase))
+                {
+                    if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
+                    {
+                        if(event.getFace()==EnumFacing.UP && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)))
+                        {
+                            spawnBasicCluster(event,0,1,0);
+                        }
+                        else if(event.getFace()==EnumFacing.DOWN && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)))
+                        {
+                            spawnBasicCluster(event,0,-1,0);
+                        }
+                        else if(event.getFace()==EnumFacing.NORTH && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                            spawnBasicCluster(event,0,0,-1);
+                        }
+                        else if(event.getFace()==EnumFacing.SOUTH && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                            spawnBasicCluster(event,0,0,1);
+                        }
+                        else if(event.getFace()==EnumFacing.EAST && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                            spawnBasicCluster(event,1,0,0);
+                        }
+                        else if(event.getFace()==EnumFacing.WEST && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                            spawnBasicCluster(event,-1,0,0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void spawnBasicCluster(PlayerInteractEvent.RightClickBlock event,int x, int y, int z)
+    {
+        World worldIn = event.getWorld();
         BlockPos pos = event.getPos();
         EntityPlayer playerIn = event.getEntityPlayer();
         EnumHand hand = event.getHand();
         EnumFacing facing = event.getFace();
-        IBlockState state = worldIn.getBlockState(event.getPos());
 
-            if(event.getEntityPlayer().isSneaking())
+        worldIn.setBlockState(pos.add(x,y,z), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
+        TileEntity tileentity = worldIn.getTileEntity(pos.add(x,y,z));
+        if (tileentity instanceof TileCrystalCluster) {
+            if(((TileCrystalCluster) tileentity).getCrystalCount()==0)
             {
-
-//Case through the facings and then output the position add based on that???
-                if((playerIn.getHeldItem(hand) != null))
-                {
-                    if (!(state.getBlock()instanceof BlockCrystalBase))
-                    {
-                        if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal
-                                && event.getFace()==EnumFacing.UP) {
-
-                            worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
-                            playerIn.getHeldItem(hand).shrink(1);
-                            TileEntity tileentity = worldIn.getTileEntity(pos.add(0,1,0));
-                            if (tileentity instanceof TileCrystalCluster) {
-                                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                            }
-                        }
-                        else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal) )
-                                && event.getFace()==EnumFacing.DOWN) {
-                            worldIn.setBlockState(pos.add(0,-1,0), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
-                            playerIn.getHeldItem(hand).shrink(1);
-                            TileEntity tileentity = worldIn.getTileEntity(pos.add(0,-1,0));
-                            if (tileentity instanceof TileCrystalCluster) {
-                                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                            }
-                        }
-                        else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal) )
-                                && event.getFace()==EnumFacing.NORTH) {
-                            worldIn.setBlockState(pos.add(0,0,-1), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
-                            playerIn.getHeldItem(hand).shrink(1);
-                            TileEntity tileentity = worldIn.getTileEntity(pos.add(0,0,-1));
-                            if (tileentity instanceof TileCrystalCluster) {
-                                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                            }
-                        }
-                        else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal) )
-                                && event.getFace()==EnumFacing.SOUTH) {
-                            worldIn.setBlockState(pos.add(0,0,1), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
-                            playerIn.getHeldItem(hand).shrink(1);
-                            TileEntity tileentity = worldIn.getTileEntity(pos.add(0,0,1));
-                            if (tileentity instanceof TileCrystalCluster) {
-                                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                            }
-                        }
-                        else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal) )
-                                && event.getFace()==EnumFacing.EAST) {
-                            worldIn.setBlockState(pos.add(1,0,0), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
-                            playerIn.getHeldItem(hand).shrink(1);
-                            TileEntity tileentity = worldIn.getTileEntity(pos.add(1,0,0));
-                            if (tileentity instanceof TileCrystalCluster) {
-                                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                            }
-                        }
-                        else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal)
-                                || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal) )
-                                && event.getFace()==EnumFacing.WEST) {
-                            worldIn.setBlockState(pos.add(-1,0,0), BlockRegistry.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
-                            playerIn.getHeldItem(hand).shrink(1);
-                            TileEntity tileentity = worldIn.getTileEntity(pos.add(-1,0,0));
-                            if (tileentity instanceof TileCrystalCluster) {
-                                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                            }
-                        }
-                    }
-
-                }
+                ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
+                playerIn.getHeldItem(hand).shrink(1);
             }
         }
-
+    }
 
 }
