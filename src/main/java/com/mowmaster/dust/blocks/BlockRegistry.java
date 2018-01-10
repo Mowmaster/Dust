@@ -260,14 +260,14 @@ public class BlockRegistry
     public static Block greenDust;
     public static Block whiteDust;
     public static Block blackDust;
-	public static Block blazeDust;
-	public static Block carbonDust;
-	public static Block redstoneDust;
-	public static Block ironDust;
-	public static Block goldDust;
-	public static Block wheatDust;
-	public static Block potatoDust;
-	public static Block sugarDust;
+    public static Block blazeDust;
+    public static Block carbonDust;
+    public static Block redstoneDust;
+    public static Block ironDust;
+    public static Block goldDust;
+    public static Block wheatDust;
+    public static Block potatoDust;
+    public static Block sugarDust;
 
     public static Block crystalCluster;
     public static Block machineBase;
@@ -341,15 +341,15 @@ public class BlockRegistry
         greenDust = new BlockDust("greendust","green/greendust");
         whiteDust = new BlockDust("whitedust","white/whitedust");
         blackDust = new BlockDust("blackdust","black/blackdust");
-		
-		blazeDust = new BlockDust("blazedust","dust/blazedust");
-		carbonDust = new BlockDust("carbondust","dust/carbondust");
-		ironDust = new BlockDust("irondust","dust/irondust");
-		goldDust = new BlockDust("golddust","dust/golddust");
-		redstoneDust = new BlockDust("redstonedust","dust/redstonedust");
-		wheatDust = new BlockDust("wheatdust","dust/wheatdust");
-		potatoDust = new BlockDust("potatodust","dust/potatodust");
-		sugarDust = new BlockDust("sugardust","dust/sugardust");
+
+        blazeDust = new BlockDust("blazedust","dust/blazedust");
+        carbonDust = new BlockDust("carbondust","dust/carbondust");
+        ironDust = new BlockDust("irondust","dust/irondust");
+        goldDust = new BlockDust("golddust","dust/golddust");
+        redstoneDust = new BlockDust("redstonedust","dust/redstonedust");
+        wheatDust = new BlockDust("wheatdust","dust/wheatdust");
+        potatoDust = new BlockDust("potatodust","dust/potatodust");
+        sugarDust = new BlockDust("sugardust","dust/sugardust");
 
         leaf = new BlockLeaf("leaves");
 
@@ -776,14 +776,14 @@ public class BlockRegistry
         registerBlock(greenDust);
         registerBlock(whiteDust);
         registerBlock(blackDust);
-		registerBlock(blazeDust);
-		registerBlock(carbonDust);
-		registerBlock(ironDust);
-		registerBlock(goldDust);
-		registerBlock(redstoneDust);
-		registerBlock(wheatDust);
-		registerBlock(potatoDust);
-		registerBlock(sugarDust);
+        registerBlock(blazeDust);
+        registerBlock(carbonDust);
+        registerBlock(ironDust);
+        registerBlock(goldDust);
+        registerBlock(redstoneDust);
+        registerBlock(wheatDust);
+        registerBlock(potatoDust);
+        registerBlock(sugarDust);
 
         registerBlock(crate1);
         registerBlock(pot1);
@@ -1040,14 +1040,14 @@ public class BlockRegistry
         registerRender(greenDust);
         registerRender(whiteDust);
         registerRender(blackDust);
-		registerRender(blazeDust);
-		registerRender(carbonDust);
-		registerRender(ironDust);
-		registerRender(goldDust);
-		registerRender(redstoneDust);
-		registerRender(wheatDust);
-		registerRender(potatoDust);
-		registerRender(sugarDust);
+        registerRender(blazeDust);
+        registerRender(carbonDust);
+        registerRender(ironDust);
+        registerRender(goldDust);
+        registerRender(redstoneDust);
+        registerRender(wheatDust);
+        registerRender(potatoDust);
+        registerRender(sugarDust);
 
         registerRender(crate1);
         registerRender(pot1);

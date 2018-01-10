@@ -324,34 +324,4 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
-    /*
-            SPEED = getRegisteredMobEffect("speed");
-            SLOWNESS = getRegisteredMobEffect("slowness");
-            HASTE = getRegisteredMobEffect("haste");
-            MINING_FATIGUE = getRegisteredMobEffect("mining_fatigue");
-            STRENGTH = getRegisteredMobEffect("strength");
-            INSTANT_HEALTH = getRegisteredMobEffect("instant_health");
-            INSTANT_DAMAGE = getRegisteredMobEffect("instant_damage");
-            JUMP_BOOST = getRegisteredMobEffect("jump_boost");
-            NAUSEA = getRegisteredMobEffect("nausea");
-            REGENERATION = getRegisteredMobEffect("regeneration");
-            RESISTANCE = getRegisteredMobEffect("resistance");
-            FIRE_RESISTANCE = getRegisteredMobEffect("fire_resistance");
-            WATER_BREATHING = getRegisteredMobEffect("water_breathing");
-            INVISIBILITY = getRegisteredMobEffect("invisibility");
-            BLINDNESS = getRegisteredMobEffect("blindness");
-            NIGHT_VISION = getRegisteredMobEffect("night_vision");
-            HUNGER = getRegisteredMobEffect("hunger");
-            WEAKNESS = getRegisteredMobEffect("weakness");
-            POISON = getRegisteredMobEffect("poison");
-            WITHER = getRegisteredMobEffect("wither");
-            HEALTH_BOOST = getRegisteredMobEffect("health_boost");
-            ABSORPTION = getRegisteredMobEffect("absorption");
-            SATURATION = getRegisteredMobEffect("saturation");
-            GLOWING = getRegisteredMobEffect("glowing");
-            LEVITATION = getRegisteredMobEffect("levitation");
-            LUCK = getRegisteredMobEffect("luck");
-            UNLUCK = getRegisteredMobEffect("unluck");
-     */
-
 }

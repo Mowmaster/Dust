@@ -7,10 +7,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,7 +16,6 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
 public class BlockCrystalOre extends Block
@@ -41,50 +38,29 @@ public class BlockCrystalOre extends Block
         return null;
     }
 
+    private Boolean oreToCrystal(World worldIn,BlockPos pos, Block crystalOreBlock,Block crystalState)
+    {
+        if(this.equals(crystalOreBlock))
+        {
+            worldIn.setBlockState(pos,crystalState.getDefaultState());
+            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         if(!worldIn.isRemote)
         {
-            if(this.equals(BlockRegistry.redOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.redCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.blueOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.blueCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.yellowOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.yellowCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.purpleOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.purpleCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.orangeOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.orangeCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.greenOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.greenCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.whiteOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.whiteCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
-            else if(this.equals(BlockRegistry.blackOre))
-            {
-                worldIn.setBlockState(pos,BlockRegistry.blackCrystalFive.getDefaultState());
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            }
+            oreToCrystal(worldIn,pos,BlockRegistry.redOre,BlockRegistry.redCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.blueOre,BlockRegistry.blueCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.yellowOre,BlockRegistry.yellowCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.purpleOre,BlockRegistry.purpleCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.greenOre,BlockRegistry.greenCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.orangeOre,BlockRegistry.orangeCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.whiteOre,BlockRegistry.whiteCrystalFive);
+            oreToCrystal(worldIn,pos,BlockRegistry.blackOre,BlockRegistry.blackCrystalFive);
         }
     }
 }

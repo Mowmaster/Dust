@@ -25,9 +25,6 @@ public class PlaceableCrystals
     ItemStack redcrystal = new ItemStack(crystal,1,0);
     ItemStack bluecrystal = new ItemStack(crystal,1,1);
     ItemStack yellowcrystal = new ItemStack(crystal,1,2);
-    ItemStack purplecrystal = new ItemStack(crystal,1,3);
-    ItemStack orangecrystal = new ItemStack(crystal,1,4);
-    ItemStack greencrystal = new ItemStack(crystal,1,5);
     ItemStack whitecrystal = new ItemStack(crystal,1,6);
     ItemStack blackcrystal = new ItemStack(crystal,1,7);
 
