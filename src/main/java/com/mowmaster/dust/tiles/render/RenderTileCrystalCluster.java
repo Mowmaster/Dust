@@ -1,21 +1,14 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderItemFrame;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
@@ -34,6 +27,12 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
         ItemStack crystal1 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(1));
         ItemStack crystal2 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(2));
         ItemStack crystal3 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(3));
+        ItemStack crystal4 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(4));
+        ItemStack crystal5 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(5));
+        ItemStack crystal6 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(6));
+        ItemStack crystal7 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(7));
+        ItemStack crystal8 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(8));
+        ItemStack crystal9 = new ItemStack(ItemRegistry.crystal,1,te.getCrystalFromList(9));
         float f0=1.0f;
         float f1= 0.5f;
         float f2= 0.45f;
@@ -51,9 +50,57 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
 
         if(enumfacing==EnumFacing.UP)//when placed on ground
         {
-            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1 , f1, f2, f1, 0f, 0f, 0f, 0f);}
-            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, f1, f2, f3,  f4 , f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f2, f5, f7, f0, 0f, 0f);}
-            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, f1, f2, f3,  f4 , f0, 0f, 0f);renderItem(itemRenderer, crystal2, f1, f2, f5, f7, f0, 0f, 0f);renderItem(itemRenderer, crystal3, f1, f2, f1, 0f, 0f, 0f, 0f);}
+            if(te.crystalCount==1) {renderItem(itemRenderer, crystal1 , 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);}
+
+            if(te.crystalCount==2) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);}
+
+            if(te.crystalCount==3) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal3, 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);}
+
+            if(te.crystalCount==4) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal3, 0.35f, 0.45f, 0.5f,  11.25f , 0f, 0f, 1.0f);
+                                    renderItem(itemRenderer, crystal4, 0.65f, 0.45f, 0.5f, 348.75f, 0f, 0f, 1.0f);}
+
+            if(te.crystalCount==5) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal3, 0.35f, 0.45f, 0.5f,  11.25f , 0f, 0f, 1.0f);
+                                    renderItem(itemRenderer, crystal4, 0.65f, 0.45f, 0.5f, 348.75f, 0f, 0f, 1.0f);
+                                    renderItem(itemRenderer, crystal5, 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);}
+
+            if(te.crystalCount==6) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                                    renderItem(itemRenderer, crystal3, 0.35f, 0.45f, 0.5f,  11.25f , 0f, 0f, 1.0f);
+                                    renderItem(itemRenderer, crystal4, 0.65f, 0.45f, 0.5f, 348.75f, 0f, 0f, 1.0f);
+                                    renderItem(itemRenderer, crystal5, 0.35f, 0.45f, 0.65f, 11.25f , 1.0f, 0f, 1.0f);
+                                    renderItem(itemRenderer, crystal6, 0.65f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 1.0f);}
+
+            if(te.crystalCount==7) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                renderItem(itemRenderer, crystal3, 0.35f, 0.45f, 0.5f,  11.25f , 0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal4, 0.65f, 0.45f, 0.5f, 348.75f, 0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal5, 0.35f, 0.45f, 0.65f, 11.25f , 1.0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal6, 0.65f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal7, 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);}
+            if(te.crystalCount==8) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                renderItem(itemRenderer, crystal3, 0.35f, 0.45f, 0.5f,  11.25f , 0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal4, 0.65f, 0.45f, 0.5f, 348.75f, 0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal5, 0.35f, 0.45f, 0.65f, 11.25f , 1.0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal6, 0.65f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal7, 0.35f, 0.45f, 0.35f, 348.75f , 1.0f, 0f, -1.0f);
+                renderItem(itemRenderer, crystal8, 0.65f, 0.45f, 0.65f, 11.25f, 1.0f, 0f, -1.0f);}
+            if(te.crystalCount==9) {renderItem(itemRenderer, crystal1, 0.5f, 0.45f, 0.65f,  11.25f , 1.0f, 0f, 0f);
+                renderItem(itemRenderer, crystal2, 0.5f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 0f);
+                renderItem(itemRenderer, crystal3, 0.35f, 0.45f, 0.5f,  11.25f , 0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal4, 0.65f, 0.45f, 0.5f, 348.75f, 0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal5, 0.35f, 0.45f, 0.65f, 11.25f , 1.0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal6, 0.65f, 0.45f, 0.35f, 348.75f, 1.0f, 0f, 1.0f);
+                renderItem(itemRenderer, crystal7, 0.35f, 0.45f, 0.35f, 348.75f , 1.0f, 0f, -1.0f);
+                renderItem(itemRenderer, crystal8, 0.65f, 0.45f, 0.65f, 11.25f, 1.0f, 0f, -1.0f);
+                renderItem(itemRenderer, crystal9, 0.5f, 0.45f, 0.5f, 0f, 0f, 0f, 0f);}
         }
         if(enumfacing==EnumFacing.DOWN)
         {

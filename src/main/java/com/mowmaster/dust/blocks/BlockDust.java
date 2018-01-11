@@ -4,6 +4,7 @@ import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -15,7 +16,10 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,7 +42,35 @@ public class BlockDust extends BlockFalling {
         //this.setTickRandomly(true);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
+/*
+    @Override
+    public boolean canCollideCheck(IBlockState state, boolean b)
+    {
+        return false;
+    }
 
+    @Override
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
+    {
+        return null;
+    }
+
+    @Override
+    public RayTraceResult collisionRayTrace(IBlockState state, World par1World, BlockPos pos, Vec3d par5Vec3, Vec3d par6Vec3)
+    {
+        return null;
+    }
+    @Override
+    public EnumPushReaction getMobilityFlag(IBlockState state)
+    {
+        return EnumPushReaction.IGNORE;
+    }
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return true;
+    }
+*/
     //Only until the Crusher is implimented
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune) {

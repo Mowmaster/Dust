@@ -42,7 +42,7 @@ import static com.mowmaster.dust.items.ItemRegistry.crystal;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
-public class BlockCrystalBase extends BlockDirectional implements ITileEntityProvider
+public class BlockCrystalClusterBasic extends BlockDirectional implements ITileEntityProvider
 {
     private static double v1=0.9D;
     private static double v2=0.1D;
@@ -56,7 +56,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
 
 
 
-    public BlockCrystalBase(String unloc, String registryName)
+    public BlockCrystalClusterBasic(String unloc, String registryName)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
@@ -161,6 +161,20 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
         return true;
     }
 
+    private void checkThenAddCrystal(EntityPlayer playerIn,EnumHand hand, TileCrystalCluster cluster, int metaCrystalAllowed)
+    {
+        if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
+        {
+            if (playerIn.getHeldItem(hand).getMetadata()==metaCrystalAllowed)//restricts basic cluster to 3 primaries
+            {
+                if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
+                {
+                    playerIn.getHeldItem(hand).shrink(1);
+                }
+            }
+        }
+    }
+
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
@@ -179,29 +193,20 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
 
                 }
 
-                if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
-                {
-                    if (playerIn.getHeldItem(hand).getMetadata()==0 || playerIn.getHeldItem(hand).getMetadata()==1 || playerIn.getHeldItem(hand).getMetadata()==2)//restricts basic cluster to 3 primaries
-                    {
-                        if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
-                        {
-                            playerIn.getHeldItem(hand).shrink(1);
-                        }
-                    }
-                }
+                checkThenAddCrystal(playerIn,hand,cluster,0);
+                checkThenAddCrystal(playerIn,hand,cluster,1);
+                checkThenAddCrystal(playerIn,hand,cluster,2);
+                checkThenAddCrystal(playerIn,hand,cluster,3);
+                checkThenAddCrystal(playerIn,hand,cluster,4);
+                checkThenAddCrystal(playerIn,hand,cluster,5);
+                checkThenAddCrystal(playerIn,hand,cluster,6);
+                checkThenAddCrystal(playerIn,hand,cluster,7);
 
                 ItemStack blockGlowstone = new ItemStack(Blocks.GLOWSTONE,1);
                 if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blockGlowstone))
                 {
                     if(cluster.addGlowstone()) {playerIn.getHeldItem(hand).shrink(1);}
                 }
-
-                if (playerIn.getHeldItem(hand).isEmpty())
-                {
-                    System.out.println(cluster.getLight());
-                }
-
-
             }
         }
 
@@ -246,8 +251,7 @@ public class BlockCrystalBase extends BlockDirectional implements ITileEntityPro
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-        tooltip.add("[WIP] Will Allow for The creation of Mixed Crystal Clusters");
-        tooltip.add("Will replace craftable crystals and have effects at tier 2+");
-        tooltip.add("Will be in the Next Beta Release");
+        tooltip.add("[WIP] Combine Crystals To Create Effects");
+
     }
 }

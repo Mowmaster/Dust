@@ -1,6 +1,6 @@
 package com.mowmaster.dust.handlers;
 
-import com.mowmaster.dust.blocks.BlockCrystalBase;
+import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
@@ -40,7 +40,7 @@ public class PlaceableCrystals
         {
             if((playerIn.getHeldItem(hand) != null))
             {
-                if (!(state.getBlock()instanceof BlockCrystalBase))
+                if (!(state.getBlock()instanceof BlockCrystalClusterBasic))
                 {
                     if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
                     {

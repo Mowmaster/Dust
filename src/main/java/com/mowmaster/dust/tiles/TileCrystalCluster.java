@@ -1,25 +1,15 @@
 package com.mowmaster.dust.tiles;
 
 import com.google.common.collect.Sets;
-import com.mowmaster.dust.blocks.BlockCrystalBase;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneLight;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.potion.Potion;
@@ -27,14 +17,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 
 import javax.annotation.Nullable;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.*;
 
 
@@ -42,7 +28,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 {
 
     public int crystalCount = 0;
-    public int crystalMax = 3;
+    public int crystalMax = 9;
     public int redCrystals =0;
     public int blueCrystals = 0;
     public int yellowCrystals = 0;
@@ -165,6 +151,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         return false;
     }
 
+    private PotionEffect crystalEffect;
     public static final Potion[][] LISTOFEFFECTS = new Potion[][] {{MobEffects.SPEED, MobEffects.HASTE}, {MobEffects.RESISTANCE, MobEffects.JUMP_BOOST}, {MobEffects.STRENGTH}, {MobEffects.REGENERATION}};
     private static final Set<Potion> POSSIBLEEFFECTS = Sets.<Potion>newHashSet();
     private void addEffectsToArea()
@@ -179,7 +166,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         if(crystalCount>=7 && crystalCount<=8) {a=2;}
         if(crystalCount>=9) {a=Math.round(crystalCount/3);}//??? may need to change to work???
 
-        PotionEffect crystalEffect;
+
         if(redCrystals==3){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, 0, false, true);}
         else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, 0, false, true);}
         else if(redCrystals<yellowCrystals && redCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.NIGHT_VISION ,100, 0, false, true);}

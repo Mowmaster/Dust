@@ -524,7 +524,7 @@ public class BlockRegistry
         blackplankslabs = new BlockAncientSlabs("blackplankslabs", "ancient/blackplankslabs");
         blackplankfences = new BlockAncientFences("blackplankfences", "ancient/blackplankfences");
 
-        crystalCluster = new BlockCrystalBase("crystalcluster", "crystalcluster");
+        crystalCluster = new BlockCrystalClusterBasic("crystalcluster", "crystalcluster");
         machineBase = new BlockMachineBase("machinebase", "machinebase");
 
         crate1 = new BlockCrate("crate1","crate1");
