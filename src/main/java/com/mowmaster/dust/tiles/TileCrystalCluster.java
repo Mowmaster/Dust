@@ -79,9 +79,11 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
     public boolean addCrystal(int type)
     {
-        if(type==0){redCrystals++;}
-        if(type==1){blueCrystals++;}
-        if(type==2){yellowCrystals++;}
+        if(type==0){redCrystals++;redCrystals++;}
+        if(type==1){blueCrystals++;blueCrystals++;}
+        if(type==2){yellowCrystals++;yellowCrystals++;}
+        if(type==6){whiteCrystals++;}
+        if(type==7){blackCrystals++;}
         if(crystalCount<crystalMax)
         {
             crystalCount++;
@@ -117,9 +119,11 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             if(crystalCount==7){slot=slot7;}
             if(crystalCount==8){slot=slot8;}
             if(crystalCount==9){slot=slot9;}
-            if(slot==0){redCrystals--;}
-            if(slot==1){blueCrystals--;}
-            if(slot==2){yellowCrystals--;}
+            if(slot==0){redCrystals--;redCrystals--;}
+            if(slot==1){blueCrystals--;blueCrystals--;}
+            if(slot==2){yellowCrystals--;yellowCrystals--;}
+            if(slot==6){whiteCrystals--;}
+            if(slot==7){blackCrystals--;}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,slot)));
             crystalCount--;
             markDirty();
@@ -152,32 +156,65 @@ public class TileCrystalCluster extends TileEntity implements ITickable
     }
 
     private PotionEffect crystalEffect;
+    private int amp;
     public static final Potion[][] LISTOFEFFECTS = new Potion[][] {{MobEffects.SPEED, MobEffects.HASTE}, {MobEffects.RESISTANCE, MobEffects.JUMP_BOOST}, {MobEffects.STRENGTH}, {MobEffects.REGENERATION}};
     private static final Set<Potion> POSSIBLEEFFECTS = Sets.<Potion>newHashSet();
     private void addEffectsToArea()
     {
-
+        int totalColors=redCrystals+blueCrystals+yellowCrystals;
         int x = this.pos.getX();
         int y = this.pos.getY();
         int z = this.pos.getZ();
-        int a=0;
+        int a=0;//CrystalEffectRange
+        //Effect Amplifier
         if(crystalCount>=3 && crystalCount<=4) {a=0;}
         if(crystalCount>=5 && crystalCount<=6) {a=1;}
         if(crystalCount>=7 && crystalCount<=8) {a=2;}
         if(crystalCount>=9) {a=Math.round(crystalCount/3);}//??? may need to change to work???
+        if(totalColors>=6)
+        {
+            if(whiteCrystals>blackCrystals && whiteCrystals-blackCrystals>0)
+            {
+                amp= Math.subtractExact(whiteCrystals,blackCrystals);
+            }
+            else if(blackCrystals>whiteCrystals && blackCrystals-whiteCrystals>0)
+            {
+                amp= Math.subtractExact(blackCrystals,whiteCrystals);
+            }
+            else
+            {
+                amp=0;
+            }
+        }
 
 
-        if(redCrystals==3){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, 0, false, true);}
-        else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, 0, false, true);}
-        else if(redCrystals<yellowCrystals && redCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.NIGHT_VISION ,100, 0, false, true);}
-        else if(redCrystals>blueCrystals && blueCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, 0, false, true);}//should be envigoration
-        else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.FIRE_RESISTANCE ,100, 0, false, true);}
-        else if(blueCrystals==3){crystalEffect = new PotionEffect(MobEffects.WATER_BREATHING ,100, 0, false, true);}
-        else if(yellowCrystals==3){crystalEffect = new PotionEffect(MobEffects.SATURATION ,100, 0, false, true);}
-        else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.INVISIBILITY,100, 0, false, true);}
-        else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.SPEED,100, 0, false, true);}
-        else if((yellowCrystals==1 && blueCrystals==1 && redCrystals==1)){crystalEffect = new PotionEffect(MobEffects.LEVITATION,100, 0, false, true);}
-        else{crystalEffect = new PotionEffect(MobEffects.SPEED ,100, 0, false, true);}
+        if(blackCrystals>whiteCrystals && blackCrystals-whiteCrystals>=1)
+        {
+            if(totalColors==redCrystals){crystalEffect = new PotionEffect(MobEffects.WEAKNESS ,100, amp, false, true);}
+            else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, 250, false, true);}
+            else if(redCrystals<yellowCrystals && redCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.BLINDNESS ,100, amp, false, true);}
+            else if(redCrystals>blueCrystals && blueCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.NAUSEA ,100, amp, false, true);}
+            else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.POISON ,100, amp, false, true);}//should be flamibility
+            else if(totalColors==blueCrystals){crystalEffect = new PotionEffect(MobEffects.POISON ,100, amp, false, true);}//Drowning in water or raining out take damage
+            else if(totalColors==yellowCrystals){crystalEffect = new PotionEffect(MobEffects.HUNGER ,100, amp, false, true);}
+            else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.GLOWING,100, amp, false, true);}
+            else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.SLOWNESS,100, amp, false, true);}
+            else if((yellowCrystals==1 && blueCrystals==1 && redCrystals==1)){crystalEffect = new PotionEffect(MobEffects.LEVITATION,100, amp, false, true);}//Gravity
+        }
+        else
+        {
+            if(totalColors==redCrystals){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, amp, false, true);}
+            else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, amp, false, true);}
+            else if(redCrystals<yellowCrystals && redCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.NIGHT_VISION ,100, amp, false, true);}
+            else if(redCrystals>blueCrystals && blueCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, amp, false, true);}//should be envigoration
+            else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.FIRE_RESISTANCE ,100, amp, false, true);}
+            else if(totalColors==blueCrystals){crystalEffect = new PotionEffect(MobEffects.WATER_BREATHING ,100, amp, false, true);}
+            else if(totalColors==yellowCrystals){crystalEffect = new PotionEffect(MobEffects.SATURATION ,100, amp, false, true);}
+            else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.INVISIBILITY,100, amp, false, true);}
+            else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.SPEED,100, amp, false, true);}
+            else if((yellowCrystals==1 && blueCrystals==1 && redCrystals==1)){crystalEffect = new PotionEffect(MobEffects.LEVITATION,100, amp, false, true);}
+        }
+
 
         if (!this.world.isRemote)
         {
