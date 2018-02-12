@@ -451,7 +451,7 @@ public class OreGeneration implements IWorldGenerator
 
 
                 //Random Chance given structures will be placed in Crystal Biomes [WIP]
-                int getrando = random.nextInt(5);
+                int getrando = random.nextInt(6);
                 //System.out.println(getrando);
                 switch (getrando)
                 {
