@@ -7,6 +7,8 @@ import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.recipes.OreDictDust;
+import com.mowmaster.dust.recipes.SmeltingRecipes;
+import com.mowmaster.dust.recipes.fuels.FuelRegistry;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,6 +50,8 @@ public class dust {
         TileRegistry.registerTile();
         proxy.PreInit();
         proxy.registerTile();
+        FuelRegistry.init();
+        SmeltingRecipes.init();
         BiomeRegistry.BiomeReg();
     }
 

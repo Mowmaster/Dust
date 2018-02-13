@@ -21,6 +21,7 @@ public class ItemRegistry
     public static Item dust;
     public static Item crystal;
     public static Item bit;
+    public static Item dustyCharcoal;
     public static Item scroll;
     public static Item crushingcomponents;
     public static Item finnisher;
@@ -33,6 +34,7 @@ public class ItemRegistry
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
+        dustyCharcoal = new ItemCharcoal("charcoal");
         scroll = new ItemScroll("scroll","scroll");
         crushingcomponents = new ItemBasic("crusheritems","crusheritems");
         finnisher = new ItemFinnisher("finnisher","finnisher",10,10.0F,false,
@@ -46,6 +48,7 @@ public class ItemRegistry
         registerItem(dust);
         registerItem(crystal);
         registerItem(bit);
+        registerItem(dustyCharcoal);
         registerItem(scroll);
         registerItem(crushingcomponents);
         registerItem(finnisher);
@@ -66,6 +69,10 @@ public class ItemRegistry
         for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)
         {
             registerRender(bit,i,"bit_" + CrystalItems.BitTypes.values()[i].getName());
+        }
+        for(int i = 0; i < CrystalItems.CharcoalTypes.values().length; i++)
+        {
+            registerRender(dustyCharcoal,i,"charcoal_" + CrystalItems.CharcoalTypes.values()[i].getName());
         }
 
         registerRender(scroll);

@@ -33,6 +33,16 @@ item.bit.orange.name=Orange Bit
 item.bit.white.name=White Bit
 item.bit.black.name=Black Bit
 
+item.charcoal.red.name=Red Charcoal
+item.charcoal.blue.name=Blue Charcoal
+item.charcoal.yellow.name=Yellow Charcoal
+item.charcoal.purple.name=Purple Charcoal
+item.charcoal.green.name=Green Charcoal
+item.charcoal.orange.name=Orange Charcoal
+item.charcoal.white.name=White Charcoal
+item.charcoal.black.name=Black Charcoal
+
+
 item.scroll.name=Ancient Scroll
 item.finnisher.name=The Finnish'er
 

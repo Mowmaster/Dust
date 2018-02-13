@@ -3,6 +3,7 @@ package com.mowmaster.dust.recipes;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -65,9 +66,14 @@ public class OreDictDust
         OreDictionary.registerOre("dustCrystal", ItemRegistry.dust);
         OreDictionary.registerOre("bitDust", ItemRegistry.bit);
 
-
-
-
-
+        //OreDictionary.registerOre("charcoal",ItemRegistry.dustyCharcoal);
+        OreDictionary.registerOre("charcoalRed",new ItemStack(ItemRegistry.dustyCharcoal,1,0));
+        OreDictionary.registerOre("charcoalBlue",new ItemStack(ItemRegistry.dustyCharcoal,1,1));
+        OreDictionary.registerOre("charcoalYellow",new ItemStack(ItemRegistry.dustyCharcoal,1,2));
+        OreDictionary.registerOre("charcoalPurple",new ItemStack(ItemRegistry.dustyCharcoal,1,3));
+        OreDictionary.registerOre("charcoalGreen",new ItemStack(ItemRegistry.dustyCharcoal,1,4));
+        OreDictionary.registerOre("charcoalOrange",new ItemStack(ItemRegistry.dustyCharcoal,1,5));
+        OreDictionary.registerOre("charcoalWhite",new ItemStack(ItemRegistry.dustyCharcoal,1,6));
+        OreDictionary.registerOre("charcoalBlack",new ItemStack(ItemRegistry.dustyCharcoal,1,7));
     }
 }
