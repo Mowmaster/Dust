@@ -16,19 +16,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-/**
- * Created by KingMowmaster on 6/5/2017.
- */
+
 public class BlockAncientFences extends BlockFence
 {
-    public BlockAncientFences(String unloc, String registryName)
+    public BlockAncientFences(String unloc, String registryName, Material material, MapColor color, SoundType soundType, int hardness, int resistance, int lightopacity)
     {
-        super (Material.ROCK, MapColor.STONE);
+        super (material, color);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(20);
-        this.setResistance(20);
-        this.setLightOpacity(10);
+        this.setSoundType(soundType);
+        this.setHardness(hardness);
+        this.setResistance(resistance);
+        this.setLightOpacity(lightopacity);
         setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);

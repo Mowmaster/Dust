@@ -43,7 +43,7 @@ public class BlockCrystalCluster extends BlockDirectional implements ITileEntity
     public BlockCrystalCluster()
     {
         super(Material.ROCK);
-        this.setHardness(20);
+        this.setHardness(3);
         this.setResistance(20);
         this.setCreativeTab(DUSTTABS);
         this.setSoundType(SoundType.STONE);

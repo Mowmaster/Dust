@@ -61,7 +61,7 @@ public class BlockCrystalClusterBasic extends BlockDirectional implements ITileE
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(20);
+        this.setHardness(3);
         this.setResistance(20);
         this.setCreativeTab(DUSTTABS);
         this.setSoundType(SoundType.STONE);

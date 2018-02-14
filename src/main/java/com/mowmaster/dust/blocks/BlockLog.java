@@ -34,8 +34,8 @@ public class BlockLog extends Block
         super(Material.WOOD);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(20);
-        this.setResistance(20);
+        this.setHardness(2);
+        this.setResistance(10);
         this.setLightLevel(5);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setSoundType(SoundType.WOOD);

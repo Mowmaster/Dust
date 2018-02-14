@@ -19,11 +19,9 @@
   "criteria": {
     "hot": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalhot"}},
     "warm": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalwarm"}},
-    "cold": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalcold"}},
-    "crystal": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystal"}},
-    "has_the_recipe": {"trigger": "minecraft:recipe_unlocked", "conditions": {"recipe": "dust:clusters/red_five"}}
+    "cold": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalcold"}}
   },
-  "requirements": [["hot"],["warm"],["cold"],["crystal"],["has_the_recipe"]],
+  "requirements": [["hot"],["warm"],["cold"],["crystal"]],
   "rewards": {
     "recipes": [
       "dust:patreon/finnisher"

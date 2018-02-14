@@ -13,16 +13,16 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 public class BlockAncientStairs extends BlockStairs
 {
-    public BlockAncientStairs(String unloc, String registryName, Block block)
+    public BlockAncientStairs(String unloc, String registryName, Block block, SoundType soundType, int hardness, int resistance, int lightopacity)
     {
         super (block.getDefaultState());
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(20);
-        this.setResistance(20);
-        this.setLightOpacity(10);
+        this.setHardness(hardness);
+        this.setResistance(resistance);
+        this.setLightOpacity(lightopacity);
         this.setCreativeTab(DUSTBLOCKSTABS);
-        this.setSoundType(SoundType.STONE);
+        this.setSoundType(soundType);
         this.useNeighborBrightness = true;
     }
 

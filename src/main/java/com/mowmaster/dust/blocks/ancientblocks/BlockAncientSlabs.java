@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks.ancientblocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,16 +27,16 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 public class BlockAncientSlabs extends BlockDirectional
 {
 
-    public BlockAncientSlabs(String unloc, String registryName)
+    public BlockAncientSlabs(String unloc, String registryName, Material material, SoundType soundType, int hardness, int resistance, int lightopacity)
     {
-        super(Material.ROCK);
+        super(material);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(20);
-        this.setResistance(20);
-        this.setLightOpacity(10);
+        this.setHardness(hardness);
+        this.setResistance(resistance);
+        this.setLightOpacity(lightopacity);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
-        this.setSoundType(SoundType.STONE);
+        this.setSoundType(soundType);
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.useNeighborBrightness = true;
     }

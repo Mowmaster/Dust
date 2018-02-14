@@ -53,7 +53,7 @@ public class BlockCrystal extends BlockDirectional
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(10);
+        this.setHardness(3);
         this.setResistance(5);
         this.setLightLevel(2.0F);
         this.setSoundType(SoundType.GLASS);
