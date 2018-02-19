@@ -253,6 +253,15 @@ public class BlockRegistry
     public static Block saplingwhite;
     public static Block saplingblack;
 
+    public static Block leafRed;
+    public static Block leafBlue;
+    public static Block leafYellow;
+    public static Block leafPurple;
+    public static Block leafGreen;
+    public static Block leafOrange;
+    public static Block leafWhite;
+    public static Block leafBlack;
+
     public static Block redDust;
     public static Block blueDust;
     public static Block yellowDust;
@@ -353,6 +362,8 @@ public class BlockRegistry
         sugarDust = new BlockDust("sugardust","dust/sugardust");
 
         leaf = new BlockLeaf("leaves");
+
+
 
         logred = new BlockLog("log_red", "red/log_red");
         logblue = new BlockLog("log_blue", "blue/log_blue");
@@ -865,8 +876,6 @@ public class BlockRegistry
         {
             registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
         }
-
-
 
         registerRenderAncient(redstone);
         registerRenderAncient(redstonestairs);

@@ -127,6 +127,9 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             if(slot==0){redCrystals--;redCrystals--;}
             if(slot==1){blueCrystals--;blueCrystals--;}
             if(slot==2){yellowCrystals--;yellowCrystals--;}
+            if(slot==3){redCrystals--;blueCrystals--;}//purple
+            if(slot==4){yellowCrystals--;blueCrystals--;}//green
+            if(slot==5){yellowCrystals--;redCrystals--;}//orange
             if(slot==6){whiteCrystals--;}
             if(slot==7){blackCrystals--;}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,slot)));

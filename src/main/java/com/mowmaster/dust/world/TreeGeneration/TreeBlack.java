@@ -13,13 +13,10 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockLeaf.CHECK_DECAY;
-import static com.mowmaster.dust.blocks.BlockLeaf.DECAYABLE;
+
 import static com.mowmaster.dust.blocks.BlockLeaf.LEAVES;
 
-/**
- * Created by KingMowmaster on 4/3/2017.
- */
+
 public class TreeBlack extends WorldGenAbstractTree
 {
     private final int minTreeHeight = 4;

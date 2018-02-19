@@ -15,9 +15,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.blocks.BlockLeaf.LEAVES;
 
-/**
- * Created by KingMowmaster on 4/3/2017.
- */
+
 public class TreeBlue extends WorldGenAbstractTree
 {
     private final int minTreeHeight = 4;

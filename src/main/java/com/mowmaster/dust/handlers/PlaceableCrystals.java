@@ -25,6 +25,9 @@ public class PlaceableCrystals
     ItemStack redcrystal = new ItemStack(crystal,1,0);
     ItemStack bluecrystal = new ItemStack(crystal,1,1);
     ItemStack yellowcrystal = new ItemStack(crystal,1,2);
+    ItemStack purplecrystal = new ItemStack(crystal,1,3);
+    ItemStack greencrystal = new ItemStack(crystal,1,4);
+    ItemStack orangecrystal = new ItemStack(crystal,1,5);
     ItemStack whitecrystal = new ItemStack(crystal,1,6);
     ItemStack blackcrystal = new ItemStack(crystal,1,7);
 
@@ -36,6 +39,15 @@ public class PlaceableCrystals
         EnumHand hand = event.getHand();
         IBlockState state = worldIn.getBlockState(event.getPos());
 
+        Boolean red = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal);
+        Boolean blue = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal);
+        Boolean yellow = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal);
+        Boolean purple = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), purplecrystal);
+        Boolean green = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), greencrystal);
+        Boolean orange = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), orangecrystal);
+        Boolean white = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), whitecrystal);
+        Boolean black = ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blackcrystal);
+
         if(event.getEntityPlayer().isSneaking())
         {
             if((playerIn.getHeldItem(hand) != null))
@@ -44,24 +56,24 @@ public class PlaceableCrystals
                 {
                     if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
                     {
-                        if(event.getFace()==EnumFacing.UP && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)))
+                        if(event.getFace()==EnumFacing.UP && (red||blue||yellow||purple||green||orange))
                         {
                             spawnBasicCluster(event,0,1,0);
                         }
-                        else if(event.getFace()==EnumFacing.DOWN && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal)))
+                        else if(event.getFace()==EnumFacing.DOWN && (red||blue||yellow||purple||green||orange))
                         {
                             spawnBasicCluster(event,0,-1,0);
                         }
-                        else if(event.getFace()==EnumFacing.NORTH && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                        else if(event.getFace()==EnumFacing.NORTH && (red||blue||yellow||purple||green||orange)) {
                             spawnBasicCluster(event,0,0,-1);
                         }
-                        else if(event.getFace()==EnumFacing.SOUTH && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                        else if(event.getFace()==EnumFacing.SOUTH && (red||blue||yellow||purple||green||orange)) {
                             spawnBasicCluster(event,0,0,1);
                         }
-                        else if(event.getFace()==EnumFacing.EAST && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                        else if(event.getFace()==EnumFacing.EAST && (red||blue||yellow||purple||green||orange)) {
                             spawnBasicCluster(event,1,0,0);
                         }
-                        else if(event.getFace()==EnumFacing.WEST && (ItemStack.areItemsEqual(playerIn.getHeldItem(hand), redcrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), bluecrystal) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand), yellowcrystal))) {
+                        else if(event.getFace()==EnumFacing.WEST && (red||blue||yellow||purple||green||orange)) {
                             spawnBasicCluster(event,-1,0,0);
                         }
                     }
