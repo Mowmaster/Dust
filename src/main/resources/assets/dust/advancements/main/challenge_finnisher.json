@@ -7,7 +7,7 @@
       "translate": "The Finnisher"
     },
     "description": {
-      "translate": "Travel to all Biomes and Be able to craft Crystal Clusters"
+      "translate": "The Ultimate Patreon Item"
     }
   },
   "hidden": true,
@@ -17,11 +17,8 @@
   "hidden": true,
   "parent": "dust:main/travel_biomes",
   "criteria": {
-    "hot": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalhot"}},
-    "warm": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalwarm"}},
-    "cold": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalcold"}}
+    "pickup_crystal": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"item": "minecraft:dragon_breath"}]}}
   },
-  "requirements": [["hot"],["warm"],["cold"],["crystal"]],
   "rewards": {
     "recipes": [
       "dust:patreon/finnisher"

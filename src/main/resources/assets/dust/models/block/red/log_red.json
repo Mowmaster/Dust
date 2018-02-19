@@ -1,21 +1,21 @@
-{"parent": "block/cube",
-"textures": {
-    "particle": "dust:blocks/crystal_cores",
-    "1870236960": "dust:items/crystal_wood_logs",
-    "1974808378": "minecraft:blocks/stone"
-},
-"elements": [ 
-{
-    "from": [ 0, 0, 0 ],
-    "to": [ 16, 16, 16 ],
-    "faces": {
-        "down":  { "uv": [ 4, 4, 0, 0 ], "texture": "#1870236960" },
-        "up":    { "uv": [ 0, 0, 4, 4 ], "texture": "#1870236960" },
-        "north": { "uv": [ 0, 8, 4, 12 ], "texture": "#1870236960" },
-        "south": { "uv": [ 0, 8, 4, 12 ], "texture": "#1870236960" },
-        "west":  { "uv": [ 0, 8, 4, 12 ], "texture": "#1870236960" },
-        "east":  { "uv": [ 0, 8, 4, 12 ], "texture": "#1870236960" }
-    }
-}
-]
+{"parent": "block/cube_all",
+    "textures": {
+        "side": "dust:blocks/logs/red_side",
+        "top": "dust:blocks/logs/red_top",
+        "particle": "dust:blocks/crystal_cores"
+    },
+    "elements": [
+        {
+            "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#top" },
+                "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#top" },
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#side" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#side" },
+                "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#side" },
+                "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#side" }
+            }
+        }
+    ]
 }
