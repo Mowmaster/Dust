@@ -1,5 +1,6 @@
 package com.mowmaster.dust.tiles.render;
 
+import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +22,7 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
     @Override
     public void render(TileCrystalCluster te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
-        if(te instanceof TileCrystalCluster)
+        if(te.getBlockType() instanceof BlockCrystalClusterBasic)
         {
             IBlockState state = te.getWorld().getBlockState(te.getPos());
             EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
