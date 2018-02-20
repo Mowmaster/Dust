@@ -241,6 +241,11 @@ public class BlockLog extends Block
         {
             getSapling(worldIn,pos);
             getDust(worldIn,pos);
+
+            if(worldIn.getBlockState(pos).getBlock() instanceof BlockLog)
+            {
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(this, 1)));
+            }
             worldIn.setBlockToAir(pos);
         }
 
@@ -264,6 +269,7 @@ public class BlockLog extends Block
                     {
                         if(worldIn.getBlockState(pos.add(a,0,c))!= Blocks.AIR)
                         {
+
                             breakLeaves(worldIn,pos.add(a,b,c));
                             worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 0.5F, 1.0F);
                         }
