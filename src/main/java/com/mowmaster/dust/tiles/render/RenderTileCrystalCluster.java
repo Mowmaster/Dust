@@ -21,8 +21,12 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
 
     @Override
     public void render(TileCrystalCluster te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if(te==null)
+        {
+            return;
+        }
 
-        if(te.getBlockType() instanceof BlockCrystalClusterBasic)
+        else if(te.getBlockType() instanceof BlockCrystalClusterBasic)
         {
             IBlockState state = te.getWorld().getBlockState(te.getPos());
             EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
