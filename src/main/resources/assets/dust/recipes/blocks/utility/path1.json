@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group":"block_stone",
   "pattern": [
     "BYB",
     "YBY",
@@ -8,10 +7,10 @@
   ],
   "key": {
     "B": {
-      "item": "dust:bluestone"
+      "item": "dust:ancient/bluestone"
     },
     "Y": {
-      "item": "dust:yellowstone"
+      "item": "dust:ancient/yellowstone"
     }
   },
   "result": {
