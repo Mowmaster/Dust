@@ -49,6 +49,7 @@ public class BlockLog extends Block
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setSoundType(SoundType.WOOD);
         this.setCreativeTab(DUSTBLOCKSTABS);
+        this.setHarvestLevel("axe",1);
     }
 
     @Override

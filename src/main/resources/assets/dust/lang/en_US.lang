@@ -316,3 +316,8 @@ item.crusheritems.name=Crusher Machine Components
 
 tile.crate1.name=Ancient Crate
 tile.pot1.name=Ancient Pot
+tile.path1.name=Stone Path
+tile.path2.name=Fast Stone Path
+tile.path3.name=Faster Stone Path
+tile.path4.name=Fastest Stone Path
+tile.farmland.name=Enchanted Farmland

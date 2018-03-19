@@ -288,6 +288,7 @@ public class BlockRegistry
     public static Block path2;
     public static Block path3;
     public static Block path4;
+    public static Block farmland;
 
     public static void init() {
         redOre = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
@@ -549,6 +550,7 @@ public class BlockRegistry
         path2 = new BlockPath("path2","path2");
         path3 = new BlockPath("path3","path3");
         path4 = new BlockPath("path4","path4");
+        farmland = new BlockEnhancedFarmland("farmland","farmland");
     }
 
     public static void register()
@@ -811,6 +813,7 @@ public class BlockRegistry
         registerBlock(path2);
         registerBlock(path3);
         registerBlock(path4);
+        registerBlock(farmland);
 
     }
 
@@ -1077,6 +1080,7 @@ public class BlockRegistry
         registerRender(path2);
         registerRender(path3);
         registerRender(path4);
+        registerRender(farmland);
 
     }
 
