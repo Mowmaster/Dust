@@ -2,18 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "group":"block_stone",
   "pattern": [
-    "DSD",
-    "SDS",
-    "DSD"
+    "BYB",
+    "YBY",
+    "BYB"
   ],
   "key": {
-    "S": {
-      "item": "minecraft:stone",
-      "data": 0
+    "B": {
+      "item": "dust:bluestone"
     },
-    "D": {
-      "item": "dust:dust",
-      "data": 7
+    "Y": {
+      "item": "dust:yellowstone"
     }
   },
   "result": {

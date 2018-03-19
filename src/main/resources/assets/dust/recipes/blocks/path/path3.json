@@ -2,22 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "group":"block_stone",
   "pattern": [
-    "DSD",
-    "SDS",
-    "DSD"
+    "DDD",
+    "DPD",
+    "DDD"
   ],
   "key": {
-    "S": {
-      "item": "minecraft:stone",
-      "data": 0
-    },
     "D": {
       "item": "dust:dust",
       "data": 6
+    },
+    "P": {
+      "item": "dust:path2"
     }
   },
   "result": {
-    "item": "dust:ancient/whitestone",
-    "count": 4
+    "item": "dust:ancient/blackstone",
+    "count": 1
   }
 }

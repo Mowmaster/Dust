@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "group":"block_stone",
   "pattern": [
-    "SSS",
+    "DSD",
     "SDS",
-    "SSS"
+    "DSD"
   ],
   "key": {
     "S": {
@@ -18,6 +18,6 @@
   },
   "result": {
     "item": "dust:ancient/redstone",
-    "count": 8
+    "count": 4
   }
 }

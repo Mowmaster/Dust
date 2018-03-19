@@ -2,18 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "group":"block_stone",
   "pattern": [
-    "DSD",
-    "SDS",
-    "DSD"
+    "CPC",
+    "PCP",
+    "CPC"
   ],
   "key": {
-    "S": {
-      "item": "minecraft:stone",
-      "data": 0
+    "C": {
+      "item": "dust:crystal",
+      "data": 6
     },
-    "D": {
-      "item": "dust:dust",
-      "data": 7
+    "P": {
+      "item": "dust:path3"
     }
   },
   "result": {

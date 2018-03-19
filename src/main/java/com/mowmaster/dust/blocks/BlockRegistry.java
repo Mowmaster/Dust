@@ -284,6 +284,10 @@ public class BlockRegistry
 
     public static Block crate1;
     public static Block pot1;
+    public static Block path1;
+    public static Block path2;
+    public static Block path3;
+    public static Block path4;
 
     public static void init() {
         redOre = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
@@ -541,6 +545,10 @@ public class BlockRegistry
 
         crate1 = new BlockCrate("crate1","crate1");
         pot1 = new BlockPot("pot1","pot1");
+        path1 = new BlockPath("path1","path1");
+        path2 = new BlockPath("path2","path2");
+        path3 = new BlockPath("path3","path3");
+        path4 = new BlockPath("path4","path4");
     }
 
     public static void register()
@@ -799,6 +807,10 @@ public class BlockRegistry
 
         registerBlock(crate1);
         registerBlock(pot1);
+        registerBlock(path1);
+        registerBlock(path2);
+        registerBlock(path3);
+        registerBlock(path4);
 
     }
 
@@ -1061,6 +1073,10 @@ public class BlockRegistry
 
         registerRender(crate1);
         registerRender(pot1);
+        registerRender(path1);
+        registerRender(path2);
+        registerRender(path3);
+        registerRender(path4);
 
     }
 
