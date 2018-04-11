@@ -1,5 +1,6 @@
 package com.mowmaster.dust.proxies;
 
+import com.mowmaster.dust.handlers.DebugAndLogging;
 import com.mowmaster.dust.handlers.PlaceableCrystals;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
@@ -19,6 +20,10 @@ public class CommonProxy
         PlaceableCrystals handler = new PlaceableCrystals();
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
+
+        DebugAndLogging handled = new DebugAndLogging();
+        MinecraftForge.EVENT_BUS.register(handled);
+        FMLCommonHandler.instance().bus().register(handled);
     }
 
     public void PreInit()

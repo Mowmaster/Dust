@@ -18,6 +18,8 @@ public class ItemRegistry
 {
 
 
+    public static Item debug;
+
     public static Item dust;
     public static Item crystal;
     public static Item bit;
@@ -31,6 +33,8 @@ public class ItemRegistry
 
     public static void init()
     {
+        debug = new ItemBasic("debug","debug");
+
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
@@ -45,6 +49,8 @@ public class ItemRegistry
 
     public static void register()
     {
+        registerItem(debug);
+
         registerItem(dust);
         registerItem(crystal);
         registerItem(bit);
@@ -56,6 +62,7 @@ public class ItemRegistry
 
     public static void registerRenders()
     {
+        registerRender(debug);
 
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
         {
