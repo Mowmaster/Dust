@@ -314,7 +314,8 @@ public class BlockCrystal extends BlockDirectional
 
         int rand = random.nextInt(1000);
 
-        if(worldIn.getBiome(pos).equals(crystal_hot) || worldIn.getBiome(pos).equals(crystal_warm) || worldIn.getBiome(pos).equals(crystal_cold) || worldIn.getBiome(pos).equals(crystal_crystal)) {
+        //if(worldIn.getBiome(pos).equals(crystal_hot) || worldIn.getBiome(pos).equals(crystal_warm) || worldIn.getBiome(pos).equals(crystal_cold) || worldIn.getBiome(pos).equals(crystal_crystal)) {
+        if(worldIn.getBiome(pos).equals(crystal_crystal)) {
             EnumFacing facing = state.getValue(FACING);
             if (rand < CHANCE)
             {

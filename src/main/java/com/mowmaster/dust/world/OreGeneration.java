@@ -108,17 +108,17 @@ public class OreGeneration implements IWorldGenerator
 
     private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
-            if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
-                throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
+        if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+            throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-                int heightDiff = maxHeight - minHeight + 1;
-                for (int i = 0; i < chancesToSpawn; i++) {
-                    int x = chunk_X*16 + rand.nextInt(16);
-                    int y = minHeight + rand.nextInt(heightDiff);
-                    int z = chunk_Z*16 + rand.nextInt(16);
-                    if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal))
-                    {generator.generate(world, rand, new BlockPos(x, y, z));}
-                }
+        int heightDiff = maxHeight - minHeight + 1;
+        for (int i = 0; i < chancesToSpawn; i++) {
+            int x = chunk_X*16 + rand.nextInt(16);
+            int y = minHeight + rand.nextInt(heightDiff);
+            int z = chunk_Z*16 + rand.nextInt(16);
+            if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal))
+            {generator.generate(world, rand, new BlockPos(x, y, z));}
+        }
     }
     private void runGeneratorHot(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
@@ -330,16 +330,16 @@ public class OreGeneration implements IWorldGenerator
 
     private void runStructureGeneratorFiveByFive(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
-    if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
-        throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
+        if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
+            throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
         if (rand.nextInt(BiomeSpecificStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
-            int x = chunk_X*16 + rand.nextInt(9)+ 3;
-            int y = world.getHeight(chunk_X,chunk_Z) + 1;
-            int z = chunk_Z*16 + rand.nextInt(9)+ 3;
-            //Once this is good the below is biome specific
-            if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                int x = chunk_X*16 + rand.nextInt(9)+ 3;
+                int y = world.getHeight(chunk_X,chunk_Z) + 1;
+                int z = chunk_Z*16 + rand.nextInt(9)+ 3;
+                //Once this is good the below is biome specific
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -457,7 +457,7 @@ public class OreGeneration implements IWorldGenerator
                 {
                     case 0: this.runStructureGeneratorDireBox(mediumCave,world,random,chunkX,chunkZ,1,0,20);
                         return;
-                        //Start of Machine Specific Structures
+                    //Start of Machine Specific Structures
                     case 1: this.runStructureGeneratorElevenByEleven(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
                         return;
                     case 2: this.runStructureGeneratorDireBox(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);

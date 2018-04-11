@@ -253,6 +253,7 @@ public class BlockLog extends Block
     }
 
 
+
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn) {
         int zmin = -3;
