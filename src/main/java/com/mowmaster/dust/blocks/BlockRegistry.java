@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.ancientblocks.BlockAncientSlabs;
 import com.mowmaster.dust.blocks.ancientblocks.BlockAncientStairs;
 import com.mowmaster.dust.blocks.ancientblocks.BlockAncientWalls;
 import com.mowmaster.dust.blocks.item.ItemBlockOre;
+import com.mowmaster.dust.blocks.machines.BlockEnchantMod;
 import com.mowmaster.dust.blocks.sapling.*;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
@@ -281,6 +282,7 @@ public class BlockRegistry
 
     public static Block crystalCluster;
     public static Block machineBase;
+    public static Block enchantmod;
 
     public static Block crate1;
     public static Block pot1;
@@ -543,6 +545,7 @@ public class BlockRegistry
 
         crystalCluster = new BlockCrystalClusterBasic("crystalcluster", "crystalcluster");
         machineBase = new BlockMachineBase("machinebase", "machinebase");
+        enchantmod = new BlockEnchantMod("enchantmod","enchantmod");
 
         crate1 = new BlockCrate("crate1","crate1");
         pot1 = new BlockPot("pot1","pot1");
@@ -780,6 +783,7 @@ public class BlockRegistry
 
         registerBlock(crystalCluster);
         registerBlock(machineBase);
+        registerBlock(enchantmod);
 
         registerBlock(saplingred);
         registerBlock(saplingblue);
@@ -1047,6 +1051,7 @@ public class BlockRegistry
 
         registerRender(crystalCluster);
         registerRender(machineBase);
+        registerRender(enchantmod);
 
         registerRender(saplingred);
         registerRender(saplingblue);
