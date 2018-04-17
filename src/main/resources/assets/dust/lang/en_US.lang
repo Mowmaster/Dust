@@ -1,5 +1,7 @@
 item.crystal_red.name=Red Crystal
 
+death.attack.crystal=%1$s was Skewered by a bunch of Crystals
+
 itemGroup.dusttabs=Crystals, Dusts, & Items
 itemGroup.dustblockstabs=Crystal & Dust Blocks
 
@@ -322,3 +324,8 @@ tile.path2.name=Fast Stone Path
 tile.path3.name=Faster Stone Path
 tile.path4.name=Fastest Stone Path
 tile.farmland.name=Enchanted Farmland
+tile.spike1.name=Crystal Spike
+tile.spike2.name=Crystal Spikes
+tile.spike3.name=Crystal Spikes
+tile.spike4.name=Crystal Spikes
+tile.spike5.name=Crystal Spikes

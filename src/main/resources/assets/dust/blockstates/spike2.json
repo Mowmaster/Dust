@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=up": {"model": "dust:spike2"},
+    "facing=down": {"model": "dust:spike2","x": 180},
+    "facing=north": {"model": "dust:spike2","x": 90},
+    "facing=east": {"model": "dust:spike2","x": 90,"y":90},
+    "facing=south": {"model": "dust:spike2","x": 90,"y":180},
+    "facing=west": {"model": "dust:spike2","x": 90,"y":270}
+  }
+}
