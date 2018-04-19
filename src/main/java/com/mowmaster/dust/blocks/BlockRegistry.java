@@ -291,6 +291,7 @@ public class BlockRegistry
     public static Block path3;
     public static Block path4;
     public static Block farmland;
+    public static Block darksoil;
     public static Block spike1;
     public static Block spike2;
     public static Block spike3;
@@ -560,6 +561,7 @@ public class BlockRegistry
         path3 = new BlockPath("path3","path3");
         path4 = new BlockPath("path4","path4");
         farmland = new BlockEnhancedFarmland("farmland","farmland");
+        darksoil = new BlockNaturalSpawns("darksoil","darksoil");
         spike1 = new BlockSpike("spike1","spike1");
         spike2 = new BlockSpike("spike2","spike2");
         spike3 = new BlockSpike("spike3","spike3");
@@ -829,6 +831,7 @@ public class BlockRegistry
         registerBlock(path3);
         registerBlock(path4);
         registerBlock(farmland);
+        registerBlock(darksoil);
         registerBlock(spike1);
         registerBlock(spike2);
         registerBlock(spike3);
@@ -1102,6 +1105,7 @@ public class BlockRegistry
         registerRender(path3);
         registerRender(path4);
         registerRender(farmland);
+        registerRender(darksoil);
         registerRender(spike1);
         registerRender(spike2);
         registerRender(spike3);

@@ -467,8 +467,6 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
                     renderItem(itemRenderer, crystal2, 0.65f, 0.65f, 0.5f, 78.75f, 0f, 0f, 1.0f);renderItem(itemRenderer, crystal3, 0.65f, 0.5f, 0.5f, 90.0f, 0f, 0f, 1.0f);}
                     */
             }
-
-
             GlStateManager.popMatrix();
         }
 
