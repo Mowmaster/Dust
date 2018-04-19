@@ -186,12 +186,20 @@ public class BlockCrystalClusterBasic extends BlockDirectional implements ITileE
 
                 if (playerIn.isSneaking())
                 {
-                    if (playerIn.getHeldItem(hand) !=null)
+
+                    if (playerIn.getHeldItem(hand).isEmpty())
                     {
-                        cluster.removeCrystal(cluster);
+                        playerIn.inventory.addItemStackToInventory(cluster.removeCrystal(cluster));
+                        return true;
+                    }
+                    else if (!playerIn.inventory.addItemStackToInventory(cluster.removeCrystal(cluster)))
+                    {
+                        playerIn.dropItem(cluster.removeCrystal(cluster), false);
+                        return true;
                     }
 
                 }
+
 
                 checkThenAddCrystal(playerIn,hand,cluster,0);
                 checkThenAddCrystal(playerIn,hand,cluster,1);

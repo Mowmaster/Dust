@@ -110,8 +110,9 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         return false;
     }
     private int slot;
-    public void removeCrystal(TileEntity tile) {
+    public ItemStack removeCrystal(TileEntity tile) {
         World worldIn = tile.getWorld();
+        ItemStack droppedItem = ItemStack.EMPTY;
 
 
         if (crystalCount > 0) {
@@ -132,7 +133,11 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             if(slot==5){yellowCrystals--;redCrystals--;}//orange
             if(slot==6){whiteCrystals--;}
             if(slot==7){blackCrystals--;}
-            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.crystal, 1,slot)));
+
+
+             droppedItem = new ItemStack(ItemRegistry.crystal, 1,slot);
+
+
             crystalCount--;
             markDirty();
             IBlockState state = world.getBlockState(pos);
@@ -144,6 +149,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             }
             else{if(crystalCount==0) {worldIn.setBlockToAir(pos);}}
         }
+        return droppedItem;
 
     }
 
