@@ -325,6 +325,7 @@ tile.path3.name=Faster Stone Path
 tile.path4.name=Fastest Stone Path
 tile.farmland.name=Enchanted Farmland
 tile.darksoil.name=Sinister Earth
+tile.darksoilbase.name=Dark Soil
 tile.spike1.name=Crystal Spike
 tile.spike2.name=Crystal Spikes
 tile.spike3.name=Crystal Spikes

@@ -292,6 +292,7 @@ public class BlockRegistry
     public static Block path4;
     public static Block farmland;
     public static Block darksoil;
+    public static Block darksoilbase;
     public static Block spike1;
     public static Block spike2;
     public static Block spike3;
@@ -562,6 +563,7 @@ public class BlockRegistry
         path4 = new BlockPath("path4","path4");
         farmland = new BlockEnhancedFarmland("farmland","farmland");
         darksoil = new BlockNaturalSpawns("darksoil","darksoil");
+        darksoilbase = new BlockBasic("darksoilbase","darksoilbase",Material.GROUND,SoundType.GROUND,3,20,0);
         spike1 = new BlockSpike("spike1","spike1");
         spike2 = new BlockSpike("spike2","spike2");
         spike3 = new BlockSpike("spike3","spike3");
@@ -832,6 +834,7 @@ public class BlockRegistry
         registerBlock(path4);
         registerBlock(farmland);
         registerBlock(darksoil);
+        registerBlock(darksoilbase);
         registerBlock(spike1);
         registerBlock(spike2);
         registerBlock(spike3);
@@ -1106,6 +1109,7 @@ public class BlockRegistry
         registerRender(path4);
         registerRender(farmland);
         registerRender(darksoil);
+        registerRender(darksoilbase);
         registerRender(spike1);
         registerRender(spike2);
         registerRender(spike3);

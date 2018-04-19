@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BPB",
+    "PDP",
+    "BPB"
+  ],
+  "key": {
+    "B": {
+      "item": "dust:dust",
+      "data": 7
+    },
+    "P": {
+      "item": "dust:dust",
+      "data": 3
+    },
+    "D": {
+      "item": "dust:darksoilbase"
+    }
+  },
+  "result": {
+    "item": "dust:darksoil",
+    "count": 1
+  }
+}
