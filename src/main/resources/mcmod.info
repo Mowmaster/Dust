@@ -3,13 +3,13 @@
   "modid": "dust",
   "name": "Dust",
   "description": "Crystals spawn naturally in the world,they can be used for all manner of things.",
-  "version": "0.001.7",
+  "version": "0.001.8",
   "mcversion": "1.12-14.21.1.2387",
-  "url": "",
+  "url": "https://discordapp.com/invite/MHh2QYp",
   "updateUrl": "",
   "authorList": ["Mowmaster"],
   "credits": "Thanks to all the guys/gals that have helped me learn along the way :)",
-  "logoFile": "",
+  "logoFile": "assets/dust/textures/logo.png",
   "screenshots": [],
   "dependencies": []
 }
