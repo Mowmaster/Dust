@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
@@ -48,6 +49,7 @@ public class dust {
         ItemRegistry.register();
         OreDictDust.addEntries();
         TileRegistry.registerTile();
+        EnchantmentRegistry.Init();
         proxy.PreInit();
         proxy.registerTile();
         FuelRegistry.init();

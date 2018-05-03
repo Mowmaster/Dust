@@ -1,5 +1,7 @@
 package com.mowmaster.dust.proxies;
 
+import com.mowmaster.dust.enchantments.EnchantmentDigger;
+import com.mowmaster.dust.enchantments.EnchantmentHandlers;
 import com.mowmaster.dust.handlers.DebugAndLogging;
 import com.mowmaster.dust.handlers.PlaceableCrystals;
 import com.mowmaster.dust.references.Reference;
@@ -24,6 +26,11 @@ public class CommonProxy
         DebugAndLogging handled = new DebugAndLogging();
         MinecraftForge.EVENT_BUS.register(handled);
         FMLCommonHandler.instance().bus().register(handled);
+
+        EnchantmentHandlers enchants = new EnchantmentHandlers();
+        MinecraftForge.EVENT_BUS.register(enchants);
+        FMLCommonHandler.instance().bus().register(enchants);
+
     }
 
     public void PreInit()
