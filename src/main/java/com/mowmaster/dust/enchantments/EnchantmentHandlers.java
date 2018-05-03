@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EnchantmentHandlers
 {
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onBreakEvent(BlockEvent.BreakEvent event)
     {
         World world = event.getWorld();
@@ -83,10 +83,12 @@ public class EnchantmentHandlers
         {
             int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
             Float health = player.getHealth();
-            //if(health>3.0f)
+            //if(health>6.0f)
             //{
-                if(player.getHeldItem(player.getActiveHand()).getMaxDamage()-damage>=5)
+                if(damage>=5)
                 {
+                    System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
+                    System.out.println(damage);
                     player.getHeldItem(player.getActiveHand()).setItemDamage(damage - 6);
                     player.setHealth(health-1.0f);
                 }
