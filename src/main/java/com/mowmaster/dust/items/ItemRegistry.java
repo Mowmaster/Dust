@@ -19,13 +19,12 @@ public class ItemRegistry
 
 
     public static Item debug;
-
     public static Item dust;
     public static Item crystal;
     public static Item bit;
     public static Item dustyCharcoal;
     public static Item scroll;
-    public static Item crushingcomponents;
+    public static Item crushingComponents; // fixed the capitalization to use proper camel casing instead of being all lowercase
     public static Item finnisher;
 
 
@@ -34,13 +33,12 @@ public class ItemRegistry
     public static void init()
     {
         debug = new ItemBasic("debug","debug");
-
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
         dustyCharcoal = new ItemCharcoal("charcoal");
         scroll = new ItemScroll("scroll","scroll");
-        crushingcomponents = new ItemBasic("crusheritems","crusheritems");
+        crushingComponents = new ItemBasic("crusheritems","crusheritems");
         finnisher = new ItemFinnisher("finnisher","finnisher",10,10.0F,false,
                 new PotionEffect(Potion.getPotionById(3),1200,10),
                 new PotionEffect(Potion.getPotionById(5),1200,10),
@@ -50,13 +48,12 @@ public class ItemRegistry
     public static void register()
     {
         registerItem(debug);
-
         registerItem(dust);
         registerItem(crystal);
         registerItem(bit);
         registerItem(dustyCharcoal);
         registerItem(scroll);
-        registerItem(crushingcomponents);
+        registerItem(crushingComponents);
         registerItem(finnisher);
     }
 
@@ -83,7 +80,7 @@ public class ItemRegistry
         }
 
         registerRender(scroll);
-        registerRender(crushingcomponents);
+        registerRender(crushingComponents);
         registerRender(finnisher);
     }
 
