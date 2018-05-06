@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ItemRegistry
 {
 
-
+    public static Item ancientCoin;
     public static Item debug;
     public static Item dust;
     public static Item crystal;
@@ -32,6 +32,7 @@ public class ItemRegistry
 
     public static void init()
     {
+        ancientCoin = new ItemBasic("ancientcoin","ancientcoin",64);
         debug = new ItemBasic("debug","debug");
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
@@ -47,6 +48,7 @@ public class ItemRegistry
 
     public static void register()
     {
+        registerItem(ancientCoin);
         registerItem(debug);
         registerItem(dust);
         registerItem(crystal);
@@ -60,7 +62,7 @@ public class ItemRegistry
     public static void registerRenders()
     {
         registerRender(debug);
-
+        registerRender(ancientCoin);
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
         {
             registerRender(crystal,i,"crystal_" + CrystalItems.CrystalTypes.values()[i].getName());
