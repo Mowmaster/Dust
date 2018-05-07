@@ -28,7 +28,7 @@ public class ItemBasic extends Item
     public ItemBasic(String unlocName,String registryName )
     {
         this( unlocName ,registryName ,1);
-        // Calls the previous constructer and passes the needed stacksize paramater to the above method 
+        // Calls the previous constructer and passes the needed stacksize paramater to the above method
 
     }
 }
