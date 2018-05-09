@@ -3,8 +3,10 @@ package com.mowmaster.dust.recipes;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SmeltingRecipes
 {
@@ -18,5 +20,7 @@ public class SmeltingRecipes
         GameRegistry.addSmelting(BlockRegistry.logorange, new ItemStack(ItemRegistry.dustyCharcoal,1,5),0.7f);
         GameRegistry.addSmelting(BlockRegistry.logwhite, new ItemStack(ItemRegistry.dustyCharcoal,1,6),0.7f);
         GameRegistry.addSmelting(BlockRegistry.logblack, new ItemStack(ItemRegistry.dustyCharcoal,1,7),0.7f);
+
+        for(ItemStack stack : OreDictionary.getOres("ancientCoin")){ GameRegistry.addSmelting(stack, new ItemStack(Items.GOLD_INGOT,1), 0.05f); }
     }
 }

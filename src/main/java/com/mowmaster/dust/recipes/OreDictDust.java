@@ -75,5 +75,34 @@ public class OreDictDust
         OreDictionary.registerOre("charcoalOrange",new ItemStack(ItemRegistry.dustyCharcoal,1,5));
         OreDictionary.registerOre("charcoalWhite",new ItemStack(ItemRegistry.dustyCharcoal,1,6));
         OreDictionary.registerOre("charcoalBlack",new ItemStack(ItemRegistry.dustyCharcoal,1,7));
+
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinA));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinB));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinC));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinD));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinE));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinF));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinG));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinH));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinI));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinJ));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinK));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinL));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinM));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinN));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinO));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinP));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinQ));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinR));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinS));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinT));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinU));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinV));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinW));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinX));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinY));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinZ));
+
+
     }
 }

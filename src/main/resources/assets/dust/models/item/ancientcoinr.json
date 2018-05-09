@@ -2,7 +2,7 @@
     "parent": "dust:item/ancientcoin",
     "textures": {
         "coin": "dust:items/text/ancientcoin",
-        "letter": "dust:items/text/coinb",
+        "letter": "dust:items/text/coinr",
         "part": "dust:items/text/ancientcoin"
     }
 }
