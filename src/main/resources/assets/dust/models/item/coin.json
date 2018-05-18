@@ -1,8 +1,9 @@
 {
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "#coin",
-		"1": "#letter",
-		"particle": "#part"
+		"0": "items/text/ancientcoin",
+		"1": "items/text/coina",
+		"particle": "items/text/ancientcoin"
 	},
 	"elements": [
 		{

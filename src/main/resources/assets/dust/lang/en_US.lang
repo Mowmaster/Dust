@@ -35,6 +35,34 @@ item.ancientcoinx.name=Ancient Coin
 item.ancientcoiny.name=Ancient Coin
 item.ancientcoinz.name=Ancient Coin
 
+item.scrolla.name=Ancient Scroll
+item.scrollb.name=Ancient Scroll
+item.scrollc.name=Ancient Scroll
+item.scrolld.name=Ancient Scroll
+item.scrolle.name=Ancient Scroll
+item.scrollf.name=Ancient Scroll
+item.scrollg.name=Ancient Scroll
+item.scrollh.name=Ancient Scroll
+item.scrolli.name=Ancient Scroll
+item.scrollj.name=Ancient Scroll
+item.scrollk.name=Ancient Scroll
+item.scrolll.name=Ancient Scroll
+item.scrollm.name=Ancient Scroll
+item.scrolln.name=Ancient Scroll
+item.scrollo.name=Ancient Scroll
+item.scrollp.name=Ancient Scroll
+item.scrollq.name=Ancient Scroll
+item.scrollr.name=Ancient Scroll
+item.scrolls.name=Ancient Scroll
+item.scrollt.name=Ancient Scroll
+item.scrollu.name=Ancient Scroll
+item.scrollv.name=Ancient Scroll
+item.scrollw.name=Ancient Scroll
+item.scrollx.name=Ancient Scroll
+item.scrolly.name=Ancient Scroll
+item.scrollz.name=Ancient Scroll
+item.scroll.name=Ancient Scroll
+
 item.akashic.name=Akashic Records
 
 item.crystal.red.name=Red Crystal
@@ -77,7 +105,6 @@ item.charcoal.white.name=White Charcoal
 item.charcoal.black.name=Black Charcoal
 
 item.debug.name=Scroll Of The All Knowing
-item.scroll.name=Ancient Scroll
 item.finnisher.name=The Finnish'er
 
 tile.redore.name=Red Crystal Ore (Ore)

@@ -53,6 +53,33 @@ public class ItemRegistry
     public static Item ancientCoinY;
     public static Item ancientCoinZ;
 
+    public static Item scrollA;
+    public static Item scrollB;
+    public static Item scrollC;
+    public static Item scrollD;
+    public static Item scrollE;
+    public static Item scrollF;
+    public static Item scrollG;
+    public static Item scrollH;
+    public static Item scrollI;
+    public static Item scrollJ;
+    public static Item scrollK;
+    public static Item scrollL;
+    public static Item scrollM;
+    public static Item scrollN;
+    public static Item scrollO;
+    public static Item scrollP;
+    public static Item scrollQ;
+    public static Item scrollR;
+    public static Item scrollS;
+    public static Item scrollT;
+    public static Item scrollU;
+    public static Item scrollV;
+    public static Item scrollW;
+    public static Item scrollX;
+    public static Item scrollY;
+    public static Item scrollZ;
+
 
 
 
@@ -84,6 +111,33 @@ public class ItemRegistry
         ancientCoinX = new ItemBasic("ancientcoinx","ancientcoinx",64);
         ancientCoinY = new ItemBasic("ancientcoiny","ancientcoiny",64);
         ancientCoinZ = new ItemBasic("ancientcoinz","ancientcoinz",64);
+
+        scrollA = new ItemBasic("scrolla","scrolla",1);
+        scrollB = new ItemBasic("scrollb","scrollb",1);
+        scrollC = new ItemBasic("scrollc","scrollc",1);
+        scrollD = new ItemBasic("scrolld","scrolld",1);
+        scrollE = new ItemBasic("scrolle","scrolle",1);
+        scrollF = new ItemBasic("scrollf","scrollf",1);
+        scrollG = new ItemBasic("scrollg","scrollg",1);
+        scrollH = new ItemBasic("scrollh","scrollh",1);
+        scrollI = new ItemBasic("scrolli","scrolli",1);
+        scrollJ = new ItemBasic("scrollj","scrollj",1);
+        scrollK = new ItemBasic("scrollk","scrollk",1);
+        scrollL = new ItemBasic("scrolll","scrolll",1);
+        scrollM = new ItemBasic("scrollm","scrollm",1);
+        scrollN = new ItemBasic("scrolln","scrolln",1);
+        scrollO = new ItemBasic("scrollo","scrollo",1);
+        scrollP = new ItemBasic("scrollp","scrollp",1);
+        scrollQ = new ItemBasic("scrollq","scrollq",1);
+        scrollR = new ItemBasic("scrollr","scrollr",1);
+        scrollS = new ItemBasic("scrolls","scrolls",1);
+        scrollT = new ItemBasic("scrollt","scrollt",1);
+        scrollU = new ItemBasic("scrollu","scrollu",1);
+        scrollV = new ItemBasic("scrollv","scrollv",1);
+        scrollW = new ItemBasic("scrollw","scrollw",1);
+        scrollX = new ItemBasic("scrollx","scrollx",1);
+        scrollY = new ItemBasic("scrolly","scrolly",1);
+        scrollZ = new ItemBasic("scrollz","scrollz",1);
         debug = new ItemBasic("debug","debug");
         akashic = new ItemBasic("akashic","akashic");
         dust = new ItemDust("dust");
@@ -126,6 +180,33 @@ public class ItemRegistry
         registerItem(ancientCoinX);
         registerItem(ancientCoinY);
         registerItem(ancientCoinZ);
+
+        registerItem(scrollA);
+        registerItem(scrollB);
+        registerItem(scrollC);
+        registerItem(scrollD);
+        registerItem(scrollE);
+        registerItem(scrollF);
+        registerItem(scrollG);
+        registerItem(scrollH);
+        registerItem(scrollI);
+        registerItem(scrollJ);
+        registerItem(scrollK);
+        registerItem(scrollL);
+        registerItem(scrollM);
+        registerItem(scrollN);
+        registerItem(scrollO);
+        registerItem(scrollP);
+        registerItem(scrollQ);
+        registerItem(scrollR);
+        registerItem(scrollS);
+        registerItem(scrollT);
+        registerItem(scrollU);
+        registerItem(scrollV);
+        registerItem(scrollW);
+        registerItem(scrollX);
+        registerItem(scrollY);
+        registerItem(scrollZ);
         registerItem(debug);
         registerItem(akashic);
         registerItem(dust);
@@ -167,6 +248,33 @@ public class ItemRegistry
         registerRender(ancientCoinX);
         registerRender(ancientCoinY);
         registerRender(ancientCoinZ);
+
+        registerRender(scrollA);
+        registerRender(scrollB);
+        registerRender(scrollC);
+        registerRender(scrollD);
+        registerRender(scrollE);
+        registerRender(scrollF);
+        registerRender(scrollG);
+        registerRender(scrollH);
+        registerRender(scrollI);
+        registerRender(scrollJ);
+        registerRender(scrollK);
+        registerRender(scrollL);
+        registerRender(scrollM);
+        registerRender(scrollN);
+        registerRender(scrollO);
+        registerRender(scrollP);
+        registerRender(scrollQ);
+        registerRender(scrollR);
+        registerRender(scrollS);
+        registerRender(scrollT);
+        registerRender(scrollU);
+        registerRender(scrollV);
+        registerRender(scrollW);
+        registerRender(scrollX);
+        registerRender(scrollY);
+        registerRender(scrollZ);
 
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
         {
