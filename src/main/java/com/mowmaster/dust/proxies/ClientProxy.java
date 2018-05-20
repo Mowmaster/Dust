@@ -1,6 +1,7 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.handlers.ClientEvents;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
@@ -8,7 +9,11 @@ import com.mowmaster.dust.tiles.render.RenderTileCrystalCluster;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,6 +28,10 @@ public class ClientProxy extends CommonProxy
         BlockRegistry.registerRenders();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCluster.class,new RenderTileCrystalCluster());
+
+        ClientEvents clientEvents= new ClientEvents();
+        MinecraftForge.EVENT_BUS.register(clientEvents);
+        FMLCommonHandler.instance().bus().register(clientEvents);
     }
 
     @Override
