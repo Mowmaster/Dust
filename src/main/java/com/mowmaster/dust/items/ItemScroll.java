@@ -199,13 +199,14 @@ public class ItemScroll extends Item
 
         return new ActionResult(EnumActionResult.SUCCESS, itemstack);
     }
- */
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
         tooltip.add("[WIP] Will randomly give you a letter of the Ancient Alphabet.");
         tooltip.add("Not needed till next beta release(will also be reworked)");
     }
+    */
 
 }
 

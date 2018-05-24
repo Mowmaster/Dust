@@ -1,0 +1,8 @@
+{
+    "parent": "dust:block/pedestal",
+    "textures": {
+        "glow":"dust:blocks/ancient/ancientglowstone",
+        "type": "dust:blocks/ancient/redstone",
+        "typepart":"dust:blocks/ancient/redstone"
+    }
+}

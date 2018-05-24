@@ -299,6 +299,15 @@ public class BlockRegistry
     public static Block spike4;
     public static Block spike5;
 
+    public static Block pedestalred;
+    public static Block pedestalblue;
+    public static Block pedestalyellow;
+    public static Block pedestalpurple;
+    public static Block pedestalorange;
+    public static Block pedestalgreen;
+    public static Block pedestalwhite;
+    public static Block pedestalblack;
+
 
     public static void init() {
         redOre = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
@@ -569,6 +578,15 @@ public class BlockRegistry
         spike3 = new BlockSpike("spike3","spike3");
         spike4 = new BlockSpike("spike4","spike4");
         spike5 = new BlockSpike("spike5","spike5");
+
+        pedestalred = new BlockPedestal("pedestal_red","pedestal_red");
+        pedestalblue = new BlockPedestal("pedestal_blue","pedestal_blue");
+        pedestalyellow = new BlockPedestal("pedestal_yellow","pedestal_yellow");
+        pedestalpurple = new BlockPedestal("pedestal_purple","pedestal_purple");
+        pedestalorange = new BlockPedestal("pedestal_orange","pedestal_orange");
+        pedestalgreen = new BlockPedestal("pedestal_green","pedestal_green");
+        pedestalwhite = new BlockPedestal("pedestal_white","pedestal_white");
+        pedestalblack = new BlockPedestal("pedestal_black","pedestal_black");
     }
 
     public static void register()
@@ -840,6 +858,14 @@ public class BlockRegistry
         registerBlock(spike3);
         registerBlock(spike4);
         registerBlock(spike5);
+        registerBlock(pedestalred);
+        registerBlock(pedestalblue);
+        registerBlock(pedestalyellow);
+        registerBlock(pedestalpurple);
+        registerBlock(pedestalorange);
+        registerBlock(pedestalgreen);
+        registerBlock(pedestalwhite);
+        registerBlock(pedestalblack);
 
     }
 
@@ -1115,8 +1141,14 @@ public class BlockRegistry
         registerRender(spike3);
         registerRender(spike4);
         registerRender(spike5);
-
-
+        registerRender(pedestalred);
+        registerRender(pedestalblue);
+        registerRender(pedestalyellow);
+        registerRender(pedestalpurple);
+        registerRender(pedestalorange);
+        registerRender(pedestalgreen);
+        registerRender(pedestalwhite);
+        registerRender(pedestalblack);
     }
 
     public static void registerBlock(Block block)

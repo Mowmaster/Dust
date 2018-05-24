@@ -8,5 +8,6 @@ public class TileRegistry
     public static void registerTile()
     {
         GameRegistry.registerTileEntity(TileCrystalCluster.class, Reference.MODID + "tilecrystalcluster");
+        GameRegistry.registerTileEntity(TilePedestal.class, Reference.MODID + "tilepedestal");
     }
 }

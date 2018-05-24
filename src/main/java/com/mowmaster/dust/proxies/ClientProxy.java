@@ -5,7 +5,9 @@ import com.mowmaster.dust.handlers.ClientEvents;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
+import com.mowmaster.dust.tiles.TilePedestal;
 import com.mowmaster.dust.tiles.render.RenderTileCrystalCluster;
+import com.mowmaster.dust.tiles.render.RenderTilePedestal;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -28,6 +30,7 @@ public class ClientProxy extends CommonProxy
         BlockRegistry.registerRenders();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCluster.class,new RenderTileCrystalCluster());
+        ClientRegistry.bindTileEntitySpecialRenderer(TilePedestal.class,new RenderTilePedestal());
 
         ClientEvents clientEvents= new ClientEvents();
         MinecraftForge.EVENT_BUS.register(clientEvents);
