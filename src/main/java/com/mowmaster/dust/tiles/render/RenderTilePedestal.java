@@ -30,18 +30,18 @@ public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
 
         else if(te.getBlockType() instanceof BlockPedestal)
         {
+            int num = 1;
             ItemStack item = te.getItemInPedestal();
             ItemStack coin = te.getCoinOnPedestal();
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
-
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
 
-
-
-            //North
             renderItem(itemRenderer,coin,0.5f,0.475f,0.3125f,0,0,0,0);
+            renderItem(itemRenderer,coin,0.3125f,0.475f,0.5f,90,0,1f,0);
+            renderItem(itemRenderer,coin,0.5f,0.475f,0.6875f,180,0,1f,0);
+            renderItem(itemRenderer,coin,0.6875f,0.475f,0.5f,270,0,1f,0);
 
             renderItemRotating(itemRenderer,item,1f);
             GlStateManager.popMatrix();
