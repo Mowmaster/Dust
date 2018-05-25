@@ -4,9 +4,7 @@ package com.mowmaster.dust.blocks;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -40,6 +38,7 @@ public class BlockPedestal extends Block implements ITileEntityProvider
         this.setResistance(10);
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
+        this.setLightLevel(5f);
     }
 
     @Override
