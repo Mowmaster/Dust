@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "GBG",
+    "BBB"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "S": {
+      "item": "dust:ancient/yellowstoneslabs"
+    },
+    "B": {
+      "item": "dust:ancient/yellowstone"
+    }
+  },
+  "result": {
+    "item": "dust:pedestal_yellow",
+    "count": 1
+  }
+}

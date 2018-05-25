@@ -371,6 +371,15 @@ tile.greendust.name=Green Dust Cloud
 tile.whitedust.name=White Dust Cloud
 tile.blackdust.name=Black Dust Cloud
 
+tile.pedestal_red.name=Item Pedestal
+tile.pedestal_blue.name=Item Pedestal
+tile.pedestal_yellow.name=Item Pedestal
+tile.pedestal_purple.name=Item Pedestal
+tile.pedestal_orange.name=Item Pedestal
+tile.pedestal_green.name=Item Pedestal
+tile.pedestal_white.name=Item Pedestal
+tile.pedestal_black.name=Item Pedestal
+
 tile.crystalcluster.name=Crystal Cluster Base [WIP]
 tile.machinebase.name=Machine Base
 item.crusheritems.name=Crusher Machine Components

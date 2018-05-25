@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "GBG",
+    "BBB"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "S": {
+      "item": "dust:ancient/bluestoneslabs"
+    },
+    "B": {
+      "item": "dust:ancient/bluestone"
+    }
+  },
+  "result": {
+    "item": "dust:pedestal_blue",
+    "count": 1
+  }
+}
