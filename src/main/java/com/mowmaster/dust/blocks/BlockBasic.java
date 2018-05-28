@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -21,7 +23,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 public class BlockBasic extends Block
 {
-
 
     public BlockBasic(String unloc, String registryName, Material material, SoundType soundType, int hardness, int resistance, int lightopacity)
     {
