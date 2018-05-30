@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemRegistry
 {
-    public static Item debug;
     public static Item akashic;
     public static Item dust;
     public static Item crystal;
@@ -138,7 +137,6 @@ public class ItemRegistry
         scrollX = new ItemScroll("scrollx","scrollx");
         scrollY = new ItemScroll("scrolly","scrolly");
         scrollZ = new ItemScroll("scrollz","scrollz");
-        debug = new ItemBasic("debug","debug");
         akashic = new ItemBasic("akashic","akashic");
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
@@ -207,7 +205,6 @@ public class ItemRegistry
         registerItem(scrollX);
         registerItem(scrollY);
         registerItem(scrollZ);
-        registerItem(debug);
         registerItem(akashic);
         registerItem(dust);
         registerItem(crystal);
@@ -220,7 +217,6 @@ public class ItemRegistry
 
     public static void registerRenders()
     {
-        registerRender(debug);
         registerRender(akashic);
         registerRender(ancientCoinA);
         registerRender(ancientCoinB);
