@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:scrollk"},
+    {"item": "minecraft:gold_ingot"}
+  ],
+  "result": {
+    "item": "dust:ancientcoink"
+  }
+}

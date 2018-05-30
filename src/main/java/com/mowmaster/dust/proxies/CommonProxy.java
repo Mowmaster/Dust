@@ -19,6 +19,8 @@ public class CommonProxy
     public void init()
     {
         GameRegistry.registerWorldGenerator(new OreGeneration(),0);
+
+
         PlaceableCrystals handler = new PlaceableCrystals();
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
