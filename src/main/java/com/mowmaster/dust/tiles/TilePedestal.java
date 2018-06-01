@@ -12,22 +12,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.*;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
+import java.util.stream.IntStream;
 
 public class TilePedestal extends TileEntity implements ITickable
 {
 
     private ItemStack item = ItemStack.EMPTY;
     private ItemStack coin = ItemStack.EMPTY;
+    private ItemStack display = ItemStack.EMPTY;
 
     public ItemStack getItemInPedestal() {return item;}
     public ItemStack getCoinOnPedestal() {return coin;}
+    public ItemStack getDisplay() {return display;}
     public boolean hasItem()
     {
         if(item.isEmpty())
@@ -94,38 +96,39 @@ public class TilePedestal extends TileEntity implements ITickable
     private int ticker=0;
     @Override
     public void update() {
-        IBlockState state = world.getBlockState(pos.add(0,-1,0));
-        TileEntity tileEntity = world.getTileEntity(pos.add(0,-1,0));
         if(!world.isRemote)
         {
-            if(tileEntity instanceof TileEntityChest)
+            if(isBlockUnder(0,-1,0))
             {
                 ticker++;
                 if(ticker>=20)
                 {
-                    System.out.println(((TileEntityChest) tileEntity).getSizeInventory());
-                    System.out.println(getNextSlotInChest(tileEntity));
-                    System.out.println(i);
-                    i=0;
+                    display = getNextSlotInChest(0,-1,0);
+                    //System.out.println(display);
+                    updateBlock();
                     ticker=0;
                 }
             }
         }
     }
 
-    private int i=0;
-    private ItemStack getNextSlotInChest(TileEntity entity)
+    public boolean isBlockUnder(int x,int y,int z)
     {
-        int max=((TileEntityChest) entity).getSizeInventory();//27 for chests
-
-        for(i=0;i>((TileEntityChest) entity).getSizeInventory();i++)
+        TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
+        if(tileEntity instanceof TileEntityLockable)
         {
-            if(!(((TileEntityChest) entity).getStackInSlot(i).equals(ItemStack.EMPTY)))
-            {
-                break;
-            }
+            return true;
         }
-        return ((TileEntityChest) entity).getStackInSlot(i);
+        return false;
+    }
+
+    public ItemStack getNextSlotInChest(int x,int y,int z)
+    {
+        TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
+        return IntStream.range(0,((TileEntityLockable) tileEntity).getSizeInventory())//Int Range
+                .mapToObj(((TileEntityLockable) tileEntity)::getStackInSlot)//Function being applied to each interval
+                .filter(itemStack -> !itemStack.isEmpty())
+                .findFirst().orElse(ItemStack.EMPTY);
     }
 
     @Override
@@ -134,6 +137,7 @@ public class TilePedestal extends TileEntity implements ITickable
         super.writeToNBT(compound);
         compound.setTag("coin",coin.writeToNBT(new NBTTagCompound()));
         compound.setTag("item",item.writeToNBT(new NBTTagCompound()));
+        compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
         return compound;
     }
 
@@ -146,6 +150,8 @@ public class TilePedestal extends TileEntity implements ITickable
         this.coin = new ItemStack(itemCoin);
         NBTTagCompound itemTag = compound.getCompoundTag("item");
         this.item = new ItemStack(itemTag);
+        NBTTagCompound itemTagD = compound.getCompoundTag("display");
+        this.display = new ItemStack(itemTagD);
     }
 
 

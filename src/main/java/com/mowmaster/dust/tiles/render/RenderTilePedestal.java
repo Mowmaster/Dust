@@ -32,6 +32,7 @@ public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
         {
             int num = 1;
             ItemStack item = te.getItemInPedestal();
+            ItemStack itemInBlockBelow = te.getDisplay();
             ItemStack coin = te.getCoinOnPedestal();
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
@@ -43,13 +44,30 @@ public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
             renderItem(itemRenderer,coin,0.5f,0.475f,0.6875f,180,0,1f,0);
             renderItem(itemRenderer,coin,0.6875f,0.475f,0.5f,270,0,1f,0);
 
-            renderItemRotating(itemRenderer,item,1f);
+
+            if(te.isBlockUnder(0,-1,0))
+            {
+                renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
+            }
+            else renderItemRotating(itemRenderer,item,1f);
             GlStateManager.popMatrix();
         }
 
     }
 
     public static void renderItemRotating(RenderItem itemRenderer, ItemStack itemStack, float y)
+    {
+        GlStateManager.translate(0.5f, y, 0.5f);
+        GlStateManager.scale(2f,2f,2f);
+        double boop = Minecraft.getSystemTime()/800D;
+        GlStateManager.translate(0D, 0D, 0D);
+        GlStateManager.rotate((float)(((boop*40D)%360)), 0f, 1f, 0f);
+        if (!itemStack.isEmpty()) {
+            renderItem(itemRenderer, itemStack , 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+        }
+    }
+
+    public static void renderItemRotatingOpaque(RenderItem itemRenderer, ItemStack itemStack, float y)
     {
         GlStateManager.translate(0.5f, y, 0.5f);
         GlStateManager.scale(2f,2f,2f);
