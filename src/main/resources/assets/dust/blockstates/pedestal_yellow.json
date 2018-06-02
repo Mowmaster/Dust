@@ -1,5 +1,10 @@
 {
-  "variants": {
-    "normal": { "model": "dust:pedestal_yellow" }
+  "variants":{
+    "facing=up": {"model": "dust:pedestal_yellow"},
+    "facing=down": {"model": "dust:pedestal_yellow","x": 180},
+    "facing=north": {"model": "dust:pedestal_yellow","x": 90},
+    "facing=east": {"model": "dust:pedestal_yellow","x": 90,"y":90},
+    "facing=south": {"model": "dust:pedestal_yellow","x": 90,"y":180},
+    "facing=west": {"model": "dust:pedestal_yellow","x": 90,"y":270}
   }
 }

@@ -1,7 +1,9 @@
 package com.mowmaster.dust.tiles;
 
+import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.items.ItemCoin;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
@@ -13,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +25,6 @@ import java.util.stream.IntStream;
 
 public class TilePedestal extends TileEntity implements ITickable
 {
-
     private ItemStack item = ItemStack.EMPTY;
     private ItemStack coin = ItemStack.EMPTY;
     private ItemStack display = ItemStack.EMPTY;
@@ -96,6 +98,9 @@ public class TilePedestal extends TileEntity implements ITickable
     private int ticker=0;
     @Override
     public void update() {
+
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
         if(!world.isRemote)
         {
             if(isBlockUnder(0,-1,0))
@@ -103,10 +108,77 @@ public class TilePedestal extends TileEntity implements ITickable
                 ticker++;
                 if(ticker>=20)
                 {
-                    display = getNextSlotInChest(0,-1,0);
-                    //System.out.println(display);
-                    updateBlock();
-                    ticker=0;
+                    if (enumfacing.equals(EnumFacing.UP))
+                    {
+                        display = getNextSlotInChest(0,-1,0);
+                        updateBlock();
+                        ticker=0;
+                    }
+                }
+            }
+            if(isBlockUnder(0,1,0))
+            {
+                ticker++;
+                if(ticker>=20)
+                {
+                    if (enumfacing.equals(EnumFacing.DOWN))
+                    {
+                        display = getNextSlotInChest(0,1,0);
+                        updateBlock();
+                        ticker=0;
+                    }
+                }
+            }
+            if(isBlockUnder(0,0,1))
+            {
+                ticker++;
+                if(ticker>=20)
+                {
+                    if (enumfacing.equals(EnumFacing.NORTH))
+                    {
+                        display = getNextSlotInChest(0,0,1);
+                        updateBlock();
+                        ticker=0;
+                    }
+                }
+            }
+            if(isBlockUnder(0,0,-1))
+            {
+                ticker++;
+                if(ticker>=20)
+                {
+                    if (enumfacing.equals(EnumFacing.SOUTH))
+                    {
+                        display = getNextSlotInChest(0,0,-1);
+                        updateBlock();
+                        ticker=0;
+                    }
+                }
+            }
+            if(isBlockUnder(-1,0,0))
+            {
+                ticker++;
+                if(ticker>=20)
+                {
+                    if (enumfacing.equals(EnumFacing.EAST))
+                    {
+                        display = getNextSlotInChest(-1,0,0);
+                        updateBlock();
+                        ticker=0;
+                    }
+                }
+            }
+            if(isBlockUnder(1,0,0))
+            {
+                ticker++;
+                if(ticker>=20)
+                {
+                    if (enumfacing.equals(EnumFacing.WEST))
+                    {
+                        display = getNextSlotInChest(1,0,0);
+                        updateBlock();
+                        ticker=0;
+                    }
                 }
             }
         }

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 import static net.minecraft.block.BlockDirectional.FACING;
@@ -34,23 +35,103 @@ public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
             ItemStack item = te.getItemInPedestal();
             ItemStack itemInBlockBelow = te.getDisplay();
             ItemStack coin = te.getCoinOnPedestal();
+            IBlockState state = te.getWorld().getBlockState(te.getPos());
+            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
 
-            renderItem(itemRenderer,coin,0.5f,0.475f,0.3125f,0,0,0,0);
-            renderItem(itemRenderer,coin,0.3125f,0.475f,0.5f,90,0,1f,0);
-            renderItem(itemRenderer,coin,0.5f,0.475f,0.6875f,180,0,1f,0);
-            renderItem(itemRenderer,coin,0.6875f,0.475f,0.5f,270,0,1f,0);
+            if(enumfacing==EnumFacing.UP)//when placed on ground
+            {
+                renderTile(itemRenderer,te,enumfacing,coin,item,itemInBlockBelow);
+            }
+            if(enumfacing==EnumFacing.DOWN) {
+                GlStateManager.rotate(180, 0, 0, 1);
+                GlStateManager.translate(0, -1, 0);
+                GlStateManager.translate(-1, 0, 0);
+                renderTile(itemRenderer,te,enumfacing,coin,item,itemInBlockBelow);
+            }
+            if(enumfacing==EnumFacing.NORTH) {
+                GlStateManager.rotate(270, 1, 0, 0);
+                GlStateManager.translate(0, -1, 0);
+                renderTile(itemRenderer,te,enumfacing,coin,item,itemInBlockBelow);
+            }
+            if(enumfacing==EnumFacing.EAST) {
 
+                GlStateManager.rotate(270, 0, 0, 1);
+                GlStateManager.translate(-1, 0, 0);
+                renderTile(itemRenderer,te,enumfacing,coin,item,itemInBlockBelow);
+            }
+            if(enumfacing==EnumFacing.SOUTH) {
+                GlStateManager.rotate(90, 1, 0, 0);
+                GlStateManager.translate(0, 0, -1);
+                renderTile(itemRenderer,te,enumfacing,coin,item,itemInBlockBelow);
+            }
+            if(enumfacing==EnumFacing.WEST) {
+                GlStateManager.rotate(90, 0, 0, 1);
+                GlStateManager.translate(0, -1, 0);
+                renderTile(itemRenderer,te,enumfacing,coin,item,itemInBlockBelow);
+            }
+            GlStateManager.popMatrix();
+        }
 
+    }
+
+    public static void  renderTile(RenderItem itemRenderer, TilePedestal te, EnumFacing enumfacing, ItemStack coin, ItemStack item, ItemStack itemInBlockBelow)
+    {
+        renderItem(itemRenderer,coin,0.5f,0.475f,0.3125f,0,0,0,0);
+        renderItem(itemRenderer,coin,0.3125f,0.475f,0.5f,90,0,1f,0);
+        renderItem(itemRenderer,coin,0.5f,0.475f,0.6875f,180,0,1f,0);
+        renderItem(itemRenderer,coin,0.6875f,0.475f,0.5f,270,0,1f,0);
+
+        if(enumfacing==EnumFacing.UP)
+        {
             if(te.isBlockUnder(0,-1,0))
             {
                 renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
             }
             else renderItemRotating(itemRenderer,item,1f);
-            GlStateManager.popMatrix();
+        }
+        if(enumfacing==EnumFacing.DOWN)
+        {
+            if(te.isBlockUnder(0,1,0))
+            {
+                renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
+            }
+            else renderItemRotating(itemRenderer,item,1f);
+        }
+        if (enumfacing.equals(EnumFacing.NORTH))
+        {
+            if(te.isBlockUnder(0,0,1))
+            {
+                renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
+            }
+            else renderItemRotating(itemRenderer,item,1f);
+        }
+        if (enumfacing.equals(EnumFacing.SOUTH))
+        {
+            if(te.isBlockUnder(0,0,-1))
+            {
+                renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
+            }
+            else renderItemRotating(itemRenderer,item,1f);
+        }
+        if (enumfacing.equals(EnumFacing.EAST))
+        {
+            if(te.isBlockUnder(-1,0,0))
+            {
+                renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
+            }
+            else renderItemRotating(itemRenderer,item,1f);
+        }
+        if (enumfacing.equals(EnumFacing.WEST))
+        {
+            if(te.isBlockUnder(1,0,0))
+            {
+                renderItemRotatingOpaque(itemRenderer,itemInBlockBelow,1f);
+            }
+            else renderItemRotating(itemRenderer,item,1f);
         }
 
     }
