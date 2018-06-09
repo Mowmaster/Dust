@@ -71,7 +71,7 @@ public class BlockPot extends Block
         {
             if(this.equals(BlockRegistry.pot1))
             {
-                int rand = rn.nextInt(5);
+                int rand = rn.nextInt(6);
 
                 if(rand == 0)
                 {
@@ -92,6 +92,10 @@ public class BlockPot extends Block
                 else if (rand == 4)
                 {
                     worldIn.setBlockState(pos, Blocks.EMERALD_ORE.getDefaultState());
+                }
+                else if (rand == 5)
+                {
+                    worldIn.setBlockState(pos, BlockRegistry.voidpot.getDefaultState());
                 }
             }
         }

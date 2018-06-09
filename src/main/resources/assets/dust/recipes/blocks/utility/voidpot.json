@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "BPB",
+    "BCB"
+  ],
+  "key": {
+    "B": {
+      "item": "dust:ancient/blackstone"
+    },
+    "P": {
+      "item": "minecraft:ender_pearl"
+    },
+    "C": {
+      "item": "dust:crystal",
+      "data": 7
+    }
+  },
+  "result": {
+    "item": "dust:voidpot",
+    "count": 1
+  }
+}

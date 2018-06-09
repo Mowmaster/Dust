@@ -1,0 +1,8 @@
+{
+    "parent": "dust:block/pot",
+    "textures": {
+        "outside": "dust:items/void",
+        "inside": "dust:items/void",
+        "part": "dust:items/void"
+    }
+}
