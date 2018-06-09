@@ -50,7 +50,7 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         this.setResistance(10);
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
-        this.setLightLevel(5f);
+        this.setLightLevel(3f);
     }
 
     @Override
@@ -200,6 +200,35 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
             }
         }
         return true;
+    }
+
+    private int getRedstoneLevel(World worldIn, BlockPos pos)
+    {
+        int hasItem=0;
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if(tileEntity instanceof TilePedestal) {
+            TilePedestal pedestal = (TilePedestal) tileEntity;
+            if(pedestal.hasItem())
+            {
+                hasItem=15;
+            }
+            else hasItem=0;
+        }
+        return hasItem;
+    }
+
+
+
+
+    public boolean hasComparatorInputOverride(IBlockState state)
+    {
+        return true;
+    }
+
+
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        return getRedstoneLevel(worldIn,pos);
     }
 
     public boolean isOpaqueCube(IBlockState state)
