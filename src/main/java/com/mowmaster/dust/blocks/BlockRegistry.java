@@ -283,6 +283,7 @@ public class BlockRegistry
     public static Block crystalCluster;
     public static Block machineBase;
     public static Block enchantmod;
+    public static Block crystalcrusher;
 
     public static Block crate1;
     public static Block pot1;
@@ -298,6 +299,7 @@ public class BlockRegistry
     public static Block spike3;
     public static Block spike4;
     public static Block spike5;
+    public static Block voidpot;
 
     public static Block pedestalred;
     public static Block pedestalblue;
@@ -563,6 +565,7 @@ public class BlockRegistry
         crystalCluster = new BlockCrystalClusterBasic("crystalcluster", "crystalcluster");
         machineBase = new BlockMachineBase("machinebase", "machinebase");
         enchantmod = new BlockEnchantMod("enchantmod","enchantmod");
+        crystalcrusher = new BlockCrystalCrusher("crystalcrusher","crystalcrusher");
 
         crate1 = new BlockCrate("crate1","crate1");
         pot1 = new BlockPot("pot1","pot1");
@@ -578,6 +581,7 @@ public class BlockRegistry
         spike3 = new BlockSpike("spike3","spike3");
         spike4 = new BlockSpike("spike4","spike4");
         spike5 = new BlockSpike("spike5","spike5");
+        voidpot = new BlockVoidPot("voidpot","voidpot");
 
         pedestalred = new BlockPedestal("pedestal_red","pedestal_red");
         pedestalblue = new BlockPedestal("pedestal_blue","pedestal_blue");
@@ -817,6 +821,7 @@ public class BlockRegistry
         registerBlock(crystalCluster);
         registerBlock(machineBase);
         registerBlock(enchantmod);
+        registerBlock(crystalcrusher);
 
         registerBlock(saplingred);
         registerBlock(saplingblue);
@@ -858,6 +863,8 @@ public class BlockRegistry
         registerBlock(spike3);
         registerBlock(spike4);
         registerBlock(spike5);
+        registerBlock(voidpot);
+
         registerBlock(pedestalred);
         registerBlock(pedestalblue);
         registerBlock(pedestalyellow);
@@ -866,6 +873,7 @@ public class BlockRegistry
         registerBlock(pedestalgreen);
         registerBlock(pedestalwhite);
         registerBlock(pedestalblack);
+
 
     }
 
@@ -1100,6 +1108,7 @@ public class BlockRegistry
         registerRender(crystalCluster);
         registerRender(machineBase);
         registerRender(enchantmod);
+        registerRender(crystalcrusher);
 
         registerRender(saplingred);
         registerRender(saplingblue);
@@ -1141,6 +1150,8 @@ public class BlockRegistry
         registerRender(spike3);
         registerRender(spike4);
         registerRender(spike5);
+        registerRender(voidpot);
+
         registerRender(pedestalred);
         registerRender(pedestalblue);
         registerRender(pedestalyellow);
