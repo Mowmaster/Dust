@@ -1,0 +1,12 @@
+{
+  "variants":{
+    "active=false,facing=north": {"model": "dust:crystalfurnace"},
+    "active=false,facing=east": {"model": "dust:crystalfurnace","y":90},
+    "active=false,facing=south": {"model": "dust:crystalfurnace","y":180},
+    "active=false,facing=west": {"model": "dust:crystalfurnace","y":270},
+    "active=true,facing=north": {"model": "dust:crystalfurnace_lit"},
+    "active=true,facing=east": {"model": "dust:crystalfurnace_lit","y":90},
+    "active=true,facing=south": {"model": "dust:crystalfurnace_lit","y":180},
+    "active=true,facing=west": {"model": "dust:crystalfurnace_lit","y":270}
+  }
+}
