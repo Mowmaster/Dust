@@ -1,6 +1,7 @@
 package com.mowmaster.dust.tiles.containers;
 
 import com.mowmaster.dust.tiles.TileCrystalFurnace;
+import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceCrystal;
 import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceFuel;
 import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceOutput;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +24,7 @@ public class ContainerCrystalFurnace extends Container
         this.tileCrystalFurnace = tileCrystalFurnace;
 
         this.addSlotToContainer(new Slot(tileCrystalFurnace,0,57,18));//inventory,index slot# so Input for this one, pixels in from the left side of the gui image top corner of the slot,top down to the top corner in pixels
-        this.addSlotToContainer(new Slot(tileCrystalFurnace,1,21,30));//crystal input
+        this.addSlotToContainer(new SlotCrystalFurnaceCrystal(tileCrystalFurnace,1,21,30));//crystal input
         this.addSlotToContainer(new SlotCrystalFurnaceFuel(tileCrystalFurnace,2,57,54));//fuel input
         this.addSlotToContainer(new SlotCrystalFurnaceOutput(player.player,tileCrystalFurnace,3,113,32));//output
 

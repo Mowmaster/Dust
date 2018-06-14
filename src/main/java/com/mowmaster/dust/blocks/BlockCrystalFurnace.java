@@ -4,10 +4,7 @@ package com.mowmaster.dust.blocks;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalFurnace;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -19,7 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -59,11 +58,13 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
         if(!worldIn.isRemote)
         {
             playerIn.openGui(dust.instance,Reference.GUI_FURNACE,worldIn,pos.getX(),pos.getY(),pos.getZ());
         }
         return true;
+
     }
 
     @Override

@@ -96,7 +96,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return (ItemStack)this.inventory.get(index);//gets one of our 4 slots liek input=0 input crystal=1 input fuel=2 output=3 for example
+        return this.inventory.get(index);//gets one of our 4 slots like input=0 input crystal=1 input fuel=2 output=3 for example
     }
 
     @Override
@@ -247,7 +247,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         return getItemBurnTime(fuel) > 0;
     }
 
-    private boolean isItemCrystal(ItemStack crystal)
+    public static boolean isItemCrystal(ItemStack crystal)
     {
         if(crystal.getItem() instanceof ItemCrystal)
         {
