@@ -2,19 +2,23 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockCrystalFurnace;
 import com.mowmaster.dust.items.ItemCrystal;
+import com.mowmaster.dust.tiles.containers.ContainerCrystalFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.tileentity.TileEntityShulkerBoxRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
@@ -23,16 +27,23 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
 import static net.minecraft.tileentity.TileEntityFurnace.getItemBurnTime;
 
 
-public class TileCrystalFurnace extends TileEntity implements IInventory, ITickable
+public class TileCrystalFurnace extends TileEntityLockable implements ISidedInventory, ITickable
 {
+    private static final int[] SLOTS_TOP = new int[] {0};
+    private static final int[] SLOTS_BOTTOM = new int[] {3};
+    private static final int[] SLOTS_SIDES = new int[] {1, 2};
+
     private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(4,ItemStack.EMPTY);//Input, Input Crystal, Input Fuel, Output
     private String customName;
 
@@ -79,6 +90,11 @@ public class TileCrystalFurnace extends TileEntity implements IInventory, ITicka
     }
 
     @Override
+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+        return new ContainerCrystalFurnace(playerInventory,this);
+    }
+
+    @Override
     public ItemStack getStackInSlot(int index) {
         return (ItemStack)this.inventory.get(index);//gets one of our 4 slots liek input=0 input crystal=1 input fuel=2 output=3 for example
     }
@@ -101,10 +117,9 @@ public class TileCrystalFurnace extends TileEntity implements IInventory, ITicka
         this.inventory.set(index,stack);
 
         if(stack.getCount() > this.getInventoryStackLimit()) stack.setCount(this.getInventoryStackLimit());//if the stack is above 64(or whatever the limit is) make it the limit.
-        if(index == 0 && index +1 == 1 && !flag)
+        if(index == 0 && !flag)
         {
-            ItemStack stack1 = (ItemStack)this.inventory.get(index +1);
-            this.totalCookTime = this.getCookTime(stack,stack1);
+            this.totalCookTime = this.getCookTime(stack);
             this.cookTime = 0;
             this.markDirty();
         }
@@ -152,7 +167,7 @@ public class TileCrystalFurnace extends TileEntity implements IInventory, ITicka
         return iInventory.getField(0) > 0;
     }
 
-    public int getCookTime(ItemStack input, ItemStack input2)
+    public int getCookTime(ItemStack input)
     {
         return 200;//Could modify later to speed or slow down cook times
     }
@@ -276,6 +291,38 @@ public class TileCrystalFurnace extends TileEntity implements IInventory, ITicka
         }
     }
 
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        if (side == EnumFacing.DOWN)
+        {
+            return SLOTS_BOTTOM;
+        }
+        else
+        {
+            return side == EnumFacing.UP ? SLOTS_TOP : SLOTS_SIDES;
+        }
+    }
+
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    {
+        return this.isItemValidForSlot(index, itemStackIn);
+    }
+
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    {
+        if (direction == EnumFacing.DOWN && index == 1)
+        {
+            Item item = stack.getItem();
+
+            if (item != Items.WATER_BUCKET && item != Items.BUCKET)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public String getGuiID()
     {
         return "dust.crystalfurnace";
@@ -370,7 +417,7 @@ public class TileCrystalFurnace extends TileEntity implements IInventory, ITicka
                     if(this.cookTime == this.totalCookTime)
                     {
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime((ItemStack)this.inventory.get(0), (ItemStack)this.inventory.get(1));
+                        this.totalCookTime = this.getCookTime((ItemStack)this.inventory.get(0));
                         this.smeltItem();
                         flag1 = true;
                     }
@@ -388,5 +435,25 @@ public class TileCrystalFurnace extends TileEntity implements IInventory, ITicka
             }
         }
         if(flag1) this.markDirty();
+    }
+
+
+
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.UP);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
+    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.WEST);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, @javax.annotation.Nullable EnumFacing facing)
+    {
+        if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            if (facing == EnumFacing.DOWN)
+                return (T) handlerBottom;
+            else if (facing == EnumFacing.UP)
+                return (T) handlerTop;
+            else
+                return (T) handlerSide;
+        return super.getCapability(capability, facing);
     }
 }

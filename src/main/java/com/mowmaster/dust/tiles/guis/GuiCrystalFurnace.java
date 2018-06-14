@@ -9,9 +9,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-/**
- * Created by KingMowmaster on 6/13/2018.
- */
 public class GuiCrystalFurnace extends GuiContainer
 {
     private static final ResourceLocation TEXTURES = new ResourceLocation(Reference.MODID + ":textures/guis/crystalfurnace.png");
@@ -29,7 +26,7 @@ public class GuiCrystalFurnace extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)//contains the text
     {
         String tileName = this.tileCrystalFurnace.getDisplayName().getUnformattedComponentText();
-        this.fontRenderer.drawString(tileName,(this.xSize/2 - this.fontRenderer.getStringWidth(tileName) /2) + 3/*offset of 3 if needed*/,8,4210752);//default binary color
+        this.fontRenderer.drawString(tileName,(this.xSize/2 - this.fontRenderer.getStringWidth(tileName) /2),8,4210752);//default binary color
         this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(),122,this.ySize - 96 +2,4210752);
     }
 
@@ -53,15 +50,15 @@ public class GuiCrystalFurnace extends GuiContainer
 
     private int getBurnLeftScaled(int pixels)//how much of the burning image should be left
     {
-        int i = this.tileCrystalFurnace.getField(1);
+        int i = this.tileCrystalFurnace.getField(1);//current burn time
         if(i==0) i=200;
-        return this.tileCrystalFurnace.getField(0) * pixels /i;
+        return this.tileCrystalFurnace.getField(0) * pixels /i;//burn time
     }
 
     private int getCookProgressScaled(int pixels)//how much of the arrow progress image should be left
     {
-        int i = this.tileCrystalFurnace.getField(2);
-        int j = this.tileCrystalFurnace.getField(3);
+        int i = this.tileCrystalFurnace.getField(2);//cook time
+        int j = this.tileCrystalFurnace.getField(3);//total cook time
         return j !=0 && i != 0 ? i * pixels /j : 0;
     }
 

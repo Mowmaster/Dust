@@ -86,39 +86,39 @@ public class ContainerCrystalFurnace extends Container
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
         ItemStack stack = ItemStack.EMPTY;
-        Slot slot = (Slot)this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
         if(slot != null && slot.getHasStack())
         {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
 
-            if(index == 3)
+            if(index == 3)//3=output slot
             {
                 if(!this.mergeItemStack(stack1, 4, 40, true)) return ItemStack.EMPTY;
                 slot.onSlotChange(stack1, stack);
             }
             else if(index != 2 && index != 1 && index != 0)
             {
-                Slot slot1 = (Slot)this.inventorySlots.get(index + 1);
 
-                if(!FurnaceRecipes.instance().getSmeltingResult(slot1.getStack()).isEmpty())
+
+                if(!FurnaceRecipes.instance().getSmeltingResult(slot.getStack()).isEmpty())
                 {
-                    if(!this.mergeItemStack(stack1, 0, 2, false))
+                    if(!this.mergeItemStack(stack1, 0, 2, false))//0-2 is input, crystal input, and fuel input
                     {
                         return ItemStack.EMPTY;
                     }
                     else if(TileCrystalFurnace.isItemFuel(stack1))
                     {
-                        if(!this.mergeItemStack(stack1, 2, 3, false)) return ItemStack.EMPTY;
+                        if(!this.mergeItemStack(stack1, 1, 3, false)) return ItemStack.EMPTY;
                     }
                     else if(TileCrystalFurnace.isItemFuel(stack1))
                     {
-                        if(!this.mergeItemStack(stack1, 2, 3, false)) return ItemStack.EMPTY;
+                        if(!this.mergeItemStack(stack1, 1, 3, false)) return ItemStack.EMPTY;
                     }
                     else if(TileCrystalFurnace.isItemFuel(stack1))
                     {
-                        if(!this.mergeItemStack(stack1, 2, 3, false)) return ItemStack.EMPTY;
+                        if(!this.mergeItemStack(stack1, 1, 3, false)) return ItemStack.EMPTY;
                     }
                     else if(index >= 4 && index < 31)
                     {
