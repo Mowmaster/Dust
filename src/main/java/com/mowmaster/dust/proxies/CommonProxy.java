@@ -1,14 +1,17 @@
 package com.mowmaster.dust.proxies;
 
+import com.mowmaster.dust.dust;
 import com.mowmaster.dust.enchantments.EnchantmentDigger;
 import com.mowmaster.dust.enchantments.EnchantmentHandlers;
 import com.mowmaster.dust.handlers.DebugAndLogging;
+import com.mowmaster.dust.handlers.GuiHandler;
 import com.mowmaster.dust.handlers.PlaceableCrystals;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.world.OreGeneration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -32,6 +35,8 @@ public class CommonProxy
         EnchantmentHandlers enchants = new EnchantmentHandlers();
         MinecraftForge.EVENT_BUS.register(enchants);
         FMLCommonHandler.instance().bus().register(enchants);
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(dust.instance,new GuiHandler());
 
     }
 
