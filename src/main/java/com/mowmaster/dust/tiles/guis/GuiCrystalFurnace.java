@@ -40,11 +40,11 @@ public class GuiCrystalFurnace extends GuiContainer
         if(TileCrystalFurnace.isBurning(tileCrystalFurnace))
         {
             int k = this.getBurnLeftScaled(13);//height of fire texture
-            this.drawTexturedModalRect(this.guiLeft + 58/*xcord from bottom*/,this.guiTop + 38/*ycord from top*/ + 12-k/*height in pixels to render*/,177/*xcord from bottom of texture side of gui box*/,12-k,14/*width*/,k+1/*height*/);
+            this.drawTexturedModalRect(this.guiLeft + 58/*xcord from bottom*/,this.guiTop + 37/*ycord from top*/ + 12-k/*height in pixels to render*/,177/*xcord from bottom of texture side of gui box*/,12-k,14/*width*/,k+1/*height*/);
         }
 
         int l = this.getCookProgressScaled(24);//lenght of texture from left to right
-        this.drawTexturedModalRect(this.guiLeft + 81,this.guiTop + 36,177,14,l+1,16);
+        this.drawTexturedModalRect(this.guiLeft + 79,this.guiTop + 35,176,14,l+1,16);
 
     }
 

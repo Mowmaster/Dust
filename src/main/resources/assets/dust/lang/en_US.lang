@@ -393,6 +393,8 @@ tile.crystalcluster.name=Crystal Cluster Base [WIP]
 tile.machinebase.name=Machine Base
 item.crusheritems.name=Crusher Machine Components
 tile.enchantmod.name=Crystal Enchantment Modification Table
+tile.crystalfurnace.name=Crystal Furnace
+container.crystalfurnace=Crystal Furnace
 
 tile.crate1.name=Ancient Crate
 tile.pot1.name=Ancient Pot

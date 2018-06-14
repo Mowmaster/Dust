@@ -17,6 +17,8 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -63,7 +65,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     }
 
     public void setCustomName(String customName) {
-        this.customName = customName;
+        this.customName = "Crystal Furnace";
     }
 
     @Nullable
@@ -125,31 +127,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.inventory = NonNullList.<ItemStack>withSize(this.getInventoryStackLimit(),ItemStack.EMPTY);//makes the inventory again
-        ItemStackHelper.loadAllItems(compound,this.inventory);//loads all the items back into the inventory
-        this.burnTime = compound.getInteger("burntime");
-        this.cookTime = compound.getInteger("cooktime");
-        this.totalCookTime = compound.getInteger("totalcooktime");
-        this.currentBurnTime = getItemBurnTime((ItemStack)this.inventory.get(2));//sets burntime for slot 2
 
-        if(compound.hasKey("customname",8)) this.setCustomName(compound.getString("customname"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setInteger("burntime",(short)this.burnTime);
-        compound.setInteger("cooktime",(short)this.cookTime);
-        compound.setInteger("totalcooktime",(short)this.totalCookTime);
-        ItemStackHelper.saveAllItems(compound,this.inventory);//saves all item stack in the inventory to the nbt
-
-        if(this.hasCustomName()) compound.setString("customname",this.customName);
-        return compound;
-
-    }
 
     @Override
     public int getInventoryStackLimit() {
@@ -194,9 +172,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     {
         if(this.canSmelt())
         {
-            ItemStack input = (ItemStack)this.inventory.get(0);
+            ItemStack input = this.inventory.get(0);
             ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-            ItemStack output = (ItemStack)this.inventory.get(3);
+            ItemStack output = this.inventory.get(3);
 
             if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
             else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
@@ -269,25 +247,31 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     {
     }
 
+    private boolean isItemSmeltable(ItemStack stack)
+    {
+        if(FurnaceRecipes.instance().getSmeltingResult(stack).isEmpty())
+        {
+            return false;
+        }
+        else return true;
+    }
+
 
 
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
-        if (index == 3)//if its the output slot
+        switch (index)
         {
-            return false;
-        }
-        else if(index == 1 && isItemCrystal(stack))
-        {
-            return true;
-        }
-        else if (index ==0)
-        {
-            return true;//items can go in input
-        }
-        else
-        {
-            return isItemFuel(stack);
+            case 0:
+                return isItemSmeltable(stack);
+            case 1:
+                return isItemCrystal(stack);
+            case 2:
+                return isItemFuel(stack);
+            case 3:
+                return false;
+            default:
+                return false;
         }
     }
 
@@ -455,5 +439,47 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
             else
                 return (T) handlerSide;
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("burntime",(short)this.burnTime);
+        compound.setInteger("cooktime",(short)this.cookTime);
+        compound.setInteger("totalcooktime",(short)this.totalCookTime);
+        ItemStackHelper.saveAllItems(compound,this.inventory);//saves all item stack in the inventory to the nbt
+
+        //if(this.hasCustomName()) compound.setString("customname",this.customName);
+        return compound;
+
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.inventory = NonNullList.<ItemStack>withSize(this.getInventoryStackLimit(),ItemStack.EMPTY);//makes the inventory again
+        ItemStackHelper.loadAllItems(compound,this.inventory);//loads all the items back into the inventory
+        this.burnTime = compound.getInteger("burntime");
+        this.cookTime = compound.getInteger("cooktime");
+        this.totalCookTime = compound.getInteger("totalcooktime");
+        this.currentBurnTime = getItemBurnTime(this.inventory.get(2));//sets burntime for slot 2
+
+        //if(compound.hasKey("customname",8)) this.setCustomName(compound.getString("customname"));
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+        readFromNBT(pkt.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 }
