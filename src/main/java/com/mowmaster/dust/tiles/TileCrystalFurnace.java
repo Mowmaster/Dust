@@ -37,22 +37,28 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
+import java.util.Random;
+
 import static net.minecraft.tileentity.TileEntityFurnace.getItemBurnTime;
 
 
 public class TileCrystalFurnace extends TileEntityLockable implements ISidedInventory, ITickable
 {
     private static final int[] SLOTS_TOP = new int[] {0};
-    private static final int[] SLOTS_BOTTOM = new int[] {3};
+    private static final int[] SLOTS_BOTTOM = new int[] {3, 4};
     private static final int[] SLOTS_SIDES = new int[] {1, 2};
 
-    private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(4,ItemStack.EMPTY);//Input, Input Crystal, Input Fuel, Output
+    private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(5,ItemStack.EMPTY);//Input, Input Crystal, Input Fuel, Output, Output Spent Crystals
     private String customName;
 
     private int burnTime;
     private int currentBurnTime;
     private int cookTime;
     private int totalCookTime;
+    private int crystalEnergyLeft = 0;
+    private int customCookTime = 200;
+    private int crystalEffectActive;
+    private int randomPotencyChance = 10;
 
     @Override
     public String getName() {
@@ -61,11 +67,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     @Override
     public boolean hasCustomName() {
-        return true;
-    }
-
-    public void setCustomName(String customName) {
-        this.customName = "Crystal Furnace";
+        return false;
     }
 
     @Nullable
@@ -76,7 +78,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     @Override
     public int getSizeInventory() {
-        return this.inventory.size();//from the non null inventory above == 4
+        return this.inventory.size();//from the non null inventory above == 5
     }
 
     @Override
@@ -98,7 +100,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return this.inventory.get(index);//gets one of our 4 slots like input=0 input crystal=1 input fuel=2 output=3 for example
+        return this.inventory.get(index);//gets one of our 5 slots like input=0 input crystal=1 input fuel=2 output=3 for example
     }
 
     @Override
@@ -147,7 +149,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     public int getCookTime(ItemStack input)
     {
-        return 200;//Could modify later to speed or slow down cook times
+        return customCookTime;
     }
 
     private boolean canSmelt()
@@ -220,18 +222,55 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         }
     }
 
-    public static boolean isItemFuel(ItemStack fuel)
-    {
-        return getItemBurnTime(fuel) > 0;
-    }
-
-    public static boolean isItemCrystal(ItemStack crystal)
+    public static boolean isItemCrystal(ItemStack crystal)//finds out if item is instance of crystal
     {
         if(crystal.getItem() instanceof ItemCrystal)
         {
             return true;
         }
         else return false;
+    }
+
+    public ItemStack getCrystalIn()//finds out which crystal is being used in the slot
+    {
+        ItemStack stack = ItemStack.EMPTY;
+        if(isItemCrystal(this.inventory.get(2)))
+        {
+            stack = this.inventory.get(2);
+        }
+        return stack;
+    }
+
+    public int getCrystalType()//gets meta of crystal
+    {
+        return getCrystalIn().getMetadata();
+    }
+
+    public void setCrystalEnergyLeft()
+    {
+        if(getCrystalIn().getItem() instanceof ItemCrystal && crystalEnergyLeft>=0)
+        {
+            crystalEffectActive = getCrystalType();
+            crystalEnergyLeft = 32;
+            this.inventory.get(2).shrink(1);
+        }
+    }
+
+    private boolean chanceTo()
+    {
+        Random rn = new Random();
+        int chance = rn.nextInt(100);
+
+        if(chance<=randomPotencyChance)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public static boolean isItemFuel(ItemStack fuel)
+    {
+        return getItemBurnTime(fuel) > 0;
     }
 
     public boolean isUsableByPlayer(EntityPlayer player)
