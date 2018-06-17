@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ContainerCrystalFurnace extends Container
 {
     private final TileCrystalFurnace tileCrystalFurnace;
-    private int cookTime, totalCookTime, burnTime, currentBurnTime, crystalEnergyLeft;
+    private int cookTime, totalCookTime, burnTime, currentBurnTime, crystalEnergyLeft, crystalEffectActive;
 
     public ContainerCrystalFurnace(InventoryPlayer player, TileCrystalFurnace tileCrystalFurnace)
     {
@@ -28,7 +28,7 @@ public class ContainerCrystalFurnace extends Container
         this.addSlotToContainer(new SlotCrystalFurnaceCrystal(tileCrystalFurnace,1,20,29));//crystal input
         this.addSlotToContainer(new SlotCrystalFurnaceFuel(tileCrystalFurnace,2,56,53));//fuel input
         this.addSlotToContainer(new SlotCrystalFurnaceOutput(player.player,tileCrystalFurnace,3,116,35));//output
-        this.addSlotToContainer(new SlotCrystalFurnaceCrystalOutput(player.player,tileCrystalFurnace,4,141,34));//crystal output
+        this.addSlotToContainer(new SlotCrystalFurnaceCrystalOutput(player.player,tileCrystalFurnace,4,142,35));//crystal output
 
         for(int y = 0; y < 3; y++)//check for the player inventory portion of the GUI
         {
@@ -65,6 +65,7 @@ public class ContainerCrystalFurnace extends Container
             if(this.currentBurnTime != this.tileCrystalFurnace.getField(1)) listener.sendWindowProperty(this, 1, this.tileCrystalFurnace.getField(1));
             if(this.totalCookTime != this.tileCrystalFurnace.getField(3)) listener.sendWindowProperty(this, 3, this.tileCrystalFurnace.getField(3));
             if(this.crystalEnergyLeft != this.tileCrystalFurnace.getField(4)) listener.sendWindowProperty(this, 4, this.tileCrystalFurnace.getField(4));
+            if(this.crystalEffectActive != this.tileCrystalFurnace.getField(5)) listener.sendWindowProperty(this, 5, this.tileCrystalFurnace.getField(5));
         }
 
         this.cookTime = this.tileCrystalFurnace.getField(2);
@@ -72,6 +73,7 @@ public class ContainerCrystalFurnace extends Container
         this.currentBurnTime = this.tileCrystalFurnace.getField(1);
         this.totalCookTime = this.tileCrystalFurnace.getField(3);
         this.crystalEnergyLeft = this.tileCrystalFurnace.getField(4);
+        this.crystalEffectActive = this.tileCrystalFurnace.getField(5);
     }
 
     @Override

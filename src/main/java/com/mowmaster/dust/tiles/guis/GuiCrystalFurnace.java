@@ -25,7 +25,8 @@ public class GuiCrystalFurnace extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)//contains the text
     {
-        String tileName = this.tileCrystalFurnace.getDisplayName().getUnformattedComponentText();
+        //String tileName = this.tileCrystalFurnace.getDisplayName().getUnformattedComponentText();
+        String tileName = "Crystal Furnace";
         this.fontRenderer.drawString(tileName,(this.xSize/2 - this.fontRenderer.getStringWidth(tileName) /2),8,4210752);//default binary color
         this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(),122,this.ySize - 96 +2,4210752);
     }
@@ -45,6 +46,12 @@ public class GuiCrystalFurnace extends GuiContainer
 
         int l = this.getCookProgressScaled(24);//lenght of texture from left to right
         this.drawTexturedModalRect(this.guiLeft + 79,this.guiTop + 35,176,14,l+1,16);
+
+        int m = this.getCookProgressScaled(18);//lenght of texture from left to right
+        int color = this.tileCrystalFurnace.getField(5);
+        int colored = (color*4) + 31;
+        this.drawTexturedModalRect(this.guiLeft + 18,this.guiTop + 49,175,colored,m+1,4);
+
 
     }
 

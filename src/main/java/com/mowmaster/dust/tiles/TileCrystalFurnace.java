@@ -55,9 +55,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     private int currentBurnTime;
     private int cookTime;
     private int totalCookTime;
-    private int crystalEnergyLeft = 0;
+    private int crystalEnergyLeft = 20;
     private int customCookTime = 200;
-    private int crystalEffectActive;
+    private int crystalEffectActive = 2;
     private int randomPotencyChance = 10;
 
     @Override
@@ -248,12 +248,25 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     public void setCrystalEnergyLeft()
     {
-        if(getCrystalIn().getItem() instanceof ItemCrystal && crystalEnergyLeft>=0)
+        if(getCrystalIn().getItem() instanceof ItemCrystal)
         {
             crystalEffectActive = getCrystalType();
             crystalEnergyLeft = 32;
             this.inventory.get(2).shrink(1);
         }
+    }
+
+    public void consumeCrystal()
+    {
+        if(this.isBurning() && crystalEnergyLeft>=0)
+        {
+            setCrystalEnergyLeft();
+        }
+    }
+
+    public void consumeCrystalEnergy()
+    {
+        crystalEnergyLeft--;
     }
 
     private boolean chanceTo()
@@ -365,8 +378,10 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 return this.cookTime;
             case 3:
                 return this.totalCookTime;
-            case 5:
+            case 4:
                 return this.crystalEnergyLeft;
+            case 5:
+                return this.crystalEffectActive;
             default:
                 return 0;
         }
@@ -391,12 +406,15 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 break;
             case 4:
                 this.crystalEnergyLeft = value;
+                break;
+            case 5:
+                this.crystalEffectActive = value;
         }
     }
 
     @Override
     public int getFieldCount() {
-        return 5;
+        return 6;
     }
 
     @Override
