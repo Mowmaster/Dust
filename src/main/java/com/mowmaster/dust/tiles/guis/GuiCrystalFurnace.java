@@ -62,5 +62,12 @@ public class GuiCrystalFurnace extends GuiContainer
         return j !=0 && i != 0 ? i * pixels /j : 0;
     }
 
+    private int getCrystalEnergyLeftScaled(int pixels)//how much of the arrow progress image should be left
+    {
+        int i = this.tileCrystalFurnace.getField(4);//crystal energy left
+        int j = 32;//crystal energy max
+        return j !=0 && i != 0 ? i * pixels /j : 0;
+    }
+
 
 }

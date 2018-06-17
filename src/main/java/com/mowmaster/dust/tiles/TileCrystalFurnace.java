@@ -309,6 +309,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 return isItemFuel(stack);
             case 3:
                 return false;
+            case 4:
+                return false;
             default:
                 return false;
         }
@@ -363,6 +365,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 return this.cookTime;
             case 3:
                 return this.totalCookTime;
+            case 5:
+                return this.crystalEnergyLeft;
             default:
                 return 0;
         }
@@ -384,12 +388,15 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 break;
             case 3:
                 this.totalCookTime = value;
+                break;
+            case 4:
+                this.crystalEnergyLeft = value;
         }
     }
 
     @Override
     public int getFieldCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -486,6 +493,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         compound.setInteger("burntime",(short)this.burnTime);
         compound.setInteger("cooktime",(short)this.cookTime);
         compound.setInteger("totalcooktime",(short)this.totalCookTime);
+        compound.setInteger("crystalenergy",(short)this.crystalEnergyLeft);
+        compound.setInteger("crystaleffect",(short)this.crystalEffectActive);
+        compound.setInteger("randomchance",(short)this.randomPotencyChance);
         ItemStackHelper.saveAllItems(compound,this.inventory);//saves all item stack in the inventory to the nbt
 
         //if(this.hasCustomName()) compound.setString("customname",this.customName);
@@ -501,6 +511,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         this.burnTime = compound.getInteger("burntime");
         this.cookTime = compound.getInteger("cooktime");
         this.totalCookTime = compound.getInteger("totalcooktime");
+        this.crystalEnergyLeft = compound.getInteger("crystalenergy");
+        this.crystalEffectActive = compound.getInteger("crystaleffect");
+        this.randomPotencyChance = compound.getInteger("randomchance");
         this.currentBurnTime = getItemBurnTime(this.inventory.get(2));//sets burntime for slot 2
 
         //if(compound.hasKey("customname",8)) this.setCustomName(compound.getString("customname"));

@@ -2,6 +2,7 @@ package com.mowmaster.dust.tiles.containers;
 
 import com.mowmaster.dust.tiles.TileCrystalFurnace;
 import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceCrystal;
+import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceCrystalOutput;
 import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceFuel;
 import com.mowmaster.dust.tiles.slots.SlotCrystalFurnaceOutput;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ContainerCrystalFurnace extends Container
 {
     private final TileCrystalFurnace tileCrystalFurnace;
-    private int cookTime, totalCookTime, burnTime, currentBurnTime;
+    private int cookTime, totalCookTime, burnTime, currentBurnTime, crystalEnergyLeft;
 
     public ContainerCrystalFurnace(InventoryPlayer player, TileCrystalFurnace tileCrystalFurnace)
     {
@@ -27,6 +28,7 @@ public class ContainerCrystalFurnace extends Container
         this.addSlotToContainer(new SlotCrystalFurnaceCrystal(tileCrystalFurnace,1,20,29));//crystal input
         this.addSlotToContainer(new SlotCrystalFurnaceFuel(tileCrystalFurnace,2,56,53));//fuel input
         this.addSlotToContainer(new SlotCrystalFurnaceOutput(player.player,tileCrystalFurnace,3,116,35));//output
+        this.addSlotToContainer(new SlotCrystalFurnaceCrystalOutput(player.player,tileCrystalFurnace,4,141,34));//crystal output
 
         for(int y = 0; y < 3; y++)//check for the player inventory portion of the GUI
         {
@@ -62,12 +64,14 @@ public class ContainerCrystalFurnace extends Container
             if(this.burnTime != this.tileCrystalFurnace.getField(0)) listener.sendWindowProperty(this, 0, this.tileCrystalFurnace.getField(0));
             if(this.currentBurnTime != this.tileCrystalFurnace.getField(1)) listener.sendWindowProperty(this, 1, this.tileCrystalFurnace.getField(1));
             if(this.totalCookTime != this.tileCrystalFurnace.getField(3)) listener.sendWindowProperty(this, 3, this.tileCrystalFurnace.getField(3));
+            if(this.crystalEnergyLeft != this.tileCrystalFurnace.getField(4)) listener.sendWindowProperty(this, 4, this.tileCrystalFurnace.getField(4));
         }
 
         this.cookTime = this.tileCrystalFurnace.getField(2);
         this.burnTime = this.tileCrystalFurnace.getField(0);
         this.currentBurnTime = this.tileCrystalFurnace.getField(1);
         this.totalCookTime = this.tileCrystalFurnace.getField(3);
+        this.crystalEnergyLeft = this.tileCrystalFurnace.getField(4);
     }
 
     @Override
