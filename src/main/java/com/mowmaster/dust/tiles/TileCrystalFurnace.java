@@ -77,6 +77,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         return false;
     }
 
+
+
     @Nullable
     @Override
     public ITextComponent getDisplayName() {
