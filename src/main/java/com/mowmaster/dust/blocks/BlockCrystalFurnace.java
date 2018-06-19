@@ -13,6 +13,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
@@ -23,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,14 +48,19 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE,false));
         this.setSoundType(SoundType.STONE);
+        this.setHardness(3);
+        this.setResistance(20);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
+
+
 
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
         return Item.getItemFromBlock(BlockRegistry.crystalfurnace);
     }
+
 
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
@@ -99,7 +106,7 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
         if(active) {world.setBlockState(pos,BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING,state.getValue(FACING)).withProperty(ACTIVE,true),3);}
         else world.setBlockState(pos,BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING,state.getValue(FACING)).withProperty(ACTIVE,false),3);
 
-        if(tileEntity != null)
+        if(tileEntity instanceof TileCrystalFurnace)
         {
             tileEntity.validate();
             world.setTileEntity(pos,tileEntity);
@@ -130,9 +137,19 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileCrystalFurnace tileCrystalFurnace = (TileCrystalFurnace)worldIn.getTileEntity(pos);
-        //InventoryHelper.dropInventoryItems(worldIn,pos,TileCrystalFurnace); Will have to look into later
-        super.breakBlock(worldIn,pos,state);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if(tileEntity instanceof TileCrystalFurnace)
+        {
+            if(!worldIn.isRemote)
+            {
+                TileCrystalFurnace furnace = (TileCrystalFurnace) tileEntity;
+                if(!furnace.getFromInv(0).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(0)));}
+                if(!furnace.getFromInv(1).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(1)));}
+                if(!furnace.getFromInv(2).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(2)));}
+                if(!furnace.getFromInv(3).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(3)));}
+                if(!furnace.getFromInv(4).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(4)));}
+            }
+        }
     }
 
     @Override
@@ -162,8 +179,52 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
         return this.getDefaultState().withProperty(FACING,facing);
     }
 
+
     @Override
     public int getMetaFromState(IBlockState state) {
         return ((EnumFacing)state.getValue(FACING)).getIndex();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("incomplete-switch")
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    {
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if(tileEntity instanceof TileCrystalFurnace)
+        {
+            if (((TileCrystalFurnace) tileEntity).isBurning())
+            {
+                EnumFacing enumfacing = (EnumFacing)stateIn.getValue(FACING);
+                double d0 = (double)pos.getX() + 0.5D;
+                double d1 = (double)pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
+                double d2 = (double)pos.getZ() + 0.5D;
+                double d3 = 0.52D;
+                double d4 = rand.nextDouble() * 0.6D - 0.3D;
+
+                if (rand.nextDouble() < 0.1D)
+                {
+                    worldIn.playSound((double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                }
+
+                switch (enumfacing)
+                {
+                    case WEST:
+                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                        worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                        break;
+                    case EAST:
+                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                        worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                        break;
+                    case NORTH:
+                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
+                        worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
+                        break;
+                    case SOUTH:
+                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
+                        worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
+                }
+            }
+        }
     }
 }

@@ -157,7 +157,10 @@ public class BlockCrystalClusterBasic extends BlockDirectional implements ITileE
             {
                 if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
                 {
-                    playerIn.getHeldItem(hand).shrink(1);
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
                 }
             }
         }
@@ -201,7 +204,7 @@ public class BlockCrystalClusterBasic extends BlockDirectional implements ITileE
                 ItemStack blockGlowstone = new ItemStack(Blocks.GLOWSTONE,1);
                 if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blockGlowstone))
                 {
-                    if(cluster.addGlowstone()) {playerIn.getHeldItem(hand).shrink(1);}
+                    if(cluster.addGlowstone()) {if(!playerIn.isCreative())playerIn.getHeldItem(hand).shrink(1);}
                 }
             }
         }

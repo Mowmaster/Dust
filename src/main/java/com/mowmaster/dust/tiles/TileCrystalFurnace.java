@@ -2,9 +2,11 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockCrystalFurnace;
 import com.mowmaster.dust.items.ItemCrystal;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.containers.ContainerCrystalFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.tileentity.TileEntityShulkerBoxRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -27,6 +29,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -52,11 +56,16 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     private int currentBurnTime;
     private int cookTime;
     private int totalCookTime;
-    private int crystalEnergyLeft = 20;
+    private int crystalEnergyLeft;
     private int customCookTime;
-    private int crystalEffectActive = 2;
+    private int crystalEffectActive=-1;
     private int randomPotencyChance = 10;
-    private int modifier = 1;
+    private int modifier = 1;//Biggest mod is 4
+
+    public ItemStack getFromInv(int num)
+    {
+        return this.inventory.get(num);
+    }
 
     @Override
     public String getName() {
@@ -184,30 +193,68 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
             if(crystalEffectActive==4 && result.getItem() instanceof ItemFood)
             {
-                randomPotencyChance = 25;
+                randomPotencyChance = 30*modifier;
                 if(chanceTo())
                 {
-                    if(output.isEmpty()) this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
-                    else if(output.getItem() == result.getItem()) output.grow(result.getCount() + 1);//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                    if(output.isEmpty())
+                    {
+                        this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                        consumeCrystalEnergy();
+                    }
+                    else if(output.getItem() == result.getItem())
+                    {
+                        output.grow(result.getCount() + 1);
+                        consumeCrystalEnergy();
+                    } //if the output has items increese the stack count of that item(check for same is in canSmelt()
                 }
                 else
                 {
-                    if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
-                    else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                    if(output.isEmpty()) {
+                        this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                        consumeCrystalEnergy();
+                    }
+                    else if(output.getItem() == result.getItem()) {
+                        output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                        consumeCrystalEnergy();
+                    }
                 }
             }
             else if(crystalEffectActive==1)
             {
-                randomPotencyChance = 10;
+                randomPotencyChance = 15*modifier;
                 if(chanceTo())
                 {
-                    if(output.isEmpty()) this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
-                    else if(output.getItem() == result.getItem()) output.grow(result.getCount() + 1);//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                    if(output.isEmpty())
+                    {
+                        this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                        consumeCrystalEnergy();
+                    }
+                    else if(output.getItem() == result.getItem()) {
+                        output.grow(result.getCount() + 1);//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                        consumeCrystalEnergy();
+                    }
                 }
                 else
                 {
-                    if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
-                    else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                    if(output.isEmpty()) {
+                        this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                        consumeCrystalEnergy();
+                    }
+                    else if(output.getItem() == result.getItem()) {
+                        output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                        consumeCrystalEnergy();
+                    }
+                }
+            }
+            else if(crystalEffectActive==2)
+            {
+                if(output.isEmpty()) {
+                    this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                    consumeCrystalEnergy();
+                }
+                else if(output.getItem() == result.getItem()) {
+                    output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                    consumeCrystalEnergy();
                 }
             }
             else
@@ -269,9 +316,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     public ItemStack getCrystalIn()//finds out which crystal is being used in the slot
     {
         ItemStack stack = ItemStack.EMPTY;
-        if(isItemCrystal(this.inventory.get(2)))
+        if(isItemCrystal(this.inventory.get(1)))
         {
-            stack = this.inventory.get(2);
+            stack = this.inventory.get(1);
         }
         return stack;
     }
@@ -287,16 +334,36 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         {
             crystalEffectActive = getCrystalType();
             crystalEnergyLeft = 32;
-            this.inventory.get(2).shrink(1);
+            this.inventory.get(1).shrink(1);
+            if(this.inventory.get(4).isEmpty())
+            {
+                this.inventory.set(4,new ItemStack(ItemRegistry.crystal,1,8));
+            }
+            else
+            {
+                this.inventory.get(4).grow(1);
+            }
+
         }
     }
 
     public void consumeCrystal()
     {
-        if(this.isBurning() && crystalEnergyLeft>=0)
+        if(crystalEnergyLeft<=0)
         {
-            setCrystalEnergyLeft();
+            if(!getCrystalIn().isEmpty())
+            {
+                setCrystalEnergyLeft();
+            }
+            else
+            {
+                customCookTime=200;
+                crystalEffectActive=-1;
+                crystalEnergyLeft=-1;
+            }
+
         }
+
     }
 
     public void consumeCrystalEnergy()
@@ -422,6 +489,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         }
     }
 
+
     @Override
     public void setField(int id, int value)
     {
@@ -457,6 +525,14 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         this.inventory.clear();
     }
 
+    private void updateBlock()
+    {
+        markDirty();
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+        world.setBlockState(pos,state,3);
+    }
+
     @Override
     public void update()
     {
@@ -465,13 +541,14 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
         if(this.isBurning()) --this.burnTime;//if active then decreese burntime
 
+        consumeCrystal();
+
+
         if(!this.world.isRemote)
         {
             ItemStack stack = (ItemStack)this.inventory.get(2);//fuel itemstack
 
-
-
-            if(this.isBurning() || !stack.isEmpty() && !((((ItemStack)this.inventory.get(0)).isEmpty())))//if active and fuel and input arnt empty
+            if(this.isBurning() || !stack.isEmpty() && !((ItemStack)this.inventory.get(0)).isEmpty())//if active and fuel and input arnt empty
             {
                 if(!this.isBurning() && this.canSmelt())//function checks and consumes fuel
                 {
@@ -485,17 +562,24 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                         if(!stack.isEmpty())//if fuel stack isnt empty
                         {
                             Item item = stack.getItem();//set item == to the fuel in the stack
+                            randomPotencyChance = 10*modifier;
                             if(crystalEffectActive==5 && chanceTo())
                             {
-
+                                consumeCrystalEnergy();
                             }
                             else if(crystalEffectActive==0)
                             {
                                 stack.shrink(1);
+                                consumeCrystalEnergy();
                                 int oldburntime= burnTime;
-                                burnTime = oldburntime + 20;
+                                burnTime = oldburntime + (20*modifier);
                             }
-                            else stack.shrink(1);//consume a fuel
+                            else if(crystalEffectActive==5 )
+                            {
+                                stack.shrink(1);//consume a fuel
+                                consumeCrystalEnergy();
+                            }
+                            else stack.shrink(1);
 
                             if(stack.isEmpty())
                             {
