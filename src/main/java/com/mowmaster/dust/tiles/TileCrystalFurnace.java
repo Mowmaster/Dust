@@ -10,10 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,9 +53,10 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     private int cookTime;
     private int totalCookTime;
     private int crystalEnergyLeft = 20;
-    private int customCookTime = 200;
+    private int customCookTime;
     private int crystalEffectActive = 2;
     private int randomPotencyChance = 10;
+    private int modifier = 1;
 
     @Override
     public String getName() {
@@ -149,6 +147,12 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     public int getCookTime(ItemStack input)
     {
+        if(crystalEffectActive==2)
+        {
+            customCookTime =  200-(40*modifier);
+        }
+        else customCookTime = 200;
+
         return customCookTime;
     }
 
@@ -178,8 +182,39 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
             ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
             ItemStack output = this.inventory.get(3);
 
-            if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
-            else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+            if(crystalEffectActive==4 && result.getItem() instanceof ItemFood)
+            {
+                randomPotencyChance = 25;
+                if(chanceTo())
+                {
+                    if(output.isEmpty()) this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                    else if(output.getItem() == result.getItem()) output.grow(result.getCount() + 1);//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                }
+                else
+                {
+                    if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                    else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                }
+            }
+            else if(crystalEffectActive==1)
+            {
+                randomPotencyChance = 10;
+                if(chanceTo())
+                {
+                    if(output.isEmpty()) this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                    else if(output.getItem() == result.getItem()) output.grow(result.getCount() + 1);//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                }
+                else
+                {
+                    if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                    else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+                }
+            }
+            else
+            {
+                if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
+            }
 
             input.shrink(1);
         }
@@ -434,6 +469,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         {
             ItemStack stack = (ItemStack)this.inventory.get(2);//fuel itemstack
 
+
+
             if(this.isBurning() || !stack.isEmpty() && !((((ItemStack)this.inventory.get(0)).isEmpty())))//if active and fuel and input arnt empty
             {
                 if(!this.isBurning() && this.canSmelt())//function checks and consumes fuel
@@ -448,7 +485,17 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                         if(!stack.isEmpty())//if fuel stack isnt empty
                         {
                             Item item = stack.getItem();//set item == to the fuel in the stack
-                            stack.shrink(1);//consume a fuel
+                            if(crystalEffectActive==5 && chanceTo())
+                            {
+
+                            }
+                            else if(crystalEffectActive==0)
+                            {
+                                stack.shrink(1);
+                                int oldburntime= burnTime;
+                                burnTime = oldburntime + 20;
+                            }
+                            else stack.shrink(1);//consume a fuel
 
                             if(stack.isEmpty())
                             {
