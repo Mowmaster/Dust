@@ -10,6 +10,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +22,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -52,7 +55,16 @@ public class BlockCrystalCrusher extends BlockContainer
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
-
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileCrystalCrusher te = (TileCrystalCrusher)worldIn.getTileEntity(pos);
+        IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
+        for(int slot = 0; slot <handler.getSlots() -1; slot++){
+            ItemStack stack = handler.getStackInSlot(slot);
+            InventoryHelper.spawnItemStack(worldIn,pos.getX(),pos.getY(),pos.getZ(),stack);
+        }
+        super.breakBlock(worldIn, pos, state);
+    }
 
     public boolean isOpaqueCube(IBlockState state)
     {
