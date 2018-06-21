@@ -411,3 +411,8 @@ tile.spike3.name=Crystal Spikes
 tile.spike4.name=Crystal Spikes
 tile.spike5.name=Crystal Spikes
 tile.voidpot.name=Pot of the Abyss
+
+item.crystalhelmet.name=Crystal Helmet
+item.crystalchestplate.name=Crystal Chestplate
+item.crystalleggings.name=Crystal Leggings
+item.crystalboots.name=Crystal Boots

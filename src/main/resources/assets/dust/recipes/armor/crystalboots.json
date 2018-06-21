@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group":"armor_crystal",
+  "pattern": [
+    "C C",
+    "CLC"
+  ],
+  "key": {
+    "C": {
+      "item": "dust:crystal",
+      "data": 8
+    },
+    "L": {
+      "item": "minecraft:leather_boots"
+    }
+  },
+  "result": {
+    "item": "dust:crystalboots"
+  }
+}

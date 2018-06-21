@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group":"armor_crystal",
+  "pattern": [
+    "CCC",
+    "CLC"
+  ],
+  "key": {
+    "C": {
+      "item": "dust:crystal",
+      "data": 8
+    },
+    "L": {
+      "item": "minecraft:leather_helmet"
+    }
+  },
+  "result": {
+    "item": "dust:crystalhelmet"
+  }
+}

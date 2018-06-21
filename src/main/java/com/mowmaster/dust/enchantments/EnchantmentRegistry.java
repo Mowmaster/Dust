@@ -15,11 +15,19 @@ public class EnchantmentRegistry
 
     public static EnchantmentDigger enchantDigger = new EnchantmentDigger(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantDigger"));
     public static EnchantmentVamperic enchantVamperic = new EnchantmentVamperic(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantVamperic"));
+    public static EnchantmentLastResort enchantLastResort = new EnchantmentLastResort(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantLastResort"));
+    public static EnchantmentSteadfast enchantSteadfast = new EnchantmentSteadfast(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantSteadfast"));
+    public static EnchantmentStepAssist enchantmentStepAssist = new EnchantmentStepAssist(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantStepAssist"));
+    public static EnchantmentQuickPace enchantmentQuickPace = new EnchantmentQuickPace(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantQuickPace"));
 
     public static void Init(){
         //GameRegistry.register(enchantDigger, );
         ForgeRegistries.ENCHANTMENTS.register(enchantDigger);
         ForgeRegistries.ENCHANTMENTS.register(enchantVamperic);
+        ForgeRegistries.ENCHANTMENTS.register(enchantLastResort);
+        ForgeRegistries.ENCHANTMENTS.register(enchantSteadfast);
+        ForgeRegistries.ENCHANTMENTS.register(enchantmentStepAssist);
+        ForgeRegistries.ENCHANTMENTS.register(enchantmentQuickPace);
 
 
     }

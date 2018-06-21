@@ -3,6 +3,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
@@ -47,6 +48,8 @@ public class dust {
         BlockRegistry.register();
         ItemRegistry.init();
         ItemRegistry.register();
+        ItemArmorAndToolsRegistry.init();
+        ItemArmorAndToolsRegistry.register();
         OreDictDust.addEntries();
         TileRegistry.registerTile();
         EnchantmentRegistry.Init();
@@ -65,7 +68,9 @@ public class dust {
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        CraftingRecipes.CraftingRecipes();
     }
 
 }
