@@ -7,6 +7,11 @@ itemGroup.dustblockstabs=Crystal & Dust Blocks
 
 enchantment.enchantDigger=AOE Miner
 enchantment.enchantVamperic=Vamperic
+enchantment.enchantSteadfast=Steadfast
+enchantment.enchantLastResort=Last Resort
+enchantment.enchantStepAssist=Step Up
+enchantment.enchantQuickPace=Brisk Pace
+
 
 item.ancientcoina.name=Ancient Coin
 item.ancientcoinb.name=Ancient Coin
@@ -104,6 +109,7 @@ item.charcoal.orange.name=Orange Charcoal
 item.charcoal.white.name=White Charcoal
 item.charcoal.black.name=Black Charcoal
 
+item.crystalfurnaceupgrade.name=Machine Block Furnace Upgrade
 item.debug.name=Scroll Of The All Knowing
 item.finnisher.name=The Finnish'er
 
@@ -390,11 +396,12 @@ tile.pedestal_white.name=Item Pedestal
 tile.pedestal_black.name=Item Pedestal
 
 tile.crystalcluster.name=Crystal Cluster Base [WIP]
-tile.machinebase.name=Machine Base
+tile.machinebase.name=Crystal Machine Block
 item.crusheritems.name=Crusher Machine Components
-tile.enchantmod.name=Crystal Enchantment Modification Table
+tile.enchantmod.name=Crystal Enchantment Modification Table [WIP]
 tile.crystalfurnace.name=Crystal Furnace
 container.crystalfurnace=Crystal Furnace
+tile.crystalcrusher.name=Crystal Crusher [WIP]
 
 tile.crate1.name=Ancient Crate
 tile.pot1.name=Ancient Pot

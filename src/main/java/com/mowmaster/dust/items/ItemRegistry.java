@@ -6,6 +6,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -23,6 +24,7 @@ public class ItemRegistry
     public static Item dustyCharcoal;
     public static Item scroll;
     public static Item crushingComponents; // fixed the capitalization to use proper camel casing instead of being all lowercase
+    public static Item furnaceComponents;
     public static Item finnisher;
 
     public static Item ancientCoinA;
@@ -144,6 +146,7 @@ public class ItemRegistry
         dustyCharcoal = new ItemCharcoal("charcoal");
         scroll = new ItemScroll("scroll","scroll");
         crushingComponents = new ItemBasic("crusheritems","crusheritems");
+        furnaceComponents = new ItemUpgrade("crystalfurnaceupgrade","crystalfurnaceupgrade");
         finnisher = new ItemFinnisher("finnisher","finnisher",10,10.0F,false,
                 new PotionEffect(Potion.getPotionById(3),1200,10),
                 new PotionEffect(Potion.getPotionById(5),1200,10),
@@ -212,6 +215,7 @@ public class ItemRegistry
         registerItem(dustyCharcoal);
         registerItem(scroll);
         registerItem(crushingComponents);
+        registerItem(furnaceComponents);
         registerItem(finnisher);
     }
 
@@ -292,6 +296,7 @@ public class ItemRegistry
 
         registerRender(scroll);
         registerRender(crushingComponents);
+        registerRender(furnaceComponents);
         registerRender(finnisher);
     }
 

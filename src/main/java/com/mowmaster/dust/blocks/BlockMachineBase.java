@@ -58,10 +58,10 @@ public class BlockMachineBase extends BlockFalling //Temporarily BlockFalling un
 
         if((playerIn.getHeldItem(hand) != null))
         {
-            if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.crushingComponents))) {
+            if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.furnaceComponents))) {
                     //playerIn.sendMessage(new TextComponentString("You are adding Carbon"));
                     playerIn.getHeldItem(hand).shrink(1);
-                    worldIn.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
+                    worldIn.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState());
             }
 
         }
