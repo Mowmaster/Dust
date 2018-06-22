@@ -2,6 +2,8 @@ package com.mowmaster.dust;
 
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.effects.PotionTypeRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
@@ -53,6 +55,8 @@ public class dust {
         OreDictDust.addEntries();
         TileRegistry.registerTile();
         EnchantmentRegistry.Init();
+        PotionRegistry.init();
+        PotionTypeRegistry.registerPotionTypes();
         proxy.PreInit();
         proxy.registerTile();
         FuelRegistry.init();

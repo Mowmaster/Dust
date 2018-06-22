@@ -4,6 +4,7 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.handlers.ClientEvents;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.armors.ItemCrystalArmor;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TilePedestal;

@@ -19,6 +19,7 @@ public class EnchantmentRegistry
     public static EnchantmentSteadfast enchantSteadfast = new EnchantmentSteadfast(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantSteadfast"));
     public static EnchantmentStepAssist enchantmentStepAssist = new EnchantmentStepAssist(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantStepAssist"));
     public static EnchantmentQuickPace enchantmentQuickPace = new EnchantmentQuickPace(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantQuickPace"));
+    public static EnchantmentFlight enchantmentFlight = new EnchantmentFlight(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantFlight"));
 
     public static void Init(){
         //GameRegistry.register(enchantDigger, );
@@ -28,6 +29,7 @@ public class EnchantmentRegistry
         ForgeRegistries.ENCHANTMENTS.register(enchantSteadfast);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentStepAssist);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentQuickPace);
+        ForgeRegistries.ENCHANTMENTS.register(enchantmentFlight);
 
 
     }

@@ -423,3 +423,9 @@ item.crystalhelmet.name=Crystal Helmet
 item.crystalchestplate.name=Crystal Chestplate
 item.crystalleggings.name=Crystal Leggings
 item.crystalboots.name=Crystal Boots
+
+effect.flight=Flight
+potion.effect.flight=Potion of Flight
+splash_potion.effect.flight=Splash Potion of Flight
+lingering_potion.effect.flight=Lingering Potion of Flight
+tipped_arrow.effect.flight=Arrow of Flight

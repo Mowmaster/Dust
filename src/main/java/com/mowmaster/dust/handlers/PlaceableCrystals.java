@@ -2,13 +2,18 @@ package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.effects.PotionTypeRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemScroll;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
@@ -19,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -187,6 +193,39 @@ public class PlaceableCrystals
                 ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
                 playerIn.getHeldItem(hand).shrink(1);
             }
+        }
+    }
+
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onFlight(TickEvent.PlayerTickEvent event)
+    {
+        boolean flight = false;
+        if(event.player.inventory.armorInventory.get(1) !=null)
+        {
+            int f = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(1));
+            {
+                if(f !=1)
+                {
+                    flight=true;
+                }
+            }
+        }
+
+        if(event.player.isPotionActive(PotionRegistry.POTION_FLIGHT))
+        {
+            flight=true;
+        }
+        if(flight || event.player.isCreative() || event.player.isSpectator())
+        {
+            event.player.capabilities.allowFlying = true;
+            event.player.fallDistance=0.0f;
+        }
+        else
+        {
+            flight=false;
+            event.player.capabilities.isFlying = false;
+            event.player.capabilities.allowFlying = false;
         }
     }
 
