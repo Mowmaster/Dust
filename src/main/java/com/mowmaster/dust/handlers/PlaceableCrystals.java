@@ -4,6 +4,7 @@ import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.effects.PotionTypeRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentFlight;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
@@ -11,10 +12,12 @@ import com.mowmaster.dust.items.ItemScroll;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumFacing;
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
+import static sun.audio.AudioPlayer.player;
 
 
 public class PlaceableCrystals
@@ -227,6 +231,35 @@ public class PlaceableCrystals
             event.player.capabilities.isFlying = false;
             event.player.capabilities.allowFlying = false;
         }
+
+
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onWalkingOrRunning(TickEvent.PlayerTickEvent event)
+    {
+        boolean stepup = false;
+        if(event.player.inventory.armorInventory.get(2) !=null)
+        {
+            int f = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(2));
+            {
+                if(f !=2)
+                {
+                    stepup=true;
+                }
+            }
+        }
+        if(stepup || event.player.isCreative() || event.player.isSpectator())
+        {
+            event.player.capabilities.allowFlying = true;
+            event.player.stepHeight=1.25f;
+        }
+        else
+        {
+            stepup=false;
+            event.player.capabilities.isFlying = false;
+            event.player.capabilities.allowFlying = false;
+            event.player.stepHeight=0.6f;
+        }
+    }
 }
