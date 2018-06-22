@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RBY",
+    "PFG",
+    "OWL"
+  ],
+  "key": {
+    "R": {
+      "item": "dust:dust",
+      "data": 0
+    },
+    "B": {
+      "item": "dust:dust",
+      "data": 1
+    },
+    "Y": {
+      "item": "dust:dust",
+      "data": 2
+    },
+    "P": {
+      "item": "dust:dust",
+      "data": 3
+    },
+    "G": {
+      "item": "dust:dust",
+      "data": 4
+    },
+    "O": {
+      "item": "dust:dust",
+      "data": 5
+    },
+    "W": {
+      "item": "dust:dust",
+      "data": 6
+    },
+    "L": {
+      "item": "dust:dust",
+      "data": 7
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    }
+  },
+    "result": {
+      "item": "dust:crystalfurnaceupgrade",
+      "count": 1
+    }
+}
