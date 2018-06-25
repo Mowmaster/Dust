@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumFacing;
@@ -201,18 +202,42 @@ public class PlaceableCrystals
     }
 
 
+    private boolean flight = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFlight(TickEvent.PlayerTickEvent event)
     {
+        /*
+        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(2));
         boolean flight = false;
-        if(event.player.inventory.armorInventory.get(1) !=null)
+        if(event.player.inventory.armorInventory.get(2) !=null && event.player.inventory.armorInventory.get(2).isItemEnchanted())
         {
-            int f = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(1));
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2))!=0 && event.player.experienceTotal>0)
             {
-                if(f !=1)
-                {
-                    flight=true;
-                }
+                flight=true;
+            }
+        }
+
+
+         */
+
+
+        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2));
+        if(event.player.inventory.armorInventory.get(2) !=null && event.player.inventory.armorInventory.get(2).isItemEnchanted())
+        {
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2))!=0 && event.player.experienceTotal>0)
+            {
+                flight = true;
+            }
+            else flight=false;
+        }
+        else flight=false;
+
+        int expLoss = (int)(4 * level);
+
+        if(!event.player.isPotionActive(PotionRegistry.POTION_FLIGHT) && !event.player.onGround && event.player.capabilities.isFlying)
+        {
+            if(!event.player.world.isRemote && (event.player.ticksExisted % expLoss == 0)) {
+                removeXp(event.player, 1);
             }
         }
 
@@ -235,31 +260,71 @@ public class PlaceableCrystals
 
     }
 
+    private boolean stepup = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onWalkingOrRunning(TickEvent.PlayerTickEvent event)
     {
-        boolean stepup = false;
-        if(event.player.inventory.armorInventory.get(2) !=null)
+        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
+        if(event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
         {
-            int f = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(2));
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1))!=0)
             {
-                if(f !=2)
-                {
-                    stepup=true;
-                }
+                stepup = true;
             }
+            else stepup=false;
         }
-        if(stepup || event.player.isCreative() || event.player.isSpectator())
+        else stepup=false;
+
+        Float stepheightvalue = (float)(0.42 * level) + (float)1.0048174;
+
+        if(stepup==true)
         {
-            event.player.capabilities.allowFlying = true;
-            event.player.stepHeight=1.25f;
+            event.player.stepHeight = stepheightvalue;
         }
         else
         {
-            stepup=false;
-            event.player.capabilities.isFlying = false;
-            event.player.capabilities.allowFlying = false;
-            event.player.stepHeight=0.6f;
+            if(event.player.stepHeight >= 1.3448174)
+            {
+                event.player.stepHeight=0.6f;
+            }
         }
+    }
+
+    //Use Aura once Aura is implimented, till then this will have to work.
+    //Code snip from betweenlands for learning from and modifying to work here
+    //seems like all values but be updated for it to display properly
+    public static int removeXp(EntityPlayer player, int amount) {
+        int startAmount = amount;
+        while(amount > 0) {
+            int barCap = player.xpBarCap();
+            int barXp = (int) (barCap * player.experience);
+            int removeXp = Math.min(barXp, amount);
+            int newBarXp = barXp - removeXp;
+            amount -= removeXp;//amount = amount-removeXp
+/*
+        System.out.println(event.player.xpBarCap());//7         9       11      11          xp to next level
+        System.out.println(event.player.experience);//0.14285   0.0     0.0     0.0909      1/expierence = xp to next level
+        System.out.println(event.player.experienceLevel);//0    1       2       2           #of levels
+        System.out.println(event.player.experienceTotal);//1    7       16      17          total xp
+ */
+            player.experienceTotal -= removeXp;
+            if(player.experienceTotal < 0) {
+                player.experienceTotal = 0;
+            }
+            if(newBarXp == 0 && amount > 0) {
+                player.experienceLevel--;
+                if(player.experienceLevel < 0) {
+                    player.experienceLevel = 0;
+                    player.experienceTotal = 0;
+                    player.experience = 0;
+                    break;
+                } else {
+                    player.experience = 1.0F;
+                }
+            } else {
+                player.experience = newBarXp / (float) barCap;
+            }
+        }
+        return startAmount - amount;
     }
 }
