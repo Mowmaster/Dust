@@ -1,7 +1,6 @@
 package com.mowmaster.dust.enchantments;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.enchantment.*;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +18,7 @@ public class EnchantmentFlight extends Enchantment
     @Override
     public int getMinEnchantability(int par1){
         return 25;
+
     }
 
     @Override

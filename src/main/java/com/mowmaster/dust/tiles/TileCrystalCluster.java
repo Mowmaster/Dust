@@ -215,7 +215,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.POISON ,100, amp, false, true);}//should be flamibility
             else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.GLOWING,100, amp, false, true);}
             else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.SLOWNESS,100, amp, false, true);}
-            else if((yellowCrystals==blueCrystals && blueCrystals==redCrystals)){crystalEffect = new PotionEffect(PotionRegistry.POTION_FLIGHT,100, amp, false, true);}//Gravity
+            else if((yellowCrystals==blueCrystals && blueCrystals==redCrystals)){crystalEffect = new PotionEffect(MobEffects.LEVITATION,100, amp, false, true);}//Gravity
 
             else if((blueCrystals==redCrystals && yellowCrystals==0)){crystalEffect = new PotionEffect(MobEffects.POISON,100, amp, false, true);}//purple
             else if((yellowCrystals==blueCrystals && redCrystals==0)){crystalEffect = new PotionEffect(MobEffects.WITHER,100, amp, false, true);}//green
@@ -232,7 +232,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             else if(redCrystals>blueCrystals && blueCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, amp, false, true);}//should be envigoration
             else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.FIRE_RESISTANCE ,100, amp, false, true);}
             else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.INVISIBILITY,100, amp, false, true);}
-            else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.SPEED,100, amp, false, true);}
+            else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(PotionRegistry.POTION_QUICKNESS,100, amp, false, true);}
             else if((yellowCrystals==blueCrystals && blueCrystals==redCrystals)){crystalEffect = new PotionEffect(PotionRegistry.POTION_FLIGHT,100, amp, false, true);}
 
             else if((blueCrystals==redCrystals && yellowCrystals==0)){crystalEffect = new PotionEffect(MobEffects.RESISTANCE,100, amp, false, true);}//purple

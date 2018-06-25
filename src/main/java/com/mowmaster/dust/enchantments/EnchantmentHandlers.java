@@ -1,11 +1,14 @@
 package com.mowmaster.dust.enchantments;
 
+import com.mowmaster.dust.effects.PotionRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentMending;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,6 +16,7 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -21,6 +25,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class EnchantmentHandlers
 {
@@ -98,6 +103,150 @@ public class EnchantmentHandlers
         }
 
 
+
+    }
+
+    private boolean flight = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onFlight(TickEvent.PlayerTickEvent event)
+    {
+        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2));
+        int expLoss = (int)(4 * level);
+        if(event.player.inventory.armorInventory.get(2) !=null && event.player.inventory.armorInventory.get(2).isItemEnchanted())
+        {
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2))!=0 && event.player.experienceTotal>0)
+            {
+                flight = true;
+
+                if(!event.player.world.isRemote && !event.player.isPotionActive(PotionRegistry.POTION_FLIGHT) && !event.player.onGround && event.player.capabilities.isFlying && (event.player.ticksExisted % expLoss == 0)) {
+                    removeXp(event.player, 1);
+                }
+            }
+            else flight=false;
+        }
+        else flight=false;
+
+
+        if(event.player.isPotionActive(PotionRegistry.POTION_FLIGHT))
+        {
+            flight=true;
+        }
+        if(flight || event.player.isCreative() || event.player.isSpectator())
+        {
+            event.player.capabilities.allowFlying = true;
+            event.player.fallDistance=0.0f;
+        }
+        else
+        {
+            flight=false;
+            event.player.capabilities.isFlying = false;
+            event.player.capabilities.allowFlying = false;
+        }
+
+
+    }
+
+    private boolean stepup = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onStepAssist(TickEvent.PlayerTickEvent event)
+    {
+        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
+        if(event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
+        {
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1))!=0)
+            {
+                stepup = true;
+            }
+            else stepup=false;
+        }
+        else stepup=false;
+
+        Float stepheightvalue = (float)(0.42 * level) + (float)1.0048174;
+
+        if(stepup==true && !event.player.isSneaking())
+        {
+            event.player.stepHeight = stepheightvalue;
+        }
+        else if(stepup==true && event.player.isSneaking())
+        {
+            event.player.stepHeight=0.6f;
+        }
+        else
+        {
+            if(event.player.stepHeight >= 1.3448174)
+            {
+                event.player.stepHeight=0.6f;
+            }
+        }
+    }
+
+    //Use Aura once Aura is implimented, till then this will have to work.
+    //Code snip from betweenlands for learning from and modifying to work here
+    //seems like all values but be updated for it to display properly
+    public static int removeXp(EntityPlayer player, int amount) {
+        int startAmount = amount;
+        while(amount > 0) {
+            int barCap = player.xpBarCap();
+            int barXp = (int) (barCap * player.experience);
+            int removeXp = Math.min(barXp, amount);
+            int newBarXp = barXp - removeXp;
+            amount -= removeXp;//amount = amount-removeXp
+/*
+        System.out.println(event.player.xpBarCap());//7         9       11      11          xp to next level
+        System.out.println(event.player.experience);//0.14285   0.0     0.0     0.0909      1/expierence = xp to next level
+        System.out.println(event.player.experienceLevel);//0    1       2       2           #of levels
+        System.out.println(event.player.experienceTotal);//1    7       16      17          total xp
+ */
+            player.experienceTotal -= removeXp;
+            if(player.experienceTotal < 0) {
+                player.experienceTotal = 0;
+            }
+            if(newBarXp == 0 && amount > 0) {
+                player.experienceLevel--;
+                if(player.experienceLevel < 0) {
+                    player.experienceLevel = 0;
+                    player.experienceTotal = 0;
+                    player.experience = 0;
+                    break;
+                } else {
+                    player.experience = 1.0F;
+                }
+            } else {
+                player.experience = newBarXp / (float) barCap;
+            }
+        }
+        return startAmount - amount;
+    }
+
+
+    private boolean runner = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onMovingFast(TickEvent.PlayerTickEvent event)
+    {
+        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0));//on boots
+        if(event.player.inventory.armorInventory.get(0) !=null && event.player.inventory.armorInventory.get(0).isItemEnchanted())
+        {
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0)
+            {
+                runner = true;
+            }
+            else runner=false;
+        }
+        else runner=false;
+
+        Float fastwalk = (float)(0.1 * level) + 0.1f;
+
+        if(event.player.isPotionActive(PotionRegistry.POTION_QUICKNESS))
+        {
+            runner=true;
+            int amp = event.player.getActivePotionEffect(PotionRegistry.POTION_QUICKNESS).getAmplifier() +1;
+            fastwalk = (float)(0.15 * amp)  + fastwalk;
+        }
+        else if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0){}
+        else{runner=false;}
+
+        if (runner == true) {event.player.capabilities.setPlayerWalkSpeed(fastwalk);}
+        else {event.player.capabilities.setPlayerWalkSpeed(0.1f);}
 
     }
 }

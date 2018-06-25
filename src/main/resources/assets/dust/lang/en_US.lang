@@ -5,14 +5,6 @@ death.attack.crystal=%1$s was Skewered by a bunch of Crystals
 itemGroup.dusttabs=Crystals, Dusts, & Items
 itemGroup.dustblockstabs=Crystal & Dust Blocks
 
-enchantment.enchantDigger=AOE Miner
-enchantment.enchantVamperic=Vamperic
-enchantment.enchantSteadfast=Steadfast
-enchantment.enchantLastResort=Last Resort
-enchantment.enchantStepAssist=Step Up
-enchantment.enchantQuickPace=Brisk Pace
-
-
 item.ancientcoina.name=Ancient Coin
 item.ancientcoinb.name=Ancient Coin
 item.ancientcoinc.name=Ancient Coin
@@ -424,8 +416,33 @@ item.crystalchestplate.name=Crystal Chestplate
 item.crystalleggings.name=Crystal Leggings
 item.crystalboots.name=Crystal Boots
 
-effect.flight=Flight
-potion.effect.flight=Potion of Flight
-splash_potion.effect.flight=Splash Potion of Flight
-lingering_potion.effect.flight=Lingering Potion of Flight
-tipped_arrow.effect.flight=Arrow of Flight
+enchantment.enchantDigger=AOE Miner
+enchantment.enchantVamperic=Vamperic
+enchantment.enchantSteadfast=Steadfast
+enchantment.enchantLastResort=Last Resort
+enchantment.enchantStepAssist=Step Up
+
+
+enchantment.enchantFlight=Flight
+effect.fly=Flight
+potion.effect.fly=Potion of Flight
+splash_potion.effect.fly=Splash Potion of Flight
+lingering_potion.effect.fly=Lingering Potion of Flight
+tipped_arrow.effect.fly=Arrow of Flight
+
+enchantment.enchantQuickPace=Quickness
+effect.quickness=Quickness
+potion.effect.quickness=Potion of Quickness
+splash_potion.effect.quickness=Splash Potion of Quickness
+lingering_potion.effect.quickness=Lingering Potion of Quickness
+tipped_arrow.effect.quickness=Arrow of Quickness
+
+potion.effect.long_quickness=Potion of Quickness
+splash_potion.effect.long_quickness=Splash Potion of Quickness
+lingering_potion.effect.long_quickness=Lingering Potion of Quickness
+tipped_arrow.effect.long_quickness=Arrow of Quickness
+
+potion.effect.strong_quickness=Potion of Quickness
+splash_potion.effect.strong_quickness=Splash Potion of Quickness
+lingering_potion.effect.strong_quickness=Lingering Potion of Quickness
+tipped_arrow.effect.strong_quickness=Arrow of Quickness
