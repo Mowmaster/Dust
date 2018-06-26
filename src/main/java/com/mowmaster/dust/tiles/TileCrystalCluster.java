@@ -206,7 +206,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         if(blackCrystals>whiteCrystals && blackCrystals-whiteCrystals>=1)
         {
             if(totalColors==redCrystals){crystalEffect = new PotionEffect(MobEffects.WEAKNESS ,100, amp, false, true);}
-            else if(totalColors==blueCrystals){crystalEffect = new PotionEffect(MobEffects.POISON ,100, amp, false, true);}//Drowning in water or raining out take damage
+            else if(totalColors==blueCrystals){crystalEffect = new PotionEffect(PotionRegistry.POTION_DROWNING ,100, amp, false, true);}
             else if(totalColors==yellowCrystals){crystalEffect = new PotionEffect(MobEffects.HUNGER ,100, amp, false, true);}
 
             else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, 250, false, true);}

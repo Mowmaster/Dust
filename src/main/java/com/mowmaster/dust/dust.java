@@ -8,6 +8,7 @@ import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
+import com.mowmaster.dust.recipes.BrewingRecipes;
 import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.recipes.OreDictDust;
 import com.mowmaster.dust.recipes.SmeltingRecipes;
@@ -60,6 +61,7 @@ public class dust {
         proxy.registerTile();
         FuelRegistry.init();
         SmeltingRecipes.init();
+        BrewingRecipes.registerPotionRecipes();
         BiomeRegistry.BiomeReg();
     }
 

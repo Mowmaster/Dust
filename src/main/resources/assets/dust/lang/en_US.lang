@@ -446,3 +446,9 @@ potion.effect.strong_quickness=Potion of Quickness
 splash_potion.effect.strong_quickness=Splash Potion of Quickness
 lingering_potion.effect.strong_quickness=Lingering Potion of Quickness
 tipped_arrow.effect.strong_quickness=Arrow of Quickness
+
+effect.drowning=Drowning
+potion.effect.drowning=Potion of Drowning
+splash_potion.effect.drowning=Splash Potion of Drowning
+lingering_potion.effect.drowning=Lingering Potion of Drowning
+tipped_arrow.effect.drowning=Arrow of Drowning

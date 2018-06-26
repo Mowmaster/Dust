@@ -1,25 +1,35 @@
-package com.mowmaster.dust.enchantments;
+package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentMending;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.datafix.fixes.PotionWater;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -27,7 +37,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-public class EnchantmentHandlers
+public class EnchantAndEffectHandlers
 {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -247,6 +257,35 @@ public class EnchantmentHandlers
 
         if (runner == true) {event.player.capabilities.setPlayerWalkSpeed(fastwalk);}
         else {event.player.capabilities.setPlayerWalkSpeed(0.1f);}
+
+    }
+
+
+    private boolean drowning = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onDrowning(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity =  event.getEntityLiving();
+
+        if(entity.isPotionActive(PotionRegistry.POTION_DROWNING))
+        {
+            drowning=true;
+        }
+        else{drowning=false;}
+
+        if (drowning == true && !entity.isPotionActive(MobEffects.WATER_BREATHING))
+        {
+            DamageSource damage = DamageSource.DROWN;
+            int amp = entity.getActivePotionEffect(PotionRegistry.POTION_DROWNING).getAmplifier() +1;
+            Float amount = (float) 1.0 * amp;
+            if(!entity.world.isRemote && entity.isWet() && (entity.ticksExisted % 20 == 0)) {
+                entity.attackEntityFrom(damage,amount);
+            }
+        }
+        else
+        {
+
+        }
 
     }
 }

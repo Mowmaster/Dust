@@ -1,8 +1,7 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.dust;
-import com.mowmaster.dust.enchantments.EnchantmentDigger;
-import com.mowmaster.dust.enchantments.EnchantmentHandlers;
+import com.mowmaster.dust.handlers.EnchantAndEffectHandlers;
 import com.mowmaster.dust.handlers.DebugAndLogging;
 import com.mowmaster.dust.handlers.GuiHandler;
 import com.mowmaster.dust.handlers.PlaceableCrystals;
@@ -32,7 +31,7 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(handled);
         FMLCommonHandler.instance().bus().register(handled);
 
-        EnchantmentHandlers enchants = new EnchantmentHandlers();
+        EnchantAndEffectHandlers enchants = new EnchantAndEffectHandlers();
         MinecraftForge.EVENT_BUS.register(enchants);
         FMLCommonHandler.instance().bus().register(enchants);
 
