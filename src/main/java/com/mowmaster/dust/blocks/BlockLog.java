@@ -269,7 +269,7 @@ public class BlockLog extends Block
                 for (int a = xmin; a <= xmax; a++)
                     for (int b = ymin; b <= ymax; b++)
                     {
-                        if(worldIn.getBlockState(pos.add(a,0,c))!= Blocks.AIR)
+                        if(worldIn.getBlockState(pos.add(a,0,c)).getBlock() instanceof BlockLeaf)
                         {
 
                             breakLeaves(worldIn,pos.add(a,b,c));
@@ -293,7 +293,7 @@ public class BlockLog extends Block
             for(int c=zmin;c<=zmax;c++) {
                 for (int a = xmin; a <= xmax; a++)
                 {
-                    if(worldIn.getBlockState(pos.add(a,0,c))!= Blocks.AIR)
+                    if(worldIn.getBlockState(pos.add(a,0,c)).getBlock() instanceof BlockLeaf)
                     {
                         breakLeaves(worldIn,pos.add(a,0,c));
                         worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.BLOCK_GRASS_BREAK, SoundCategory.BLOCKS, 0.5F, 1.0F);
