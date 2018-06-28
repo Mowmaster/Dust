@@ -19,6 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionAttackDamage;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.stats.StatBasic;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -36,6 +40,8 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import javax.xml.stream.events.Attribute;
 
 public class EnchantAndEffectHandlers
 {
@@ -281,6 +287,49 @@ public class EnchantAndEffectHandlers
             if(!entity.world.isRemote && entity.isWet() && (entity.ticksExisted % 20 == 0)) {
                 entity.attackEntityFrom(damage,amount);
             }
+        }
+        else
+        {
+
+        }
+
+    }
+
+    private boolean buffed = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onBuffed(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity =  event.getEntityLiving();
+
+        if(entity.isPotionActive(PotionRegistry.POTION_ENVIGORATION))
+        {
+            buffed=true;
+        }
+        else{buffed=false;}
+
+        if (buffed == true)
+        {
+
+            int amp = entity.getActivePotionEffect(PotionRegistry.POTION_ENVIGORATION).getAmplifier() +1;
+            Float amount = (float) 1.0 * amp;
+
+
+
+
+            if(!entity.world.isRemote && (entity.ticksExisted % 20 == 0)) {
+
+                if (entity.getHealth() < entity.getMaxHealth())
+                {
+                    entity.heal(1.0F + (float)(amp * 0.5));
+                }
+            }
+
+
+            //entity.addPotionEffect(new PotionEffect(MobEffects.STRENGTH));
+            //entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE));
+            //entity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION));
+            //entity.addPotionEffect(new PotionEffect(MobEffects.SPEED));
+            //entity.addPotionEffect(new PotionEffect(MobEffects.HEALTH_BOOST));
         }
         else
         {
