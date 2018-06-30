@@ -10,6 +10,9 @@ import net.minecraft.enchantment.EnchantmentMending;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -42,6 +45,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.xml.stream.events.Attribute;
+import java.util.HashMap;
 
 public class EnchantAndEffectHandlers
 {
@@ -310,8 +314,10 @@ public class EnchantAndEffectHandlers
         if (buffed == true)
         {
 
+
             int amp = entity.getActivePotionEffect(PotionRegistry.POTION_ENVIGORATION).getAmplifier() +1;
             Float amount = (float) 1.0 * amp;
+            applyStatModifiersBasedOnBuffs(entity);
 
 
 
@@ -336,5 +342,14 @@ public class EnchantAndEffectHandlers
 
         }
 
+    }
+
+    public void applyStatModifiersBasedOnBuffs(EntityLivingBase entity)
+    {
+        AttributeModifier modifier = new AttributeModifier("mod",1.0D,1);
+        //fury
+        HashMap<IAttribute, AttributeModifier> fury = new HashMap<IAttribute, AttributeModifier>();
+        fury.put(SharedMonsterAttributes.MOVEMENT_SPEED,modifier);
+        fury.put(SharedMonsterAttributes.ATTACK_DAMAGE, modifier);
     }
 }
