@@ -61,6 +61,7 @@ public class ItemCrystalArmor extends ItemArmor
         }
     }
 
+
     @Override
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         if(!itemStack.isEmpty())
@@ -95,4 +96,5 @@ public class ItemCrystalArmor extends ItemArmor
         }
         return null;
     }
+
 }

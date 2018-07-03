@@ -1,6 +1,7 @@
 package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -49,7 +50,6 @@ import java.util.HashMap;
 
 public class EnchantAndEffectHandlers
 {
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onBreakEvent(BlockEvent.BreakEvent event)
     {
@@ -244,9 +244,9 @@ public class EnchantAndEffectHandlers
     public void onMovingFast(TickEvent.PlayerTickEvent event)
     {
         int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0));//on boots
-        if(event.player.inventory.armorInventory.get(0) !=null && event.player.inventory.armorInventory.get(0).isItemEnchanted())
+        if(event.player.inventory.armorInventory.get(0) !=null && event.player.inventory.armorInventory.get(0).isItemEnchanted() || event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
         {
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0)
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(1))!=0)
             {
                 runner = true;
             }
@@ -262,7 +262,7 @@ public class EnchantAndEffectHandlers
             int amp = event.player.getActivePotionEffect(PotionRegistry.POTION_QUICKNESS).getAmplifier() +1;
             fastwalk = (float)(0.15 * amp)  + fastwalk;
         }
-        else if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0){}
+        else if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(1))!=0){}
         else{runner=false;}
 
         if (runner == true) {event.player.capabilities.setPlayerWalkSpeed(fastwalk);}
