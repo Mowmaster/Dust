@@ -34,11 +34,19 @@ public class ModelCrystalHelmet extends ModelBiped
     public ModelRenderer CrystalSide1_6;
     public ModelRenderer CrystalSide1_7;
 
+    public ModelRenderer crystal;
+    public ModelRenderer crystal2;
+
     public ModelRenderer e0;
     public ModelRenderer e1;
     public ModelRenderer e2;
     public ModelRenderer e3;
     public ModelRenderer e4;
+    public ModelRenderer e5;
+    public ModelRenderer e6;
+    public ModelRenderer e7;
+    public ModelRenderer e8;
+    public ModelRenderer e9;
 
 
     public ModelCrystalHelmet(float scale) {
@@ -61,6 +69,30 @@ public class ModelCrystalHelmet extends ModelBiped
         this.e4 = new ModelRenderer(this, 12, 32);
         this.e4.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.e4.addBox(-1.5F, -18F, -0.5F, 1, 6, 1, 0.0F);//had to edit the model texture UV and the height of the modeled item to get it to work
+
+        this.e5 = new ModelRenderer(this, 8, 32);
+        this.e5.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.e5.addBox(-0.5F, -19F, -0.5F, 1, 8, 1, 0.0F);
+        this.e6 = new ModelRenderer(this, 12, 32);
+        this.e6.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.e6.addBox(-0.5F, -18F, -1.5F, 1, 6, 1, 0.0F);
+        this.e7 = new ModelRenderer(this, 12, 32);
+        this.e7.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.e7.addBox(-0.5F, -18F, 0.5F, 1, 6, 1, 0.0F);
+        this.e8 = new ModelRenderer(this, 12, 32);
+        this.e8.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.e8.addBox(0.5F, -18F, -0.5F, 1, 6, 1, 0.0F);
+        this.e9 = new ModelRenderer(this, 12, 32);
+        this.e9.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.e9.addBox(-1.5F, -18F, -0.5F, 1, 6, 1, 0.0F);
+
+        this.crystal = new ModelRenderer(this, 0, 32);
+        this.crystal.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.crystal.addBox(0.0F, 0.0F, 0.0F, 1, 8, 1, 0.0F);
+
+        this.crystal2 = new ModelRenderer(this, 0, 32);
+        this.crystal2.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.crystal2.addBox(1.0F, 0.0F, 1.0F, 1, 8, 1, 0.0F);
 
 
         /*
@@ -127,11 +159,20 @@ public class ModelCrystalHelmet extends ModelBiped
         bipedHead.addChild(CrystalLeft);
         bipedHead.addChild(CrystalRight);
          */
-        bipedHead.addChild(e0);
-        bipedHead.addChild(e1);
-        bipedHead.addChild(e2);
-        bipedHead.addChild(e3);
-        bipedHead.addChild(e4);
+        this.crystal.addChild(e0);
+        this.crystal.addChild(e1);
+        this.crystal.addChild(e2);
+        this.crystal.addChild(e3);
+        this.crystal.addChild(e4);
+
+        this.crystal2.addChild(e5);
+        this.crystal2.addChild(e6);
+        this.crystal2.addChild(e7);
+        this.crystal2.addChild(e8);
+        this.crystal2.addChild(e9);
+
+        bipedHead.addChild(crystal);
+        bipedHead.addChild(crystal2);
     }
 
     @Override
