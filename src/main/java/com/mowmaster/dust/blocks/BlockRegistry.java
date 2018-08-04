@@ -311,6 +311,8 @@ public class BlockRegistry
     public static Block pedestalwhite;
     public static Block pedestalblack;
 
+    public static Block lootblock;
+
 
     public static void init() {
         redOre = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
@@ -593,6 +595,8 @@ public class BlockRegistry
         pedestalgreen = new BlockPedestal("pedestal_green","pedestal_green");
         pedestalwhite = new BlockPedestal("pedestal_white","pedestal_white");
         pedestalblack = new BlockPedestal("pedestal_black","pedestal_black");
+
+        lootblock = new BlockLootBlock("lootblock","lootblock");
     }
 
     public static void register()
@@ -877,7 +881,7 @@ public class BlockRegistry
         registerBlock(pedestalwhite);
         registerBlock(pedestalblack);
 
-
+        registerBlock(lootblock);
     }
 
     public static void registerRenders()
@@ -1164,6 +1168,8 @@ public class BlockRegistry
         registerRender(pedestalgreen);
         registerRender(pedestalwhite);
         registerRender(pedestalblack);
+
+        registerRender(lootblock);
     }
 
     public static void registerBlock(Block block)

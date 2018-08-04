@@ -11,5 +11,6 @@ public class TileRegistry
         GameRegistry.registerTileEntity(TilePedestal.class, Reference.MODID + "tilepedestal");
         GameRegistry.registerTileEntity(TileCrystalCrusher.class, Reference.MODID + "tilecrystalcrusher");
         GameRegistry.registerTileEntity(TileCrystalFurnace.class, Reference.MODID + "tilecrystalfurnace");
+        GameRegistry.registerTileEntity(TileLootBlock.class, Reference.MODID + "tilelootblock");
     }
 }

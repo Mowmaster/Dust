@@ -442,8 +442,8 @@ public class ModelCrystalHelmet extends ModelBiped
         bipedLeftLeg.addChild(CoreLeftLeg);
         bipedRightLeg.addChild(CoreRightLeg);
 
-        bipedLeftLeg.addChild(CoreLeftBoot);
-        bipedRightLeg.addChild(CoreRightBoot);
+        //bipedLeftLeg.addChild(CoreLeftBoot);
+        //bipedRightLeg.addChild(CoreRightBoot);
     }
 
     @Override
