@@ -1,10 +1,7 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.BlockCrystal;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -13,11 +10,10 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static net.minecraft.block.BlockStoneBrick.VARIANT;
-
 
 public class TileLootBlock extends TileEntity implements ITickable
 {
+    boolean inDev = false;
     int chancetospawnloot = new Random().nextInt(99);
 
 
@@ -55,6 +51,22 @@ public class TileLootBlock extends TileEntity implements ITickable
         LootBlock.add(BlockRegistry.whiteCrystalTwo.getDefaultState());
         LootBlock.add(BlockRegistry.crate1.getDefaultState());
         LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockRegistry.redCrystalTwo.getDefaultState());
+        LootBlock.add(BlockRegistry.blueCrystalTwo.getDefaultState());
+        LootBlock.add(BlockRegistry.yellowCrystalTwo.getDefaultState());
+        LootBlock.add(BlockRegistry.purpleCrystalTwo.getDefaultState());
+        LootBlock.add(BlockRegistry.greenCrystalTwo.getDefaultState());
+        LootBlock.add(BlockRegistry.orangeCrystalTwo.getDefaultState());
+        LootBlock.add(BlockRegistry.crate1.getDefaultState());
+        LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockRegistry.redCrystalOne.getDefaultState());
+        LootBlock.add(BlockRegistry.blueCrystalOne.getDefaultState());
+        LootBlock.add(BlockRegistry.yellowCrystalOne.getDefaultState());
+        LootBlock.add(BlockRegistry.purpleCrystalOne.getDefaultState());
+        LootBlock.add(BlockRegistry.greenCrystalOne.getDefaultState());
+        LootBlock.add(BlockRegistry.orangeCrystalOne.getDefaultState());
+        LootBlock.add(BlockRegistry.crate1.getDefaultState());
+        LootBlock.add(BlockRegistry.pot1.getDefaultState());
 
 
         Random random = new Random();
@@ -65,11 +77,14 @@ public class TileLootBlock extends TileEntity implements ITickable
 
         if(!world.isRemote)
         {
-            if(chancetospawnloot<=10)
+            if(inDev==false)
             {
-                this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                if(chancetospawnloot<=10)
+                {
+                    this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                }
+                else this.world.setBlockToAir(pos);
             }
-            else this.world.setBlockToAir(pos);
         }
     }
 }

@@ -56,6 +56,8 @@ public class OreGeneration implements IWorldGenerator
     private LargeHouseFireplace largeHouseFireplace;
     private MediumCrusherLab mediumCrusherLab;
 
+    private StructureGenerator tester;
+
 
 
     public OreGeneration()
@@ -88,6 +90,11 @@ public class OreGeneration implements IWorldGenerator
         mediumObservatory = new MediumObservatory();
         largeHouseFireplace = new LargeHouseFireplace();
         mediumCrusherLab = new MediumCrusherLab();
+
+
+        tester = new StructureGenerator("furnacehouse");
+
+
     }
 
 
@@ -447,6 +454,9 @@ public class OreGeneration implements IWorldGenerator
                 this.runAllBiomeStructures(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
                 this.runAllBiomeStructures(smallstonewell,world,random,chunkX,chunkZ,1,0,20);
                 this.runAllBiomeStructures(smallpiller,world,random,chunkX,chunkZ,1,0,20);
+
+
+                this.runAllBiomeStructures(tester,world,random,chunkX,chunkZ,1,0,20);
 
 
 
