@@ -311,7 +311,19 @@ public class BlockRegistry
     public static Block pedestalwhite;
     public static Block pedestalblack;
 
-    public static Block lootblock;
+
+    public static Block lootblockaircommon;
+    public static Block lootblockairuncommon;
+    public static Block lootblockairrare;
+    public static Block lootblockairlegendary;
+    public static Block lootblockairexotic;
+
+
+    public static Block lootblockcommon;
+    public static Block lootblockuncommon;
+    public static Block lootblockrare;
+    public static Block lootblocklegendary;
+    public static Block lootblockexotic;
 
 
     public static void init() {
@@ -596,7 +608,17 @@ public class BlockRegistry
         pedestalwhite = new BlockPedestal("pedestal_white","pedestal_white");
         pedestalblack = new BlockPedestal("pedestal_black","pedestal_black");
 
-        lootblock = new BlockLootBlock("lootblock","lootblock");
+        lootblockaircommon = new BlockLootBlock("lootblockaircommon","lootblockaircommon");
+        lootblockairuncommon = new BlockLootBlock("lootblockairuncommon","lootblockairuncommon");
+        lootblockairrare = new BlockLootBlock("lootblockairrare","lootblockairrare");
+        lootblockairlegendary = new BlockLootBlock("lootblockairlegendary","lootblockairlegendary");
+        lootblockairexotic = new BlockLootBlock("lootblockairexotic","lootblockairexotic");
+
+        lootblockcommon = new BlockLootBlock("lootblockcommon","lootblockcommon");
+        lootblockuncommon = new BlockLootBlock("lootblockuncommon","lootblockuncommon");
+        lootblockrare = new BlockLootBlock("lootblockrare","lootblockrare");
+        lootblocklegendary = new BlockLootBlock("lootblocklegendary","lootblocklegendary");
+        lootblockexotic = new BlockLootBlock("lootblockexotic","lootblockexotic");
     }
 
     public static void register()
@@ -881,7 +903,17 @@ public class BlockRegistry
         registerBlock(pedestalwhite);
         registerBlock(pedestalblack);
 
-        registerBlock(lootblock);
+        registerBlock(lootblockaircommon);
+        registerBlock(lootblockairuncommon);
+        registerBlock(lootblockairrare);
+        registerBlock(lootblockairlegendary);
+        registerBlock(lootblockairexotic);
+
+        registerBlock(lootblockcommon);
+        registerBlock(lootblockuncommon);
+        registerBlock(lootblockrare);
+        registerBlock(lootblocklegendary);
+        registerBlock(lootblockexotic);
     }
 
     public static void registerRenders()
@@ -1169,7 +1201,17 @@ public class BlockRegistry
         registerRender(pedestalwhite);
         registerRender(pedestalblack);
 
-        registerRender(lootblock);
+        registerRender(lootblockaircommon);
+        registerRender(lootblockairuncommon);
+        registerRender(lootblockairrare);
+        registerRender(lootblockairlegendary);
+        registerRender(lootblockairexotic);
+
+        registerRender(lootblockcommon);
+        registerRender(lootblockuncommon);
+        registerRender(lootblockrare);
+        registerRender(lootblocklegendary);
+        registerRender(lootblockexotic);
     }
 
     public static void registerBlock(Block block)

@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class TileLootBlock extends TileEntity implements ITickable
 {
-    boolean inDev = false;
+    boolean inDev = true;
     int chancetospawnloot = new Random().nextInt(99);
 
 
@@ -79,11 +79,70 @@ public class TileLootBlock extends TileEntity implements ITickable
         {
             if(inDev==false)
             {
-                if(chancetospawnloot<=10)
+                if(this.getBlockType().equals(BlockRegistry.lootblockaircommon))
+                {
+                    if(chancetospawnloot<=10)
+                    {
+                        this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                    }
+                    else this.world.setBlockToAir(pos);
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblockairuncommon))
+                {
+                    if(chancetospawnloot<=10)
+                    {
+                        this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                    }
+                    else this.world.setBlockToAir(pos);
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblockairrare))
+                {
+                    if(chancetospawnloot<=10)
+                    {
+                        this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                    }
+                    else this.world.setBlockToAir(pos);
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblockairlegendary))
+                {
+                    if(chancetospawnloot<=10)
+                    {
+                        this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                    }
+                    else this.world.setBlockToAir(pos);
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblockairexotic))
+                {
+                    if(chancetospawnloot<=10)
+                    {
+                        this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                    }
+                    else this.world.setBlockToAir(pos);
+                }
+
+
+
+                if(this.getBlockType().equals(BlockRegistry.lootblockcommon))
                 {
                     this.world.setBlockState(pos,LootBlock.get(lootchoice));
                 }
-                else this.world.setBlockToAir(pos);
+                if(this.getBlockType().equals(BlockRegistry.lootblockuncommon))
+                {
+                    this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblockrare))
+                {
+                    this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblocklegendary))
+                {
+                    this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                }
+                if(this.getBlockType().equals(BlockRegistry.lootblockexotic))
+                {
+                    this.world.setBlockState(pos,LootBlock.get(lootchoice));
+                }
+
             }
         }
     }
