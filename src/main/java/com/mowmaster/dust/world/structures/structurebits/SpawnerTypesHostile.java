@@ -9,9 +9,7 @@ import net.minecraft.util.WeightedRandom;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by KingMowmaster on 6/30/2017.
- */
+
 public class SpawnerTypesHostile
 {
     private static ArrayList<SpawnerTypesHostile.DungeonMob> dungeonMobs = new ArrayList<SpawnerTypesHostile.DungeonMob>();

@@ -317,13 +317,13 @@ public class BlockRegistry
     public static Block lootblockairrare;
     public static Block lootblockairlegendary;
     public static Block lootblockairexotic;
-
-
     public static Block lootblockcommon;
     public static Block lootblockuncommon;
     public static Block lootblockrare;
     public static Block lootblocklegendary;
     public static Block lootblockexotic;
+    public static Block lootblockpassivespawner;
+    public static Block lootblockhostilespawner;
 
 
     public static void init() {
@@ -619,6 +619,8 @@ public class BlockRegistry
         lootblockrare = new BlockLootBlock("lootblockrare","lootblockrare");
         lootblocklegendary = new BlockLootBlock("lootblocklegendary","lootblocklegendary");
         lootblockexotic = new BlockLootBlock("lootblockexotic","lootblockexotic");
+        lootblockpassivespawner = new BlockLootBlock("lootblockpassivespawner","lootblockpassivespawner");
+        lootblockhostilespawner = new BlockLootBlock("lootblockhostilespawner","lootblockhostilespawner");
     }
 
     public static void register()
@@ -908,12 +910,13 @@ public class BlockRegistry
         registerBlock(lootblockairrare);
         registerBlock(lootblockairlegendary);
         registerBlock(lootblockairexotic);
-
         registerBlock(lootblockcommon);
         registerBlock(lootblockuncommon);
         registerBlock(lootblockrare);
         registerBlock(lootblocklegendary);
         registerBlock(lootblockexotic);
+        registerBlock(lootblockpassivespawner);
+        registerBlock(lootblockhostilespawner);
     }
 
     public static void registerRenders()
@@ -1206,12 +1209,13 @@ public class BlockRegistry
         registerRender(lootblockairrare);
         registerRender(lootblockairlegendary);
         registerRender(lootblockairexotic);
-
         registerRender(lootblockcommon);
         registerRender(lootblockuncommon);
         registerRender(lootblockrare);
         registerRender(lootblocklegendary);
         registerRender(lootblockexotic);
+        registerRender(lootblockpassivespawner);
+        registerRender(lootblockhostilespawner);
     }
 
     public static void registerBlock(Block block)
