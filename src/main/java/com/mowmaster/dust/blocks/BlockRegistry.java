@@ -324,6 +324,8 @@ public class BlockRegistry
     public static Block lootblockexotic;
     public static Block lootblockpassivespawner;
     public static Block lootblockhostilespawner;
+    public static Block lootblockpillar;
+    public static Block lootblockcrystalcluster;
 
 
     public static void init() {
@@ -621,6 +623,8 @@ public class BlockRegistry
         lootblockexotic = new BlockLootBlock("lootblockexotic","lootblockexotic");
         lootblockpassivespawner = new BlockLootBlock("lootblockpassivespawner","lootblockpassivespawner");
         lootblockhostilespawner = new BlockLootBlock("lootblockhostilespawner","lootblockhostilespawner");
+        lootblockpillar = new BlockLootBlock("lootblockpillar","lootblockpillar");
+        lootblockcrystalcluster = new BlockLootBlock("lootblockcrystalcluster","lootblockcrystalcluster");
     }
 
     public static void register()
@@ -917,6 +921,8 @@ public class BlockRegistry
         registerBlock(lootblockexotic);
         registerBlock(lootblockpassivespawner);
         registerBlock(lootblockhostilespawner);
+        registerBlock(lootblockpillar);
+        registerBlock(lootblockcrystalcluster);
     }
 
     public static void registerRenders()
@@ -1216,6 +1222,8 @@ public class BlockRegistry
         registerRender(lootblockexotic);
         registerRender(lootblockpassivespawner);
         registerRender(lootblockhostilespawner);
+        registerRender(lootblockpillar);
+        registerRender(lootblockcrystalcluster);
     }
 
     public static void registerBlock(Block block)

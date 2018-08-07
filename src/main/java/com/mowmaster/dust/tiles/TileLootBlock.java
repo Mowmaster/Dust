@@ -3,7 +3,6 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesPassive;
-import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -14,8 +13,6 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import static net.minecraft.block.BlockStoneBrick.VARIANT;
 
 
 public class TileLootBlock extends TileEntity implements ITickable
@@ -182,6 +179,55 @@ public class TileLootBlock extends TileEntity implements ITickable
         return LootBlock.get(lootchoice);
     }
 
+    private IBlockState pillarLoot()
+    {
+        ArrayList<IBlockState> LootBlock = new ArrayList<>();
+
+        LootBlock.add(BlockRegistry.lootblockhostilespawner.getDefaultState());
+        LootBlock.add(BlockRegistry.lootblockpassivespawner.getDefaultState());
+        LootBlock.add(Blocks.DIAMOND_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.EMERALD_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.GLOWSTONE.getDefaultState());
+        LootBlock.add(Blocks.GOLD_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.IRON_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.REDSTONE_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.COAL_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.LAPIS_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.DIAMOND_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.EMERALD_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.GLOWSTONE.getDefaultState());
+        LootBlock.add(Blocks.GOLD_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.IRON_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.REDSTONE_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.COAL_BLOCK.getDefaultState());
+        LootBlock.add(Blocks.LAPIS_BLOCK.getDefaultState());
+
+
+        Random random = new Random();
+        int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
+
+        return LootBlock.get(lootchoice);
+    }
+
+    private IBlockState crystalLoot()
+    {
+        ArrayList<IBlockState> LootBlock = new ArrayList<>();
+
+        LootBlock.add(BlockRegistry.redCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.blueCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.yellowCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.purpleCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.orangeCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.whiteCrystalFive.getDefaultState());
+        LootBlock.add(BlockRegistry.blackCrystalFive.getDefaultState());
+
+        Random random = new Random();
+        int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
+
+        return LootBlock.get(lootchoice);
+    }
+
     public static void spawnSpawnerHostile(World worldIn, BlockPos pos, IBlockState state)
     {
         Random random = new Random();
@@ -298,6 +344,17 @@ public class TileLootBlock extends TileEntity implements ITickable
                 {
                     spawnSpawnerPassive(this.world,pos, Blocks.MOB_SPAWNER.getDefaultState());
                     this.world.setBlockState(pos,Blocks.MOB_SPAWNER.getDefaultState());
+                }
+
+
+                if(this.getBlockType().equals(BlockRegistry.lootblockpillar))
+                {
+                    this.world.setBlockState(pos,pillarLoot());
+                }
+
+                if(this.getBlockType().equals(BlockRegistry.lootblockcrystalcluster))
+                {
+                    this.world.setBlockState(pos,crystalLoot());
                 }
 
             }
