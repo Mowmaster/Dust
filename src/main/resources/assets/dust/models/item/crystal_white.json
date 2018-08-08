@@ -1,7 +1,7 @@
 {
     "parent": "dust:item/item_crystal",
     "textures": {
-        "core": "dust:items/crystalcore_white",
-        "side": "dust:items/crystal_white"
+        "core": "dust:items/models/crystals/crystalcore_white",
+        "side": "dust:items/models/crystals/crystal_white"
     }
 }

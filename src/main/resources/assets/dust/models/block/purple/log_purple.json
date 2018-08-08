@@ -2,7 +2,7 @@
     "textures": {
         "side": "dust:blocks/logs/purple_side",
         "top": "dust:blocks/logs/purple_top",
-        "particle": "dust:blocks/crystalcore_purple"
+        "particle": "dust:items/models/crystals/crystalcore_purple"
     },
     "elements": [
         {

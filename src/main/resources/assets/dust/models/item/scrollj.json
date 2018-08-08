@@ -1,7 +1,7 @@
 {
     "parent": "dust:item/ancientscroll",
     "textures": {
-        "letter": "dust:items/text/scrollj",
-        "blank": "dust:items/scrollblank"
+        "letter": "dust:items/models/scrolls/scrollj",
+        "blank": "dust:items/models/scrolls/scroll"
     }
 }

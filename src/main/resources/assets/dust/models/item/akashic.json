@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "dust:items/akashic",
-		"1": "dust:items/akashic_top",
-		"particle": "dust:items/akashic"
+		"0": "dust:items/models/akashic/akashic",
+		"1": "dust:items/models/akashic/akashic_top",
+		"particle": "dust:items/models/akashic/akashic"
 	},
 	"elements": [
 		{

@@ -1,6 +1,6 @@
 {
     "parent": "dust:item/item_bit",
     "textures": {
-        "core": "dust:items/crystalcore_red"
+        "core": "dust:items/models/crystals/crystalcore_red"
     }
 }

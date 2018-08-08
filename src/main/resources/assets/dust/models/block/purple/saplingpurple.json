@@ -1,7 +1,7 @@
 {
   "parent": "dust:block/block_sapling",
   "textures": {
-    "break": "dust:items/crystalcore_purple",
+    "break": "dust:items/models/crystals/crystalcore_purple",
     "logside": "dust:blocks/logside_purple",
     "logtop": "dust:blocks/logtop_purple",
     "leaves": "dust:blocks/leaves/leaves_purple"

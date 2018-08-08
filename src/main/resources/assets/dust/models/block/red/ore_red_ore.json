@@ -1,7 +1,7 @@
 {
     "parent": "dust:block/ore_ore",
     "textures": {
-        "break": "dust:items/crystalcore_red",
-        "core": "dust:items/crystalcore_red"
+        "break": "dust:items/models/crystals/crystalcore_red",
+        "core": "dust:items/models/crystals/crystalcore_red"
     }
 }

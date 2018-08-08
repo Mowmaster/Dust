@@ -2,7 +2,7 @@
     "textures": {
         "side": "dust:blocks/logs/black_side",
         "top": "dust:blocks/logs/black_top",
-        "particle": "dust:blocks/crystalcore_black"
+        "particle": "dust:items/models/crystals/crystalcore_black"
 },
 "elements": [ 
 {

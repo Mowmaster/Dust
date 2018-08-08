@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "dust:items/charcoal_blue"
+        "layer0": "dust:items/charcoal/charcoal_blue"
     }
 }

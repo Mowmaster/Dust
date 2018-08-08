@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/ancient/blueplanks"
+    "all": "dust:blocks/logs/blue_planks"
   }
 }
