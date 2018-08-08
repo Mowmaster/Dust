@@ -2,8 +2,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "parent": "block/cube_all",
     "textures": {
-        "particle": "dust:blocks/ancient/purplestone",
-        "0": "dust:blocks/ancient/purplestone"
+        "particle": "dust:blocks/stone/stone/purplestone",
+        "0": "dust:blocks/stone/stone/purplestone"
     },
     "elements": [
         {

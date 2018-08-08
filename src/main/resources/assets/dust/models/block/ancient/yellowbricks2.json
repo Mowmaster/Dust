@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/ancient/yellowbricks2"
+    "all": "dust:blocks/stone/brick/yellowbricks2"
   }
 }

@@ -1,6 +1,6 @@
 {"parent": "block/cube_all",
     "parent": "dust:block/leaves",
     "textures": {
-        "all": "dust:blocks/leaves/leaves_orange"
+        "all": "dust:blocks/wood/treeparts/orange_leaves"
     }
 }

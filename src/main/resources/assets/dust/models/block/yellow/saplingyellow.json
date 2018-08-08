@@ -2,8 +2,8 @@
   "parent": "dust:block/block_sapling",
   "textures": {
     "break": "dust:items/models/crystals/crystalcore_yellow",
-    "logside": "dust:blocks/logside_yellow",
-    "logtop": "dust:blocks/logtop_yellow",
-    "leaves": "dust:blocks/leaves/leaves_yellow"
+    "logside": "dust:blocks/wood/treeparts/yellow_log_side",
+    "logtop": "dust:blocks/wood/treeparts/yellow_log_top",
+    "leaves": "dust:blocks/wood/treeparts/yellow_leaves"
   }
 }

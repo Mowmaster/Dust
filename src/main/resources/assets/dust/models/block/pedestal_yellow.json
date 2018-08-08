@@ -2,7 +2,7 @@
     "parent": "dust:block/pedestal",
     "textures": {
         "glow":"dust:blocks/ancient/ancientglowstone",
-        "type": "dust:blocks/ancient/yellowstone",
-        "typepart":"dust:blocks/ancient/yellowstone"
+        "type": "dust:blocks/stone/stone/yellowstone",
+        "typepart":"dust:blocks/stone/stone/yellowstone"
     }
 }

@@ -1,7 +1,7 @@
 {"parent": "block/cube_all",
     "textures": {
-        "side": "dust:blocks/logs/green_side",
-        "top": "dust:blocks/logs/green_top",
+        "side": "dust:blocks/wood/treeparts/green_log_side",
+        "top": "dust:blocks/wood/treeparts/green_log_top",
         "particle": "dust:items/models/crystals/crystalcore_green"
     },
     "elements": [

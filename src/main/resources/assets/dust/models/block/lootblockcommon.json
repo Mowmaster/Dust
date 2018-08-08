@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/lootblockcommon"
+    "all": "dust:blocks/devblocks/lootblockcommon"
   }
 }

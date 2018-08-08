@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/orangebricks2",
-      "top": "dust:blocks/ancient/orangebricks2",
-      "side": "dust:blocks/ancient/orangebricks2",
-      "particle": "dust:blocks/ancient/orangebricks2"
+      "bottom": "dust:blocks/stone/brick/orangebricks2",
+      "top": "dust:blocks/stone/brick/orangebricks2",
+      "side": "dust:blocks/stone/brick/orangebricks2",
+      "particle": "dust:blocks/stone/brick/orangebricks2"
     }
   },
 

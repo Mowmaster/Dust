@@ -2,7 +2,7 @@
     "parent": "dust:block/pedestal",
     "textures": {
         "glow":"dust:blocks/ancient/ancientglowstone",
-        "type": "dust:blocks/ancient/orangestone",
-        "typepart":"dust:blocks/ancient/orangestone"
+        "type": "dust:blocks/stone/stone/orangestone",
+        "typepart":"dust:blocks/stone/stone/orangestone"
     }
 }

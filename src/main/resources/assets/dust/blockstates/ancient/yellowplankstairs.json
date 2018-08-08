@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/yellowplanks",
-      "top": "dust:blocks/ancient/yellowplanks",
-      "side": "dust:blocks/ancient/yellowplanks",
-      "particle": "dust:blocks/ancient/yellowplanks"
+      "bottom": "dust:blocks/wood/planks/yellow_planks",
+      "top": "dust:blocks/wood/planks/yellow_planks",
+      "side": "dust:blocks/wood/planks/yellow_planks",
+      "particle": "dust:blocks/wood/planks/yellow_planks"
     }
   },
 

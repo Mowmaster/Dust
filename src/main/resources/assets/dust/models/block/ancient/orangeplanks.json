@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/ancient/orangeplanks"
+    "all": "dust:blocks/wood/planks/orange_planks"
   }
 }

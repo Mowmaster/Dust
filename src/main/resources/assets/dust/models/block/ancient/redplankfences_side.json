@@ -1,6 +1,6 @@
 {
   "parent": "dust:block/fence_side",
   "textures": {
-    "slats": "dust:blocks/logs/red_planks"
+    "slats": "dust:blocks/wood/planks/red_planks"
   }
 }

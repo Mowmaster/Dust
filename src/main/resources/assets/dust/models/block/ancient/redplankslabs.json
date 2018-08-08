@@ -2,8 +2,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "parent": "block/cube",
     "textures": {
-        "particle": "dust:blocks/logs/red_planks",
-        "0": "dust:blocks/logs/red_planks"
+        "particle": "dust:blocks/wood/planks/red_planks",
+        "0": "dust:blocks/wood/planks/red_planks"
     },
     "elements": [
         {

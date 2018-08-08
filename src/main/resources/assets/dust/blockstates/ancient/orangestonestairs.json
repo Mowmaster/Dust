@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/orangestone",
-      "top": "dust:blocks/ancient/orangestone",
-      "side": "dust:blocks/ancient/orangestone",
-      "particle": "dust:blocks/ancient/orangestone"
+      "bottom": "dust:blocks/stone/stone/orangestone",
+      "top": "dust:blocks/stone/stone/orangestone",
+      "side": "dust:blocks/stone/stone/orangestone",
+      "particle": "dust:blocks/stone/stone/orangestone"
     }
   },
 

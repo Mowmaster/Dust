@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/blackstone",
-      "top": "dust:blocks/ancient/blackstone",
-      "side": "dust:blocks/ancient/blackstone",
-      "particle": "dust:blocks/ancient/blackstone"
+      "bottom": "dust:blocks/stone/stone/blackstone",
+      "top": "dust:blocks/stone/stone/blackstone",
+      "side": "dust:blocks/stone/stone/blackstone",
+      "particle": "dust:blocks/stone/stone/blackstone"
     }
   },
 

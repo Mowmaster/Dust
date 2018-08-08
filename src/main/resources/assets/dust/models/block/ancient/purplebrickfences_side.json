@@ -1,6 +1,6 @@
 {
   "parent": "dust:block/fence_side",
   "textures": {
-    "slats": "dust:blocks/ancient/purplebricks"
+    "slats": "dust:blocks/stone/bricks/purplebricks"
   }
 }

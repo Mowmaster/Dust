@@ -1,9 +1,9 @@
 {
 	"parent": "block/cube",
 	"textures": {
-		"0": "dust:blocks/ancient/blackstone",
+		"0": "dust:blocks/stone/stone/blackstone",
 		"1": "dust:blocks/ancient/ancientstone3",
-		"particle": "blocks/ancient/blackstone"
+		"particle": "blocks/stone/stone/blackstone"
 	},
 	"elements": [
 		{

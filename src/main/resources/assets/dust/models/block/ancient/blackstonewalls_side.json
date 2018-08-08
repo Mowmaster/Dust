@@ -1,6 +1,6 @@
 {
   "parent": "block/wall_side",
   "textures": {
-    "wall": "dust:blocks/ancient/blackstone"
+    "wall": "dust:blocks/stone/stone/blackstone"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "dust:block/fence_post",
   "textures": {
-    "texture": "dust:blocks/ancient/redbricks2"
+    "texture": "dust:blocks/stone/brick/redbricks2"
   }
 }

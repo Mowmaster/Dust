@@ -1,6 +1,6 @@
 {
   "parent": "block/wall_post",
   "textures": {
-    "wall": "dust:blocks/ancient/greenbricks"
+    "wall": "dust:blocks/stone/bricks/greenbricks"
   }
 }

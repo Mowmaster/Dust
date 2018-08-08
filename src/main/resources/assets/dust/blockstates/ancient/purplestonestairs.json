@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/purplestone",
-      "top": "dust:blocks/ancient/purplestone",
-      "side": "dust:blocks/ancient/purplestone",
-      "particle": "dust:blocks/ancient/purplestone"
+      "bottom": "dust:blocks/stone/stone/purplestone",
+      "top": "dust:blocks/stone/stone/purplestone",
+      "side": "dust:blocks/stone/stone/purplestone",
+      "particle": "dust:blocks/stone/stone/purplestone"
     }
   },
 

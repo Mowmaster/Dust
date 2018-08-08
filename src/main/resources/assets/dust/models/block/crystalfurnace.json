@@ -2,12 +2,12 @@
   "parent": "block/orientable",
   "textures":
   {
-    "particle": "dust:blocks/crystalfurnace_side",
-    "up": "dust:blocks/crystalfurnace_top",
-    "down": "dust:blocks/crystalfurnace_bottom",
-    "north":"dust:blocks/crystalfurnace_front",
-    "east":"dust:blocks/crystalfurnace_side",
-    "south":"dust:blocks/crystalfurnace_side",
-    "west":"dust:blocks/crystalfurnace_side"
+    "particle": "dust:blocks/machines/furnace/crystalfurnace_side",
+    "up": "dust:blocks/machines/furnace/crystalfurnace_top",
+    "down": "dust:blocks/machines/furnace/crystalfurnace_bottom",
+    "north":"dust:blocks/machines/furnace/crystalfurnace_front",
+    "east":"dust:blocks/machines/furnace/crystalfurnace_side",
+    "south":"dust:blocks/machines/furnace/crystalfurnace_side",
+    "west":"dust:blocks/machines/furnace/crystalfurnace_side"
   }
 }

@@ -1,10 +1,10 @@
 {
   "parent": "block/cube_all",
 	"textures": {
-		"0": "dust:blocks/farmland_bottom",
-		"1": "dust:blocks/darksoiltop",
-		"2": "dust:blocks/darksoilside",
-		"particle": "dust:blocks/farmland_bottom"
+		"0": "dust:blocks/utility/farmland_bottom",
+		"1": "dust:blocks/utility/darksoiltop",
+		"2": "dust:blocks/utility/darksoilside",
+		"particle": "dust:blocks/utility/farmland_bottom"
 	},
 	"elements": [
 		{

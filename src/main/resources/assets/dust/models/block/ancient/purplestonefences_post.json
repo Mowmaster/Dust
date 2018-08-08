@@ -1,6 +1,6 @@
 {
   "parent": "dust:block/fence_post",
   "textures": {
-    "texture": "dust:blocks/ancient/purplestone"
+    "texture": "dust:blocks/stone/stone/purplestone"
   }
 }

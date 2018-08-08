@@ -1,6 +1,6 @@
 {
     "parent": "dust:block/leaves",
     "textures": {
-        "all": "dust:blocks/whitedust"
+        "all": "dust:blocks/dust/whitedust"
     }
 }

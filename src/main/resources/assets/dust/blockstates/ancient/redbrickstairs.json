@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/redbricks",
-      "top": "dust:blocks/ancient/redbricks",
-      "side": "dust:blocks/ancient/redbricks",
-      "particle": "dust:blocks/ancient/redbricks"
+      "bottom": "dust:blocks/stone/bricks/redbricks",
+      "top": "dust:blocks/stone/bricks/redbricks",
+      "side": "dust:blocks/stone/bricks/redbricks",
+      "particle": "dust:blocks/stone/bricks/redbricks"
     }
   },
 

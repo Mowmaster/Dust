@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/redplanks",
-      "top": "dust:blocks/ancient/redplanks",
-      "side": "dust:blocks/ancient/redplanks",
-      "particle": "dust:blocks/ancient/redplanks"
+      "bottom": "dust:blocks/wood/planks/red_planks",
+      "top": "dust:blocks/wood/planks/red_planks",
+      "side": "dust:blocks/wood/planks/red_planks",
+      "particle": "dust:blocks/wood/planks/red_planks"
     }
   },
 

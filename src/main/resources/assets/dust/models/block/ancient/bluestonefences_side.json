@@ -1,6 +1,6 @@
 {
   "parent": "dust:block/fence_side",
   "textures": {
-    "slats": "dust:blocks/ancient/bluestone"
+    "slats": "dust:blocks/stone/stone/bluestone"
   }
 }

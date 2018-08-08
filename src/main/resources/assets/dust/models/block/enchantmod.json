@@ -1,7 +1,7 @@
 {
 	"parent": "block/cube_all",
 	"textures": {
-		"0": "dust:blocks/enchantmod",
+		"0": "dust:blocks/machines/enchanter/enchantmod",
 		"particle": "dust:blocks/ancient/ancientstone3"
 	},
 	"elements": [

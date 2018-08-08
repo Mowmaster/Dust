@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/greenstone",
-      "top": "dust:blocks/ancient/greenstone",
-      "side": "dust:blocks/ancient/greenstone",
-      "particle": "dust:blocks/ancient/greenstone"
+      "bottom": "dust:blocks/stone/stone/greenstone",
+      "top": "dust:blocks/stone/stone/greenstone",
+      "side": "dust:blocks/stone/stone/greenstone",
+      "particle": "dust:blocks/stone/stone/greenstone"
     }
   },
 

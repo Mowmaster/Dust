@@ -2,8 +2,8 @@
   "parent": "dust:block/block_sapling",
   "textures": {
     "break": "dust:items/models/crystals/crystalcore_black",
-    "logside": "dust:blocks/logside_black",
-    "logtop": "dust:blocks/logtop_black",
-    "leaves": "dust:blocks/leaves/leaves_black"
+    "logside": "dust:blocks/wood/treeparts/black_log_side",
+    "logtop": "dust:blocks/wood/treeparts/black_log_top",
+    "leaves": "dust:blocks/wood/treeparts/black_leaves"
   }
 }

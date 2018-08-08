@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/path3"
+    "all": "dust:blocks/utility/path3"
   }
 }

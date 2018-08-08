@@ -1,6 +1,6 @@
 {
   "parent": "dust:block/fence_post",
   "textures": {
-    "texture": "dust:blocks/ancient/purpleplanks"
+    "texture": "dust:blocks/wood/planks/purple_planks"
   }
 }

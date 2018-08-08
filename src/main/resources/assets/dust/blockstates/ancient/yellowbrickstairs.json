@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/yellowbricks",
-      "top": "dust:blocks/ancient/yellowbricks",
-      "side": "dust:blocks/ancient/yellowbricks",
-      "particle": "dust:blocks/ancient/yellowbricks"
+      "bottom": "dust:blocks/stone/bricks/yellowbricks",
+      "top": "dust:blocks/stone/bricks/yellowbricks",
+      "side": "dust:blocks/stone/bricks/yellowbricks",
+      "particle": "dust:blocks/stone/bricks/yellowbricks"
     }
   },
 

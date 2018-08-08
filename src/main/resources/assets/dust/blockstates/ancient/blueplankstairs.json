@@ -2,10 +2,10 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "dust:blocks/ancient/blueplanks",
-      "top": "dust:blocks/ancient/blueplanks",
-      "side": "dust:blocks/ancient/blueplanks",
-      "particle": "dust:blocks/ancient/blueplanks"
+      "bottom": "dust:blocks/wood/planks/blue_planks",
+      "top": "dust:blocks/wood/planks/blue_planks",
+      "side": "dust:blocks/wood/planks/blue_planks",
+      "particle": "dust:blocks/wood/planks/blue_planks"
     }
   },
 

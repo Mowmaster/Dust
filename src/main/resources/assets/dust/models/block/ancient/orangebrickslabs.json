@@ -2,8 +2,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "parent": "block/cube_all",
     "textures": {
-        "particle": "dust:blocks/ancient/orangebricks",
-        "0": "dust:blocks/ancient/orangebricks"
+        "particle": "dust:blocks/stone/bricks/orangebricks",
+        "0": "dust:blocks/stone/bricks/orangebricks"
     },
     "elements": [
         {

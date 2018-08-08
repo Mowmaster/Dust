@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "dust:blocks/lootblockpassivespawner"
+    "all": "dust:blocks/devblocks/lootblockpassivespawner"
   }
 }
