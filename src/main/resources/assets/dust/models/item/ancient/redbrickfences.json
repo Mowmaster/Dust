@@ -1,7 +1,7 @@
 {
   "parent": "dust:block/fence_inventory",
   "textures": {
-    "texture": "dust:blocks/ancient/redbricks",
-    "slats": "dust:blocks/ancient/redbricks"
+    "texture": "dust:blocks/stone/bricks/redbricks",
+    "slats": "dust:blocks/stone/bricks/redbricks"
   }
 }

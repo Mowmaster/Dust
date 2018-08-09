@@ -1,7 +1,7 @@
 {
   "parent": "dust:block/fence_inventory",
   "textures": {
-    "texture": "dust:blocks/ancient/yellowplanks",
-    "slats": "dust:blocks/ancient/yellowplanks"
+    "texture": "dust:blocks/wood/planks/yellow_planks",
+    "slats": "dust:blocks/wood/planks/yellow_planks"
   }
 }

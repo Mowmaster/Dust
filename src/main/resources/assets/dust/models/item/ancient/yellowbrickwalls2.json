@@ -1,6 +1,6 @@
 {
   "parent": "block/wall_inventory",
   "textures": {
-    "wall": "dust:blocks/ancient/yellowbricks2"
+    "wall": "dust:blocks/stone/brick/yellowbricks2"
   }
 }

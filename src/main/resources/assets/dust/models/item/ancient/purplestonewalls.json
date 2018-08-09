@@ -1,6 +1,6 @@
 {
   "parent": "block/wall_inventory",
   "textures": {
-    "wall": "dust:blocks/ancient/purplestone"
+    "wall": "dust:blocks/stone/stone/purplestone"
   }
 }
