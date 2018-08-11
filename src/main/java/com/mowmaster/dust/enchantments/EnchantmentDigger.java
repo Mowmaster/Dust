@@ -51,4 +51,6 @@ public class EnchantmentDigger extends Enchantment
         return super.canApplyAtEnchantingTable(stack);
     }
 
+
+
 }

@@ -1,5 +1,6 @@
 package com.mowmaster.dust.handlers;
 
+import com.mowmaster.dust.blocks.BlockLeaf;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
@@ -18,10 +19,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.PotionTypes;
+import net.minecraft.init.*;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,11 +30,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionAttackDamage;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBasic;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.datafix.fixes.PotionWater;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -114,15 +112,84 @@ public class EnchantAndEffectHandlers
             Float health = player.getHealth();
             //if(health>6.0f)
             //{
-                if(damage>=5)
-                {
-                    System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
-                    System.out.println(damage);
-                    player.getHeldItem(player.getActiveHand()).setItemDamage(damage - 6);
-                    player.setHealth(health-1.0f);
-                }
+            if(damage>=5)
+            {
+                System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
+                System.out.println(damage);
+                player.getHeldItem(player.getActiveHand()).setItemDamage(damage - 6);
+                player.setHealth(health-1.0f);
+            }
 
             //}
+
+        }
+
+
+
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onDigger(BlockEvent.BreakEvent event)
+    {
+        World world = event.getWorld();
+        EntityPlayer player = event.getPlayer();
+        if (player.swingingHand == null) {
+            return;
+        }
+        
+        BlockPos pos = event.getPos();
+        Block block = event.getState().getBlock();
+        IBlockState state = world.getBlockState(pos);
+
+        //testing raytrace stuffs
+        RayTraceResult ray = player.rayTrace(200,1.0f);
+        IBlockState blockLookingAt = player.world.getBlockState(new BlockPos(ray.getBlockPos().getX(),ray.getBlockPos().getY(),ray.getBlockPos().getZ()));
+
+        //is this item stack enchanted with ME?
+        ItemStack stackHarvestingWith = player.getHeldItem(player.swingingHand);
+
+        NBTTagList list = player.getHeldItem(player.getActiveHand()).getEnchantmentTagList();
+        if (list == null) {
+            return;
+        }
+        int id = 0;
+        int lvl = 0;
+        int enchantLvl = 0;
+        Enchantment e = Enchantment.getEnchantmentByID(id);
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound compound = list.getCompoundTagAt(i);
+            id = compound.getShort("id");
+            lvl = compound.getShort("lvl");
+            e = Enchantment.getEnchantmentByID(id);
+
+            if (e.getName().contains("enchantDigger")) {
+                lvl = enchantLvl;
+            }
+        }
+
+        //Wont Mine Dirt/ Wood on pickaxe
+        for (String type : stackHarvestingWith.getItem().getToolClasses(stackHarvestingWith)) {
+            if (block.isToolEffective(type, world.getBlockState(pos)) == false) {
+                return;
+            }
+        }
+
+
+
+
+
+        //block.harvestBlock(world, player, targetPos, targetState, null, player.getHeldItem(EnumHand.MAIN_HAND));
+
+        if(!world.isRemote)
+        {
+            int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
+            System.out.println("WORKING");
+            System.out.println(blockLookingAt);
+            //System.out.println(face);
+
+                //System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
+                //System.out.println(damage);
+                //player.getHeldItem(player.getActiveHand()).setItemDamage(damage - 6);
 
         }
 
