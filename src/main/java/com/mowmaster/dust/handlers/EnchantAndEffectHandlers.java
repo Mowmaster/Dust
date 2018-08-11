@@ -38,6 +38,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -144,6 +145,9 @@ public class EnchantAndEffectHandlers
         //testing raytrace stuffs
         RayTraceResult ray = player.rayTrace(200,1.0f);
         IBlockState blockLookingAt = player.world.getBlockState(new BlockPos(ray.getBlockPos().getX(),ray.getBlockPos().getY(),ray.getBlockPos().getZ()));
+        RayTraceResult result = ForgeHooks.rayTraceEyes(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue() + 1);
+        EnumFacing facing = result.sideHit;
+
 
         //is this item stack enchanted with ME?
         ItemStack stackHarvestingWith = player.getHeldItem(player.swingingHand);
@@ -185,7 +189,7 @@ public class EnchantAndEffectHandlers
             int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
             System.out.println("WORKING");
             System.out.println(blockLookingAt);
-            //System.out.println(face);
+            System.out.println(facing);
 
                 //System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
                 //System.out.println(damage);
