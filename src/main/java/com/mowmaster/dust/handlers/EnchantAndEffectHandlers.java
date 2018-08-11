@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.init.*;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,6 +51,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.xml.stream.events.Attribute;
 import java.util.HashMap;
+import java.util.Random;
 
 public class EnchantAndEffectHandlers
 {
@@ -157,18 +159,20 @@ public class EnchantAndEffectHandlers
             return;
         }
         int id = 0;
-        int lvl = 0;
+        //int lvl = 0;
         int enchantLvl = 0;
         Enchantment e = Enchantment.getEnchantmentByID(id);
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound compound = list.getCompoundTagAt(i);
             id = compound.getShort("id");
-            lvl = compound.getShort("lvl");
+            //lvl = compound.getShort("lvl");
             e = Enchantment.getEnchantmentByID(id);
 
+            /*
             if (e.getName().contains("enchantDigger")) {
                 lvl = enchantLvl;
             }
+             */
         }
 
         //Wont Mine Dirt/ Wood on pickaxe
@@ -184,21 +188,51 @@ public class EnchantAndEffectHandlers
 
         //block.harvestBlock(world, player, targetPos, targetState, null, player.getHeldItem(EnumHand.MAIN_HAND));
 
+        int zmin = -1;
+        int zmax = +1;
+        int xmin = -1;
+        int xmax = +1;
+        int ymin = -1;
+        int ymax = +1;
         if(!world.isRemote)
         {
+
             int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
-            System.out.println("WORKING");
+
             System.out.println(blockLookingAt);
             System.out.println(facing);
+            int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()));
+            System.out.println(-lvl);
+            System.out.println(+lvl);
+
+
+                zmin=-lvl;
+                zmax=+lvl;
+                xmin=-lvl;
+                xmax=+lvl;
+                ymin=0;
+                ymax=0;
+
+
+            for(int c=zmin;c<=zmax;c++) {
+                for (int a = xmin; a <= xmax; a++)
+                    for (int b = ymin; b <= ymax; b++)
+                    {
+                        System.out.println();
+                        Item item = world.getBlockState(pos.add(a,b,c)).getBlock().getItemDropped(world.getBlockState(pos.add(a,b,c)),new Random(),0);
+                        ItemStack items = new ItemStack(item,1);
+                        BlockPos newpos = pos.add(a,b,c);
+                        world.setBlockToAir(newpos);
+                        world.spawnEntity(new EntityItem(world, newpos.getX(), newpos.getY(), newpos.getZ(), new ItemStack(item, 1)));
+                    }
+
+            }
 
                 //System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
                 //System.out.println(damage);
                 //player.getHeldItem(player.getActiveHand()).setItemDamage(damage - 6);
 
         }
-
-
-
     }
 
     private boolean flight = false;
