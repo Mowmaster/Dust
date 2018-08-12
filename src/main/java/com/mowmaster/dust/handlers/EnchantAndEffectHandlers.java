@@ -58,6 +58,8 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onBreakEvent(BlockEvent.BreakEvent event)
     {
+
+        /*
         World world = event.getWorld();
         EntityPlayer player = event.getPlayer();
         if (player.swingingHand == null) {
@@ -86,24 +88,24 @@ public class EnchantAndEffectHandlers
                 lvl = enchantLvl;
             }
         }
-        /*
+
         if (enchantLvl <= 0) {
             return;
         }
-         */
+
 
 
 
 
         //Wont Mine Dirt/ Wood on pickaxe
 
-        /*
+
         for (String type : stackHarvestingWith.getItem().getToolClasses(stackHarvestingWith)) {
             if (block.isToolEffective(type, world.getBlockState(pos)) == false) {
                 return;
             }
         }
-         */
+
 
 
 
@@ -128,9 +130,7 @@ public class EnchantAndEffectHandlers
             //}
 
         }
-
-
-
+         */
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -153,7 +153,6 @@ public class EnchantAndEffectHandlers
 
         RayTraceResult result = ForgeHooks.rayTraceEyes(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue() + 1);
         EnumFacing facing = result.sideHit.getOpposite();
-        Blocks.BEDROCK.setHardness(99999f);
         if(!world.isRemote)
         {
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))!=0)
@@ -163,6 +162,7 @@ public class EnchantAndEffectHandlers
                 int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
                 int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()));
                 float blockHardness = world.getBlockState(pos).getBlockHardness(world,pos);
+                Blocks.BEDROCK.setHardness(99999f);
                 int zmin=0;
                 int zmax=0;
                 int xmin=0;
@@ -249,6 +249,7 @@ public class EnchantAndEffectHandlers
                                 float newblockHardness = world.getBlockState(pos.add(a,b,c)).getBlockHardness(world,newpos);
                                 if (blockHardness>=newblockHardness) {
                                     newblock.harvestBlock(world, player, newpos, world.getBlockState(newpos), null, player.getHeldItem(EnumHand.MAIN_HAND));
+                                    player.getHeldItem(player.getActiveHand()).damageItem(1,player);
                                     world.setBlockToAir(newpos);
                                 }
                                 else continue;
@@ -257,11 +258,6 @@ public class EnchantAndEffectHandlers
                     }
                 }
             }
-
-            //System.out.println(player.getHeldItem(player.getActiveHand()).getMaxDamage());
-            //System.out.println(damage);
-            //player.getHeldItem(player.getActiveHand()).setItemDamage(damage - 6);
-
         }
     }
 
