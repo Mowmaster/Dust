@@ -7,6 +7,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -35,10 +36,30 @@ public class BlockCrystalOre extends Block
     @Override
     public Item getItemDropped(IBlockState state,Random random,int fortune)
     {
-        return null;
+        return ItemRegistry.crystal;
     }
 
-    private Boolean oreToCrystal(World worldIn,BlockPos pos, Block crystalOreBlock,Block crystalState)
+    @Override
+    public int damageDropped(IBlockState state) {
+        int count = 0;
+        if(this.getDefaultState().getBlock().equals(BlockRegistry.redOre)) {count=0;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.blueOre)) {count=1;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.yellowOre)) {count=2;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.purpleOre)) {count=3;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.greenOre)) {count=4;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.orangeOre)) {count=5;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.whiteOre)) {count=6;}
+        else if(this.getDefaultState().getBlock().equals(BlockRegistry.blackOre)) {count=7;}
+        return count;
+    }
+
+    @Override
+    public int quantityDropped(Random random) {
+        int count = random.nextInt(5);
+        return count;
+    }
+
+    private Boolean oreToCrystal(World worldIn, BlockPos pos, Block crystalOreBlock, Block crystalState)
     {
         if(this.equals(crystalOreBlock))
         {
@@ -48,6 +69,7 @@ public class BlockCrystalOre extends Block
         }
         return false;
     }
+
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
@@ -63,4 +85,5 @@ public class BlockCrystalOre extends Block
             oreToCrystal(worldIn,pos,BlockRegistry.blackOre,BlockRegistry.blackCrystalFive);
         }
     }
+
 }

@@ -255,6 +255,7 @@ public class BlockCrystal extends BlockDirectional
         return false;
     }
 
+
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         EnumFacing facing = state.getValue(FACING);
@@ -302,7 +303,8 @@ public class BlockCrystal extends BlockDirectional
         }
     }
 
-    private boolean regrowCrystal(World worldIn,BlockPos pos,EnumFacing facing,Block smallCrystal, Block largeCrystal)
+
+    private boolean regrowCrystal(World worldIn, BlockPos pos, EnumFacing facing, Block smallCrystal, Block largeCrystal)
     {
         if (this.equals(smallCrystal)) {
             worldIn.setBlockState(pos, largeCrystal.getDefaultState().withProperty(BlockCrystal.FACING, facing));
