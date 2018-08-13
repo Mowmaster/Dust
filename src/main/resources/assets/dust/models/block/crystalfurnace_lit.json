@@ -3,8 +3,8 @@
   "textures":
   {
     "particle": "dust:blocks/machines/furnace/crystalfurnace_side",
-    "up": "dust:blocks/machines/furnace/crystalfurnace_top",
-    "down": "dust:blocks/machines/furnace/crystalfurnace_bottom",
+    "up": "dust:blocks/machines/furnace/crystalfurnace_side",
+    "down": "dust:blocks/machines/furnace/crystalfurnace_side",
     "north":"dust:blocks/machines/furnace/crystalfurnace_front_on",
     "east":"dust:blocks/machines/furnace/crystalfurnace_side",
     "south":"dust:blocks/machines/furnace/crystalfurnace_side",
