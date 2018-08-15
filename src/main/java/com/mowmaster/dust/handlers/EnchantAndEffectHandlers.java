@@ -20,10 +20,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.init.*;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemEnchantedBook;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
@@ -138,6 +135,7 @@ public class EnchantAndEffectHandlers
     {
         World world = event.getWorld();
         EntityPlayer player = event.getPlayer();
+        ItemStack tool = player.getHeldItem(player.getActiveHand());
         if (player.swingingHand == null) {
             return;
         }
@@ -162,7 +160,6 @@ public class EnchantAndEffectHandlers
                 int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
                 int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()));
                 float blockHardness = world.getBlockState(pos).getBlockHardness(world,pos);
-                Blocks.BEDROCK.setHardness(99999f);
                 int zmin=0;
                 int zmax=0;
                 int xmin=0;
@@ -245,9 +242,12 @@ public class EnchantAndEffectHandlers
                                 Item item = world.getBlockState(pos.add(a,b,c)).getBlock().getItemDropped(world.getBlockState(pos.add(a,b,c)),new Random(),0);
                                 ItemStack items = new ItemStack(item,1);
                                 BlockPos newpos = pos.add(a,b,c);
+                                IBlockState newblockstate = world.getBlockState(pos.add(a,b,c));
                                 Block newblock = world.getBlockState(pos.add(a,b,c)).getBlock();
                                 float newblockHardness = world.getBlockState(pos.add(a,b,c)).getBlockHardness(world,newpos);
-                                if (blockHardness>=newblockHardness) {
+                                int maxdur = tool.getMaxDamage();
+                                int damdone = tool.getItemDamage();
+                                if (blockHardness>=newblockHardness && !newblock.equals(Blocks.BEDROCK) && tool.getItem() instanceof ItemTool && (Math.subtractExact(maxdur,damdone)>=0) && !newblock.isAir(newblockstate,world,newpos)) {
                                     newblock.harvestBlock(world, player, newpos, world.getBlockState(newpos), null, player.getHeldItem(EnumHand.MAIN_HAND));
                                     player.getHeldItem(player.getActiveHand()).damageItem(1,player);
                                     world.setBlockToAir(newpos);
