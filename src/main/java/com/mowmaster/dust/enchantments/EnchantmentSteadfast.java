@@ -11,14 +11,14 @@ public class EnchantmentSteadfast extends Enchantment//AntiKnockback
 {
 
     public EnchantmentSteadfast(Rarity rarityIn, ResourceLocation location) {
-        super(rarityIn, EnumEnchantmentType.ARMOR_CHEST, new EntityEquipmentSlot[] {EntityEquipmentSlot.CHEST});
+        super(Rarity.VERY_RARE, EnumEnchantmentType.ARMOR_CHEST, new EntityEquipmentSlot[] {EntityEquipmentSlot.CHEST});
         setName("enchantSteadfast");
         setRegistryName(location);
     }
 
     @Override
     public int getMinEnchantability(int par1){
-        return 0;
+        return 30;
     }
 
     @Override
@@ -38,7 +38,12 @@ public class EnchantmentSteadfast extends Enchantment//AntiKnockback
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack){
-        return super.canApplyAtEnchantingTable(stack);
+        return true;
+    }
+
+    @Override
+    public boolean isAllowedOnBooks() {
+        return true;
     }
 
 }

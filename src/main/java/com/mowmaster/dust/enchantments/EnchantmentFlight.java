@@ -10,15 +10,14 @@ public class EnchantmentFlight extends Enchantment
 {
 
     public EnchantmentFlight(Rarity rarityIn, ResourceLocation location) {
-        super(rarityIn, EnumEnchantmentType.ARMOR_CHEST, new EntityEquipmentSlot[] {EntityEquipmentSlot.CHEST});
+        super(Rarity.VERY_RARE, EnumEnchantmentType.ARMOR_CHEST, new EntityEquipmentSlot[] {EntityEquipmentSlot.CHEST});
         setName("enchantFlight");
         setRegistryName(location);
     }
 
     @Override
     public int getMinEnchantability(int par1){
-        return 25;
-
+        return 30;
     }
 
     @Override
@@ -38,7 +37,12 @@ public class EnchantmentFlight extends Enchantment
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack){
-        return super.canApplyAtEnchantingTable(stack);
+        return true;
+    }
+
+    @Override
+    public boolean isAllowedOnBooks() {
+        return true;
     }
 
 }

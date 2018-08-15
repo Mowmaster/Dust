@@ -11,14 +11,14 @@ public class EnchantmentStepAssist extends Enchantment
 {
 
     public EnchantmentStepAssist(Rarity rarityIn, ResourceLocation location) {
-        super(rarityIn, EnumEnchantmentType.ARMOR_LEGS, new EntityEquipmentSlot[] {EntityEquipmentSlot.LEGS});
+        super(Rarity.VERY_RARE, EnumEnchantmentType.ARMOR_LEGS, new EntityEquipmentSlot[] {EntityEquipmentSlot.LEGS});
         setName("enchantStepAssist");
         setRegistryName(location);
     }
 
     @Override
     public int getMinEnchantability(int par1){
-        return 0;
+        return 30;
     }
 
     @Override
@@ -38,7 +38,12 @@ public class EnchantmentStepAssist extends Enchantment
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack){
-        return super.canApplyAtEnchantingTable(stack);
+        return true;
+    }
+
+    @Override
+    public boolean isAllowedOnBooks() {
+        return true;
     }
 
 }

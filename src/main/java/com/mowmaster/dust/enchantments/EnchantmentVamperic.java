@@ -11,14 +11,14 @@ public class EnchantmentVamperic extends Enchantment
 {
 
     public EnchantmentVamperic(Rarity rarityIn, ResourceLocation location) {
-        super(rarityIn, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
+        super(Rarity.VERY_RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
         setName("enchantVamperic");
         setRegistryName(location);
     }
 
     @Override
     public int getMinEnchantability(int par1){
-        return 0;
+        return 30;
     }
 
     @Override
@@ -38,7 +38,12 @@ public class EnchantmentVamperic extends Enchantment
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack){
-        return super.canApplyAtEnchantingTable(stack);
+        return true;
+    }
+
+    @Override
+    public boolean isAllowedOnBooks() {
+        return true;
     }
 
 }
