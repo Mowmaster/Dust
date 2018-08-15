@@ -1,12 +1,18 @@
 package com.mowmaster.dust.items.armors;
 
+import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.armors.models.ModelCrystalHelmet;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentProtection;
+import net.minecraft.enchantment.EnchantmentWaterWalker;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -71,35 +77,35 @@ public class ItemCrystalArmor extends ItemArmor
                 id = compound.getShort("id");
                 e = Enchantment.getEnchantmentByID(id);
 
-                if (e.getName().contains("enchantment.protect.fire"))
+                if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_PROTECTION,stack)>0)
                 {
                     colorHelm = 0;
                 }
-                else if (e.getName().contains("enchantment.waterWorker"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.AQUA_AFFINITY,stack)>0)
                 {
                     colorHelm = 8;
                 }
-                else if (e.getName().contains("enchantment.oxygen"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.RESPIRATION,stack)>0)
                 {
                     colorHelm = 16;
                 }
-                else if (e.getName().contains("enchantment.protect.projectile"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION,stack)>0)
                 {
                     colorHelm = 24;
                 }
-                else if (e.getName().contains("enchantment.thorns"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.THORNS,stack)>0)
                 {
                     colorHelm = 32;
                 }
-                else if (e.getName().contains("enchantment.protect.explosion"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.BLAST_PROTECTION,stack)>0)
                 {
                     colorHelm = 40;
                 }
-                else if (e.getName().contains("enchantment.mending"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING,stack)>0)
                 {
                     colorHelm = 48;
                 }
-                else if (e.getName().contains("enchantment.protect.all"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION,stack)>0)
                 {
                     colorHelm = 56;
                 }
@@ -126,35 +132,35 @@ public class ItemCrystalArmor extends ItemArmor
                 id = compound.getShort("id");
                 e = Enchantment.getEnchantmentByID(id);
 
-                if (e.getName().contains("enchantment.protect.fire"))
+                if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_PROTECTION,stack)>0)
                 {
                     colorChest = 0;
                 }
-                else if (e.getName().contains("enchantment.enchantLastResort"))
+                else if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantLastResort,stack)>0)
                 {
                     colorChest = 8;
                 }
-                else if (e.getName().contains("enchantment.enchantSteadfast"))
+                else if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantSteadfast,stack)>0)
                 {
                     colorChest = 16;
                 }
-                else if (e.getName().contains("enchantment.protect.projectile"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION,stack)>0)
                 {
                     colorChest = 24;
                 }
-                else if (e.getName().contains("enchantment.thorns"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.THORNS,stack)>0)
                 {
                     colorChest = 32;
                 }
-                else if (e.getName().contains("enchantment.protect.explosion"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.BLAST_PROTECTION,stack)>0)
                 {
                     colorChest = 40;
                 }
-                else if (e.getName().contains("enchantment.mending"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING,stack)>0)
                 {
                     colorChest = 48;
                 }
-                else if (e.getName().contains("enchantment.protect.all"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION,stack)>0)
                 {
                     colorChest = 56;
                 }
@@ -181,35 +187,35 @@ public class ItemCrystalArmor extends ItemArmor
                 id = compound.getShort("id");
                 e = Enchantment.getEnchantmentByID(id);
 
-                if (e.getName().contains("enchantment.protect.fire"))
+                if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_PROTECTION,stack)>0)
                 {
                     colorLeg = 0;
                 }
-                else if (e.getName().contains("enchantment.enchantStepAssist"))
+                else if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,stack)>0)
                 {
                     colorLeg = 8;
                 }
-                else if (e.getName().contains("enchantment.enchantQuickPace"))
+                else if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,stack)>0)
                 {
                     colorLeg = 16;
                 }
-                else if (e.getName().contains("enchantment.protect.projectile"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION,stack)>0)
                 {
                     colorLeg = 24;
                 }
-                else if (e.getName().contains("enchantment.thorns"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.THORNS,stack)>0)
                 {
                     colorLeg = 32;
                 }
-                else if (e.getName().contains("enchantment.protect.explosion"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.BLAST_PROTECTION,stack)>0)
                 {
                     colorLeg = 40;
                 }
-                else if (e.getName().contains("enchantment.mending"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING,stack)>0)
                 {
                     colorLeg = 48;
                 }
-                else if (e.getName().contains("enchantment.protect.all"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION,stack)>0)
                 {
                     colorLeg = 56;
                 }
@@ -231,42 +237,42 @@ public class ItemCrystalArmor extends ItemArmor
             int id = 0;
             Enchantment e = Enchantment.getEnchantmentByID(id);
 
-            System.out.println(e.getName());
+            //System.out.println(e.getName());
 
             for (int i = 0; i < list.tagCount(); i++) {
                 NBTTagCompound compound = list.getCompoundTagAt(i);
                 id = compound.getShort("id");
                 e = Enchantment.getEnchantmentByID(id);
 
-                if (e.getName().contains("enchantment.protect.fire"))
+                if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_PROTECTION,stack)>0)
                 {
                     colorBoot = 0;
                 }
-                else if (e.getName().contains("enchantment.enchantStepAssist"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.DEPTH_STRIDER,stack)>0)
                 {
                     colorBoot = 8;
                 }
-                else if (e.getName().contains("enchantment.enchantQuickPace"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FEATHER_FALLING,stack)>0)
                 {
                     colorBoot = 16;
                 }
-                else if (e.getName().contains("enchantment.protect.projectile"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION,stack)>0)
                 {
                     colorBoot = 24;
                 }
-                else if (e.getName().contains("enchantment.thorns"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.THORNS,stack)>0)
                 {
                     colorBoot = 32;
                 }
-                else if (e.getName().contains("enchantment.protect.explosion"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.BLAST_PROTECTION,stack)>0)
                 {
                     colorBoot = 40;
                 }
-                else if (e.getName().contains("enchantment.mending"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING,stack)>0)
                 {
                     colorBoot = 48;
                 }
-                else if (e.getName().contains("enchantment.protect.all"))
+                else if (EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION,stack)>0)
                 {
                     colorBoot = 56;
                 }
@@ -282,6 +288,41 @@ public class ItemCrystalArmor extends ItemArmor
                 && player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).getItem() == ItemArmorAndToolsRegistry.crystalLeggings
                 && player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).getItem() == ItemArmorAndToolsRegistry.crystalBoots)
         {
+            if(colorHelm==colorChest && colorChest==colorLeg && colorLeg==colorBoot)
+            {
+                if(colorHelm==0)
+                {
+                    this.effectPlayer(player,MobEffects.STRENGTH,1);
+                }
+                else if(colorHelm==8)
+                {
+                    this.effectPlayer(player,MobEffects.WATER_BREATHING,0);
+                }
+                else if(colorHelm==16)
+                {
+                    this.effectPlayer(player,MobEffects.SATURATION,0);
+                }
+                else if(colorHelm==24)
+                {
+                    this.effectPlayer(player,MobEffects.RESISTANCE,1);
+                }
+                else if(colorHelm==32)
+                {
+                    this.effectPlayer(player,MobEffects.REGENERATION,0);
+                }
+                else if(colorHelm==40)
+                {
+                    this.effectPlayer(player,MobEffects.HASTE,0);
+                }
+                else if(colorHelm==48)
+                {
+                    this.effectPlayer(player, PotionRegistry.POTION_FLIGHT,0);
+                }
+                else if(colorHelm==56)
+                {
+                    this.effectPlayer(player,MobEffects.NIGHT_VISION,0);
+                }
+            }
             this.effectPlayer(player, MobEffects.RESISTANCE,0);
             this.effectPlayer(player, MobEffects.STRENGTH,0);
         }
