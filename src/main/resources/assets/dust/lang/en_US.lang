@@ -92,14 +92,14 @@ item.bit.orange.name=Orange Bit
 item.bit.white.name=White Bit
 item.bit.black.name=Black Bit
 
-item.charcoal.red.name=Red Charcoal
-item.charcoal.blue.name=Blue Charcoal
-item.charcoal.yellow.name=Yellow Charcoal
-item.charcoal.purple.name=Purple Charcoal
-item.charcoal.green.name=Green Charcoal
-item.charcoal.orange.name=Orange Charcoal
-item.charcoal.white.name=White Charcoal
-item.charcoal.black.name=Black Charcoal
+item.charcoalred.name=Red Charcoal
+item.charcoalblue.name=Blue Charcoal
+item.charcoalyellow.name=Yellow Charcoal
+item.charcoa.purple.name=Purple Charcoal
+item.charcoalgreen.name=Green Charcoal
+item.charcoalorange.name=Orange Charcoal
+item.charcoalwhite.name=White Charcoal
+item.charcoalblack.name=Black Charcoal
 
 item.crystalfurnaceupgrade.name=Machine Block Furnace Upgrade
 item.debug.name=Scroll Of The All Knowing

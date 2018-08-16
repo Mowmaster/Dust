@@ -67,14 +67,14 @@ public class OreDictDust
         OreDictionary.registerOre("bitDust", ItemRegistry.bit);
 
         //OreDictionary.registerOre("charcoal",ItemRegistry.dustyCharcoal);
-        OreDictionary.registerOre("charcoalRed",new ItemStack(ItemRegistry.dustyCharcoal,1,0));
-        OreDictionary.registerOre("charcoalBlue",new ItemStack(ItemRegistry.dustyCharcoal,1,1));
-        OreDictionary.registerOre("charcoalYellow",new ItemStack(ItemRegistry.dustyCharcoal,1,2));
-        OreDictionary.registerOre("charcoalPurple",new ItemStack(ItemRegistry.dustyCharcoal,1,3));
-        OreDictionary.registerOre("charcoalGreen",new ItemStack(ItemRegistry.dustyCharcoal,1,4));
-        OreDictionary.registerOre("charcoalOrange",new ItemStack(ItemRegistry.dustyCharcoal,1,5));
-        OreDictionary.registerOre("charcoalWhite",new ItemStack(ItemRegistry.dustyCharcoal,1,6));
-        OreDictionary.registerOre("charcoalBlack",new ItemStack(ItemRegistry.dustyCharcoal,1,7));
+        OreDictionary.registerOre("charcoalRed",new ItemStack(ItemRegistry.charcoalRed));
+        OreDictionary.registerOre("charcoalBlue",new ItemStack(ItemRegistry.charcoalBlue));
+        OreDictionary.registerOre("charcoalYellow",new ItemStack(ItemRegistry.charcoalYellow));
+        OreDictionary.registerOre("charcoalPurple",new ItemStack(ItemRegistry.charcoalPurple));
+        OreDictionary.registerOre("charcoalGreen",new ItemStack(ItemRegistry.charcoalGreen));
+        OreDictionary.registerOre("charcoalOrange",new ItemStack(ItemRegistry.charcoalOrange));
+        OreDictionary.registerOre("charcoalWhite",new ItemStack(ItemRegistry.charcoalWhite));
+        OreDictionary.registerOre("charcoalBlack",new ItemStack(ItemRegistry.charcoalBlack));
 
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinA));
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinB));

@@ -77,17 +77,6 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(Reference.MODID,"bit_black")
         );
 
-        ModelBakery.registerItemVariants(ItemRegistry.dustyCharcoal,
-                new ResourceLocation(Reference.MODID,"charcoal_red"),
-                new ResourceLocation(Reference.MODID,"charcoal_blue"),
-                new ResourceLocation(Reference.MODID,"charcoal_yellow"),
-                new ResourceLocation(Reference.MODID,"charcoal_purple"),
-                new ResourceLocation(Reference.MODID,"charcoal_green"),
-                new ResourceLocation(Reference.MODID,"charcoal_orange"),
-                new ResourceLocation(Reference.MODID,"charcoal_white"),
-                new ResourceLocation(Reference.MODID,"charcoal_black")
-        );
-
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.leaf),
                 new ResourceLocation(Reference.MODID, "leaves_red"),
                 new ResourceLocation(Reference.MODID, "leaves_blue"),

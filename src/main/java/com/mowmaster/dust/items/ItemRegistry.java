@@ -21,7 +21,14 @@ public class ItemRegistry
     public static Item dust;
     public static Item crystal;
     public static Item bit;
-    public static Item dustyCharcoal;
+    public static Item charcoalRed;
+    public static Item charcoalBlue;
+    public static Item charcoalYellow;
+    public static Item charcoalPurple;
+    public static Item charcoalGreen;
+    public static Item charcoalOrange;
+    public static Item charcoalWhite;
+    public static Item charcoalBlack;
     public static Item scroll;
     public static Item crushingComponents; // fixed the capitalization to use proper camel casing instead of being all lowercase
     public static Item furnaceComponents;
@@ -143,7 +150,14 @@ public class ItemRegistry
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
-        dustyCharcoal = new ItemCharcoal("charcoal");
+        charcoalRed = new ItemCharcoal("charcoalred","charcoalred");
+        charcoalBlue = new ItemCharcoal("charcoalblue","charcoalblue");
+        charcoalYellow = new ItemCharcoal("charcoalyellow","charcoalyellow");
+        charcoalPurple = new ItemCharcoal("charcoalpurple","charcoalpurple");
+        charcoalGreen = new ItemCharcoal("charcoalgreen","charcoalgreen");
+        charcoalOrange = new ItemCharcoal("charcoalorange","charcoalorange");
+        charcoalWhite = new ItemCharcoal("charcoalwhite","charcoalwhite");
+        charcoalBlack = new ItemCharcoal("charcoalblack","charcoalblack");
         scroll = new ItemScroll("scroll","scroll");
         crushingComponents = new ItemBasic("crusheritems","crusheritems");
         furnaceComponents = new ItemUpgrade("crystalfurnaceupgrade","crystalfurnaceupgrade");
@@ -212,7 +226,14 @@ public class ItemRegistry
         registerItem(dust);
         registerItem(crystal);
         registerItem(bit);
-        registerItem(dustyCharcoal);
+        registerItem(charcoalRed);
+        registerItem(charcoalBlue);
+        registerItem(charcoalYellow);
+        registerItem(charcoalPurple);
+        registerItem(charcoalGreen);
+        registerItem(charcoalOrange);
+        registerItem(charcoalWhite);
+        registerItem(charcoalBlack);
         registerItem(scroll);
         registerItem(crushingComponents);
         registerItem(furnaceComponents);
@@ -289,11 +310,15 @@ public class ItemRegistry
         {
             registerRender(bit,i,"bit_" + CrystalItems.BitTypes.values()[i].getName());
         }
-        for(int i = 0; i < CrystalItems.CharcoalTypes.values().length; i++)
-        {
-            registerRender(dustyCharcoal,i,"charcoal_" + CrystalItems.CharcoalTypes.values()[i].getName());
-        }
 
+        registerRender(charcoalRed);
+        registerRender(charcoalBlue);
+        registerRender(charcoalYellow);
+        registerRender(charcoalPurple);
+        registerRender(charcoalGreen);
+        registerRender(charcoalOrange);
+        registerRender(charcoalWhite);
+        registerRender(charcoalBlack);
         registerRender(scroll);
         registerRender(crushingComponents);
         registerRender(furnaceComponents);

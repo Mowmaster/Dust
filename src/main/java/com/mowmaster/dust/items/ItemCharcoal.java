@@ -18,36 +18,12 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ItemCharcoal extends Item
 {
-    public ItemCharcoal(String unlocName)
+    public ItemCharcoal(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
-        this.setRegistryName(new ResourceLocation(Reference.MODID, unlocName));
-        this.setHasSubtypes(true);
+        this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
+        this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
-    }
-    //@Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-        for(int i = 0; i < CrystalItems.CharcoalTypes.values().length; i++)
-        {
-            list.add(new ItemStack(item,1,i));
-        }
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack)
-    {
-        for(int i = 0; i <CrystalItems.CharcoalTypes.values().length; i++)
-        {
-            if(stack.getItemDamage() == i)
-            {
-                return this.getUnlocalizedName() + "." + CrystalItems.CharcoalTypes.values()[i].getName();
-            }
-            else {
-                continue;
-            }
-        }
-        return this.getUnlocalizedName() + "." + CrystalItems.CharcoalTypes.RED.getName();
     }
 
     @SideOnly(Side.CLIENT)
