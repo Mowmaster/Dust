@@ -24,11 +24,11 @@ public class ContainerCrystalFurnace extends Container
     {
         this.tileCrystalFurnace = tileCrystalFurnace;
 
-        this.addSlotToContainer(new Slot(tileCrystalFurnace,0,56,17));//inventory,index slot# so Input for this one, pixels in from the left side of the gui image top corner of the slot,top down to the top corner in pixels
-        this.addSlotToContainer(new SlotCrystalFurnaceCrystal(tileCrystalFurnace,1,20,29));//crystal input
-        this.addSlotToContainer(new SlotCrystalFurnaceFuel(tileCrystalFurnace,2,56,53));//fuel input
-        this.addSlotToContainer(new SlotCrystalFurnaceOutput(player.player,tileCrystalFurnace,3,116,35));//output
-        this.addSlotToContainer(new SlotCrystalFurnaceCrystalOutput(player.player,tileCrystalFurnace,4,142,35));//crystal output
+        this.addSlotToContainer(new Slot(tileCrystalFurnace,0,71,11));//inventory,index slot# so Input for this one, pixels in from the left side of the gui image top corner of the slot,top down to the top corner in pixels
+        this.addSlotToContainer(new SlotCrystalFurnaceCrystal(tileCrystalFurnace,1,34,12));//crystal input
+        this.addSlotToContainer(new SlotCrystalFurnaceFuel(tileCrystalFurnace,2,49,59));//fuel input
+        this.addSlotToContainer(new SlotCrystalFurnaceOutput(player.player,tileCrystalFurnace,3,138,35));//output
+        this.addSlotToContainer(new SlotCrystalFurnaceCrystalOutput(player.player,tileCrystalFurnace,4,112,59));//crystal output
 
         for(int y = 0; y < 3; y++)//check for the player inventory portion of the GUI
         {

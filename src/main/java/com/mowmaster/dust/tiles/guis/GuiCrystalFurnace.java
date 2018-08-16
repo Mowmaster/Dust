@@ -26,9 +26,11 @@ public class GuiCrystalFurnace extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)//contains the text
     {
         //String tileName = this.tileCrystalFurnace.getDisplayName().getUnformattedComponentText();
-        String tileName = "Crystal Furnace";
-        this.fontRenderer.drawString(tileName,(this.xSize/2 - this.fontRenderer.getStringWidth(tileName) /2),6,4210752);//default binary color
-        this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(),122,this.ySize - 96 +2,4210752);
+        String tileName = "Crystal";
+        String tileName2 = "Furnace";
+        this.fontRenderer.drawString(tileName,(this.xSize -47 ),6,16777215);//default binary color
+        this.fontRenderer.drawString(tileName2,(this.xSize -50),15,16777215);//default binary color
+        this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(),4,this.ySize - 93 +2,16777215);
     }
 
     @Override
@@ -40,17 +42,22 @@ public class GuiCrystalFurnace extends GuiContainer
 
         if(TileCrystalFurnace.isBurning(tileCrystalFurnace))
         {
-            int k = this.getBurnLeftScaled(13);//height of fire texture
-            this.drawTexturedModalRect(this.guiLeft + 58/*xcord from bottom*/,this.guiTop + 37/*ycord from top*/ + 12-k/*height in pixels to render*/,177/*xcord from bottom of texture side of gui box*/,12-k,14/*width*/,k+1/*height*/);
+            int k = this.getBurnLeftScaled(3);//height of fire texture
+            this.drawTexturedModalRect(this.guiLeft + 48/*xcord from bottom*/,this.guiTop + 54/*ycord from top*/ + 3-k/*height in pixels to render*/,175/*xcord from bottom of texture side of gui box*/,3-k,17/*width*/,k+0/*height*/);
         }
 
-        int l = this.getCookProgressScaled(24);//lenght of texture from left to right
-        this.drawTexturedModalRect(this.guiLeft + 79,this.guiTop + 35,176,14,l+1,16);
+        int l = this.getCookProgressScaled(86);//lenght of texture from left to right
+        this.drawTexturedModalRect(this.guiLeft + 48,this.guiTop + 46,1,166,l+1,16);
+
+        int color2 = this.tileCrystalFurnace.getField(5);
+        int colored2 = (color2*19) + 38;
+        int n = this.getCookProgressScaled(79);//lenght of texture from left to right
+        this.drawTexturedModalRect(this.guiLeft + 41,this.guiTop + 39,175,colored2,n+1,16);
 
         int m = this.getCrystalEnergyLeftScaled(18);//lenght of texture from left to right
         int color = this.tileCrystalFurnace.getField(5);
-        int colored = (color*4) + 31;
-        this.drawTexturedModalRect(this.guiLeft + 18,this.guiTop + 49,175,colored,m+1,4);
+        int colored = (color*4) + 5;
+        this.drawTexturedModalRect(this.guiLeft + 32,this.guiTop + 34,175,colored,m+1,4);
 
 
     }
@@ -69,7 +76,7 @@ public class GuiCrystalFurnace extends GuiContainer
         return j !=0 && i != 0 ? i * pixels /j : 0;
     }
 
-    private int getCrystalEnergyLeftScaled(int pixels)//how much of the arrow progress image should be left
+    private int getCrystalEnergyLeftScaled(int pixels)//how much of the crystal progress image should be left
     {
         int i = this.tileCrystalFurnace.getField(4);//crystal energy left
         int j = 32;//crystal energy max
