@@ -288,43 +288,61 @@ public class ItemCrystalArmor extends ItemArmor
                 && player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).getItem() == ItemArmorAndToolsRegistry.crystalLeggings
                 && player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).getItem() == ItemArmorAndToolsRegistry.crystalBoots)
         {
-            if(colorHelm==colorChest && colorChest==colorLeg && colorLeg==colorBoot)
+            if(colorHelm==colorChest && colorChest==colorLeg && colorLeg==colorBoot && player.inventory.armorItemInSlot(3).isItemEnchanted())
             {
                 if(colorHelm==0)
                 {
-                    this.effectPlayer(player,MobEffects.STRENGTH,1);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,1);
                 }
                 else if(colorHelm==8)
                 {
                     this.effectPlayer(player,MobEffects.WATER_BREATHING,0);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
                 else if(colorHelm==16)
                 {
                     this.effectPlayer(player,MobEffects.SATURATION,0);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
                 else if(colorHelm==24)
                 {
                     this.effectPlayer(player,MobEffects.RESISTANCE,1);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
                 else if(colorHelm==32)
                 {
                     this.effectPlayer(player,MobEffects.REGENERATION,0);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
                 else if(colorHelm==40)
                 {
                     this.effectPlayer(player,MobEffects.HASTE,0);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
                 else if(colorHelm==48)
                 {
                     this.effectPlayer(player, PotionRegistry.POTION_FLIGHT,0);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
                 else if(colorHelm==56)
                 {
                     this.effectPlayer(player,MobEffects.NIGHT_VISION,0);
+                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                    this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
             }
-            this.effectPlayer(player, MobEffects.RESISTANCE,0);
-            this.effectPlayer(player, MobEffects.STRENGTH,0);
+            else
+            {
+                this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                this.effectPlayer(player, MobEffects.STRENGTH,0);
+            }
+
         }
 
 
@@ -371,7 +389,8 @@ public class ItemCrystalArmor extends ItemArmor
             if(itemStack.getItem() instanceof ItemArmor)
             {
                 ModelCrystalHelmet armorModel = new ModelCrystalHelmet(1.0f,colorHelm,colorChest,colorLeg,colorBoot);
-                ModelCrystalHelmet armorModelLegs = new ModelCrystalHelmet(0.5f,colorHelm,colorChest,colorLeg,colorBoot);
+                ModelCrystalHelmet armorModelLegs = new ModelCrystalHelmet(0.75f,colorHelm,colorChest,colorLeg,colorBoot);
+
 
                 armorModel.bipedHead.showModel = (armorSlot == EntityEquipmentSlot.HEAD);armorModel.bipedHeadwear.showModel = (armorSlot == EntityEquipmentSlot.HEAD);
                 armorModel.bipedBody.showModel = armorSlot == EntityEquipmentSlot.CHEST || (armorSlot == EntityEquipmentSlot.CHEST);

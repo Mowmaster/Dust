@@ -321,36 +321,36 @@ public class ModelCrystalHelmet extends ModelBiped
         this.CoreLeftLeft.addChild(this.Crystal_5);
 
 
-        this.Crystal4LLeg = new ModelRenderer(this, 0, 32);
+        this.Crystal4LLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.Crystal4LLeg.setRotationPoint(0.0F, 1.0F, -1.0F);
         this.Crystal4LLeg.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.CoreRightLeg = new ModelRenderer(this, 0, 32);
+        this.CoreRightLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.CoreRightLeg.setRotationPoint(-1.0F, 0.0F, 4.0F);
         this.CoreRightLeg.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
         this.setRotateAngle(CoreRightLeg, -0.7853981633974483F, 0.0F, 0.0F);
-        this.CrystalLLeg = new ModelRenderer(this, 0, 32);
+        this.CrystalLLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.CrystalLLeg.setRotationPoint(1.0F, 1.0F, 0.0F);
         this.CrystalLLeg.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.Crystal2LLeg = new ModelRenderer(this, 0, 32);
+        this.Crystal2LLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.Crystal2LLeg.setRotationPoint(-1.0F, 1.0F, 0.0F);
         this.Crystal2LLeg.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.CrystalRLeg = new ModelRenderer(this, 0, 32);
+        this.CrystalRLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.CrystalRLeg.setRotationPoint(1.0F, 1.0F, 0.0F);
         this.CrystalRLeg.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.CoreLeftLeg = new ModelRenderer(this, 0, 32);
+        this.CoreLeftLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.CoreLeftLeg.setRotationPoint(0.0F, 0.0F, 4.0F);
         this.CoreLeftLeg.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
         this.setRotateAngle(CoreLeftLeg, -0.7853981633974483F, 0.0F, 0.0F);
-        this.Crystal3LLeg = new ModelRenderer(this, 0, 32);
+        this.Crystal3LLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.Crystal3LLeg.setRotationPoint(0.0F, 1.0F, 1.0F);
         this.Crystal3LLeg.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-        this.Crystal4RLeg = new ModelRenderer(this, 0, 32);
+        this.Crystal4RLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.Crystal4RLeg.setRotationPoint(0.0F, 1.0F, -1.0F);
         this.Crystal4RLeg.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.Crystal3RLeg = new ModelRenderer(this, 0, 32);
+        this.Crystal3RLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.Crystal3RLeg.setRotationPoint(0.0F, 1.0F, 1.0F);
         this.Crystal3RLeg.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-        this.Crystal2RLeg = new ModelRenderer(this, 0, 32);
+        this.Crystal2RLeg = new ModelRenderer(this, coreLegColor + 4, 32);
         this.Crystal2RLeg.setRotationPoint(-1.0F, 1.0F, 0.0F);
         this.Crystal2RLeg.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
         this.CoreLeftLeg.addChild(this.Crystal4LLeg);
@@ -363,36 +363,36 @@ public class ModelCrystalHelmet extends ModelBiped
         this.CoreRightLeg.addChild(this.Crystal2RLeg);
 
 
-        this.Crystal3LBoot = new ModelRenderer(this, 0, 32);
+        this.Crystal3LBoot = new ModelRenderer(this, bootColor + 4, 32);
         this.Crystal3LBoot.setRotationPoint(0.0F, 1.0F, 1.0F);
         this.Crystal3LBoot.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-        this.CoreLeftBoot = new ModelRenderer(this, 0, 32);
+        this.CoreLeftBoot = new ModelRenderer(this, bootColor + 4, 32);
         this.CoreLeftBoot.setRotationPoint(5.0F, 7.0F, 0.0F);
         this.CoreLeftBoot.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
         this.setRotateAngle(CoreLeftBoot, 0.0F, 0.7853981633974483F, 0.7853981633974483F);
-        this.Crystal4LBoot_1 = new ModelRenderer(this, 0, 32);
+        this.Crystal4LBoot_1 = new ModelRenderer(this, bootColor + 4, 32);
         this.Crystal4LBoot_1.setRotationPoint(0.0F, 1.0F, -1.0F);
         this.Crystal4LBoot_1.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-        this.Crystal2LBoot_1 = new ModelRenderer(this, 0, 32);
+        this.Crystal2LBoot_1 = new ModelRenderer(this, bootColor + 4, 32);
         this.Crystal2LBoot_1.setRotationPoint(-1.0F, 1.0F, 0.0F);
         this.Crystal2LBoot_1.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-        this.CoreRightBoot = new ModelRenderer(this, 0, 32);
+        this.CoreRightBoot = new ModelRenderer(this, bootColor + 4, 32);
         this.CoreRightBoot.setRotationPoint(-6.0F, 8.0F, 0.0F);
         this.CoreRightBoot.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
         this.setRotateAngle(CoreRightBoot, 0.0F, 0.7853981633974483F, -0.7853981633974483F);
-        this.CrystalLBoot = new ModelRenderer(this, 0, 32);
+        this.CrystalLBoot = new ModelRenderer(this, bootColor + 4, 32);
         this.CrystalLBoot.setRotationPoint(1.0F, 1.0F, 0.0F);
         this.CrystalLBoot.addBox(0.0F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-        this.Crystal2LBoot = new ModelRenderer(this, 0, 32);
+        this.Crystal2LBoot = new ModelRenderer(this, bootColor + 4, 32);
         this.Crystal2LBoot.setRotationPoint(-1.0F, 1.0F, 0.0F);
         this.Crystal2LBoot.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.CrystalLBoot_1 = new ModelRenderer(this, 0, 32);
+        this.CrystalLBoot_1 = new ModelRenderer(this, bootColor + 4, 32);
         this.CrystalLBoot_1.setRotationPoint(1.0F, 1.0F, 0.0F);
         this.CrystalLBoot_1.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.Crystal3LBoot_1 = new ModelRenderer(this, 0, 32);
+        this.Crystal3LBoot_1 = new ModelRenderer(this, bootColor + 4, 32);
         this.Crystal3LBoot_1.setRotationPoint(0.0F, 1.0F, 1.0F);
         this.Crystal3LBoot_1.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
-        this.Crystal4LBoot = new ModelRenderer(this, 0, 32);
+        this.Crystal4LBoot = new ModelRenderer(this, bootColor + 4, 32);
         this.Crystal4LBoot.setRotationPoint(0.0F, 1.0F, -1.0F);
         this.Crystal4LBoot.addBox(0.0F, 0.0F, 0.0F, 1, 3, 1, 0.0F);
         this.CoreLeftBoot.addChild(this.Crystal3LBoot);
@@ -442,8 +442,8 @@ public class ModelCrystalHelmet extends ModelBiped
         bipedLeftLeg.addChild(CoreLeftLeg);
         bipedRightLeg.addChild(CoreRightLeg);
 
-        //bipedLeftLeg.addChild(CoreLeftBoot);
-        //bipedRightLeg.addChild(CoreRightBoot);
+        bipedLeftLeg.addChild(CoreLeftBoot);
+        bipedRightLeg.addChild(CoreRightBoot);
     }
 
     @Override
