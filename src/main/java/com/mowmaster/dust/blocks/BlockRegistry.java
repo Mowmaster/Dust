@@ -327,6 +327,15 @@ public class BlockRegistry
     public static Block lootblockpillar;
     public static Block lootblockcrystalcluster;
 
+    public static Block charcoalRed;
+    public static Block charcoalBlue;
+    public static Block charcoalYellow;
+    public static Block charcoalPurple;
+    public static Block charcoalGreen;
+    public static Block charcoalOrange;
+    public static Block charcoalWhite;
+    public static Block charcoalBlack;
+
 
     public static void init() {
         redOre = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
@@ -625,6 +634,15 @@ public class BlockRegistry
         lootblockhostilespawner = new BlockLootBlock("lootblockhostilespawner","lootblockhostilespawner");
         lootblockpillar = new BlockLootBlock("lootblockpillar","lootblockpillar");
         lootblockcrystalcluster = new BlockLootBlock("lootblockcrystalcluster","lootblockcrystalcluster");
+
+        charcoalRed = new BlockCharcoal("blockcharcoalred","blockcharcoalred");
+        charcoalBlue = new BlockCharcoal("blockcharcoalblue","blockcharcoalblue");
+        charcoalYellow = new BlockCharcoal("blockcharcoalyellow","blockcharcoalyellow");
+        charcoalPurple = new BlockCharcoal("blockcharcoalpurple","blockcharcoalpurple");
+        charcoalGreen = new BlockCharcoal("blockcharcoalgreen","blockcharcoalgreen");
+        charcoalOrange = new BlockCharcoal("blockcharcoalorange","blockcharcoalorange");
+        charcoalWhite = new BlockCharcoal("blockcharcoalwhite","blockcharcoalwhite");
+        charcoalBlack = new BlockCharcoal("blockcharcoalblack","blockcharcoalblack");
     }
 
     public static void register()
@@ -923,6 +941,15 @@ public class BlockRegistry
         registerBlock(lootblockhostilespawner);
         registerBlock(lootblockpillar);
         registerBlock(lootblockcrystalcluster);
+
+        registerBlock(charcoalRed);
+        registerBlock(charcoalBlue);
+        registerBlock(charcoalYellow);
+        registerBlock(charcoalPurple);
+        registerBlock(charcoalGreen);
+        registerBlock(charcoalOrange);
+        registerBlock(charcoalWhite);
+        registerBlock(charcoalBlack);
     }
 
     public static void registerRenders()
@@ -1224,6 +1251,15 @@ public class BlockRegistry
         registerRender(lootblockhostilespawner);
         registerRender(lootblockpillar);
         registerRender(lootblockcrystalcluster);
+
+        registerRender(charcoalRed);
+        registerRender(charcoalBlue);
+        registerRender(charcoalYellow);
+        registerRender(charcoalPurple);
+        registerRender(charcoalGreen);
+        registerRender(charcoalOrange);
+        registerRender(charcoalWhite);
+        registerRender(charcoalBlack);
     }
 
     public static void registerBlock(Block block)

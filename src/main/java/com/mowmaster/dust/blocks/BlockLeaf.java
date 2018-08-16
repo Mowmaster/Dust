@@ -22,6 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,6 +37,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 public class BlockLeaf  extends Block implements IMetaBlockName
 {
     public static final PropertyEnum LEAVES = PropertyEnum.create("leaves",CrystalBlocks.CrystalLeaves.class);
+    protected boolean leavesFancy;
 
 
 
@@ -100,24 +102,6 @@ public class BlockLeaf  extends Block implements IMetaBlockName
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(Item.getItemFromBlock(this),1,getMetaFromState(world.getBlockState(pos)));
-    }
-
-    /**
-     * Used to determine ambient occlusion and culling when rebuilding chunks for render
-     */
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    /**
-     * Pass true to draw this block using fancy graphics, or false for fast graphics.
-     */
-
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
-    {
-        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     public boolean isVisuallyOpaque()
@@ -193,5 +177,28 @@ public class BlockLeaf  extends Block implements IMetaBlockName
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblack);}
         }
         return dropped;
+    }
+
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return !this.leavesFancy;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setGraphicsLevel(boolean fancy)
+    {
+        this.leavesFancy = fancy;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return this.leavesFancy ? BlockRenderLayer.CUTOUT_MIPPED : BlockRenderLayer.SOLID;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return !this.leavesFancy && blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }
