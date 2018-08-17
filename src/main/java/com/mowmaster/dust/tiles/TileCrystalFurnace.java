@@ -5,9 +5,10 @@ import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.containers.ContainerCrystalFurnace;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.tileentity.TileEntityShulkerBoxRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -18,38 +19,37 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
 import java.util.Random;
 
-import static net.minecraft.tileentity.TileEntityFurnace.getItemBurnTime;
 
-
-public class TileCrystalFurnace extends TileEntityLockable implements ISidedInventory, ITickable
+public class TileCrystalFurnace extends TileEntityLockable implements ITickable,ISidedInventory, ICapabilityProvider
 {
+
+
+    private ItemStackHandler handler;
     private static final int[] SLOTS_TOP = new int[] {0};
     private static final int[] SLOTS_BOTTOM = new int[] {3, 4};
     private static final int[] SLOTS_SIDES = new int[] {1, 2};
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-    private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(5,ItemStack.EMPTY);//Input, Input Crystal, Input Fuel, Output, Output Spent Crystals
+
+    //private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(5,ItemStack.EMPTY);//Input, Input Crystal, Input Fuel, Output, Output Spent Crystals
     private String customName;
 
     private int burnTime;
@@ -62,9 +62,14 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     private int randomPotencyChance = 10;
     private int modifier = 1;//Biggest mod is 4
 
+    public TileCrystalFurnace()
+    {
+        this.handler = new ItemStackHandler(5);
+    }
+
     public ItemStack getFromInv(int num)
     {
-        return this.inventory.get(num);
+        return this.handler.getStackInSlot(num);
     }
 
     @Override
@@ -86,21 +91,21 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     }
 
     @Override
-    public int getSizeInventory() {
-        return this.inventory.size();//from the non null inventory above == 5
-    }
-
-    @Override
     public boolean isEmpty() {
-        for (ItemStack stack : this.inventory)
+        for(int i=0;i<=this.handler.getSlots();i++)
         {
-            if(!stack.isEmpty())
-            {
+            if(!this.handler.getStackInSlot(i).isEmpty())
                 return false;
-            }
         }
         return true;
     }
+
+    @Override
+    public int getSizeInventory() {
+        return this.handler.getSlots();//from the non null inventory above == 5
+    }
+
+
 
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
@@ -109,36 +114,37 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return this.inventory.get(index);//gets one of our 5 slots like input=0 input crystal=1 input fuel=2 output=3 for example
+        return this.handler.getStackInSlot(index);//gets one of our 5 slots like input=0 input crystal=1 input fuel=2 output=3 for example
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndSplit(this.inventory,index,count);//in our inventory, what slot, and how many in the slot to remove
+        return this.handler.extractItem(index,count,false);//no idea what true and false do here
     }
-
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.inventory,index);//in our inventory, what slot to completely remove from
+        return null;
     }
 
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        ItemStack itemStack = (ItemStack)this.inventory.get(index);//makes a stack for each slot in the index
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemStack) && ItemStack.areItemStacksEqual(stack,itemStack);//CHecks to make sure index slot isnt null and checks incomming item/meta to item/meta already inside.
-        this.inventory.set(index,stack);
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        ItemStack itemstack = this.handler.getStackInSlot(index);
+        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
+        this.handler.setStackInSlot(index,stack);
 
-        if(stack.getCount() > this.getInventoryStackLimit()) stack.setCount(this.getInventoryStackLimit());//if the stack is above 64(or whatever the limit is) make it the limit.
-        if(index == 0 && !flag)
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        if (index == 0 && !flag)
         {
             this.totalCookTime = this.getCookTime(stack);
             this.cookTime = 0;
             this.markDirty();
         }
     }
-
-
 
     @Override
     public int getInventoryStackLimit() {
@@ -169,14 +175,15 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     private boolean canSmelt()
     {
-        if(((ItemStack)this.inventory.get(0)).isEmpty()) return false;//check if input slot is empty, if empty == false
+
+        if(((ItemStack)this.handler.getStackInSlot(0)).isEmpty()) return false;//check if input slot is empty, if empty == false
         else//if input isnt empty
         {
-            ItemStack result = FurnaceRecipes.instance().getSmeltingResult((ItemStack)this.inventory.get(0));
-            if(result.isEmpty())return false;//if item cant be smelted then false and do nothing
+            ItemStack result = FurnaceRecipes.instance().getSmeltingResult((ItemStack)this.handler.getStackInSlot(0));//if item cant be smelted then false and do nothing
+            if(result.isEmpty())return false;
             else//if item can be smelted
             {
-                ItemStack output = (ItemStack)this.inventory.get(3);//output slot
+                ItemStack output = (ItemStack)this.handler.getStackInSlot(3);//output slot
                 if(output.isEmpty())return true;//If output has nothing in it we're good to go
                 if(!output.isItemEqual(result)) return false;//if output has items in it and they dont match what were smelting
                 int resulting = output.getCount() + result.getCount();//resulting stack count equals current plus whats being smelted
@@ -189,9 +196,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     {
         if(this.canSmelt())
         {
-            ItemStack input = this.inventory.get(0);
+            ItemStack input = this.handler.getStackInSlot(0);
             ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-            ItemStack output = this.inventory.get(3);
+            ItemStack output = this.handler.getStackInSlot(3);
 
             if(crystalEffectActive==4 && result.getItem() instanceof ItemFood)
             {
@@ -200,19 +207,22 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 {
                     if(output.isEmpty())
                     {
-                        this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                        //this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                        this.handler.setStackInSlot(3,result.copy());
+                        output.grow(result.copy().getCount());//just incase the output isnt 1 (double output)
                         consumeCrystalEnergy();
                     }
                     else if(output.getItem() == result.getItem())
                     {
-                        output.grow(result.getCount() + 1);
+                        output.grow(result.getCount()*2);
                         consumeCrystalEnergy();
                     } //if the output has items increese the stack count of that item(check for same is in canSmelt()
                 }
                 else
                 {
                     if(output.isEmpty()) {
-                        this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                        //this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                        this.handler.setStackInSlot(3,result.copy());
                         consumeCrystalEnergy();
                     }
                     else if(output.getItem() == result.getItem()) {
@@ -228,7 +238,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 {
                     if(output.isEmpty())
                     {
-                        this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                        //this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                        this.handler.setStackInSlot(3,result.copy());
+                        output.grow(result.copy().getCount());//just incase the output isnt 1 (double output)
                         consumeCrystalEnergy();
                     }
                     else if(output.getItem() == result.getItem()) {
@@ -239,7 +251,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                 else
                 {
                     if(output.isEmpty()) {
-                        this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                        //this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                        this.handler.setStackInSlot(3,result.copy());
                         consumeCrystalEnergy();
                     }
                     else if(output.getItem() == result.getItem()) {
@@ -251,7 +264,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
             else if(crystalEffectActive==2)
             {
                 if(output.isEmpty()) {
-                    this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                    //this.inventory.set(3,result.copy()).grow(1);//if output is empty then just copy in the resulting smelted item stack
+                    this.handler.setStackInSlot(3,result.copy());
+                    output.grow(result.copy().getCount());//just incase the output isnt 1 (double output)
                     consumeCrystalEnergy();
                 }
                 else if(output.getItem() == result.getItem()) {
@@ -261,10 +276,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
             }
             else
             {
-                if(output.isEmpty()) this.inventory.set(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
+                if(output.isEmpty()) this.handler.setStackInSlot(3,result.copy());//if output is empty then just copy in the resulting smelted item stack
                 else if(output.getItem() == result.getItem()) output.grow(result.getCount());//if the output has items increese the stack count of that item(check for same is in canSmelt()
             }
-
             input.shrink(1);
         }
     }
@@ -318,9 +332,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     public ItemStack getCrystalIn()//finds out which crystal is being used in the slot
     {
         ItemStack stack = ItemStack.EMPTY;
-        if(isItemCrystal(this.inventory.get(1)))
+        if(isItemCrystal(this.handler.getStackInSlot(1)))
         {
-            stack = this.inventory.get(1);
+            stack = this.handler.getStackInSlot(1);
         }
         return stack;
     }
@@ -336,14 +350,16 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         {
             crystalEffectActive = getCrystalType();
             crystalEnergyLeft = 32;
-            this.inventory.get(1).shrink(1);
-            if(this.inventory.get(4).isEmpty())
+            this.handler.getStackInSlot(1).shrink(1);
+            if(this.handler.getStackInSlot(4).isEmpty())
             {
-                this.inventory.set(4,new ItemStack(ItemRegistry.crystal,1,8));
+                this.handler.setStackInSlot(4,new ItemStack(ItemRegistry.crystal,1,8));//returns depleated crystal
+                //this.inventory.set(4,new ItemStack(ItemRegistry.crystal,1,8));
             }
             else
             {
-                this.inventory.get(4).grow(1);
+                //this.inventory.get(4).grow(1);
+                this.handler.getStackInSlot(4).grow(1);
             }
 
         }
@@ -433,6 +449,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         }
     }
 
+
     public int[] getSlotsForFace(EnumFacing side)
     {
         if (side == EnumFacing.DOWN)
@@ -464,6 +481,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
         return true;
     }
+
 
     public String getGuiID()
     {
@@ -524,7 +542,10 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
     @Override
     public void clear() {
-        this.inventory.clear();
+        for(int i=0;i<=this.handler.getSlots();i++)
+        {
+            this.handler.setStackInSlot(i,ItemStack.EMPTY);
+        }
     }
 
     private void updateBlock()
@@ -548,9 +569,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
         if(!this.world.isRemote)
         {
-            ItemStack stack = (ItemStack)this.inventory.get(2);//fuel itemstack
+            ItemStack stack = (ItemStack)this.handler.getStackInSlot(2);//fuel itemstack
 
-            if(this.isBurning() || !stack.isEmpty() && !((ItemStack)this.inventory.get(0)).isEmpty())//if active and fuel and input arnt empty
+            if(this.isBurning() || !stack.isEmpty() && !((ItemStack)this.handler.getStackInSlot(0)).isEmpty())//if active and fuel and input arnt empty
             {
                 if(!this.isBurning() && this.canSmelt())//function checks and consumes fuel
                 {
@@ -586,24 +607,29 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
                             if(stack.isEmpty())
                             {
                                 ItemStack item1 = item.getContainerItem(stack);
-                                this.inventory.set(2, item1);
+                                this.handler.setStackInSlot(2,item1);
                             }
                         }
                     }
                 }
+
                 if(this.isBurning() && this.canSmelt())
                 {
                     ++this.cookTime;
 
-                    if(this.cookTime == this.totalCookTime)
+                    if(this.cookTime >= this.totalCookTime)
                     {
                         this.cookTime = 0;
-                        this.totalCookTime = this.getCookTime((ItemStack)this.inventory.get(0));
+                        this.totalCookTime = this.getCookTime((ItemStack)this.handler.getStackInSlot(0));
                         this.smeltItem();
                         flag1 = true;
                     }
+                    else {}
                 }
                 else this.cookTime = 0;
+
+
+
             }
             else if(!this.isBurning() && this.cookTime > 0)
             {
@@ -620,24 +646,6 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
 
 
 
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
-    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.WEST);
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(Capability<T> capability, @javax.annotation.Nullable EnumFacing facing)
-    {
-        if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == EnumFacing.DOWN)
-                return (T) handlerBottom;
-            else if (facing == EnumFacing.UP)
-                return (T) handlerTop;
-            else
-                return (T) handlerSide;
-        return super.getCapability(capability, facing);
-    }
-
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -647,7 +655,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
         compound.setInteger("crystalenergy",(short)this.crystalEnergyLeft);
         compound.setInteger("crystaleffect",(short)this.crystalEffectActive);
         compound.setInteger("randomchance",(short)this.randomPotencyChance);
-        ItemStackHelper.saveAllItems(compound,this.inventory);//saves all item stack in the inventory to the nbt
+        compound.setTag("ItemStackInventoryHandler", this.handler.serializeNBT());
+        //ItemStackHelper.saveAllItems(compound,this.inventory);//saves all item stack in the inventory to the nbt
 
         //if(this.hasCustomName()) compound.setString("customname",this.customName);
         return compound;
@@ -657,15 +666,16 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.inventory = NonNullList.<ItemStack>withSize(this.getInventoryStackLimit(),ItemStack.EMPTY);//makes the inventory again
-        ItemStackHelper.loadAllItems(compound,this.inventory);//loads all the items back into the inventory
+        //this.inventory = NonNullList.<ItemStack>withSize(this.getInventoryStackLimit(),ItemStack.EMPTY);//makes the inventory again
+        //ItemStackHelper.loadAllItems(compound,this.inventory);//loads all the items back into the inventory
+        this.handler.deserializeNBT(compound.getCompoundTag("ItemStackInventoryHandler"));
         this.burnTime = compound.getInteger("burntime");
         this.cookTime = compound.getInteger("cooktime");
         this.totalCookTime = compound.getInteger("totalcooktime");
         this.crystalEnergyLeft = compound.getInteger("crystalenergy");
         this.crystalEffectActive = compound.getInteger("crystaleffect");
         this.randomPotencyChance = compound.getInteger("randomchance");
-        this.currentBurnTime = getItemBurnTime(this.inventory.get(2));//sets burntime for slot 2
+        this.currentBurnTime = getItemBurnTime(this.handler.getStackInSlot(2));//sets burntime for slot 2
 
         //if(compound.hasKey("customname",8)) this.setCustomName(compound.getString("customname"));
     }
@@ -684,5 +694,34 @@ public class TileCrystalFurnace extends TileEntityLockable implements ISidedInve
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    }
+
+    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.UP);
+    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
+    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.WEST);
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+
+        if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            if (facing == EnumFacing.DOWN)
+                return (T) handlerBottom;
+            else if (facing == EnumFacing.UP)
+                return (T) handlerTop;
+            else
+                return (T) handlerSide;
+
+
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return (T) this.handler;
+        return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return true;
+        return super.hasCapability(capability, facing);
     }
 }
