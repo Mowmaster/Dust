@@ -16,6 +16,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
@@ -30,6 +31,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatBasic;
 import net.minecraft.util.*;
 import net.minecraft.util.datafix.fixes.PotionWater;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -48,6 +50,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.xml.stream.events.Attribute;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class EnchantAndEffectHandlers
@@ -486,5 +489,50 @@ public class EnchantAndEffectHandlers
         HashMap<IAttribute, AttributeModifier> fury = new HashMap<IAttribute, AttributeModifier>();
         fury.put(SharedMonsterAttributes.MOVEMENT_SPEED,modifier);
         fury.put(SharedMonsterAttributes.ATTACK_DAMAGE, modifier);
+    }
+
+
+
+    Boolean magnet;
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onMagnet(TickEvent.PlayerTickEvent event)
+    {
+
+        EntityPlayer player = event.player;
+        World world = event.player.getEntityWorld();
+        int amp = player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
+        if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM))
+        {
+            magnet=true;
+        }
+        else{magnet=false;}
+
+
+        if(magnet==true)
+        {
+            int range = 10;
+            int verticalRange = 10;
+            float posX = Math.round(player.posX);
+            float posY = (float) (player.posY - player.getEyeHeight());
+            float posZ = Math.round(player.posZ);
+            List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 0.5f, posY - 0.5f, posZ - 0.5f, posX + 0.5f, posY + 0.5f, posZ + 0.5f).expand(range, verticalRange, range));
+            List<EntityXPOrb> xpOrbs = player.getEntityWorld().getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(posX - 0.5f, posY - 0.5f, posZ - 0.5f, posX + 0.5f, posY + 0.5f, posZ + 0.5f).expand(range, verticalRange, range));
+
+            for (EntityItem entity : entities) {
+                if (entity != null && !world.isRemote && !entity.isDead) {
+                    System.out.println("ITEMS GET IN ME!!!");
+                    entity.onCollideWithPlayer(player);
+                }
+            }
+
+            for (EntityXPOrb xpOrb : xpOrbs) {
+                if (xpOrb != null && !world.isRemote) {
+                    System.out.println("EXP GET IN ME!!!");
+                    xpOrb.onCollideWithPlayer(player);
+                }
+            }
+        }
+
+
     }
 }
