@@ -133,7 +133,7 @@ public class EnchantAndEffectHandlers
          */
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onDigger(BlockEvent.BreakEvent event)
     {
         World world = event.getWorld();
@@ -500,34 +500,33 @@ public class EnchantAndEffectHandlers
 
         EntityPlayer player = event.player;
         World world = event.player.getEntityWorld();
-        int amp = player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
+        int amp=0;
         if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM))
         {
             magnet=true;
+            amp = player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
         }
         else{magnet=false;}
 
-
         if(magnet==true)
         {
-            int range = 10;
-            int verticalRange = 10;
+            float range = Math.multiplyExact(5,amp);
+            float verticalRange = Math.multiplyExact(3,amp);
             float posX = Math.round(player.posX);
             float posY = (float) (player.posY - player.getEyeHeight());
             float posZ = Math.round(player.posZ);
-            List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 0.5f, posY - 0.5f, posZ - 0.5f, posX + 0.5f, posY + 0.5f, posZ + 0.5f).expand(range, verticalRange, range));
-            List<EntityXPOrb> xpOrbs = player.getEntityWorld().getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(posX - 0.5f, posY - 0.5f, posZ - 0.5f, posX + 0.5f, posY + 0.5f, posZ + 0.5f).expand(range, verticalRange, range));
+
+            List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+            List<EntityXPOrb> xpOrbs = player.getEntityWorld().getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
 
             for (EntityItem entity : entities) {
                 if (entity != null && !world.isRemote && !entity.isDead) {
-                    System.out.println("ITEMS GET IN ME!!!");
                     entity.onCollideWithPlayer(player);
                 }
             }
 
             for (EntityXPOrb xpOrb : xpOrbs) {
                 if (xpOrb != null && !world.isRemote) {
-                    System.out.println("EXP GET IN ME!!!");
                     xpOrb.onCollideWithPlayer(player);
                 }
             }
