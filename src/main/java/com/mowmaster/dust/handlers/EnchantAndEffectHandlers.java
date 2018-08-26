@@ -4,6 +4,7 @@ import com.mowmaster.dust.blocks.BlockLeaf;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
@@ -47,6 +49,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.xml.stream.events.Attribute;
 import java.util.HashMap;
@@ -133,32 +136,27 @@ public class EnchantAndEffectHandlers
          */
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onDigger(BlockEvent.BreakEvent event)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void blockBreakEvent(BlockEvent.BreakEvent event)
     {
         World world = event.getWorld();
         EntityPlayer player = event.getPlayer();
-        ItemStack tool = player.getHeldItem(player.getActiveHand());
-        if (player.swingingHand == null) {
-            return;
-        }
-        
         BlockPos pos = event.getPos();
         Block block = event.getState().getBlock();
         IBlockState state = world.getBlockState(pos);
 
-        // raytrace stuffs (client)
-        //RayTraceResult ray = player.rayTrace(200,1.0f);
-        //IBlockState blockLookingAt = player.world.getBlockState(new BlockPos(ray.getBlockPos().getX(),ray.getBlockPos().getY(),ray.getBlockPos().getZ()));
-
-
-        RayTraceResult result = ForgeHooks.rayTraceEyes(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue() + 1);
-        EnumFacing facing = result.sideHit.getOpposite();
         if(!world.isRemote)
         {
+
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))!=0)
             {
-
+                ItemStack tool = player.getHeldItem(player.getActiveHand());
+                if (player.swingingHand == null) {return;}
+                // raytrace stuffs (client)
+                //RayTraceResult ray = player.rayTrace(200,1.0f);
+                //IBlockState blockLookingAt = player.world.getBlockState(new BlockPos(ray.getBlockPos().getX(),ray.getBlockPos().getY(),ray.getBlockPos().getZ()));
+                RayTraceResult result = ForgeHooks.rayTraceEyes(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue() + 1);
+                EnumFacing facing = result.sideHit.getOpposite();
                 String type = player.getHeldItem(player.getActiveHand()).getItem().getToolClasses(player.getHeldItem(player.getActiveHand())).toString();
                 int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
                 int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()));
@@ -172,70 +170,18 @@ public class EnchantAndEffectHandlers
 
                 if(player.capabilities.isFlying)
                 {
-                    if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP))
-                    {
-                        zmin=-lvl;
-                        zmax=+lvl;
-                        xmin=-lvl;
-                        xmax=+lvl;
-                        ymin=0;
-                        ymax=0;
-                    }
-                    else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST))
-                    {
-                        zmin=-lvl;
-                        zmax=+lvl;
-                        xmin=0;
-                        xmax=0;
-                        ymin=-lvl;
-                        ymax=+lvl;
-                    }
-                    else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH))
-                    {
-                        zmin=0;
-                        zmax=0;
-                        xmin=-lvl;
-                        xmax=+lvl;
-                        ymin=-lvl;
-                        ymax=+lvl;
-                    }
+                    if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP)) {zmin=-lvl;zmax=+lvl;xmin=-lvl;xmax=+lvl;ymin=0;ymax=0;}
+                    else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST)) {zmin=-lvl;zmax=+lvl;xmin=0;xmax=0;ymin=-lvl;ymax=+lvl;}
+                    else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {zmin=0;zmax=0;xmin=-lvl;xmax=+lvl;ymin=-lvl;ymax=+lvl;}
                 }
                 else
                 {
-                    if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP))
-                    {
-                        zmin=-lvl;
-                        zmax=+lvl;
-                        xmin=-lvl;
-                        xmax=+lvl;
-                        ymin=0;
-                        ymax=0;
-                    }
-                    else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST))
-                    {
-                        zmin=-lvl;
-                        zmax=+lvl;
-                        xmin=0;
-                        xmax=0;
-                        ymin=-1;
-                        ymax=+((2*lvl)-1);
-                    }
-                    else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH))
-                    {
-                        zmin=0;
-                        zmax=0;
-                        xmin=-lvl;
-                        xmax=+lvl;
-                        ymin=-1;
-                        ymax=+((2*lvl)-1);
-                    }
+                    if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP)) {zmin=-lvl;zmax=+lvl;xmin=-lvl;xmax=+lvl;ymin=0;ymax=0;}
+                    else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST)) {zmin=-lvl;zmax=+lvl;xmin=0;xmax=0;ymin=-1;ymax=+((2*lvl)-1);}
+                    else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {zmin=0;zmax=0;xmin=-lvl;xmax=+lvl;ymin=-1;ymax=+((2*lvl)-1);}
                 }
 
-
-                if(player.isSneaking())
-                {
-
-                }
+                if(player.isSneaking()) {}
                 else
                 {
                     for(int c=zmin;c<=zmax;c++) {
@@ -257,7 +203,38 @@ public class EnchantAndEffectHandlers
                                 }
                                 else continue;
                             }
+                    }
+                }
+            }
 
+
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
+            {
+                ItemStack dropped = new ItemStack(block.getItemDropped(state,null,0));
+                ItemStack tool = player.getHeldItem(player.getActiveHand());
+                if (player.swingingHand == null) {
+                    return;
+                }
+
+                String type = player.getHeldItem(player.getActiveHand()).getItem().getToolClasses(player.getHeldItem(player.getActiveHand())).toString();
+                int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
+                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
+                float blockHardness = world.getBlockState(pos).getBlockHardness(world,pos);
+
+
+                if(tool.getItem() instanceof ItemTool)
+                {
+                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(dropped).isEmpty())
+                    {
+                        block.harvestBlock(world, player, pos, state, null, player.getHeldItem(EnumHand.MAIN_HAND));
+                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                        world.setBlockToAir(pos);
+                    }
+                    else
+                    {
+                        world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,FurnaceRecipes.instance().getSmeltingResult(dropped)));
+                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                        world.setBlockToAir(pos);
                     }
                 }
             }
@@ -268,13 +245,16 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFlight(TickEvent.PlayerTickEvent event)
     {
-        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2));
-        int expLoss = (int)(4 * level);
+        int level = 0;
+        int expLoss = 0;
         if(event.player.inventory.armorInventory.get(2) !=null && event.player.inventory.armorInventory.get(2).isItemEnchanted())
         {
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2))!=0 && event.player.experienceTotal>0)
             {
                 flight = true;
+
+                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2));
+                expLoss = (int)(4 * level);
 
                 if(!event.player.world.isRemote && !event.player.isPotionActive(PotionRegistry.POTION_FLIGHT) && !event.player.onGround && event.player.capabilities.isFlying && (event.player.ticksExisted % expLoss == 0)) {
                     removeXp(event.player, 1);
@@ -308,12 +288,13 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onStepAssist(TickEvent.PlayerTickEvent event)
     {
-        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
+        int level=0;
         if(event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
         {
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1))!=0)
             {
                 stepup = true;
+                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
             }
             else stepup=false;
         }
@@ -381,12 +362,13 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onMovingFast(TickEvent.PlayerTickEvent event)
     {
-        int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0));//on boots
+        int level=0;
         if(event.player.inventory.armorInventory.get(0) !=null && event.player.inventory.armorInventory.get(0).isItemEnchanted() || event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
         {
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(1))!=0)
             {
                 runner = true;
+                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0));//on boots
             }
             else runner=false;
         }
@@ -405,7 +387,6 @@ public class EnchantAndEffectHandlers
 
         if (runner == true) {event.player.capabilities.setPlayerWalkSpeed(fastwalk);}
         else {event.player.capabilities.setPlayerWalkSpeed(0.1f);}
-
     }
 
 

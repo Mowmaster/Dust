@@ -43,7 +43,7 @@ public class EnchantmentDigger extends Enchantment
 
     @Override
     public int getMaxLevel(){
-        return 5;
+        return 10;
     }
 
     @Override
