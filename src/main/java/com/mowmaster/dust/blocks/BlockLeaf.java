@@ -181,6 +181,20 @@ public class BlockLeaf  extends Block implements IMetaBlockName
 
     public boolean isOpaqueCube(IBlockState state)
     {
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+
+
+    /*
+    public boolean isOpaqueCube(IBlockState state)
+    {
         return !this.leavesFancy;
     }
 
@@ -201,4 +215,5 @@ public class BlockLeaf  extends Block implements IMetaBlockName
     {
         return !this.leavesFancy && blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
+     */
 }
