@@ -48,14 +48,14 @@ public class CraftingRecipes
         enchantedHelmOrange.addEnchantment(Enchantment.getEnchantmentByID(3),1);//Blast Prot
         enchantedHelmWhite.addEnchantment(Enchantment.getEnchantmentByID(34),1);//Unbreaking
         enchantedHelmBlack.addEnchantment(Enchantment.getEnchantmentByID(0),1);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetRed"),null,enchantedHelmRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlue"),null,enchantedHelmBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetYellow"),null,enchantedHelmYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetPurple"),null,enchantedHelmPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetGreen"),null,enchantedHelmGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetOrange"),null,enchantedHelmOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetWhite"),null,enchantedHelmWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlack"),null,enchantedHelmBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetRed"),null,enchantedHelmRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlue"),null,enchantedHelmBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetYellow"),null,enchantedHelmYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetPurple"),null,enchantedHelmPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetGreen"),null,enchantedHelmGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetOrange"),null,enchantedHelmOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetWhite"),null,enchantedHelmWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlack"),null,enchantedHelmBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldHelm});
 
         ItemStack enchantedHelmRed2 = oldHelm.copy();
         ItemStack enchantedHelmBlue2 = oldHelm.copy();
@@ -73,14 +73,14 @@ public class CraftingRecipes
         enchantedHelmOrange2.addEnchantment(Enchantment.getEnchantmentByID(3),2);//Blast Prot
         enchantedHelmWhite2.addEnchantment(Enchantment.getEnchantmentByID(34),2);//Unbreaking
         enchantedHelmBlack2.addEnchantment(Enchantment.getEnchantmentByID(0),2);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetRed2"),null,enchantedHelmRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlue2"),null,enchantedHelmBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetYellow2"),null,enchantedHelmYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetPurple2"),null,enchantedHelmPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetGreen2"),null,enchantedHelmGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetOrange2"),null,enchantedHelmOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetWhite2"),null,enchantedHelmWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlack2"),null,enchantedHelmBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetRed2"),null,enchantedHelmRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlue2"),null,enchantedHelmBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetYellow2"),null,enchantedHelmYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetPurple2"),null,enchantedHelmPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetGreen2"),null,enchantedHelmGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetOrange2"),null,enchantedHelmOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetWhite2"),null,enchantedHelmWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlack2"),null,enchantedHelmBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldHelm});
 
         ItemStack enchantedHelmRed3 = oldHelm.copy();
         ItemStack enchantedHelmBlue3 = oldHelm.copy();
@@ -98,14 +98,14 @@ public class CraftingRecipes
         enchantedHelmOrange3.addEnchantment(Enchantment.getEnchantmentByID(3),3);//Blast Prot
         enchantedHelmWhite3.addEnchantment(Enchantment.getEnchantmentByID(34),3);//Unbreaking
         enchantedHelmBlack3.addEnchantment(Enchantment.getEnchantmentByID(0),3);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetRed3"),null,enchantedHelmRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlue3"),null,enchantedHelmBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetYellow3"),null,enchantedHelmYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetPurple3"),null,enchantedHelmPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetGreen3"),null,enchantedHelmGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetOrange3"),null,enchantedHelmOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetWhite3"),null,enchantedHelmWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlack3"),null,enchantedHelmBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetRed3"),null,enchantedHelmRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlue3"),null,enchantedHelmBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetYellow3"),null,enchantedHelmYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetPurple3"),null,enchantedHelmPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetGreen3"),null,enchantedHelmGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetOrange3"),null,enchantedHelmOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetWhite3"),null,enchantedHelmWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlack3"),null,enchantedHelmBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldHelm});
 
         ItemStack enchantedHelmRed4 = oldHelm.copy();
         ItemStack enchantedHelmBlue4 = oldHelm.copy();
@@ -123,14 +123,14 @@ public class CraftingRecipes
         enchantedHelmOrange4.addEnchantment(Enchantment.getEnchantmentByID(3),4);//Blast Prot
         enchantedHelmWhite4.addEnchantment(Enchantment.getEnchantmentByID(70),1);//Mending
         enchantedHelmBlack4.addEnchantment(Enchantment.getEnchantmentByID(0),4);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetRed4"),null,enchantedHelmRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlue4"),null,enchantedHelmBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetYellow4"),null,enchantedHelmYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetPurple4"),null,enchantedHelmPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetGreen4"),null,enchantedHelmGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetOrange4"),null,enchantedHelmOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetWhite4"),null,enchantedHelmWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldHelm});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalHelmetBlack4"),null,enchantedHelmBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetRed4"),null,enchantedHelmRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlue4"),null,enchantedHelmBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetYellow4"),null,enchantedHelmYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetPurple4"),null,enchantedHelmPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetGreen4"),null,enchantedHelmGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetOrange4"),null,enchantedHelmOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetWhite4"),null,enchantedHelmWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldHelm});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalHelmetBlack4"),null,enchantedHelmBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldHelm});
 
 
         ItemStack oldChest = new ItemStack(ItemArmorAndToolsRegistry.crystalChestplate);
@@ -150,14 +150,14 @@ public class CraftingRecipes
         enchantedChestOrange.addEnchantment(Enchantment.getEnchantmentByID(3),1);//Blast Prot
         enchantedChestWhite.addEnchantment(Enchantment.getEnchantmentByID(34),1);//Unbreaking
         enchantedChestBlack.addEnchantment(Enchantment.getEnchantmentByID(0),1);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateRed"),null,enchantedChestRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlue"),null,enchantedChestBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateYellow"),null,enchantedChestYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplatePurple"),null,enchantedChestPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateGreen"),null,enchantedChestGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateOrange"),null,enchantedChestOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateWhite"),null,enchantedChestWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlack"),null,enchantedChestBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateRed"),null,enchantedChestRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlue"),null,enchantedChestBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateYellow"),null,enchantedChestYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplatePurple"),null,enchantedChestPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateGreen"),null,enchantedChestGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateOrange"),null,enchantedChestOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateWhite"),null,enchantedChestWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlack"),null,enchantedChestBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldChest});
 
         ItemStack enchantedChestRed2 = oldChest.copy();
         ItemStack enchantedChestBlue2 = oldChest.copy();
@@ -175,14 +175,14 @@ public class CraftingRecipes
         enchantedChestOrange2.addEnchantment(Enchantment.getEnchantmentByID(3),2);//Blast Prot
         enchantedChestWhite2.addEnchantment(Enchantment.getEnchantmentByID(34),2);//Unbreaking
         enchantedChestBlack2.addEnchantment(Enchantment.getEnchantmentByID(0),2);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateRed2"),null,enchantedChestRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlue2"),null,enchantedChestBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateYellow2"),null,enchantedChestYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplatePurple2"),null,enchantedChestPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateGreen2"),null,enchantedChestGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateOrange2"),null,enchantedChestOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateWhite2"),null,enchantedChestWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlack2"),null,enchantedChestBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateRed2"),null,enchantedChestRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlue2"),null,enchantedChestBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateYellow2"),null,enchantedChestYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplatePurple2"),null,enchantedChestPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateGreen2"),null,enchantedChestGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateOrange2"),null,enchantedChestOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateWhite2"),null,enchantedChestWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlack2"),null,enchantedChestBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldChest});
 
         ItemStack enchantedChestRed3 = oldChest.copy();
         ItemStack enchantedChestBlue3 = oldChest.copy();
@@ -200,14 +200,14 @@ public class CraftingRecipes
         enchantedChestOrange3.addEnchantment(Enchantment.getEnchantmentByID(3),3);//Blast Prot
         enchantedChestWhite3.addEnchantment(Enchantment.getEnchantmentByID(34),3);//Unbreaking
         enchantedChestBlack3.addEnchantment(Enchantment.getEnchantmentByID(0),3);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateRed3"),null,enchantedChestRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlue3"),null,enchantedChestBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateYellow3"),null,enchantedChestYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplatePurple3"),null,enchantedChestPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateGreen3"),null,enchantedChestGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateOrange3"),null,enchantedChestOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateWhite3"),null,enchantedChestWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlack3"),null,enchantedChestBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateRed3"),null,enchantedChestRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlue3"),null,enchantedChestBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateYellow3"),null,enchantedChestYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplatePurple3"),null,enchantedChestPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateGreen3"),null,enchantedChestGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateOrange3"),null,enchantedChestOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateWhite3"),null,enchantedChestWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlack3"),null,enchantedChestBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldChest});
 
         ItemStack enchantedChestRed4 = oldChest.copy();
         ItemStack enchantedChestBlue4 = oldChest.copy();
@@ -225,14 +225,14 @@ public class CraftingRecipes
         enchantedChestOrange4.addEnchantment(Enchantment.getEnchantmentByID(3),4);//Blast Prot
         enchantedChestWhite4.addEnchantment(Enchantment.getEnchantmentByID(70),1);//Mending
         enchantedChestBlack4.addEnchantment(Enchantment.getEnchantmentByID(0),4);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateRed4"),null,enchantedChestRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlue4"),null,enchantedChestBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateYellow4"),null,enchantedChestYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplatePurple4"),null,enchantedChestPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateGreen4"),null,enchantedChestGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateOrange4"),null,enchantedChestOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateWhite4"),null,enchantedChestWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldChest});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalChestplateBlack4"),null,enchantedChestBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateRed4"),null,enchantedChestRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlue4"),null,enchantedChestBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateYellow4"),null,enchantedChestYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplatePurple4"),null,enchantedChestPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateGreen4"),null,enchantedChestGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateOrange4"),null,enchantedChestOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateWhite4"),null,enchantedChestWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldChest});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalChestplateBlack4"),null,enchantedChestBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldChest});
 
 
         ItemStack oldLegs = new ItemStack(ItemArmorAndToolsRegistry.crystalLeggings);
@@ -252,14 +252,14 @@ public class CraftingRecipes
         enchantedLegsOrange.addEnchantment(Enchantment.getEnchantmentByID(3),1);//Blast Prot
         enchantedLegsWhite.addEnchantment(Enchantment.getEnchantmentByID(34),1);//Unbreaking
         enchantedLegsBlack.addEnchantment(Enchantment.getEnchantmentByID(0),1);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsRed"),null,enchantedLegsRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlue"),null,enchantedLegsBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsYellow"),null,enchantedLegsYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsPurple"),null,enchantedLegsPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsGreen"),null,enchantedLegsGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsOrange"),null,enchantedLegsOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsWhite"),null,enchantedLegsWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlack"),null,enchantedLegsBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsRed"),null,enchantedLegsRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlue"),null,enchantedLegsBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsYellow"),null,enchantedLegsYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsPurple"),null,enchantedLegsPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsGreen"),null,enchantedLegsGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsOrange"),null,enchantedLegsOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsWhite"),null,enchantedLegsWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlack"),null,enchantedLegsBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldLegs});
 
         ItemStack enchantedLegsRed2 = oldLegs.copy();
         ItemStack enchantedLegsBlue2 = oldLegs.copy();
@@ -277,14 +277,14 @@ public class CraftingRecipes
         enchantedLegsOrange2.addEnchantment(Enchantment.getEnchantmentByID(3),2);//Blast Prot
         enchantedLegsWhite2.addEnchantment(Enchantment.getEnchantmentByID(34),2);//Unbreaking
         enchantedLegsBlack2.addEnchantment(Enchantment.getEnchantmentByID(0),2);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsRed2"),null,enchantedLegsRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlue2"),null,enchantedLegsBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsYellow2"),null,enchantedLegsYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsPurple2"),null,enchantedLegsPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsGreen2"),null,enchantedLegsGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsOrange2"),null,enchantedLegsOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsWhite2"),null,enchantedLegsWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlack2"),null,enchantedLegsBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsRed2"),null,enchantedLegsRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlue2"),null,enchantedLegsBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsYellow2"),null,enchantedLegsYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsPurple2"),null,enchantedLegsPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsGreen2"),null,enchantedLegsGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsOrange2"),null,enchantedLegsOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsWhite2"),null,enchantedLegsWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlack2"),null,enchantedLegsBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldLegs});
 
         ItemStack enchantedLegsRed3 = oldLegs.copy();
         ItemStack enchantedLegsBlue3 = oldLegs.copy();
@@ -302,14 +302,14 @@ public class CraftingRecipes
         enchantedLegsOrange3.addEnchantment(Enchantment.getEnchantmentByID(3),3);//Blast Prot
         enchantedLegsWhite3.addEnchantment(Enchantment.getEnchantmentByID(34),3);//Unbreaking
         enchantedLegsBlack3.addEnchantment(Enchantment.getEnchantmentByID(0),3);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsRed3"),null,enchantedLegsRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlue3"),null,enchantedLegsBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsYellow3"),null,enchantedLegsYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsPurple3"),null,enchantedLegsPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsGreen3"),null,enchantedLegsGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsOrange3"),null,enchantedLegsOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsWhite3"),null,enchantedLegsWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlack3"),null,enchantedLegsBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsRed3"),null,enchantedLegsRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlue3"),null,enchantedLegsBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsYellow3"),null,enchantedLegsYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsPurple3"),null,enchantedLegsPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsGreen3"),null,enchantedLegsGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsOrange3"),null,enchantedLegsOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsWhite3"),null,enchantedLegsWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlack3"),null,enchantedLegsBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldLegs});
 
         ItemStack enchantedLegsRed4 = oldLegs.copy();
         ItemStack enchantedLegsBlue4 = oldLegs.copy();
@@ -327,14 +327,14 @@ public class CraftingRecipes
         enchantedLegsOrange4.addEnchantment(Enchantment.getEnchantmentByID(3),4);//Blast Prot
         enchantedLegsWhite4.addEnchantment(Enchantment.getEnchantmentByID(70),1);//Mending
         enchantedLegsBlack4.addEnchantment(Enchantment.getEnchantmentByID(0),4);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsRed4"),null,enchantedLegsRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlue4"),null,enchantedLegsBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsYellow4"),null,enchantedLegsYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsPurple4"),null,enchantedLegsPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsGreen4"),null,enchantedLegsGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsOrange4"),null,enchantedLegsOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsWhite4"),null,enchantedLegsWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldLegs});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalLeggingsBlack4"),null,enchantedLegsBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsRed4"),null,enchantedLegsRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlue4"),null,enchantedLegsBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsYellow4"),null,enchantedLegsYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsPurple4"),null,enchantedLegsPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsGreen4"),null,enchantedLegsGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsOrange4"),null,enchantedLegsOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsWhite4"),null,enchantedLegsWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldLegs});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalLeggingsBlack4"),null,enchantedLegsBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldLegs});
 
 
         ItemStack oldBoots = new ItemStack(ItemArmorAndToolsRegistry.crystalBoots);
@@ -354,14 +354,14 @@ public class CraftingRecipes
         enchantedBootsOrange.addEnchantment(Enchantment.getEnchantmentByID(3),1);//Blast Prot
         enchantedBootsWhite.addEnchantment(Enchantment.getEnchantmentByID(34),1);//Unbreaking
         enchantedBootsBlack.addEnchantment(Enchantment.getEnchantmentByID(0),1);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsRed"),null,enchantedBootsRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlue"),null,enchantedBootsBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsYellow"),null,enchantedBootsYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsPurple"),null,enchantedBootsPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsGreen"),null,enchantedBootsGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsOrange"),null,enchantedBootsOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsWhite"),null,enchantedBootsWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlack"),null,enchantedBootsBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsRed"),null,enchantedBootsRed,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlue"),null,enchantedBootsBlue,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsYellow"),null,enchantedBootsYellow,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsPurple"),null,enchantedBootsPurple,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsGreen"),null,enchantedBootsGreen,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsOrange"),null,enchantedBootsOrange,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsWhite"),null,enchantedBootsWhite,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlack"),null,enchantedBootsBlack,new Object[]{"DDD", "DAD", "DDD", 'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldBoots});
 
         ItemStack enchantedBootsRed2 = oldBoots.copy();
         ItemStack enchantedBootsBlue2 = oldBoots.copy();
@@ -379,14 +379,14 @@ public class CraftingRecipes
         enchantedBootsOrange2.addEnchantment(Enchantment.getEnchantmentByID(3),2);//Blast Prot
         enchantedBootsWhite2.addEnchantment(Enchantment.getEnchantmentByID(34),2);//Unbreaking
         enchantedBootsBlack2.addEnchantment(Enchantment.getEnchantmentByID(0),2);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsRed2"),null,enchantedBootsRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlue2"),null,enchantedBootsBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsYellow2"),null,enchantedBootsYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsPurple2"),null,enchantedBootsPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsGreen2"),null,enchantedBootsGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsOrange2"),null,enchantedBootsOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsWhite2"),null,enchantedBootsWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlack2"),null,enchantedBootsBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsRed2"),null,enchantedBootsRed2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.redstone),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlue2"),null,enchantedBootsBlue2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.bluestone),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsYellow2"),null,enchantedBootsYellow2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.yellowstone),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsPurple2"),null,enchantedBootsPurple2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.purplestone),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsGreen2"),null,enchantedBootsGreen2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.greenstone),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsOrange2"),null,enchantedBootsOrange2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.orangestone),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsWhite2"),null,enchantedBootsWhite2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.whitestone),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlack2"),null,enchantedBootsBlack2,new Object[]{"BDB", "DAD", "BDB", 'B',new ItemStack(BlockRegistry.blackstone),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldBoots});
 
         ItemStack enchantedBootsRed3 = oldBoots.copy();
         ItemStack enchantedBootsBlue3 = oldBoots.copy();
@@ -404,14 +404,14 @@ public class CraftingRecipes
         enchantedBootsOrange3.addEnchantment(Enchantment.getEnchantmentByID(3),3);//Blast Prot
         enchantedBootsWhite3.addEnchantment(Enchantment.getEnchantmentByID(34),3);//Unbreaking
         enchantedBootsBlack3.addEnchantment(Enchantment.getEnchantmentByID(0),3);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsRed3"),null,enchantedBootsRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlue3"),null,enchantedBootsBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsYellow3"),null,enchantedBootsYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsPurple3"),null,enchantedBootsPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsGreen3"),null,enchantedBootsGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsOrange3"),null,enchantedBootsOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsWhite3"),null,enchantedBootsWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlack3"),null,enchantedBootsBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsRed3"),null,enchantedBootsRed3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'D', new ItemStack(ItemRegistry.dust,1,0), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlue3"),null,enchantedBootsBlue3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'D', new ItemStack(ItemRegistry.dust,1,1), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsYellow3"),null,enchantedBootsYellow3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'D', new ItemStack(ItemRegistry.dust,1,2), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsPurple3"),null,enchantedBootsPurple3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'D', new ItemStack(ItemRegistry.dust,1,3), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsGreen3"),null,enchantedBootsGreen3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'D', new ItemStack(ItemRegistry.dust,1,4), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsOrange3"),null,enchantedBootsOrange3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'D', new ItemStack(ItemRegistry.dust,1,5), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsWhite3"),null,enchantedBootsWhite3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'D', new ItemStack(ItemRegistry.dust,1,6), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlack3"),null,enchantedBootsBlack3,new Object[]{"CDC", "DAD", "CDC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'D', new ItemStack(ItemRegistry.dust,1,7), 'A', oldBoots});
 
         ItemStack enchantedBootsRed4 = oldBoots.copy();
         ItemStack enchantedBootsBlue4 = oldBoots.copy();
@@ -429,14 +429,14 @@ public class CraftingRecipes
         enchantedBootsOrange4.addEnchantment(Enchantment.getEnchantmentByID(3),4);//Blast Prot
         enchantedBootsWhite4.addEnchantment(Enchantment.getEnchantmentByID(70),1);//Mending
         enchantedBootsBlack4.addEnchantment(Enchantment.getEnchantmentByID(0),4);//Prot
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsRed4"),null,enchantedBootsRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlue4"),null,enchantedBootsBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsYellow4"),null,enchantedBootsYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsPurple4"),null,enchantedBootsPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsGreen4"),null,enchantedBootsGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsOrange4"),null,enchantedBootsOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsWhite4"),null,enchantedBootsWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldBoots});
-        GameRegistry.addShapedRecipe(new ResourceLocation("crystalBootsBlack4"),null,enchantedBootsBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsRed4"),null,enchantedBootsRed4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0), 'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlue4"),null,enchantedBootsBlue4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsYellow4"),null,enchantedBootsYellow4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsPurple4"),null,enchantedBootsPurple4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsGreen4"),null,enchantedBootsGreen4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsOrange4"),null,enchantedBootsOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsWhite4"),null,enchantedBootsWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldBoots});
+        GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlack4"),null,enchantedBootsBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldBoots});
 
 
     }
