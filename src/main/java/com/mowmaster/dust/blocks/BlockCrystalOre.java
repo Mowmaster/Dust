@@ -55,7 +55,7 @@ public class BlockCrystalOre extends Block
 
     @Override
     public int quantityDropped(Random random) {
-        int count = random.nextInt(5);
+        int count = 1+ random.nextInt(4);//guarenteed 1 but could be up to 5
         return count;
     }
 
