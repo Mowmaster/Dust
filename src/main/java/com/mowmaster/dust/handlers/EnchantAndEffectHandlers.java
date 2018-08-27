@@ -1,6 +1,7 @@
 package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.BlockLeaf;
+import com.mowmaster.dust.effects.PotionMagnetism;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
@@ -395,7 +396,6 @@ public class EnchantAndEffectHandlers
     }
 
 
-
     Boolean magnet;
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onMagnet(TickEvent.PlayerTickEvent event)
@@ -435,4 +435,7 @@ public class EnchantAndEffectHandlers
             }
         }
     }
+
+
+
 }
