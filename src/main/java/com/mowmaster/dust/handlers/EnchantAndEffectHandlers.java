@@ -139,38 +139,17 @@ public class EnchantAndEffectHandlers
         World world = event.getWorld();
         EntityPlayer player = event.getHarvester();
         BlockPos pos = event.getPos();
-        Block block = event.getState().getBlock();
-        IBlockState state = world.getBlockState(pos);
         List<ItemStack> stackie = event.getDrops();
-
-
-
         if(!world.isRemote)
         {
-
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
             {
-
-
                 ItemStack tool = player.getHeldItem(player.getActiveHand());
-                if (player.swingingHand == null) {
-                    return;
-                }
+                if (player.swingingHand == null) {return;}
                 int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
-
-
                 if(tool.getItem() instanceof ItemTool)
                 {
-
-
-                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty())
-                    {
-                        /*
-                        block.harvestBlock(world, player, pos, state, null, player.getHeldItem(EnumHand.MAIN_HAND));
-                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
-                        world.setBlockToAir(pos);
-                         */
-                    }
+                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty()) {}
                     else
                     {
                         world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0))));
@@ -179,8 +158,6 @@ public class EnchantAndEffectHandlers
                         world.setBlockToAir(pos);
                     }
                 }
-
-
             }
         }
     }
@@ -427,7 +404,7 @@ public class EnchantAndEffectHandlers
         EntityPlayer player = event.player;
         World world = event.player.getEntityWorld();
         int amp=0;
-        if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM))
+        if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM) && !player.isSneaking())
         {
             magnet=true;
             amp = player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
@@ -457,7 +434,5 @@ public class EnchantAndEffectHandlers
                 }
             }
         }
-
-
     }
 }
