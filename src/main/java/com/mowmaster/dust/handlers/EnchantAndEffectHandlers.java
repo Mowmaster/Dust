@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentMending;
+import net.minecraft.enchantment.EnchantmentUntouching;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -60,8 +61,8 @@ import java.util.Random;
 
 public class EnchantAndEffectHandlers
 {
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void blockBreakEvent(BlockEvent.BreakEvent event)
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void blockBreakEventLow(BlockEvent.BreakEvent event)
     {
         World world = event.getWorld();
         EntityPlayer player = event.getPlayer();
@@ -71,34 +72,6 @@ public class EnchantAndEffectHandlers
 
         if(!world.isRemote)
         {
-
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
-            {
-                ItemStack dropped = new ItemStack(block.getItemDropped(state,null,0));
-                ItemStack tool = player.getHeldItem(player.getActiveHand());
-                if (player.swingingHand == null) {
-                    return;
-                }
-                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
-
-
-                if(tool.getItem() instanceof ItemTool)
-                {
-                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(dropped).isEmpty())
-                    {
-                        block.harvestBlock(world, player, pos, state, null, player.getHeldItem(EnumHand.MAIN_HAND));
-                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
-                        world.setBlockToAir(pos);
-                    }
-                    else
-                    {
-                        world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,FurnaceRecipes.instance().getSmeltingResult(dropped)));
-                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
-                        world.setBlockToAir(pos);
-                    }
-                }
-            }
-
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))!=0)
             {
                 ItemStack tool = player.getHeldItem(player.getActiveHand());
@@ -154,6 +127,47 @@ public class EnchantAndEffectHandlers
                                 }
                                 else continue;
                             }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void blockBreakEventLowest(BlockEvent.BreakEvent event)
+    {
+        World world = event.getWorld();
+        EntityPlayer player = event.getPlayer();
+        BlockPos pos = event.getPos();
+        Block block = event.getState().getBlock();
+        IBlockState state = world.getBlockState(pos);
+
+        if(!world.isRemote)
+        {
+
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
+            {
+                ItemStack dropped = new ItemStack(block.getItemDropped(state,null,0));
+                ItemStack tool = player.getHeldItem(player.getActiveHand());
+                if (player.swingingHand == null) {
+                    return;
+                }
+                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
+
+
+                if(tool.getItem() instanceof ItemTool)
+                {
+                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(dropped).isEmpty())
+                    {
+                        block.harvestBlock(world, player, pos, state, null, player.getHeldItem(EnumHand.MAIN_HAND));
+                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                        world.setBlockToAir(pos);
+                    }
+                    else
+                    {
+                        world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,FurnaceRecipes.instance().getSmeltingResult(dropped)));
+                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                        world.setBlockToAir(pos);
                     }
                 }
             }
