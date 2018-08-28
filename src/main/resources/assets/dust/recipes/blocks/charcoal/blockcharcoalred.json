@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group":"block_charcoal",
+  "ingredients": [
+    {"item": "dust:charcoalred"},{"item": "dust:charcoalred"},{"item": "dust:charcoalred"},
+    {"item": "dust:charcoalred"},{"item": "dust:charcoalred"},{"item": "dust:charcoalred"},
+    {"item": "dust:charcoalred"},{"item": "dust:charcoalred"},{"item": "dust:charcoalred"}
+  ],
+  "result": {
+    "item": "dust:blockcharcoalred",
+    "count":1
+  }
+}
