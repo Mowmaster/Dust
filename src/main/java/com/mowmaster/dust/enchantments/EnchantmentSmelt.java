@@ -2,6 +2,7 @@ package com.mowmaster.dust.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -16,25 +17,35 @@ public class EnchantmentSmelt extends Enchantment
         setRegistryName(location);
     }
 
-    @Override
-    public int getMinEnchantability(int par1){
-        return 30;
+    /**
+     * Returns the minimal value of enchantability needed on the enchantment level passed.
+     */
+    public int getMinEnchantability(int enchantmentLevel)
+    {
+        return enchantmentLevel * 25;
     }
 
-    @Override
-    public int getMaxEnchantability(int par1){
-        return 50;
+    /**
+     * Returns the maximum value of enchantability nedded on the enchantment level passed.
+     */
+    public int getMaxEnchantability(int enchantmentLevel)
+    {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-    //NO min max level defaults to 1 only
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack){
-        return true;
+    /**
+     * Returns the maximum level that the enchantment can have.
+     */
+    public int getMaxLevel()
+    {
+        return 1;
     }
 
-    @Override
-    public boolean isAllowedOnBooks() {
-        return true;
+    /**
+     * Determines if the enchantment passed can be applyied together with this enchantment.
+     */
+    public boolean canApplyTogether(Enchantment ench)
+    {
+        return super.canApplyTogether(ench) && ench != Enchantments.SILK_TOUCH;
     }
 }

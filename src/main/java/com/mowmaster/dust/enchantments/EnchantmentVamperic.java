@@ -2,6 +2,7 @@ package com.mowmaster.dust.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -16,34 +17,36 @@ public class EnchantmentVamperic extends Enchantment
         setRegistryName(location);
     }
 
-    @Override
-    public int getMinEnchantability(int par1){
-        return 30;
+    /**
+     * Returns the minimal value of enchantability needed on the enchantment level passed.
+     */
+    public int getMinEnchantability(int enchantmentLevel)
+    {
+        return enchantmentLevel * 40;
     }
 
-    @Override
-    public int getMaxEnchantability(int par1){
-        return 50;
+    /**
+     * Returns the maximum value of enchantability nedded on the enchantment level passed.
+     */
+    public int getMaxEnchantability(int enchantmentLevel)
+    {
+        return super.getMinEnchantability(enchantmentLevel) + 50;
     }
 
-    @Override
-    public int getMinLevel(){
-        return 1;
-    }
-
-    @Override
-    public int getMaxLevel(){
+    /**
+     * Returns the maximum level that the enchantment can have.
+     */
+    public int getMaxLevel()
+    {
         return 5;
     }
 
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack){
-        return true;
-    }
-
-    @Override
-    public boolean isAllowedOnBooks() {
-        return true;
+    /**
+     * Determines if the enchantment passed can be applyied together with this enchantment.
+     */
+    public boolean canApplyTogether(Enchantment ench)
+    {
+        return super.canApplyTogether(ench) && ench != Enchantments.UNBREAKING;
     }
 
 }

@@ -143,10 +143,11 @@ public class EnchantAndEffectHandlers
         List<ItemStack> stackie = event.getDrops();
         if(!world.isRemote)
         {
+            if (player.swingingHand == null) {return;}
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
             {
                 ItemStack tool = player.getHeldItem(player.getActiveHand());
-                if (player.swingingHand == null) {return;}
+
                 int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
                 if(tool.getItem() instanceof ItemTool)
                 {
@@ -407,7 +408,7 @@ public class EnchantAndEffectHandlers
         if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM) && !player.isSneaking())
         {
             magnet=true;
-            amp = player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
+            amp = 1+player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
         }
         else{magnet=false;}
 
@@ -436,6 +437,110 @@ public class EnchantAndEffectHandlers
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onItemRightClick(PlayerInteractEvent.RightClickBlock event) {
+        World worldIn = event.getWorld();
+        EnumHand hand = event.getHand();
+        IBlockState state = worldIn.getBlockState(event.getPos());
+        EntityPlayer player = event.getEntityPlayer();
 
+        int posX = event.getPos().getX();
+        int posY = event.getPos().getY();
+        int posZ = event.getPos().getZ();
+
+        int red=0;
+        int blue=0;
+        int yellow=0;
+        int white=0;
+        int black=0;
+        int count=0;
+
+        int effectCap=9;
+        int minimumDustRequired=5;
+
+        if(!worldIn.isRemote)
+        {
+            //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
+            List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-3, posY-3, posZ-3, posX+3, posY+3,posZ+3));
+
+            if((player.getHeldItem(hand) != null)) {
+                if (player.getHeldItem(hand).getItem() instanceof ItemFlintAndSteel) {
+
+                    for (EntityItem item : items) {
+                        ItemStack stack = item.getItem();
+                        if(stack.getItemDamage()==0) {red=red+2*stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==1){blue=blue+2*stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==2){yellow=yellow+2*stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==3){red=red+stack.getCount();blue=blue+stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==4){yellow=yellow+stack.getCount();blue=blue+stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==5){yellow=yellow+stack.getCount();red=red+stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==6){white=white+stack.getCount();count=count+stack.getCount();}
+                        else if(stack.getItemDamage()==7){black=black+stack.getCount();count=count+stack.getCount();}
+                        item.setDead();
+                    }
+                }
+
+                if(count>=minimumDustRequired)
+                {
+                    int amp = 0;
+                    if(white>black || white==black)//positive effects
+                    {
+                        amp=Math.abs(white-black);
+                        if(amp>effectCap)
+                        {
+                            amp=effectCap;
+                        }
+
+                        if(red>=1 && blue==0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH ,20*count, amp, false, true));}
+                        else if(blue>=1 && red==0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING ,20*count, amp, false, true));}
+                        else if(yellow>=1 && blue==0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.SATURATION ,20*count, amp, false, true));}
+
+                        else if(red>yellow && yellow !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST ,20*count, amp, false, true));}
+                        else if(red<yellow && red !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION ,20*count, amp, false, true));}
+                        else if(red>blue && blue !=0 && yellow==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_MAGNETISM ,20*count, amp, false, true));}//should be envigoration
+                        else if(red<blue && red !=0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE ,20*count, amp, false, true));}
+                        else if(yellow>blue && blue !=0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY,20*count, amp, false, true));}
+                        else if(yellow<blue && yellow !=0 && red==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_QUICKNESS,20*count, amp, false, true));}
+                        else if((yellow==blue && blue==red)){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_FLIGHT,20*count, amp, false, true));}
+
+                        else if((blue==red && yellow==0)){player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE,20*count, amp, false, true));}//purple
+                        else if((yellow==blue && red==0)){player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION,20*count, amp, false, true));}//green
+                        else if((yellow==red && blue==0)){player.addPotionEffect(new PotionEffect(MobEffects.HASTE,20*count, amp, false, true));}//orange
+
+                    }
+                    else//negative effects
+                    {
+                        amp=Math.abs((black-white)-1);
+                        if(amp>effectCap)
+                        {
+                            amp=effectCap;
+                        }
+
+                        //player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS ,20*count, amp, false, true));
+
+                        if(red>=1 && blue==0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS ,20*count, amp, false, true));}
+                        else if(blue>=1 && red==0 && yellow==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_DROWNING ,20*count, amp, false, true));}
+                        else if(yellow>=1 && blue==0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.HUNGER ,20*count, amp, false, true));}
+                        else if(red>yellow && yellow !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST ,20*count, 250, false, true));}
+                        else if(red<yellow && red !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS ,20*count, amp, false, true));}
+                        else if(red>blue && blue !=0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA ,20*count, amp, false, true));}
+                        else if(red<blue && red !=0 && yellow==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,20*count, amp, false, true));}//should be flamibility
+                        else if(yellow>blue && blue !=0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.GLOWING,20*count, amp, false, true));}
+                        else if(yellow<blue && yellow !=0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS,20*count, amp, false, true));}
+                        else if((yellow==blue && blue==red)){player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION,20*count, amp, false, true));}//Gravity
+                        else if((blue==red && yellow==0)){player.addPotionEffect(new PotionEffect(MobEffects.POISON,20*count, amp, false, true));}//purple
+                        else if((yellow==blue && red==0)){player.addPotionEffect(new PotionEffect(MobEffects.WITHER,20*count, amp, false, true));}//green
+                        else if((yellow==red && blue==0)){player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE,20*count, amp, false, true));}//orange
+
+
+                    }
+                }
+            }
+        }
+
+
+
+
+    }
 
 }
