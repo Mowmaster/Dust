@@ -6,15 +6,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-/**
- * Created by KingMowmaster on 7/14/2017.
- */
 public class OreDictDust
 {
     public static void addEntries()
     {
-        //NEoAOreDictionary.registerOre("dustPyrothium",fake_pyrothium);
-
         OreDictionary.registerOre("plankWood", BlockRegistry.redplanks);
         OreDictionary.registerOre("plankWood", BlockRegistry.blueplanks);
         OreDictionary.registerOre("plankWood", BlockRegistry.yellowplanks);
@@ -66,15 +61,24 @@ public class OreDictDust
         OreDictionary.registerOre("dustCrystal", ItemRegistry.dust);
         OreDictionary.registerOre("bitDust", ItemRegistry.bit);
 
-        //OreDictionary.registerOre("charcoal",ItemRegistry.dustyCharcoal);
-        OreDictionary.registerOre("charcoalRed",new ItemStack(ItemRegistry.charcoalRed));
-        OreDictionary.registerOre("charcoalBlue",new ItemStack(ItemRegistry.charcoalBlue));
-        OreDictionary.registerOre("charcoalYellow",new ItemStack(ItemRegistry.charcoalYellow));
-        OreDictionary.registerOre("charcoalPurple",new ItemStack(ItemRegistry.charcoalPurple));
-        OreDictionary.registerOre("charcoalGreen",new ItemStack(ItemRegistry.charcoalGreen));
-        OreDictionary.registerOre("charcoalOrange",new ItemStack(ItemRegistry.charcoalOrange));
-        OreDictionary.registerOre("charcoalWhite",new ItemStack(ItemRegistry.charcoalWhite));
-        OreDictionary.registerOre("charcoalBlack",new ItemStack(ItemRegistry.charcoalBlack));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalRed));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalBlue));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalYellow));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalPurple));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalGreen));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalOrange));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalWhite));
+        OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalBlack));
+
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalRed));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalBlue));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalYellow));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalPurple));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalGreen));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalOrange));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalWhite));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalBlack));
+
 
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinA));
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinB));

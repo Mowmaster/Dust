@@ -1,5 +1,7 @@
 package com.mowmaster.dust.recipes.fuels;
 
+import com.mowmaster.dust.blocks.BlockCharcoal;
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCharcoal;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.item.ItemStack;
@@ -19,7 +21,24 @@ public class FuelTypes implements IFuelHandler
             else if(fuel.getItem().equals(ItemRegistry.charcoalOrange)){return 2000;}
             else if(fuel.getItem().equals(ItemRegistry.charcoalWhite)){return 2600;}
             else if(fuel.getItem().equals(ItemRegistry.charcoalBlack)){return 1200;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalRed).getItem())){return 16200;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalBlue).getItem())){return 21600;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalYellow).getItem())){return 19800;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalPurple).getItem())){return 12600;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalGreen).getItem())){return 14400;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalOrange).getItem())){return 18000;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalWhite).getItem())){return 23400;}
+            else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalBlack).getItem())){return 10800;}
         }
+        if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalRed).getItem())){return 16200;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalBlue).getItem())){return 21600;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalYellow).getItem())){return 19800;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalPurple).getItem())){return 12600;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalGreen).getItem())){return 14400;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalOrange).getItem())){return 18000;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalWhite).getItem())){return 23400;}
+        else if(fuel.getItem().equals(new ItemStack(BlockRegistry.charcoalBlack).getItem())){return 10800;}
+
         return 0;
     }
 }

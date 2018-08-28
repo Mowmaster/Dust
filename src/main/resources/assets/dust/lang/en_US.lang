@@ -95,7 +95,7 @@ item.bit.black.name=Black Bit
 item.charcoalred.name=Red Charcoal
 item.charcoalblue.name=Blue Charcoal
 item.charcoalyellow.name=Yellow Charcoal
-item.charcoa.purple.name=Purple Charcoal
+item.charcoalpurple.name=Purple Charcoal
 item.charcoalgreen.name=Green Charcoal
 item.charcoalorange.name=Orange Charcoal
 item.charcoalwhite.name=White Charcoal
@@ -411,6 +411,15 @@ tile.spike4.name=Crystal Spikes
 tile.spike5.name=Crystal Spikes
 tile.voidpot.name=Pot of the Abyss
 
+tile.blockcharcoalred.name=Red Block of Charcoal
+tile.blockcharcoalblue.name=Blue Block of Charcoal
+tile.blockcharcoalyellow.name=Yellow Block of Charcoal
+tile.blockcharcoalpurple.name=Purple Block of Charcoal
+tile.blockcharcoalgreen.name=Green Block of Charcoal
+tile.blockcharcoalorange.name=Orange Block of Charcoal
+tile.blockcharcoalwhite.name=White Block of Charcoal
+tile.blockcharcoalblack.name=Black Block of Charcoal
+
 item.crystalhelmet.name=Crystal Helmet
 item.crystalchestplate.name=Crystal Chestplate
 item.crystalleggings.name=Crystal Leggings
@@ -421,6 +430,7 @@ enchantment.enchantVamperic=Vamperic
 enchantment.enchantSteadfast=Steadfast
 enchantment.enchantLastResort=Last Resort
 enchantment.enchantStepAssist=Step Up
+enchantment.enchantSmelter=Smelter
 
 
 enchantment.enchantFlight=Flight
@@ -452,3 +462,15 @@ potion.effect.drowning=Potion of Drowning
 splash_potion.effect.drowning=Splash Potion of Drowning
 lingering_potion.effect.drowning=Lingering Potion of Drowning
 tipped_arrow.effect.drowning=Arrow of Drowning
+
+effect.envigoration=Envigoration
+potion.effect.envigoration=Potion of Envigoration
+splash_potion.effect.envigoration=Splash Potion of Envigoration
+lingering_potion.effect.envigoration=Lingering Potion of Envigoration
+tipped_arrow.effect.envigoration=Arrow of Envigoration
+
+effect.magnetism=Magnetism
+potion.effect.magnetism=Potion of Magnetism
+splash_potion.effect.magnetism=Splash Potion of Magnetism
+lingering_potion.effect.magnetism=Lingering Potion of Magnetism
+tipped_arrow.effect.magnetism=Arrow of Magnetism
