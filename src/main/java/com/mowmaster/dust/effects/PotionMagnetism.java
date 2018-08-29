@@ -28,6 +28,7 @@ public class PotionMagnetism extends Potion
         super(false,1393400);//does it hurt dead mobs?T/F, decimal color or hexadecimal
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         setPotionName(potionName);
+        this.isBeneficial();
     }
 
     private ResourceLocation iconTexture = new ResourceLocation(Reference.MODID, "textures/icons/icons.png");

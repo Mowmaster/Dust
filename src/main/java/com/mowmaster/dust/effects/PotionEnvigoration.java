@@ -17,6 +17,7 @@ public class PotionEnvigoration extends Potion
         super(false,15667711);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         setPotionName(potionName);
+        this.isBeneficial();
     }
 
     private ResourceLocation iconTexture = new ResourceLocation(Reference.MODID, "textures/icons/icons.png");

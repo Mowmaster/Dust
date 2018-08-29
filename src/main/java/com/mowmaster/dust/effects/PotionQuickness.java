@@ -19,6 +19,7 @@ public class PotionQuickness extends Potion
         super(false,8376831);//does it hurt dead mobs?T/F, decimal color or hexadecimal
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         setPotionName(potionName);//"effect.fly"
+        this.isBeneficial();
     }
 
     private ResourceLocation iconTexture = new ResourceLocation(Reference.MODID, "textures/icons/icons.png");
