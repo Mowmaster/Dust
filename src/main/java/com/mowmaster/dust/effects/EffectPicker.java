@@ -6,7 +6,7 @@ import net.minecraft.potion.PotionEffect;
 public class EffectPicker
 {
 
-    public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, Boolean ambient, Boolean showParticles )
+    public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration,int potencyCap, Boolean ambient, Boolean showParticles )
     {
         PotionEffect effect=new PotionEffect(MobEffects.LUCK);
         double totalColor=(red+blue)+yellow;
@@ -14,15 +14,13 @@ public class EffectPicker
         double percentBlue= 100*((double)blue/totalColor);
         double percentYellow= 100*((double)yellow/totalColor);
 
-
-        int effectCap=3;
         int amp = 0;
         if(white>black || white==black)//positive effects
         {
             amp=Math.abs(white-black);
-            if(amp>effectCap)
+            if(amp>potencyCap)
             {
-                amp=effectCap;
+                amp=potencyCap;
             }
 
             if(red>=1 && blue==0 && yellow==0){effect=new PotionEffect(MobEffects.STRENGTH ,duration, amp, false, true);}
@@ -30,13 +28,11 @@ public class EffectPicker
             else if(yellow>=1 && blue==0 && red==0){effect=new PotionEffect(MobEffects.SATURATION ,duration, amp, false, true);}
             else if(blue==0)
             {
-                System.out.println("NO BLUE");
                 if(yellow!=0 && red!=0)
                 {
                     if(red==yellow){effect=new PotionEffect(MobEffects.HASTE,duration, amp, false, true);}//orange
                     else if(red>yellow)
                     {
-                        System.out.println("MORE RED THEN YELLOW");
                         if(percentRed>=50.0 && percentRed<60.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}
                         if(percentRed>=60.0 && percentRed<70.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}
                         if(percentRed>=70.0 && percentRed<80.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}//red-orange
@@ -45,9 +41,6 @@ public class EffectPicker
                     }
                     else if(yellow>red)
                     {
-                        System.out.println("MORE YELLOW THEN RED");
-                        System.out.println(percentYellow);
-                        System.out.println(percentRed);
                         if(percentYellow>=50.0 && percentYellow<60.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}
                         if(percentYellow>=60.0 && percentYellow<70.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}
                         if(percentYellow>=70.0 && percentYellow<80.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}//yellow-orange
@@ -107,9 +100,9 @@ public class EffectPicker
         else//negative effects
         {
             amp=Math.abs((black-white)-1);
-            if(amp>effectCap)
+            if(amp>potencyCap)
             {
-                amp=effectCap;
+                amp=potencyCap;
             }
 
             if(red>=1 && blue==0 && yellow==0){effect=new PotionEffect(MobEffects.WEAKNESS ,duration, amp, false, true);}

@@ -1,6 +1,7 @@
 package com.mowmaster.dust.tiles;
 
 import com.google.common.collect.Sets;
+import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -170,7 +171,6 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         return false;
     }
 
-    private PotionEffect crystalEffect;
     private int amp;
     public static final Potion[][] LISTOFEFFECTS = new Potion[][] {{MobEffects.SPEED, MobEffects.HASTE}, {MobEffects.RESISTANCE, MobEffects.JUMP_BOOST}, {MobEffects.STRENGTH}, {MobEffects.REGENERATION}};
     private static final Set<Potion> POSSIBLEEFFECTS = Sets.<Potion>newHashSet();
@@ -181,64 +181,11 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         int y = this.pos.getY();
         int z = this.pos.getZ();
         int a=0;//CrystalEffectRange
-        //Effect Amplifier
         if(crystalCount>=3 && crystalCount<=4) {a=0;}
         if(crystalCount>=5 && crystalCount<=6) {a=1;}
         if(crystalCount>=7 && crystalCount<=8) {a=2;}
         if(crystalCount>=9) {a=Math.round(crystalCount/3);}//??? may need to change to work???
-        if(totalColors>=6)
-        {
-            if(whiteCrystals>blackCrystals && whiteCrystals-blackCrystals>0)
-            {
-                amp= Math.subtractExact(whiteCrystals,blackCrystals);
-            }
-            else if(blackCrystals>whiteCrystals && blackCrystals-whiteCrystals>0)
-            {
-                amp= Math.subtractExact(blackCrystals,whiteCrystals);
-            }
-            else
-            {
-                amp=0;
-            }
-        }
 
-
-        if(blackCrystals>whiteCrystals && blackCrystals-whiteCrystals>=1)
-        {
-            if(totalColors==redCrystals){crystalEffect = new PotionEffect(MobEffects.WEAKNESS ,100, amp, false, true);}
-            else if(totalColors==blueCrystals){crystalEffect = new PotionEffect(PotionRegistry.POTION_DROWNING ,100, amp, false, true);}
-            else if(totalColors==yellowCrystals){crystalEffect = new PotionEffect(MobEffects.HUNGER ,100, amp, false, true);}
-
-            else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, 250, false, true);}
-            else if(redCrystals<yellowCrystals && redCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.BLINDNESS ,100, amp, false, true);}
-            else if(redCrystals>blueCrystals && blueCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.NAUSEA ,100, amp, false, true);}
-            else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.POISON ,100, amp, false, true);}//should be flamibility
-            else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.GLOWING,100, amp, false, true);}
-            else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.SLOWNESS,100, amp, false, true);}
-            else if((yellowCrystals==blueCrystals && blueCrystals==redCrystals)){crystalEffect = new PotionEffect(MobEffects.LEVITATION,100, amp, false, true);}//Gravity
-
-            else if((blueCrystals==redCrystals && yellowCrystals==0)){crystalEffect = new PotionEffect(MobEffects.POISON,100, amp, false, true);}//purple
-            else if((yellowCrystals==blueCrystals && redCrystals==0)){crystalEffect = new PotionEffect(MobEffects.WITHER,100, amp, false, true);}//green
-            else if((yellowCrystals==redCrystals && blueCrystals==0)){crystalEffect = new PotionEffect(MobEffects.MINING_FATIGUE,100, amp, false, true);}//orange
-        }
-        else
-        {
-            if(totalColors==redCrystals){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, amp, false, true);}
-            else if(totalColors==blueCrystals){crystalEffect = new PotionEffect(MobEffects.WATER_BREATHING ,100, amp, false, true);}
-            else if(totalColors==yellowCrystals){crystalEffect = new PotionEffect(MobEffects.SATURATION ,100, amp, false, true);}
-
-            else if(redCrystals>yellowCrystals && yellowCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.JUMP_BOOST ,100, amp, false, true);}
-            else if(redCrystals<yellowCrystals && redCrystals !=0 && blueCrystals==0){crystalEffect = new PotionEffect(MobEffects.NIGHT_VISION ,100, amp, false, true);}
-            else if(redCrystals>blueCrystals && blueCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.STRENGTH ,100, amp, false, true);}//should be envigoration
-            else if(redCrystals<blueCrystals && redCrystals !=0 && yellowCrystals==0){crystalEffect = new PotionEffect(MobEffects.FIRE_RESISTANCE ,100, amp, false, true);}
-            else if(yellowCrystals>blueCrystals && blueCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(MobEffects.INVISIBILITY,100, amp, false, true);}
-            else if(yellowCrystals<blueCrystals && yellowCrystals !=0 && redCrystals==0){crystalEffect = new PotionEffect(PotionRegistry.POTION_QUICKNESS,100, amp, false, true);}
-            else if((yellowCrystals==blueCrystals && blueCrystals==redCrystals)){crystalEffect = new PotionEffect(PotionRegistry.POTION_FLIGHT,100, amp, false, true);}
-
-            else if((blueCrystals==redCrystals && yellowCrystals==0)){crystalEffect = new PotionEffect(MobEffects.RESISTANCE,100, amp, false, true);}//purple
-            else if((yellowCrystals==blueCrystals && redCrystals==0)){crystalEffect = new PotionEffect(MobEffects.REGENERATION,100, amp, false, true);}//green
-            else if((yellowCrystals==redCrystals && blueCrystals==0)){crystalEffect = new PotionEffect(MobEffects.HASTE,100, amp, false, true);}//orange
-        }
 
 
         if (!this.world.isRemote)
@@ -251,12 +198,12 @@ public class TileCrystalCluster extends TileEntity implements ITickable
                     List<EntityPlayer> listed = this.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, (new AxisAlignedBB((double)x-1, (double)y, (double)z-1, (double)x +2, (double)y+1, (double)z+2).grow(a)));
                     for (EntityCreature entityCreature : lista)
                     {
-                        entityCreature.addPotionEffect(crystalEffect);
+                        entityCreature.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true));
                         //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
                     }
                     for (EntityPlayer entityPlayer : listed)
                     {
-                        entityPlayer.addPotionEffect(crystalEffect);
+                        entityPlayer.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,false));
                         //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
                     }
                 }
