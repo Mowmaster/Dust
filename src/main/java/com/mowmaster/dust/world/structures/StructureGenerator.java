@@ -67,7 +67,7 @@ public class StructureGenerator extends WorldGenerator {
                 new ResourceLocation(Reference.MODID, this.structureName));
 
         if (template == null) {
-            System.out.println("Structure Doesnt Exist");
+            System.out.println("Structure Doesnt Exist" + this.structureName);
             return false;
         }
 
@@ -174,7 +174,7 @@ public class StructureGenerator extends WorldGenerator {
                 y = -1;
                 break;
             }
-            foundGround = block == Blocks.GRASS || block == Blocks.SAND || block == Blocks.SNOW
+            foundGround = block == Blocks.GRASS || block == Blocks.HARDENED_CLAY || block == Blocks.STAINED_HARDENED_CLAY || block == Blocks.SAND || block == Blocks.SNOW
                     || block == Blocks.SNOW_LAYER || block == Blocks.MYCELIUM || block == Blocks.STONE;
         }
         return y;

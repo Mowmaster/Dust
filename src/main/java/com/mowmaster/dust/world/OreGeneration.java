@@ -56,7 +56,18 @@ public class OreGeneration implements IWorldGenerator
     private LargeHouseFireplace largeHouseFireplace;
     private MediumCrusherLab mediumCrusherLab;
 
-    private StructureGenerator tester;
+    private StructureGenerator tester;//the same as tester1 atm
+    private StructureGenerator tester1;
+    private StructureGenerator tester2;
+    private StructureGenerator tester3;
+    private StructureGenerator tester4;
+    private StructureGenerator tester5;
+    private StructureGenerator tester6;
+    private StructureGenerator tester7;
+    private StructureGenerator tester8;
+    private StructureGenerator tester9;
+    private StructureGenerator tester10;
+    private StructureGenerator tester11;
 
 
 
@@ -92,7 +103,20 @@ public class OreGeneration implements IWorldGenerator
         mediumCrusherLab = new MediumCrusherLab();
 
 
-        tester = new StructureGenerator("furnacehouse");
+        tester = new StructureGenerator("pillarchiseled1");
+        tester1 = new StructureGenerator("pillarchiseled1");
+        tester2 = new StructureGenerator("pillarchiseled2");
+        tester3 = new StructureGenerator("pillarchiseled3");
+        tester4 = new StructureGenerator("pillarchiseled4");
+
+        tester5 = new StructureGenerator("pillarcobble1");
+        tester6 = new StructureGenerator("pillarcobble2");
+        tester7 = new StructureGenerator("pillarcobble3");
+
+        tester8 = new StructureGenerator("pillarstone1");
+        tester9 = new StructureGenerator("pillarstone2");
+        tester10 = new StructureGenerator("pillarstone3");
+        tester11 = new StructureGenerator("pillarstone4");
 
 
     }
@@ -127,6 +151,7 @@ public class OreGeneration implements IWorldGenerator
             {generator.generate(world, rand, new BlockPos(x, y, z));}
         }
     }
+    /*
     private void runGeneratorHot(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
@@ -169,6 +194,7 @@ public class OreGeneration implements IWorldGenerator
             {generator.generate(world, rand, new BlockPos(x, y, z));}
         }
     }
+     */
 
     private void runTreeGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
@@ -185,6 +211,7 @@ public class OreGeneration implements IWorldGenerator
             }
         }
     }
+    /*
     private void runTreeGeneratorHot(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
@@ -230,6 +257,7 @@ public class OreGeneration implements IWorldGenerator
             }
         }
     }
+     */
 
 
     private void runAllBiomeStructures(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
@@ -239,10 +267,11 @@ public class OreGeneration implements IWorldGenerator
 
         if (rand.nextInt(OverWorldStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
-                int x = chunk_X*16 + rand.nextInt(5)+ 5;
+                int x = chunk_X*16 + rand.nextInt(3)+ 6;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
-                int z = chunk_Z*16 + rand.nextInt(5)+ 5;
+                int z = chunk_Z*16 + rand.nextInt(3)+ 6;
                 generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
+                System.out.println("Spawning Structure In World!!!");
             }
         }
     }
@@ -261,7 +290,7 @@ public class OreGeneration implements IWorldGenerator
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + 8;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -278,12 +307,12 @@ public class OreGeneration implements IWorldGenerator
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(1)+ 7;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
     }
-
+//worldgen structures
     private void runStructureGeneratorElevenByEleven(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
@@ -295,12 +324,12 @@ public class OreGeneration implements IWorldGenerator
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(3)+ 6;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
     }
-
+    //worldgen structures
     private void runStructureGeneratorDireBox(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
 
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
@@ -312,7 +341,7 @@ public class OreGeneration implements IWorldGenerator
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(5)+ 5;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
 
             }
         }
@@ -323,13 +352,13 @@ public class OreGeneration implements IWorldGenerator
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        if (rand.nextInt(BiomeSpecificStructureChance) <= 1) {
+        if (rand.nextInt(OverWorldStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(7)+ 4;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(7)+ 4;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
 
             }
         }
@@ -340,13 +369,13 @@ public class OreGeneration implements IWorldGenerator
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        if (rand.nextInt(BiomeSpecificStructureChance) <= 1) {
+        if (rand.nextInt(OverWorldStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(9)+ 3;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(9)+ 3;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
 
             }
         }
@@ -357,13 +386,13 @@ public class OreGeneration implements IWorldGenerator
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        if (rand.nextInt(BiomeSpecificStructureChance) <= 1) {
+        if (rand.nextInt(OverWorldStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(11)+2;
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(11)+2;
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
 
             }
         }
@@ -374,13 +403,13 @@ public class OreGeneration implements IWorldGenerator
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        if (rand.nextInt(BiomeSpecificStructureChance) <= 1) {
+        if (rand.nextInt(OverWorldStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(15);
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(15);
                 //Once this is good the below is biome specific
-                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_hot) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_warm) || world.getBiome(new BlockPos(x,y,z)).equals(crystal_cold)) {generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));}
+                generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
 
             }
         }
@@ -410,6 +439,7 @@ public class OreGeneration implements IWorldGenerator
                 this.runGenerator(green_ore,world,random,chunkX,chunkZ,9,0,30);
                 this.runGenerator(white_ore,world,random,chunkX,chunkZ,3,0,10);
                 this.runGenerator(black_ore,world,random,chunkX,chunkZ,3,0,10);
+                /*
                 //Ore Generator Crystal Hot Biome
                 this.runGeneratorHot(red_ore,world,random,chunkX,chunkZ,15,0,60);
                 this.runGeneratorHot(yellow_ore,world,random,chunkX,chunkZ,15,0,60);
@@ -426,6 +456,7 @@ public class OreGeneration implements IWorldGenerator
                 this.runGeneratorCold(purple_ore,world,random,chunkX,chunkZ,9,0,30);
                 this.runGeneratorCold(green_ore,world,random,chunkX,chunkZ,9,0,30);
                 this.runGeneratorCold(black_ore,world,random,chunkX,chunkZ,3,0,10);
+                 */
                 //Tree Generator Crystal Biome
                 this.runTreeGenerator(smalltreered, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreeblue, world, random, chunkX, chunkZ,1,0,20);
@@ -435,28 +466,67 @@ public class OreGeneration implements IWorldGenerator
                 this.runTreeGenerator(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
                 this.runTreeGenerator(smalltreeblack, world, random, chunkX, chunkZ,1,0,20);
-                //Tree Generator Crystal Hot Biome
-                this.runTreeGeneratorHot(smalltreered, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorHot(smalltreeyellow, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorHot(smalltreeorange, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorHot(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
-                //Tree Generator Crystal Warm Biome
-                this.runTreeGeneratorWarm(smalltreeyellow, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorWarm(smalltreeorange, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorWarm(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorWarm(smalltreewhite, world, random, chunkX, chunkZ,1,0,20);
-                //Tree Generator Crystal Cold Biome
-                this.runTreeGeneratorCold(smalltreeblue, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorCold(smalltreepurple, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorCold(smalltreegreen, world, random, chunkX, chunkZ,1,0,20);
-                this.runTreeGeneratorCold(smalltreeblack, world, random, chunkX, chunkZ,1,0,20);
+
                 //Overworld Structures All Biomes
-                this.runAllBiomeStructures(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
-                this.runAllBiomeStructures(smallstonewell,world,random,chunkX,chunkZ,1,0,20);
-                this.runAllBiomeStructures(smallpiller,world,random,chunkX,chunkZ,1,0,20);
+                int getrandoOW = random.nextInt(23);
+                switch (getrandoOW)
+                {
+                    case 0: this.runAllBiomeStructures(smallsandwell,world,random,chunkX,chunkZ,1,0,20);
+                        this.runAllBiomeStructures(smallstonewell,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    //Start of Machine Specific Structures
+                    case 1: this.runAllBiomeStructures(mediumStoneHenge,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 2: this.runAllBiomeStructures(mediumCrusherLab,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 3: this.runAllBiomeStructures(largeAuraMachineRoom,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 4: this.runAllBiomeStructures(tester,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 5: this.runAllBiomeStructures(tester1,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 6: this.runAllBiomeStructures(tester2,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 7: this.runAllBiomeStructures(tester3,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 8: this.runAllBiomeStructures(tester4,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 9: this.runAllBiomeStructures(tester5,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 10: this.runAllBiomeStructures(tester6,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 11: this.runAllBiomeStructures(tester7,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 12: this.runAllBiomeStructures(tester8,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 13: this.runAllBiomeStructures(tester9,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 14: this.runAllBiomeStructures(tester10,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 15: this.runAllBiomeStructures(smalltreered,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 16: this.runAllBiomeStructures(smalltreeblue,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 17: this.runAllBiomeStructures(smalltreeyellow,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 18: this.runAllBiomeStructures(smalltreepurple,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 19: this.runAllBiomeStructures(smalltreegreen,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 20: this.runAllBiomeStructures(smalltreeorange,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 21: this.runAllBiomeStructures(smalltreewhite,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+                    case 22: this.runAllBiomeStructures(smalltreeblack,world,random,chunkX,chunkZ,1,0,20);
+                        return;
+
+                }
 
 
-                this.runAllBiomeStructures(tester,world,random,chunkX,chunkZ,1,0,20);
+
+
+
+                //this.runAllBiomeStructures(tester,world,random,chunkX,chunkZ,1,0,20);
 
 
 
