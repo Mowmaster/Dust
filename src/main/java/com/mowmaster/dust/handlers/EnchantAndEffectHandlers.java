@@ -1,61 +1,34 @@
 package com.mowmaster.dust.handlers;
 
-import com.mowmaster.dust.blocks.BlockLeaf;
-import com.mowmaster.dust.effects.PotionMagnetism;
+import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
-import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentMending;
-import net.minecraft.enchantment.EnchantmentUntouching;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionAttackDamage;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatBasic;
 import net.minecraft.util.*;
-import net.minecraft.util.datafix.fixes.PotionWater;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.xml.stream.events.Attribute;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -458,89 +431,52 @@ public class EnchantAndEffectHandlers
         int effectCap=9;
         int minimumDustRequired=5;
 
-        if(!worldIn.isRemote)
-        {
+        if(!worldIn.isRemote) {
             //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
-            List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-3, posY-3, posZ-3, posX+3, posY+3,posZ+3));
+            List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3, posY - 3, posZ - 3, posX + 3, posY + 3, posZ + 3));
 
-            if((player.getHeldItem(hand) != null)) {
+            if ((player.getHeldItem(hand) != null)) {
                 if (player.getHeldItem(hand).getItem() instanceof ItemFlintAndSteel) {
 
                     for (EntityItem item : items) {
                         ItemStack stack = item.getItem();
-                        if(stack.getItemDamage()==0) {red=red+2*stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==1){blue=blue+2*stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==2){yellow=yellow+2*stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==3){red=red+stack.getCount();blue=blue+stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==4){yellow=yellow+stack.getCount();blue=blue+stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==5){yellow=yellow+stack.getCount();red=red+stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==6){white=white+stack.getCount();count=count+stack.getCount();}
-                        else if(stack.getItemDamage()==7){black=black+stack.getCount();count=count+stack.getCount();}
+                        if (stack.getItemDamage() == 0) {
+                            red = red + 2 * stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 1) {
+                            blue = blue + 2 * stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 2) {
+                            yellow = yellow + 2 * stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 3) {
+                            red = red + stack.getCount();
+                            blue = blue + stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 4) {
+                            yellow = yellow + stack.getCount();
+                            blue = blue + stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 5) {
+                            yellow = yellow + stack.getCount();
+                            red = red + stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 6) {
+                            white = white + stack.getCount();
+                            count = count + stack.getCount();
+                        } else if (stack.getItemDamage() == 7) {
+                            black = black + stack.getCount();
+                            count = count + stack.getCount();
+                        }
                         item.setDead();
                     }
-                }
 
-                if(count>=minimumDustRequired)
-                {
-                    int amp = 0;
-                    if(white>black || white==black)//positive effects
-                    {
-                        amp=Math.abs(white-black);
-                        if(amp>effectCap)
-                        {
-                            amp=effectCap;
-                        }
-
-                        if(red>=1 && blue==0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH ,20*count, amp, false, true));}
-                        else if(blue>=1 && red==0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING ,20*count, amp, false, true));}
-                        else if(yellow>=1 && blue==0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.SATURATION ,20*count, amp, false, true));}
-
-                        else if(red>yellow && yellow !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST ,20*count, amp, false, true));}
-                        else if(red<yellow && red !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION ,20*count, amp, false, true));}
-                        else if(red>blue && blue !=0 && yellow==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_MAGNETISM ,20*count, amp, false, true));}//should be envigoration
-                        else if(red<blue && red !=0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE ,20*count, amp, false, true));}
-                        else if(yellow>blue && blue !=0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY,20*count, amp, false, true));}
-                        else if(yellow<blue && yellow !=0 && red==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_QUICKNESS,20*count, amp, false, true));}
-                        else if((yellow==blue && blue==red)){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_FLIGHT,20*count, amp, false, true));}
-
-                        else if((blue==red && yellow==0)){player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE,20*count, amp, false, true));}//purple
-                        else if((yellow==blue && red==0)){player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION,20*count, amp, false, true));}//green
-                        else if((yellow==red && blue==0)){player.addPotionEffect(new PotionEffect(MobEffects.HASTE,20*count, amp, false, true));}//orange
-
-                    }
-                    else//negative effects
-                    {
-                        amp=Math.abs((black-white)-1);
-                        if(amp>effectCap)
-                        {
-                            amp=effectCap;
-                        }
-
-                        //player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS ,20*count, amp, false, true));
-
-                        if(red>=1 && blue==0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS ,20*count, amp, false, true));}
-                        else if(blue>=1 && red==0 && yellow==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_DROWNING ,20*count, amp, false, true));}
-                        else if(yellow>=1 && blue==0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.HUNGER ,20*count, amp, false, true));}
-                        else if(red>yellow && yellow !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST ,20*count, 250, false, true));}
-                        else if(red<yellow && red !=0 && blue==0){player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS ,20*count, amp, false, true));}
-                        else if(red>blue && blue !=0 && yellow==0){player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA ,20*count, amp, false, true));}
-                        else if(red<blue && red !=0 && yellow==0){player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,20*count, amp, false, true));}//should be flamibility
-                        else if(yellow>blue && blue !=0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.GLOWING,20*count, amp, false, true));}
-                        else if(yellow<blue && yellow !=0 && red==0){player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS,20*count, amp, false, true));}
-                        else if((yellow==blue && blue==red)){player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION,20*count, amp, false, true));}//Gravity
-                        else if((blue==red && yellow==0)){player.addPotionEffect(new PotionEffect(MobEffects.POISON,20*count, amp, false, true));}//purple
-                        else if((yellow==blue && red==0)){player.addPotionEffect(new PotionEffect(MobEffects.WITHER,20*count, amp, false, true));}//green
-                        else if((yellow==red && blue==0)){player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE,20*count, amp, false, true));}//orange
-
-
+                    if (count >= minimumDustRequired) {
+                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count, false, true));
                     }
                 }
             }
         }
-
-
-
-
     }
 
 }
