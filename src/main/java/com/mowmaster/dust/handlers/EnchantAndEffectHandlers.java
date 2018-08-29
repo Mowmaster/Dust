@@ -116,8 +116,10 @@ public class EnchantAndEffectHandlers
         List<ItemStack> stackie = event.getDrops();
         if(!world.isRemote)
         {//Disabled due to Ticking World Error
-            /*
+            if(player==null){return;}
+
             if (player.swingingHand == null) {return;}
+            
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
             {
                 ItemStack tool = player.getHeldItem(player.getActiveHand());
@@ -135,7 +137,7 @@ public class EnchantAndEffectHandlers
                     }
                 }
             }
-             */
+
         }
     }
 
