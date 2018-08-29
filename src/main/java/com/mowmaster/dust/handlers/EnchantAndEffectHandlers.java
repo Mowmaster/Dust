@@ -115,7 +115,8 @@ public class EnchantAndEffectHandlers
         BlockPos pos = event.getPos();
         List<ItemStack> stackie = event.getDrops();
         if(!world.isRemote)
-        {
+        {//Disabled due to Ticking World Error
+            /*
             if (player.swingingHand == null) {return;}
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
             {
@@ -134,6 +135,7 @@ public class EnchantAndEffectHandlers
                     }
                 }
             }
+             */
         }
     }
 
@@ -472,7 +474,7 @@ public class EnchantAndEffectHandlers
                     }
 
                     if (count >= minimumDustRequired) {
-                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count, false, true));
+                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true));
                     }
                 }
             }
