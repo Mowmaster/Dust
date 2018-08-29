@@ -2,6 +2,7 @@ package com.mowmaster.dust.effects;
 
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.registries.GameData;
 
 public class EffectPicker
 {
@@ -95,7 +96,7 @@ public class EffectPicker
                     }
                 }
             }
-            else if((yellow==blue && blue==red)){effect=new PotionEffect(PotionRegistry.POTION_FLIGHT,duration, amp, false, true);}
+            else if((yellow==blue && blue==red) || red>0 && blue>0 && yellow >0){effect=new PotionEffect(PotionRegistry.POTION_FLIGHT,duration, amp, false, true);}
         }
         else//negative effects
         {
@@ -178,7 +179,7 @@ public class EffectPicker
                     }
                 }
             }
-            else if((yellow==blue && blue==red)){effect=new PotionEffect(MobEffects.LEVITATION,duration, amp, false, true);}//Gravity
+            else if((yellow==blue && blue==red) || red>0 && blue>0 && yellow >0 ){effect=new PotionEffect(MobEffects.LEVITATION,duration, amp, false, true);}//Gravity
 
 
         }
