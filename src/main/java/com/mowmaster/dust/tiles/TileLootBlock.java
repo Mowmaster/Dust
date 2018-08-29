@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class TileLootBlock extends TileEntity implements ITickable
 {
-    boolean inDev = true;
+    boolean inDev = false;
     int chancetospawnloot = new Random().nextInt(99);
 
     private IBlockState commonLoot()
