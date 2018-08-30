@@ -1,9 +1,13 @@
 package com.mowmaster.dust.handlers;
 
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.items.ItemDust;
+import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -430,9 +435,9 @@ public class EnchantAndEffectHandlers
         int yellow=0;
         int white=0;
         int black=0;
+        int pressurePlate = 0;
         int count=0;
 
-        int effectCap=9;
         int minimumDustRequired=5;
 
         if(!worldIn.isRemote) {
@@ -444,39 +449,62 @@ public class EnchantAndEffectHandlers
 
                     for (EntityItem item : items) {
                         ItemStack stack = item.getItem();
-                        if (stack.getItemDamage() == 0) {
-                            red = red + 2 * stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 1) {
-                            blue = blue + 2 * stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 2) {
-                            yellow = yellow + 2 * stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 3) {
-                            red = red + stack.getCount();
-                            blue = blue + stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 4) {
-                            yellow = yellow + stack.getCount();
-                            blue = blue + stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 5) {
-                            yellow = yellow + stack.getCount();
-                            red = red + stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 6) {
-                            white = white + stack.getCount();
-                            count = count + stack.getCount();
-                        } else if (stack.getItemDamage() == 7) {
-                            black = black + stack.getCount();
-                            count = count + stack.getCount();
+                        //System.out.println(stack.getItem() instanceof ItemDust);
+                        if(stack.getItem() instanceof ItemDust)
+                        {
+                            if (stack.getItemDamage() == 0) {
+                                red = red + 2 * stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 1) {
+                                blue = blue + 2 * stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 2) {
+                                yellow = yellow + 2 * stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 3) {
+                                red = red + stack.getCount();
+                                blue = blue + stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 4) {
+                                yellow = yellow + stack.getCount();
+                                blue = blue + stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 5) {
+                                yellow = yellow + stack.getCount();
+                                red = red + stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 6) {
+                                white = white + stack.getCount();
+                                count = count + stack.getCount();
+                            } else if (stack.getItemDamage() == 7) {
+                                black = black + stack.getCount();
+                                count = count + stack.getCount();
+                            }
+                            item.setDead();
                         }
-                        item.setDead();
+                        if(stack.getItem().equals(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE).getItem())
+                                || stack.getItem().equals(new ItemStack(Blocks.STONE_PRESSURE_PLATE).getItem())
+                                || stack.getItem().equals(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE).getItem())
+                                || stack.getItem().equals(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).getItem()))
+                        {
+                            pressurePlate++;
+                            item.setDead();
+                        }
+
                     }
 
-                    if (count >= minimumDustRequired) {
+                    if (count >= minimumDustRequired && pressurePlate==0) {
                         player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true));
+                    }
+                    else if(count >= minimumDustRequired && pressurePlate>=1)
+                    {
+
+                        worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
+                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockRegistry.blockTrap.getDefaultState());
+                        TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
+                        if (tileentity instanceof TileTrapBlock) {
+                            ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true));
+                        }
                     }
                 }
             }

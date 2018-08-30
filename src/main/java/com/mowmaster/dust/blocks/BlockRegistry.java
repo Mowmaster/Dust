@@ -285,6 +285,7 @@ public class BlockRegistry
     public static Block enchantmod;
     public static Block crystalcrusher;
     public static Block crystalfurnace;
+    public static Block blockTrap;
 
     public static Block crate1;
     public static Block pot1;
@@ -593,6 +594,7 @@ public class BlockRegistry
         enchantmod = new BlockEnchantMod("enchantmod","enchantmod");
         crystalcrusher = new BlockCrystalCrusher("crystalcrusher","crystalcrusher");
         crystalfurnace = new com.mowmaster.dust.blocks.BlockCrystalFurnace("crystalfurnace","crystalfurnace");
+        blockTrap = new BlockTrap("blocktrap","blocktrap");
 
         crate1 = new BlockCrate("crate1","crate1");
         pot1 = new BlockPot("pot1","pot1");
@@ -875,6 +877,7 @@ public class BlockRegistry
         registerBlock(enchantmod);
         registerBlock(crystalcrusher);
         registerBlock(crystalfurnace);
+        registerBlock(blockTrap);
 
         registerBlock(saplingred);
         registerBlock(saplingblue);
@@ -1185,6 +1188,7 @@ public class BlockRegistry
         registerRender(enchantmod);
         registerRender(crystalcrusher);
         registerRender(crystalfurnace);
+        registerRender(blockTrap);
 
         registerRender(saplingred);
         registerRender(saplingblue);
