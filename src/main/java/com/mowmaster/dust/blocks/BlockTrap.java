@@ -43,7 +43,6 @@ public class BlockTrap extends Block implements ITileEntityProvider
         this.setHardness(20);
         this.setResistance(20);
         this.setSoundType(SoundType.GROUND);
-        this.setCreativeTab(DUSTTABS);
         this.setBlockUnbreakable();
     }
 
