@@ -394,6 +394,7 @@ tile.enchantmod.name=Crystal Enchantment Modification Table [WIP]
 tile.crystalfurnace.name=Crystal Furnace
 container.crystalfurnace=Crystal Furnace
 tile.crystalcrusher.name=Crystal Crusher [WIP]
+tile.blocktrap.name=Spell Trap Block
 
 tile.crate1.name=Ancient Crate
 tile.pot1.name=Ancient Pot

@@ -9,6 +9,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -114,6 +115,12 @@ public class BlockTrap extends Block implements ITileEntityProvider
         {
             worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, d0 + (double)d3, d1 + (double)d3, d2 +d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
         }
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add("This Block isnt useable by itsself normally...");
+        tooltip.add("Please report the method used to obtain this block (outside of cheat mode or commands) to the mod author.");
     }
 
 
