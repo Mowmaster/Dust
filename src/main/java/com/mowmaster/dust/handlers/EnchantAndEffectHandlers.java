@@ -1,6 +1,7 @@
 package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -499,6 +501,13 @@ public class EnchantAndEffectHandlers
                     else if(count >= minimumDustRequired && pressurePlate>=1)
                     {
 
+                        /*
+                        if(worldIn.getBlockState(new BlockPos(posX,posY+1,posZ)).getBlock() instanceof BlockTrap)
+                        {
+                            System.out.println("TRAP BLOCK ALREADY HERE!!!");
+                        }
+                        //Could use this to impliment more plates that could hold multiple effects???
+                         */
                         worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
                         worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockRegistry.blockTrap.getDefaultState());
                         TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
