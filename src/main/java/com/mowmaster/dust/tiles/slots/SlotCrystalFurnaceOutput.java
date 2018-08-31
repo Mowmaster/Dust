@@ -10,7 +10,9 @@ import net.minecraft.item.ItemStack;
  */
 public class SlotCrystalFurnaceOutput extends Slot
 {
-    private final EntityPlayer player;
+    private final EntityPlayer player;   // you might wanna make sure u want to use final here as the object cannot change once instantiated
+    // name for above line should probably change so its easier to remember that it is only called here and cannot change.
+
     private int removeCount;
 
     public SlotCrystalFurnaceOutput(EntityPlayer player, IInventory inventory, int index, int x, int y)

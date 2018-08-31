@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class SlotCrystalFurnaceCrystalOutput extends Slot
 {
-    private final EntityPlayer player;
+    private final EntityPlayer player; // You might wanna check this line for accuracy the final here might screw up things, as it prevents change to object once instantiated
     private int removeCount;
 
     public SlotCrystalFurnaceCrystalOutput(EntityPlayer player, IInventory inventory, int index, int x, int y)
