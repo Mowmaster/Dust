@@ -436,10 +436,10 @@ enchantment.enchantSmelter=Smelter
 
 enchantment.enchantFlight=Flight
 effect.fly=Flight
-potion.effect.fly=Potion of Flight
-splash_potion.effect.fly=Splash Potion of Flight
-lingering_potion.effect.fly=Lingering Potion of Flight
-tipped_arrow.effect.fly=Arrow of Flight
+potion.effect.flight=Potion of Flight
+splash_potion.effect.flight=Splash Potion of Flight
+lingering_potion.effect.flight=Lingering Potion of Flight
+tipped_arrow.effect.flight=Arrow of Flight
 
 enchantment.enchantQuickPace=Quickness
 effect.quickness=Quickness
@@ -447,16 +447,6 @@ potion.effect.quickness=Potion of Quickness
 splash_potion.effect.quickness=Splash Potion of Quickness
 lingering_potion.effect.quickness=Lingering Potion of Quickness
 tipped_arrow.effect.quickness=Arrow of Quickness
-
-potion.effect.long_quickness=Potion of Quickness
-splash_potion.effect.long_quickness=Splash Potion of Quickness
-lingering_potion.effect.long_quickness=Lingering Potion of Quickness
-tipped_arrow.effect.long_quickness=Arrow of Quickness
-
-potion.effect.strong_quickness=Potion of Quickness
-splash_potion.effect.strong_quickness=Splash Potion of Quickness
-lingering_potion.effect.strong_quickness=Lingering Potion of Quickness
-tipped_arrow.effect.strong_quickness=Arrow of Quickness
 
 effect.drowning=Drowning
 potion.effect.drowning=Potion of Drowning
@@ -475,3 +465,9 @@ potion.effect.magnetism=Potion of Magnetism
 splash_potion.effect.magnetism=Splash Potion of Magnetism
 lingering_potion.effect.magnetism=Lingering Potion of Magnetism
 tipped_arrow.effect.magnetism=Arrow of Magnetism
+
+effect.stepassist=Step Up
+potion.effect.stepassist=Potion of Step Up
+splash_potion.effect.stepassist=Splash Potion of Step Up
+lingering_potion.effect.stepassist=Lingering Potion of Step Up
+tipped_arrow.effect.stepassist=Arrow of Step Up

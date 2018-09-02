@@ -13,8 +13,6 @@ public class BrewingRecipes
 {
     public static void registerPotionRecipes()
     {
-        PotionHelper.addMix(PotionTypes.STRONG_SWIFTNESS, new ItemStack(ItemRegistry.crystal,1).getItem(), PotionRegistry.QUICKNESS);
-        PotionHelper.addMix(PotionRegistry.QUICKNESS, new ItemStack(ItemRegistry.crystal,6).getItem(),PotionRegistry.STRONG_QUICKNESS);
-        PotionHelper.addMix(PotionRegistry.QUICKNESS, new ItemStack(Blocks.REDSTONE_BLOCK).getItem(),PotionRegistry.LONG_QUICKNESS);
+        //PotionHelper.addMix(PotionRegistry.QUICKNESS, new ItemStack(ItemRegistry.crystal,6).getItem(),PotionRegistry.STRONG_QUICKNESS);
     }
 }

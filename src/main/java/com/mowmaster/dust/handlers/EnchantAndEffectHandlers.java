@@ -22,6 +22,7 @@ import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -196,19 +197,28 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onStepAssist(TickEvent.PlayerTickEvent event)
     {
-        int level=0;
         if(event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
         {
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1))!=0)
             {
-                stepup = true;
-                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
+                int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
+                event.player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_STEPASSIST,80,level-1,false,false));
             }
-            else stepup=false;
+        }
+
+
+
+
+        int amp = 0;
+        if(event.player.isPotionActive(PotionRegistry.POTION_STEPASSIST))
+        {
+            stepup=true;
+            amp = event.player.getActivePotionEffect(PotionRegistry.POTION_STEPASSIST).getAmplifier() +1;
         }
         else stepup=false;
 
-        Float stepheightvalue = (float)(0.42 * level) + (float)1.0048174;
+
+        Float stepheightvalue = (float)(0.42 * amp) + (float)1.0048174;
 
         if(stepup==true && !event.player.isSneaking())
         {
