@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -39,6 +40,7 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
 {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    private static boolean keepInventory;
 
 
     public BlockCrystalFurnace(String unloc, String registryName)
@@ -100,19 +102,48 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
 
     public static void setStateActive(boolean active,World world,BlockPos pos)
     {
-        IBlockState state = world.getBlockState(pos);
-        TileEntity tileEntity = world.getTileEntity(pos);
+        IBlockState iblockstate = world.getBlockState(pos);
+        TileEntity tileentity = world.getTileEntity(pos);
+        keepInventory = true;
 
-        if(active) {world.setBlockState(pos,BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING,state.getValue(FACING)).withProperty(ACTIVE,true),3);}
-        else world.setBlockState(pos,BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING,state.getValue(FACING)).withProperty(ACTIVE,false),3);
-
-        if(tileEntity instanceof TileCrystalFurnace)
+        if (active)
         {
-            tileEntity.validate();
-            world.setTileEntity(pos,tileEntity);
+            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,true),3);
+            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,true),3);
+        }
+        else
+        {
+            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,false),3);
+            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,false),3);
         }
 
+        keepInventory = false;
+
+        if (tileentity != null)
+        {
+            tileentity.validate();
+            world.setTileEntity(pos, tileentity);
+        }
     }
+
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (!keepInventory)
+        {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+
+            if (tileentity instanceof TileCrystalFurnace)
+            {
+                InventoryHelper.dropInventoryItems(worldIn, pos, (TileCrystalFurnace)tileentity);
+            }
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+
+
+
+
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
@@ -133,23 +164,6 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos,this.getDefaultState().withProperty(FACING,placer.getHorizontalFacing().getOpposite()),2);
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TileCrystalFurnace)
-        {
-            if(!worldIn.isRemote)
-            {
-                TileCrystalFurnace furnace = (TileCrystalFurnace) tileEntity;
-                if(!furnace.getFromInv(0).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(0)));}
-                if(!furnace.getFromInv(1).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(1)));}
-                if(!furnace.getFromInv(2).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(2)));}
-                if(!furnace.getFromInv(3).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(3)));}
-                if(!furnace.getFromInv(4).isEmpty()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,furnace.getFromInv(4)));}
-            }
-        }
     }
 
     @Override

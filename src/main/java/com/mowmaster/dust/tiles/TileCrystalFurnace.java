@@ -624,7 +624,6 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
                         this.smeltItem();
                         flag1 = true;
                     }
-                    else {}
                 }
                 else this.cookTime = 0;
 
@@ -635,14 +634,16 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
             {
                 this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
+
             if(flag != this.isBurning())
             {
                 flag1 = true;
                 BlockCrystalFurnace.setStateActive(this.isBurning(), this.world, this.pos);
             }
         }
-        if(flag1) this.markDirty();
+        if(flag1) {this.markDirty();}
     }
+
 
 
 
