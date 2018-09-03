@@ -271,7 +271,6 @@ public class OreGeneration implements IWorldGenerator
                 int y = world.getHeight(chunk_X,chunk_Z) + 1;
                 int z = chunk_Z*16 + rand.nextInt(3)+ 6;
                 generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
-                System.out.println("Spawning Structure In World!!!");
             }
         }
     }
