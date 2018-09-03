@@ -80,7 +80,7 @@ public class EffectPicker
                     if(blue==red){effect=new PotionEffect(MobEffects.RESISTANCE,duration, amp, false, true);}//purple
                     else if(blue>red)
                     {
-                        if(percentBlue>=50.0 && percentBlue<60.0){effect=new PotionEffect(MobEffects.FIRE_RESISTANCE ,duration, amp, false, true);}
+                        if(percentBlue>=50.0 && percentBlue<60.0){effect=new PotionEffect(PotionRegistry.POTION_WATERQUICKNESS ,duration, amp, false, true);}
                         if(percentBlue>=60.0 && percentBlue<70.0){effect=new PotionEffect(MobEffects.FIRE_RESISTANCE ,duration, amp, false, true);}
                         if(percentBlue>=70.0 && percentBlue<80.0){effect=new PotionEffect(MobEffects.FIRE_RESISTANCE ,duration, amp, false, true);}//Blue-Purple
                         if(percentBlue>=80.0 && percentBlue<90.0){effect=new PotionEffect(MobEffects.FIRE_RESISTANCE ,duration, amp, false, true);}

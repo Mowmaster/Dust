@@ -18,9 +18,11 @@ public class PotionRegistry
     public static final Potion POTION_ENVIGORATION = new PotionEnvigoration("effect.envigoration","potionenvigoration");
     public static final Potion POTION_MAGNETISM = new PotionMagnetism("effect.magnetism","potionmagnetism");
     public static final Potion POTION_STEPASSIST = new PotionBase("effect.stepassist","potionstepassist",false,3200511,5,0);
+    public static final Potion POTION_WATERQUICKNESS = new PotionBase("effect.waterquickness","potionwaterquickness",false,8376831,6,0);
 
     public static final PotionType FLIGHT = new PotionType("flight",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_FLIGHT,3600)}).setRegistryName("flight");
     public static final PotionType QUICKNESS = new PotionType("quickness",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_QUICKNESS,3600)}).setRegistryName("quickness");
+    public static final PotionType WATERQUICKNESS = new PotionType("waterquickness",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_WATERQUICKNESS,3600)}).setRegistryName("waterquickness");
 
     public static final PotionType DROWNING = new PotionType("drowning",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_DROWNING,3600)}).setRegistryName("drowning");
     public static final PotionType MAGNETISM = new PotionType("magnetism",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_MAGNETISM,3600)}).setRegistryName("magnetism");
@@ -32,6 +34,7 @@ public class PotionRegistry
     public static void init(){
         ForgeRegistries.POTIONS.register(POTION_FLIGHT);
         ForgeRegistries.POTIONS.register(POTION_QUICKNESS);
+        ForgeRegistries.POTIONS.register(POTION_WATERQUICKNESS);
         ForgeRegistries.POTIONS.register(POTION_DROWNING);
         ForgeRegistries.POTIONS.register(POTION_ENVIGORATION);
         ForgeRegistries.POTIONS.register(POTION_MAGNETISM);
@@ -44,6 +47,7 @@ public class PotionRegistry
     {
         ForgeRegistries.POTION_TYPES.register(FLIGHT);
         ForgeRegistries.POTION_TYPES.register(QUICKNESS);
+        ForgeRegistries.POTION_TYPES.register(WATERQUICKNESS);
         ForgeRegistries.POTION_TYPES.register(DROWNING);
         ForgeRegistries.POTION_TYPES.register(ENVIGORATION);
         ForgeRegistries.POTION_TYPES.register(MAGNETISM);

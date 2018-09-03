@@ -8,7 +8,9 @@ import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -307,6 +309,31 @@ public class EnchantAndEffectHandlers
         else {event.player.capabilities.setPlayerWalkSpeed(0.1f);}
     }
 
+    private boolean waterRunner = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onMovingFastInWater(TickEvent.PlayerTickEvent event)
+    {
+        EntityPlayer player = event.player;
+        int amp=0;
+
+        if(player.isPotionActive(PotionRegistry.POTION_WATERQUICKNESS))
+        {
+            waterRunner=true;
+            amp = player.getActivePotionEffect(PotionRegistry.POTION_WATERQUICKNESS).getAmplifier() +1;
+        }
+        else waterRunner=false;
+
+        if (waterRunner == true && player.isInWater() && !player.isSneaking() && !player.capabilities.isFlying)
+        {
+            player.motionX *= (1.0f + 0.025 * amp);
+            player.motionZ *= (1.0f + 0.025 * amp);
+
+            if (player.motionY > 0){
+                player.motionY *= 1.134;
+            }
+        }
+    }
+
 
     private boolean drowning = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -502,7 +529,6 @@ public class EnchantAndEffectHandlers
                             pressurePlate++;
                             item.setDead();
                         }
-
                     }
 
                     if (count >= minimumDustRequired && pressurePlate==0) {
