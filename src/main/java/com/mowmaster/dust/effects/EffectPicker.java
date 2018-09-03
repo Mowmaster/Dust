@@ -42,7 +42,7 @@ public class EffectPicker
                     }
                     else if(yellow>red)
                     {
-                        if(percentYellow>=50.0 && percentYellow<60.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}
+                        if(percentYellow>=50.0 && percentYellow<60.0){effect=new PotionEffect(PotionRegistry.POTION_HARVESTER ,duration, amp, false, true);}
                         if(percentYellow>=60.0 && percentYellow<70.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}
                         if(percentYellow>=70.0 && percentYellow<80.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}//yellow-orange
                         if(percentYellow>=80.0 && percentYellow<90.0){effect=new PotionEffect(MobEffects.NIGHT_VISION ,duration, amp, false, true);}
@@ -65,7 +65,7 @@ public class EffectPicker
                     }
                     else if(yellow>blue)
                     {
-                        if(percentYellow>=50.0 && percentYellow<60.0){effect=new PotionEffect(MobEffects.INVISIBILITY,duration, amp, false, true);}
+                        if(percentYellow>=50.0 && percentYellow<60.0){effect=new PotionEffect(PotionRegistry.POTION_GROWER,duration, amp, false, true);}
                         if(percentYellow>=60.0 && percentYellow<70.0){effect=new PotionEffect(MobEffects.INVISIBILITY,duration, amp, false, true);}
                         if(percentYellow>=70.0 && percentYellow<80.0){effect=new PotionEffect(MobEffects.INVISIBILITY,duration, amp, false, true);}//Yellow-green
                         if(percentYellow>=80.0 && percentYellow<90.0){effect=new PotionEffect(MobEffects.INVISIBILITY,duration, amp, false, true);}
@@ -96,7 +96,8 @@ public class EffectPicker
                     }
                 }
             }
-            else if((yellow==blue && blue==red) || red>0 && blue>0 && yellow >0){effect=new PotionEffect(PotionRegistry.POTION_FLIGHT,duration, amp, false, true);}
+            else if((yellow==blue && blue==red) ){effect=new PotionEffect(PotionRegistry.POTION_FLIGHT,duration, amp, false, true);}
+            else if(!(yellow==blue && blue==red) && red>0 && blue>0 && yellow >0){effect=new PotionEffect(PotionRegistry.POTION_SLOWFALL,duration, amp, false, true);}
         }
         else//negative effects
         {
@@ -143,7 +144,7 @@ public class EffectPicker
                         if(percentBlue>=60.0 && percentBlue<70.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
                         if(percentBlue>=70.0 && percentBlue<80.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}//Blue-green
                         if(percentBlue>=80.0 && percentBlue<90.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
-                        if(percentBlue>=90.0 && percentBlue<100.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
+                        if(percentBlue>=90.0 && percentBlue<100.0){effect=new PotionEffect(PotionRegistry.POTION_PETRIFIED,duration, amp, false, true);}
                     }
                     else if(yellow>blue)
                     {

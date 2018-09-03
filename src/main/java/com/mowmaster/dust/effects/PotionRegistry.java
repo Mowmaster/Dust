@@ -19,6 +19,11 @@ public class PotionRegistry
     public static final Potion POTION_MAGNETISM = new PotionMagnetism("effect.magnetism","potionmagnetism");
     public static final Potion POTION_STEPASSIST = new PotionBase("effect.stepassist","potionstepassist",false,3200511,5,0);
     public static final Potion POTION_WATERQUICKNESS = new PotionBase("effect.waterquickness","potionwaterquickness",false,8376831,6,0);
+    public static final Potion POTION_PETRIFIED = new PotionBase("effect.petrified","potionpetrified",false,10525595,7,0);
+    public static final Potion POTION_SLOWFALL = new PotionBase("effect.slowfall","potionslowfall",false,16248815,8,0);
+
+    public static final Potion POTION_HARVESTER = new PotionBase("effect.harvester","potionharvester",false,16248815,9,0);
+    public static final Potion POTION_GROWER = new PotionBase("effect.grower","potiongrower",false,16248815,10,0);
 
     public static final PotionType FLIGHT = new PotionType("flight",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_FLIGHT,3600)}).setRegistryName("flight");
     public static final PotionType QUICKNESS = new PotionType("quickness",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_QUICKNESS,3600)}).setRegistryName("quickness");
@@ -30,6 +35,12 @@ public class PotionRegistry
     public static final PotionType ENVIGORATION = new PotionType("envigoration",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_ENVIGORATION,3600)}).setRegistryName("envigoration");
     public static final PotionType STEPASSIST = new PotionType("stepassist",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_STEPASSIST,3600)}).setRegistryName("stepassist");
 
+    public static final PotionType PETRIFIED = new PotionType("petrified",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_PETRIFIED,3600)}).setRegistryName("petrified");
+    public static final PotionType SLOWFALL = new PotionType("slowfall",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_SLOWFALL,3600)}).setRegistryName("slowfall");
+    public static final PotionType HARVESTER = new PotionType("harvester",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_HARVESTER,3600)}).setRegistryName("harvester");
+    public static final PotionType GROWER = new PotionType("grower",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_GROWER,3600)}).setRegistryName("grower");
+
+
 
     public static void init(){
         ForgeRegistries.POTIONS.register(POTION_FLIGHT);
@@ -39,6 +50,10 @@ public class PotionRegistry
         ForgeRegistries.POTIONS.register(POTION_ENVIGORATION);
         ForgeRegistries.POTIONS.register(POTION_MAGNETISM);
         ForgeRegistries.POTIONS.register(POTION_STEPASSIST);
+        ForgeRegistries.POTIONS.register(POTION_PETRIFIED);
+        ForgeRegistries.POTIONS.register(POTION_SLOWFALL);
+        ForgeRegistries.POTIONS.register(POTION_HARVESTER);
+        ForgeRegistries.POTIONS.register(POTION_GROWER);
     }
 
 
@@ -52,6 +67,10 @@ public class PotionRegistry
         ForgeRegistries.POTION_TYPES.register(ENVIGORATION);
         ForgeRegistries.POTION_TYPES.register(MAGNETISM);
         ForgeRegistries.POTION_TYPES.register(STEPASSIST);
+        ForgeRegistries.POTION_TYPES.register(PETRIFIED);
+        ForgeRegistries.POTION_TYPES.register(SLOWFALL);
+        ForgeRegistries.POTION_TYPES.register(HARVESTER);
+        ForgeRegistries.POTION_TYPES.register(GROWER);
     }
 
 }

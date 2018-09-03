@@ -477,3 +477,27 @@ potion.effect.waterquickness=Potion of the Quick Swimmer
 splash_potion.effect.waterquickness=Splash Potion of the Quick Swimmer
 lingering_potion.effect.waterquickness=Lingering Potion of the Quick Swimmer
 tipped_arrow.effect.waterquickness=Arrow of the Quick Swimmer
+
+effect.petrified=Petrified
+potion.effect.petrified=Potion of Petrification
+splash_potion.effect.petrified=Splash Potion of Petrification
+lingering_potion.effect.petrified=Lingering Potion of Petrification
+tipped_arrow.effect.petrified=Arrow of Petrification
+
+effect.slowfall=Slow Fall
+potion.effect.slowfall=Potion of Slow Fall
+splash_potion.effect.slowfall=Splash Potion of Slow Fall
+lingering_potion.effect.slowfall=Lingering Potion of Slow Fall
+tipped_arrow.effect.slowfall=Arrow of Slow Fall
+
+effect.harvester=Harvester
+potion.effect.harvester=Potion of the Harvester
+splash_potion.effect.harvester=Splash Potion of the Harvester
+lingering_potion.effect.harvester=Lingering Potion of the Harvester
+tipped_arrow.effect.harvester=Arrow of the Harvester
+
+effect.grower=Grower
+potion.effect.grower=Potion of Plant Growth
+splash_potion.effect.grower=Splash Potion of Plant Growth
+lingering_potion.effect.grower=Lingering Potion of Plant Growth
+tipped_arrow.effect.grower=Arrow of Plant Growth

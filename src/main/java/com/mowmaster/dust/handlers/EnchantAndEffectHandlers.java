@@ -1,5 +1,6 @@
 package com.mowmaster.dust.handlers;
 
+import com.mojang.authlib.GameProfile;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.effects.EffectPicker;
@@ -12,12 +13,15 @@ import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
@@ -330,6 +334,163 @@ public class EnchantAndEffectHandlers
 
             if (player.motionY > 0){
                 player.motionY *= 1.134;
+            }
+        }
+    }
+
+    private boolean petrified = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onStopped(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp=0;
+
+        if(entity.isPotionActive(PotionRegistry.POTION_PETRIFIED))
+        {
+            petrified=true;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_PETRIFIED).getAmplifier() +1;
+        }
+        else petrified=false;
+
+        if (petrified == true)
+        {
+            if(entity instanceof EntityPlayer)
+            {
+                if(((EntityPlayer) entity).capabilities.isFlying && !((EntityPlayer) entity).isCreative())
+                {
+                    flight=false;
+                    ((EntityPlayer) entity).capabilities.isFlying = false;
+                    ((EntityPlayer) entity).capabilities.allowFlying = false;
+                }
+            }
+
+            entity.motionX =0f;
+            entity.motionZ =0f;
+            entity.motionY =-1f * amp;
+        }
+    }
+
+    private boolean slowfall = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onSlowFalling(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp=0;
+
+        if(entity.isPotionActive(PotionRegistry.POTION_SLOWFALL))
+        {
+            slowfall=true;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_SLOWFALL).getAmplifier() +1;
+        }
+        else slowfall=false;
+
+        if (slowfall == true && !entity.isSneaking() && !entity.isInWater())
+        {
+            entity.setPosition(entity.posX, entity.posY + (entity.fallDistance / 1.01), entity.posZ);
+            entity.motionX *= (1.0f + 0.0125 * amp);
+            entity.motionZ *= (1.0f + 0.0125 * amp);
+            entity.fallDistance=0.0f;
+        }
+        else if(slowfall == true && entity.isSneaking() && !entity.isInWater())
+        {
+            entity.setPosition(entity.posX, entity.posY + (entity.fallDistance / 1.51), entity.posZ);
+            entity.motionX *= (1.0f + 0.025 * amp);
+            entity.motionZ *= (1.0f + 0.025 * amp);
+            entity.fallDistance=0.0f;
+        }
+    }
+
+    private boolean harvester = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onHarvester(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp=0;
+        int zmin=0;
+        int zmax=0;
+        int xmin=0;
+        int xmax=0;
+
+        if(entity.isPotionActive(PotionRegistry.POTION_HARVESTER))
+        {
+            harvester=true;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_HARVESTER).getAmplifier();
+            zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
+        }
+        else harvester=false;
+
+        if (harvester == true)
+        {
+            BlockPos pos = new BlockPos(entity.posX,entity.posY,entity.posZ);//the block above the block player is standing on
+            World world = entity.getEntityWorld();
+
+            if(entity instanceof EntityPlayer)
+            {
+                for(int c=zmin;c<=zmax;c++) {
+                    for (int a = xmin; a <= xmax; a++)
+                    {
+                        IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                        if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
+                        {
+                            state.getBlock().harvestBlock(world,(EntityPlayer)entity,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
+                            world.setBlockState(pos.add(a,0,c),state.getBlock().getDefaultState());
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                for(int c=zmin;c<=zmax;c++) {
+                    for (int a = xmin; a <= xmax; a++)
+                    {
+                        IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                        if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
+                        {
+                            state.getBlock().harvestBlock(world,new EntityOtherPlayerMP(entity.getEntityWorld(),new GameProfile(null,"Mowmaster")),pos.add(a,0,c),state,null,new ItemStack(Items.STICK));
+                            world.setBlockState(pos.add(a,0,c),state.getBlock().getDefaultState());
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    private boolean grower = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onGrower(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp=0;
+        int zmin=0;
+        int zmax=0;
+        int xmin=0;
+        int xmax=0;
+
+        if(entity.isPotionActive(PotionRegistry.POTION_GROWER))
+        {
+            grower=true;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_GROWER).getAmplifier();
+            zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
+        }
+        else grower=false;
+
+        if (grower == true)
+        {
+            BlockPos pos = new BlockPos(entity.posX,entity.posY,entity.posZ);//the block above the block player is standing on
+            World world = entity.getEntityWorld();
+            Random rn = new Random();
+            for(int c=zmin;c<=zmax;c++) {
+                for (int a = xmin; a <= xmax; a++)
+                {
+                    int growchance = rn.nextInt(100);
+                    IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                    if(state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false) && growchance<=1)
+                    {
+                        ((IGrowable) state.getBlock()).grow(world,rn,pos.add(a,0,c),state);
+                    }
+                }
             }
         }
     }
