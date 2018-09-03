@@ -471,3 +471,9 @@ potion.effect.stepassist=Potion of Step Up
 splash_potion.effect.stepassist=Splash Potion of Step Up
 lingering_potion.effect.stepassist=Lingering Potion of Step Up
 tipped_arrow.effect.stepassist=Arrow of Step Up
+
+effect.waterquickness=Quick Swimmer
+potion.effect.waterquickness=Potion of the Quick Swimmer
+splash_potion.effect.waterquickness=Splash Potion of the Quick Swimmer
+lingering_potion.effect.waterquickness=Lingering Potion of the Quick Swimmer
+tipped_arrow.effect.waterquickness=Arrow of the Quick Swimmer
