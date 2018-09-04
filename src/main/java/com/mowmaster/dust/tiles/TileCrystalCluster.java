@@ -3,6 +3,7 @@ package com.mowmaster.dust.tiles;
 import com.google.common.collect.Sets;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
@@ -198,12 +199,12 @@ public class TileCrystalCluster extends TileEntity implements ITickable
                     List<EntityPlayer> listed = this.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, (new AxisAlignedBB((double)x-1, (double)y, (double)z-1, (double)x +2, (double)y+1, (double)z+2).grow(a)));
                     for (EntityCreature entityCreature : lista)
                     {
-                        entityCreature.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true));
+                        entityCreature.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true, CrystalTypes.EffectTypes.CRYSTAL));
                         //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
                     }
                     for (EntityPlayer entityPlayer : listed)
                     {
-                        entityPlayer.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,false));
+                        entityPlayer.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,false, CrystalTypes.EffectTypes.CRYSTAL));
                         //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
                     }
                 }

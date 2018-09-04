@@ -1,5 +1,7 @@
 package com.mowmaster.dust.effects;
 
+import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.enums.CrystalTypes;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.registries.GameData;
@@ -7,7 +9,7 @@ import net.minecraftforge.registries.GameData;
 public class EffectPicker
 {
 
-    public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration,int potencyCap, Boolean ambient, Boolean showParticles )
+    public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, int potencyCap, Boolean ambient, Boolean showParticles, CrystalTypes.EffectTypes type)
     {
         PotionEffect effect=new PotionEffect(MobEffects.LUCK);
         double totalColor=(red+blue)+yellow;
@@ -18,7 +20,23 @@ public class EffectPicker
         int amp = 0;
         if(white>black || white==black)//positive effects
         {
-            amp=Math.abs(white-black);
+            if(type.equals(CrystalTypes.EffectTypes.DUST))
+            {
+                int whitecount=Math.abs(white-black);
+                if(whitecount>=0 && whitecount<10){amp=0;}
+                if(whitecount>=10 && whitecount<30){amp=1;}
+                if(whitecount>=30 && whitecount<60){amp=2;}
+                if(whitecount>=60 && whitecount<100){amp=3;}
+                if(whitecount>=100 && whitecount<150){amp=4;}
+                if(whitecount>=150 && whitecount<210){amp=5;}
+                if(whitecount>=210 && whitecount<280){amp=6;}
+                if(whitecount>=280 && whitecount<360){amp=7;}
+                if(whitecount>=360 && whitecount<450){amp=8;}
+                if(whitecount>=450 && whitecount<550){amp=9;}
+                if(whitecount>=550){amp=10;}
+            }
+            else{amp=Math.abs(white-black);}
+
             if(amp>potencyCap)
             {
                 amp=potencyCap;
@@ -34,7 +52,7 @@ public class EffectPicker
                     if(red==yellow){effect=new PotionEffect(MobEffects.HASTE,duration, amp, false, true);}//orange
                     else if(red>yellow)
                     {
-                        if(percentRed>=50.0 && percentRed<60.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}
+                        if(percentRed>=50.0 && percentRed<60.0){effect=new PotionEffect(PotionRegistry.POTION_TILLER ,duration, amp, false, true);}
                         if(percentRed>=60.0 && percentRed<70.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}
                         if(percentRed>=70.0 && percentRed<80.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}//red-orange
                         if(percentRed>=80.0 && percentRed<90.0){effect=new PotionEffect(MobEffects.JUMP_BOOST ,duration, amp, false, true);}
@@ -101,7 +119,24 @@ public class EffectPicker
         }
         else//negative effects
         {
-            amp=Math.abs((black-white)-1);
+
+            if(type.equals(CrystalTypes.EffectTypes.DUST))
+            {
+                int blackcount=Math.abs(black-white);
+                if(blackcount>=1 && blackcount<10){amp=0;}
+                if(blackcount>=10 && blackcount<30){amp=1;}
+                if(blackcount>=30 && blackcount<60){amp=2;}
+                if(blackcount>=60 && blackcount<100){amp=3;}
+                if(blackcount>=100 && blackcount<150){amp=4;}
+                if(blackcount>=150 && blackcount<210){amp=5;}
+                if(blackcount>=210 && blackcount<280){amp=6;}
+                if(blackcount>=280 && blackcount<360){amp=7;}
+                if(blackcount>=360 && blackcount<450){amp=8;}
+                if(blackcount>=450 && blackcount<550){amp=9;}
+                if(blackcount>=550){amp=10;}
+            }
+            else{amp=Math.abs((black-white)-1);}
+
             if(amp>potencyCap)
             {
                 amp=potencyCap;
