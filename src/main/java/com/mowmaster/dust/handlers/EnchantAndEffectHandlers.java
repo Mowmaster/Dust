@@ -2,16 +2,16 @@ package com.mowmaster.dust.handlers;
 
 import com.mojang.authlib.GameProfile;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -19,16 +19,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -46,6 +43,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import static net.minecraft.block.BlockFarmland.MOISTURE;
 
 public class EnchantAndEffectHandlers
 {
@@ -495,6 +494,44 @@ public class EnchantAndEffectHandlers
         }
     }
 
+    private boolean tiller = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void ontiller(LivingEvent.LivingUpdateEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp=0;
+        int zmin=0;
+        int zmax=0;
+        int xmin=0;
+        int xmax=0;
+
+        if(entity.isPotionActive(PotionRegistry.POTION_TILLER))
+        {
+            tiller=true;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_TILLER).getAmplifier();
+            zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
+        }
+        else tiller=false;
+
+        if (tiller == true)
+        {
+            BlockPos pos = new BlockPos(entity.posX,entity.posY-1,entity.posZ);//the block player is standing on
+            World world = entity.getEntityWorld();
+            for(int c=zmin;c<=zmax;c++) {
+                for (int a = xmin; a <= xmax; a++)
+                {
+                    IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                    if(state.getBlock().equals(Blocks.GRASS) || state.getBlock().equals(Blocks.DIRT))
+                    {
+                        world.setBlockState(pos.add(a,0,c),Blocks.FARMLAND.getDefaultState().withProperty(MOISTURE, 7));//Unless there is some wat to use a fake player or the player effected to use a hoe on the soil for the drops
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
     private boolean drowning = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -693,7 +730,7 @@ public class EnchantAndEffectHandlers
                     }
 
                     if (count >= minimumDustRequired && pressurePlate==0) {
-                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true));
+                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true, CrystalTypes.EffectTypes.DUST));
                     }
                     else if(count >= minimumDustRequired && pressurePlate>=1)
                     {
@@ -709,7 +746,7 @@ public class EnchantAndEffectHandlers
                         worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockRegistry.blockTrap.getDefaultState());
                         TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
                         if (tileentity instanceof TileTrapBlock) {
-                            ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true));
+                            ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true, CrystalTypes.EffectTypes.DUST));
                         }
                     }
                 }
