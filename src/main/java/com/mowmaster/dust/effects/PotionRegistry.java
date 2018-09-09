@@ -25,6 +25,7 @@ public class PotionRegistry
     public static final Potion POTION_HARVESTER = new PotionBase("effect.harvester","potionharvester",false,16248815,9,0);
     public static final Potion POTION_GROWER = new PotionBase("effect.grower","potiongrower",false,16248815,10,0);
     public static final Potion POTION_TILLER = new PotionBase("effect.tiller","potiontiller",false,11898433,11,0);
+    public static final Potion POTION_PLANTER = new PotionBase("effect.planter","potionplanter",false,11898800,12,0);
     //Make a planter effect that uses items off of the ground on tilled soil, might also place blocks but whatever xD
 
     public static final PotionType FLIGHT = new PotionType("flight",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_FLIGHT,3600)}).setRegistryName("flight");
@@ -42,6 +43,7 @@ public class PotionRegistry
     public static final PotionType HARVESTER = new PotionType("harvester",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_HARVESTER,3600)}).setRegistryName("harvester");
     public static final PotionType GROWER = new PotionType("grower",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_GROWER,3600)}).setRegistryName("grower");
     public static final PotionType TILLER = new PotionType("tiller",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_TILLER,3600)}).setRegistryName("tiller");
+    public static final PotionType PLANTER = new PotionType("planter",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_PLANTER,3600)}).setRegistryName("planter");
 
 
 
@@ -58,6 +60,7 @@ public class PotionRegistry
         ForgeRegistries.POTIONS.register(POTION_HARVESTER);
         ForgeRegistries.POTIONS.register(POTION_GROWER);
         ForgeRegistries.POTIONS.register(POTION_TILLER);
+        ForgeRegistries.POTIONS.register(POTION_PLANTER);
     }
 
 
@@ -76,6 +79,7 @@ public class PotionRegistry
         ForgeRegistries.POTION_TYPES.register(HARVESTER);
         ForgeRegistries.POTION_TYPES.register(GROWER);
         ForgeRegistries.POTION_TYPES.register(TILLER);
+        ForgeRegistries.POTION_TYPES.register(PLANTER);
     }
 
 }

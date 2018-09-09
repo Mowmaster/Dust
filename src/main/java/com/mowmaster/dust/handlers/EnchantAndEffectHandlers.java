@@ -657,6 +657,52 @@ public class EnchantAndEffectHandlers
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onPlanter(LivingEvent.LivingUpdateEvent event) {
+        World worldIn = event.getEntityLiving().getEntityWorld();
+        EntityLivingBase entityLiving = event.getEntityLiving();
+        int amp=0;
+        int zmin=0;
+        int zmax=0;
+        int xmin=0;
+        int xmax=0;
+
+
+        int posX = entityLiving.getPosition().getX();
+        int posY = entityLiving.getPosition().getY();
+        int posZ = entityLiving.getPosition().getZ();
+        BlockPos pos = new BlockPos(posX,posY,posZ);//the block above the block the entity is standing on
+        if(entityLiving.isPotionActive(PotionRegistry.POTION_PLANTER))
+        {
+            amp = entityLiving.getActivePotionEffect(PotionRegistry.POTION_PLANTER).getAmplifier();
+            zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
+            if(!worldIn.isRemote) {
+                //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
+                List<EntityItem> items = entityLiving.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3, posY - 3, posZ - 3, posX + 3, posY + 3, posZ + 3));
+
+                for (EntityItem item : items) {
+                    ItemStack stack = item.getItem();
+                    for(int c=zmin;c<=zmax;c++) {
+                        for (int a = xmin; a <= xmax; a++)
+                        {
+                            if(worldIn.getBlockState(pos).getBlock().equals(Blocks.AIR))
+                            {
+                                if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock().equals(Blocks.FARMLAND))
+                                {
+                                    if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
+                                    {
+                                        worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
+                                        item.setDead();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onItemRightClick(PlayerInteractEvent.RightClickBlock event) {
         World worldIn = event.getWorld();
         EnumHand hand = event.getHand();
