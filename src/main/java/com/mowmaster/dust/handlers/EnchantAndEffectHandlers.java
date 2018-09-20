@@ -31,6 +31,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -794,6 +796,10 @@ public class EnchantAndEffectHandlers
                         if (tileentity instanceof TileTrapBlock) {
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true, CrystalTypes.EffectTypes.DUST));
                         }
+                    }
+                    else
+                    {
+                        player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Activate Effect"),true);
                     }
                 }
             }
