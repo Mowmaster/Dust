@@ -75,8 +75,8 @@ public class EffectPicker
                     if(blue==yellow){effect=new PotionEffect(MobEffects.REGENERATION,duration, amp, false, true);}//green
                     else if(blue>yellow)
                     {
-                        if(percentBlue>=50.0 && percentBlue<60.0){effect=new PotionEffect(PotionRegistry.POTION_STEPASSIST,duration, amp, false, true);}
-                        if(percentBlue>=60.0 && percentBlue<70.0){effect=new PotionEffect(MobEffects.SPEED,duration, amp, false, true);}
+                        if(percentBlue>=50.0 && percentBlue<60.0){effect=new PotionEffect(PotionRegistry.POTION_PLANTER,duration, amp, false, true);}
+                        if(percentBlue>=60.0 && percentBlue<70.0){effect=new PotionEffect(PotionRegistry.POTION_STEPASSIST,duration, amp, false, true);}
                         if(percentBlue>=70.0 && percentBlue<80.0){effect=new PotionEffect(MobEffects.SPEED,duration, amp, false, true);}//Blue-green
                         if(percentBlue>=80.0 && percentBlue<90.0){effect=new PotionEffect(MobEffects.SPEED,duration, amp, false, true);}
                         if(percentBlue>=90.0 && percentBlue<100.0){effect=new PotionEffect(PotionRegistry.POTION_QUICKNESS,duration, amp, false, true);}

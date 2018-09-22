@@ -507,3 +507,9 @@ potion.effect.tiller=Potion of Tilling
 splash_potion.effect.tiller=Splash Potion of Tilling
 lingering_potion.effect.tiller=Lingering Potion of Tilling
 tipped_arrow.effect.tiller=Arrow of Tilling
+
+effect.planter=Sower
+potion.effect.planter=Potion of Sowing
+splash_potion.effect.planter=Splash Potion of Sowing
+lingering_potion.effect.planter=Lingering Potion of Sowing
+tipped_arrow.effect.planter=Arrow of Sowing

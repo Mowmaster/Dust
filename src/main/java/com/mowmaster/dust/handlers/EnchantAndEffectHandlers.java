@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -431,7 +432,7 @@ public class EnchantAndEffectHandlers
                     for (int a = xmin; a <= xmax; a++)
                     {
                         IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
-                        if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
+                        if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false) && !state.getBlock().equals(Blocks.PUMPKIN_STEM) && !state.getBlock().equals(Blocks.MELON_STEM) )
                         {
                             state.getBlock().harvestBlock(world,(EntityPlayer)entity,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
                             world.setBlockState(pos.add(a,0,c),state.getBlock().getDefaultState());
@@ -662,6 +663,7 @@ public class EnchantAndEffectHandlers
     public void onPlanter(LivingEvent.LivingUpdateEvent event) {
         World worldIn = event.getEntityLiving().getEntityWorld();
         EntityLivingBase entityLiving = event.getEntityLiving();
+
         int amp=0;
         int zmin=0;
         int zmax=0;
@@ -686,13 +688,82 @@ public class EnchantAndEffectHandlers
                     for(int c=zmin;c<=zmax;c++) {
                         for (int a = xmin; a <= xmax; a++)
                         {
-                            if(worldIn.getBlockState(pos).getBlock().equals(Blocks.AIR))
+                            if(worldIn.getBlockState(pos.add(a,-1,c)).getBlock().isFertile(worldIn,pos.add(a,-1,c)) || worldIn.getBlockState(pos.add(a,-1,c)).getBlock().equals(Blocks.FARMLAND))
                             {
-                                if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock().equals(Blocks.FARMLAND))
+                                if(worldIn.getBlockState(pos.add(a,0,c)).getBlock().equals(Blocks.AIR))
                                 {
-                                    if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
+                                    if(stack.getCount()>0)
                                     {
-                                        worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
+                                        int oldCount = stack.getCount();
+                                        if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sunflowerseedsitem")
+                                                || stack.getItem().getUnlocalizedName().contains("roastedpumpkinseedsitem")
+                                                || stack.getItem().getUnlocalizedName().contains("toastedsesameseedsitem")
+                                                || stack.getItem().getUnlocalizedName().contains("saltedsunflowerseedsitem")) {}
+                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("teaseeditem"))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pamtealeafcrop").getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sesameseedsitem") || stack.getItem().getUnlocalizedName().contains("sesameseedsseeditem"))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pamsesameseedscrop").getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("coffeeseeditem"))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pamcoffeebeancrop").getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("mustardseeditem") || stack.getItem().getUnlocalizedName().contains("mustardseedsitem"))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pammustardseedscrop").getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
+                                            stack.setCount(oldCount-1);
+
+                                        }
+                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("immersiveengineering") && stack.getItem().getUnlocalizedName().contains("seed"))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("immersiveengineering:hemp").getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().equals(Items.WHEAT_SEEDS))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.WHEAT.getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().equals(Items.MELON_SEEDS))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.MELON_STEM.getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().equals(Items.PUMPKIN_SEEDS))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.PUMPKIN_STEM.getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().equals(Items.BEETROOT_SEEDS))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.BEETROOTS.getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().equals(Items.POTATO))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.POTATOES.getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                        else if(stack.getItem().equals(Items.CARROT))
+                                        {
+                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.CARROTS.getDefaultState());
+                                            stack.setCount(oldCount-1);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item.setItem(ItemStack.EMPTY);
                                         item.setDead();
                                     }
                                 }
@@ -738,32 +809,32 @@ public class EnchantAndEffectHandlers
                         if(stack.getItem() instanceof ItemDust)
                         {
                             if (stack.getItemDamage() == 0) {
-                                red = red + 2 * stack.getCount();
-                                count = count + stack.getCount();
+                                red += 2 * stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 1) {
-                                blue = blue + 2 * stack.getCount();
-                                count = count + stack.getCount();
+                                blue += 2 * stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 2) {
-                                yellow = yellow + 2 * stack.getCount();
-                                count = count + stack.getCount();
+                                yellow += 2 * stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 3) {
-                                red = red + stack.getCount();
-                                blue = blue + stack.getCount();
-                                count = count + stack.getCount();
+                                red += stack.getCount();
+                                blue += stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 4) {
-                                yellow = yellow + stack.getCount();
-                                blue = blue + stack.getCount();
-                                count = count + stack.getCount();
+                                yellow += stack.getCount();
+                                blue += stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 5) {
-                                yellow = yellow + stack.getCount();
-                                red = red + stack.getCount();
-                                count = count + stack.getCount();
+                                yellow += stack.getCount();
+                                red += stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 6) {
-                                white = white + stack.getCount();
-                                count = count + stack.getCount();
+                                white += stack.getCount();
+                                count += stack.getCount();
                             } else if (stack.getItemDamage() == 7) {
-                                black = black + stack.getCount();
-                                count = count + stack.getCount();
+                                black += stack.getCount();
+                                count += stack.getCount();
                             }
                             item.setDead();
                         }
