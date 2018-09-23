@@ -437,7 +437,7 @@ public class EnchantAndEffectHandlers
                         if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false) && !state.getBlock().equals(Blocks.PUMPKIN_STEM) && !state.getBlock().equals(Blocks.MELON_STEM) )
                         {
                             state.getBlock().harvestBlock(world,(EntityPlayer)entity,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
-                            world.setBlockState(pos.add(a,0,c),state.getBlock().getDefaultState());
+                            world.setBlockToAir(pos.add(a,0,c));
                         }
                     }
                 }
@@ -452,7 +452,7 @@ public class EnchantAndEffectHandlers
                         if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
                         {
                             state.getBlock().harvestBlock(world,new EntityOtherPlayerMP(entity.getEntityWorld(),new GameProfile(null,"Mowmaster")),pos.add(a,0,c),state,null,new ItemStack(Items.STICK));
-                            world.setBlockState(pos.add(a,0,c),state.getBlock().getDefaultState());
+                            world.setBlockToAir(pos.add(a,0,c));
                         }
                     }
                 }
@@ -485,15 +485,26 @@ public class EnchantAndEffectHandlers
             BlockPos pos = new BlockPos(entity.posX,entity.posY,entity.posZ);//the block above the block player is standing on
             World world = entity.getEntityWorld();
             Random rn = new Random();
+            int randompowerful = 1000;
+            if(amp<10)
+            {
+                randompowerful = 1000 - (100*amp);
+            }
+            else randompowerful=100;
+
             for(int c=zmin;c<=zmax;c++) {
                 for (int a = xmin; a <= xmax; a++)
                 {
-                    int growchance = rn.nextInt(100);
+                    int growchance = rn.nextInt(randompowerful);
                     IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
-                    if(state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false) && growchance<=1)
+                    if(growchance<=1)
                     {
-                        ((IGrowable) state.getBlock()).grow(world,rn,pos.add(a,0,c),state);
+                        if(state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
+                        {
+                            ((IGrowable) state.getBlock()).grow(world,rn,pos.add(a,0,c),state);
+                        }
                     }
+
                 }
             }
         }
@@ -683,7 +694,7 @@ public class EnchantAndEffectHandlers
             zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
             if(!worldIn.isRemote) {
                 //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
-                List<EntityItem> items = entityLiving.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3, posY - 3, posZ - 3, posX + 3, posY + 3, posZ + 3));
+                List<EntityItem> items = entityLiving.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3*amp, posY - 2, posZ - 3*amp, posX + 3*amp, posY + 2, posZ + 3*amp));
 
                 for (EntityItem item : items) {
                     ItemStack stack = item.getItem();
