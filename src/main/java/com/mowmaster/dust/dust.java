@@ -68,8 +68,8 @@ public class dust {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
-        proxy.registerModelBakeryVarients();
-        MinecraftForge.EVENT_BUS.register(this);
+        //proxy.registerModelBakeryVarients();
+        //MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Mod.EventHandler

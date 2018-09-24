@@ -9,13 +9,8 @@ import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockFarmland;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,6 +19,7 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -36,14 +32,19 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.List;
@@ -408,6 +409,8 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvester(LivingEvent.LivingUpdateEvent event)
     {
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(event.getEntityLiving().dimension);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
         EntityLivingBase entity = event.getEntityLiving();
         int amp=0;
         int zmin=0;
@@ -451,7 +454,7 @@ public class EnchantAndEffectHandlers
                         IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
                         if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
                         {
-                            state.getBlock().harvestBlock(world,new EntityOtherPlayerMP(entity.getEntityWorld(),new GameProfile(null,"Mowmaster")),pos.add(a,0,c),state,null,new ItemStack(Items.STICK));
+                            state.getBlock().harvestBlock(world,fakePlayer,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
                             world.setBlockToAir(pos.add(a,0,c));
                         }
                     }

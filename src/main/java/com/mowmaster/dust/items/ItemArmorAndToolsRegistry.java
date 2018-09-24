@@ -42,8 +42,6 @@ public class ItemArmorAndToolsRegistry
     public static ItemShield crystalShield;
 
 
-
-
     public static void init()
     {
         crystalHelmet = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.HEAD,"crystalhelmet","crystalhelmet");

@@ -17,7 +17,6 @@ public class PotionDrowning extends Potion
         super(false,1393407);//does it hurt dead mobs?T/F, decimal color or hexadecimal
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         setPotionName(potionName);
-        this.isBadEffect();
     }
 
     private ResourceLocation iconTexture = new ResourceLocation(Reference.MODID, "textures/icons/icons.png");

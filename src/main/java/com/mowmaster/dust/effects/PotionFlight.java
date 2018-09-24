@@ -9,9 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Created by KingMowmaster on 6/22/2018.
- */
 public class PotionFlight extends Potion
 {
     public PotionFlight(String potionName, String registryName)
@@ -19,7 +16,6 @@ public class PotionFlight extends Potion
         super(false,15921906);//does it hurt dead mobs?T/F, decimal color or hexadecimal
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         setPotionName(potionName);//"effect.fly"
-        this.isBeneficial();
     }
 
     private ResourceLocation iconTexture = new ResourceLocation(Reference.MODID, "textures/icons/icons.png");
