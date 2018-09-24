@@ -1,8 +1,6 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.misc.AchievementHandler;
-import com.mowmaster.dust.particles.ParticleRosePetals;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -39,7 +37,7 @@ import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 public class BlockCrystal extends BlockDirectional
 {
 
-    public static Boolean canPlayerExplode = funhaters;
+    public static Boolean funHatersExplode = funhaters;
     //Covers all crystals
     //Using BlockEndRod as an "example"
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
@@ -192,7 +190,7 @@ public class BlockCrystal extends BlockDirectional
             }
         }
 
-        if(canPlayerExplode == false)
+        if(!funHatersExplode)
         {
             if (!worldIn.isRemote && entityIn instanceof EntityAnimal || entityIn instanceof EntitySquid || entityIn instanceof EntityVillager || entityIn instanceof EntityBat || entityIn instanceof EntityPlayer)
             {

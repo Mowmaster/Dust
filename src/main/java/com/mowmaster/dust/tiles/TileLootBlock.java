@@ -14,10 +14,13 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustConfigurationFile.devBlocks;
+import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
+
 
 public class TileLootBlock extends TileEntity implements ITickable
 {
-    boolean inDev = false;
+    public static Boolean inDev = devBlocks;
     int chancetospawnloot = new Random().nextInt(99);
 
     private IBlockState commonLoot()

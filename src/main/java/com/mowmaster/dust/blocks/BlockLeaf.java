@@ -29,6 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
+
+import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
@@ -38,6 +40,7 @@ public class BlockLeaf  extends Block implements IMetaBlockName
 {
     public static final PropertyEnum LEAVES = PropertyEnum.create("leaves",CrystalBlocks.CrystalLeaves.class);
     protected boolean leavesFancy;
+    public static Boolean funHatersExplode = funhaters;
 
 
 
@@ -125,7 +128,11 @@ public class BlockLeaf  extends Block implements IMetaBlockName
     }
     @Override
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
-        worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,1.0F, true);
+        if(!funHatersExplode)
+        {
+            worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,1.0F, true);
+        }
+
     }
 
     @Override
