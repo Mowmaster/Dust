@@ -1,6 +1,5 @@
 package com.mowmaster.dust.handlers;
 
-import com.mojang.authlib.GameProfile;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
@@ -12,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -19,7 +19,6 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -37,19 +36,20 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustConfigurationFile.dustToActivate;
+import static com.mowmaster.dust.misc.DustConfigurationFile.effectMaximum;
 import static net.minecraft.block.BlockFarmland.MOISTURE;
 
 public class EnchantAndEffectHandlers
@@ -160,24 +160,25 @@ public class EnchantAndEffectHandlers
         }
     }
 
-
     private boolean flight = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onFlight(TickEvent.PlayerTickEvent event)
+    public void onFlight(TickEvent.PlayerTickEvent.PlayerTickEvent event)
     {
+        EntityPlayer player = event.player;
+
         int level = 0;
         int expLoss = 0;
-        if(event.player.inventory.armorInventory.get(2) !=null && event.player.inventory.armorInventory.get(2).isItemEnchanted())
+        if(player.inventory.armorInventory.get(2) !=null && player.inventory.armorInventory.get(2).isItemEnchanted())
         {
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2))!=0 && event.player.experienceTotal>0)
+            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,player.inventory.armorInventory.get(2))!=0 && player.experienceTotal>0)
             {
                 flight = true;
 
-                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,event.player.inventory.armorInventory.get(2));
+                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,player.inventory.armorInventory.get(2));
                 expLoss = (int)(4 * level);
 
-                if(!event.player.world.isRemote && !event.player.isPotionActive(PotionRegistry.POTION_FLIGHT) && !event.player.onGround && event.player.capabilities.isFlying && (event.player.ticksExisted % expLoss == 0)) {
-                    removeXp(event.player, 1);
+                if(!player.world.isRemote && !player.isPotionActive(PotionRegistry.POTION_FLIGHT) && !player.onGround && player.capabilities.isFlying && (player.ticksExisted % expLoss == 0)) {
+                    removeXp(player, 1);
                 }
             }
             else flight=false;
@@ -185,20 +186,20 @@ public class EnchantAndEffectHandlers
         else flight=false;
 
 
-        if(event.player.isPotionActive(PotionRegistry.POTION_FLIGHT))
+        if(player.isPotionActive(PotionRegistry.POTION_FLIGHT))
         {
             flight=true;
         }
-        if(flight || event.player.isCreative() || event.player.isSpectator())
+        if(flight || player.isCreative() || player.isSpectator())
         {
-            event.player.capabilities.allowFlying = true;
-            event.player.fallDistance=0.0f;
+            player.capabilities.allowFlying = true;
+            player.fallDistance=0.0f;
         }
         else
         {
             flight=false;
-            event.player.capabilities.isFlying = false;
-            event.player.capabilities.allowFlying = false;
+            player.capabilities.isFlying = false;
+            player.capabilities.allowFlying = false;
         }
 
 
@@ -206,44 +207,48 @@ public class EnchantAndEffectHandlers
 
     private boolean stepup = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onStepAssist(TickEvent.PlayerTickEvent event)
+    public void onStepAssist(LivingEvent.LivingUpdateEvent event)
     {
-        if(event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp = 0;
+
+        if(event.getEntityLiving() instanceof EntityPlayer)
         {
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1))!=0)
+            EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+            if(player.inventory.armorInventory.get(1) !=null && player.inventory.armorInventory.get(1).isItemEnchanted())
             {
-                int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,event.player.inventory.armorInventory.get(1));
-                event.player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_STEPASSIST,80,level-1,false,false));
+                if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,player.inventory.armorInventory.get(1))!=0)
+                {
+                    int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentStepAssist,player.inventory.armorInventory.get(1));
+                    player.addPotionEffect(new PotionEffect(PotionRegistry.POTION_STEPASSIST,80,level-1,false,false));
+                }
             }
         }
-
-
-
-
-        int amp = 0;
-        if(event.player.isPotionActive(PotionRegistry.POTION_STEPASSIST))
+        if(entity.isPotionActive(PotionRegistry.POTION_STEPASSIST))
         {
             stepup=true;
-            amp = event.player.getActivePotionEffect(PotionRegistry.POTION_STEPASSIST).getAmplifier() +1;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_STEPASSIST).getAmplifier() +1;
         }
         else stepup=false;
 
 
+
+
         Float stepheightvalue = (float)(0.42 * amp) + (float)1.0048174;
 
-        if(stepup==true && !event.player.isSneaking())
+        if(stepup==true && !entity.isSneaking())
         {
-            event.player.stepHeight = stepheightvalue;
+            entity.stepHeight = stepheightvalue;
         }
-        else if(stepup==true && event.player.isSneaking())
+        else if(stepup==true && entity.isSneaking())
         {
-            event.player.stepHeight=0.6f;
+            entity.stepHeight=0.6f;
         }
         else
         {
-            if(event.player.stepHeight >= 1.3448174)
+            if(entity.stepHeight >= 1.3448174)
             {
-                event.player.stepHeight=0.6f;
+                entity.stepHeight=0.6f;
             }
         }
     }
@@ -286,59 +291,67 @@ public class EnchantAndEffectHandlers
         return startAmount - amount;
     }
 
-
     private boolean runner = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onMovingFast(TickEvent.PlayerTickEvent event)
+    public void onMovingFast(LivingEvent.LivingUpdateEvent event)
     {
+        EntityLivingBase entity = event.getEntityLiving();
+        int amp=0;
         int level=0;
-        if(event.player.inventory.armorInventory.get(0) !=null && event.player.inventory.armorInventory.get(0).isItemEnchanted() || event.player.inventory.armorInventory.get(1) !=null && event.player.inventory.armorInventory.get(1).isItemEnchanted())
+        if(event.getEntityLiving() instanceof EntityPlayer)
         {
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(1))!=0)
+            EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+            if(player.inventory.armorInventory.get(0) !=null && player.inventory.armorInventory.get(0).isItemEnchanted() || player.inventory.armorInventory.get(1) !=null && player.inventory.armorInventory.get(1).isItemEnchanted())
             {
-                runner = true;
-                level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0));//on boots
+                if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(1))!=0)
+                {
+                    runner = true;
+                    level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0));//on boots
+                }
+                else runner=false;
             }
             else runner=false;
         }
-        else runner=false;
 
-        Float fastwalk = (float)(0.1 * level) + 0.1f;
-
-        if(event.player.isPotionActive(PotionRegistry.POTION_QUICKNESS))
+        if(entity.isPotionActive(PotionRegistry.POTION_QUICKNESS))
         {
             runner=true;
-            int amp = event.player.getActivePotionEffect(PotionRegistry.POTION_QUICKNESS).getAmplifier() +1;
-            fastwalk = (float)(0.15 * amp)  + fastwalk;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_QUICKNESS).getAmplifier() +1;
         }
-        else if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,event.player.inventory.armorInventory.get(1))!=0){}
         else{runner=false;}
 
-        if (runner == true) {event.player.capabilities.setPlayerWalkSpeed(fastwalk);}
-        else {event.player.capabilities.setPlayerWalkSpeed(0.1f);}
+        if (runner == true && entity.onGround) {
+            entity.motionX *= (1.0f + 0.035 * (amp+level));
+            entity.motionZ *= (1.0f + 0.035 * (amp+level));
+
+            if (entity.motionY > 0){
+                entity.motionY *= 1.134;
+            }
+        }
     }
 
     private boolean waterRunner = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onMovingFastInWater(TickEvent.PlayerTickEvent event)
+    public void onMovingFastInWater(LivingEvent.LivingUpdateEvent event)
     {
-        EntityPlayer player = event.player;
+        EntityLivingBase entity = event.getEntityLiving();
+
         int amp=0;
 
-        if(player.isPotionActive(PotionRegistry.POTION_WATERQUICKNESS))
+        if(entity.isPotionActive(PotionRegistry.POTION_WATERQUICKNESS))
         {
             waterRunner=true;
-            amp = player.getActivePotionEffect(PotionRegistry.POTION_WATERQUICKNESS).getAmplifier() +1;
+            amp = entity.getActivePotionEffect(PotionRegistry.POTION_WATERQUICKNESS).getAmplifier() +1;
         }
         else waterRunner=false;
 
-        if (waterRunner == true && player.isInWater() && !player.isSneaking() && !player.capabilities.isFlying)
+        if (waterRunner == true && entity.isInWater() && !entity.isSneaking())
         {
-            player.motionX *= (1.0f + 0.025 * amp);
-            player.motionZ *= (1.0f + 0.025 * amp);
+            entity.motionX *= (1.0f + 0.035 * amp);
+            entity.motionZ *= (1.0f + 0.035 * amp);
 
-            if (player.motionY > 0){
-                player.motionY *= 1.134;
+            if (entity.motionY > 0){
+                entity.motionY *= 1.134;
             }
         }
     }
@@ -409,8 +422,6 @@ public class EnchantAndEffectHandlers
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onHarvester(LivingEvent.LivingUpdateEvent event)
     {
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(event.getEntityLiving().dimension);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
         EntityLivingBase entity = event.getEntityLiving();
         int amp=0;
         int zmin=0;
@@ -454,6 +465,8 @@ public class EnchantAndEffectHandlers
                         IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
                         if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
                         {
+                            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(event.getEntityLiving().dimension);
+                            FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
                             state.getBlock().harvestBlock(world,fakePlayer,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
                             world.setBlockToAir(pos.add(a,0,c));
                         }
@@ -641,7 +654,8 @@ public class EnchantAndEffectHandlers
     {
 
         EntityPlayer player = event.player;
-        World world = event.player.getEntityWorld();
+
+        World world = player.getEntityWorld();
         int amp=0;
         if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM) && !player.isSneaking())
         {
@@ -791,6 +805,7 @@ public class EnchantAndEffectHandlers
         }
     }
 
+    private static int potencyLimiter =  effectMaximum;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onItemRightClick(PlayerInteractEvent.RightClickBlock event) {
         World worldIn = event.getWorld();
@@ -810,7 +825,7 @@ public class EnchantAndEffectHandlers
         int pressurePlate = 0;
         int count=0;
 
-        int minimumDustRequired=5;
+        int minimumDustRequired=dustToActivate;
 
         if(!worldIn.isRemote) {
             //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
@@ -865,7 +880,7 @@ public class EnchantAndEffectHandlers
                     }
 
                     if (count >= minimumDustRequired && pressurePlate==0) {
-                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true, CrystalTypes.EffectTypes.DUST));
+                        player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                     }
                     else if(count >= minimumDustRequired && pressurePlate>=1)
                     {
@@ -881,10 +896,10 @@ public class EnchantAndEffectHandlers
                         worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockRegistry.blockTrap.getDefaultState());
                         TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
                         if (tileentity instanceof TileTrapBlock) {
-                            ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,3, false, true, CrystalTypes.EffectTypes.DUST));
+                            ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                         }
                     }
-                    else
+                    else if(count<minimumDustRequired && count>0)
                     {
                         player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Activate Effect"),true);
                     }
