@@ -19,6 +19,8 @@ public class DustConfigurationFile
     public static int oreRegrowthRate;
     public static boolean funhaters;
     public static boolean devBlocks;
+    public static int effectMaximum;
+    public static int dustToActivate;
 
 
     public static void InitConfig(File file)
@@ -48,6 +50,11 @@ public class DustConfigurationFile
         dustConfig.addCustomCategoryComment(category,"Player Interaction");
         funhaters = dustConfig.getBoolean("1.Fun Hater?",category,false,"Do you hate fun and Explosions?");
         devBlocks = dustConfig.getBoolean("2.Creative Use Dev Blocks?",category,false,"True is you want to use dev blocks while you build custom structures");
+
+        category = "Effects";
+        dustConfig.addCustomCategoryComment(category,"Spells/Effects");
+        effectMaximum = dustConfig.getInt("1.Spell Potency", category,4,0,9,"How potent spells can be");
+        dustToActivate = dustConfig.getInt("2.Spell Activation", category,5,0,9999,"Requirement for how much dust must be used to Activate spells/effects");
 
 
         dustConfig.save();
