@@ -22,7 +22,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -154,25 +157,34 @@ public class BlockSpike extends BlockDirectional
         return true;
     }
 
-    public static DamageSource crystalSpikes = new DamageSource("crystal").setMagicDamage();
+
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 
-        if(entityIn instanceof EntityLivingBase) {
-            float damage = 0f;
-            DamageSource source = DamageSource.WITHER;
-            int level = 0;
-            if(this.equals(BlockRegistry.spike1)){damage = 1f; source = DamageSource.MAGIC; level = 0;}
-            else if(this.equals(BlockRegistry.spike2)){damage = 2f; source = crystalSpikes; level = 1;}
-            else if(this.equals(BlockRegistry.spike3)){damage = 3f; source = crystalSpikes; level = 2;}
-            else if(this.equals(BlockRegistry.spike4)){damage = 5f; source = crystalSpikes; level = 3;}
-            else if(this.equals(BlockRegistry.spike5)){damage = 7f; source = crystalSpikes; level = 4;}
-            if(entityIn.fallDistance > 0) {
-                damage += entityIn.fallDistance * 1.5f + 2f;
+        if(!worldIn.isRemote)
+        {
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(entityIn.dimension);
+            FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+            DamageSource crystalSpikes = new DamageSource("crystal").setMagicDamage();
+            DamageSource crystalSpikes1 = new EntityDamageSource("crystal",fakePlayer).setMagicDamage().setDamageBypassesArmor();
+
+            if(entityIn instanceof EntityLivingBase) {
+                float damage = 0f;
+                DamageSource source = crystalSpikes;
+                int level = 0;
+                if(this.equals(BlockRegistry.spike1)){damage = 1f; level = 0;}
+                else if(this.equals(BlockRegistry.spike2)){damage = 2f; level = 1;}
+                else if(this.equals(BlockRegistry.spike3)){damage = 3f; level = 2;}
+                else if(this.equals(BlockRegistry.spike4)){damage = 5f; level = 3;}
+                else if(this.equals(BlockRegistry.spike5)){damage = 7f; source = crystalSpikes1; level = 4;}
+                if(entityIn.fallDistance > 0) {
+                    damage += entityIn.fallDistance * 1.5f + 2f;
+                }
+                entityIn.attackEntityFrom(source, damage);
+                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20, level));
             }
-            entityIn.attackEntityFrom(source, damage);
-            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20, level));
+
         }
     }
 
