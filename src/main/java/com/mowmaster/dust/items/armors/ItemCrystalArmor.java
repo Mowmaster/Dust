@@ -284,93 +284,97 @@ public class ItemCrystalArmor extends ItemArmor
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        if(player.inventory.armorItemInSlot(3) !=null && player.inventory.armorItemInSlot(3).getItem() == ItemArmorAndToolsRegistry.crystalHelmet
-                && player.inventory.armorItemInSlot(2) !=null && player.inventory.armorItemInSlot(2).getItem() == ItemArmorAndToolsRegistry.crystalChestplate
-                && player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).getItem() == ItemArmorAndToolsRegistry.crystalLeggings
-                && player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).getItem() == ItemArmorAndToolsRegistry.crystalBoots)
+        if(world.isRemote)
         {
-            if(colorHelm==colorChest && colorChest==colorLeg && colorLeg==colorBoot && player.inventory.armorItemInSlot(3).isItemEnchanted())
+            if(player.inventory.armorItemInSlot(3) !=null && player.inventory.armorItemInSlot(3).getItem() == ItemArmorAndToolsRegistry.crystalHelmet
+                    && player.inventory.armorItemInSlot(2) !=null && player.inventory.armorItemInSlot(2).getItem() == ItemArmorAndToolsRegistry.crystalChestplate
+                    && player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).getItem() == ItemArmorAndToolsRegistry.crystalLeggings
+                    && player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).getItem() == ItemArmorAndToolsRegistry.crystalBoots)
             {
-                if(colorHelm==0)
+                if(colorHelm==colorChest && colorChest==colorLeg && colorLeg==colorBoot && player.inventory.armorItemInSlot(3).isItemEnchanted())
                 {
-                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                    this.effectPlayer(player, MobEffects.STRENGTH,1);
+                    if(colorHelm==0)
+                    {
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,1);
+                    }
+                    else if(colorHelm==4)//old way is every 8
+                    {
+                        this.effectPlayer(player,MobEffects.WATER_BREATHING,0);
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
+                    else if(colorHelm==8)
+                    {
+                        this.effectPlayer(player,MobEffects.SATURATION,0);
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
+                    else if(colorHelm==12)
+                    {
+                        this.effectPlayer(player,MobEffects.RESISTANCE,1);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
+                    else if(colorHelm==16)
+                    {
+                        this.effectPlayer(player,MobEffects.REGENERATION,0);
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
+                    else if(colorHelm==20)
+                    {
+                        this.effectPlayer(player,MobEffects.HASTE,0);
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
+                    else if(colorHelm==24)
+                    {
+                        this.effectPlayer(player, PotionRegistry.POTION_FLIGHT,0);
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
+                    else if(colorHelm==28)
+                    {
+                        this.effectPlayer(player,MobEffects.NIGHT_VISION,0);
+                        this.effectPlayer(player, MobEffects.RESISTANCE,0);
+                        this.effectPlayer(player, MobEffects.STRENGTH,0);
+                    }
                 }
-                else if(colorHelm==8)
+                else
                 {
-                    this.effectPlayer(player,MobEffects.WATER_BREATHING,0);
                     this.effectPlayer(player, MobEffects.RESISTANCE,0);
                     this.effectPlayer(player, MobEffects.STRENGTH,0);
                 }
-                else if(colorHelm==16)
-                {
-                    this.effectPlayer(player,MobEffects.SATURATION,0);
-                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                    this.effectPlayer(player, MobEffects.STRENGTH,0);
-                }
-                else if(colorHelm==24)
-                {
-                    this.effectPlayer(player,MobEffects.RESISTANCE,1);
-                    this.effectPlayer(player, MobEffects.STRENGTH,0);
-                }
-                else if(colorHelm==32)
-                {
-                    this.effectPlayer(player,MobEffects.REGENERATION,0);
-                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                    this.effectPlayer(player, MobEffects.STRENGTH,0);
-                }
-                else if(colorHelm==40)
-                {
-                    this.effectPlayer(player,MobEffects.HASTE,0);
-                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                    this.effectPlayer(player, MobEffects.STRENGTH,0);
-                }
-                else if(colorHelm==48)
-                {
-                    this.effectPlayer(player, PotionRegistry.POTION_FLIGHT,0);
-                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                    this.effectPlayer(player, MobEffects.STRENGTH,0);
-                }
-                else if(colorHelm==56)
-                {
-                    this.effectPlayer(player,MobEffects.NIGHT_VISION,0);
-                    this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                    this.effectPlayer(player, MobEffects.STRENGTH,0);
-                }
+
             }
-            else
+
+
+            if(player.inventory.armorItemInSlot(3) !=null && player.inventory.armorItemInSlot(3).isItemEnchanted())
             {
-                this.effectPlayer(player, MobEffects.RESISTANCE,0);
-                this.effectPlayer(player, MobEffects.STRENGTH,0);
+                getColorCrystalHelm(player.inventory.armorItemInSlot(3));
             }
+            else colorHelm=32;
 
+            if(player.inventory.armorItemInSlot(2) !=null && player.inventory.armorItemInSlot(2).isItemEnchanted())
+            {
+                getColorCrystalChest(player.inventory.armorItemInSlot(2));
+            }
+            else colorChest=32;
+
+            if(player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).isItemEnchanted())
+            {
+                getColorCrystalLeg(player.inventory.armorItemInSlot(1));
+            }
+            else colorLeg=32;
+
+            if(player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).isItemEnchanted())
+            {
+                getColorCrystalBoot(player.inventory.armorItemInSlot(0));
+            }
+            else colorBoot=32;
         }
-
-
-        if(player.inventory.armorItemInSlot(3) !=null && player.inventory.armorItemInSlot(3).isItemEnchanted())
-        {
-            getColorCrystalHelm(player.inventory.armorItemInSlot(3));
-        }
-        else colorHelm=0;
-
-        if(player.inventory.armorItemInSlot(2) !=null && player.inventory.armorItemInSlot(2).isItemEnchanted())
-        {
-            getColorCrystalChest(player.inventory.armorItemInSlot(2));
-        }
-        else colorChest=0;
-
-        if(player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).isItemEnchanted())
-        {
-            getColorCrystalLeg(player.inventory.armorItemInSlot(1));
-        }
-        else colorLeg=0;
-
-        if(player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).isItemEnchanted())
-        {
-            getColorCrystalBoot(player.inventory.armorItemInSlot(0));
-        }
-        else colorBoot=0;
     }
 
 
