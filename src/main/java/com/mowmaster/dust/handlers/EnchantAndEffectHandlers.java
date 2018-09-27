@@ -165,9 +165,14 @@ public class EnchantAndEffectHandlers
     public void onFlight(TickEvent.PlayerTickEvent.PlayerTickEvent event)
     {
         EntityPlayer player = event.player;
+        World world = event.player.world;
 
         int level = 0;
         int expLoss = 0;
+        if(!world.isRemote)
+        {
+
+        }
         if(player.inventory.armorInventory.get(2) !=null && player.inventory.armorInventory.get(2).isItemEnchanted())
         {
             if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight,player.inventory.armorInventory.get(2))!=0 && player.experienceTotal>0)

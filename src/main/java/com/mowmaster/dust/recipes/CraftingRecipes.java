@@ -1,7 +1,9 @@
 package com.mowmaster.dust.recipes;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentFlight;
 import com.mowmaster.dust.enchantments.EnchantmentLastResort;
+import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
@@ -245,7 +247,7 @@ public class CraftingRecipes
         ItemStack enchantedLegsWhite = oldLegs.copy();
         ItemStack enchantedLegsBlack = oldLegs.copy();
         enchantedLegsRed.addEnchantment(Enchantment.getEnchantmentByID(1),1);//Fire Prot
-        enchantedLegsBlue.addEnchantment(EnchantmentRegistry.enchantmentStepAssist,1);
+        enchantedLegsBlue.addEnchantment(EnchantmentRegistry.enchantmentQuickPace,1);
         enchantedLegsYellow.addEnchantment(EnchantmentRegistry.enchantmentQuickPace,1);
         enchantedLegsPurple.addEnchantment(Enchantment.getEnchantmentByID(4),1);//Proj Prot
         enchantedLegsGreen.addEnchantment(Enchantment.getEnchantmentByID(7),1);//Thorns
