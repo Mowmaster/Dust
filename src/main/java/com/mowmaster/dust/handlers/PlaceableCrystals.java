@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.items.ItemRegistry.crystal;
-import static sun.audio.AudioPlayer.player;
 
 
 public class PlaceableCrystals

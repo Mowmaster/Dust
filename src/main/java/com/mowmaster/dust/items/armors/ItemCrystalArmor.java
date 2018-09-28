@@ -283,11 +283,39 @@ public class ItemCrystalArmor extends ItemArmor
         return colorBoot;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        if(!world.isRemote)
-        {
-            if(!player.inventory.armorItemInSlot(3).isEmpty() && player.inventory.armorItemInSlot(3).getItem() instanceof ItemCrystalArmor
+
+            if(world.isRemote)
+            {
+                if(player.inventory.armorItemInSlot(3) !=null && player.inventory.armorItemInSlot(3).isItemEnchanted())
+                {
+                    getColorCrystalHelm(player.inventory.armorItemInSlot(3));
+                }
+                else colorHelm=0;
+
+                if(player.inventory.armorItemInSlot(2) !=null && player.inventory.armorItemInSlot(2).isItemEnchanted())
+                {
+                    getColorCrystalChest(player.inventory.armorItemInSlot(2));
+                }
+                else colorChest=0;
+
+                if(player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).isItemEnchanted())
+                {
+                    getColorCrystalLeg(player.inventory.armorItemInSlot(1));
+                }
+                else colorLeg=0;
+
+                if(player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).isItemEnchanted())
+                {
+                    getColorCrystalBoot(player.inventory.armorItemInSlot(0));
+                }
+                else colorBoot=0;
+            }
+
+        /*
+        if(!player.inventory.armorItemInSlot(3).isEmpty() && player.inventory.armorItemInSlot(3).getItem() instanceof ItemCrystalArmor
                     && !player.inventory.armorItemInSlot(2).isEmpty() && player.inventory.armorItemInSlot(2).getItem() instanceof ItemCrystalArmor
                     && !player.inventory.armorItemInSlot(1).isEmpty() && player.inventory.armorItemInSlot(1).getItem() instanceof ItemCrystalArmor
                     && !player.inventory.armorItemInSlot(0).isEmpty() && player.inventory.armorItemInSlot(0).getItem() instanceof ItemCrystalArmor
@@ -349,39 +377,13 @@ public class ItemCrystalArmor extends ItemArmor
                 }
             }
         }
-        else
-        {
-            if(world.isRemote)
-            {
-                if(player.inventory.armorItemInSlot(3) !=null && player.inventory.armorItemInSlot(3).isItemEnchanted())
-                {
-                    getColorCrystalHelm(player.inventory.armorItemInSlot(3));
-                }
-                else colorHelm=0;
+         */
 
-                if(player.inventory.armorItemInSlot(2) !=null && player.inventory.armorItemInSlot(2).isItemEnchanted())
-                {
-                    getColorCrystalChest(player.inventory.armorItemInSlot(2));
-                }
-                else colorChest=0;
-
-                if(player.inventory.armorItemInSlot(1) !=null && player.inventory.armorItemInSlot(1).isItemEnchanted())
-                {
-                    getColorCrystalLeg(player.inventory.armorItemInSlot(1));
-                }
-                else colorLeg=0;
-
-                if(player.inventory.armorItemInSlot(0) !=null && player.inventory.armorItemInSlot(0).isItemEnchanted())
-                {
-                    getColorCrystalBoot(player.inventory.armorItemInSlot(0));
-                }
-                else colorBoot=0;
-            }
-        }
     }
 
 
 
+    /*
     private void effectPlayer(EntityPlayer player, Potion potion, int amplifier)
     {
         if(player.getActivePotionEffect(potion) == null)
@@ -389,6 +391,7 @@ public class ItemCrystalArmor extends ItemArmor
             player.addPotionEffect(new PotionEffect(potion,120,amplifier,false,false));
         }
     }
+     */
 
 
 
