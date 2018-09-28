@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,7 +48,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
+import static com.mowmaster.dust.misc.DustConfigurationFile.SyncConfig;
 import static com.mowmaster.dust.misc.DustConfigurationFile.dustToActivate;
 import static com.mowmaster.dust.misc.DustConfigurationFile.effectMaximum;
 import static net.minecraft.block.BlockFarmland.MOISTURE;
@@ -297,42 +300,52 @@ public class EnchantAndEffectHandlers
     }
 
     private boolean runner = false;
+    private boolean runnerE = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onMovingFast(LivingEvent.LivingUpdateEvent event)
     {
-        EntityLivingBase entity = event.getEntityLiving();
-        int amp=0;
-        int level=0;
-        if(event.getEntityLiving() instanceof EntityPlayer)
-        {
-            EntityPlayer player = (EntityPlayer)event.getEntityLiving();
-            if(player.inventory.armorInventory.get(0) !=null && player.inventory.armorInventory.get(0).isItemEnchanted() || player.inventory.armorInventory.get(1) !=null && player.inventory.armorInventory.get(1).isItemEnchanted())
+            EntityLivingBase entity = event.getEntityLiving();
+            int amp=0;
+            int level=0;
+            if(event.getEntityLiving() instanceof EntityPlayer)
             {
-                if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(1))!=0)
+                EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+                if(!player.inventory.armorInventory.get(0).isEmpty() && player.inventory.armorInventory.get(0).isItemEnchanted() || !player.inventory.armorInventory.get(1).isEmpty() && player.inventory.armorInventory.get(1).isItemEnchanted())
                 {
-                    runner = true;
-                    level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0));//on boots
+                    if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0))!=0 || EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(1))!=0)
+                    {
+                        runnerE = true;
+                        if(player.inventory.armorInventory.get(0).isItemEnchanted() && !player.inventory.armorInventory.get(1).isItemEnchanted())
+                        {
+                            level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0));
+                        }
+                        else if(player.inventory.armorInventory.get(1).isItemEnchanted() && !player.inventory.armorInventory.get(0).isItemEnchanted())
+                        {
+                            level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(1));
+                        }
+                        else
+                        {
+                            level = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(0)) +
+                                    EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentQuickPace,player.inventory.armorInventory.get(1));
+                        }
+                    }
+                    else runnerE=false;
                 }
-                else runner=false;
+                else runnerE=false;
             }
-            else runner=false;
-        }
 
-        if(entity.isPotionActive(PotionRegistry.POTION_QUICKNESS))
-        {
-            runner=true;
-            amp = entity.getActivePotionEffect(PotionRegistry.POTION_QUICKNESS).getAmplifier() +1;
-        }
-        else{runner=false;}
-
-        if (runner == true && entity.onGround) {
-            entity.motionX *= (1.0f + 0.035 * (amp+level));
-            entity.motionZ *= (1.0f + 0.035 * (amp+level));
-
-            if (entity.motionY > 0){
-                entity.motionY *= 1.134;
+            if(entity.isPotionActive(PotionRegistry.POTION_QUICKNESS))
+            {
+                runner=true;
+                amp = entity.getActivePotionEffect(PotionRegistry.POTION_QUICKNESS).getAmplifier() +1;
             }
-        }
+            else{runner=false;}
+
+            if (runner == true || runnerE == true && entity.onGround && !entity.isWet() || !entity.isInWater() && !entity.isSneaking() && entity.motionY == 0)
+            {
+                entity.motionX *= (1.0f + (0.02f * (float)Math.addExact(amp,level)));
+                entity.motionZ *= (1.0f + (0.02f * (float)Math.addExact(amp,level)));
+            }
     }
 
     private boolean waterRunner = false;
@@ -350,7 +363,7 @@ public class EnchantAndEffectHandlers
         }
         else waterRunner=false;
 
-        if (waterRunner == true && entity.isInWater() && !entity.isSneaking())
+        if (waterRunner == true && entity.isInWater() || entity.isWet() && !entity.isSneaking())
         {
             entity.motionX *= (1.0f + 0.035 * amp);
             entity.motionZ *= (1.0f + 0.035 * amp);
