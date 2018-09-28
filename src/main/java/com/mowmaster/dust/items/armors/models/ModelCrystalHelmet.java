@@ -95,7 +95,7 @@ public class ModelCrystalHelmet extends ModelBiped
         int coreChestColor = chestColor;
         int coreLegColor = legColor;
         int coreBootColor = bootColor;
-        int heightTexture = 41;//old is 32
+        int heightTexture = 32;
         textureWidth = 64;
         textureHeight = 64;
 
