@@ -6,6 +6,7 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemBasic;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.ItemSpellScroll;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockDirectional;
@@ -92,6 +93,11 @@ public class DebugAndLogging
                     }
 
                 }
+            }
+
+            if(playerIn.getHeldItemMainhand().getItem() instanceof ItemSpellScroll)
+            {
+                System.out.println(playerIn.getHeldItemMainhand().getSubCompound("scrolleffect"));
             }
         }
 

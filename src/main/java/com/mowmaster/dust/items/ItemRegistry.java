@@ -88,6 +88,8 @@ public class ItemRegistry
     public static Item scrollY;
     public static Item scrollZ;
 
+    public static Item spellPaper;
+
     public static Item tomeGuideBook;
 
 
@@ -148,6 +150,8 @@ public class ItemRegistry
         scrollX = new ItemScroll("scrollx","scrollx");
         scrollY = new ItemScroll("scrolly","scrolly");
         scrollZ = new ItemScroll("scrollz","scrollz");
+
+        spellPaper = new ItemSpellScroll("spellpaper","spellpaper");
 
         tomeGuideBook = new ItemGuideBook("guidebook","guidebook");
 
@@ -227,6 +231,7 @@ public class ItemRegistry
         registerItem(scrollX);
         registerItem(scrollY);
         registerItem(scrollZ);
+        registerItem(spellPaper);
         registerItem(tomeGuideBook);
         registerItem(akashic);
         registerItem(dust);
@@ -303,6 +308,7 @@ public class ItemRegistry
         registerRender(scrollY);
         registerRender(scrollZ);
 
+        registerRender(spellPaper);
         registerRender(tomeGuideBook);
 
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)

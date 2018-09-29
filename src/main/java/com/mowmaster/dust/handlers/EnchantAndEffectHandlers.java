@@ -6,6 +6,8 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemDust;
+import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.ItemSpellScroll;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -23,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -842,6 +845,7 @@ public class EnchantAndEffectHandlers
         int white=0;
         int black=0;
         int pressurePlate = 0;
+        int paper = 0;
         int count=0;
 
         int minimumDustRequired=dustToActivate;
@@ -896,12 +900,17 @@ public class EnchantAndEffectHandlers
                             pressurePlate++;
                             item.setDead();
                         }
+                        if(stack.getItem().equals(Items.PAPER))
+                        {
+                            paper++;
+                            item.setDead();
+                        }
                     }
 
-                    if (count >= minimumDustRequired && pressurePlate==0) {
+                    if (count >= minimumDustRequired && pressurePlate==0 && paper==0) {
                         player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                     }
-                    else if(count >= minimumDustRequired && pressurePlate>=1)
+                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0)
                     {
 
                         /*
@@ -916,6 +925,20 @@ public class EnchantAndEffectHandlers
                         TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
                         if (tileentity instanceof TileTrapBlock) {
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
+                        }
+                    }
+                    else if(count >= minimumDustRequired && pressurePlate==0 && paper>=1)
+                    {
+                        if(!worldIn.isRemote)
+                        {
+                            PotionEffect effect = EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                            ItemStack stack = new ItemStack(ItemRegistry.spellPaper);
+                            NBTTagCompound cmpd = new NBTTagCompound();
+                            cmpd.setTag("scrolleffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                            stack.setTagCompound(cmpd);
+
+                            EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack);
+                            items1.onCollideWithPlayer(player);
                         }
                     }
                     else if(count<minimumDustRequired && count>0)
