@@ -61,6 +61,8 @@ item.scrollz.name=Ancient Scroll
 item.scroll.name=Ancient Scroll
 
 item.akashic.name=Akashic Records
+item.guidebook.name=Pile of Research Notes
+item.spellpaper.name=Spell Scroll
 
 item.crystal.red.name=Red Crystal
 item.crystal.blue.name=Blue Crystal
