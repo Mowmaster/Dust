@@ -41,10 +41,45 @@ public class BlockPath extends Block
         return Item.getItemFromBlock(this);
     }
 
-
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9D, 1.0D);
+    }
 
     @Override
-    public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
+        Vec3d dir = new Vec3d(entity.motionX, entity.motionY, entity.motionZ);
+
+        if(this.equals(BlockRegistry.path1))
+        {
+            if (dir.lengthVector() > 0.25) {
+                dir = dir.normalize();
+                entity.addVelocity(dir.x * 0.25, dir.y * 0.25, dir.z * 0.25);
+            }
+        }
+        else if(this.equals(BlockRegistry.path2))
+        {
+            if (dir.lengthVector() > 0.25) {
+                dir = dir.normalize();
+                entity.addVelocity(dir.x * 0.5, dir.y * 0.5, dir.z * 0.5);
+            }
+        }
+        else if(this.equals(BlockRegistry.path3))
+        {
+            if (dir.lengthVector() > 0.25) {
+                dir = dir.normalize();
+                entity.addVelocity(dir.x * 1, dir.y * 1, dir.z * 1);
+            }
+        }
+        else if(this.equals(BlockRegistry.path4))
+        {
+            if (dir.lengthVector() > 0.25) {
+                dir = dir.normalize();
+                entity.addVelocity(dir.x * 2, dir.y * 2, dir.z * 2);
+            }
+        }
+
+        /*
         Vec3d dir = new Vec3d(entity.motionX, entity.motionY, entity.motionZ);
         if (dir.lengthVector() > 0.25) {
             dir = dir.normalize();
@@ -65,6 +100,8 @@ public class BlockPath extends Block
                 entity.addVelocity(dir.x * 1, dir.y * 1, dir.z * 1);
             }
         }
+         */
+
     }
 
 
