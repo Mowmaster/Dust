@@ -17,8 +17,10 @@ import net.minecraft.enchantment.EnchantmentKnockback;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -95,9 +97,9 @@ public class DebugAndLogging
                 }
             }
 
-            if(playerIn.getHeldItemMainhand().getItem() instanceof ItemSpellScroll)
+            if(playerIn.getHeldItemMainhand().getItem() instanceof ItemTippedArrow)
             {
-                System.out.println(playerIn.getHeldItemMainhand().getSubCompound("scrolleffect"));
+                System.out.println(playerIn.getHeldItemMainhand().getTagCompound());
             }
         }
 

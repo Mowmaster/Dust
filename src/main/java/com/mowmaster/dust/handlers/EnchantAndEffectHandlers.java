@@ -26,7 +26,9 @@ import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -846,7 +848,9 @@ public class EnchantAndEffectHandlers
         int black=0;
         int pressurePlate = 0;
         int paper = 0;
+        int spellpaper = 0;
         int count=0;
+        ItemStack keepStack = ItemStack.EMPTY;
 
         int minimumDustRequired=dustToActivate;
 
@@ -902,9 +906,33 @@ public class EnchantAndEffectHandlers
                         }
                         if(stack.getItem().equals(Items.PAPER))
                         {
-                            paper++;
+                            paper += stack.getCount();
                             item.setDead();
                         }
+                        if(stack.getItem() instanceof ItemSpellScroll)
+                        {
+                            if(keepStack.equals(ItemStack.EMPTY))
+                            {
+                                spellpaper += stack.getCount();
+                                keepStack = stack;
+                                item.setDead();
+                                System.out.println(spellpaper);
+                            }
+                            else if(PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect")).getEffectName() ==
+                                    PotionEffect.readCustomPotionEffectFromNBT(keepStack.getTagCompound().getCompoundTag("scrolleffect")).getEffectName())
+                            {
+                                spellpaper += stack.getCount();
+                                item.setDead();
+                                System.out.println(spellpaper);
+                            }
+                        }
+                        /*
+                        if(stack.getItem().equals(Items.ARROW))
+                        {
+                            arrow += stack.getCount();
+                            item.setDead();
+                        }
+                         */
                     }
 
                     if (count >= minimumDustRequired && pressurePlate==0 && paper==0) {
@@ -927,20 +955,80 @@ public class EnchantAndEffectHandlers
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                         }
                     }
-                    else if(count >= minimumDustRequired && pressurePlate==0 && paper>=1)
+                    else if(pressurePlate==0 && paper>=1)
                     {
-                        if(!worldIn.isRemote)
+                        if(count/paper >= minimumDustRequired)
                         {
-                            PotionEffect effect = EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
-                            ItemStack stack = new ItemStack(ItemRegistry.spellPaper);
-                            NBTTagCompound cmpd = new NBTTagCompound();
-                            cmpd.setTag("scrolleffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
-                            stack.setTagCompound(cmpd);
+                            if(!worldIn.isRemote)
+                            {
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/paper, blue/paper, yellow/paper, white/paper, black/paper, 20 * count/paper,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                ItemStack stack = new ItemStack(ItemRegistry.spellPaper);
+                                NBTTagCompound cmpd = new NBTTagCompound();
+                                cmpd.setTag("scrolleffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                                stack.setTagCompound(cmpd);
 
-                            EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack);
-                            items1.onCollideWithPlayer(player);
+                                for(int i=0; i<paper; i++)
+                                {
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack.copy());
+                                    items1.onCollideWithPlayer(player);
+                                    //worldIn.spawnEntity(items1);
+                                }
+                            }
                         }
+                        else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
                     }
+                    /*
+                    else if(pressurePlate==0 && paper==0 && spellpaper>=1)
+                    {
+                        if(count/spellpaper >= minimumDustRequired)
+                        {
+                            if(!worldIn.isRemote)
+                            {
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/spellpaper, blue/spellpaper, yellow/spellpaper, white/spellpaper, black/spellpaper, 20 * count/spellpaper,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                PotionEffect old = PotionEffect.readCustomPotionEffectFromNBT(keepStack.getTagCompound().getCompoundTag("scrolleffect"));
+                                old.combine(effect);
+                                ItemStack stack = new ItemStack(ItemRegistry.spellPaper);
+                                NBTTagCompound cmpd = new NBTTagCompound();
+                                cmpd.setTag("scrolleffect",old.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                                stack.setTagCompound(cmpd);
+
+                                for(int i=0; i<paper; i++)
+                                {
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack.copy());
+                                    items1.onCollideWithPlayer(player);
+                                    //worldIn.spawnEntity(items1);
+                                }
+                            }
+                        }
+                        else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
+                    }
+                     */
+                    /*
+                    else if(pressurePlate==0 && paper>=0 && arrow==1)
+                    {
+                        if(count/arrow >= minimumDustRequired)
+                        {
+                            if(!worldIn.isRemote)
+                            {
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white/arrow, black/arrow, 20 * count/arrow,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                ItemStack stack = new ItemStack(Items.TIPPED_ARROW);
+                                NBTTagCompound cmpd = new NBTTagCompound();
+
+                                cmpd.setTag("CustomPotionEffects",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                                //cmpd.setTag("Potion",new NBTTagString(effect.getPotion().getRegistryName().toString()));
+                                stack.setTagCompound(cmpd);
+
+                                for(int i=0; i<arrow; i++)
+                                {
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack.copy());
+                                    items1.onCollideWithPlayer(player);
+                                    //worldIn.spawnEntity(items1);
+                                }
+                            }
+                        }
+                        else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
+                    }
+                     */
                     else if(count<minimumDustRequired && count>0)
                     {
                         player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Activate Effect"),true);
