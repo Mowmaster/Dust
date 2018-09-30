@@ -3,6 +3,7 @@ package com.mowmaster.dust.handlers;
 import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemBasic;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
@@ -17,12 +18,16 @@ import net.minecraft.enchantment.EnchantmentKnockback;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -97,10 +102,14 @@ public class DebugAndLogging
                 }
             }
 
-            if(playerIn.getHeldItemMainhand().getItem() instanceof ItemTippedArrow)
+            if(worldIn.isRemote)
             {
-                System.out.println(playerIn.getHeldItemMainhand().getTagCompound());
+                if(playerIn.getHeldItemMainhand().getItem() instanceof ItemTippedArrow)
+                {
+                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + PotionUtils.getEffectsFromStack(playerIn.getHeldItemMainhand()).toString()));
+                }
             }
+
         }
 
     }

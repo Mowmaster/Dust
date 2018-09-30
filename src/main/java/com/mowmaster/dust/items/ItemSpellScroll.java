@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
@@ -28,12 +29,14 @@ public class ItemSpellScroll extends Item
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         potionEffect = PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect"));
+        String s1 = I18n.translateToLocal(potionEffect.getEffectName()).trim();
+        int s2 = potionEffect.getAmplifier();
+        int s3 = potionEffect.getDuration();
         if(entityIn.isSneaking())
         {
-            stack.setStackDisplayName("Potency: " + PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect")).getAmplifier() +
-                    " Duration: " + PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect")).getDuration()/20 + " seconds");
+            stack.setStackDisplayName("Potency: " + s2 + " Duration: " + s3/20 + " seconds");
         }
-        else stack.setStackDisplayName("Scroll of " + PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect")).getEffectName().replace("effect.","").toUpperCase());
+        else stack.setStackDisplayName("Scroll of " + s1);
     }
 
     @Override

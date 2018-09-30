@@ -1,5 +1,6 @@
 package com.mowmaster.dust.handlers;
 
+import com.google.common.collect.Lists;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
@@ -8,6 +9,7 @@ import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemSpellScroll;
+import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -22,13 +24,15 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
+import net.minecraft.potion.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,6 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
@@ -848,7 +853,8 @@ public class EnchantAndEffectHandlers
         int black=0;
         int pressurePlate = 0;
         int paper = 0;
-        int spellpaper = 0;
+        //int spellpaper = 0;
+        int arrow = 0;
         int count=0;
         ItemStack keepStack = ItemStack.EMPTY;
 
@@ -909,6 +915,7 @@ public class EnchantAndEffectHandlers
                             paper += stack.getCount();
                             item.setDead();
                         }
+                        /*
                         if(stack.getItem() instanceof ItemSpellScroll)
                         {
                             if(keepStack.equals(ItemStack.EMPTY))
@@ -926,19 +933,19 @@ public class EnchantAndEffectHandlers
                                 System.out.println(spellpaper);
                             }
                         }
-                        /*
+                         */
                         if(stack.getItem().equals(Items.ARROW))
                         {
                             arrow += stack.getCount();
                             item.setDead();
                         }
-                         */
+
                     }
 
-                    if (count >= minimumDustRequired && pressurePlate==0 && paper==0) {
+                    if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0) {
                         player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                     }
-                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0)
+                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0)
                     {
 
                         /*
@@ -955,7 +962,7 @@ public class EnchantAndEffectHandlers
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                         }
                     }
-                    else if(pressurePlate==0 && paper>=1)
+                    else if(pressurePlate==0 && arrow==0 &&  paper>=1)
                     {
                         if(count/paper >= minimumDustRequired)
                         {
@@ -1003,24 +1010,33 @@ public class EnchantAndEffectHandlers
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
                     }
                      */
-                    /*
-                    else if(pressurePlate==0 && paper>=0 && arrow==1)
+
+                    else if(pressurePlate==0 && paper>=0 && arrow>=1)
                     {
                         if(count/arrow >= minimumDustRequired)
                         {
                             if(!worldIn.isRemote)
                             {
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white/arrow, black/arrow, 20 * count/arrow,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
-                                ItemStack stack = new ItemStack(Items.TIPPED_ARROW);
-                                NBTTagCompound cmpd = new NBTTagCompound();
-
-                                cmpd.setTag("CustomPotionEffects",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                                List<PotionEffect> effects = Lists.<PotionEffect>newArrayList();
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white/arrow, black/arrow, 20 * count/arrow * 8,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                effects.add(effect);
+                                //NBTTagCompound cmpd = new NBTTagCompound();
+                                //cmpd.setTag("CustomPotionEffects",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 //cmpd.setTag("Potion",new NBTTagString(effect.getPotion().getRegistryName().toString()));
-                                stack.setTagCompound(cmpd);
+                                //stack.setTagCompound(cmpd);
+
+                                ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW);
+                                //PotionUtils.addPotionToItemStack(itemstack1, new PotionType(new PotionEffect[]{effect}));
+                                NBTTagCompound cmpd = new NBTTagCompound();
+                                cmpd.setInteger("CustomPotionColor",effect.getPotion().getLiquidColor());
+                                itemstack1.setTagCompound(cmpd);
+                                PotionUtils.appendEffects(itemstack1, effects);
+                                String s1 = I18n.translateToLocal(effect.getEffectName()).trim();
+                                itemstack1.setStackDisplayName("Arrow of " + s1);
 
                                 for(int i=0; i<arrow; i++)
                                 {
-                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack.copy());
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, itemstack1.copy());
                                     items1.onCollideWithPlayer(player);
                                     //worldIn.spawnEntity(items1);
                                 }
@@ -1028,7 +1044,7 @@ public class EnchantAndEffectHandlers
                         }
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
                     }
-                     */
+
                     else if(count<minimumDustRequired && count>0)
                     {
                         player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Activate Effect"),true);
