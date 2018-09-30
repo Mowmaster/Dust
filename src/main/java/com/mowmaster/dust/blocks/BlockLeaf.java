@@ -197,8 +197,6 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
-
-
     /*
     public boolean isOpaqueCube(IBlockState state)
     {
