@@ -82,18 +82,18 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
     public boolean addCrystal(int type)
     {
-        if(type==0){redCrystals++;redCrystals++;}
-        if(type==1){blueCrystals++;blueCrystals++;}
-        if(type==2){yellowCrystals++;yellowCrystals++;}
-
-        if(type==3){redCrystals++;blueCrystals++;}//purple
-        if(type==4){yellowCrystals++;blueCrystals++;}//green
-        if(type==5){yellowCrystals++;redCrystals++;}//orange
-
-        if(type==6){whiteCrystals++;}
-        if(type==7){blackCrystals++;}
         if(crystalCount<crystalMax)
-        {
+        {if(type==0){redCrystals++;redCrystals++;}
+            if(type==1){blueCrystals++;blueCrystals++;}
+            if(type==2){yellowCrystals++;yellowCrystals++;}
+
+            if(type==3){redCrystals++;blueCrystals++;}//purple
+            if(type==4){yellowCrystals++;blueCrystals++;}//green
+            if(type==5){yellowCrystals++;redCrystals++;}//orange
+
+            if(type==6){whiteCrystals++;}
+            if(type==7){blackCrystals++;}
+            
             crystalCount++;
             if(crystalCount==1){slot1=type;}
             if(crystalCount==2){slot2=type;}
