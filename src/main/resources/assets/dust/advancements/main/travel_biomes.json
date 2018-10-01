@@ -7,16 +7,13 @@
       "translate": "Exotic Traveler"
     },
     "description": {
-      "translate": "Travel to all the Crystal Biomes"
+      "translate": "Travel to the Crystal Biome"
     }
   },
   "frame": "goal",
   "parent": "dust:main/root",
   "criteria": {
-    "hot": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalhot"}},
-    "warm": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalwarm"}},
-    "cold": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystalcold"}},
     "crystal": {"trigger": "minecraft:location","conditions":{"biome": "dust:crystal"}}
   },
-  "requirements": [["hot"],["warm"],["cold"],["crystal"]]
+  "requirements": [["crystal"]]
 }
