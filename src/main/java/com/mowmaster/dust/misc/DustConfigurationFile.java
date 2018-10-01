@@ -39,12 +39,12 @@ public class DustConfigurationFile
 
         category = "World Generation";
         dustConfig.addCustomCategoryComment(category,"World Generation Tweaks");
-        structuresInCrystal = dustConfig.getInt("1.Crystal Structure Generation", category,1000,1,9999,"Structures in Crystal Biomes");
+        structuresInCrystal = dustConfig.getInt("1.Crystal Structure Generation", category,500,1,9999,"Structures in Crystal Biomes");
         structuresInWorld = dustConfig.getInt("2.Structure Generation", category,1500,1,9999,"Structures in any biome");
-        treeGenChance = dustConfig.getInt("3.Trees Generation", category,9,1,9999,"1 in X chunks a tree will spawn in a crystal biome");
-        anyBiomeOreSpawnChance = dustConfig.getInt("4.Ore Spawn Rate", category,50,1,9999,"Specifically in Normal Biomes");
-        oreClusterSize = dustConfig.getInt("5.Cluster Size", category,3,1,20,"Size of Crystal Ore Clusters");
-        oreRegrowthRate = dustConfig.getInt("6.Regrow Rate", category,40,1,999,"Higher is faster regeneration of crystal ore");
+        treeGenChance = dustConfig.getInt("3.Trees Generation", category,15,1,9999,"1 in X chunks a tree will spawn in a crystal biome");
+        anyBiomeOreSpawnChance = dustConfig.getInt("4.Ore Spawn Rate", category,40,1,9999,"Specifically in Normal Biomes");
+        oreClusterSize = dustConfig.getInt("5.Cluster Size", category,5,1,20,"Size of Crystal Ore Clusters");
+        oreRegrowthRate = dustConfig.getInt("6.Regrow Rate", category,50,1,999,"Higher is faster regeneration of crystal ore");
 
         category = "Misc";
         dustConfig.addCustomCategoryComment(category,"Player Interaction");
