@@ -93,7 +93,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
 
             if(type==6){whiteCrystals++;}
             if(type==7){blackCrystals++;}
-            
+
             crystalCount++;
             if(crystalCount==1){slot1=type;}
             if(crystalCount==2){slot2=type;}
