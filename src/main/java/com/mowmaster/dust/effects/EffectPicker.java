@@ -3,14 +3,19 @@ package com.mowmaster.dust.effects;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.enums.CrystalTypes;
 import net.minecraft.init.MobEffects;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.registries.GameData;
 
 public class EffectPicker
 {
 
+    private static Boolean immersiveE = false;
     public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, int potencyCap, Boolean ambient, Boolean showParticles, CrystalTypes.EffectTypes type)
     {
+        if(Loader.isModLoaded("immersiveengineering")) {immersiveE = true;}
+
         PotionEffect effect=new PotionEffect(MobEffects.LUCK);
         double totalColor=(red+blue)+yellow;
         double percentRed= 100*((double)red/totalColor);
@@ -177,8 +182,10 @@ public class EffectPicker
                     {
                         if(percentBlue>=50.0 && percentBlue<60.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
                         if(percentBlue>=60.0 && percentBlue<70.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
-                        if(percentBlue>=70.0 && percentBlue<80.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}//Blue-green
-                        if(percentBlue>=80.0 && percentBlue<90.0){effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
+                        if(percentBlue>=70.0 && percentBlue<80.0){if(immersiveE){effect=new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:slippery"),duration, amp, false, true);}
+                        else effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}//Blue-green
+                        if(percentBlue>=80.0 && percentBlue<90.0){if(immersiveE){effect=new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:sticky"),duration, amp, false, true);}
+                        else effect=new PotionEffect(MobEffects.SLOWNESS,duration, amp, false, true);}
                         if(percentBlue>=90.0 && percentBlue<100.0){effect=new PotionEffect(PotionRegistry.POTION_PETRIFIED,duration, amp, false, true);}
                     }
                     else if(yellow>blue)
@@ -186,8 +193,10 @@ public class EffectPicker
                         if(percentYellow>=50.0 && percentYellow<60.0){effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}
                         if(percentYellow>=60.0 && percentYellow<70.0){effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}
                         if(percentYellow>=70.0 && percentYellow<80.0){effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}//Yellow-green
-                        if(percentYellow>=80.0 && percentYellow<90.0){effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}
-                        if(percentYellow>=90.0 && percentYellow<100.0){effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}
+                        if(percentYellow>=80.0 && percentYellow<90.0){if(immersiveE){effect=new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:stunned"),duration, amp, false, true);}
+                        else effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}
+                        if(percentYellow>=90.0 && percentYellow<100.0){if(immersiveE){effect=new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:flashed"),duration, amp, false, true);}
+                        else effect=new PotionEffect(MobEffects.GLOWING,duration, amp, false, true);}
                     }
                 }
             }
@@ -201,7 +210,9 @@ public class EffectPicker
                     {
                         if(percentBlue>=50.0 && percentBlue<60.0){effect=new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,duration, amp, false, true);}
                         if(percentBlue>=60.0 && percentBlue<70.0){effect=new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,duration, amp, false, true);}
-                        if(percentBlue>=70.0 && percentBlue<80.0){effect=new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,duration, amp, false, true);}//Blue-Purple also should be flamibility
+                        if(percentBlue>=70.0 && percentBlue<80.0){
+                            if(immersiveE){effect=new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:flammable"),duration, amp, false, true);}
+                            else effect=new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,duration, amp, false, true);}//Blue-Purple also should be flamibility
                         if(percentBlue>=80.0 && percentBlue<90.0){effect=new PotionEffect(PotionRegistry.POTION_ENVIGORATION ,duration, amp, false, true);}
                         if(percentBlue>=90.0 && percentBlue<100.0){effect=new PotionEffect(MobEffects.UNLUCK ,duration, amp, false, true);}
                     }
@@ -209,7 +220,8 @@ public class EffectPicker
                     {
                         if(percentRed>=50.0 && percentRed<60.0){effect=new PotionEffect(MobEffects.NAUSEA ,duration, amp, false, true);}
                         if(percentRed>=60.0 && percentRed<70.0){effect=new PotionEffect(MobEffects.NAUSEA ,duration, amp, false, true);}
-                        if(percentRed>=70.0 && percentRed<80.0){effect=new PotionEffect(MobEffects.NAUSEA ,duration, amp, false, true);}//Red-Purple
+                        if(percentRed>=70.0 && percentRed<80.0){if(immersiveE){effect=new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:conductive"),duration, amp, false, true);}
+                        else effect=new PotionEffect(MobEffects.NAUSEA ,duration, amp, false, true);}//Red-Purple
                         if(percentRed>=80.0 && percentRed<90.0){effect=new PotionEffect(MobEffects.INSTANT_DAMAGE ,1, amp, false, true);}
                         if(percentRed>=90.0 && percentRed<100.0){effect=new PotionEffect(MobEffects.INSTANT_DAMAGE ,1, amp, false, true);}
                     }
