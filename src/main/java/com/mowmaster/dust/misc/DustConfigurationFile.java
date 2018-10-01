@@ -19,6 +19,8 @@ public class DustConfigurationFile
     public static int oreRegrowthRate;
     public static boolean funhaters;
     public static boolean devBlocks;
+    public static boolean craftCrystals;
+    public static boolean craftSaplings;
     public static int effectMaximum;
     public static int dustToActivate;
 
@@ -50,6 +52,8 @@ public class DustConfigurationFile
         dustConfig.addCustomCategoryComment(category,"Player Interaction");
         funhaters = dustConfig.getBoolean("1.Fun Hater?",category,false,"Do you hate fun and Explosions?");
         devBlocks = dustConfig.getBoolean("2.Creative Use Dev Blocks?",category,false,"True is you want to use dev blocks while you build custom structures");
+        craftCrystals = dustConfig.getBoolean("2.Craft Crystals?",category,false,"Can you craft Crystals with diamonds and dye?");
+        craftSaplings = dustConfig.getBoolean("2.Craft Crystal Saplings?",category,false,"Can you craft Crystal Saplings with crystals and saplings?");
 
         category = "Effects";
         dustConfig.addCustomCategoryComment(category,"Spells/Effects");
