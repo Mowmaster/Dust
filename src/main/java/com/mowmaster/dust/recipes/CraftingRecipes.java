@@ -458,17 +458,17 @@ public class CraftingRecipes
             GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystal_black"),null,new ItemStack(ItemRegistry.crystal,1,7),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(Items.DYE,10),'A', diamond} );
         }
 
-        ItemStack sapling = new ItemStack(Blocks.SAPLING,0);
+        ItemStack sapling = new ItemStack(Blocks.SAPLING,1,0);
         if(craftSaplings)
         {
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingred"),null,new ItemStack(BlockRegistry.saplingred),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,0),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingblue"),null,new ItemStack(BlockRegistry.saplingblue),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingyellow"),null,new ItemStack(BlockRegistry.saplingyellow),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,2),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingpurple"),null,new ItemStack(BlockRegistry.saplingpurple),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,3),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplinggreen"),null,new ItemStack(BlockRegistry.saplinggreen),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,4),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingorange"),null,new ItemStack(BlockRegistry.saplingorange),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,5),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingwhite"),null,new ItemStack(BlockRegistry.saplingwhite),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,6),'A', sapling} );
-            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingblack"),null,new ItemStack(BlockRegistry.saplingblack),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,7),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingred"),null,new ItemStack(BlockRegistry.saplingred),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,0),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingblue"),null,new ItemStack(BlockRegistry.saplingblue),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,1),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingyellow"),null,new ItemStack(BlockRegistry.saplingyellow),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,2),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingpurple"),null,new ItemStack(BlockRegistry.saplingpurple),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,3),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplinggreen"),null,new ItemStack(BlockRegistry.saplinggreen),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,4),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingorange"),null,new ItemStack(BlockRegistry.saplingorange),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingwhite"),null,new ItemStack(BlockRegistry.saplingwhite),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', sapling} );
+            GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"saplingblack"),null,new ItemStack(BlockRegistry.saplingblack),new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', sapling} );
         }
 
     }
