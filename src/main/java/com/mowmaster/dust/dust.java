@@ -8,10 +8,7 @@ import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
-import com.mowmaster.dust.recipes.BrewingRecipes;
-import com.mowmaster.dust.recipes.CraftingRecipes;
-import com.mowmaster.dust.recipes.OreDictDust;
-import com.mowmaster.dust.recipes.SmeltingRecipes;
+import com.mowmaster.dust.recipes.*;
 import com.mowmaster.dust.recipes.fuels.FuelRegistry;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
@@ -24,6 +21,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.mowmaster.dust.proxies.CommonProxy;
 import com.mowmaster.dust.references.Reference;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.io.File;
 

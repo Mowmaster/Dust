@@ -33,6 +33,7 @@ public class ItemRegistry
     public static Item crushingComponents; // fixed the capitalization to use proper camel casing instead of being all lowercase
     public static Item furnaceComponents;
     public static Item finnisher;
+    public static Item dustbread;
 
     public static Item ancientCoinA;
     public static Item ancientCoinB;
@@ -174,6 +175,8 @@ public class ItemRegistry
                 new PotionEffect(Potion.getPotionById(3),1200,10),
                 new PotionEffect(Potion.getPotionById(5),1200,10),
         new PotionEffect(Potion.getPotionById(10),1200,5));
+
+        dustbread = new ItemDustBread("dustbread","dustbread");
     }
 
     public static void register()
@@ -249,6 +252,7 @@ public class ItemRegistry
         registerItem(crushingComponents);
         registerItem(furnaceComponents);
         registerItem(finnisher);
+        registerItem(dustbread);
     }
 
     public static void registerRenders()
@@ -337,6 +341,7 @@ public class ItemRegistry
         registerRender(crushingComponents);
         registerRender(furnaceComponents);
         registerRender(finnisher);
+        registerRender(dustbread);
     }
 
     public static void registerItem(Item item)

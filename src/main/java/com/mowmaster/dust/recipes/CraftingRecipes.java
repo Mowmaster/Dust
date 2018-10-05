@@ -1,35 +1,17 @@
 package com.mowmaster.dust.recipes;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.enchantments.EnchantmentFlight;
-import com.mowmaster.dust.enchantments.EnchantmentLastResort;
-import com.mowmaster.dust.enchantments.EnchantmentQuickPace;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentProtection;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.OreIngredient;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static com.mowmaster.dust.blocks.BlockRegistry.*;
-import static com.mowmaster.dust.items.ItemRegistry.*;
 import static com.mowmaster.dust.misc.DustConfigurationFile.craftCrystals;
 import static com.mowmaster.dust.misc.DustConfigurationFile.craftSaplings;
 
