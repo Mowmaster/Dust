@@ -13,6 +13,8 @@ import com.mowmaster.dust.recipes.fuels.FuelRegistry;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.RecipeMatcher;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,6 +24,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import com.mowmaster.dust.proxies.CommonProxy;
 import com.mowmaster.dust.references.Reference;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import java.io.File;
 
@@ -66,6 +70,7 @@ public class dust {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
+        //RecipeSorter.register("dust_bread",RecipeDustBread.class, RecipeSorter.Category.SHAPED,"");
         //proxy.registerModelBakeryVarients();
         //MinecraftForge.EVENT_BUS.register(this);
     }

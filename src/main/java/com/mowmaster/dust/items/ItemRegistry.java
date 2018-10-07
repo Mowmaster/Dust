@@ -176,7 +176,7 @@ public class ItemRegistry
                 new PotionEffect(Potion.getPotionById(5),1200,10),
         new PotionEffect(Potion.getPotionById(10),1200,5));
 
-        dustbread = new ItemDustBread("dustbread","dustbread");
+        dustbread = new ItemDustBread("dustbread","dustbread",1,1f);
     }
 
     public static void register()
