@@ -905,12 +905,13 @@ public class EnchantAndEffectHandlers
                         if(stack.getItem().equals(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE).getItem())
                                 || stack.getItem().equals(new ItemStack(Blocks.STONE_PRESSURE_PLATE).getItem())
                                 || stack.getItem().equals(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE).getItem())
-                                || stack.getItem().equals(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).getItem()))
+                                || stack.getItem().equals(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).getItem())
+                                && !(arrow>0) || !(paper>0))
                         {
                             pressurePlate++;
                             item.setDead();
                         }
-                        if(stack.getItem().equals(Items.PAPER))
+                        if(stack.getItem().equals(Items.PAPER) && !(arrow>0) || !(pressurePlate>0))
                         {
                             paper += stack.getCount();
                             item.setDead();
@@ -934,7 +935,7 @@ public class EnchantAndEffectHandlers
                             }
                         }
                          */
-                        if(stack.getItem().equals(Items.ARROW))
+                        if(stack.getItem().equals(Items.ARROW) && !(paper>0) || !(pressurePlate>0))
                         {
                             arrow += stack.getCount();
                             item.setDead();

@@ -55,7 +55,6 @@ public class dust {
         ItemArmorAndToolsRegistry.init();
         ItemArmorAndToolsRegistry.register();
         OreDictDust.addEntries();
-        TileRegistry.registerTile();
         EnchantmentRegistry.Init();
         PotionRegistry.init();
         PotionRegistry.registerPotionTypes();

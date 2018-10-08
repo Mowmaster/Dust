@@ -184,7 +184,10 @@ public class PlaceableCrystals
             if(((TileCrystalCluster) tileentity).getCrystalCount()==0)
             {
                 ((TileCrystalCluster) tileentity).addCrystal(playerIn.getHeldItem(hand).getMetadata());
-                playerIn.getHeldItem(hand).shrink(1);
+                if(!playerIn.isCreative())
+                {
+                    playerIn.getHeldItem(hand).shrink(1);
+                }
             }
         }
     }
