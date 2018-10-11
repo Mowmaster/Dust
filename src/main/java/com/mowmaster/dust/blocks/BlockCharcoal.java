@@ -8,10 +8,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -47,5 +49,4 @@ public class BlockCharcoal extends Block
     {
         return Item.getItemFromBlock(this);
     }
-
 }

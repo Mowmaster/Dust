@@ -2,6 +2,7 @@ package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

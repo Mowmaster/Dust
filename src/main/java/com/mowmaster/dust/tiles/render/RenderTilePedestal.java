@@ -1,9 +1,6 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.blocks.BlockPedestal;
-import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -13,7 +10,6 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 import static net.minecraft.block.BlockDirectional.FACING;
