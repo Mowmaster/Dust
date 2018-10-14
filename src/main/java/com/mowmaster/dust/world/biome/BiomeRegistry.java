@@ -46,7 +46,7 @@ public class BiomeRegistry
         //BiomeManager.addSpawnBiome(crystal_hot);
         //BiomeManager.addSpawnBiome(crystal_warm);
         //BiomeManager.addSpawnBiome(crystal_cold);
-        BiomeManager.addSpawnBiome(crystal_crystal);
+        //BiomeManager.addSpawnBiome(crystal_crystal);
 
         //BiomeManager.addBiome(BiomeManager.BiomeType.DESERT, new BiomeManager.BiomeEntry(crystal_hot,biomeWeight));//Number is Biome Weight
         //BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_warm,biomeWeight));
@@ -54,6 +54,7 @@ public class BiomeRegistry
         BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_crystal,(biomeWeight)));
 
         BiomeManager.addVillageBiome(crystal_crystal,true);
+        BiomeManager.addStrongholdBiome(crystal_crystal);
 
 
     }
