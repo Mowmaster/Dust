@@ -1,10 +1,7 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.dust;
-import com.mowmaster.dust.handlers.EnchantAndEffectHandlers;
-import com.mowmaster.dust.handlers.DebugAndLogging;
-import com.mowmaster.dust.handlers.GuiHandler;
-import com.mowmaster.dust.handlers.PlaceableCrystals;
+import com.mowmaster.dust.handlers.*;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TileRegistry;
@@ -35,6 +32,10 @@ public class CommonProxy
         EnchantAndEffectHandlers enchants = new EnchantAndEffectHandlers();
         MinecraftForge.EVENT_BUS.register(enchants);
         FMLCommonHandler.instance().bus().register(enchants);
+
+        LootHandler loots = new LootHandler();
+        MinecraftForge.EVENT_BUS.register(loots);
+        FMLCommonHandler.instance().bus().register(loots);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(dust.instance,new GuiHandler());
 
