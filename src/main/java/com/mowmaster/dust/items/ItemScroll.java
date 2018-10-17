@@ -45,6 +45,8 @@ public class ItemScroll extends Item
         tooltip.add("Not needed till next beta release(will also be reworked)");
     }
 
+    //Use NBT to define which one and set item resources based on that, maybe also apply to coins...
+
 
 }
 

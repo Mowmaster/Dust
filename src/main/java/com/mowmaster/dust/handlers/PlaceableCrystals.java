@@ -96,7 +96,7 @@ public class PlaceableCrystals
         EnumHand hand = event.getHand();
         IBlockState state = worldIn.getBlockState(event.getPos());
 
-        if(playerIn.getHeldItemMainhand().getItem() instanceof ItemScroll)
+        if(playerIn.getHeldItemMainhand().getItem().equals(ItemRegistry.scroll))
         {
             playerIn.setHeldItem(EnumHand.MAIN_HAND,picker());
         }
