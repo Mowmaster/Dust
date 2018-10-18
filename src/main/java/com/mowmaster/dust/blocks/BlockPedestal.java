@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileCrystalFurnace;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -99,8 +101,25 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         return state;
     }
 
+    private boolean keepInventory = true;
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        if (!keepInventory)
+        {
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+
+            if (tileentity instanceof TilePedestal)
+            {
+                InventoryHelper.dropInventoryItems(worldIn, pos, (TilePedestal)tileentity);
+            }
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
 
 
+
+    /*
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -116,11 +135,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-    }
-
-    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if(tileEntity instanceof TilePedestal)
@@ -133,6 +147,14 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
             }
         }
     }
+     */
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    }
+
+
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
@@ -175,7 +197,27 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                         }
                     }
                 }
-
+                else if(!tilePedestal.hasCoin())
+                {
+                    if(playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCoin)
+                    {
+                        if(tilePedestal.addCoin(new ItemStack(playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem(),1)))
+                        {
+                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                        }
+                    }
+                    else if (playerIn.getHeldItemMainhand().isEmpty()) {
+                        if (tilePedestal.hasItem()) {
+                            playerIn.inventory.addItemStackToInventory(tilePedestal.removeItem());
+                        }
+                    }
+                    else if (!tilePedestal.hasItem()) {
+                        if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND))) {
+                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(playerIn.getHeldItem(EnumHand.MAIN_HAND).getCount());
+                            return true;
+                        }
+                    }
+                }
                 else if (playerIn.getHeldItemMainhand().isEmpty()) {
                     if (tilePedestal.hasItem()) {
                         playerIn.inventory.addItemStackToInventory(tilePedestal.removeItem());
@@ -183,18 +225,8 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                 }
                 else if (!tilePedestal.hasItem()) {
                     if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND))) {
-                        playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                        playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(playerIn.getHeldItem(EnumHand.MAIN_HAND).getCount());
                         return true;
-                    }
-                }
-                else if(!tilePedestal.hasCoin())
-                {
-                    if(playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCoin)
-                    {
-                        if(tilePedestal.addCoin(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
-                        {
-                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
-                        }
                     }
                 }
             }
