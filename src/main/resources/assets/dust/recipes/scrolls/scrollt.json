@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:scrollt"},
+    {"item": "dust:scroll"}
+  ],
+  "result": {
+    "item": "dust:scrollt",
+    "count": 2
+  }
+}

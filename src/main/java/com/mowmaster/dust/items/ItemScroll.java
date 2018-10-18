@@ -34,7 +34,7 @@ public class ItemScroll extends Item
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.maxStackSize = 1;
+        this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
     }
 
