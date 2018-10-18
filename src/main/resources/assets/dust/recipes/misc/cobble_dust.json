@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CDC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
+    "D": {
+      "item": "dust:dust",
+      "data": 8
+    }
+  },
+  "result": {
+    "item": "dust:dust",
+    "data": 8,
+    "count": 33
+  }
+}
