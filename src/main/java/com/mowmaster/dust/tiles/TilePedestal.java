@@ -122,84 +122,88 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
         if(!world.isRemote)
         {
-            if(isBlockUnder(0,-1,0))
+            if(item.getStackInSlot(0).isEmpty())
             {
-                ticker++;
-                if(ticker>=20)
+                if(isBlockUnder(0,-1,0))
                 {
-                    if (enumfacing.equals(EnumFacing.UP))
+                    ticker++;
+                    if(ticker>=20)
                     {
-                        display = getNextSlotInChest(0,-1,0);
-                        updateBlock();
-                        ticker=0;
+                        if (enumfacing.equals(EnumFacing.UP))
+                        {
+                            display = getNextSlotInChest(0,-1,0);
+                            updateBlock();
+                            ticker=0;
+                        }
+                    }
+                }
+                if(isBlockUnder(0,1,0))
+                {
+                    ticker++;
+                    if(ticker>=20)
+                    {
+                        if (enumfacing.equals(EnumFacing.DOWN))
+                        {
+                            display = getNextSlotInChest(0,1,0);
+                            updateBlock();
+                            ticker=0;
+                        }
+                    }
+                }
+                if(isBlockUnder(0,0,1))
+                {
+                    ticker++;
+                    if(ticker>=20)
+                    {
+                        if (enumfacing.equals(EnumFacing.NORTH))
+                        {
+                            display = getNextSlotInChest(0,0,1);
+                            updateBlock();
+                            ticker=0;
+                        }
+                    }
+                }
+                if(isBlockUnder(0,0,-1))
+                {
+                    ticker++;
+                    if(ticker>=20)
+                    {
+                        if (enumfacing.equals(EnumFacing.SOUTH))
+                        {
+                            display = getNextSlotInChest(0,0,-1);
+                            updateBlock();
+                            ticker=0;
+                        }
+                    }
+                }
+                if(isBlockUnder(-1,0,0))
+                {
+                    ticker++;
+                    if(ticker>=20)
+                    {
+                        if (enumfacing.equals(EnumFacing.EAST))
+                        {
+                            display = getNextSlotInChest(-1,0,0);
+                            updateBlock();
+                            ticker=0;
+                        }
+                    }
+                }
+                if(isBlockUnder(1,0,0))
+                {
+                    ticker++;
+                    if(ticker>=20)
+                    {
+                        if (enumfacing.equals(EnumFacing.WEST))
+                        {
+                            display = getNextSlotInChest(1,0,0);
+                            updateBlock();
+                            ticker=0;
+                        }
                     }
                 }
             }
-            if(isBlockUnder(0,1,0))
-            {
-                ticker++;
-                if(ticker>=20)
-                {
-                    if (enumfacing.equals(EnumFacing.DOWN))
-                    {
-                        display = getNextSlotInChest(0,1,0);
-                        updateBlock();
-                        ticker=0;
-                    }
-                }
-            }
-            if(isBlockUnder(0,0,1))
-            {
-                ticker++;
-                if(ticker>=20)
-                {
-                    if (enumfacing.equals(EnumFacing.NORTH))
-                    {
-                        display = getNextSlotInChest(0,0,1);
-                        updateBlock();
-                        ticker=0;
-                    }
-                }
-            }
-            if(isBlockUnder(0,0,-1))
-            {
-                ticker++;
-                if(ticker>=20)
-                {
-                    if (enumfacing.equals(EnumFacing.SOUTH))
-                    {
-                        display = getNextSlotInChest(0,0,-1);
-                        updateBlock();
-                        ticker=0;
-                    }
-                }
-            }
-            if(isBlockUnder(-1,0,0))
-            {
-                ticker++;
-                if(ticker>=20)
-                {
-                    if (enumfacing.equals(EnumFacing.EAST))
-                    {
-                        display = getNextSlotInChest(-1,0,0);
-                        updateBlock();
-                        ticker=0;
-                    }
-                }
-            }
-            if(isBlockUnder(1,0,0))
-            {
-                ticker++;
-                if(ticker>=20)
-                {
-                    if (enumfacing.equals(EnumFacing.WEST))
-                    {
-                        display = getNextSlotInChest(1,0,0);
-                        updateBlock();
-                        ticker=0;
-                    }
-                }
-            }
+            else display = item.getStackInSlot(0);
         }
     }
 
