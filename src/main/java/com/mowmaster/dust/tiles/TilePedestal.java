@@ -8,9 +8,11 @@ import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -29,124 +31,22 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
-public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider, IInventory
+public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
 {
     private ItemStackHandler item;
+    private ItemStackHandler coin;
     private static final int[] SLOTS_ALLSIDES = new int[] {0};
     public ItemStack display = ItemStack.EMPTY;
-    private String customName = "Item_Pedestal";
 
     public TilePedestal()
     {
-        this.item = new ItemStackHandler(2);
+        this.item = new ItemStackHandler(1);
+        this.coin = new ItemStackHandler(1);
     }//Slots
 
     public ItemStack getItemInPedestal() {return item.getStackInSlot(0);}
-    public ItemStack getCoinOnPedestal() {return item.getStackInSlot(1);}
+    public ItemStack getCoinOnPedestal() {return coin.getStackInSlot(0);}
     public ItemStack getDisplay() {return display;}
-
-    @Override
-    public String getName() {
-        return customName;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return this.item.getSlots();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return this.item.getStackInSlot(index);//gets one of our 5 slots like input=0 input crystal=1 input fuel=2 output=3 for example
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return this.item.extractItem(index,count,false);//no idea what true and false do here
-    }
-
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        ItemStack itemstack = this.item.getStackInSlot(index);
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
-        this.item.setStackInSlot(index,stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-    }
-
-    public boolean isUsableByPlayer(EntityPlayer player)
-    {
-        return this.world.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
-    }
-
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        switch (index)
-        {
-            case 0:
-                return true;
-            case 1:
-                return isEqualToCoin(stack);
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {}
-
-    @Override
-    public void closeInventory(EntityPlayer player) {}
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 2;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-
-    }
-
-    @Override
-    public void clear() {
-        for(int i=0;i<=this.item.getSlots();i++)
-        {
-            this.item.setStackInSlot(i,ItemStack.EMPTY);
-        }
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return null;
-    }
-
-    public boolean isEmpty() {
-        for(int i=0;i<=this.item.getSlots();i++)
-        {
-            if(!this.item.getStackInSlot(i).isEmpty())
-                return false;
-        }
-        return true;
-    }
 
     public boolean hasItem()
     {
@@ -158,7 +58,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     }
     public boolean hasCoin()
     {
-        if(item.getStackInSlot(1).isEmpty())
+        if(coin.getStackInSlot(0).isEmpty())
         {
             return false;
         }
@@ -193,7 +93,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public boolean addCoin(ItemStack coinFromBlock)
     {
-        if(hasCoin()){} else item.insertItem(1,coinFromBlock.copy(),false);
+        if(hasCoin()){} else coin.insertItem(0,coinFromBlock.copy(),false);
         updateBlock();
         return true;
     }
@@ -204,7 +104,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return stack;
     }
     public ItemStack removeCoin() {
-        ItemStack stack = item.extractItem(1,item.getStackInSlot(1).getCount(),false);
+        ItemStack stack = coin.extractItem(0,coin.getStackInSlot(0).getCount(),false);
         updateBlock();
         return stack;
     }
@@ -326,7 +226,8 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setTag("ItemStackInventoryHandler", this.item.serializeNBT());
+        compound.setTag("ItemStackItemInventoryHandler", this.item.serializeNBT());
+        compound.setTag("ItemStackCoinInventoryHandler", this.coin.serializeNBT());
         compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
         return compound;
     }
@@ -336,7 +237,8 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.item.deserializeNBT(compound.getCompoundTag("ItemStackInventoryHandler"));
+        this.item.deserializeNBT(compound.getCompoundTag("ItemStackItemInventoryHandler"));
+        this.coin.deserializeNBT(compound.getCompoundTag("ItemStackCoinInventoryHandler"));
         NBTTagCompound itemTagD = compound.getCompoundTag("display");
         this.display = new ItemStack(itemTagD);
     }
