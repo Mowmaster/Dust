@@ -303,6 +303,7 @@ public class BlockRegistry
     public static Block spike5;
     public static Block voidpot;
 
+    public static Block pedestalstone;
     public static Block pedestalred;
     public static Block pedestalblue;
     public static Block pedestalyellow;
@@ -612,6 +613,7 @@ public class BlockRegistry
         spike5 = new BlockSpike("spike5","spike5");
         voidpot = new BlockVoidPot("voidpot","voidpot");
 
+        pedestalstone = new BlockPedestal("pedestal_stone","pedestal_stone");
         pedestalred = new BlockPedestal("pedestal_red","pedestal_red");
         pedestalblue = new BlockPedestal("pedestal_blue","pedestal_blue");
         pedestalyellow = new BlockPedestal("pedestal_yellow","pedestal_yellow");
@@ -921,6 +923,7 @@ public class BlockRegistry
         registerBlock(spike5);
         registerBlock(voidpot);
 
+        registerBlock(pedestalstone);
         registerBlock(pedestalred);
         registerBlock(pedestalblue);
         registerBlock(pedestalyellow);
@@ -1232,6 +1235,7 @@ public class BlockRegistry
         registerRender(spike5);
         registerRender(voidpot);
 
+        registerRender(pedestalstone);
         registerRender(pedestalred);
         registerRender(pedestalblue);
         registerRender(pedestalyellow);

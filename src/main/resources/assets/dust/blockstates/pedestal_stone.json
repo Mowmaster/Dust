@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=up": {"model": "dust:pedestal_stone"},
+    "facing=down": {"model": "dust:pedestal_stone","x": 180},
+    "facing=north": {"model": "dust:pedestal_stone","x": 90},
+    "facing=east": {"model": "dust:pedestal_stone","x": 90,"y":90},
+    "facing=south": {"model": "dust:pedestal_stone","x": 90,"y":180},
+    "facing=west": {"model": "dust:pedestal_stone","x": 90,"y":270}
+  }
+}
