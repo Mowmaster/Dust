@@ -3,7 +3,7 @@
 	"textures": {
 		"0": "dust:blocks/stone/stone/blackstone",
 		"1": "dust:blocks/ancient/ancientstone3",
-		"particle": "blocks/stone/stone/blackstone"
+		"particle": "dust:blocks/stone/stone/blackstone"
 	},
 	"elements": [
 		{
