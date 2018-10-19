@@ -37,7 +37,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 
-public class BlockPedestal extends BlockDirectional implements ITileEntityProvider, IItemHandler
+public class BlockPedestal extends BlockDirectional implements ITileEntityProvider//, IItemHandler
 {
     private static double lengthWidth = 0.625;
     private static double height = 0.75;
@@ -285,6 +285,7 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
     }
 
 
+    /*
     @Nonnull
     @Override
     public ItemStack getStackInSlot(int slot) {
@@ -317,4 +318,5 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
     public int getSlots() {
         return 0;
     }
+     */
 }

@@ -8,6 +8,7 @@ import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -70,6 +71,19 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             return false;
         }
         else  return true;
+    }
+
+    public boolean hasFilter()
+    {
+        if(coin.getStackInSlot(0).isEmpty())
+        {
+            return false;
+        }
+        else if(coin.getStackInSlot(0).getItem().equals(Item.getItemFromBlock(Blocks.IRON_BARS)))
+        {
+            return true;
+        }
+        else  return false;
     }
 
     private void updateBlock()
@@ -284,7 +298,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(!hasCoin())
+        if(!hasFilter())
         {
             if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 return (T) this.item;
@@ -295,7 +309,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if(!hasCoin())
+        if(!hasFilter())
         {
             if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return true;
