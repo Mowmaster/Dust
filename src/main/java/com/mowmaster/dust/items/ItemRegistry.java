@@ -92,6 +92,7 @@ public class ItemRegistry
     public static Item spellPaper;
 
     public static Item tomeGuideBook;
+    public static Item crystalWrench;
 
 
 
@@ -155,6 +156,7 @@ public class ItemRegistry
         spellPaper = new ItemSpellScroll("spellpaper","spellpaper");
 
         tomeGuideBook = new ItemGuideBook("guidebook","guidebook");
+        crystalWrench = new ItemCrystalWrench("wrench","wrench");
 
         akashic = new ItemBasic("akashic","akashic");
         dust = new ItemDust("dust");
@@ -236,6 +238,7 @@ public class ItemRegistry
         registerItem(scrollZ);
         registerItem(spellPaper);
         registerItem(tomeGuideBook);
+        registerItem(crystalWrench);
         registerItem(akashic);
         registerItem(dust);
         registerItem(crystal);
@@ -314,6 +317,7 @@ public class ItemRegistry
 
         registerRender(spellPaper);
         registerRender(tomeGuideBook);
+        registerRender(crystalWrench);
 
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
         {

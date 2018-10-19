@@ -1,7 +1,9 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCoin;
+import com.mowmaster.dust.items.ItemCrystalWrench;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockFurnace;
@@ -39,6 +41,9 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     private ItemStackHandler coin;
     private static final int[] SLOTS_ALLSIDES = new int[] {0};
     public ItemStack display = ItemStack.EMPTY;
+
+    private BlockPos defaultPos = new BlockPos(0,-2000,0);
+    public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
 
     public TilePedestal()
     {
@@ -116,6 +121,33 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         if(hasCoin()){} else coin.insertItem(0,coinFromBlock.copy(),false);
         updateBlock();
         return true;
+    }
+
+    public boolean addOutputLocation(BlockPos getWrench)
+    {
+
+        for(int i=0;i<storedOutputLocations.length;i++)
+        {
+            if(getWrench == storedOutputLocations[i])
+            {
+                return false;
+            }
+            else if(defaultPos == storedOutputLocations[i])
+            {
+                storedOutputLocations[i] = getWrench;
+                return true;
+            }
+            System.out.println(storedOutputLocations[i]);
+        }
+        return false;
+    }
+
+    public void getStoredBlockPoss()
+    {
+        for(int i=0;i<storedOutputLocations.length;i++)
+        {
+            System.out.println(storedOutputLocations[i]);
+        }
     }
 
     public ItemStack removeItem() {
@@ -232,7 +264,15 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     }
                 }
             }
-            else display = item.getStackInSlot(0);
+            else
+            {
+                display = item.getStackInSlot(0);
+                if(item.getStackInSlot(0).getCount()<=0)
+                {
+                    display = ItemStack.EMPTY;
+                }
+                updateBlock();
+            }
         }
     }
 
@@ -248,11 +288,19 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public ItemStack getNextSlotInChest(int x,int y,int z)
     {
+        ItemStack stack = ItemStack.EMPTY;
         TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
-        return IntStream.range(0,((TileEntityLockable) tileEntity).getSizeInventory())//Int Range
+        if(tileEntity instanceof TilePedestal) {
+            stack = ItemStack.EMPTY;
+
+        }
+        else {stack = IntStream.range(0,((TileEntityLockable) tileEntity).getSizeInventory())//Int Range
                 .mapToObj(((TileEntityLockable) tileEntity)::getStackInSlot)//Function being applied to each interval
                 .filter(itemStack -> !itemStack.isEmpty())
-                .findFirst().orElse(ItemStack.EMPTY);
+                .findFirst().orElse(ItemStack.EMPTY);}
+
+        return stack;
+
     }
 
     @Override
@@ -262,6 +310,26 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         compound.setTag("ItemStackItemInventoryHandler", this.item.serializeNBT());
         compound.setTag("ItemStackCoinInventoryHandler", this.coin.serializeNBT());
         compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
+        int counter = 0;
+        for(int i=0;i<storedOutputLocations.length;i++)
+        {
+            if(storedOutputLocations[i].equals(defaultPos))
+            {
+                continue;
+            }
+            else
+            {
+                String keyNameX = "storedLocationX" + i;
+                String keyNameY = "storedLocationY" + i;
+                String keyNameZ = "storedLocationZ" + i;
+                compound.setInteger(keyNameX,storedOutputLocations[i].getX());
+                compound.setInteger(keyNameY,storedOutputLocations[i].getY());
+                compound.setInteger(keyNameZ,storedOutputLocations[i].getZ());
+                counter++;
+            }
+        }
+        compound.setInteger("storedBlockPosCounter",counter);
+
         return compound;
     }
 
@@ -273,6 +341,21 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         this.item.deserializeNBT(compound.getCompoundTag("ItemStackItemInventoryHandler"));
         this.coin.deserializeNBT(compound.getCompoundTag("ItemStackCoinInventoryHandler"));
         NBTTagCompound itemTagD = compound.getCompoundTag("display");
+        int counter = compound.getInteger("storedBlockPosCounter");
+
+        for(int i=0;i<counter;i++)
+        {
+            String getKeyNameX = "storedLocationX" + i;
+            String getKeyNameY = "storedLocationY" + i;
+            String getKeyNameZ = "storedLocationZ" + i;
+            int getX = compound.getInteger(getKeyNameX);
+            int getY = compound.getInteger(getKeyNameY);
+            int getZ = compound.getInteger(getKeyNameZ);
+            BlockPos gotPos = new BlockPos(getX,getY,getZ);
+            storedOutputLocations[i] = gotPos;
+        }
+
+
         this.display = new ItemStack(itemTagD);
     }
 

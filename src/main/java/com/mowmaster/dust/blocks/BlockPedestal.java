@@ -2,6 +2,8 @@ package com.mowmaster.dust.blocks;
 
 
 import com.mowmaster.dust.items.ItemCoin;
+import com.mowmaster.dust.items.ItemCrystalWrench;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalFurnace;
 import com.mowmaster.dust.tiles.TilePedestal;
@@ -22,6 +24,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -168,6 +172,7 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                             playerIn.inventory.addItemStackToInventory(tilePedestal.removeCoin());
                         }
                     }
+
                 }
                 else if(!tilePedestal.hasCoin())
                 {
@@ -192,6 +197,7 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                         }
                     }
                 }
+
                 else if (playerIn.getHeldItemMainhand().isEmpty()) {
                     if (tilePedestal.hasItem()) {
                         playerIn.inventory.addItemStackToInventory(tilePedestal.removeItem());

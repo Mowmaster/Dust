@@ -63,6 +63,8 @@ item.scroll.name=Ancient Scroll
 item.akashic.name=Akashic Records
 item.guidebook.name=Pile of Research Notes
 item.spellpaper.name=Spell Scroll
+item.wrench.name=Crystal Wrench
+
 
 item.crystal.red.name=Red Crystal
 item.crystal.blue.name=Blue Crystal
@@ -428,6 +430,7 @@ item.crystalchestplate.name=Crystal Chestplate
 item.crystalleggings.name=Crystal Leggings
 item.crystalboots.name=Crystal Boots
 
+enchantment.level.-1=
 enchantment.enchantDigger=AOE Miner
 enchantment.enchantVamperic=Vamperic
 enchantment.enchantSteadfast=Steadfast
