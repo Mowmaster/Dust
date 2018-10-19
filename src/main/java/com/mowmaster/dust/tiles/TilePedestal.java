@@ -25,13 +25,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
-public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
+public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider, IItemHandler
 {
     private ItemStackHandler item;
     private ItemStackHandler coin;
@@ -42,12 +43,50 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         this.item = new ItemStackHandler(1);
         this.coin = new ItemStackHandler(1);
-    }//Slots
-
+    }
     public ItemStack getItemInPedestal() {return item.getStackInSlot(0);}
     public ItemStack getCoinOnPedestal() {return coin.getStackInSlot(0);}
     public ItemStack getDisplay() {return display;}
 
+    @Nonnull
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return getItemInPedestal();
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        return extractItem(0,item.getStackInSlot(0).getCount(),false);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+        if(stack.getItem().equals(Items.WHEAT))
+        {
+            return insertItem(0, stack.copy(), false);
+        }
+        else return null;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return 64;
+    }
+
+    @Override
+    public int getSlots() {
+        return 0;
+    }
+
+    public boolean doItemsMatch(ItemStack itemStackIn)
+    {
+        if(itemStackIn.getItem().equals(getItemInPedestal().getItem()) && itemStackIn.getMetadata()==getItemInPedestal().getMetadata())
+            return true;
+        else
+            return false;
+    }
     public boolean hasItem()
     {
         if(item.getStackInSlot(0).isEmpty())
@@ -69,24 +108,23 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         markDirty();
         IBlockState state = world.getBlockState(pos);
+        world.getRedstonePower(pos,EnumFacing.UP);
         world.notifyBlockUpdate(pos, state, state, 3);
         world.setBlockState(pos,state,3);
     }
 
-    public boolean isEqualToCoin(ItemStack itemFromBlock)
-    {
-        if(itemFromBlock.getItem() instanceof ItemCoin)
-        {
-            if(hasCoin()){}
-            else
-            return true;
-        }
-        return false;
-    }
+    public int getMaxStackSize(){return 64;}
 
     public boolean addItem(ItemStack itemFromBlock)
     {
-        if(hasItem()){} else {item.insertItem(0, itemFromBlock.copy(), false);}
+        if(hasItem())
+        {
+            if(doItemsMatch(itemFromBlock))
+            {
+                item.insertItem(0, itemFromBlock.copy(), false);
+            }
+        }
+        else {item.insertItem(0, itemFromBlock.copy(), false);}
         updateBlock();
         return true;
     }
@@ -110,18 +148,27 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     }
 
     private int ticker=0;
-    ItemStack checker = ItemStack.EMPTY;
+    private int ticker2=0;
     @Override
     public void update() {
-
-        if(item.getStackInSlot(0).equals(checker)){}else{checker = item.getStackInSlot(0); updateBlock();}
-
-
 
         IBlockState state = this.getWorld().getBlockState(this.getPos());
         EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
         if(!world.isRemote)
         {
+            if(!getItemInPedestal().isEmpty())
+            {
+                if(getItemInPedestal().getCount()!=getMaxStackSize())
+                {
+                    ticker2++;
+                    if(ticker2>=10)
+                    {
+                        updateBlock();
+                        ticker2=0;
+                    }
+                }
+            }
+
             if(item.getStackInSlot(0).isEmpty())
             {
                 if(isBlockUnder(0,-1,0))
@@ -264,36 +311,27 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
-    /*
-    net.minecraftforge.items.IItemHandler handlerTop = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerBottom = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
-    net.minecraftforge.items.IItemHandler handlerSide = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.WEST);
-     */
+
 
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if(!hasCoin())
+        {
+            if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                return (T) this.item;
 
-        /*
-        if (facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            if (facing == EnumFacing.DOWN)
-                return (T) handlerBottom;
-            else if (facing == EnumFacing.UP)
-                return (T) handlerTop;
-            else
-                return (T) handlerSide;
-         */
-
-
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return (T) this.item;
+        }
         return super.getCapability(capability, facing);
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if(!hasCoin())
+        {
+            if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return true;
+        }
         return super.hasCapability(capability, facing);
     }
 }

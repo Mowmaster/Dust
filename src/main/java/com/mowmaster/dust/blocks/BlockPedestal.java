@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
@@ -117,38 +118,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         super.breakBlock(worldIn, pos, state);
     }
 
-
-
-    /*
-    @Override
-    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TilePedestal)
-        {
-            if(!worldIn.isRemote)
-            {
-                TilePedestal pedestal = (TilePedestal) tileEntity;
-                if(pedestal.hasItem()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,pedestal.getItemInPedestal()));}
-                if(pedestal.hasCoin()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,pedestal.getCoinOnPedestal()));}
-            }
-        }
-    }
-
-    @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TilePedestal)
-        {
-            if(!worldIn.isRemote)
-            {
-                TilePedestal pedestal = (TilePedestal) tileEntity;
-                if(pedestal.hasItem()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,pedestal.getItemInPedestal()));}
-                if(pedestal.hasCoin()){worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,pedestal.getCoinOnPedestal()));}
-            }
-        }
-    }
-     */
-
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
@@ -211,9 +180,11 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                             playerIn.inventory.addItemStackToInventory(tilePedestal.removeItem());
                         }
                     }
-                    else if (!tilePedestal.hasItem()) {
+                    else
+                    {
+                        int stackSize = tilePedestal.getMaxStackSize()-tilePedestal.getItemInPedestal().getCount();
                         if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND))) {
-                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(playerIn.getHeldItem(EnumHand.MAIN_HAND).getCount());
+                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
                             return true;
                         }
                     }
@@ -223,9 +194,11 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                         playerIn.inventory.addItemStackToInventory(tilePedestal.removeItem());
                     }
                 }
-                else if (!tilePedestal.hasItem()) {
+                else
+                {
+                    int stackSize = tilePedestal.getMaxStackSize()-tilePedestal.getItemInPedestal().getCount();
                     if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND))) {
-                        playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(playerIn.getHeldItem(EnumHand.MAIN_HAND).getCount());
+                        playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
                         return true;
                     }
                 }
@@ -240,11 +213,23 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if(tileEntity instanceof TilePedestal) {
             TilePedestal pedestal = (TilePedestal) tileEntity;
-            if(pedestal.hasItem())
-            {
-                hasItem=15;
-            }
-            else hasItem=0;
+            int counter = pedestal.getItemInPedestal().getCount();
+            if(counter<=0) {hasItem=0;}
+            else if(counter>0 && counter<=5) {hasItem=1;}
+            else if(counter>5 && counter<=9) {hasItem=2;}
+            else if(counter>9 && counter<=13) {hasItem=3;}
+            else if(counter>13 && counter<=17) {hasItem=4;}
+            else if(counter>17 && counter<=21) {hasItem=5;}
+            else if(counter>21 && counter<=25) {hasItem=6;}
+            else if(counter>25 && counter<=29) {hasItem=7;}
+            else if(counter>29 && counter<=33) {hasItem=8;}
+            else if(counter>33 && counter<=37) {hasItem=9;}
+            else if(counter>37 && counter<=41) {hasItem=10;}
+            else if(counter>41 && counter<=45) {hasItem=11;}
+            else if(counter>45 && counter<=49) {hasItem=12;}
+            else if(counter>49 && counter<=53) {hasItem=13;}
+            else if(counter>53 && counter<=57) {hasItem=14;}
+            else if(counter>57) {hasItem=15;}
         }
         return hasItem;
     }
