@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +37,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 
-public class BlockPedestal extends BlockDirectional implements ITileEntityProvider
+public class BlockPedestal extends BlockDirectional implements ITileEntityProvider, IItemHandler
 {
     private static double lengthWidth = 0.625;
     private static double height = 0.75;
@@ -279,5 +282,39 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
         tooltip.add("Used To Display Items");
+    }
+
+
+    @Nonnull
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+
+        return getStackInSlot(0);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        return extractItem(0,amount,false);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+        if(stack.getItem().equals(Items.WHEAT))
+        {
+            return insertItem(0, stack.copy(), false);
+        }
+        else return null;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return 64;
+    }
+
+    @Override
+    public int getSlots() {
+        return 0;
     }
 }

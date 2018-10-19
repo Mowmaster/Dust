@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
-public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider, IItemHandler
+public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
 {
     private ItemStackHandler item;
     private ItemStackHandler coin;
@@ -47,38 +47,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public ItemStack getItemInPedestal() {return item.getStackInSlot(0);}
     public ItemStack getCoinOnPedestal() {return coin.getStackInSlot(0);}
     public ItemStack getDisplay() {return display;}
-
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return getItemInPedestal();
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return extractItem(0,item.getStackInSlot(0).getCount(),false);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        if(stack.getItem().equals(Items.WHEAT))
-        {
-            return insertItem(0, stack.copy(), false);
-        }
-        else return null;
-    }
-
-    @Override
-    public int getSlotLimit(int slot) {
-        return 64;
-    }
-
-    @Override
-    public int getSlots() {
-        return 0;
-    }
 
     public boolean doItemsMatch(ItemStack itemStackIn)
     {
