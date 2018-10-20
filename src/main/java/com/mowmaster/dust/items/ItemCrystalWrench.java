@@ -58,29 +58,33 @@ public class ItemCrystalWrench extends Item
 
             if(storedPosition!=defaultPos)
             {
-
-                ticker++;
-                if(ticker>30)
+                if(isSelected)
                 {
-                        //Test to see what location is stored in the wrench System.out.println(this.getStoredPosition(stack));
-                        for (int c = zmin; c <= zmax; c++) {
-                            for (int a = xmin; a <= xmax; a++) {
-                                for (int b = ymin; b <= ymax; b++) {
-                                    if(worldIn.isRemote)
-                                    {
-                                    double d0 = (double) pos.getX() + 0.55D - (double) (rand.nextFloat() * 0.1F);
-                                    double d1 = (double) pos.getY() + 0.55D - (double) (rand.nextFloat() * 0.1F);
-                                    double d2 = (double) pos.getZ() + 0.55D - (double) (rand.nextFloat() * 0.1F);
-                                    double d3 = (double) (0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
-                                    worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.add(a,b,c).getX(),pos.add(a,b,c).getY(),pos.add(a,b,c).getZ(), rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                    if(worldIn.isRemote)
+                    {
+                        ticker++;
+                        if(ticker>30)
+                        {
+
+                            //Test to see what location is stored in the wrench System.out.println(this.getStoredPosition(stack));
+                            for (int c = zmin; c <= zmax; c++) {
+                                for (int a = xmin; a <= xmax; a++) {
+                                    for (int b = ymin; b <= ymax; b++) {
+
+                                        double d0 = (double) pos.getX() + 0.55D - (double) (rand.nextFloat() * 0.1F);
+                                        double d1 = (double) pos.getY() + 0.55D - (double) (rand.nextFloat() * 0.1F);
+                                        double d2 = (double) pos.getZ() + 0.55D - (double) (rand.nextFloat() * 0.1F);
+                                        double d3 = (double) (0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
+                                        worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.add(a,b,c).getX(),pos.add(a,b,c).getY(),pos.add(a,b,c).getZ(), rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+
                                     }
                                 }
                             }
+
+                            ticker=0;
                         }
-
-                    ticker=0;
+                    }
                 }
-
             }
 
         }
