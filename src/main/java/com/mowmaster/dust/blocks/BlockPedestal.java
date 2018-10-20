@@ -200,7 +200,7 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                                 return true;
                             }
                         }
-                        else return false;
+                        else return true;
                     }
                 }
 
@@ -212,10 +212,16 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                 else
                 {
                     int stackSize = tilePedestal.getMaxStackSize()-tilePedestal.getItemInPedestal().getCount();
-                    if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND))) {
-                        playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
-                        return true;
+                    if(tilePedestal.doItemsMatch(playerIn.getHeldItem(hand)))
+                    {
+                        if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
+                        {
+                            System.out.println("");
+                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
+                            return true;
+                        }
                     }
+                    else return true;
                 }
             }
         }
