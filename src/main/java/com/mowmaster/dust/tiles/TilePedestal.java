@@ -25,6 +25,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -42,7 +43,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     private static final int[] SLOTS_ALLSIDES = new int[] {0};
     public ItemStack display = ItemStack.EMPTY;
 
-    private BlockPos defaultPos = new BlockPos(0,-2000,0);
+    private static final BlockPos defaultPos = new BlockPos(0,-2000,0);
     public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
 
     public TilePedestal()
@@ -163,8 +164,30 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     private int ticker=0;
     private int ticker2=0;
+    private int ticker3=0;
     @Override
     public void update() {
+
+
+        if(!world.isRemote)
+        {
+
+            if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalred))
+            {
+                if(world.isBlockLoaded(pos))
+                {
+                    ticker3++;
+                    if(ticker3>20)
+                    {
+                        getStoredBlockPoss();
+                        ticker3=0;
+                    }
+                }
+
+            }
+        }
+
+
 
         IBlockState state = this.getWorld().getBlockState(this.getPos());
         EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
