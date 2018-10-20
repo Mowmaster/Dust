@@ -153,20 +153,95 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public boolean addOutputLocation(BlockPos getWrench)
     {
 
-        for(int i=0;i<storedOutputLocations.length;i++)
+        if(canLinkToPedestalNetwork(getWrench))
         {
-            if(getWrench == storedOutputLocations[i])
+            for(int i=0;i<storedOutputLocations.length;i++)
             {
-                return false;
+                if(getWrench == storedOutputLocations[i])
+                {
+                    return false;
+                }
+                else if(defaultPos == storedOutputLocations[i])
+                {
+
+                    storedOutputLocations[i] = getWrench;
+                    return true;
+                }
+                System.out.println(storedOutputLocations[i]);
             }
-            else if(defaultPos == storedOutputLocations[i])
+            return false;
+        }
+        else return false;
+
+    }
+    //Checks when linking pedestals if the two being linked are 1.on the same network 2. if one is neutral thus meaning they can link
+    public boolean canLinkToPedestalNetwork(BlockPos pedestalToBeLinked)
+    {
+        //Check to see if pedestal to be linked is a block pedestal
+        if(world.getBlockState(pedestalToBeLinked).getBlock() instanceof BlockPedestal)
+        {
+            //checks to see if pedestal to be linked and this one are the same
+            if(world.getBlockState(pedestalToBeLinked).getBlock().equals(world.getBlockState(this.getPos()).getBlock()))
             {
-                storedOutputLocations[i] = getWrench;
                 return true;
             }
-            System.out.println(storedOutputLocations[i]);
+            //if they arnt then check if one is neutral
+            else if(world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockRegistry.pedestalstone) ||
+                    world.getBlockState(this.getPos()).getBlock().equals(BlockRegistry.pedestalstone))
+            {
+                return true;
+            }
+            else return false;
         }
+
         return false;
+    }
+
+    public boolean hasConnectionAlready(BlockPos pedestalToBeLinked)
+    {
+        for(int i=0;i<storedOutputLocations.length;i++)
+        {
+            if(storedOutputLocations[i].equals(pedestalToBeLinked))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isSamePedestal(BlockPos pedestalToBeLinked)
+    {
+        for(int i=0;i<storedOutputLocations.length;i++)
+        {
+            if(storedOutputLocations[i].equals(this.getPos()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static int getPedestalRange = 8;
+    public boolean isPedestalInRange(BlockPos pedestalToBeLinked)
+    {
+        int x = pedestalToBeLinked.getX();
+        int y = pedestalToBeLinked.getY();
+        int z = pedestalToBeLinked.getZ();
+        int x1 = this.getPos().getX();
+        int y1 = this.getPos().getY();
+        int z1 = this.getPos().getZ();
+        int xF = Math.abs(Math.subtractExact(x,x1));
+        int yF = Math.abs(Math.subtractExact(y,y1));
+        int zF = Math.abs(Math.subtractExact(z,z1));
+
+        if(xF>getPedestalRange || yF>getPedestalRange || zF>getPedestalRange)
+        {
+            return false;
+        }
+        else return true;
+
     }
 
     public void getStoredBlockPoss()

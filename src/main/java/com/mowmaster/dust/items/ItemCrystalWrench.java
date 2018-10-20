@@ -76,7 +76,6 @@ public class ItemCrystalWrench extends Item
                                         double d2 = (double) pos.getZ() + 0.55D - (double) (rand.nextFloat() * 0.1F);
                                         double d3 = (double) (0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
                                         worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.add(a,b,c).getX(),pos.add(a,b,c).getY(),pos.add(a,b,c).getZ(), rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-
                                     }
                                 }
                             }
@@ -128,23 +127,45 @@ public class ItemCrystalWrench extends Item
                             TileEntity tileEntity = worldIn.getTileEntity(pos);
                             if (tileEntity instanceof TilePedestal) {
                                 TilePedestal tilePedestal = (TilePedestal) tileEntity;
-                                //Checks if senderPedestal has locationSlots available
-                                if(tilePedestal.addOutputLocation(getStoredPosition(player.getHeldItem(hand))))
+
+                                //checks if connecting pedestal is out of range of the senderPedestal
+                                if(tilePedestal.isPedestalInRange(getStoredPosition(player.getHeldItem(hand))))
                                 {
-                                    //If slots are available then set wrench properties back to a default value
-                                    this.storedPosition = defaultPos;
-                                    writePosToNBT(player.getHeldItem(hand));
-                                    worldIn.notifyBlockUpdate(pos,worldIn.getBlockState(pos),worldIn.getBlockState(pos),2);
-                                    if(player.getHeldItem(hand).getItem() instanceof ItemCrystalWrench)
+                                    //Checks if pedestals to be linked are on same networks or if one is neutral
+                                    if(tilePedestal.canLinkToPedestalNetwork(getStoredPosition(player.getHeldItem(hand))))
                                     {
-                                        if(player.getHeldItem(hand).isItemEnchanted())
+                                        //If stored location isnt the same as the connecting pedestal
+                                        if(!tilePedestal.isSamePedestal(getStoredPosition(player.getHeldItem(hand))))
                                         {
-                                            player.getHeldItem(hand).removeSubCompound("ench");
+                                            //Checks if the conenction hasnt been made once already yet
+                                            if(!tilePedestal.hasConnectionAlready(getStoredPosition(player.getHeldItem(hand))))
+                                            {
+                                                //Checks if senderPedestal has locationSlots available
+                                                if(tilePedestal.addOutputLocation(getStoredPosition(player.getHeldItem(hand))))
+                                                {
+                                                    //If slots are available then set wrench properties back to a default value
+                                                    this.storedPosition = defaultPos;
+                                                    writePosToNBT(player.getHeldItem(hand));
+                                                    worldIn.notifyBlockUpdate(pos,worldIn.getBlockState(pos),worldIn.getBlockState(pos),2);
+                                                    if(player.getHeldItem(hand).getItem() instanceof ItemCrystalWrench)
+                                                    {
+                                                        if(player.getHeldItem(hand).isItemEnchanted())
+                                                        {
+                                                            player.getHeldItem(hand).removeSubCompound("ench");
+                                                        }
+                                                    }
+                                                    player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successful"));
+                                                }
+                                                else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful"));
+                                            }
+                                            else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Connection Already Exists"));
                                         }
+                                        else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Cannot be Linked to Itsself"));
                                     }
-                                    player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successful"));
+                                    else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Cannot Connect to this Network"));
                                 }
-                                else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful"));
+                                else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Too Far to Connect"));
+
                             }
                         }
                     }
