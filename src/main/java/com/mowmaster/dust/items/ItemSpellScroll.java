@@ -37,7 +37,7 @@ public class ItemSpellScroll extends Item
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (stack.hasTagCompound()) {
-            potionEffect = PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect"));
+            potionEffect = getPotionEffectFromStack(stack);
             String s1 = I18n.translateToLocal(potionEffect.getEffectName()).trim();
             stack.setStackDisplayName("Scroll of " + s1);
         }
@@ -47,7 +47,7 @@ public class ItemSpellScroll extends Item
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (stack.hasTagCompound()) {
-            playerIn.addPotionEffect(PotionEffect.readCustomPotionEffectFromNBT(playerIn.getHeldItem(handIn).getTagCompound().getCompoundTag("scrolleffect")));
+            playerIn.addPotionEffect(getPotionEffectFromStack(playerIn.getHeldItem(handIn)));
             playerIn.getHeldItemMainhand().shrink(1);
             worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
             worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
@@ -55,6 +55,15 @@ public class ItemSpellScroll extends Item
         return ActionResult.newResult(EnumActionResult.PASS,playerIn.getHeldItem(handIn));
     }
 
+    public PotionEffect getPotionEffectFromStack(ItemStack stack)
+    {
+        if(stack.hasTagCompound())
+        {
+            NBTTagCompound getCompound = stack.getTagCompound();
+            potionEffect = PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("scrolleffect"));
+        }
+        return potionEffect;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -62,11 +71,11 @@ public class ItemSpellScroll extends Item
 
         if (stack.hasTagCompound())
         {
-            String s1 = I18n.translateToLocal(potionEffect.getEffectName()).trim();
-            int s2 = potionEffect.getAmplifier();
-            int s3 = potionEffect.getDuration();
+            String s1 = I18n.translateToLocal(getPotionEffectFromStack(stack).getEffectName()).trim();
+            int s2 = getPotionEffectFromStack(stack).getAmplifier();
+            int s3 = getPotionEffectFromStack(stack).getDuration();
             String count = "";
-            switch (potionEffect.getAmplifier())
+            switch (getPotionEffectFromStack(stack).getAmplifier())
             {
                 case 0:
                     count = "I";
@@ -104,6 +113,7 @@ public class ItemSpellScroll extends Item
         }
         else tooltip.add("Doesnt function if grabbed from cheat mode");
     }
+
 
 
 
