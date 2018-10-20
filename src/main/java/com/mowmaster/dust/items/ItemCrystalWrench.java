@@ -116,25 +116,25 @@ public class ItemCrystalWrench extends Item
                     }
                     else if(player.getHeldItem(hand).hasTagCompound() && player.getHeldItem(hand).isItemEnchanted())
                     {
-                            TileEntity tileEntity = worldIn.getTileEntity(pos);
-                            if (tileEntity instanceof TilePedestal) {
-                                TilePedestal tilePedestal = (TilePedestal) tileEntity;
-                                if(tilePedestal.addOutputLocation(getStoredPosition()))
+                        TileEntity tileEntity = worldIn.getTileEntity(pos);
+                        if (tileEntity instanceof TilePedestal) {
+                            TilePedestal tilePedestal = (TilePedestal) tileEntity;
+                            if(tilePedestal.addOutputLocation(getStoredPosition()))
+                            {
+                                storedPosition = defaultPos;
+                                writePosToNBT(player.getHeldItem(hand));
+                                worldIn.notifyBlockUpdate(pos,worldIn.getBlockState(pos),worldIn.getBlockState(pos),2);
+                                if(player.getHeldItem(hand).getItem() instanceof ItemCrystalWrench)
                                 {
-                                    storedPosition = defaultPos;
-                                    writePosToNBT(player.getHeldItem(hand));
-                                    worldIn.notifyBlockUpdate(pos,worldIn.getBlockState(pos),worldIn.getBlockState(pos),2);
-                                    if(player.getHeldItem(hand).getItem() instanceof ItemCrystalWrench)
+                                    if(player.getHeldItem(hand).isItemEnchanted())
                                     {
-                                        if(player.getHeldItem(hand).isItemEnchanted())
-                                        {
-                                            player.getHeldItem(hand).removeSubCompound("ench");
-                                        }
+                                        player.getHeldItem(hand).removeSubCompound("ench");
                                     }
-                                    player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successful"));
                                 }
-                                else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful"));
+                                player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successful"));
                             }
+                            else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful"));
+                        }
                     }
                 }
                 else
@@ -214,5 +214,4 @@ public class ItemCrystalWrench extends Item
 
 
 }
-
 

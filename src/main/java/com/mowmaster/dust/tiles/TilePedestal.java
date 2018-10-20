@@ -395,7 +395,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         if(!hasFilter())
         {
             if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return true;
+                return true;
         }
         return super.hasCapability(capability, facing);
     }
