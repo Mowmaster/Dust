@@ -25,14 +25,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
@@ -57,10 +55,38 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public boolean doItemsMatch(ItemStack itemStackIn)
     {
-        if(itemStackIn.getItem().equals(getItemInPedestal().getItem()) && itemStackIn.getMetadata()==getItemInPedestal().getMetadata())
-            return true;
-        else
-            return false;
+        if(hasItem())
+        {
+            if(itemStackIn.getHasSubtypes())
+            {
+                if(itemStackIn.getItem().equals(item.getStackInSlot(0).getItem()) && itemStackIn.getMetadata()==item.getStackInSlot(0).getMetadata())
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else if(itemStackIn.hasTagCompound())
+            {
+                NBTTagCompound itemIn = itemStackIn.getTagCompound();
+                NBTTagCompound itemStored = item.getStackInSlot(0).getTagCompound();
+                if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(item.getStackInSlot(0).getItem()))
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else
+            {
+                if(itemStackIn.getItem().equals(item.getStackInSlot(0).getItem()))
+                {
+                    return true;
+                }
+            }
+        }
+        else{return true;}
+
+
+        return false;
     }
     public boolean hasItem()
     {
@@ -107,7 +133,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         if(hasItem())
         {
-            if(doItemsMatch(itemFromBlock))
+            if(ItemHandlerHelper.canItemStacksStack(itemFromBlock,item.getStackInSlot(0)))
             {
                 item.insertItem(0, itemFromBlock.copy(), false);
             }
