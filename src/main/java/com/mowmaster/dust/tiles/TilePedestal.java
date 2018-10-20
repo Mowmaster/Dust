@@ -241,7 +241,78 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             return false;
         }
         else return true;
+    }
 
+    public int numConnections()
+    {
+        int connections = 0;
+        for(int i=0;i<storedOutputLocations.length;i++)
+        {
+            if(!storedOutputLocations[i].equals(defaultPos))
+            {
+                connections++;
+            }
+        }
+        return connections;
+    }
+
+    private boolean doesRecieverExistandIsLoaded(BlockPos getRecieverPos)
+    {
+        if(world.getBlockState(getRecieverPos)!=null)
+        {
+            if(world.isBlockLoaded(getRecieverPos))
+            {
+                return true;
+            }
+            else return false;
+        }
+        else return false;
+    }
+
+    private boolean sendItemsToReciever(int slot)
+    {
+        if(!storedOutputLocations[slot].equals(defaultPos))
+        {
+            if(doesRecieverExistandIsLoaded(storedOutputLocations[slot]))
+            {
+                TileEntity tileEntity = world.getTileEntity(storedOutputLocations[slot]);
+                if (tileEntity instanceof TilePedestal) {
+                    TilePedestal tileRecieverPedestal = (TilePedestal) tileEntity;
+
+                    if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                    {
+                        tileRecieverPedestal.addItem(item.getStackInSlot(0));
+                        removeItem();
+                    }
+                    else return false;
+
+                }
+                else return false;
+            }
+            else return false;
+        }
+        else return false;
+
+        return false;
+    }
+
+
+    private void tryToSendItemToPedestal()
+    {
+        if(this.hasItem())
+        {
+            if(numConnections()>0)
+            {
+                if(sendItemsToReciever(0)){}
+                else if(sendItemsToReciever(1)){}
+                else if(sendItemsToReciever(2)){}
+                else if(sendItemsToReciever(3)){}
+                else if(sendItemsToReciever(4)){}
+                else if(sendItemsToReciever(5)){}
+                else if(sendItemsToReciever(6)){}
+                else if(sendItemsToReciever(7)){}
+            }
+        }
     }
 
     public void getStoredBlockPoss()
@@ -272,19 +343,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
         if(!world.isRemote)
         {
-
-            if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalred))
+            ticker3++;
+            if(ticker3>20)
             {
-                if(world.isBlockLoaded(pos))
-                {
-                    ticker3++;
-                    if(ticker3>20)
-                    {
-                        getStoredBlockPoss();
-                        ticker3=0;
-                    }
-                }
-
+                tryToSendItemToPedestal();
+                ticker3=0;
             }
         }
 
