@@ -315,6 +315,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         }
     }
 
+
     public void getStoredBlockPoss()
     {
         for(int i=0;i<storedOutputLocations.length;i++)

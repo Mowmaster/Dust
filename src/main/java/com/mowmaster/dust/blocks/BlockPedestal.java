@@ -195,7 +195,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                         {
                             if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
                             {
-                                System.out.println("");
                                 playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
                                 return true;
                             }
