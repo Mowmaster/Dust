@@ -2,19 +2,9 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.items.ItemCoin;
-import com.mowmaster.dust.items.ItemCrystalWrench;
-import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockFurnace;
-import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +13,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -40,6 +29,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     private ItemStackHandler coin;
     private static final int[] SLOTS_ALLSIDES = new int[] {0};
     public ItemStack display = ItemStack.EMPTY;
+    private int transferSizeCount = 4;
 
     private static final BlockPos defaultPos = new BlockPos(0,-2000,0);
     public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
@@ -88,6 +78,43 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
         return false;
     }
+
+    public boolean doItemsMatch(ItemStack itemStackIn, ItemStack toCompareTo)
+    {
+        if(hasItem())
+        {
+            if(itemStackIn.getHasSubtypes())
+            {
+                if(itemStackIn.getItem().equals(toCompareTo.getItem()) && itemStackIn.getMetadata()==toCompareTo.getMetadata())
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else if(itemStackIn.hasTagCompound())
+            {
+                NBTTagCompound itemIn = itemStackIn.getTagCompound();
+                NBTTagCompound itemStored = toCompareTo.getTagCompound();
+                if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(toCompareTo.getItem()))
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else
+            {
+                if(itemStackIn.getItem().equals(toCompareTo.getItem()))
+                {
+                    return true;
+                }
+            }
+        }
+        else{return true;}
+
+
+        return false;
+    }
+
     public boolean hasItem()
     {
         if(item.getStackInSlot(0).isEmpty())
@@ -129,11 +156,13 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public int getMaxStackSize(){return 64;}
 
+
+
     public boolean addItem(ItemStack itemFromBlock)
     {
         if(hasItem())
         {
-            if(ItemHandlerHelper.canItemStacksStack(itemFromBlock,item.getStackInSlot(0)))
+            if(doItemsMatch(itemFromBlock))
             {
                 item.insertItem(0, itemFromBlock.copy(), false);
             }
@@ -269,33 +298,172 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         else return false;
     }
 
-    private boolean sendItemsToReciever(int slot)
+    private boolean sendItemsToReciever(int listIndex)
     {
-        if(!storedOutputLocations[slot].equals(defaultPos))
+        if(!storedOutputLocations[listIndex].equals(defaultPos))
         {
-            if(doesRecieverExistandIsLoaded(storedOutputLocations[slot]))
+            if(doesRecieverExistandIsLoaded(storedOutputLocations[listIndex]))
             {
-                TileEntity tileEntity = world.getTileEntity(storedOutputLocations[slot]);
+                TileEntity tileEntity = world.getTileEntity(storedOutputLocations[listIndex]);
                 if (tileEntity instanceof TilePedestal) {
                     TilePedestal tileRecieverPedestal = (TilePedestal) tileEntity;
 
                     if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                     {
-                        tileRecieverPedestal.addItem(item.getStackInSlot(0));
-                        removeItem();
+                        //getting the stack from this, the sender
+                        ItemStack stackToAdd = item.getStackInSlot(0).copy();
+                        ItemStack stackInReciever = tileRecieverPedestal.getItemInPedestal();
+                        int itemCountInReciever = stackInReciever.getCount();
+
+
+                        //is the reciever has room in inventory
+                        if(roomLeftInStack(stackInReciever)!=0)
+                        {
+                            //checking if sender has at least transferSizeCount in its inventory
+                            if(this.getItemInPedestal().getCount()>=transferSizeCount)
+                            {
+                                //checking if receiver has enough room for transferSizeCount or more
+                                if(roomLeftInStack(stackInReciever)>=transferSizeCount)
+                                {
+                                    //set stack size to transfer to the transfer rate
+                                    stackToAdd.setCount(transferSizeCount);
+                                    //add to receiver
+                                    tileRecieverPedestal.addItem(stackToAdd);
+                                    //remove from this(sender)
+                                    this.removeItem(transferSizeCount);
+                                    return true;
+                                }
+                                else
+                                {
+                                    int smallStackCount = roomLeftInStack(stackInReciever);
+                                    stackToAdd.setCount(smallStackCount);
+                                    tileRecieverPedestal.addItem(stackToAdd);
+                                    removeItem(smallStackCount);
+                                    return true;
+                                }
+                            }
+                            //has less the transfer size in sender
+                            else
+                            {
+                                //checks is reciever has enough storage for whats left in this (the sender)
+                                if(roomLeftInStack(stackInReciever)>=this.getItemInPedestal().getCount())
+                                {
+                                    //set the input itemstack count to be added
+                                    stackToAdd.setCount(this.getItemInPedestal().getCount());
+                                    //actually add it
+                                    tileRecieverPedestal.addItem(stackToAdd);
+                                    //remove that count from the inventory ??just use regular remove since its all there is??
+                                    removeItem(this.getItemInPedestal().getCount());
+                                    return true;
+                                }
+                                //if the storage cant take in the remaining input item stack we figure out how much it can take.
+                                else
+                                {
+                                    //get how little room there is for storage
+                                    int smallStackCount = roomLeftInStack(stackInReciever);
+                                    //set the stack stack size for items being sent
+                                    stackToAdd.setCount(smallStackCount);
+                                    //recieve items from sender
+                                    tileRecieverPedestal.addItem(stackToAdd);
+                                    //remove those items from sender
+                                    removeItem(smallStackCount);
+                                    return true;
+                                }
+                            }
+                        }
+                        else return false;
                     }
                     else return false;
-
                 }
                 else return false;
             }
             else return false;
         }
         else return false;
-
-        return false;
     }
 
+    public int roomLeftInStack(ItemStack addToThisStack)
+    {
+        int maxSize = getMaxStackSize();
+        int currentlyStored = addToThisStack.getCount();
+        int countLeftTillFilled = maxSize-currentlyStored;
+        return countLeftTillFilled;
+    }
+
+    public boolean hasInventoryBelow()
+    {
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
+        if (enumfacing.equals(EnumFacing.UP))
+        {
+            if(isBlockUnder(0,-1,0))
+            {
+               return true;
+            }
+        }
+        else if (enumfacing.equals(EnumFacing.DOWN))
+        {
+            if(isBlockUnder(0,1,0))
+            {
+                return true;
+            }
+        }
+
+
+        if(isBlockUnder(0,0,1))
+        {
+            ticker++;
+            if(ticker>=20)
+            {
+                if (enumfacing.equals(EnumFacing.NORTH))
+                {
+                    display = getNextSlotInChest(0,0,1);
+                    updateBlock();
+                    ticker=0;
+                }
+            }
+        }
+        if(isBlockUnder(0,0,-1))
+        {
+            ticker++;
+            if(ticker>=20)
+            {
+                if (enumfacing.equals(EnumFacing.SOUTH))
+                {
+                    display = getNextSlotInChest(0,0,-1);
+                    updateBlock();
+                    ticker=0;
+                }
+            }
+        }
+        if(isBlockUnder(-1,0,0))
+        {
+            ticker++;
+            if(ticker>=20)
+            {
+                if (enumfacing.equals(EnumFacing.EAST))
+                {
+                    display = getNextSlotInChest(-1,0,0);
+                    updateBlock();
+                    ticker=0;
+                }
+            }
+        }
+        if(isBlockUnder(1,0,0))
+        {
+            ticker++;
+            if(ticker>=20)
+            {
+                if (enumfacing.equals(EnumFacing.WEST))
+                {
+                    display = getNextSlotInChest(1,0,0);
+                    updateBlock();
+                    ticker=0;
+                }
+            }
+        }
+        return false;
+    }
 
     private void tryToSendItemToPedestal()
     {
@@ -326,6 +494,12 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public ItemStack removeItem() {
         ItemStack stack = item.extractItem(0,item.getStackInSlot(0).getCount(),false);
+        updateBlock();
+        return stack;
+    }
+
+    public ItemStack removeItem(int numToRemove) {
+        ItemStack stack = item.extractItem(0,numToRemove,false);
         updateBlock();
         return stack;
     }
