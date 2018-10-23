@@ -63,6 +63,7 @@ public class ItemRegistry
     public static Item ancientCoinZ;
 
     public static Item filterUpgrade;
+    public static Item fuzzyFilterUpgrade;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -129,6 +130,7 @@ public class ItemRegistry
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
 
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
+        fuzzyFilterUpgrade = new ItemCoin("fuzzyfilterupgrade","fuzzyfilterupgrade");
 
         scrollA = new ItemScroll("scrolla","scrolla");
         scrollB = new ItemScroll("scrollb","scrollb");
@@ -215,6 +217,7 @@ public class ItemRegistry
         registerItem(ancientCoinZ);
 
         registerItem(filterUpgrade);
+        registerItem(fuzzyFilterUpgrade);
 
         registerItem(scrollA);
         registerItem(scrollB);
@@ -295,6 +298,7 @@ public class ItemRegistry
         registerRender(ancientCoinZ);
 
         registerRender(filterUpgrade);
+        registerRender(fuzzyFilterUpgrade);
 
         registerRender(scrollA);
         registerRender(scrollB);

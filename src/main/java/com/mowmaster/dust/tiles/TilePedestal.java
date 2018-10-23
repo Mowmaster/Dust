@@ -137,11 +137,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         else  return true;
     }
 
-    public boolean hasFilterUpgrade(TilePedestal getReciever)
+    public boolean hasUpgrade(TilePedestal getReciever, Item coinType)
     {
         if(getReciever.hasCoin())
         {
-            if(getReciever.getCoinOnPedestal().getItem().equals(ItemRegistry.filterUpgrade))
+            if(getReciever.getCoinOnPedestal().getItem().equals(coinType))
             {
                 return true;
             }
@@ -300,7 +300,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         else return false;
     }
 
-    public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn)
+    public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn, boolean isFuzzy)
     {
         BlockPos filterInv = recievingPedestal.getPosOfBlockBelow();
         if(world.getTileEntity(filterInv).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
@@ -314,27 +314,39 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 {
                     stackInFilter = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
 
-                    if(itemStackIn.getHasSubtypes())
+                    if(isFuzzy)
                     {
-                        if(itemStackIn.getItem().equals(stackInFilter.getItem()) && itemStackIn.getMetadata()==stackInFilter.getMetadata())
-                        {
-                            return true;
-                        }
-                    }
-                    else if(itemStackIn.hasTagCompound())
-                    {
-                        NBTTagCompound itemIn = itemStackIn.getTagCompound();
-                        NBTTagCompound itemStored = stackInFilter.getTagCompound();
-                        if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(stackInFilter.getItem()))
+                        System.out.println("IS FUZZY");
+                        System.out.println(itemStackIn.getItem().equals(stackInFilter.getItem()));
+                        if(itemStackIn.getItem().equals(stackInFilter.getItem()))
                         {
                             return true;
                         }
                     }
                     else
                     {
-                        if(itemStackIn.getItem().equals(stackInFilter.getItem()))
+                        if(itemStackIn.getHasSubtypes())
                         {
-                            return true;
+                            if(itemStackIn.getItem().equals(stackInFilter.getItem()) && itemStackIn.getMetadata()==stackInFilter.getMetadata())
+                            {
+                                return true;
+                            }
+                        }
+                        else if(itemStackIn.hasTagCompound())
+                        {
+                            NBTTagCompound itemIn = itemStackIn.getTagCompound();
+                            NBTTagCompound itemStored = stackInFilter.getTagCompound();
+                            if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(stackInFilter.getItem()))
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if(itemStackIn.getItem().equals(stackInFilter.getItem()))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -358,12 +370,27 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                     if(tileRecieverPedestal.hasCoin())
                     {
-                        if(tileRecieverPedestal.hasFilterUpgrade(tileRecieverPedestal))
+                        if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.filterUpgrade))
                         {
                             if(tileRecieverPedestal.hasFilterableInventoryBelow())
                             {
 
-                                if(tileRecieverPedestal.areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0)))
+                                if(tileRecieverPedestal.areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
+                                {
+                                    if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                    {
+                                        getAndSend(tileRecieverPedestal);
+                                    }
+
+                                }
+                            }
+                        }
+                        if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.fuzzyFilterUpgrade))
+                        {
+                            if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                            {
+
+                                if(tileRecieverPedestal.areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),true))
                                 {
                                     if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                     {

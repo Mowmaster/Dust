@@ -33,6 +33,8 @@ item.ancientcoiny.name=Ancient Coin
 item.ancientcoinz.name=Ancient Coin
 
 item.filterupgrade.name=Pedestal Upgrade - Filter
+item.fuzzyfilterupgrade.name=Pedestal Upgrade - Fuzzy Filter
+
 
 item.scrolla.name=Ancient Scroll
 item.scrollb.name=Ancient Scroll
