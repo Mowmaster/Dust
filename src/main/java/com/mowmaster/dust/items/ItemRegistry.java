@@ -62,6 +62,8 @@ public class ItemRegistry
     public static Item ancientCoinY;
     public static Item ancientCoinZ;
 
+    public static Item filterUpgrade;
+
     public static Item scrollA;
     public static Item scrollB;
     public static Item scrollC;
@@ -125,6 +127,8 @@ public class ItemRegistry
         ancientCoinX = new ItemCoin("ancientcoinx","ancientcoinx");
         ancientCoinY = new ItemCoin("ancientcoiny","ancientcoiny");
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
+
+        filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
 
         scrollA = new ItemScroll("scrolla","scrolla");
         scrollB = new ItemScroll("scrollb","scrollb");
@@ -210,6 +214,8 @@ public class ItemRegistry
         registerItem(ancientCoinY);
         registerItem(ancientCoinZ);
 
+        registerItem(filterUpgrade);
+
         registerItem(scrollA);
         registerItem(scrollB);
         registerItem(scrollC);
@@ -287,6 +293,8 @@ public class ItemRegistry
         registerRender(ancientCoinX);
         registerRender(ancientCoinY);
         registerRender(ancientCoinZ);
+
+        registerRender(filterUpgrade);
 
         registerRender(scrollA);
         registerRender(scrollB);
