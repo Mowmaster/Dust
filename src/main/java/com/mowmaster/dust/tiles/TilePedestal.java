@@ -3,8 +3,10 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -157,6 +159,20 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         world.getRedstonePower(pos,EnumFacing.UP);
         world.notifyBlockUpdate(pos, state, state, 3);
         world.setBlockState(pos,state,3);
+    }
+
+
+
+    public int onEntitiesCollidWithBlock(EntityItem itemEntityIn)
+    {
+        int returner = 0;
+        ItemStack incomingItem = itemEntityIn.getItem();
+        if(!hasItem())
+        {
+            item.insertItem(0,incomingItem,false);
+            returner = incomingItem.getCount();
+        }
+        return returner;
     }
 
     public int getMaxStackSize(){return 64;}
@@ -316,8 +332,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                     if(isFuzzy)
                     {
-                        System.out.println("IS FUZZY");
-                        System.out.println(itemStackIn.getItem().equals(stackInFilter.getItem()));
                         if(itemStackIn.getItem().equals(stackInFilter.getItem()))
                         {
                             return true;
@@ -360,56 +374,59 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     private boolean sendItemsToReciever(int listIndex)
     {
-        if(!storedOutputLocations[listIndex].equals(defaultPos))
+        if(!world.isRemote)
         {
-            if(doesRecieverExistandIsLoaded(storedOutputLocations[listIndex]))
+            if(!storedOutputLocations[listIndex].equals(defaultPos))
             {
-                TileEntity tileEntity = world.getTileEntity(storedOutputLocations[listIndex]);
-                if (tileEntity instanceof TilePedestal) {
-                    TilePedestal tileRecieverPedestal = (TilePedestal) tileEntity;
+                if(doesRecieverExistandIsLoaded(storedOutputLocations[listIndex]))
+                {
+                    TileEntity tileEntity = world.getTileEntity(storedOutputLocations[listIndex]);
+                    if (tileEntity instanceof TilePedestal) {
+                        TilePedestal tileRecieverPedestal = (TilePedestal) tileEntity;
 
-                    if(tileRecieverPedestal.hasCoin())
-                    {
-                        if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.filterUpgrade))
+                        if(tileRecieverPedestal.hasCoin())
                         {
-                            if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                            if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.filterUpgrade))
                             {
-
-                                if(tileRecieverPedestal.areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
+                                if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-                                    if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
-                                    {
-                                        getAndSend(tileRecieverPedestal);
-                                    }
 
+                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
+                                    {
+                                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                        {
+                                            getAndSend(tileRecieverPedestal);
+                                        }
+
+                                    }
+                                }
+                            }
+                            if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.fuzzyFilterUpgrade))
+                            {
+                                if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                                {
+                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),true))
+                                    {
+                                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                        {
+                                            getAndSend(tileRecieverPedestal);
+                                        }
+
+                                    }
                                 }
                             }
                         }
-                        if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.fuzzyFilterUpgrade))
+                        else
                         {
-                            if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                            if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                             {
-
-                                if(tileRecieverPedestal.areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),true))
-                                {
-                                    if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
-                                    {
-                                        getAndSend(tileRecieverPedestal);
-                                    }
-
-                                }
+                                getAndSend(tileRecieverPedestal);
                             }
-                        }
-                    }
-                    else
-                    {
-                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
-                        {
-                            getAndSend(tileRecieverPedestal);
                         }
                     }
                 }
             }
+            return false;
         }
         return false;
     }
@@ -599,8 +616,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 ticker3=0;
             }
         }
-
-
 
         IBlockState state = this.getWorld().getBlockState(this.getPos());
         EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);

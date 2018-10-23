@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -130,8 +131,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
-
-
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (((EnumFacing)state.getValue(FACING)))
@@ -215,7 +214,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                     {
                         if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
                         {
-                            System.out.println("");
                             playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
                             return true;
                         }
@@ -253,9 +251,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         }
         return hasItem;
     }
-
-
-
 
     public boolean hasComparatorInputOverride(IBlockState state)
     {
