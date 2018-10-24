@@ -6,6 +6,7 @@ import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.CrystalTypes;
+import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemSpellScroll;
@@ -853,6 +854,7 @@ public class EnchantAndEffectHandlers
         int black=0;
         int pressurePlate = 0;
         int paper = 0;
+        int coin = 0;
         //int spellpaper = 0;
         int arrow = 0;
         int count=0;
@@ -916,6 +918,11 @@ public class EnchantAndEffectHandlers
                             paper += stack.getCount();
                             item.setDead();
                         }
+                        if(stack.getItem() instanceof ItemCoin)//&& !(arrow>0) || !(pressurePlate>0)
+                        {
+                            coin += stack.getCount();
+                            item.setDead();
+                        }
                         /*
                         if(stack.getItem() instanceof ItemSpellScroll)
                         {
@@ -943,10 +950,10 @@ public class EnchantAndEffectHandlers
 
                     }
 
-                    if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0) {
+                    if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0 && coin==0) {
                         player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                     }
-                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0)
+                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0 && coin==0)
                     {
 
                         /*
@@ -963,7 +970,7 @@ public class EnchantAndEffectHandlers
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                         }
                     }
-                    else if(pressurePlate==0 && arrow==0 &&  paper>=1)
+                    else if(pressurePlate==0 && arrow==0 && coin==0 && paper>=1)
                     {
                         if(count/paper >= minimumDustRequired)
                         {
@@ -985,8 +992,30 @@ public class EnchantAndEffectHandlers
                         }
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
                     }
+                    else if(pressurePlate==0 && arrow==0 &&  paper==0 && coin>=1)
+                    {
+                        if(count/coin >= minimumDustRequired)
+                        {
+                            if(!worldIn.isRemote)
+                            {
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                ItemStack stack = new ItemStack(ItemRegistry.effectUpgrade);
+                                NBTTagCompound cmpd = new NBTTagCompound();
+                                cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                                stack.setTagCompound(cmpd);
+
+                                for(int i=0; i<coin; i++)
+                                {
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack.copy());
+                                    items1.onCollideWithPlayer(player);
+                                    //worldIn.spawnEntity(items1);
+                                }
+                            }
+                        }
+                        else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Effect Upgrade"),true);
+                    }
                     /*
-                    else if(pressurePlate==0 && paper==0 && spellpaper>=1)
+                    else if(pressurePlate==0 && paper==0 && coin==0 && spellpaper>=1)
                     {
                         if(count/spellpaper >= minimumDustRequired)
                         {
@@ -1012,7 +1041,7 @@ public class EnchantAndEffectHandlers
                     }
                      */
 
-                    else if(pressurePlate==0 && paper>=0 && arrow>=1)
+                    else if(pressurePlate==0 && paper>=0 && coin==0&& arrow>=1)
                     {
                         if(count/arrow >= minimumDustRequired)
                         {

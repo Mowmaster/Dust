@@ -3,9 +3,13 @@ package com.mowmaster.dust.items;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,6 +24,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ItemCoin extends Item
 {
+    PotionEffect potionEffect = new PotionEffect(MobEffects.LUCK);
     public ItemCoin(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
@@ -28,8 +33,54 @@ public class ItemCoin extends Item
         this.setCreativeTab(DUSTTABS);
     }
 
+    public PotionEffect getPotionEffectFromStack(ItemStack stack)
+    {
+        if(stack.hasTagCompound())
+        {
+            potionEffect = PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("coineffect"));
+        }
+        return potionEffect;
+    }
+
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+
+        String s1 = I18n.translateToLocal(getPotionEffectFromStack(stack).getEffectName()).trim();
+        int s2 = getPotionEffectFromStack(stack).getAmplifier()+1;
+        String count = "";
+        switch (s2)
+        {
+            case 0:
+                count = "I";
+                break;
+            case 1:
+                count = "II";
+                break;
+            case 2:
+                count = "III";
+                break;
+            case 3:
+                count = "IV";
+                break;
+            case 4:
+                count = "V";
+                break;
+            case 5:
+                count = "VI";
+                break;
+            case 6:
+                count = "VII";
+                break;
+            case 7:
+                count = "VIII";
+                break;
+            case 8:
+                count = "IX";
+                break;
+            case 9:
+                count = "X";
+                break;
+        }
         if(stack.getItem().equals(ItemRegistry.filterUpgrade))
         {
             tooltip.add("Filter Upgrade");
@@ -45,6 +96,10 @@ public class ItemCoin extends Item
         else if(stack.getItem().equals(ItemRegistry.fuzzyFilterBlacklistUpgrade))
         {
             tooltip.add("Fuzzy Blacklist Filter Upgrade");
+        }
+        else if(stack.getItem().equals(ItemRegistry.effectUpgrade))
+        {
+            tooltip.add(s1 + " " + s2);
         }
     }
 }

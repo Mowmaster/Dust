@@ -32,6 +32,7 @@ item.ancientcoinx.name=Ancient Coin
 item.ancientcoiny.name=Ancient Coin
 item.ancientcoinz.name=Ancient Coin
 
+item.effectupgrade.name=Pedestal Upgrade
 item.filterupgrade.name=Pedestal Upgrade
 item.fuzzyfilterupgrade.name=Pedestal Upgrade
 item.filterblacklistupgrade.name=Pedestal Upgrade

@@ -2,20 +2,24 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
@@ -25,6 +29,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
@@ -161,7 +166,65 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         world.setBlockState(pos,state,3);
     }
 
+    public boolean hasEffectUpgrade()
+    {
 
+        if(hasCoin())
+        {
+            if(this.coin.getStackInSlot(0).getItem().equals(ItemRegistry.effectUpgrade))
+            {
+                if(this.coin.getStackInSlot(0).hasTagCompound())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public PotionEffect getEffectFromUpgrade()
+    {
+        PotionEffect potionEffect = new PotionEffect(MobEffects.LUCK);
+
+        if(hasCoin())
+        {
+            if(this.coin.getStackInSlot(0).hasTagCompound())
+            {
+                potionEffect = PotionEffect.readCustomPotionEffectFromNBT(this.coin.getStackInSlot(0).getTagCompound().getCompoundTag("coineffect"));
+            }
+        }
+        return potionEffect;
+    }
+
+    public int getUpgradePotency()
+    {
+        return getEffectFromUpgrade().getAmplifier()+1;
+    }
+
+    //
+
+
+    public void getItemEntitiesNearby(int rangeIncrease)
+    {
+        World world = this.world;
+        ItemStack stack = ItemStack.EMPTY;
+        int increase = rangeIncrease;
+        if(!world.isRemote)
+        {
+            List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(this.pos.getX() - (1 + increase), this.pos.getY() - (1 + increase),
+                    this.pos.getZ() - (1 + increase), this.pos.getX() + (2 + increase), this.pos.getY() + (1 + increase), this.pos.getZ() + (2 + increase)));
+
+            for (EntityItem item : items) {
+                int remover = onEntitiesCollidWithBlock(item);
+                if(item.getItem().getCount()-remover>0)
+                {
+                    item.getItem().setCount(item.getItem().getCount()-remover);
+                }
+                else item.setDead();
+            }
+
+        }
+    }
 
     public int onEntitiesCollidWithBlock(EntityItem itemEntityIn)
     {
@@ -171,6 +234,23 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         {
             item.insertItem(0,incomingItem,false);
             returner = incomingItem.getCount();
+        }
+        else if(doItemsMatch(incomingItem))
+        {
+            int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
+            if(leftTillFilled>incomingItem.getCount())
+            {
+
+                item.insertItem(0,incomingItem,false);
+                returner = incomingItem.getCount();
+            }
+            else
+            {
+                ItemStack copyIncoming = incomingItem.copy();
+                copyIncoming.setCount(leftTillFilled);
+                item.insertItem(0,copyIncoming,false);
+                returner = incomingItem.getCount()-leftTillFilled;
+            }
         }
         return returner;
     }
@@ -193,7 +273,9 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public boolean addCoin(ItemStack coinFromBlock)
     {
-        if(hasCoin()){} else coin.insertItem(0,coinFromBlock.copy(),false);
+        ItemStack itemFromBlock = coinFromBlock.copy();
+        itemFromBlock.setCount(1);
+        if(hasCoin()){} else coin.insertItem(0,itemFromBlock,false);
         updateBlock();
         return true;
     }
@@ -606,6 +688,10 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     @Override
     public void update() {
 
+        if(hasEffectUpgrade())
+        {
+            getItemEntitiesNearby(getUpgradePotency());
+        }
 
         if(!world.isRemote)
         {
@@ -613,6 +699,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             if(ticker3>20)
             {
                 tryToSendItemToPedestal();
+
                 ticker3=0;
             }
         }
