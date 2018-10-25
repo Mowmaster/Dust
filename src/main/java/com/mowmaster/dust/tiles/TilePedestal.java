@@ -6,10 +6,17 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentSweepingEdge;
+import net.minecraft.enchantment.EnchantmentUntouching;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +26,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
@@ -30,6 +39,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
@@ -43,6 +54,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     private int ticker=0;
     private int ticker2=0;
     private int ticker3=0;
+    private int ticker4=0;
     private static final BlockPos defaultPos = new BlockPos(0,-2000,0);
     public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
 
@@ -201,8 +213,63 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return getEffectFromUpgrade().getAmplifier()+1;
     }
 
-    //
 
+
+    public ItemStack getDropsFromBlock()
+    {
+        int fortune = 0;
+        Random rn = new Random();
+        IBlockState blocky = world.getBlockState(getPosOfBlockBelow());
+        ItemStack getDrops = ItemStack.EMPTY;
+
+        if(!world.getBlockState(getPosOfBlockBelow()).getBlock().equals(Blocks.AIR))
+        {
+            if(hasCoin())
+            {
+                if(coin.getStackInSlot(0).getItem().equals(ItemRegistry.breakerUpgrade))
+                {
+                    if(coin.getStackInSlot(0).isItemEnchanted())
+                    {
+                        if(EnchantmentHelper.getEnchantments(coin.getStackInSlot(0)).containsKey(Enchantments.SILK_TOUCH))
+                        {
+                            getDrops = new ItemStack(blocky.getBlock());
+                        }
+                        else if(EnchantmentHelper.getEnchantments(coin.getStackInSlot(0)).containsKey(Enchantments.FORTUNE))
+                        {
+                            fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coin.getStackInSlot(0)) + 1;
+                            Item dropItem = blocky.getBlock().getItemDropped(blocky,rn,fortune);
+                            int metaDropped = blocky.getBlock().damageDropped(blocky);
+                            int countDropped = blocky.getBlock().quantityDropped(blocky,fortune,rn);
+                            if(blocky.getBlock().getItemDropped(blocky,rn,fortune)!=null)
+                            {
+                                if(dropItem.getHasSubtypes())
+                                {
+                                    getDrops = new ItemStack(dropItem,countDropped,metaDropped);
+                                }
+                                else getDrops = new ItemStack(dropItem,countDropped);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Item dropItem = blocky.getBlock().getItemDropped(blocky,rn,0);
+                        int metaDropped = blocky.getBlock().damageDropped(blocky);
+                        int countDropped = blocky.getBlock().quantityDropped(blocky,0,rn);
+                        if(blocky.getBlock().getItemDropped(blocky,rn,0)!=null)
+                        {
+
+                            if(dropItem.getHasSubtypes())
+                            {
+                                getDrops = new ItemStack(dropItem,countDropped,metaDropped);
+                            }
+                            else getDrops = new ItemStack(dropItem,countDropped);
+                        }
+                    }
+                }
+            }
+        }
+        return getDrops;
+    }
 
     public void getItemEntitiesNearby(int rangeIncrease)
     {
@@ -688,18 +755,37 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     @Override
     public void update() {
 
-        if(hasEffectUpgrade())
-        {
-            getItemEntitiesNearby(getUpgradePotency());
-        }
-
         if(!world.isRemote)
         {
+            if(hasEffectUpgrade())
+            {
+                getItemEntitiesNearby(getUpgradePotency());
+            }
+
             ticker3++;
             if(ticker3>20)
             {
                 tryToSendItemToPedestal();
 
+                if(hasCoin())
+                {
+                    if(coin.getStackInSlot(0).getItem().equals(ItemRegistry.breakerUpgrade))
+                    {
+                        if(hasItem())
+                        {
+                            if(getItemInPedestal().getCount() + getDropsFromBlock().getCount() <= getMaxStackSize())
+                            {
+                                addItem(getDropsFromBlock());
+                                world.setBlockToAir(getPosOfBlockBelow());
+                            }
+                        }
+                        else
+                        {
+                            addItem(getDropsFromBlock());
+                            world.setBlockToAir(getPosOfBlockBelow());
+                        }
+                    }
+                }
                 ticker3=0;
             }
         }

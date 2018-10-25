@@ -2,9 +2,12 @@ package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
@@ -31,6 +34,16 @@ public class ItemCoin extends Item
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        if(stack.getItem().equals(ItemRegistry.breakerUpgrade))
+        {
+            return super.isBookEnchantable(stack, book);
+        }
+
+        return false;
     }
 
     public PotionEffect getPotionEffectFromStack(ItemStack stack)
@@ -91,15 +104,21 @@ public class ItemCoin extends Item
         }
         else if(stack.getItem().equals(ItemRegistry.filterBlacklistUpgrade))
         {
+            tooltip.add("[WIP]");
             tooltip.add("Blacklist Filter Upgrade");
         }
         else if(stack.getItem().equals(ItemRegistry.fuzzyFilterBlacklistUpgrade))
         {
+            tooltip.add("[WIP]");
             tooltip.add("Fuzzy Blacklist Filter Upgrade");
         }
         else if(stack.getItem().equals(ItemRegistry.effectUpgrade))
         {
             tooltip.add(s1 + " " + s2);
+        }
+        else if(stack.getItem().equals(ItemRegistry.breakerUpgrade))
+        {
+            tooltip.add("Block Breaker Upgrade");
         }
     }
 }
