@@ -918,7 +918,7 @@ public class EnchantAndEffectHandlers
                             paper += stack.getCount();
                             item.setDead();
                         }
-                        if(stack.getItem() instanceof ItemCoin)//&& !(arrow>0) || !(pressurePlate>0)
+                        if(stack.getItem().equals(ItemRegistry.ancientCoin))//&& !(arrow>0) || !(pressurePlate>0)
                         {
                             coin += stack.getCount();
                             item.setDead();

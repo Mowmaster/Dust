@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityComparator;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -212,6 +213,16 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         return true;
     }
 
+    @Override
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+        return super.canConnectRedstone(state, world, pos, side);
+    }
+
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return blockState.getWeakPower(blockAccess, pos, side);
+    }
+
     private int getRedstoneLevel(World worldIn, BlockPos pos)
     {
         int hasItem=0;
@@ -243,7 +254,6 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
     {
         return true;
     }
-
 
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {

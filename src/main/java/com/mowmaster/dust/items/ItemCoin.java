@@ -120,6 +120,10 @@ public class ItemCoin extends Item
         {
             tooltip.add("Block Breaker Upgrade");
         }
+        else if(stack.getItem().equals(ItemRegistry.placerUpgrade))
+        {
+            tooltip.add("Block Placer Upgrade");
+        }
     }
 }
 

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {"item": "dust:scrollm"},
-    {"item": "minecraft:gold_ingot"}
+    {"item": "dust:coin"}
   ],
   "result": {
     "item": "dust:ancientcoinm"

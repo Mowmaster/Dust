@@ -20,7 +20,7 @@ public class LootHandler
             ItemRegistry.scrollP,ItemRegistry.scrollQ,ItemRegistry.scrollR,ItemRegistry.scrollS,ItemRegistry.scrollT,ItemRegistry.scrollU,ItemRegistry.scrollV,ItemRegistry.scrollW,
             ItemRegistry.scrollX,ItemRegistry.scrollY,ItemRegistry.scrollZ,};
 
-    Item[] coins = {ItemRegistry.ancientCoinA,ItemRegistry.ancientCoinB,ItemRegistry.ancientCoinC,ItemRegistry.ancientCoinD,ItemRegistry.ancientCoinE,ItemRegistry.ancientCoinF,ItemRegistry.ancientCoinG,
+    Item[] coins = {ItemRegistry.ancientCoin,ItemRegistry.ancientCoinB,ItemRegistry.ancientCoinC,ItemRegistry.ancientCoinD,ItemRegistry.ancientCoinE,ItemRegistry.ancientCoinF,ItemRegistry.ancientCoinG,
             ItemRegistry.ancientCoinH,ItemRegistry.ancientCoinI,ItemRegistry.ancientCoinJ,ItemRegistry.ancientCoinK,ItemRegistry.ancientCoinL,ItemRegistry.ancientCoinM,
             ItemRegistry.ancientCoinN,ItemRegistry.ancientCoinO, ItemRegistry.ancientCoinP,ItemRegistry.ancientCoinQ,ItemRegistry.ancientCoinR,ItemRegistry.ancientCoinS,
             ItemRegistry.ancientCoinT,ItemRegistry.ancientCoinU,ItemRegistry.ancientCoinV,ItemRegistry.ancientCoinW,ItemRegistry.ancientCoinX,ItemRegistry.ancientCoinY,ItemRegistry.ancientCoinZ,};
@@ -35,7 +35,7 @@ public class LootHandler
             if (simpleDungeonPool1 != null) {
                 int i=0;
                 for(Item scroll : scrolls) {i++;simpleDungeonPool1.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
-                for(Item coin : coins) {i++;simpleDungeonPool1.addEntry(new LootEntryItem(coin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));}
+                simpleDungeonPool1.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
         else if (name.equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)) {
@@ -43,7 +43,7 @@ public class LootHandler
             if (mineshaftPool1 != null) {
                 int i=0;
                 for(Item scroll : scrolls) {i++;mineshaftPool1.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
-                for(Item coin : coins) {i++;mineshaftPool1.addEntry(new LootEntryItem(coin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));}
+                mineshaftPool1.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
         else if (name.equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
@@ -51,7 +51,7 @@ public class LootHandler
             if (desertPyramidMain != null) {
                 int i=0;
                 for(Item scroll : scrolls) {i++;desertPyramidMain.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
-                for(Item coin : coins) {i++;desertPyramidMain.addEntry(new LootEntryItem(coin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));}
+                i++;desertPyramidMain.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
         else if (name.equals(LootTableList.CHESTS_SPAWN_BONUS_CHEST)) {
@@ -59,7 +59,7 @@ public class LootHandler
             if (spawnChestPool2 != null) {
                 int i=0;
                 for(Item scroll : scrolls) {i++;spawnChestPool2.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
-                for(Item coin : coins) {i++;spawnChestPool2.addEntry(new LootEntryItem(coin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));}
+                spawnChestPool2.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
         else if (name.equals(LootTableList.CHESTS_END_CITY_TREASURE)) {
@@ -67,7 +67,7 @@ public class LootHandler
             if (spawnChestEndCity != null) {
                 int i=0;
                 for(Item scroll : scrolls) {i++;spawnChestEndCity.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
-                for(Item coin : coins) {i++;spawnChestEndCity.addEntry(new LootEntryItem(coin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));}
+                spawnChestEndCity.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
     }

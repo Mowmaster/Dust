@@ -31,7 +31,9 @@ item.ancientcoinw.name=Ancient Coin
 item.ancientcoinx.name=Ancient Coin
 item.ancientcoiny.name=Ancient Coin
 item.ancientcoinz.name=Ancient Coin
+item.coin.name=Ancient Coin
 
+item.placerupgrade.name=Pedestal Upgrade
 item.breakerupgrade.name=Pedestal Upgrade
 item.effectupgrade.name=Pedestal Upgrade
 item.filterupgrade.name=Pedestal Upgrade

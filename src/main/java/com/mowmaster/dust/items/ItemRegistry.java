@@ -62,6 +62,8 @@ public class ItemRegistry
     public static Item ancientCoinY;
     public static Item ancientCoinZ;
 
+    public static Item ancientCoin;
+    public static Item placerUpgrade;
     public static Item breakerUpgrade;
     public static Item effectUpgrade;
     public static Item filterUpgrade;
@@ -132,7 +134,9 @@ public class ItemRegistry
         ancientCoinX = new ItemCoin("ancientcoinx","ancientcoinx");
         ancientCoinY = new ItemCoin("ancientcoiny","ancientcoiny");
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
+        ancientCoin = new ItemCoin("coin","coin");
 
+        placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
         fuzzyFilterUpgrade = new ItemCoin("fuzzyfilterupgrade","fuzzyfilterupgrade");
         filterBlacklistUpgrade = new ItemCoin("filterblacklistupgrade","filterblacklistupgrade");
@@ -223,7 +227,9 @@ public class ItemRegistry
         registerItem(ancientCoinX);
         registerItem(ancientCoinY);
         registerItem(ancientCoinZ);
+        registerItem(ancientCoin);
 
+        registerItem(placerUpgrade);
         registerItem(filterUpgrade);
         registerItem(fuzzyFilterUpgrade);
         registerItem(filterBlacklistUpgrade);
@@ -308,7 +314,9 @@ public class ItemRegistry
         registerRender(ancientCoinX);
         registerRender(ancientCoinY);
         registerRender(ancientCoinZ);
+        registerRender(ancientCoin);
 
+        registerRender(placerUpgrade);
         registerRender(filterUpgrade);
         registerRender(fuzzyFilterUpgrade);
         registerRender(filterBlacklistUpgrade);
