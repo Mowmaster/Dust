@@ -4,9 +4,7 @@ import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -30,6 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
+
+import static net.minecraft.block.BlockDirectional.FACING;
 
 public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
 {
@@ -169,6 +170,19 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return true;
     }
 
+    public boolean hasUpgrade(Item coinType)
+    {
+        if(hasCoin())
+        {
+            if(getCoinOnPedestal().getItem().equals(coinType))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void updateBlock()
     {
         markDirty();
@@ -213,16 +227,41 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return getEffectFromUpgrade().getAmplifier()+1;
     }
 
+    public void placeBlockFromInventory()
+    {
+        if(hasItem())
+        {
+            Block block = Block.getBlockFromItem(item.getStackInSlot(0).getItem());
+            if(block!=Blocks.AIR)
+            {
+                if(world.getBlockState(getPosOfBlockBelow(1)).getBlock().equals(Blocks.AIR))
+                {
+                    if(block instanceof IGrowable)
+                    {
+                        if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
+                        {
+                            world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                            getItemInPedestal().shrink(1);
+                        }
+                    }
+                    else {
+                        world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                        getItemInPedestal().shrink(1);
+                    }
 
+                }
+            }
+        }
+    }
 
     public ItemStack getDropsFromBlock()
     {
         int fortune = 0;
         Random rn = new Random();
-        IBlockState blocky = world.getBlockState(getPosOfBlockBelow());
+        IBlockState blocky = world.getBlockState(getPosOfBlockBelow(1));
         ItemStack getDrops = ItemStack.EMPTY;
 
-        if(!world.getBlockState(getPosOfBlockBelow()).getBlock().equals(Blocks.AIR))
+        if(!world.getBlockState(getPosOfBlockBelow(1)).getBlock().equals(Blocks.AIR))
         {
             if(hasCoin())
             {
@@ -467,7 +506,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn, boolean isFuzzy)
     {
-        BlockPos filterInv = recievingPedestal.getPosOfBlockBelow();
+        BlockPos filterInv = recievingPedestal.getPosOfBlockBelow(1);
         if(world.getTileEntity(filterInv).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
         {
             TileEntity tile = world.getTileEntity(filterInv);
@@ -564,6 +603,13 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                     }
                                 }
                             }
+                            if(tileRecieverPedestal.hasUpgrade(ItemRegistry.ancientCoin))
+                            {
+                                if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                {
+                                    getAndSend(tileRecieverPedestal);
+                                }
+                            }
                         }
                         else
                         {
@@ -586,13 +632,14 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         ItemStack stackToAdd = item.getStackInSlot(0).copy();
         ItemStack stackInReciever = recieverPedestal.getItemInPedestal();
         int itemCountInReciever = stackInReciever.getCount();
+        int holdItemsInInv = getRedstoneSignalIn();
 
 
         //is the reciever has room in inventory
         if(roomLeftInStack(stackInReciever)!=0)
         {
             //checking if sender has at least transferSizeCount in its inventory
-            if(this.getItemInPedestal().getCount()>=transferSizeCount)
+            if(this.getItemInPedestal().getCount()-holdItemsInInv>=transferSizeCount)
             {
                 //checking if receiver has enough room for transferSizeCount or more
                 if(roomLeftInStack(stackInReciever)>=transferSizeCount)
@@ -618,14 +665,14 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             else
             {
                 //checks is reciever has enough storage for whats left in this (the sender)
-                if(roomLeftInStack(stackInReciever)>=this.getItemInPedestal().getCount())
+                if(roomLeftInStack(stackInReciever)>=this.getItemInPedestal().getCount()-holdItemsInInv)
                 {
                     //set the input itemstack count to be added
-                    stackToAdd.setCount(this.getItemInPedestal().getCount());
+                    stackToAdd.setCount(this.getItemInPedestal().getCount()-holdItemsInInv);
                     //actually add it
                     recieverPedestal.addItem(stackToAdd);
                     //remove that count from the inventory ??just use regular remove since its all there is??
-                    removeItem(this.getItemInPedestal().getCount());
+                    removeItem(this.getItemInPedestal().getCount()-holdItemsInInv);
                     return true;
                 }
                 //if the storage cant take in the remaining input item stack we figure out how much it can take.
@@ -655,25 +702,25 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return countLeftTillFilled;
     }
 
-    public BlockPos getPosOfBlockBelow()
+    public BlockPos getPosOfBlockBelow(int numBelow)
     {
         IBlockState state = this.getWorld().getBlockState(this.getPos());
-        EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         BlockPos blockBelow = this.getPos();
         switch (enumfacing)
         {
             case UP:
-                return blockBelow.add(0,-1,0);
+                return blockBelow.add(0,-numBelow,0);
             case DOWN:
-                 return blockBelow.add(0,1,0);
+                 return blockBelow.add(0,numBelow,0);
             case NORTH:
-                return blockBelow.add(0,0,1);
+                return blockBelow.add(0,0,numBelow);
             case SOUTH:
-                return blockBelow.add(0,0,-1);
+                return blockBelow.add(0,0,-numBelow);
             case EAST:
-                return blockBelow.add(-1,0,0);
+                return blockBelow.add(-numBelow,0,0);
             case WEST:
-                return blockBelow.add(1,0,0);
+                return blockBelow.add(numBelow,0,0);
             default:
                 return blockBelow;
         }
@@ -682,7 +729,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public boolean hasFilterableInventoryBelow()
     {
         IBlockState state = this.getWorld().getBlockState(this.getPos());
-        EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
 
         switch (enumfacing)
         {
@@ -752,9 +799,149 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return stack;
     }
 
+    public int getRedstoneSignalIn()
+    {
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        EnumFacing enumfacing = state.getValue(FACING);
+        int totalPower = 0;
+        int pow1 = 0;
+        int pow2 = 0;
+        int pow3 = 0;
+        int pow4 = 0;
+
+        if(world.isBlockPowered(pos))
+        {
+
+            if(enumfacing.equals(EnumFacing.UP) || enumfacing.equals(EnumFacing.DOWN))
+            {
+                BlockPos pos1 = pos.add(1,0,0);
+                BlockPos pos2 = pos.add(-1,0,0);
+                BlockPos pos3 = pos.add(0,0,1);
+                BlockPos pos4 = pos.add(0,0,-1);
+
+                pow1 = getRedstonePowerFromPos(pos1);
+                pow2 = getRedstonePowerFromPos(pos2);
+                pow3 = getRedstonePowerFromPos(pos3);
+                pow4 = getRedstonePowerFromPos(pos4);
+
+                totalPower = pow1 + pow2 + pow3 + pow4;
+            }
+            else if(enumfacing.equals(EnumFacing.EAST) || enumfacing.equals(EnumFacing.WEST))
+            {
+                BlockPos pos1 = pos.add(0,1,0);
+                BlockPos pos2 = pos.add(0,-1,0);
+                BlockPos pos3 = pos.add(0,0,1);
+                BlockPos pos4 = pos.add(0,0,-1);
+                pow1 = getRedstonePowerFromPos(pos1);
+                pow2 = getRedstonePowerFromPos(pos2);
+                pow3 = getRedstonePowerFromPos(pos3);
+                pow4 = getRedstonePowerFromPos(pos4);
+
+                totalPower = pow1 + pow2 + pow3 + pow4;
+            }
+            else if(enumfacing.equals(EnumFacing.NORTH) || enumfacing.equals(EnumFacing.SOUTH))
+            {
+                BlockPos pos1 = pos.add(0,1,0);
+                BlockPos pos2 = pos.add(0,-1,0);
+                BlockPos pos3 = pos.add(1,0,0);
+                BlockPos pos4 = pos.add(-1,0,0);
+                pow1 = getRedstonePowerFromPos(pos1);
+                pow2 = getRedstonePowerFromPos(pos2);
+                pow3 = getRedstonePowerFromPos(pos3);
+                pow4 = getRedstonePowerFromPos(pos4);
+
+                totalPower = pow1 + pow2 + pow3 + pow4;
+            }
+
+        }
+
+        return totalPower;
+
+    }
+
+    public int getRedstonePowerFromPos(BlockPos pos)
+    {
+        Boolean isPowered = false;
+        int pow=0;
+        if(isBlockRedstoneComparator(pos))
+        {
+            TileEntity tileComp = world.getTileEntity(pos);
+            if(tileComp instanceof TileEntityComparator)
+            {
+                TileEntityComparator tileComparator = (TileEntityComparator)tileComp;
+                pow = tileComparator.getOutputSignal();
+            }
+        }
+        if(isBlockRedstoneWire(pos))
+        {
+            pow = world.getBlockState(pos).getValue(BlockRedstoneWire.POWER);
+        }
+        else if(isBlockRedstoneLever(pos))
+        {
+            isPowered = world.getBlockState(pos).getValue(BlockLever.POWERED);
+            if(isPowered)
+            {
+                pow = 16;
+            }
+        }
+        else if(isBlockRedstoneBlock(pos))
+        {
+            pow = 16;
+        }
+
+        return pow;
+    }
+
+    public boolean isBlockRedstoneWire(BlockPos pos)
+    {
+        Block redstoneWire = world.getBlockState(pos).getBlock();
+        if(redstoneWire instanceof BlockRedstoneWire)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isBlockRedstoneComparator(BlockPos pos)
+    {
+        Block redstoneComp = world.getBlockState(pos).getBlock();
+        if(redstoneComp instanceof BlockRedstoneComparator)
+        {
+            TileEntity tileComp = world.getTileEntity(pos);
+            if(tileComp instanceof TileEntityComparator)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isBlockRedstoneLever(BlockPos pos)
+    {
+        Block redstoneLever = world.getBlockState(pos).getBlock();
+        if(redstoneLever instanceof BlockLever)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isBlockRedstoneBlock(BlockPos pos)
+    {
+        Block redstoneBlock = world.getBlockState(pos).getBlock();
+        if(redstoneBlock.equals(Blocks.REDSTONE_BLOCK))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
     @Override
     public void update() {
 
+        getRedstoneSignalIn();
         if(!world.isRemote)
         {
             if(hasEffectUpgrade())
@@ -762,36 +949,45 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 getItemEntitiesNearby(getUpgradePotency());
             }
 
+
             ticker3++;
             if(ticker3>20)
             {
                 tryToSendItemToPedestal();
 
-                if(hasCoin())
+                if(this.hasUpgrade(ItemRegistry.breakerUpgrade))
                 {
-                    if(coin.getStackInSlot(0).getItem().equals(ItemRegistry.breakerUpgrade))
+                    if(hasItem())
                     {
-                        if(hasItem())
+                        if(getDropsFromBlock().getItem().equals(getItemInPedestal().getItem()))
                         {
                             if(getItemInPedestal().getCount() + getDropsFromBlock().getCount() <= getMaxStackSize())
                             {
                                 addItem(getDropsFromBlock());
-                                world.setBlockToAir(getPosOfBlockBelow());
+                                world.setBlockToAir(getPosOfBlockBelow(1));
                             }
                         }
-                        else
-                        {
-                            addItem(getDropsFromBlock());
-                            world.setBlockToAir(getPosOfBlockBelow());
-                        }
+
                     }
+                    else
+                    {
+                        addItem(getDropsFromBlock());
+                        world.setBlockToAir(getPosOfBlockBelow(1));
+                    }
+                }
+
+                if(this.hasUpgrade(ItemRegistry.placerUpgrade))
+                {
+                    placeBlockFromInventory();
                 }
                 ticker3=0;
             }
         }
 
+
+
         IBlockState state = this.getWorld().getBlockState(this.getPos());
-        EnumFacing enumfacing = state.getValue(BlockDirectional.FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         if(!world.isRemote)
         {
             if(!getItemInPedestal().isEmpty())
