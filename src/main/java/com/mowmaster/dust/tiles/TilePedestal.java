@@ -3,6 +3,7 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +20,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
@@ -232,6 +234,8 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         return getEffectFromUpgrade().getAmplifier()+1;
     }
+
+
 
     /*
     public void crafter()
@@ -573,7 +577,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         else return false;
     }
 
-    public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn, boolean isFuzzy)
+    public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn, FilterTypes enumType)
     {
         BlockPos filterInv = recievingPedestal.getPosOfBlockBelow(1);
         if(world.getTileEntity(filterInv).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
@@ -587,14 +591,21 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 {
                     stackInFilter = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
 
-                    if(isFuzzy)
+                    if(enumType == FilterTypes.FUZZY)
                     {
                         if(itemStackIn.getItem().equals(stackInFilter.getItem()))
                         {
                             return true;
                         }
                     }
-                    else
+                    if(enumType == FilterTypes.MOD)
+                    {
+                        if(itemStackIn.getItem().getRegistryName().getResourceDomain()==stackInFilter.getItem().getRegistryName().getResourceDomain())
+                        {
+                            return true;
+                        }
+                    }
+                    if(enumType == FilterTypes.NORMAL)
                     {
                         if(itemStackIn.getHasSubtypes())
                         {
@@ -620,6 +631,8 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             }
                         }
                     }
+
+                    else return false;
                 }
             }
         }
@@ -645,7 +658,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             {
                                 if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
+                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),FilterTypes.NORMAL))
                                     {
                                         if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                         {
@@ -659,7 +672,22 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             {
                                 if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),true))
+                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),FilterTypes.FUZZY))
+                                    {
+                                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                        {
+                                            getAndSend(tileRecieverPedestal);
+                                        }
+
+                                    }
+                                }
+                            }
+
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.filterModUpgrade))
+                            {
+                                if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                                {
+                                    if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),FilterTypes.MOD))
                                     {
                                         if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                         {
@@ -676,7 +704,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             {
                                 if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
+                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),FilterTypes.NORMAL))
                                     {
                                         if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                         {
@@ -690,7 +718,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             {
                                 if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),true))
+                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),FilterTypes.FUZZY))
                                     {
                                         if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                         {
@@ -701,7 +729,20 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 }
                             }
 
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.filterModBlacklistUpgrade))
+                            {
+                                if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                                {
+                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),FilterTypes.MOD))
+                                    {
+                                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                        {
+                                            getAndSend(tileRecieverPedestal);
+                                        }
 
+                                    }
+                                }
+                            }
 
                             Item[] sendToList = {ItemRegistry.ancientCoin,ItemRegistry.ancientCoinA,ItemRegistry.ancientCoinB,ItemRegistry.ancientCoinC,ItemRegistry.ancientCoinD,ItemRegistry.ancientCoinE,ItemRegistry.ancientCoinF,
                                     ItemRegistry.ancientCoinG,ItemRegistry.ancientCoinH,ItemRegistry.ancientCoinI,ItemRegistry.ancientCoinJ,ItemRegistry.ancientCoinK,ItemRegistry.ancientCoinL,ItemRegistry.ancientCoinM,

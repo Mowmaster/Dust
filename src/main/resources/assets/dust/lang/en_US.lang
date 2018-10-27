@@ -38,9 +38,11 @@ item.placerupgrade.name=Pedestal Upgrade
 item.breakerupgrade.name=Pedestal Upgrade
 item.effectupgrade.name=Pedestal Upgrade
 item.filterupgrade.name=Pedestal Upgrade
+item.filtermodupgrade.name=Pedestal Upgrade
 item.fuzzyfilterupgrade.name=Pedestal Upgrade
 item.filterblacklistupgrade.name=Pedestal Upgrade
 item.fuzzyfilterblacklistupgrade.name=Pedestal Upgrade
+item.filtermobblacklistupgrade.name=Pedestal Upgrade
 
 
 item.scrolla.name=Ancient Scroll

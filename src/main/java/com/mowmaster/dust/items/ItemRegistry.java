@@ -69,8 +69,10 @@ public class ItemRegistry
     public static Item effectUpgrade;
     public static Item filterUpgrade;
     public static Item fuzzyFilterUpgrade;
+    public static Item filterModUpgrade;
     public static Item filterBlacklistUpgrade;
     public static Item fuzzyFilterBlacklistUpgrade;
+    public static Item filterModBlacklistUpgrade;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -141,8 +143,10 @@ public class ItemRegistry
         placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
         fuzzyFilterUpgrade = new ItemCoin("fuzzyfilterupgrade","fuzzyfilterupgrade");
+        filterModUpgrade = new ItemCoin("filtermodupgrade","filtermodupgrade");
         filterBlacklistUpgrade = new ItemCoin("filterblacklistupgrade","filterblacklistupgrade");
         fuzzyFilterBlacklistUpgrade = new ItemCoin("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
+        filterModBlacklistUpgrade = new ItemCoin("filtermodblacklistupgrade","filtermodblacklistupgrade");
         effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");
         breakerUpgrade = new ItemCoin("breakerupgrade","breakerupgrade");
 
@@ -235,8 +239,10 @@ public class ItemRegistry
         registerItem(placerUpgrade);
         registerItem(filterUpgrade);
         registerItem(fuzzyFilterUpgrade);
+        registerItem(filterModUpgrade);
         registerItem(filterBlacklistUpgrade);
         registerItem(fuzzyFilterBlacklistUpgrade);
+        registerItem(filterModBlacklistUpgrade);
         registerItem(effectUpgrade);
         registerItem(breakerUpgrade);
 
@@ -323,8 +329,10 @@ public class ItemRegistry
         registerRender(placerUpgrade);
         registerRender(filterUpgrade);
         registerRender(fuzzyFilterUpgrade);
+        registerRender(filterModUpgrade);
         registerRender(filterBlacklistUpgrade);
         registerRender(fuzzyFilterBlacklistUpgrade);
+        registerRender(filterModBlacklistUpgrade);
         registerRender(effectUpgrade);
         registerRender(breakerUpgrade);
 
