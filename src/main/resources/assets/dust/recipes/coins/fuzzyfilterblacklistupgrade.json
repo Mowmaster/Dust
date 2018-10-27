@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "minecraft:wool",
+    "data": 15},
+    {"item": "dust:filterupgrade"}
+  ],
+  "result": {
+    "item": "dust:fuzzyfilterblacklistupgrade"
+  }
+}

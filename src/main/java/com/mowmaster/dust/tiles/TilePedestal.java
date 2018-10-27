@@ -11,12 +11,16 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentSweepingEdge;
 import net.minecraft.enchantment.EnchantmentUntouching;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -33,9 +37,11 @@ import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -167,7 +173,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             }
         }
 
-        return true;
+        return false;
     }
 
     public boolean hasUpgrade(Item coinType)
@@ -227,6 +233,46 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return getEffectFromUpgrade().getAmplifier()+1;
     }
 
+    /*
+    public void crafter()
+    {
+        InventoryCrafting craft = new InventoryCrafting(new Container()
+            {
+            @Override
+            public boolean canInteractWith(@Nonnull EntityPlayer player) {
+                return false;
+            }
+            }, 3, 3);
+
+        //sets the items from the inventory as a crafting pattern WE WILL CHECK the below inv and set the first 9 slots as this
+        for(int i = 0; i < 9; i++) {
+            ItemStack stack = itemHandler.getStackInSlot(i);
+
+            if(stack.isEmpty())
+                continue;
+
+            craft.setInventorySlotContents(i, stack);
+        }
+
+        for(IRecipe recipe : ForgeRegistries.RECIPES)
+            if(recipe.matches(craft, world)) {
+                itemHandler.setStackInSlot(9, recipe.getCraftingResult(craft));
+
+                for(int i = 0; i < 9; i++) {
+                    ItemStack stack = itemHandler.getStackInSlot(i);
+                    if(stack.isEmpty())
+                        continue;
+
+                    ItemStack container = stack.getItem().getContainerItem(stack);
+                    itemHandler.setStackInSlot(i, container);
+                }
+
+            }
+
+
+    }
+     */
+
     public void placeBlockFromInventory()
     {
         if(hasItem())
@@ -252,6 +298,29 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 }
             }
         }
+    }
+
+    public void summonItemFromInventory()
+    {
+
+        if(!world.isRemote)
+        {
+            if(!world.isBlockPowered(pos))
+            {
+                if(hasItem())
+                {
+                    ItemStack itemToSummon = getItemInPedestal().copy();
+                    itemToSummon.setCount(1);
+                    EntityItem itemEntity = new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ() + 0.5,itemToSummon);
+                    itemEntity.motionX = 0;
+                    itemEntity.motionY = 0;
+                    itemEntity.motionZ = 0;
+                    world.spawnEntity(itemEntity);
+                    this.removeItem(itemToSummon.getCount());
+                }
+            }
+        }
+
     }
 
     public ItemStack getDropsFromBlock()
@@ -552,9 +621,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         }
                     }
                 }
-                else return false;
             }
-
         }
 
         return false;
@@ -574,22 +641,21 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                         if(tileRecieverPedestal.hasCoin())
                         {
-                            if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.filterUpgrade))
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.filterUpgrade))
                             {
                                 if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-
                                     if(areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
                                     {
                                         if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                         {
                                             getAndSend(tileRecieverPedestal);
                                         }
-
                                     }
                                 }
                             }
-                            if(tileRecieverPedestal.hasUpgrade(tileRecieverPedestal, ItemRegistry.fuzzyFilterUpgrade))
+
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.fuzzyFilterUpgrade))
                             {
                                 if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
@@ -603,11 +669,53 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                     }
                                 }
                             }
-                            if(tileRecieverPedestal.hasUpgrade(ItemRegistry.ancientCoin))
+
+
+
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.filterBlacklistUpgrade))
                             {
-                                if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                if(tileRecieverPedestal.hasFilterableInventoryBelow())
                                 {
-                                    getAndSend(tileRecieverPedestal);
+                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),false))
+                                    {
+                                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                        {
+                                            getAndSend(tileRecieverPedestal);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.fuzzyFilterBlacklistUpgrade))
+                            {
+                                if(tileRecieverPedestal.hasFilterableInventoryBelow())
+                                {
+                                    if(!areFilteredItemsEqual(tileRecieverPedestal,this.item.getStackInSlot(0),true))
+                                    {
+                                        if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                        {
+                                            getAndSend(tileRecieverPedestal);
+                                        }
+
+                                    }
+                                }
+                            }
+
+
+
+                            Item[] sendToList = {ItemRegistry.ancientCoin,ItemRegistry.ancientCoinA,ItemRegistry.ancientCoinB,ItemRegistry.ancientCoinC,ItemRegistry.ancientCoinD,ItemRegistry.ancientCoinE,ItemRegistry.ancientCoinF,
+                                    ItemRegistry.ancientCoinG,ItemRegistry.ancientCoinH,ItemRegistry.ancientCoinI,ItemRegistry.ancientCoinJ,ItemRegistry.ancientCoinK,ItemRegistry.ancientCoinL,ItemRegistry.ancientCoinM,
+                                    ItemRegistry.ancientCoinN,ItemRegistry.ancientCoinO,ItemRegistry.ancientCoinP,ItemRegistry.ancientCoinQ,ItemRegistry.ancientCoinR,ItemRegistry.ancientCoinS,ItemRegistry.ancientCoinT,
+                                    ItemRegistry.ancientCoinU,ItemRegistry.ancientCoinV,ItemRegistry.ancientCoinW,ItemRegistry.ancientCoinX,ItemRegistry.ancientCoinY,ItemRegistry.ancientCoinZ,ItemRegistry.dropperUpgrade,
+                                    ItemRegistry.placerUpgrade};
+                            for(int i=0;i<sendToList.length;i++)
+                            {
+                                if(hasUpgrade(tileRecieverPedestal,sendToList[i]))
+                                {
+                                    if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                    {
+                                        getAndSend(tileRecieverPedestal);
+                                    }
                                 }
                             }
                         }
@@ -811,7 +919,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
         if(world.isBlockPowered(pos))
         {
-
             if(enumfacing.equals(EnumFacing.UP) || enumfacing.equals(EnumFacing.DOWN))
             {
                 BlockPos pos1 = pos.add(1,0,0);
@@ -949,37 +1056,62 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 getItemEntitiesNearby(getUpgradePotency());
             }
 
+            ticker4++;
+            if(ticker4>10)
+            {
+                if(this.hasCoin())
+                {
+                    if(this.hasUpgrade(ItemRegistry.dropperUpgrade))
+                    {
+                        summonItemFromInventory();
+                    }
+                }
+                ticker4=0;
+            }
 
             ticker3++;
             if(ticker3>20)
             {
-                tryToSendItemToPedestal();
 
-                if(this.hasUpgrade(ItemRegistry.breakerUpgrade))
+
+                if(this.hasCoin())
                 {
-                    if(hasItem())
+                    tryToSendItemToPedestal();
+
+                    if(this.hasUpgrade(ItemRegistry.breakerUpgrade))
                     {
-                        if(getDropsFromBlock().getItem().equals(getItemInPedestal().getItem()))
+                        if(hasItem())
                         {
-                            if(getItemInPedestal().getCount() + getDropsFromBlock().getCount() <= getMaxStackSize())
+                            if(getDropsFromBlock().getItem().equals(getItemInPedestal().getItem()))
                             {
-                                addItem(getDropsFromBlock());
-                                world.setBlockToAir(getPosOfBlockBelow(1));
+                                if(getItemInPedestal().getCount() + getDropsFromBlock().getCount() <= getMaxStackSize())
+                                {
+                                    addItem(getDropsFromBlock());
+                                    world.setBlockToAir(getPosOfBlockBelow(1));
+                                }
                             }
+
                         }
-
+                        else
+                        {
+                            addItem(getDropsFromBlock());
+                            world.setBlockToAir(getPosOfBlockBelow(1));
+                        }
                     }
-                    else
+
+                    if(this.hasUpgrade(ItemRegistry.placerUpgrade))
                     {
-                        addItem(getDropsFromBlock());
-                        world.setBlockToAir(getPosOfBlockBelow(1));
+                        placeBlockFromInventory();
+                    }
+                }
+                else
+                {
+                    if(!world.isBlockPowered(pos))
+                    {
+                        tryToSendItemToPedestal();
                     }
                 }
 
-                if(this.hasUpgrade(ItemRegistry.placerUpgrade))
-                {
-                    placeBlockFromInventory();
-                }
                 ticker3=0;
             }
         }

@@ -231,21 +231,21 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
             TilePedestal pedestal = (TilePedestal) tileEntity;
             int counter = pedestal.getItemInPedestal().getCount();
             if(counter<=0) {hasItem=0;}
-            else if(counter>0 && counter<=5) {hasItem=1;}
-            else if(counter>5 && counter<=9) {hasItem=2;}
-            else if(counter>9 && counter<=13) {hasItem=3;}
-            else if(counter>13 && counter<=17) {hasItem=4;}
-            else if(counter>17 && counter<=21) {hasItem=5;}
-            else if(counter>21 && counter<=25) {hasItem=6;}
-            else if(counter>25 && counter<=29) {hasItem=7;}
-            else if(counter>29 && counter<=33) {hasItem=8;}
-            else if(counter>33 && counter<=37) {hasItem=9;}
-            else if(counter>37 && counter<=41) {hasItem=10;}
-            else if(counter>41 && counter<=45) {hasItem=11;}
-            else if(counter>45 && counter<=49) {hasItem=12;}
-            else if(counter>49 && counter<=53) {hasItem=13;}
-            else if(counter>53 && counter<=57) {hasItem=14;}
-            else if(counter>57) {hasItem=15;}
+            else if(counter>0 && counter<=1) {hasItem=1;}
+            else if(counter>1 && counter<=9) {hasItem=2;}//1-4
+            else if(counter>9 && counter<=13) {hasItem=3;}//4-9
+            else if(counter>13 && counter<=17) {hasItem=4;}//9-14
+            else if(counter>17 && counter<=21) {hasItem=5;}//14-19
+            else if(counter>21 && counter<=25) {hasItem=6;}//19-24
+            else if(counter>25 && counter<=29) {hasItem=7;}//24-29
+            else if(counter>29 && counter<=33) {hasItem=8;}//29-34
+            else if(counter>33 && counter<=37) {hasItem=9;}//34-39
+            else if(counter>37 && counter<=41) {hasItem=10;}//39-44
+            else if(counter>41 && counter<=45) {hasItem=11;}//44-49
+            else if(counter>45 && counter<=49) {hasItem=12;}//49-54
+            else if(counter>49 && counter<=53) {hasItem=13;}//54-59
+            else if(counter>53 && counter<=57) {hasItem=14;}//59-63
+            else if(counter>63) {hasItem=15;}
         }
         return hasItem;
     }

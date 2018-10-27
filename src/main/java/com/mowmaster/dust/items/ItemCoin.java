@@ -94,36 +94,14 @@ public class ItemCoin extends Item
                 count = "X";
                 break;
         }
-        if(stack.getItem().equals(ItemRegistry.filterUpgrade))
-        {
-            tooltip.add("Filter Upgrade");
-        }
-        else if(stack.getItem().equals(ItemRegistry.fuzzyFilterUpgrade))
-        {
-            tooltip.add("Fuzzy Filter Upgrade");
-        }
-        else if(stack.getItem().equals(ItemRegistry.filterBlacklistUpgrade))
-        {
-            tooltip.add("[WIP]");
-            tooltip.add("Blacklist Filter Upgrade");
-        }
-        else if(stack.getItem().equals(ItemRegistry.fuzzyFilterBlacklistUpgrade))
-        {
-            tooltip.add("[WIP]");
-            tooltip.add("Fuzzy Blacklist Filter Upgrade");
-        }
-        else if(stack.getItem().equals(ItemRegistry.effectUpgrade))
-        {
-            tooltip.add(s1 + " " + s2);
-        }
-        else if(stack.getItem().equals(ItemRegistry.breakerUpgrade))
-        {
-            tooltip.add("Block Breaker Upgrade");
-        }
-        else if(stack.getItem().equals(ItemRegistry.placerUpgrade))
-        {
-            tooltip.add("Block Placer Upgrade");
-        }
+        if(stack.getItem().equals(ItemRegistry.filterUpgrade)) {tooltip.add("Filter Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.fuzzyFilterUpgrade)) {tooltip.add("Fuzzy Filter Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.filterBlacklistUpgrade)) {tooltip.add("Blacklist Filter Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.fuzzyFilterBlacklistUpgrade)) {tooltip.add("Fuzzy Blacklist Filter Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.effectUpgrade)){tooltip.add(s1 + " " + s2);}
+        else if(stack.getItem().equals(ItemRegistry.breakerUpgrade)) {tooltip.add("Block Breaker Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.placerUpgrade)) {tooltip.add("Block Placer Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
     }
 }
 
