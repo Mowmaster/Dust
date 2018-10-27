@@ -1283,109 +1283,23 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 if(getItemInPedestal().getCount()!=getMaxStackSize())
                 {
                     ticker2++;
-                    if(ticker2>=10)
+                    if(ticker2>=5)
                     {
+                        display = item.getStackInSlot(0);
                         updateBlock();
                         ticker2=0;
                     }
                 }
             }
-
-
-            if(hasCoin() && !hasItem())
-            {
-                display = ItemStack.EMPTY;
-                updateBlock();
-            }
-            else if(item.getStackInSlot(0).isEmpty())
-            {
-                if(isBlockUnder(0,-1,0))
-                {
-                    ticker++;
-                    if(ticker>=20)
-                    {
-                        if (enumfacing.equals(EnumFacing.UP))
-                        {
-                            display = getNextSlotInChest(0,-1,0);
-                            updateBlock();
-                            ticker=0;
-                        }
-                    }
-                }
-                if(isBlockUnder(0,1,0))
-                {
-                    ticker++;
-                    if(ticker>=20)
-                    {
-                        if (enumfacing.equals(EnumFacing.DOWN))
-                        {
-                            display = getNextSlotInChest(0,1,0);
-                            updateBlock();
-                            ticker=0;
-                        }
-                    }
-                }
-                if(isBlockUnder(0,0,1))
-                {
-                    ticker++;
-                    if(ticker>=20)
-                    {
-                        if (enumfacing.equals(EnumFacing.NORTH))
-                        {
-                            display = getNextSlotInChest(0,0,1);
-                            updateBlock();
-                            ticker=0;
-                        }
-                    }
-                }
-                if(isBlockUnder(0,0,-1))
-                {
-                    ticker++;
-                    if(ticker>=20)
-                    {
-                        if (enumfacing.equals(EnumFacing.SOUTH))
-                        {
-                            display = getNextSlotInChest(0,0,-1);
-                            updateBlock();
-                            ticker=0;
-                        }
-                    }
-                }
-                if(isBlockUnder(-1,0,0))
-                {
-                    ticker++;
-                    if(ticker>=20)
-                    {
-                        if (enumfacing.equals(EnumFacing.EAST))
-                        {
-                            display = getNextSlotInChest(-1,0,0);
-                            updateBlock();
-                            ticker=0;
-                        }
-                    }
-                }
-                if(isBlockUnder(1,0,0))
-                {
-                    ticker++;
-                    if(ticker>=20)
-                    {
-                        if (enumfacing.equals(EnumFacing.WEST))
-                        {
-                            display = getNextSlotInChest(1,0,0);
-                            updateBlock();
-                            ticker=0;
-                        }
-                    }
-                }
-            }
             else
             {
-                display = item.getStackInSlot(0);
-                if(item.getStackInSlot(0).getCount()<=0)
+                ticker2++;
+                if(ticker2>=20)
                 {
                     display = ItemStack.EMPTY;
+                    updateBlock();
+                    ticker2=0;
                 }
-                updateBlock();
             }
         }
     }
