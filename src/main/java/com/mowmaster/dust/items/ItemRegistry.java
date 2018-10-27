@@ -63,6 +63,8 @@ public class ItemRegistry
     public static Item ancientCoinZ;
     public static Item ancientCoin;
 
+    public static Item exportUpgrade;
+    public static Item importUpgrade;
     public static Item dropperUpgrade;
     public static Item placerUpgrade;
     public static Item breakerUpgrade;
@@ -139,6 +141,8 @@ public class ItemRegistry
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
         ancientCoin = new ItemCoin("coin","coin");
 
+        exportUpgrade = new ItemCoin("exportupgrade","exportupgrade");
+        importUpgrade = new ItemCoin("importupgrade","importupgrade");
         dropperUpgrade = new ItemCoin("dropperupgrade","dropperupgrade");
         placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
@@ -235,6 +239,8 @@ public class ItemRegistry
         registerItem(ancientCoinZ);
         registerItem(ancientCoin);
 
+        registerItem(exportUpgrade);
+        registerItem(importUpgrade);
         registerItem(dropperUpgrade);
         registerItem(placerUpgrade);
         registerItem(filterUpgrade);
@@ -325,6 +331,8 @@ public class ItemRegistry
         registerRender(ancientCoinZ);
         registerRender(ancientCoin);
 
+        registerRender(exportUpgrade);
+        registerRender(importUpgrade);
         registerRender(dropperUpgrade);
         registerRender(placerUpgrade);
         registerRender(filterUpgrade);

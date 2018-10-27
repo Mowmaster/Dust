@@ -564,6 +564,58 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return connections;
     }
 
+    public void addStackFromBelowInvToPedestal()
+    {
+        if(!world.isBlockPowered(pos))
+        {
+            ItemStack itemFromInv = ItemStack.EMPTY;
+            if(world.getTileEntity(getPosOfBlockBelow(1)) !=null)
+            {
+                if(world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
+                {
+
+                    TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
+                    if(invToPullFrom instanceof TilePedestal) {
+                        itemFromInv = ItemStack.EMPTY;
+
+                    }
+                    else {
+                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
+                        {
+                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
+                            {
+                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+
+                                if(!hasItem())
+                                {
+                                    ItemStack copyIncoming = itemFromInv.copy();
+                                    item.insertItem(0,copyIncoming,false);
+                                    itemFromInv.setCount(0);
+                                }
+                                else if(doItemsMatch(itemFromInv))
+                                {
+                                    int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
+                                    if(leftTillFilled>itemFromInv.getCount())
+                                    {
+                                        item.insertItem(0,itemFromInv,false);
+                                        itemFromInv.setCount(0);
+                                    }
+                                    else
+                                    {
+                                        ItemStack copyIncoming = itemFromInv.copy();
+                                        copyIncoming.setCount(leftTillFilled);
+                                        item.insertItem(0,copyIncoming,false);
+                                        itemFromInv.shrink(leftTillFilled);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private boolean doesRecieverExistandIsLoaded(BlockPos getRecieverPos)
     {
         if(world.getBlockState(getRecieverPos)!=null)
@@ -1143,6 +1195,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     if(this.hasUpgrade(ItemRegistry.placerUpgrade))
                     {
                         placeBlockFromInventory();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.importUpgrade))
+                    {
+                        addStackFromBelowInvToPedestal();
                     }
                 }
                 else

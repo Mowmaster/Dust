@@ -33,6 +33,8 @@ item.ancientcoiny.name=Ancient Coin
 item.ancientcoinz.name=Ancient Coin
 item.coin.name=Ancient Coin
 
+item.exportupgrade.name=Pedestal Upgrade
+item.importupgrade.name=Pedestal Upgrade
 item.dropperupgrade.name=Pedestal Upgrade
 item.placerupgrade.name=Pedestal Upgrade
 item.breakerupgrade.name=Pedestal Upgrade
