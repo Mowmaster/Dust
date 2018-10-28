@@ -29,6 +29,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -98,6 +99,8 @@ public class DebugAndLogging
                 }
             }
 
+
+
             if (playerIn.isSneaking()) {
                 if (worldIn.getBlockState(pos).getBlock() instanceof BlockPedestal) {
                     TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -105,6 +108,17 @@ public class DebugAndLogging
                         TilePedestal tilePedestal = (TilePedestal) tileEntity;
                         tilePedestal.getStoredBlockPoss();
                     }
+                }
+            }
+
+            if (worldIn.isRemote) {
+                if (playerIn.getHeldItemMainhand().isEmpty()) {
+                    int expL = playerIn.experienceLevel;
+                    float exp = playerIn.experience;
+                    int expT = playerIn.experienceTotal;
+                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "Level: " + expL));
+                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "Exp: " + exp));
+                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "Total: " + expT));
                 }
             }
 

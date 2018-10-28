@@ -7,31 +7,21 @@ import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentSweepingEdge;
-import net.minecraft.enchantment.EnchantmentUntouching;
+import net.minecraft.enchantment.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.*;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.*;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -56,6 +46,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 {
     private ItemStackHandler item;
     private ItemStackHandler coin;
+    private int expInPedestal = 0;
     private static final int[] SLOTS_ALLSIDES = new int[] {0};
     public ItemStack display = ItemStack.EMPTY;
     private int transferSizeCount = 4;
@@ -233,6 +224,121 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public int getUpgradePotency()
     {
         return getEffectFromUpgrade().getAmplifier()+1;
+    }
+
+    public float getEnchantmentPowerFromSorroundings()
+    {
+        float enchantPower = 0;
+
+        for (int i = -2; i <= 2; ++i) {
+            for (int j = -2; j <= 2; ++j) {
+                if (i > -2 && i < 2 && j == -1) {
+                    j = 2;
+                }
+                for (int k = 0; k <= 2; ++k) {
+                    BlockPos blockpos = pos.add(i, k, j);
+                    Block blockNearBy = world.getBlockState(blockpos).getBlock();
+
+                    if (blockNearBy.getEnchantPowerBonus(world, blockpos)>0)
+                    {
+                        enchantPower +=blockNearBy.getEnchantPowerBonus(world, blockpos);
+                    }
+                }
+            }
+        }
+                return enchantPower;
+    }
+
+    public void useExpToBottleEnchantRepair()
+    {
+        if(!world.isBlockPowered(pos))
+        {
+            expInPedestal = 1000000000;
+            float getEnchantPower = getEnchantmentPowerFromSorroundings();
+            ItemStack itemFromInv = ItemStack.EMPTY;
+            if(world.getTileEntity(getPosOfBlockBelow(1)) !=null)
+            {
+                if(world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
+                {
+
+                    TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
+                    if(invToPullFrom instanceof TilePedestal) {
+                        itemFromInv = ItemStack.EMPTY;
+
+                    }
+                    else {
+                        itemFromInv = IntStream.range(0,invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots())//Int Range
+                                .mapToObj((invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))::getStackInSlot)//Function being applied to each interval
+                                .filter(itemStack -> !itemStack.isEmpty())
+                                .findFirst().orElse(ItemStack.EMPTY);
+
+                        if(!itemFromInv.equals(ItemStack.EMPTY))
+                        {
+                            if(!hasItem())
+                            {
+                                if(itemFromInv.getItem().isDamageable() && itemFromInv.getItem().getDamage(itemFromInv)>0)
+                                {
+                                    if(getCoinOnPedestal().isItemEnchanted())
+                                    {
+                                        if(EnchantmentHelper.getEnchantments(coin.getStackInSlot(0)).containsKey(Enchantments.MENDING))
+                                        {
+                                            //repair tools if they exist
+                                        }
+                                    }
+                                }
+                                else if(!itemFromInv.isItemEnchanted())
+                                {
+                                    if(!itemFromInv.isEmpty() && itemFromInv.isItemEnchantable())
+                                    {
+                                        Random rn = new Random();
+                                        ItemStack itemFromInvCopy = itemFromInv.copy();
+                                        itemFromInvCopy.setCount(1);
+
+                                        if(getEnchantPower<16.0f)
+                                        {
+                                            getEnchantPower = getEnchantmentPowerFromSorroundings();
+                                        }
+                                        else getEnchantPower = 15.0f;
+
+                                        int level = (int)getEnchantPower*2;
+
+                                        EnchantmentHelper.addRandomEnchantment(rn,itemFromInvCopy,level,true);
+                                        item.insertItem(0,itemFromInvCopy,false);
+                                        itemFromInv.shrink(1);
+
+                                        expInPedestal -=((int)((getEnchantPower*2.5)*(getEnchantPower*2.5)))+7;
+
+                                    }
+                                }
+                                else if(itemFromInv.getItem().equals(Items.GLASS_BOTTLE))
+                                {
+                                    if(expInPedestal>=10)
+                                    {
+                                        itemFromInv.shrink(1);
+                                        item.insertItem(0,new ItemStack(Items.EXPERIENCE_BOTTLE,1),false);
+                                        expInPedestal -=10;
+                                        System.out.println(expInPedestal);
+                                    }
+                                }
+
+                            }
+                            else if(getItemInPedestal().getItem().equals(Items.EXPERIENCE_BOTTLE))
+                            {
+                                if(expInPedestal>=10)
+                                {
+                                    if(getItemInPedestal().getCount() <= getMaxStackSize()-1)
+                                    {
+                                        itemFromInv.shrink(1);
+                                        item.insertItem(0,new ItemStack(Items.EXPERIENCE_BOTTLE,1),false);
+                                        expInPedestal -=10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -924,10 +1030,13 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     //set the input itemstack count to be added
                     stackToAdd.setCount(this.getItemInPedestal().getCount()-holdItemsInInv);
                     //actually add it
-                    recieverPedestal.addItem(stackToAdd);
-                    //remove that count from the inventory ??just use regular remove since its all there is??
-                    removeItem(this.getItemInPedestal().getCount()-holdItemsInInv);
-                    return true;
+                    if(stackToAdd.getCount()>0)
+                    {
+                        recieverPedestal.addItem(stackToAdd);
+                        //remove that count from the inventory ??just use regular remove since its all there is??
+                        removeItem(this.getItemInPedestal().getCount()-holdItemsInInv);
+                        return true;
+                    }
                 }
                 //if the storage cant take in the remaining input item stack we figure out how much it can take.
                 else
@@ -1259,6 +1368,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     {
                         addStackToBelowInvFromPedestal();
                     }
+
+                    if(this.hasUpgrade(ItemRegistry.ancientCoin))
+                    {
+                        useExpToBottleEnchantRepair();
+                    }
                 }
                 else
                 {
@@ -1340,6 +1454,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         compound.setTag("ItemStackItemInventoryHandler", this.item.serializeNBT());
         compound.setTag("ItemStackCoinInventoryHandler", this.coin.serializeNBT());
         compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
+        compound.setInteger("expPedestal",expInPedestal);
         int counter = 0;
         for(int i=0;i<storedOutputLocations.length;i++)
         {
@@ -1368,6 +1483,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         super.readFromNBT(compound);
         this.item.deserializeNBT(compound.getCompoundTag("ItemStackItemInventoryHandler"));
         this.coin.deserializeNBT(compound.getCompoundTag("ItemStackCoinInventoryHandler"));
+        this.expInPedestal = compound.getInteger("expPedestal");
         NBTTagCompound itemTagD = compound.getCompoundTag("display");
         int counter = compound.getInteger("storedBlockPosCounter");
 
