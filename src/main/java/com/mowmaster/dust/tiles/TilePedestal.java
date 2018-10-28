@@ -2,13 +2,16 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.effects.PotionMagnetism;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.inventory.Container;
@@ -66,6 +69,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public ItemStack getItemInPedestal() {return item.getStackInSlot(0);}
     public ItemStack getCoinOnPedestal() {return coin.getStackInSlot(0);}
     public ItemStack getDisplay() {return display;}
+    public int getXPInPedestal() {return expInPedestal;}
 
     public boolean doItemsMatch(ItemStack itemStackIn)
     {
@@ -253,7 +257,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         if(!world.isBlockPowered(pos))
         {
-            expInPedestal = 1000000000;
             float getEnchantPower = getEnchantmentPowerFromSorroundings();
             ItemStack itemFromInv = ItemStack.EMPTY;
             if(world.getTileEntity(getPosOfBlockBelow(1)) !=null)
@@ -276,19 +279,67 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         {
                             if(!hasItem())
                             {
-                                if(itemFromInv.getItem().isDamageable() && itemFromInv.getItem().getDamage(itemFromInv)>0)
+                                if(itemFromInv.getItem().equals(Items.GLASS_BOTTLE))
                                 {
+                                    if(expInPedestal>=10)
+                                    {
+                                        itemFromInv.shrink(1);
+                                        item.insertItem(0,new ItemStack(Items.EXPERIENCE_BOTTLE,1),false);
+                                        expInPedestal -=10;
+                                    }
+                                }
+                                else if(itemFromInv.getItem().equals(Items.BOOK))
+                                {
+                                    Random rn = new Random();
+                                    ItemStack enchantedBook = itemFromInv.copy();
+                                    enchantedBook.setCount(1);
+
+                                    if(getEnchantPower<16.0f)
+                                    {
+                                        getEnchantPower = getEnchantmentPowerFromSorroundings();
+                                    }
+                                    else getEnchantPower = 15.0f;
+
+                                    if(expInPedestal>=((int)((getEnchantPower*2.5)*(getEnchantPower*2.5)))+7)
+                                    {
+                                        int level = (int)getEnchantPower*2;
+
+                                        ItemStack bookEnchanted = EnchantmentHelper.addRandomEnchantment(rn,enchantedBook,level,true);
+                                        item.insertItem(0,bookEnchanted,false);
+                                        itemFromInv.shrink(1);
+
+                                        expInPedestal -=((int)((getEnchantPower*2.5)*(getEnchantPower*2.5)))+7;
+                                    }
+                                }
+                                else if(itemFromInv.getItem().isDamageable() && itemFromInv.getItem().getDamage(itemFromInv)>0)
+                                {
+
                                     if(getCoinOnPedestal().isItemEnchanted())
                                     {
                                         if(EnchantmentHelper.getEnchantments(coin.getStackInSlot(0)).containsKey(Enchantments.MENDING))
                                         {
-                                            //repair tools if they exist
+                                            if(expInPedestal>=1)
+                                            {
+                                                int getDamage = itemFromInv.getItemDamage();
+                                                if(getDamage>1)
+                                                {
+                                                    itemFromInv.setItemDamage(getDamage-1);
+                                                    expInPedestal -=1;
+                                                }
+                                                else
+                                                {
+                                                    ItemStack itemFromInvCopy = itemFromInv.copy();
+                                                    itemFromInvCopy.setItemDamage(0);
+                                                    item.insertItem(0,itemFromInvCopy,false);
+                                                    itemFromInv.shrink(1);
+                                                }
+                                            }
                                         }
                                     }
                                 }
                                 else if(!itemFromInv.isItemEnchanted())
                                 {
-                                    if(!itemFromInv.isEmpty() && itemFromInv.isItemEnchantable())
+                                    if(itemFromInv.isItemEnchantable())
                                     {
                                         Random rn = new Random();
                                         ItemStack itemFromInvCopy = itemFromInv.copy();
@@ -300,24 +351,16 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                         }
                                         else getEnchantPower = 15.0f;
 
-                                        int level = (int)getEnchantPower*2;
+                                        if(expInPedestal>=((int)((getEnchantPower*2.5)*(getEnchantPower*2.5)))+7)
+                                        {
+                                            int level = (int)getEnchantPower*2;
 
-                                        EnchantmentHelper.addRandomEnchantment(rn,itemFromInvCopy,level,true);
-                                        item.insertItem(0,itemFromInvCopy,false);
-                                        itemFromInv.shrink(1);
+                                            EnchantmentHelper.addRandomEnchantment(rn,itemFromInvCopy,level,true);
+                                            item.insertItem(0,itemFromInvCopy,false);
+                                            itemFromInv.shrink(1);
 
-                                        expInPedestal -=((int)((getEnchantPower*2.5)*(getEnchantPower*2.5)))+7;
-
-                                    }
-                                }
-                                else if(itemFromInv.getItem().equals(Items.GLASS_BOTTLE))
-                                {
-                                    if(expInPedestal>=10)
-                                    {
-                                        itemFromInv.shrink(1);
-                                        item.insertItem(0,new ItemStack(Items.EXPERIENCE_BOTTLE,1),false);
-                                        expInPedestal -=10;
-                                        System.out.println(expInPedestal);
+                                            expInPedestal -=((int)((getEnchantPower*2.5)*(getEnchantPower*2.5)))+7;
+                                        }
                                     }
                                 }
 
@@ -340,8 +383,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             }
         }
     }
-
-
 
     /*
     public void crafter()
@@ -489,6 +530,23 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return getDrops;
     }
 
+    public void getXPOrbEntitiesNearby(int rangeIncrease)
+    {
+        World world = this.world;
+        ItemStack stack = ItemStack.EMPTY;
+        int increase = rangeIncrease;
+        if(!world.isRemote)
+        {
+            List<EntityXPOrb> orbs = world.getEntitiesWithinAABB(EntityXPOrb.class,new AxisAlignedBB(this.pos.getX() - (1 + increase), this.pos.getY() - (1 + increase),
+                    this.pos.getZ() - (1 + increase), this.pos.getX() + (2 + increase), this.pos.getY() + (1 + increase), this.pos.getZ() + (2 + increase)));
+
+            for (EntityXPOrb orbo : orbs) {
+                onEntitiesCollidWithBlock(orbo);
+            }
+
+        }
+    }
+
     public void getItemEntitiesNearby(int rangeIncrease)
     {
         World world = this.world;
@@ -500,44 +558,59 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     this.pos.getZ() - (1 + increase), this.pos.getX() + (2 + increase), this.pos.getY() + (1 + increase), this.pos.getZ() + (2 + increase)));
 
             for (EntityItem item : items) {
-                int remover = onEntitiesCollidWithBlock(item);
-                if(item.getItem().getCount()-remover>0)
-                {
-                    item.getItem().setCount(item.getItem().getCount()-remover);
-                }
-                else item.setDead();
+                onEntitiesCollidWithBlock(item);
             }
 
         }
     }
 
-    public int onEntitiesCollidWithBlock(EntityItem itemEntityIn)
+    public void onEntitiesCollidWithBlock(Entity entityIn)
     {
         int returner = 0;
-        ItemStack incomingItem = itemEntityIn.getItem();
-        if(!hasItem())
+        if(entityIn instanceof EntityItem)
         {
-            item.insertItem(0,incomingItem,false);
-            returner = incomingItem.getCount();
-        }
-        else if(doItemsMatch(incomingItem))
-        {
-            int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
-            if(leftTillFilled>incomingItem.getCount())
+            ItemStack incomingItem = ((EntityItem) entityIn).getItem();
+            if(!hasItem())
             {
-
                 item.insertItem(0,incomingItem,false);
                 returner = incomingItem.getCount();
+                if(incomingItem.getCount()-returner>0)
+                {
+                    incomingItem.setCount(incomingItem.getCount()-returner);
+                }
+                else entityIn.setDead();
             }
-            else
+            else if(doItemsMatch(incomingItem))
             {
-                ItemStack copyIncoming = incomingItem.copy();
-                copyIncoming.setCount(leftTillFilled);
-                item.insertItem(0,copyIncoming,false);
-                returner = incomingItem.getCount()-leftTillFilled;
+                int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
+                if(leftTillFilled>incomingItem.getCount())
+                {
+
+                    item.insertItem(0,incomingItem,false);
+                    returner = incomingItem.getCount();
+                }
+                else
+                {
+                    ItemStack copyIncoming = incomingItem.copy();
+                    copyIncoming.setCount(leftTillFilled);
+                    item.insertItem(0,copyIncoming,false);
+                    returner = incomingItem.getCount()-leftTillFilled;
+                }
+
+                if(incomingItem.getCount()-returner>0)
+                {
+                    incomingItem.setCount(incomingItem.getCount()-returner);
+                }
+                else entityIn.setDead();
             }
         }
-        return returner;
+        else if(entityIn instanceof EntityXPOrb)
+        {
+            EntityXPOrb getOrb = (EntityXPOrb)entityIn;
+            int valueXP = getOrb.getXpValue();
+            expInPedestal += valueXP;
+            getOrb.setDead();
+        }
     }
 
     public int getMaxStackSize(){return 64;}
@@ -1308,7 +1381,22 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         {
             if(hasEffectUpgrade())
             {
-                getItemEntitiesNearby(getUpgradePotency());
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
+                {
+                    getItemEntitiesNearby(getUpgradePotency());
+                }
+
+            }
+            if(hasCoin())
+            {
+                if(getCoinOnPedestal().getItem().equals(ItemRegistry.enchantUpgrade))
+                {
+                    if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
+                    {
+                        getXPOrbEntitiesNearby(getUpgradePotency());
+                    }
+                    else getXPOrbEntitiesNearby(0);
+                }
             }
 
             ticker4++;
@@ -1369,7 +1457,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         addStackToBelowInvFromPedestal();
                     }
 
-                    if(this.hasUpgrade(ItemRegistry.ancientCoin))
+                    if(this.hasUpgrade(ItemRegistry.enchantUpgrade))
                     {
                         useExpToBottleEnchantRepair();
                     }
@@ -1381,6 +1469,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         tryToSendItemToPedestal();
                     }
                 }
+
 
                 ticker3=0;
             }

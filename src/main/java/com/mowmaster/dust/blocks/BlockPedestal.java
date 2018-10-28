@@ -192,6 +192,11 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
                     }
                 }
 
+                else if(playerIn.getHeldItemMainhand().getItem().equals(ItemRegistry.crystalWrench))
+                {
+                    return false;
+                }
+
                 else if (playerIn.getHeldItemMainhand().isEmpty()) {
                     if (tilePedestal.hasItem()) {
                         playerIn.inventory.addItemStackToInventory(tilePedestal.removeItem());

@@ -169,6 +169,9 @@ public class ItemCrystalWrench extends Item
                             }
                         }
                     }
+
+
+
                 }
                 else
                 {
@@ -183,7 +186,17 @@ public class ItemCrystalWrench extends Item
                         }
                     }
                 }
+            }
+            else
+            {
+                TileEntity tile = worldIn.getTileEntity(pos);
+                if(tile instanceof TilePedestal)
+                {
+                    TilePedestal pedestal = (TilePedestal)tile;
+                    int xp = pedestal.getXPInPedestal();
 
+                    player.sendMessage(new TextComponentString(TextFormatting.WHITE + "XP in Pedestal: " + xp));
+                }
             }
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);

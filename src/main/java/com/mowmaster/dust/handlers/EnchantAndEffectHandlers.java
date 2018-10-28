@@ -865,7 +865,7 @@ public class EnchantAndEffectHandlers
         if(!worldIn.isRemote) {
             //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
             List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3, posY - 3, posZ - 3, posX + 3, posY + 3, posZ + 3));
-
+            ItemStack coined = ItemStack.EMPTY;
             if ((player.getHeldItem(hand) != null)) {
                 if (player.getHeldItem(hand).getItem() instanceof ItemFlintAndSteel) {
 
@@ -918,8 +918,10 @@ public class EnchantAndEffectHandlers
                             paper += stack.getCount();
                             item.setDead();
                         }
-                        if(stack.getItem().equals(ItemRegistry.ancientCoin))//&& !(arrow>0) || !(pressurePlate>0)
+
+                        if(stack.getItem().equals(ItemRegistry.ancientCoin) || stack.getItem().equals(ItemRegistry.enchantUpgrade))//&& !(arrow>0) || !(pressurePlate>0)
                         {
+                            coined = stack.copy();
                             coin += stack.getCount();
                             item.setDead();
                         }
@@ -998,8 +1000,15 @@ public class EnchantAndEffectHandlers
                         {
                             if(!worldIn.isRemote)
                             {
+                                ItemStack stack = ItemStack.EMPTY;
+                                if(coined.getItem().equals(ItemRegistry.enchantUpgrade))
+                                {
+                                    stack = coined;
+                                }
+                                else new ItemStack(ItemRegistry.effectUpgrade);
+
+
                                 PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
-                                ItemStack stack = new ItemStack(ItemRegistry.effectUpgrade);
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 stack.setTagCompound(cmpd);

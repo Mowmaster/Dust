@@ -38,7 +38,7 @@ public class ItemCoin extends Item
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        if(stack.getItem().equals(ItemRegistry.breakerUpgrade))
+        if(stack.getItem().equals(ItemRegistry.breakerUpgrade) || stack.getItem().equals(ItemRegistry.enchantUpgrade))
         {
             return super.isBookEnchantable(stack, book);
         }
@@ -100,7 +100,22 @@ public class ItemCoin extends Item
         else if(stack.getItem().equals(ItemRegistry.filterBlacklistUpgrade)) {tooltip.add("Blacklist Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.fuzzyFilterBlacklistUpgrade)) {tooltip.add("Fuzzy Blacklist Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.filterModBlacklistUpgrade)) {tooltip.add("Mod Blacklist Filter Upgrade");}
-        else if(stack.getItem().equals(ItemRegistry.effectUpgrade)){tooltip.add("Pedestal Effect Upgrade");tooltip.add(s1 + " " + s2);}
+        else if(stack.getItem().equals(ItemRegistry.effectUpgrade))
+        {
+            tooltip.add("Pedestal Effect Upgrade");
+            if(stack.hasTagCompound())
+            {
+                tooltip.add(s1 + " " + s2);
+            }
+        }
+        else if(stack.getItem().equals(ItemRegistry.enchantUpgrade))
+        {
+            tooltip.add("XP Upgrade");
+            if(stack.hasTagCompound())
+            {
+                tooltip.add(s1 + " " + s2);
+            }
+        }
         else if(stack.getItem().equals(ItemRegistry.breakerUpgrade)) {tooltip.add("Block Breaker Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.placerUpgrade)) {tooltip.add("Block Placer Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
