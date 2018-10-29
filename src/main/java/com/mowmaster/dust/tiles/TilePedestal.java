@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.PotionMagnetism;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
+import com.mowmaster.dust.enums.ItemTransferTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -30,8 +31,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -384,45 +389,231 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         }
     }
 
-    /*
-    public void crafter()
+    protected int counter = 0;
+    public void crafter(int gridSize)//1x1, 2x2, 3x3
     {
+
+        ItemStack nextStackToAdd = ItemStack.EMPTY;
         InventoryCrafting craft = new InventoryCrafting(new Container()
             {
             @Override
             public boolean canInteractWith(@Nonnull EntityPlayer player) {
                 return false;
             }
-            }, 3, 3);
+            }, gridSize, gridSize);
 
-        //sets the items from the inventory as a crafting pattern WE WILL CHECK the below inv and set the first 9 slots as this
-        for(int i = 0; i < 9; i++) {
-            ItemStack stack = itemHandler.getStackInSlot(i);
+        int gridIterateSize = gridSize*gridSize;
 
-            if(stack.isEmpty())
-                continue;
 
-            craft.setInventorySlotContents(i, stack);
+        if(!world.isBlockPowered(pos)) {
+
+            if(nextStackToAdd.isEmpty())
+            {
+                if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
+                    if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+                        TileEntity invToPushTo = world.getTileEntity(getPosOfBlockBelow(1));
+                        if (invToPushTo instanceof TilePedestal) {
+                            return;
+                        }
+
+                        if(invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()==gridIterateSize)
+                        {
+                            int itemInStackCount = 0;
+                            for(int i = 0; i < gridIterateSize; i++) {
+                                ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                if(stack.getCount()>=2 || stack.isEmpty())
+                                {
+                                    itemInStackCount++;
+                                }
+                            }
+
+                            if(itemInStackCount>=gridIterateSize)
+                            {
+                                for(int i = 0; i < gridIterateSize; i++) {
+                                    ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+
+                                    if(stack.isEmpty())
+                                        continue;
+
+                                    craft.setInventorySlotContents(i, stack);
+                                }
+
+                                for(IRecipe recipe : ForgeRegistries.RECIPES)
+                                {
+                                    if(recipe.matches(craft, world)) {
+                                        if(!hasItem())
+                                        {
+                                            this.addItem(recipe.getCraftingResult(craft));
+
+                                            for(int i = 0; i < gridIterateSize; i++) {
+                                                ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                if(stack.isEmpty())
+                                                    continue;
+
+                                                if(stack.getItem().hasContainerItem(stack))
+                                                {
+                                                    ItemStack container = stack.getItem().getContainerItem(stack);
+                                                    nextStackToAdd = container.copy();
+                                                }
+                                                else
+                                                {
+                                                    stack.shrink(1);
+                                                }
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                            {
+                                                if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                {
+                                                    this.addItem(recipe.getCraftingResult(craft));
+                                                }
+
+
+                                                for(int i = 0; i < gridIterateSize; i++) {
+                                                    ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                    if(stack.isEmpty())
+                                                        continue;
+
+                                                    if(stack.getItem().hasContainerItem(stack))
+                                                    {
+                                                        ItemStack container = stack.getItem().getContainerItem(stack);
+                                                        nextStackToAdd = container.copy();
+                                                    }
+                                                    else
+                                                    {
+                                                        stack.shrink(1);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int counted = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()/gridIterateSize;
+                            if(counter<counted)
+                            {
+                                if(!hasItem())
+                                {
+                                    // 0 1 2 3 4 5 6 7 8
+                                    // 9 10 11 12 13 14 15 16 17
+                                    // 18 19 20 21 22 23 24 25 26
+                                    int fin = ((counter+1)*gridIterateSize)-1;
+                                    int itemInStackCount = 0;
+                                    for(int j = (fin-(gridIterateSize-1)); j <=fin; j++) {
+                                        ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(j);
+                                        if(stack.getCount()>=2 || stack.isEmpty())
+                                        {
+                                            itemInStackCount++;
+                                        }
+                                    }
+
+                                    if(itemInStackCount>=gridIterateSize)
+                                    {
+                                        for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+
+                                            if(stack.isEmpty())
+                                                continue;
+
+                                            int getCraftingSlot = i-(counter*gridIterateSize);
+                                            craft.setInventorySlotContents(getCraftingSlot, stack);
+                                        }
+
+                                        for(IRecipe recipe : ForgeRegistries.RECIPES)
+                                        {
+                                            if(recipe.matches(craft, world)) {
+                                                if(!hasItem())
+                                                {
+                                                    this.addItem(recipe.getCraftingResult(craft));
+
+                                                    for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                                        ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                        if(stack.isEmpty())
+                                                            continue;
+
+                                                        if(stack.getItem().hasContainerItem(stack))
+                                                        {
+                                                            ItemStack container = stack.getItem().getContainerItem(stack);
+                                                            nextStackToAdd = container.copy();
+                                                        }
+                                                        else
+                                                        {
+                                                            stack.shrink(1);
+                                                        }
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                                    {
+                                                        if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                        {
+                                                            this.addItem(recipe.getCraftingResult(craft));
+                                                        }
+
+
+                                                        for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                            if(stack.isEmpty())
+                                                                continue;
+
+                                                            if(stack.getItem().hasContainerItem(stack))
+                                                            {
+                                                                ItemStack container = stack.getItem().getContainerItem(stack);
+                                                                nextStackToAdd = container.copy();
+                                                            }
+                                                            else
+                                                            {
+                                                                stack.shrink(1);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+                                    counter++;
+                                }
+                            }
+
+                            if(counter>=counted)
+                            {
+                                counter=0;
+                            }
+                        }
+                        //sets the items from the inventory as a crafting pattern WE WILL CHECK the below inv and set the first 9 slots as this
+                    }
+                }
+            }
+            else if(hasItem()){}
+            else{
+                this.addItem(nextStackToAdd);
+            }
         }
 
-        for(IRecipe recipe : ForgeRegistries.RECIPES)
-            if(recipe.matches(craft, world)) {
-                itemHandler.setStackInSlot(9, recipe.getCraftingResult(craft));
-
-                for(int i = 0; i < 9; i++) {
-                    ItemStack stack = itemHandler.getStackInSlot(i);
-                    if(stack.isEmpty())
-                        continue;
-
-                    ItemStack container = stack.getItem().getContainerItem(stack);
-                    itemHandler.setStackInSlot(i, container);
-                }
-
-            }
-
-
     }
-     */
+
+    //Ehh doesnt work for much :/
+    public void useItemFromPedestal()
+    {
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+        if(hasItem())
+        {
+            Item itemInPedestal = getItemInPedestal().getItem();
+            itemInPedestal.onItemUse(fakePlayer,worldServer,getPosOfBlockBelow(2),EnumHand.MAIN_HAND,EnumFacing.UP,0.5f,0.5f,0.5f);
+        }
+    }
 
     public void placeBlockFromInventory()
     {
@@ -848,6 +1039,59 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         }
     }
 
+    private int currentslot = 0;
+    public void addItemToBelowInvFromPedestal()
+    {
+        if(!world.isBlockPowered(pos))
+        {
+            ItemStack itemToInv = ItemStack.EMPTY;
+            if(world.getTileEntity(getPosOfBlockBelow(1)) !=null)
+            {
+                if(world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
+                {
+                    TileEntity invToPushTo = world.getTileEntity(getPosOfBlockBelow(1));
+                    if(invToPushTo instanceof TilePedestal) {
+                        itemToInv = ItemStack.EMPTY;
+                    }
+                    else {
+                        if(hasItem())
+                        {
+
+                            //iterates through all slots in chest
+                            if(currentslot<=invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots())
+                            {
+                                itemToInv = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(currentslot);
+                                //if items in slot has less then max size
+                                if(invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(currentslot).getCount() <
+                                        invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(currentslot).getMaxStackSize())
+                                {
+                                    //if stack is not empty (Avoid empty slots)
+                                    if(!invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(currentslot).equals(ItemStack.EMPTY))
+                                    {
+                                        //if stacks are equal
+                                        if(doItemsMatch(getItemInPedestal(),invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(currentslot)))
+                                        {
+                                            ItemStack copyPedestal = getItemInPedestal().copy();
+                                            copyPedestal.setCount(1);
+                                            invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).insertItem(currentslot,copyPedestal,false);
+                                            this.removeItem(1);
+                                        }
+                                    }
+                                }
+
+                                currentslot++;
+                            }
+                            if(currentslot>invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()-1)
+                            {
+                                currentslot=0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private boolean doesRecieverExistandIsLoaded(BlockPos getRecieverPos)
     {
         if(world.getBlockState(getRecieverPos)!=null)
@@ -917,6 +1161,139 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     }
 
                     else return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    public int roomLeftInStack(ItemStack addToThisStack)
+    {
+        int maxSize = addToThisStack.getMaxStackSize();
+        int currentlyStored = addToThisStack.getCount();
+        int countLeftTillFilled = maxSize-currentlyStored;
+        return countLeftTillFilled;
+    }
+
+    public BlockPos getPosOfBlockBelow(int numBelow)
+    {
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockPos blockBelow = this.getPos();
+        switch (enumfacing)
+        {
+            case UP:
+                return blockBelow.add(0,-numBelow,0);
+            case DOWN:
+                 return blockBelow.add(0,numBelow,0);
+            case NORTH:
+                return blockBelow.add(0,0,numBelow);
+            case SOUTH:
+                return blockBelow.add(0,0,-numBelow);
+            case EAST:
+                return blockBelow.add(-numBelow,0,0);
+            case WEST:
+                return blockBelow.add(numBelow,0,0);
+            default:
+                return blockBelow;
+        }
+    }
+
+    public boolean hasFilterableInventoryBelow()
+    {
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        EnumFacing enumfacing = state.getValue(FACING);
+
+        switch (enumfacing)
+        {
+            case UP:
+                if(isBlockUnder(0,-1,0)) {return true;}
+                return false;
+            case DOWN:
+                if(isBlockUnder(0,1,0)) {return true;}
+                return false;
+            case NORTH:
+                if(isBlockUnder(0,0,1)) {return true;}
+                return false;
+            case SOUTH:
+                if(isBlockUnder(0,0,-1)) {return true;}
+                return false;
+            case EAST:
+                if(isBlockUnder(-1,0,0)) {return true;}
+                return false;
+            case WEST:
+                if(isBlockUnder(1,0,0)) {return true;}
+                return false;
+        }
+        return false;
+    }
+
+    public boolean getAndSend(TilePedestal recieverPedestal)
+    {
+        //getting the stack from this, the sender
+        ItemStack stackToAdd = item.getStackInSlot(0).copy();
+        ItemStack stackInReciever = recieverPedestal.getItemInPedestal();
+        int itemCountInReciever = stackInReciever.getCount();
+        int holdItemsInInv = getRedstoneSignalIn();
+
+
+        //is the reciever has room in inventory
+        if(roomLeftInStack(stackInReciever)!=0)
+        {
+            //checking if sender has at least transferSizeCount in its inventory
+            if(this.getItemInPedestal().getCount()-holdItemsInInv>=transferSizeCount)
+            {
+                //checking if receiver has enough room for transferSizeCount or more
+                if(roomLeftInStack(stackInReciever)>=transferSizeCount)
+                {
+                    //set stack size to transfer to the transfer rate
+                    stackToAdd.setCount(transferSizeCount);
+                    //add to receiver
+                    recieverPedestal.addItem(stackToAdd);
+                    //remove from this(sender)
+                    this.removeItem(transferSizeCount);
+                    return true;
+                }
+                else
+                {
+                    int smallStackCount = roomLeftInStack(stackInReciever);
+                    stackToAdd.setCount(smallStackCount);
+                    recieverPedestal.addItem(stackToAdd);
+                    removeItem(smallStackCount);
+                    return true;
+                }
+            }
+            //has less the transfer size in sender
+            else
+            {
+                //checks is reciever has enough storage for whats left in this (the sender)
+                if(roomLeftInStack(stackInReciever)>=this.getItemInPedestal().getCount()-holdItemsInInv)
+                {
+                    //set the input itemstack count to be added
+                    stackToAdd.setCount(this.getItemInPedestal().getCount()-holdItemsInInv);
+                    //actually add it
+                    if(stackToAdd.getCount()>0)
+                    {
+                        recieverPedestal.addItem(stackToAdd);
+                        //remove that count from the inventory ??just use regular remove since its all there is??
+                        removeItem(this.getItemInPedestal().getCount()-holdItemsInInv);
+                        return true;
+                    }
+                }
+                //if the storage cant take in the remaining input item stack we figure out how much it can take.
+                else
+                {
+                    //get how little room there is for storage
+                    int smallStackCount = roomLeftInStack(stackInReciever);
+                    //set the stack stack size for items being sent
+                    stackToAdd.setCount(smallStackCount);
+                    //recieve items from sender
+                    recieverPedestal.addItem(stackToAdd);
+                    //remove those items from sender
+                    removeItem(smallStackCount);
+                    return true;
                 }
             }
         }
@@ -1028,11 +1405,13 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 }
                             }
 
+                            //List of upgraded pedestals that can recieve items
                             Item[] sendToList = {ItemRegistry.ancientCoin,ItemRegistry.ancientCoinA,ItemRegistry.ancientCoinB,ItemRegistry.ancientCoinC,ItemRegistry.ancientCoinD,ItemRegistry.ancientCoinE,ItemRegistry.ancientCoinF,
                                     ItemRegistry.ancientCoinG,ItemRegistry.ancientCoinH,ItemRegistry.ancientCoinI,ItemRegistry.ancientCoinJ,ItemRegistry.ancientCoinK,ItemRegistry.ancientCoinL,ItemRegistry.ancientCoinM,
                                     ItemRegistry.ancientCoinN,ItemRegistry.ancientCoinO,ItemRegistry.ancientCoinP,ItemRegistry.ancientCoinQ,ItemRegistry.ancientCoinR,ItemRegistry.ancientCoinS,ItemRegistry.ancientCoinT,
                                     ItemRegistry.ancientCoinU,ItemRegistry.ancientCoinV,ItemRegistry.ancientCoinW,ItemRegistry.ancientCoinX,ItemRegistry.ancientCoinY,ItemRegistry.ancientCoinZ,ItemRegistry.dropperUpgrade,
-                                    ItemRegistry.placerUpgrade,ItemRegistry.exportUpgrade};
+                                    ItemRegistry.placerUpgrade,ItemRegistry.exportUpgrade,ItemRegistry.singleExportUpgrade};
+
                             for(int i=0;i<sendToList.length;i++)
                             {
                                 if(hasUpgrade(tileRecieverPedestal,sendToList[i]))
@@ -1055,138 +1434,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 }
             }
             return false;
-        }
-        return false;
-    }
-
-    public boolean getAndSend(TilePedestal recieverPedestal)
-    {
-        //getting the stack from this, the sender
-        ItemStack stackToAdd = item.getStackInSlot(0).copy();
-        ItemStack stackInReciever = recieverPedestal.getItemInPedestal();
-        int itemCountInReciever = stackInReciever.getCount();
-        int holdItemsInInv = getRedstoneSignalIn();
-
-
-        //is the reciever has room in inventory
-        if(roomLeftInStack(stackInReciever)!=0)
-        {
-            //checking if sender has at least transferSizeCount in its inventory
-            if(this.getItemInPedestal().getCount()-holdItemsInInv>=transferSizeCount)
-            {
-                //checking if receiver has enough room for transferSizeCount or more
-                if(roomLeftInStack(stackInReciever)>=transferSizeCount)
-                {
-                    //set stack size to transfer to the transfer rate
-                    stackToAdd.setCount(transferSizeCount);
-                    //add to receiver
-                    recieverPedestal.addItem(stackToAdd);
-                    //remove from this(sender)
-                    this.removeItem(transferSizeCount);
-                    return true;
-                }
-                else
-                {
-                    int smallStackCount = roomLeftInStack(stackInReciever);
-                    stackToAdd.setCount(smallStackCount);
-                    recieverPedestal.addItem(stackToAdd);
-                    removeItem(smallStackCount);
-                    return true;
-                }
-            }
-            //has less the transfer size in sender
-            else
-            {
-                //checks is reciever has enough storage for whats left in this (the sender)
-                if(roomLeftInStack(stackInReciever)>=this.getItemInPedestal().getCount()-holdItemsInInv)
-                {
-                    //set the input itemstack count to be added
-                    stackToAdd.setCount(this.getItemInPedestal().getCount()-holdItemsInInv);
-                    //actually add it
-                    if(stackToAdd.getCount()>0)
-                    {
-                        recieverPedestal.addItem(stackToAdd);
-                        //remove that count from the inventory ??just use regular remove since its all there is??
-                        removeItem(this.getItemInPedestal().getCount()-holdItemsInInv);
-                        return true;
-                    }
-                }
-                //if the storage cant take in the remaining input item stack we figure out how much it can take.
-                else
-                {
-                    //get how little room there is for storage
-                    int smallStackCount = roomLeftInStack(stackInReciever);
-                    //set the stack stack size for items being sent
-                    stackToAdd.setCount(smallStackCount);
-                    //recieve items from sender
-                    recieverPedestal.addItem(stackToAdd);
-                    //remove those items from sender
-                    removeItem(smallStackCount);
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public int roomLeftInStack(ItemStack addToThisStack)
-    {
-        int maxSize = getMaxStackSize();
-        int currentlyStored = addToThisStack.getCount();
-        int countLeftTillFilled = maxSize-currentlyStored;
-        return countLeftTillFilled;
-    }
-
-    public BlockPos getPosOfBlockBelow(int numBelow)
-    {
-        IBlockState state = this.getWorld().getBlockState(this.getPos());
-        EnumFacing enumfacing = state.getValue(FACING);
-        BlockPos blockBelow = this.getPos();
-        switch (enumfacing)
-        {
-            case UP:
-                return blockBelow.add(0,-numBelow,0);
-            case DOWN:
-                 return blockBelow.add(0,numBelow,0);
-            case NORTH:
-                return blockBelow.add(0,0,numBelow);
-            case SOUTH:
-                return blockBelow.add(0,0,-numBelow);
-            case EAST:
-                return blockBelow.add(-numBelow,0,0);
-            case WEST:
-                return blockBelow.add(numBelow,0,0);
-            default:
-                return blockBelow;
-        }
-    }
-
-    public boolean hasFilterableInventoryBelow()
-    {
-        IBlockState state = this.getWorld().getBlockState(this.getPos());
-        EnumFacing enumfacing = state.getValue(FACING);
-
-        switch (enumfacing)
-        {
-            case UP:
-                if(isBlockUnder(0,-1,0)) {return true;}
-                return false;
-            case DOWN:
-                if(isBlockUnder(0,1,0)) {return true;}
-                return false;
-            case NORTH:
-                if(isBlockUnder(0,0,1)) {return true;}
-                return false;
-            case SOUTH:
-                if(isBlockUnder(0,0,-1)) {return true;}
-                return false;
-            case EAST:
-                if(isBlockUnder(-1,0,0)) {return true;}
-                return false;
-            case WEST:
-                if(isBlockUnder(1,0,0)) {return true;}
-                return false;
         }
         return false;
     }
@@ -1399,6 +1646,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 }
             }
 
+            if(this.hasUpgrade(ItemRegistry.singleExportUpgrade))
+            {
+                addItemToBelowInvFromPedestal();
+            }
+
             ticker4++;
             if(ticker4>10)
             {
@@ -1407,6 +1659,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     if(this.hasUpgrade(ItemRegistry.dropperUpgrade))
                     {
                         summonItemFromInventory();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.ancientCoin))
+                    {
+                        crafter(3);
                     }
                 }
                 ticker4=0;

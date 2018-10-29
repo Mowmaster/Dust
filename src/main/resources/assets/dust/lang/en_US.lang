@@ -33,6 +33,7 @@ item.ancientcoiny.name=Ancient Coin
 item.ancientcoinz.name=Ancient Coin
 item.coin.name=Ancient Coin
 
+item.singleexportupgrade.name=Pedestal Upgrade
 item.enchantupgrade.name=Pedestal Upgrade
 item.exportupgrade.name=Pedestal Upgrade
 item.importupgrade.name=Pedestal Upgrade
@@ -45,7 +46,7 @@ item.filtermodupgrade.name=Pedestal Upgrade
 item.fuzzyfilterupgrade.name=Pedestal Upgrade
 item.filterblacklistupgrade.name=Pedestal Upgrade
 item.fuzzyfilterblacklistupgrade.name=Pedestal Upgrade
-item.filtermobblacklistupgrade.name=Pedestal Upgrade
+item.filtermodblacklistupgrade.name=Pedestal Upgrade
 
 
 item.scrolla.name=Ancient Scroll

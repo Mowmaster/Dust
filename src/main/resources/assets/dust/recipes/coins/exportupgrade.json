@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {"item": "minecraft:hopper"},
     {"item": "dust:importupgrade"}
   ],
   "result": {

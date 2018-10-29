@@ -3,7 +3,7 @@
   "ingredients": [
     {"item": "minecraft:wool",
     "data": 15},
-    {"item": "dust:filterupgrade"}
+    {"item": "dust:filterblacklistupgrade"}
   ],
   "result": {
     "item": "dust:fuzzyfilterblacklistupgrade"

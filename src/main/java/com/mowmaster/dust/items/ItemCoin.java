@@ -121,6 +121,7 @@ public class ItemCoin extends Item
         else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.importUpgrade)) {tooltip.add("Item Import Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.exportUpgrade)) {tooltip.add("Item Export Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.singleExportUpgrade)) {tooltip.add("Single Item Export Upgrade");}
     }
 }
 
