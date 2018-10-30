@@ -7,6 +7,8 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.enums.ItemTransferTypes;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.particles.ParticleCreator;
+import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.*;
@@ -45,6 +47,7 @@ import org.lwjgl.Sys;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.vecmath.Vector3f;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -1396,6 +1399,44 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
+    public int getColor()
+    {
+        int color = 0x808080;
+        if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalstone)){color = 0x808080;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalred)){color = 0xff0008;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalblue)){color = 0x000cff;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalyellow)){color = 0xfff600;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalpurple)){color = 0xb200ff;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalgreen)){color = 0x37b700;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalorange)){color = 0xff6a00;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalwhite)){color = 0xeaeaea;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalblack)){color = 0x3f3f3f;}
+        return color;
+    }
+
+    public void spawnParticles(int reciever){
+        if(world.isRemote)
+        {
+            Vector3f dir = new Vector3f(
+                    pos.getX() - storedOutputLocations[0].getX(),
+                    pos.getY() - storedOutputLocations[0].getY(),
+                    pos.getZ() - storedOutputLocations[0].getZ());
+
+            //dir.normalize();
+
+            Random rand = new Random();
+
+            float i = dir.x;
+            float j = dir.z;
+            float k = dir.y;
+
+            //world.spawnParticle(EnumParticleTypes.CLOUD, (double)storedOutputLocations[reciever].getX() + 0.5D, (double)storedOutputLocations[reciever].getY() + 1.0D, (double)storedOutputLocations[reciever].getZ() + 0.5D,
+                    //(double)((float)i ), (double)((float)k -1f), (double)((float)j ), new int[0]);
+
+            new ParticlesInALine(world,pos.getX()+0.5f,pos.getY()+1f,pos.getZ()+0.5f,storedOutputLocations[0].getX()+0.5f,storedOutputLocations[0].getY()+1f,storedOutputLocations[0].getZ()+0.5f,1.0f,getColor(),1.0f);
+        }
+    }
+
     private boolean sendItemsToReciever(int listIndex)
     {
         if(!world.isRemote)
@@ -1717,7 +1758,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     @Override
     public void update() {
-
+        
         getRedstoneSignalIn();
         if(!world.isRemote)
         {

@@ -1,10 +1,11 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.handlers.ClientEvents;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.items.armors.ItemCrystalArmor;
+import com.mowmaster.dust.particles.ParticleCreator;
+import com.mowmaster.dust.particles.ParticleEvents;
+import com.mowmaster.dust.particles.ParticleHandler;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TilePedestal;
@@ -13,11 +14,10 @@ import com.mowmaster.dust.tiles.render.RenderTilePedestal;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,9 +35,15 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCluster.class,new RenderTileCrystalCluster());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePedestal.class,new RenderTilePedestal());
 
-        ClientEvents clientEvents= new ClientEvents();
-        MinecraftForge.EVENT_BUS.register(clientEvents);
-        FMLCommonHandler.instance().bus().register(clientEvents);
+
+        ParticleEvents parts = new ParticleEvents();
+        MinecraftForge.EVENT_BUS.register(parts);
+        FMLCommonHandler.instance().bus().register(parts);
+    }
+
+    @Override
+    public void spawnMagicParticle(World world, double posX, double posY, double posZ, double motionX, double motionY, double motionZ, int color, float scale, int maxAge, float gravity, boolean collision, boolean fade) {
+        ParticleHandler.spawnParticle(() -> new ParticleCreator(world, posX, posY, posZ, motionX, motionY, motionZ, color, scale, maxAge, gravity, collision, fade), posX, posY, posZ, 32);
     }
 
     @Override

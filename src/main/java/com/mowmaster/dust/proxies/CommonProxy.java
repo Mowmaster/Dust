@@ -6,6 +6,7 @@ import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.OreGeneration;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -55,4 +56,10 @@ public class CommonProxy
     {
 
     }
+
+    public void spawnMagicParticle(World world, double posX, double posY, double posZ, double motionX, double motionY, double motionZ, int color, float scale, int maxAge, float gravity, boolean collision, boolean fade)
+    {
+
+    }
+
 }

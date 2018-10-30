@@ -1,6 +1,7 @@
 package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.particles.ParticleCreator;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
@@ -76,6 +77,7 @@ public class ItemCrystalWrench extends Item
                                         double d2 = (double) pos.getZ() + 0.55D - (double) (rand.nextFloat() * 0.1F);
                                         double d3 = (double) (0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
                                         worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.add(a,b,c).getX(),pos.add(a,b,c).getY(),pos.add(a,b,c).getZ(), rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+
                                     }
                                 }
                             }

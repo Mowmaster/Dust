@@ -8,6 +8,7 @@ import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
+import com.mowmaster.dust.proxies.ClientProxy;
 import com.mowmaster.dust.recipes.*;
 import com.mowmaster.dust.recipes.fuels.FuelRegistry;
 import com.mowmaster.dust.tiles.TileRegistry;

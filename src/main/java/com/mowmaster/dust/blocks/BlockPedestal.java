@@ -307,7 +307,7 @@ public class BlockPedestal extends BlockDirectional implements ITileEntityProvid
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if(tileEntity instanceof TilePedestal) {
             TilePedestal pedestal = (TilePedestal) tileEntity;
-            hasRequiredUpgrade = pedestal.hasUpgrade(ItemRegistry.ancientCoin);
+            hasRequiredUpgrade = pedestal.hasUpgrade(ItemRegistry.enchantUpgrade);
         }
         super.randomDisplayTick(stateIn, worldIn, pos, rand);
 
