@@ -119,36 +119,31 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public boolean doItemsMatch(ItemStack itemStackIn, ItemStack toCompareTo)
     {
-        if(hasItem())
+        if(itemStackIn.getHasSubtypes())
         {
-            if(itemStackIn.getHasSubtypes())
+            if(itemStackIn.getItem().equals(toCompareTo.getItem()) && itemStackIn.getMetadata()==toCompareTo.getMetadata())
             {
-                if(itemStackIn.getItem().equals(toCompareTo.getItem()) && itemStackIn.getMetadata()==toCompareTo.getMetadata())
-                {
-                    return true;
-                }
-                else return false;
+                return true;
             }
-            else if(itemStackIn.hasTagCompound())
+            else return false;
+        }
+        else if(itemStackIn.hasTagCompound())
+        {
+            NBTTagCompound itemIn = itemStackIn.getTagCompound();
+            NBTTagCompound itemStored = toCompareTo.getTagCompound();
+            if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(toCompareTo.getItem()))
             {
-                NBTTagCompound itemIn = itemStackIn.getTagCompound();
-                NBTTagCompound itemStored = toCompareTo.getTagCompound();
-                if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(toCompareTo.getItem()))
-                {
-                    return true;
-                }
-                else return false;
+                return true;
             }
-            else
+            else return false;
+        }
+        else
+        {
+            if(itemStackIn.getItem().equals(toCompareTo.getItem()))
             {
-                if(itemStackIn.getItem().equals(toCompareTo.getItem()))
-                {
-                    return true;
-                }
+                return true;
             }
         }
-        else{return true;}
-
 
         return false;
     }
@@ -817,6 +812,94 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             }
         }
         return getDrops;
+    }
+
+    public void harvester(int rangeIncrease)
+    {
+        World world = this.world;
+        BlockPos posThis = this.getPos();
+        IBlockState block = world.getBlockState(posThis);
+        ItemStack stack = getItemInPedestal();
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+
+        int increase = rangeIncrease;
+
+        if(!world.isRemote)
+        {
+            for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+            {
+                for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                {
+                    for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                        block = world.getBlockState(posThis.add(x, y, z));
+
+                        if (block.getBlock() instanceof IGrowable) {
+                            if(block.getBlock().canHarvestBlock(world,posThis.add(x,y,z),fakePlayer))
+                            {
+                                block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,this,getItemInPedestal());
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    int ticky = 0;
+    int tickytick = 0;
+    public void grower(int rangeIncrease)
+    {
+        World world = this.world;
+        BlockPos posThis = this.getPos();
+        IBlockState block = world.getBlockState(posThis);
+        ItemStack stack = getItemInPedestal();
+
+        int increase = rangeIncrease;
+
+        if(!world.isRemote)
+        {
+            for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+            {
+                for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                {
+                    for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                        block = world.getBlockState(posThis.add(x, y, z));
+
+                        if (block.getBlock() instanceof IGrowable) {
+                            if(((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
+                            {
+                                if(doItemsMatch(getItemInPedestal(),new ItemStack(Items.DYE,1,15)))
+                                {
+                                    if(tickytick>=20)
+                                    {
+                                        Random rand = new Random();
+                                        ((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
+                                        stack.shrink(1);
+                                        tickytick=0;
+                                    }
+                                    else tickytick++;
+                                }
+                                else
+                                {
+                                    if(ticky>=100)
+                                    {
+                                        Random rand = new Random();
+                                        //((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
+                                        block.getBlock().updateTick(world,posThis.add(x,y,z),block,rand);
+                                        ticky=0;
+                                    }
+                                    else ticky++;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     public void getXPOrbEntitiesNearby(int rangeIncrease)
@@ -1541,6 +1624,18 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 }
                             }
 
+                            if(hasUpgrade(tileRecieverPedestal, ItemRegistry.effectUpgrade))
+                            {
+                                if(tileRecieverPedestal.getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_GROWER))
+                                {
+                                    if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
+                                    {
+                                        getAndSend(tileRecieverPedestal);
+                                    }
+                                }
+
+                            }
+
                             //List of upgraded pedestals that can recieve items
                             Item[] sendToList = {ItemRegistry.ancientCoin,ItemRegistry.ancientCoinA,ItemRegistry.ancientCoinB,ItemRegistry.ancientCoinC,ItemRegistry.ancientCoinD,ItemRegistry.ancientCoinE,ItemRegistry.ancientCoinF,
                                     ItemRegistry.ancientCoinG,ItemRegistry.ancientCoinH,ItemRegistry.ancientCoinI,ItemRegistry.ancientCoinJ,ItemRegistry.ancientCoinK,ItemRegistry.ancientCoinL,ItemRegistry.ancientCoinM,
@@ -1758,7 +1853,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     @Override
     public void update() {
-        
+
         getRedstoneSignalIn();
         if(!world.isRemote)
         {
@@ -1767,6 +1862,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
                 {
                     getItemEntitiesNearby(getUpgradePotency());
+                }
+
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_GROWER))
+                {
+                    grower(getUpgradePotency());
                 }
 
             }
