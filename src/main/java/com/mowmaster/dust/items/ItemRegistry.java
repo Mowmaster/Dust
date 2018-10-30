@@ -63,6 +63,9 @@ public class ItemRegistry
     public static Item ancientCoinZ;
     public static Item ancientCoin;
 
+    public static Item crafter1Upgrade;
+    public static Item crafter4Upgrade;
+    public static Item crafter9Upgrade;
     public static Item enchantUpgrade;
     public static Item exportUpgrade;
     public static Item singleExportUpgrade;
@@ -143,6 +146,9 @@ public class ItemRegistry
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
         ancientCoin = new ItemCoin("coin","coin");
 
+        crafter1Upgrade = new ItemCoin("crafter1upgrade","crafter1upgrade");
+        crafter4Upgrade = new ItemCoin("crafter4upgrade","crafter4upgrade");
+        crafter9Upgrade = new ItemCoin("crafter9upgrade","crafter9upgrade");
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");
         singleExportUpgrade = new ItemCoin("singleexportupgrade","singleexportupgrade");
         exportUpgrade = new ItemCoin("exportupgrade","exportupgrade");
@@ -243,6 +249,9 @@ public class ItemRegistry
         registerItem(ancientCoinZ);
         registerItem(ancientCoin);
 
+        registerItem(crafter1Upgrade);
+        registerItem(crafter4Upgrade);
+        registerItem(crafter9Upgrade);
         registerItem(enchantUpgrade);
         registerItem(singleExportUpgrade);
         registerItem(exportUpgrade);
@@ -337,6 +346,9 @@ public class ItemRegistry
         registerRender(ancientCoinZ);
         registerRender(ancientCoin);
 
+        registerRender(crafter1Upgrade);
+        registerRender(crafter4Upgrade);
+        registerRender(crafter9Upgrade);
         registerRender(enchantUpgrade);
         registerRender(singleExportUpgrade);
         registerRender(exportUpgrade);

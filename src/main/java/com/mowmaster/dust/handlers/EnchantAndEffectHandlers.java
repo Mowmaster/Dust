@@ -1005,7 +1005,7 @@ public class EnchantAndEffectHandlers
                                 {
                                     stack = coined;
                                 }
-                                else new ItemStack(ItemRegistry.effectUpgrade);
+                                else stack = new ItemStack(ItemRegistry.effectUpgrade);
 
 
                                 PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);

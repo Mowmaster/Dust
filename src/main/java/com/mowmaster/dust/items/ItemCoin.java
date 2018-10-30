@@ -122,6 +122,9 @@ public class ItemCoin extends Item
         else if(stack.getItem().equals(ItemRegistry.importUpgrade)) {tooltip.add("Item Import Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.exportUpgrade)) {tooltip.add("Item Export Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.singleExportUpgrade)) {tooltip.add("Single Item Export Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.crafter1Upgrade)) {tooltip.add("Crafter (1x1) Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.crafter4Upgrade)) {tooltip.add("Crafter (2x2) Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.crafter9Upgrade)) {tooltip.add("Crafter (3x3) Upgrade");}
     }
 }
 

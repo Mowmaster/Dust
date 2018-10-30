@@ -34,12 +34,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -392,8 +394,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     protected int counter = 0;
     public void crafter(int gridSize)//1x1, 2x2, 3x3
     {
-
-        ItemStack nextStackToAdd = ItemStack.EMPTY;
         InventoryCrafting craft = new InventoryCrafting(new Container()
             {
             @Override
@@ -405,45 +405,75 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         int gridIterateSize = gridSize*gridSize;
 
 
-        if(!world.isBlockPowered(pos)) {
+        if(!world.isBlockPowered(pos))
+        {
+            if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
+                if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+                    TileEntity invToPushTo = world.getTileEntity(getPosOfBlockBelow(1));
+                    if (invToPushTo instanceof TilePedestal) {
+                        return;
+                    }
 
-            if(nextStackToAdd.isEmpty())
-            {
-                if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
-                    if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
-                        TileEntity invToPushTo = world.getTileEntity(getPosOfBlockBelow(1));
-                        if (invToPushTo instanceof TilePedestal) {
-                            return;
+                    if(invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()==gridIterateSize)
+                    {
+                        int itemInStackCount = 0;
+                        for(int i = 0; i < gridIterateSize; i++) {
+                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                            if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1)
+                            {
+                                itemInStackCount++;
+                            }
                         }
 
-                        if(invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()==gridIterateSize)
+                        if(itemInStackCount>=gridIterateSize)
                         {
-                            int itemInStackCount = 0;
                             for(int i = 0; i < gridIterateSize; i++) {
                                 ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                if(stack.getCount()>=2 || stack.isEmpty())
-                                {
-                                    itemInStackCount++;
-                                }
+
+                                if(stack.isEmpty())
+                                    continue;
+
+                                craft.setInventorySlotContents(i, stack);
                             }
 
-                            if(itemInStackCount>=gridIterateSize)
+                            for(IRecipe recipe : ForgeRegistries.RECIPES)
                             {
-                                for(int i = 0; i < gridIterateSize; i++) {
-                                    ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                if(recipe.matches(craft, world)) {
+                                    if(!hasItem())
+                                    {
+                                        this.addItem(recipe.getCraftingResult(craft));
 
-                                    if(stack.isEmpty())
-                                        continue;
+                                        for(int i = 0; i < gridIterateSize; i++) {
+                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                            if(stack.isEmpty())
+                                                continue;
 
-                                    craft.setInventorySlotContents(i, stack);
-                                }
+                                            if(stack.getItem().hasContainerItem(stack))
+                                            {
+                                                System.out.println(stack.getDisplayName());
+                                                ItemStack container = stack.getItem().getContainerItem(stack);
+                                                if(!world.isRemote)
+                                                {
+                                                    world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                }
+                                                stack.shrink(1);
+                                            }
+                                            else
+                                            {
+                                                stack.shrink(1);
+                                            }
 
-                                for(IRecipe recipe : ForgeRegistries.RECIPES)
-                                {
-                                    if(recipe.matches(craft, world)) {
-                                        if(!hasItem())
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(doItemsMatch(recipe.getCraftingResult(craft)))
                                         {
-                                            this.addItem(recipe.getCraftingResult(craft));
+                                            if(getItemInPedestal().getCount()<getMaxStackSize())
+                                            {
+                                                this.addItem(recipe.getCraftingResult(craft));
+                                            }
+
 
                                             for(int i = 0; i < gridIterateSize; i++) {
                                                 ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
@@ -452,86 +482,96 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                                                 if(stack.getItem().hasContainerItem(stack))
                                                 {
+                                                    System.out.println(stack.getDisplayName());
                                                     ItemStack container = stack.getItem().getContainerItem(stack);
-                                                    nextStackToAdd = container.copy();
+                                                    if(!world.isRemote)
+                                                    {
+                                                        world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                    }
+                                                    stack.shrink(1);
                                                 }
                                                 else
                                                 {
                                                     stack.shrink(1);
                                                 }
-
                                             }
                                         }
-                                        else
-                                        {
-                                            if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int counted = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()/gridIterateSize;
+                        if(counter<counted)
+                        {
+                            if(!hasItem())
+                            {
+                                // 0 1 2 3 4 5 6 7 8
+                                // 9 10 11 12 13 14 15 16 17
+                                // 18 19 20 21 22 23 24 25 26
+                                int fin = ((counter+1)*gridIterateSize)-1;
+                                int itemInStackCount = 0;
+                                for(int j = (fin-(gridIterateSize-1)); j <=fin; j++) {
+                                    ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(j);
+                                    if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1)
+                                    {
+                                        itemInStackCount++;
+                                    }
+                                }
+
+                                if(itemInStackCount>=gridIterateSize)
+                                {
+                                    for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                        ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+
+                                        if(stack.isEmpty())
+                                            continue;
+
+                                        int getCraftingSlot = i-(counter*gridIterateSize);
+                                        craft.setInventorySlotContents(getCraftingSlot, stack);
+                                    }
+
+                                    for(IRecipe recipe : ForgeRegistries.RECIPES)
+                                    {
+                                        if(recipe.matches(craft, world)) {
+                                            if(!hasItem())
                                             {
-                                                if(getItemInPedestal().getCount()<getMaxStackSize())
-                                                {
-                                                    this.addItem(recipe.getCraftingResult(craft));
-                                                }
+                                                this.addItem(recipe.getCraftingResult(craft));
 
-
-                                                for(int i = 0; i < gridIterateSize; i++) {
+                                                for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
                                                     ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
                                                     if(stack.isEmpty())
                                                         continue;
 
                                                     if(stack.getItem().hasContainerItem(stack))
                                                     {
+                                                        System.out.println(stack.getDisplayName());
                                                         ItemStack container = stack.getItem().getContainerItem(stack);
-                                                        nextStackToAdd = container.copy();
+                                                        if(!world.isRemote)
+                                                        {
+                                                            world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                        }
+                                                        stack.shrink(1);
                                                     }
                                                     else
                                                     {
                                                         stack.shrink(1);
                                                     }
+
                                                 }
                                             }
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            int counted = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()/gridIterateSize;
-                            if(counter<counted)
-                            {
-                                if(!hasItem())
-                                {
-                                    // 0 1 2 3 4 5 6 7 8
-                                    // 9 10 11 12 13 14 15 16 17
-                                    // 18 19 20 21 22 23 24 25 26
-                                    int fin = ((counter+1)*gridIterateSize)-1;
-                                    int itemInStackCount = 0;
-                                    for(int j = (fin-(gridIterateSize-1)); j <=fin; j++) {
-                                        ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(j);
-                                        if(stack.getCount()>=2 || stack.isEmpty())
-                                        {
-                                            itemInStackCount++;
-                                        }
-                                    }
-
-                                    if(itemInStackCount>=gridIterateSize)
-                                    {
-                                        for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
-                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-
-                                            if(stack.isEmpty())
-                                                continue;
-
-                                            int getCraftingSlot = i-(counter*gridIterateSize);
-                                            craft.setInventorySlotContents(getCraftingSlot, stack);
-                                        }
-
-                                        for(IRecipe recipe : ForgeRegistries.RECIPES)
-                                        {
-                                            if(recipe.matches(craft, world)) {
-                                                if(!hasItem())
+                                            else
+                                            {
+                                                if(doItemsMatch(recipe.getCraftingResult(craft)))
                                                 {
-                                                    this.addItem(recipe.getCraftingResult(craft));
+                                                    if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                    {
+                                                        this.addItem(recipe.getCraftingResult(craft));
+                                                    }
+
 
                                                     for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
                                                         ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
@@ -541,63 +581,35 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                                         if(stack.getItem().hasContainerItem(stack))
                                                         {
                                                             ItemStack container = stack.getItem().getContainerItem(stack);
-                                                            nextStackToAdd = container.copy();
+                                                            if(!world.isRemote)
+                                                            {
+                                                                world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                            }
+                                                            stack.shrink(1);
                                                         }
                                                         else
                                                         {
                                                             stack.shrink(1);
                                                         }
-
                                                     }
                                                 }
-                                                else
-                                                {
-                                                    if(doItemsMatch(recipe.getCraftingResult(craft)))
-                                                    {
-                                                        if(getItemInPedestal().getCount()<getMaxStackSize())
-                                                        {
-                                                            this.addItem(recipe.getCraftingResult(craft));
-                                                        }
-
-
-                                                        for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
-                                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                                            if(stack.isEmpty())
-                                                                continue;
-
-                                                            if(stack.getItem().hasContainerItem(stack))
-                                                            {
-                                                                ItemStack container = stack.getItem().getContainerItem(stack);
-                                                                nextStackToAdd = container.copy();
-                                                            }
-                                                            else
-                                                            {
-                                                                stack.shrink(1);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-
                                             }
+
                                         }
                                     }
-
-                                    counter++;
                                 }
-                            }
 
-                            if(counter>=counted)
-                            {
-                                counter=0;
+                                counter++;
                             }
                         }
-                        //sets the items from the inventory as a crafting pattern WE WILL CHECK the below inv and set the first 9 slots as this
+
+                        if(counter>=counted)
+                        {
+                            counter=0;
+                        }
                     }
+                    //sets the items from the inventory as a crafting pattern WE WILL CHECK the below inv and set the first 9 slots as this
                 }
-            }
-            else if(hasItem()){}
-            else{
-                this.addItem(nextStackToAdd);
             }
         }
 
@@ -619,24 +631,107 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         if(hasItem())
         {
+
             Block block = Block.getBlockFromItem(item.getStackInSlot(0).getItem());
-            if(block!=Blocks.AIR)
+            String itemName = getItemInPedestal().getUnlocalizedName();
+            String displayName = getItemInPedestal().getDisplayName();
+            String domainName = getItemInPedestal().getItem().getRegistryName().getResourceDomain();
+            Block block2 = Block.getBlockFromName(itemName.replace("item.",domainName + ":"));
+            Block block3 = Block.getBlockFromName(domainName + ":" + displayName.replace(" ","_").toLowerCase());
+            IBlockState stated = block.getDefaultState();
+            IBlockState stated2 = block.getDefaultState();
+            IBlockState stated3 = block.getDefaultState();
+
+            if(!getItemInPedestal().hasTagCompound())
             {
-                if(world.getBlockState(getPosOfBlockBelow(1)).getBlock().equals(Blocks.AIR))
+                if(block!=Blocks.AIR)
                 {
-                    if(block instanceof IGrowable)
+                    if(getItemInPedestal().getHasSubtypes()) {
+                        stated = block.getStateFromMeta(getItemInPedestal().getMetadata());
+                    }
+                    if(world.getBlockState(getPosOfBlockBelow(1)).getBlock().equals(Blocks.AIR))
+                    {
+                        if(block instanceof IGrowable)
+                        {
+                            if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
+                            {
+                                if(getItemInPedestal().getHasSubtypes())
+                                {
+                                    world.setBlockState(getPosOfBlockBelow(1),stated);
+                                }
+                                else world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+
+
+                                getItemInPedestal().shrink(1);
+                            }
+                        }
+                        else {
+
+                            if(getItemInPedestal().getHasSubtypes())
+                            {
+                                world.setBlockState(getPosOfBlockBelow(1),stated);
+                            }
+                            else world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                            getItemInPedestal().shrink(1);
+                        }
+
+                    }
+                }
+                else if(block2!=null)
+                {
+                    if(getItemInPedestal().getHasSubtypes()) {
+                        stated2 = block2.getStateFromMeta(getItemInPedestal().getMetadata());
+                    }
+
+                    if(block2 instanceof IGrowable)
                     {
                         if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
                         {
-                            world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                            if(getItemInPedestal().getHasSubtypes())
+                            {
+                                world.setBlockState(getPosOfBlockBelow(1),stated2);
+                            }
+                            else world.setBlockState(getPosOfBlockBelow(1),block2.getDefaultState());
                             getItemInPedestal().shrink(1);
                         }
                     }
                     else {
-                        world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+
+                        if(getItemInPedestal().getHasSubtypes())
+                        {
+                            world.setBlockState(getPosOfBlockBelow(1),stated2);
+                        }
+                        else world.setBlockState(getPosOfBlockBelow(1),block2.getDefaultState());
                         getItemInPedestal().shrink(1);
                     }
+                }
+                else if(block3!=null)
+                {
+                    if(getItemInPedestal().getHasSubtypes())
+                    {
+                        stated3 = block3.getStateFromMeta(getItemInPedestal().getMetadata());
+                    }
 
+                    if(block3 instanceof IGrowable)
+                    {
+                        if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
+                        {
+                            if(getItemInPedestal().getHasSubtypes())
+                            {
+                                world.setBlockState(getPosOfBlockBelow(1),stated3);
+                            }
+                            else world.setBlockState(getPosOfBlockBelow(1),block3.getDefaultState());
+                            getItemInPedestal().shrink(1);
+                        }
+                    }
+                    else {
+                        if(getItemInPedestal().getHasSubtypes())
+                        {
+                            world.setBlockState(getPosOfBlockBelow(1),stated3);
+                        }
+                        else world.setBlockState(getPosOfBlockBelow(1),block3.getDefaultState());
+                        getItemInPedestal().shrink(1);
+                    }
                 }
             }
         }
@@ -1661,9 +1756,17 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         summonItemFromInventory();
                     }
 
-                    if(this.hasUpgrade(ItemRegistry.ancientCoin))
+                    if(this.hasUpgrade(ItemRegistry.crafter9Upgrade))
                     {
                         crafter(3);
+                    }
+                    if(this.hasUpgrade(ItemRegistry.crafter4Upgrade))
+                    {
+                        crafter(2);
+                    }
+                    if(this.hasUpgrade(ItemRegistry.crafter1Upgrade))
+                    {
+                        crafter(1);
                     }
                 }
                 ticker4=0;
