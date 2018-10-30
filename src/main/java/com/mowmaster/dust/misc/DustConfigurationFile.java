@@ -25,6 +25,7 @@ public class DustConfigurationFile
     public static int dustToActivate;
 
 
+
     public static void InitConfig(File file)
     {
         dustConfig = new Configuration(file);

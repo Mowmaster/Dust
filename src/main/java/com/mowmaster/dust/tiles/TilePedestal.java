@@ -814,6 +814,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return getDrops;
     }
 
+    int tickHarvest = 0;
     public void harvester(int rangeIncrease)
     {
         World world = this.world;
@@ -827,22 +828,30 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
         if(!world.isRemote)
         {
+
             for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
             {
                 for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
                 {
                     for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
                         block = world.getBlockState(posThis.add(x, y, z));
-
-                        if (block.getBlock() instanceof IGrowable) {
-                            if(block.getBlock().canHarvestBlock(world,posThis.add(x,y,z),fakePlayer))
-                            {
-                                block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,this,getItemInPedestal());
+                        if(tickHarvest>20)
+                        {
+                            if (block.getBlock() instanceof IGrowable) {
+                                if(!((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
+                                {
+                                    block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
+                                    world.setBlockToAir(posThis.add(x,y,z));
+                                    tickHarvest++;
+                                }
                             }
                         }
+                        else tickHarvest++;
                     }
                 }
             }
+
+            getItemEntitiesNearby(rangeIncrease);
 
         }
     }
@@ -872,7 +881,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             {
                                 if(doItemsMatch(getItemInPedestal(),new ItemStack(Items.DYE,1,15)))
                                 {
-                                    if(tickytick>=20)
+                                    if(tickytick>=40)
                                     {
                                         Random rand = new Random();
                                         ((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
@@ -883,7 +892,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 }
                                 else
                                 {
-                                    if(ticky>=100)
+                                    if(ticky>=200)
                                     {
                                         Random rand = new Random();
                                         //((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
@@ -1867,6 +1876,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_GROWER))
                 {
                     grower(getUpgradePotency());
+                }
+
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_HARVESTER))
+                {
+                    harvester(getUpgradePotency());
                 }
 
             }
