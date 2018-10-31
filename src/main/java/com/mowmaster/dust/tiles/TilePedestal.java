@@ -829,98 +829,117 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         {
             if(!world.isBlockPowered(posThis))
             {
-                for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+                if(this.hasItem())
                 {
-                    for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                    for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
                     {
-                        for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
-                            block = world.getBlockState(posThis.add(x, y, z));
-                            blockAbove = world.getBlockState(posThis.add(x,y+1,z));
+                        for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                        {
+                            for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                                block = world.getBlockState(posThis.add(x, y, z));
+                                blockAbove = world.getBlockState(posThis.add(x,y+1,z));
 
-                            if(tickPlanter>40)
-                            {
-                                if(getItemInPedestal().getItem() instanceof IPlantable)
+
+                                if(tickPlanter>30)
                                 {
-                                    if (block.getBlock().canSustainPlant(block,world,posThis.add(x,y,z),EnumFacing.UP,(IPlantable)getItemInPedestal().getItem()))
+                                    if(getItemInPedestal().getItem() instanceof IPlantable)
                                     {
-                                        if(blockAbove.getBlock().isAir(blockAbove,world,posThis.add(x,y+1,z)))
-                                        {
-                                            int oldCount = stack.getCount();
-                                            if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sunflowerseedsitem")
-                                                    || stack.getItem().getUnlocalizedName().contains("roastedpumpkinseedsitem")
-                                                    || stack.getItem().getUnlocalizedName().contains("toastedsesameseedsitem")
-                                                    || stack.getItem().getUnlocalizedName().contains("saltedsunflowerseedsitem")) {}
-                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("teaseeditem"))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamtealeafcrop").getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sesameseedsitem") || stack.getItem().getUnlocalizedName().contains("sesameseedsseeditem"))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamsesameseedscrop").getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("coffeeseeditem"))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamcoffeebeancrop").getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("mustardseeditem") || stack.getItem().getUnlocalizedName().contains("mustardseedsitem"))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pammustardseedscrop").getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
-                                                stack.setCount(oldCount-1);
+                                        System.out.println(block.getBlock().getLocalizedName() +" "+ posThis.add(x,y,z));
 
-                                            }
-                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("immersiveengineering") && stack.getItem().getUnlocalizedName().contains("seed"))
+                                        if (block.getBlock().canSustainPlant(block,world,posThis.add(x,y,z),EnumFacing.UP,(IPlantable)getItemInPedestal().getItem()))
+                                        {
+                                            System.out.println("Can Sustain");
+                                            if(blockAbove.getBlock().isAir(blockAbove,world,posThis.add(x,y+1,z)))
                                             {
-                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("immersiveengineering:hemp").getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().equals(Items.WHEAT_SEEDS))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.WHEAT.getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().equals(Items.MELON_SEEDS))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.MELON_STEM.getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().equals(Items.PUMPKIN_SEEDS))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.PUMPKIN_STEM.getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().equals(Items.BEETROOT_SEEDS))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.BEETROOTS.getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().equals(Items.POTATO))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.POTATOES.getDefaultState());
-                                                stack.setCount(oldCount-1);
-                                            }
-                                            else if(stack.getItem().equals(Items.CARROT))
-                                            {
-                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.CARROTS.getDefaultState());
-                                                stack.setCount(oldCount-1);
+                                                System.out.println("TRUE");
+                                                int oldCount = stack.getCount();
+                                                if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sunflowerseedsitem")
+                                                        || stack.getItem().getUnlocalizedName().contains("roastedpumpkinseedsitem")
+                                                        || stack.getItem().getUnlocalizedName().contains("toastedsesameseedsitem")
+                                                        || stack.getItem().getUnlocalizedName().contains("saltedsunflowerseedsitem")) {}
+                                                else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("teaseeditem"))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamtealeafcrop").getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sesameseedsitem") || stack.getItem().getUnlocalizedName().contains("sesameseedsseeditem"))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamsesameseedscrop").getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("coffeeseeditem"))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamcoffeebeancrop").getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("mustardseeditem") || stack.getItem().getUnlocalizedName().contains("mustardseedsitem"))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pammustardseedscrop").getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
+                                                    stack.setCount(oldCount-1);
+
+                                                }
+                                                else if(stack.getItem().getRegistryName().getResourceDomain().contains("immersiveengineering") && stack.getItem().getUnlocalizedName().contains("seed"))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("immersiveengineering:hemp").getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().equals(Items.WHEAT_SEEDS))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Blocks.WHEAT.getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().equals(Items.MELON_SEEDS))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Blocks.MELON_STEM.getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().equals(Items.PUMPKIN_SEEDS))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Blocks.PUMPKIN_STEM.getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().equals(Items.BEETROOT_SEEDS))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Blocks.BEETROOTS.getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().equals(Items.POTATO))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Blocks.POTATOES.getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
+                                                else if(stack.getItem().equals(Items.CARROT))
+                                                {
+                                                    world.setBlockState(posThis.add(x,y+1,z),Blocks.CARROTS.getDefaultState());
+                                                    stack.setCount(oldCount-1);
+                                                }
                                             }
                                         }
                                     }
+
+                                    tickPlanter=0;
                                 }
-                                tickPlanter=0;
+                                else
+                                {
+                                    tickPlanter++;
+                                }
+
                             }
-                            else tickPlanter++;
                         }
                     }
                 }
             }
+
+
+
+            /*
+
+             */
         }
     }
 
