@@ -45,6 +45,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.lwjgl.Sys;
+import scala.collection.IterableProxyLike$class;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -821,41 +822,105 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         World world = this.world;
         BlockPos posThis = this.getPos();
         IBlockState block = world.getBlockState(posThis);
+        IBlockState blockAbove = world.getBlockState(posThis.add(0,1,0));
         ItemStack stack = getItemInPedestal();
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-
-        int increase = rangeIncrease;
 
         if(!world.isRemote)
         {
-
-            for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+            if(!world.isBlockPowered(posThis))
             {
-                for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
                 {
-                    for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
-                        block = world.getBlockState(posThis.add(x, y, z));
-                        if(tickPlanter>20)
-                        {
-                            if(stack.getItem() instanceof IPlantable)
-                            {
-                                fakePlayer.setHeldItem(fakePlayer.getActiveHand(),stack);
-                                if(block.getBlock().canSustainPlant(block,world,posThis.add(z,y,z),EnumFacing.UP,(IPlantable)stack.getItem()))
-                                {
-                                    stack.getItem().onItemRightClick(world,fakePlayer,fakePlayer.getActiveHand());
-                                }
-                            }
+                    for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                    {
+                        for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                            block = world.getBlockState(posThis.add(x, y, z));
+                            blockAbove = world.getBlockState(posThis.add(x,y+1,z));
 
-                            tickPlanter=0;
+                            if(tickPlanter>40)
+                            {
+                                if(getItemInPedestal().getItem() instanceof IPlantable)
+                                {
+                                    if (block.getBlock().canSustainPlant(block,world,posThis.add(x,y,z),EnumFacing.UP,(IPlantable)getItemInPedestal().getItem()))
+                                    {
+                                        if(blockAbove.getBlock().isAir(blockAbove,world,posThis.add(x,y+1,z)))
+                                        {
+                                            int oldCount = stack.getCount();
+                                            if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sunflowerseedsitem")
+                                                    || stack.getItem().getUnlocalizedName().contains("roastedpumpkinseedsitem")
+                                                    || stack.getItem().getUnlocalizedName().contains("toastedsesameseedsitem")
+                                                    || stack.getItem().getUnlocalizedName().contains("saltedsunflowerseedsitem")) {}
+                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("teaseeditem"))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamtealeafcrop").getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sesameseedsitem") || stack.getItem().getUnlocalizedName().contains("sesameseedsseeditem"))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamsesameseedscrop").getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("coffeeseeditem"))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pamcoffeebeancrop").getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("mustardseeditem") || stack.getItem().getUnlocalizedName().contains("mustardseedsitem"))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("harvestcraft:pammustardseedscrop").getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
+                                                stack.setCount(oldCount-1);
+
+                                            }
+                                            else if(stack.getItem().getRegistryName().getResourceDomain().contains("immersiveengineering") && stack.getItem().getUnlocalizedName().contains("seed"))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Block.getBlockFromName("immersiveengineering:hemp").getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().equals(Items.WHEAT_SEEDS))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.WHEAT.getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().equals(Items.MELON_SEEDS))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.MELON_STEM.getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().equals(Items.PUMPKIN_SEEDS))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.PUMPKIN_STEM.getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().equals(Items.BEETROOT_SEEDS))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.BEETROOTS.getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().equals(Items.POTATO))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.POTATOES.getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                            else if(stack.getItem().equals(Items.CARROT))
+                                            {
+                                                world.setBlockState(posThis.add(x,y+1,z),Blocks.CARROTS.getDefaultState());
+                                                stack.setCount(oldCount-1);
+                                            }
+                                        }
+                                    }
+                                }
+                                tickPlanter=0;
+                            }
+                            else tickPlanter++;
                         }
-                        else tickPlanter++;
                     }
                 }
             }
-
-            getItemEntitiesNearby(rangeIncrease);
-
         }
     }
 
@@ -873,31 +938,32 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
         if(!world.isRemote)
         {
-
-            for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+            if(!world.isBlockPowered(posThis))
             {
-                for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
                 {
-                    for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
-                        block = world.getBlockState(posThis.add(x, y, z));
-                        if(tickHarvest>20)
-                        {
-                            if (block.getBlock() instanceof IGrowable) {
-                                if(!((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
-                                {
-                                    block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                    world.setBlockToAir(posThis.add(x,y,z));
-                                    tickHarvest++;
+                    for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                    {
+                        for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                            block = world.getBlockState(posThis.add(x, y, z));
+                            if(tickHarvest>40)
+                            {
+                                if (block.getBlock() instanceof IGrowable) {
+                                    if(!((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
+                                    {
+                                        block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
+                                        world.setBlockToAir(posThis.add(x,y,z));
+                                        tickHarvest++;
+                                    }
                                 }
                             }
+                            else tickHarvest++;
                         }
-                        else tickHarvest++;
                     }
                 }
+
+                getItemEntitiesNearby(rangeIncrease);
             }
-
-            getItemEntitiesNearby(rangeIncrease);
-
         }
     }
 
@@ -914,45 +980,47 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
         if(!world.isRemote)
         {
-            for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+            if(!world.isBlockPowered(posThis))
             {
-                for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
                 {
-                    for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
-                        block = world.getBlockState(posThis.add(x, y, z));
+                    for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                    {
+                        for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                            block = world.getBlockState(posThis.add(x, y, z));
 
-                        if (block.getBlock() instanceof IGrowable) {
-                            if(((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
-                            {
-                                if(doItemsMatch(getItemInPedestal(),new ItemStack(Items.DYE,1,15)))
+                            if (block.getBlock() instanceof IGrowable) {
+                                if(((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
                                 {
-                                    if(tickytick>=40)
+                                    if(doItemsMatch(getItemInPedestal(),new ItemStack(Items.DYE,1,15)))
                                     {
-                                        Random rand = new Random();
-                                        ((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
-                                        stack.shrink(1);
-                                        tickytick=0;
+                                        if(tickytick>=80)
+                                        {
+                                            Random rand = new Random();
+                                            ((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
+                                            stack.shrink(1);
+                                            tickytick=0;
+                                        }
+                                        else tickytick++;
                                     }
-                                    else tickytick++;
-                                }
-                                else
-                                {
-                                    if(ticky>=200)
+                                    else
                                     {
-                                        Random rand = new Random();
-                                        //((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
-                                        block.getBlock().updateTick(world,posThis.add(x,y,z),block,rand);
-                                        ticky=0;
-                                    }
-                                    else ticky++;
+                                        if(ticky>=240)
+                                        {
+                                            Random rand = new Random();
+                                            //((IGrowable) block.getBlock()).grow(world,rand,posThis.add(x,y,z),block);
+                                            block.getBlock().updateTick(world,posThis.add(x,y,z),block,rand);
+                                            ticky=0;
+                                        }
+                                        else ticky++;
 
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-
         }
     }
 
@@ -1240,7 +1308,8 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             for(int i =0;i<invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
                             {
                                 itemToInv = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                if(invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
+
+                                if(itemToInv.equals(ItemStack.EMPTY))
                                 {
                                     ItemStack copyPedestal = getItemInPedestal().copy();
                                     invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).insertItem(i,copyPedestal,false);
@@ -1680,7 +1749,8 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                             if(hasUpgrade(tileRecieverPedestal, ItemRegistry.effectUpgrade))
                             {
-                                if(tileRecieverPedestal.getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_GROWER))
+                                if(tileRecieverPedestal.getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_GROWER) ||
+                                        tileRecieverPedestal.getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_PLANTER))
                                 {
                                     if(tileRecieverPedestal.doItemsMatch(item.getStackInSlot(0)))
                                     {
