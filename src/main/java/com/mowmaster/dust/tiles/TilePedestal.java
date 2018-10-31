@@ -34,6 +34,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -812,6 +813,50 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             }
         }
         return getDrops;
+    }
+
+    int tickPlanter = 0;
+    public void planter(int rangeIncrease)
+    {
+        World world = this.world;
+        BlockPos posThis = this.getPos();
+        IBlockState block = world.getBlockState(posThis);
+        ItemStack stack = getItemInPedestal();
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+
+        int increase = rangeIncrease;
+
+        if(!world.isRemote)
+        {
+
+            for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+            {
+                for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                {
+                    for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                        block = world.getBlockState(posThis.add(x, y, z));
+                        if(tickPlanter>20)
+                        {
+                            if(stack.getItem() instanceof IPlantable)
+                            {
+                                fakePlayer.setHeldItem(fakePlayer.getActiveHand(),stack);
+                                if(block.getBlock().canSustainPlant(block,world,posThis.add(z,y,z),EnumFacing.UP,(IPlantable)stack.getItem()))
+                                {
+                                    stack.getItem().onItemRightClick(world,fakePlayer,fakePlayer.getActiveHand());
+                                }
+                            }
+
+                            tickPlanter=0;
+                        }
+                        else tickPlanter++;
+                    }
+                }
+            }
+
+            getItemEntitiesNearby(rangeIncrease);
+
+        }
     }
 
     int tickHarvest = 0;
@@ -1881,6 +1926,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                 if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_HARVESTER))
                 {
                     harvester(getUpgradePotency());
+                }
+
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_PLANTER))
+                {
+                    planter(getUpgradePotency());
                 }
 
             }
