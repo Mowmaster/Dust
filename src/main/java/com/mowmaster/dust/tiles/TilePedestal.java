@@ -839,19 +839,14 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 block = world.getBlockState(posThis.add(x, y, z));
                                 blockAbove = world.getBlockState(posThis.add(x,y+1,z));
 
-
-                                if(tickPlanter>30)
+                                if(tickPlanter>33)
                                 {
                                     if(getItemInPedestal().getItem() instanceof IPlantable)
                                     {
-                                        System.out.println(block.getBlock().getLocalizedName() +" "+ posThis.add(x,y,z));
-
                                         if (block.getBlock().canSustainPlant(block,world,posThis.add(x,y,z),EnumFacing.UP,(IPlantable)getItemInPedestal().getItem()))
                                         {
-                                            System.out.println("Can Sustain");
                                             if(blockAbove.getBlock().isAir(blockAbove,world,posThis.add(x,y+1,z)))
                                             {
-                                                System.out.println("TRUE");
                                                 int oldCount = stack.getCount();
                                                 if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sunflowerseedsitem")
                                                         || stack.getItem().getUnlocalizedName().contains("roastedpumpkinseedsitem")
