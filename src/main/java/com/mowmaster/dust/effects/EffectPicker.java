@@ -22,6 +22,13 @@ public class EffectPicker
         double percentBlue= 100*((double)blue/totalColor);
         double percentYellow= 100*((double)yellow/totalColor);
 
+        //1 100 000 000
+
+        int colorToRecipe = 1000000000;
+        colorToRecipe += (percentRed*1000000);
+        colorToRecipe += (percentBlue*1000);
+        colorToRecipe += (percentYellow);
+
         int amp = 0;
         if(white>black || white==black)//positive effects
         {
@@ -42,12 +49,39 @@ public class EffectPicker
             }
             else{amp=Math.abs(white-black);}
 
+            if(type.equals(CrystalTypes.EffectTypes.DUST))
+            {
+                int blackcount=Math.abs(black-white);
+                if(blackcount>=1 && blackcount<10){amp=0;}
+                if(blackcount>=10 && blackcount<30){amp=1;}
+                if(blackcount>=30 && blackcount<60){amp=2;}
+                if(blackcount>=60 && blackcount<100){amp=3;}
+                if(blackcount>=100 && blackcount<150){amp=4;}
+                if(blackcount>=150 && blackcount<210){amp=5;}
+                if(blackcount>=210 && blackcount<280){amp=6;}
+                if(blackcount>=280 && blackcount<360){amp=7;}
+                if(blackcount>=360 && blackcount<450){amp=8;}
+                if(blackcount>=450 && blackcount<550){amp=9;}
+                if(blackcount>=550){amp=10;}
+            }
+            else{amp=Math.abs((black-white)-1);}
+
             if(amp>potencyCap)
             {
                 amp=potencyCap;
             }
 
-            if(red>=1 && blue==0 && yellow==0){effect=new PotionEffect(MobEffects.STRENGTH ,duration, amp, false, true);}
+
+
+
+        }
+
+        return effect;
+    }
+
+
+    /*
+if(red>=1 && blue==0 && yellow==0){effect=new PotionEffect(MobEffects.STRENGTH ,duration, amp, false, true);}
             else if(blue>=1 && red==0 && yellow==0){effect=new PotionEffect(MobEffects.WATER_BREATHING ,duration, amp, false, true);}
             else if(yellow>=1 && blue==0 && red==0){effect=new PotionEffect(MobEffects.SATURATION ,duration, amp, false, true);}
             else if(blue==0)
@@ -125,22 +159,7 @@ public class EffectPicker
         else//negative effects
         {
 
-            if(type.equals(CrystalTypes.EffectTypes.DUST))
-            {
-                int blackcount=Math.abs(black-white);
-                if(blackcount>=1 && blackcount<10){amp=0;}
-                if(blackcount>=10 && blackcount<30){amp=1;}
-                if(blackcount>=30 && blackcount<60){amp=2;}
-                if(blackcount>=60 && blackcount<100){amp=3;}
-                if(blackcount>=100 && blackcount<150){amp=4;}
-                if(blackcount>=150 && blackcount<210){amp=5;}
-                if(blackcount>=210 && blackcount<280){amp=6;}
-                if(blackcount>=280 && blackcount<360){amp=7;}
-                if(blackcount>=360 && blackcount<450){amp=8;}
-                if(blackcount>=450 && blackcount<550){amp=9;}
-                if(blackcount>=550){amp=10;}
-            }
-            else{amp=Math.abs((black-white)-1);}
+
 
             if(amp>potencyCap)
             {
@@ -228,15 +247,5 @@ public class EffectPicker
                 }
             }
             else if((yellow==blue && blue==red) || red>0 && blue>0 && yellow >0 ){effect=new PotionEffect(MobEffects.LEVITATION,duration, amp, false, true);}//Gravity
-
-
-        }
-
-        return effect;
-    }
-
-
-    /*
-
      */
 }

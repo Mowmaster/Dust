@@ -831,16 +831,17 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             {
                 if(this.hasItem())
                 {
-                    for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+                    if(tickPlanter>30)
                     {
-                        for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                        for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
                         {
-                            for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
-                                block = world.getBlockState(posThis.add(x, y, z));
-                                blockAbove = world.getBlockState(posThis.add(x,y+1,z));
+                            for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                            {
+                                for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
+                                    block = world.getBlockState(posThis.add(x, y, z));
+                                    blockAbove = world.getBlockState(posThis.add(x,y+1,z));
 
-                                if(tickPlanter>33)
-                                {
+
                                     if(getItemInPedestal().getItem() instanceof IPlantable)
                                     {
                                         if (block.getBlock().canSustainPlant(block,world,posThis.add(x,y,z),EnumFacing.UP,(IPlantable)getItemInPedestal().getItem()))
@@ -917,15 +918,17 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                         }
                                     }
 
-                                    tickPlanter=0;
-                                }
-                                else
-                                {
-                                    tickPlanter++;
+
                                 }
 
                             }
                         }
+
+                        tickPlanter=0;
+                    }
+                    else
+                    {
+                        tickPlanter++;
                     }
                 }
             }
