@@ -30,8 +30,8 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
         {
             if(te instanceof TileCrystalCluster)
             {
-                if(!te.getWorld().isRemote)
-                {
+                //if(!te.getWorld().isRemote)
+                //{
                     IBlockState state = te.getWorld().getBlockState(te.getPos());
                     EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);//Getting an error here when loading in the render sometimes
                     RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
@@ -472,7 +472,7 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
                     */
                     }
                     GlStateManager.popMatrix();
-                }
+                //}
             }
         }
 
