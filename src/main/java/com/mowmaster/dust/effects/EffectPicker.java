@@ -10,72 +10,174 @@ import net.minecraftforge.registries.GameData;
 
 public class EffectPicker
 {
+    static int percentRed;
+    static int percentBlue;
+    static int percentYellow;
+    static int colorToRecipe = 0;
+    static int amp = 0;
 
     private static Boolean immersiveE = false;
     public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, int potencyCap, Boolean ambient, Boolean showParticles, CrystalTypes.EffectTypes type)
     {
-        if(Loader.isModLoaded("immersiveengineering")) {immersiveE = true;}
+        calcPercentages(red,blue,yellow);
+        getPotency(type,white,black,potencyCap);
+        getColor(white,black,percentRed,percentBlue,percentYellow);
 
-        PotionEffect effect=new PotionEffect(MobEffects.LUCK);
-        double totalColor=(red+blue)+yellow;
-        double percentRed= 100*((double)red/totalColor);
-        double percentBlue= 100*((double)blue/totalColor);
-        double percentYellow= 100*((double)yellow/totalColor);
+        while(EffectGetter.instance().hasPotionEffect(colorToRecipe)==false)
+        {
+            findNextColorForEffect();
+            getColor(white,black,percentRed,percentBlue,percentYellow);
+        }
 
-        //1 100 000 000
+        System.out.println(colorToRecipe);
+        return getEffect(duration,ambient,showParticles);
+    }
 
-        int colorToRecipe = 1000000000;
+    private static void calcPercentages(int red, int blue, int yellow)
+    {
+        int totalColor=(red+blue)+yellow;
+        percentRed = (int)(100*((double)red/totalColor));
+        percentBlue = (int)(100*((double)blue/totalColor));
+        percentYellow = (int)(100*((double)yellow/totalColor));
+
+        if(percentRed<=0)
+        {
+            if(percentBlue>percentYellow)
+            {
+                while(percentBlue+percentYellow!=100)
+                {
+                    percentBlue++;
+                }
+            }
+            else
+            {
+                while(percentBlue+percentYellow!=100)
+                {
+                    percentYellow++;
+                }
+            }
+        }
+        else if(percentBlue<=0)
+        {
+            if(percentRed>percentYellow)
+            {
+                while(percentRed+percentYellow!=100)
+                {
+                    percentRed++;
+                }
+            }
+            else
+            {
+                while(percentRed+percentYellow!=100)
+                {
+                    percentYellow++;
+                }
+            }
+        }
+        else if(percentYellow<=0)
+        {
+            if(percentBlue>percentRed)
+            {
+                while(percentBlue+percentRed!=100)
+                {
+                    percentBlue++;
+                }
+            }
+            else
+            {
+                while(percentBlue+percentRed!=100)
+                {
+                    percentRed++;
+                }
+            }
+        }
+    }
+
+    private static void getPotency(CrystalTypes.EffectTypes type, int white, int black, int potencyCap)
+    {
+        int amp = 0;
+        if(type.equals(CrystalTypes.EffectTypes.DUST))
+        {
+            int potencycount=Math.abs(white-black);
+            if(potencycount>=0 && potencycount<10){amp=0;}
+            if(potencycount>=10 && potencycount<30){amp=1;}
+            if(potencycount>=30 && potencycount<60){amp=2;}
+            if(potencycount>=60 && potencycount<100){amp=3;}
+            if(potencycount>=100 && potencycount<150){amp=4;}
+            if(potencycount>=150 && potencycount<210){amp=5;}
+            if(potencycount>=210 && potencycount<280){amp=6;}
+            if(potencycount>=280 && potencycount<360){amp=7;}
+            if(potencycount>=360 && potencycount<450){amp=8;}
+            if(potencycount>=450 && potencycount<550){amp=9;}
+            if(potencycount>=550){amp=10;}
+        }
+        else{amp=Math.abs(white-black);}
+
+        if(amp>potencyCap)
+        {
+            amp=potencyCap;
+        }
+    }
+
+    private static void getColor(int white, int black, int percentRed, int percentBlue, int percentYellow)
+    {
+        if(white>black || white==black)//positive effects
+        {
+            colorToRecipe = 1000000000;
+        }
+        else colorToRecipe = 2000000000;
+
         colorToRecipe += (percentRed*1000000);
         colorToRecipe += (percentBlue*1000);
         colorToRecipe += (percentYellow);
+    }
 
-        int amp = 0;
-        if(white>black || white==black)//positive effects
+    private static void findNextColorForEffect()
+    {
+        if(percentRed<=0)
         {
-            if(type.equals(CrystalTypes.EffectTypes.DUST))
+            if(percentBlue>percentYellow)
             {
-                int whitecount=Math.abs(white-black);
-                if(whitecount>=0 && whitecount<10){amp=0;}
-                if(whitecount>=10 && whitecount<30){amp=1;}
-                if(whitecount>=30 && whitecount<60){amp=2;}
-                if(whitecount>=60 && whitecount<100){amp=3;}
-                if(whitecount>=100 && whitecount<150){amp=4;}
-                if(whitecount>=150 && whitecount<210){amp=5;}
-                if(whitecount>=210 && whitecount<280){amp=6;}
-                if(whitecount>=280 && whitecount<360){amp=7;}
-                if(whitecount>=360 && whitecount<450){amp=8;}
-                if(whitecount>=450 && whitecount<550){amp=9;}
-                if(whitecount>=550){amp=10;}
+                percentBlue++;
+                percentYellow--;
             }
-            else{amp=Math.abs(white-black);}
-
-            if(type.equals(CrystalTypes.EffectTypes.DUST))
+            else
             {
-                int blackcount=Math.abs(black-white);
-                if(blackcount>=1 && blackcount<10){amp=0;}
-                if(blackcount>=10 && blackcount<30){amp=1;}
-                if(blackcount>=30 && blackcount<60){amp=2;}
-                if(blackcount>=60 && blackcount<100){amp=3;}
-                if(blackcount>=100 && blackcount<150){amp=4;}
-                if(blackcount>=150 && blackcount<210){amp=5;}
-                if(blackcount>=210 && blackcount<280){amp=6;}
-                if(blackcount>=280 && blackcount<360){amp=7;}
-                if(blackcount>=360 && blackcount<450){amp=8;}
-                if(blackcount>=450 && blackcount<550){amp=9;}
-                if(blackcount>=550){amp=10;}
+                percentBlue--;
+                percentYellow++;
             }
-            else{amp=Math.abs((black-white)-1);}
-
-            if(amp>potencyCap)
-            {
-                amp=potencyCap;
-            }
-
-
-
-
         }
+        else if(percentBlue<=0)
+        {
+            if(percentRed>percentYellow)
+            {
+                percentRed++;
+                percentYellow--;
+            }
+            else
+            {
+                percentRed--;
+                percentYellow++;
+            }
+        }
+        else if(percentYellow<=0)
+        {
+            if(percentBlue>percentRed)
+            {
+                percentBlue++;
+                percentRed--;
+            }
+            else
+            {
+                percentBlue--;
+                percentRed++;
+            }
+        }
+    }
 
+    private static PotionEffect getEffect(int duration, boolean isAmbient, boolean canShowParticles)
+    {
+        PotionEffect effect = new PotionEffect(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion(), duration, amp, isAmbient, canShowParticles);
         return effect;
     }
 

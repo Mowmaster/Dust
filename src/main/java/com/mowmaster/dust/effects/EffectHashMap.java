@@ -2,13 +2,13 @@ package com.mowmaster.dust.effects;
 
 import net.minecraft.potion.PotionEffect;
 
-public class EffectHashMapPositive
+public class EffectHashMap
 {
 
     public int inputColorCode;
     public PotionEffect outputEffect;
 
-    public EffectHashMapPositive(int inputColorCode, PotionEffect outputEffect)
+    public EffectHashMap(int inputColorCode, PotionEffect outputEffect)
     {
         this.inputColorCode=inputColorCode;
         this.outputEffect=outputEffect;
@@ -26,6 +26,6 @@ public class EffectHashMapPositive
 
     @Override
     public String toString() {
-        return "EffectHashMapPositive [input=" + inputColorCode + ", output=" + outputEffect + "]";
+        return "EffectHashMap [input=" + inputColorCode + ", output=" + outputEffect + "]";
     }
 }
