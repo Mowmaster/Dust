@@ -919,7 +919,7 @@ public class EnchantAndEffectHandlers
                             item.setDead();
                         }
 
-                        if(stack.getItem().equals(ItemRegistry.ancientCoin) || stack.getItem().equals(ItemRegistry.enchantUpgrade))//&& !(arrow>0) || !(pressurePlate>0)
+                        if(stack.getItem()instanceof ItemCoin)//&& !(arrow>0) || !(pressurePlate>0)
                         {
                             coined = stack.copy();
                             coin += stack.getCount();
@@ -1001,7 +1001,7 @@ public class EnchantAndEffectHandlers
                             if(!worldIn.isRemote)
                             {
                                 ItemStack stack = ItemStack.EMPTY;
-                                if(coined.getItem().equals(ItemRegistry.enchantUpgrade))
+                                if(coined.getItem().equals(ItemRegistry.enchantUpgrade) || coined.getItem().equals(ItemRegistry.chopperUpgrade))
                                 {
                                     stack = coined;
                                 }

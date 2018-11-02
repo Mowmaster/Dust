@@ -1,15 +1,12 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.BlockPedestal;
-import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.effects.PotionMagnetism;
+import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
-import com.mowmaster.dust.enums.ItemTransferTypes;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.particles.ParticleCreator;
 import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.*;
 import net.minecraft.entity.Entity;
@@ -18,7 +15,6 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
@@ -30,28 +26,22 @@ import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.lwjgl.Sys;
-import scala.collection.IterableProxyLike$class;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -653,7 +643,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     {
                         if(block instanceof IGrowable)
                         {
-                            if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
+                            if(world.getBlockState(getPosOfBlockBelow(1).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(1).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
                             {
                                 if(getItemInPedestal().getHasSubtypes())
                                 {
@@ -662,6 +652,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 else world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
 
 
+                                world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
                                 getItemInPedestal().shrink(1);
                             }
                         }
@@ -672,6 +663,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 world.setBlockState(getPosOfBlockBelow(1),stated);
                             }
                             else world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                            world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
                             getItemInPedestal().shrink(1);
                         }
 
@@ -814,6 +806,76 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             }
         }
         return getDrops;
+    }
+
+    int tickChopper = 0;
+    public void chopper(int rangeIncrease)
+    {
+        World world = this.world;
+        BlockPos posThis = this.getPos();
+        IBlockState block = world.getBlockState(posThis);
+        ItemStack stack = getItemInPedestal();
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+
+        if(!world.isRemote)
+        {
+            if(!world.isBlockPowered(posThis))
+            {
+                for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
+                {
+                    for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
+                    {
+                        for(int y=-(3+rangeIncrease);y<=(3+rangeIncrease);y++) {
+                            block = world.getBlockState(posThis.add(x, y, z));
+                            if(tickChopper>84)
+                            {
+                                if(hasItem())
+                                {
+                                    if(Item.getItemFromBlock(block.getBlock()).getHasSubtypes())
+                                    {
+                                        if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0),1,block.getBlock().getMetaFromState(block))))
+                                        {
+
+                                            if (block.getMaterial().equals(Material.WOOD) && block.getBlock().getLocalizedName().toLowerCase().contains("log") ||
+                                                    block.getMaterial().equals(Material.LEAVES) && block.getBlock().getLocalizedName().toLowerCase().contains("leaves")) {
+                                                block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
+                                                world.setBlockToAir(posThis.add(x,y,z));
+                                                tickChopper=0;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0))))
+                                        {
+                                            if (block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
+                                                block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
+                                                world.setBlockToAir(posThis.add(x,y,z));
+                                                tickChopper=0;
+                                            }
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
+                                        block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
+                                        world.setBlockToAir(posThis.add(x,y,z));
+                                        tickChopper=0;
+                                    }
+                                }
+
+                            }
+                            else tickChopper++;
+                        }
+                    }
+                }
+
+                getItemEntitiesNearby(3+rangeIncrease);
+            }
+        }
     }
 
     int tickPlanter = 0;
@@ -963,14 +1025,14 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     {
                         for(int y=-(rangeIncrease);y<=(rangeIncrease);y++) {
                             block = world.getBlockState(posThis.add(x, y, z));
-                            if(tickHarvest>40)
+                            if(tickHarvest>39)
                             {
                                 if (block.getBlock() instanceof IGrowable) {
                                     if(!((IGrowable) block.getBlock()).canGrow(world,posThis.add(x,y,z),block,false))
                                     {
                                         block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
                                         world.setBlockToAir(posThis.add(x,y,z));
-                                        tickHarvest++;
+                                        tickHarvest=0;
                                     }
                                 }
                             }
@@ -992,8 +1054,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         BlockPos posThis = this.getPos();
         IBlockState block = world.getBlockState(posThis);
         ItemStack stack = getItemInPedestal();
-
-        int increase = rangeIncrease;
 
         if(!world.isRemote)
         {
@@ -1991,7 +2051,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
-
     @Override
     public void update() {
 
@@ -2036,6 +2095,15 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             if(this.hasUpgrade(ItemRegistry.singleExportUpgrade))
             {
                 addItemToBelowInvFromPedestal();
+            }
+
+            if(this.hasUpgrade(ItemRegistry.chopperUpgrade))
+            {
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
+                {
+                    chopper(getUpgradePotency());
+                }
+                else chopper(0);
             }
 
             ticker4++;

@@ -14,7 +14,6 @@ public class EffectPicker
     static int percentBlue;
     static int percentYellow;
     static int colorToRecipe = 0;
-    static int amp = 0;
 
     private static Boolean immersiveE = false;
     public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, int potencyCap, Boolean ambient, Boolean showParticles, CrystalTypes.EffectTypes type)
@@ -30,7 +29,7 @@ public class EffectPicker
         }
 
         //System.out.println(colorToRecipe);
-        return getEffect(duration,ambient,showParticles);
+        return getEffect(CrystalTypes.EffectTypes.DUST,white,black,potencyCap,duration,ambient,showParticles);
     }
 
     private static void calcPercentages(int red, int blue, int yellow)
@@ -93,7 +92,7 @@ public class EffectPicker
         }
     }
 
-    private static void getPotency(CrystalTypes.EffectTypes type, int white, int black, int potencyCap)
+    private static int getPotency(CrystalTypes.EffectTypes type, int white, int black, int potencyCap)
     {
         int amp = 0;
         if(type.equals(CrystalTypes.EffectTypes.DUST))
@@ -117,6 +116,8 @@ public class EffectPicker
         {
             amp=potencyCap;
         }
+
+        return amp;
     }
 
     private static void getColor(int white, int black, int percentRed, int percentBlue, int percentYellow)
@@ -175,9 +176,9 @@ public class EffectPicker
         }
     }
 
-    private static PotionEffect getEffect(int duration, boolean isAmbient, boolean canShowParticles)
+    private static PotionEffect getEffect(CrystalTypes.EffectTypes type, int white, int black,int potencyCap, int duration, boolean isAmbient, boolean canShowParticles)
     {
-        PotionEffect effect = new PotionEffect(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion(), duration, amp, isAmbient, canShowParticles);
+        PotionEffect effect = new PotionEffect(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion(), duration, getPotency(type,white,black,potencyCap), isAmbient, canShowParticles);
         return effect;
     }
 }

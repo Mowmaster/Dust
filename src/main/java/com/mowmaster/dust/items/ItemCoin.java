@@ -116,6 +116,14 @@ public class ItemCoin extends Item
                 tooltip.add(s1 + " " + s2);
             }
         }
+        else if(stack.getItem().equals(ItemRegistry.chopperUpgrade))
+        {
+            tooltip.add("Tree Chopper Upgrade");
+            if(stack.hasTagCompound())
+            {
+                tooltip.add(s1 + " " + s2);
+            }
+        }
         else if(stack.getItem().equals(ItemRegistry.breakerUpgrade)) {tooltip.add("Block Breaker Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.placerUpgrade)) {tooltip.add("Block Placer Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
