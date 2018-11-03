@@ -33,7 +33,7 @@ public class ItemRegistry
     public static Item crushingComponents; // fixed the capitalization to use proper camel casing instead of being all lowercase
     public static Item furnaceComponents;
     public static Item finnisher;
-    public static Item dustbread;
+    //public static Item dustbread;
 
     public static Item ancientCoinA;
     public static Item ancientCoinB;
@@ -63,6 +63,7 @@ public class ItemRegistry
     public static Item ancientCoinZ;
     public static Item ancientCoin;
 
+    public static Item userUpgrade;
     public static Item chopperUpgrade;
     public static Item crafter1Upgrade;
     public static Item crafter4Upgrade;
@@ -147,6 +148,7 @@ public class ItemRegistry
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
         ancientCoin = new ItemCoin("coin","coin");
 
+        userUpgrade = new ItemCoin("userupgrade","userupgrade");
         chopperUpgrade = new ItemCoin("chopperupgrade","chopperupgrade");
         crafter1Upgrade = new ItemCoin("crafter1upgrade","crafter1upgrade");
         crafter4Upgrade = new ItemCoin("crafter4upgrade","crafter4upgrade");
@@ -218,7 +220,7 @@ public class ItemRegistry
                 new PotionEffect(Potion.getPotionById(5),1200,10),
         new PotionEffect(Potion.getPotionById(10),1200,5));
 
-        dustbread = new ItemDustBread("dustbread","dustbread",1,1f);
+        //dustbread = new ItemDustBread("dustbread","dustbread",1,1f);
     }
 
     public static void register()
@@ -251,6 +253,7 @@ public class ItemRegistry
         registerItem(ancientCoinZ);
         registerItem(ancientCoin);
 
+        registerItem(userUpgrade);
         registerItem(chopperUpgrade);
         registerItem(crafter1Upgrade);
         registerItem(crafter4Upgrade);
@@ -315,7 +318,7 @@ public class ItemRegistry
         registerItem(crushingComponents);
         registerItem(furnaceComponents);
         registerItem(finnisher);
-        registerItem(dustbread);
+        //registerItem(dustbread);
     }
 
     public static void registerRenders()
@@ -349,6 +352,7 @@ public class ItemRegistry
         registerRender(ancientCoinZ);
         registerRender(ancientCoin);
 
+        registerRender(userUpgrade);
         registerRender(chopperUpgrade);
         registerRender(crafter1Upgrade);
         registerRender(crafter4Upgrade);
@@ -425,7 +429,7 @@ public class ItemRegistry
         registerRender(crushingComponents);
         registerRender(furnaceComponents);
         registerRender(finnisher);
-        registerRender(dustbread);
+        //registerRender(dustbread);
     }
 
     public static void registerItem(Item item)

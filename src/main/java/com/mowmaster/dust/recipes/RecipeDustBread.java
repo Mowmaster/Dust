@@ -25,11 +25,12 @@ import javax.annotation.Nullable;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.effectMaximum;
 
-public class RecipeDustBread extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
+public class RecipeDustBread //extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     /**
      * Used to check if a recipe matches current crafting inventory
      */
+    /*
     int count = 0;
     int red = 0;
     int blue = 0;
@@ -112,9 +113,8 @@ public class RecipeDustBread extends net.minecraftforge.registries.IForgeRegistr
         }
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
+    //Returns an Item that is the result of this recipe
+
 
     private static int potencyLimiter =  effectMaximum;
     public ItemStack getCraftingResult(InventoryCrafting inv)
@@ -151,12 +151,11 @@ public class RecipeDustBread extends net.minecraftforge.registries.IForgeRegistr
         return true;
     }
 
-    /**
-     * Used to determine if this recipe can fit in a grid of the given width/height
-     */
+    //Used to determine if this recipe can fit in a grid of the given width/height
     public boolean canFit(int width, int height)
     {
         return width >= 2 && height >= 2;
     }
+     */
 
 }

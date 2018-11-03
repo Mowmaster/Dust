@@ -1,5 +1,6 @@
 package com.mowmaster.dust.tiles;
 
+import com.mojang.authlib.GameProfile;
 import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
@@ -12,7 +13,10 @@ import net.minecraft.enchantment.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.*;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -42,6 +46,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -605,15 +610,67 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     }
 
-    //Ehh doesnt work for much :/
-    public void useItemFromPedestal()
+    public void useItemFromInvBelow()
     {
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-        if(hasItem())
-        {
-            Item itemInPedestal = getItemInPedestal().getItem();
-            itemInPedestal.onItemUse(fakePlayer,worldServer,getPosOfBlockBelow(2),EnumHand.MAIN_HAND,EnumFacing.UP,0.5f,0.5f,0.5f);
+        if(!world.isBlockPowered(pos)) {
+            ItemStack itemFromInv = ItemStack.EMPTY;
+            if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
+                if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+
+                    TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
+                    if (invToPullFrom instanceof TilePedestal) {
+                        itemFromInv = ItemStack.EMPTY;
+                    }
+                    else {
+                        itemFromInv = getNextSlotInChest(getPosOfBlockBelow(1));
+                    }
+
+                    if(itemFromInv.getItem() instanceof ItemShears)
+                    {
+
+                        List<EntitySheep> baa = world.getEntitiesWithinAABB(EntitySheep.class,new AxisAlignedBB(getPosOfBlockBelow(-1)));
+                        for(EntitySheep baaaaaa : baa)
+                        {
+                            if (!baaaaaa.getSheared() && !baaaaaa.isChild())
+                            {
+                                if(!hasItem())
+                                {
+                                    if (!this.world.isRemote)
+                                    {
+                                        baaaaaa.setSheared(true);
+                                        Random rando = new Random();
+                                        int i = 1 + rando.nextInt(3);
+
+                                        for (int j = 0; j < i; ++j)
+                                        {
+                                            addItem(new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 1, baaaaaa.getFleeceColor().getMetadata()));
+                                        }
+                                    }
+                                    itemFromInv.setItemDamage(itemFromInv.getItemDamage()+1);
+                                    world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                }
+                            }
+                        }
+                    }
+                    else if(itemFromInv.getItem() instanceof ItemBucket)
+                    {
+                        List<EntityCow> moo = world.getEntitiesWithinAABB(EntityCow.class,new AxisAlignedBB(getPosOfBlockBelow(-1)));
+                        for(EntityCow moomoo : moo)
+                        {
+
+                            if (itemFromInv.getItem() == Items.BUCKET && !moomoo.isChild())
+                            {
+                                if (!hasItem())
+                                {
+                                    world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                    itemFromInv.shrink(1);
+                                    addItem(new ItemStack(Items.MILK_BUCKET,1));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -632,6 +689,12 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             IBlockState stated2 = block.getDefaultState();
             IBlockState stated3 = block.getDefaultState();
 
+            int rangeOfPlace = 1;
+            if(getCoinOnPedestal().hasEffect())
+            {
+                rangeOfPlace = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+            }
+
             if(!getItemInPedestal().hasTagCompound())
             {
                 if(block!=Blocks.AIR)
@@ -639,17 +702,17 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     if(getItemInPedestal().getHasSubtypes()) {
                         stated = block.getStateFromMeta(getItemInPedestal().getMetadata());
                     }
-                    if(world.getBlockState(getPosOfBlockBelow(1)).getBlock().equals(Blocks.AIR))
+                    if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace)).getBlock().equals(Blocks.AIR))
                     {
                         if(block instanceof IGrowable)
                         {
-                            if(world.getBlockState(getPosOfBlockBelow(1).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(1).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
+                            if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
                             {
                                 if(getItemInPedestal().getHasSubtypes())
                                 {
-                                    world.setBlockState(getPosOfBlockBelow(1),stated);
+                                    world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated);
                                 }
-                                else world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                                else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block.getDefaultState());
 
 
                                 world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
@@ -660,9 +723,9 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                             if(getItemInPedestal().getHasSubtypes())
                             {
-                                world.setBlockState(getPosOfBlockBelow(1),stated);
+                                world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated);
                             }
-                            else world.setBlockState(getPosOfBlockBelow(1),block.getDefaultState());
+                            else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block.getDefaultState());
                             world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
                             getItemInPedestal().shrink(1);
                         }
@@ -677,13 +740,13 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                     if(block2 instanceof IGrowable)
                     {
-                        if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
+                        if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
                         {
                             if(getItemInPedestal().getHasSubtypes())
                             {
-                                world.setBlockState(getPosOfBlockBelow(1),stated2);
+                                world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated2);
                             }
-                            else world.setBlockState(getPosOfBlockBelow(1),block2.getDefaultState());
+                            else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block2.getDefaultState());
                             getItemInPedestal().shrink(1);
                         }
                     }
@@ -691,9 +754,9 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                         if(getItemInPedestal().getHasSubtypes())
                         {
-                            world.setBlockState(getPosOfBlockBelow(1),stated2);
+                            world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated2);
                         }
-                        else world.setBlockState(getPosOfBlockBelow(1),block2.getDefaultState());
+                        else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block2.getDefaultState());
                         getItemInPedestal().shrink(1);
                     }
                 }
@@ -706,22 +769,22 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                     if(block3 instanceof IGrowable)
                     {
-                        if(world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(2)).getBlock().equals(Blocks.GRASS))
+                        if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
                         {
                             if(getItemInPedestal().getHasSubtypes())
                             {
-                                world.setBlockState(getPosOfBlockBelow(1),stated3);
+                                world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated3);
                             }
-                            else world.setBlockState(getPosOfBlockBelow(1),block3.getDefaultState());
+                            else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block3.getDefaultState());
                             getItemInPedestal().shrink(1);
                         }
                     }
                     else {
                         if(getItemInPedestal().getHasSubtypes())
                         {
-                            world.setBlockState(getPosOfBlockBelow(1),stated3);
+                            world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated3);
                         }
-                        else world.setBlockState(getPosOfBlockBelow(1),block3.getDefaultState());
+                        else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block3.getDefaultState());
                         getItemInPedestal().shrink(1);
                     }
                 }
@@ -752,14 +815,22 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     }
 
-    public ItemStack getDropsFromBlock()
+    public void getDropsFromBlock()
     {
+
+        int rangeOfBreak = 1;
+        if(getCoinOnPedestal().hasEffect())
+        {
+            rangeOfBreak = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+        }
         int fortune = 0;
         Random rn = new Random();
-        IBlockState blocky = world.getBlockState(getPosOfBlockBelow(1));
+        IBlockState blocky = world.getBlockState(getPosOfBlockBelow(rangeOfBreak));
         ItemStack getDrops = ItemStack.EMPTY;
 
-        if(!world.getBlockState(getPosOfBlockBelow(1)).getBlock().equals(Blocks.AIR))
+
+
+        if(!world.getBlockState(getPosOfBlockBelow(rangeOfBreak)).getBlock().equals(Blocks.AIR))
         {
             if(hasCoin())
             {
@@ -786,6 +857,21 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 else getDrops = new ItemStack(dropItem,countDropped);
                             }
                         }
+                        else
+                        {
+                            Item dropItem = blocky.getBlock().getItemDropped(blocky,rn,0);
+                            int metaDropped = blocky.getBlock().damageDropped(blocky);
+                            int countDropped = blocky.getBlock().quantityDropped(blocky,0,rn);
+                            if(blocky.getBlock().getItemDropped(blocky,rn,0)!=null)
+                            {
+
+                                if(dropItem.getHasSubtypes())
+                                {
+                                    getDrops = new ItemStack(dropItem,countDropped,metaDropped);
+                                }
+                                else getDrops = new ItemStack(dropItem,countDropped);
+                            }
+                        }
                     }
                     else
                     {
@@ -802,10 +888,30 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             else getDrops = new ItemStack(dropItem,countDropped);
                         }
                     }
+
+
+                    if(hasItem())
+                    {
+                        System.out.println(getDrops);
+                        if(doItemsMatch(getDrops))
+                        {
+                            if(getItemInPedestal().getCount() + getDrops.getCount() <= getMaxStackSize())
+                            {
+                                addItem(getDrops);
+                                world.setBlockToAir(getPosOfBlockBelow(rangeOfBreak));
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        System.out.println(getDrops);
+                        addItem(getDrops);
+                        world.setBlockToAir(getPosOfBlockBelow(rangeOfBreak));
+                    }
                 }
             }
         }
-        return getDrops;
     }
 
     int tickChopper = 0;
@@ -837,7 +943,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                         if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0),1,block.getBlock().getMetaFromState(block))))
                                         {
 
-                                            if (block.getMaterial().equals(Material.WOOD) && block.getBlock().getLocalizedName().toLowerCase().contains("log") ||
+                                            if (world.getTileEntity(posThis.add(x,y,z))==null && block.getMaterial().equals(Material.WOOD) && block.getBlock().getLocalizedName().toLowerCase().contains("log") ||
                                                     block.getMaterial().equals(Material.LEAVES) && block.getBlock().getLocalizedName().toLowerCase().contains("leaves")) {
                                                 block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
                                                 world.setBlockToAir(posThis.add(x,y,z));
@@ -849,7 +955,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                     {
                                         if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0))))
                                         {
-                                            if (block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
+                                            if (world.getTileEntity(posThis.add(x,y,z))==null &&block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
                                                 block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
                                                 world.setBlockToAir(posThis.add(x,y,z));
                                                 tickChopper=0;
@@ -860,7 +966,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 }
                                 else
                                 {
-                                    if (block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
+                                    if (world.getTileEntity(posThis.add(x,y,z))==null &&block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
                                         block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
                                         world.setBlockToAir(posThis.add(x,y,z));
                                         tickChopper=0;
@@ -1271,10 +1377,24 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
     public boolean isSamePedestal(BlockPos pedestalToBeLinked)
     {
+        BlockPos thisPedestal = this.getPos();
+
+            if(thisPedestal.equals(pedestalToBeLinked))
+            {
+                return true;
+            }
+
+        return false;
+    }
+
+    public boolean removeReciever(BlockPos recieverPedestalToRemove)
+    {
+
         for(int i=0;i<storedOutputLocations.length;i++)
         {
-            if(storedOutputLocations[i].equals(this.getPos()))
+            if(storedOutputLocations[i].equals(recieverPedestalToRemove))
             {
+                storedOutputLocations[i] = defaultPos;
                 return true;
             }
         }
@@ -2057,6 +2177,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         getRedstoneSignalIn();
         if(!world.isRemote)
         {
+
             if(hasEffectUpgrade())
             {
                 if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
@@ -2143,23 +2264,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                     if(this.hasUpgrade(ItemRegistry.breakerUpgrade))
                     {
-                        if(hasItem())
-                        {
-                            if(getDropsFromBlock().getItem().equals(getItemInPedestal().getItem()))
-                            {
-                                if(getItemInPedestal().getCount() + getDropsFromBlock().getCount() <= getMaxStackSize())
-                                {
-                                    addItem(getDropsFromBlock());
-                                    world.setBlockToAir(getPosOfBlockBelow(1));
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            addItem(getDropsFromBlock());
-                            world.setBlockToAir(getPosOfBlockBelow(1));
-                        }
+                        getDropsFromBlock();
                     }
 
                     if(this.hasUpgrade(ItemRegistry.placerUpgrade))
@@ -2180,6 +2285,11 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     if(this.hasUpgrade(ItemRegistry.enchantUpgrade))
                     {
                         useExpToBottleEnchantRepair();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.userUpgrade))
+                    {
+                        useItemFromInvBelow();
                     }
                 }
                 else
@@ -2237,12 +2347,12 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
-    public ItemStack getNextSlotInChest(int x,int y,int z)
+    public ItemStack getNextSlotInChest(BlockPos blockOfInv)
     {
         ItemStack stack = ItemStack.EMPTY;
-        if(world.getTileEntity(pos.add(x,y,z)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
+        if(world.getTileEntity(blockOfInv).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
         {
-            TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
+            TileEntity tileEntity = world.getTileEntity(blockOfInv);
             if(tileEntity instanceof TilePedestal) {
                 stack = ItemStack.EMPTY;
 

@@ -38,7 +38,7 @@ public class ItemCoin extends Item
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        if(stack.getItem().equals(ItemRegistry.breakerUpgrade) || stack.getItem().equals(ItemRegistry.enchantUpgrade))
+        if(stack.getItem().equals(ItemRegistry.breakerUpgrade) || stack.getItem().equals(ItemRegistry.enchantUpgrade) || stack.getItem().equals(ItemRegistry.placerUpgrade))
         {
             return super.isBookEnchantable(stack, book);
         }
@@ -133,6 +133,7 @@ public class ItemCoin extends Item
         else if(stack.getItem().equals(ItemRegistry.crafter1Upgrade)) {tooltip.add("Crafter (1x1) Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.crafter4Upgrade)) {tooltip.add("Crafter (2x2) Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.crafter9Upgrade)) {tooltip.add("Crafter (3x3) Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.userUpgrade)) {tooltip.add("Auto Milk/Shearer Upgrade");}
     }
 }
 
