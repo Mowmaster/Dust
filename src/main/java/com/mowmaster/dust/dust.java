@@ -39,7 +39,6 @@ public class dust {
     @SidedProxy(serverSide = Reference.SERVER_SIDE, clientSide = Reference.CLIENT_SIDE)
     public static CommonProxy proxy;
 
-
     public static File dustConfig;
     public static File getDustConfig(){return dustConfig;}
 
