@@ -707,7 +707,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             int rangeOfPlace = 1;
             if(hasCoin())
             {
-                if(getCoinOnPedestal().hasEffect())
+                if(getCoinOnPedestal().isItemEnchanted())
                 {
                     rangeOfPlace = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
                 }
@@ -840,7 +840,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         int rangeOfBreak = 1;
         if(hasCoin())
         {
-            if(getCoinOnPedestal().hasEffect())
+            if(getCoinOnPedestal().isItemEnchanted())
             {
                 rangeOfBreak = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
             }
