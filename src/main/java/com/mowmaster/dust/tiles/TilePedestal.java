@@ -73,8 +73,38 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         this.item = new ItemStackHandler(1);
         this.coin = new ItemStackHandler(1);
     }
-    public ItemStack getItemInPedestal() {return item.getStackInSlot(0);}
-    public ItemStack getCoinOnPedestal() {return coin.getStackInSlot(0);}
+    public boolean hasItem()
+    {
+        if(item.getStackInSlot(0).isEmpty())
+        {
+            return false;
+        }
+        else  return true;
+    }
+    public boolean hasCoin()
+    {
+        if(coin.getStackInSlot(0).isEmpty())
+        {
+            return false;
+        }
+        else  return true;
+    }
+    public ItemStack getItemInPedestal()
+    {
+        if(hasItem())
+        {
+            return item.getStackInSlot(0);
+        }
+        else return ItemStack.EMPTY;
+    }
+    public ItemStack getCoinOnPedestal()
+    {
+        if(hasCoin())
+        {
+            return coin.getStackInSlot(0);
+        }
+        else return ItemStack.EMPTY;
+    }
     public ItemStack getDisplay() {return display;}
     public int getXPInPedestal() {return expInPedestal;}
 
@@ -145,22 +175,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
-    public boolean hasItem()
-    {
-        if(item.getStackInSlot(0).isEmpty())
-        {
-            return false;
-        }
-        else  return true;
-    }
-    public boolean hasCoin()
-    {
-        if(coin.getStackInSlot(0).isEmpty())
-        {
-            return false;
-        }
-        else  return true;
-    }
+
 
     public boolean hasUpgrade(TilePedestal getReciever, Item coinType)
     {
@@ -690,10 +705,14 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             IBlockState stated3 = block.getDefaultState();
 
             int rangeOfPlace = 1;
-            if(getCoinOnPedestal().hasEffect())
+            if(hasCoin())
             {
-                rangeOfPlace = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+                if(getCoinOnPedestal().hasEffect())
+                {
+                    rangeOfPlace = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+                }
             }
+
 
             if(!getItemInPedestal().hasTagCompound())
             {
@@ -819,9 +838,12 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
 
         int rangeOfBreak = 1;
-        if(getCoinOnPedestal().hasEffect())
+        if(hasCoin())
         {
-            rangeOfBreak = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+            if(getCoinOnPedestal().hasEffect())
+            {
+                rangeOfBreak = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+            }
         }
         int fortune = 0;
         Random rn = new Random();
