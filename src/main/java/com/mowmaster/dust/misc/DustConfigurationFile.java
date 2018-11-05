@@ -43,7 +43,7 @@ public class DustConfigurationFile
 
         category = "World Generation";
         dustConfig.addCustomCategoryComment(category,"World Generation Tweaks");
-        structuresInCrystal = dustConfig.getInt("1.Crystal Structure Generation", category,100,1,9999,"Structures in Crystal Biomes");
+        structuresInCrystal = dustConfig.getInt("1.Crystal Structure Generation", category,150,1,9999,"Structures in Crystal Biomes");
         structuresInWorld = dustConfig.getInt("2.Structure Generation", category,250,1,9999,"Structures in any biome");
         treeGenChance = dustConfig.getInt("3.Trees Generation", category,50,1,9999,"1 in X chunks a tree will spawn in a crystal biome");
         anyBiomeOreSpawnChance = dustConfig.getInt("4.Ore Spawn Rate", category,30,1,9999,"Specifically in Normal Biomes");

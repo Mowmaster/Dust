@@ -165,9 +165,8 @@ public class OreGeneration implements IWorldGenerator
 
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
-
+        int heightDiff = maxHeight - minHeight + 1;
         if (rand.nextInt(crystalOreInCrystal) <= 1) {
-            int heightDiff = maxHeight - minHeight + 1;
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(16);
                 int y = minHeight + rand.nextInt(heightDiff);
