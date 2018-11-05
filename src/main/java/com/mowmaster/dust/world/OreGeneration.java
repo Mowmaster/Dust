@@ -5,6 +5,7 @@ import com.mowmaster.dust.world.structures.allbiomestructures.SmallPiller;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallSandWell;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallStoneWell;
 import com.mowmaster.dust.world.treegeneration.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -27,6 +28,7 @@ public class OreGeneration implements IWorldGenerator
     int randomnum = treeGenChance;//Biome Specific Specialized Biomes Tree Generation
     int randomworld = anyBiomeOreSpawnChance; //All Overworld Biomes ore spawn rate
     int count = oreClusterSize;// How many in an ore cluster
+    int crystalOreInCrystal = oreChanceInCrystalBiome;
 
     private WorldGenerator red_ore;
     private WorldGenerator blue_ore;
@@ -36,6 +38,16 @@ public class OreGeneration implements IWorldGenerator
     private WorldGenerator green_ore;
     private WorldGenerator white_ore;
     private WorldGenerator black_ore;
+
+    //For Use in crystal Biomes above y=70
+    private WorldGenerator glowstone_ore;
+    private WorldGenerator coal_ore;
+    private WorldGenerator lapis_ore;
+    private WorldGenerator redstone_ore;
+    private WorldGenerator iron_ore;
+    private WorldGenerator gold_ore;
+    private WorldGenerator diamond_ore;
+    private WorldGenerator emerald_ore;
 
     private TreeRed smalltreered;
     private TreeBlue smalltreeblue;
@@ -82,6 +94,18 @@ public class OreGeneration implements IWorldGenerator
         green_ore = new WorldGenMinable(greenOre.getDefaultState(),count);
         white_ore = new WorldGenMinable(whiteOre.getDefaultState(),count);
         black_ore = new WorldGenMinable(blackOre.getDefaultState(),count);
+
+
+        // for use in crystal biomes
+        glowstone_ore = new WorldGenMinable(Blocks.GLOWSTONE.getDefaultState(),count);
+        coal_ore = new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(),count);
+        lapis_ore = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(),count);
+        redstone_ore = new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(),count);
+        iron_ore = new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(),count);
+        gold_ore = new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(),count);
+        diamond_ore = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),count);
+        emerald_ore = new WorldGenMinable(Blocks.EMERALD_ORE.getDefaultState(),count);
+
 
         smalltreered = new TreeRed(true);
         smalltreeblue = new TreeBlue(true);
@@ -142,14 +166,19 @@ public class OreGeneration implements IWorldGenerator
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
-        int heightDiff = maxHeight - minHeight + 1;
-        for (int i = 0; i < chancesToSpawn; i++) {
-            int x = chunk_X*16 + rand.nextInt(16);
-            int y = minHeight + rand.nextInt(heightDiff);
-            int z = chunk_Z*16 + rand.nextInt(16);
-            if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal))
-            {generator.generate(world, rand, new BlockPos(x, y, z));}
+        if (rand.nextInt(crystalOreInCrystal) <= 1) {
+            int heightDiff = maxHeight - minHeight + 1;
+            for (int i = 0; i < chancesToSpawn; i++) {
+                int x = chunk_X*16 + rand.nextInt(16);
+                int y = minHeight + rand.nextInt(heightDiff);
+                int z = chunk_Z*16 + rand.nextInt(16);
+                if(world.getBiome(new BlockPos(x,y,z)).equals(crystal_crystal))
+                {generator.generate(world, rand, new BlockPos(x, y, z));}
+            }
         }
+
+
+
     }
     /*
     private void runGeneratorHot(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
@@ -268,7 +297,7 @@ public class OreGeneration implements IWorldGenerator
         if (rand.nextInt(OverWorldStructureChance) <= 1) {
             for (int i = 0; i < chancesToSpawn; i++) {
                 int x = chunk_X*16 + rand.nextInt(3)+ 6;
-                int y = world.getHeight(chunk_X,chunk_Z) + 1;
+                int y = world.getHeight(chunk_X,chunk_Z);
                 int z = chunk_Z*16 + rand.nextInt(3)+ 6;
                 generator.generate(world, rand, world.getHeight(new BlockPos(x,y,z)));
             }
@@ -430,14 +459,24 @@ public class OreGeneration implements IWorldGenerator
                 this.runWorldGenerator(white_ore,world,random,chunkX,chunkZ,1,0,20);
                 this.runWorldGenerator(black_ore,world,random,chunkX,chunkZ,1,0,20);
                 //Ore Generator Crystal Biome
-                this.runGenerator(red_ore,world,random,chunkX,chunkZ,15,0,60);
-                this.runGenerator(blue_ore,world,random,chunkX,chunkZ,15,0,60);
-                this.runGenerator(yellow_ore,world,random,chunkX,chunkZ,15,0,60);
-                this.runGenerator(purple_ore,world,random,chunkX,chunkZ,9,0,30);
-                this.runGenerator(orange_ore,world,random,chunkX,chunkZ,9,0,30);
-                this.runGenerator(green_ore,world,random,chunkX,chunkZ,9,0,30);
-                this.runGenerator(white_ore,world,random,chunkX,chunkZ,3,0,10);
-                this.runGenerator(black_ore,world,random,chunkX,chunkZ,3,0,10);
+                this.runGenerator(red_ore,world,random,chunkX,chunkZ,30,0,200);
+                this.runGenerator(blue_ore,world,random,chunkX,chunkZ,30,0,200);
+                this.runGenerator(yellow_ore,world,random,chunkX,chunkZ,30,0,200);
+                this.runGenerator(purple_ore,world,random,chunkX,chunkZ,20,0,200);
+                this.runGenerator(orange_ore,world,random,chunkX,chunkZ,20,0,200);
+                this.runGenerator(green_ore,world,random,chunkX,chunkZ,20,0,200);
+                this.runGenerator(white_ore,world,random,chunkX,chunkZ,3,0,30);
+                this.runGenerator(black_ore,world,random,chunkX,chunkZ,3,0,30);
+
+                //Regular ores in crystal biomes above y=70
+                this.runGenerator(glowstone_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(coal_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(redstone_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(lapis_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(iron_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(gold_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(diamond_ore,world,random,chunkX,chunkZ,30,50,250);
+                this.runGenerator(emerald_ore,world,random,chunkX,chunkZ,30,50,250);
                 /*
                 //Ore Generator Crystal Hot Biome
                 this.runGeneratorHot(red_ore,world,random,chunkX,chunkZ,15,0,60);

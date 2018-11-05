@@ -33,7 +33,7 @@ public class BiomeRegistry
         //crystal_cold = new CrystalCold(new Biome.BiomeProperties("Crystal Cold").setWaterColor(0).setRainDisabled().setBaseHeight(0.2F).setHeightVariation(0.2F).setTemperature(0.25F));
         //crystal_cold.setRegistryName("crystalcold");
         //ForgeRegistries.BIOMES.register(crystal_cold);
-        crystal_crystal = new Crystal(new Biome.BiomeProperties("Crystal").setWaterColor(0).setRainDisabled().setBaseHeight(2.0F).setHeightVariation(0.125F).setTemperature(0.8F));
+        crystal_crystal = new Crystal(new Biome.BiomeProperties("Crystal").setWaterColor(12035071).setRainDisabled().setBaseHeight(5.0F).setHeightVariation(2.5F).setTemperature(0.8F));
         crystal_crystal.setRegistryName("crystal");
         ForgeRegistries.BIOMES.register(crystal_crystal);
     }
@@ -54,7 +54,7 @@ public class BiomeRegistry
         BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(crystal_crystal,(biomeWeight)));
 
         BiomeManager.addVillageBiome(crystal_crystal,true);
-        BiomeManager.addStrongholdBiome(crystal_crystal);
+        //BiomeManager.addStrongholdBiome(crystal_crystal);
 
 
     }
