@@ -12,9 +12,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-/**
- * Created by KingMowmaster on 2/20/2017.
- */
+
 public class CommonProxy
 {
     public void init()
@@ -33,6 +31,10 @@ public class CommonProxy
         EnchantAndEffectHandlers enchants = new EnchantAndEffectHandlers();
         MinecraftForge.EVENT_BUS.register(enchants);
         FMLCommonHandler.instance().bus().register(enchants);
+
+        SpellCrafting spellCrafting = new SpellCrafting();
+        MinecraftForge.EVENT_BUS.register(spellCrafting);
+        FMLCommonHandler.instance().bus().register(spellCrafting);
 
         LootHandler loots = new LootHandler();
         MinecraftForge.EVENT_BUS.register(loots);
