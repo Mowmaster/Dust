@@ -902,7 +902,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         int countDropped = blocky.getBlock().quantityDropped(blocky,0,rn);
                         if(blocky.getBlock().getItemDropped(blocky,rn,0)!=null)
                         {
-
                             if(dropItem.getHasSubtypes())
                             {
                                 getDrops = new ItemStack(dropItem,countDropped,metaDropped);
@@ -914,7 +913,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                     if(hasItem())
                     {
-                        System.out.println(getDrops);
                         if(doItemsMatch(getDrops))
                         {
                             if(getItemInPedestal().getCount() + getDrops.getCount() <= getMaxStackSize())
@@ -927,7 +925,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     }
                     else
                     {
-                        System.out.println(getDrops);
                         addItem(getDrops);
                         world.setBlockToAir(getPosOfBlockBelow(rangeOfBreak));
                     }
@@ -1354,7 +1351,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     storedOutputLocations[i] = getWrench;
                     return true;
                 }
-                System.out.println(storedOutputLocations[i]);
+                //s(storedOutputLocations[i]);
             }
             return false;
         }
@@ -2034,7 +2031,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     {
         for(int i=0;i<storedOutputLocations.length;i++)
         {
-            System.out.println(storedOutputLocations[i]);
+            //System.out.println(storedOutputLocations[i]);
         }
     }
 
