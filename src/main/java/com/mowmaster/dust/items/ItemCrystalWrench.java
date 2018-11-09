@@ -160,7 +160,11 @@ public class ItemCrystalWrench extends Item
                                                 }
                                                 else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful"));
                                             }
-                                            else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Connection Already Exists"));
+                                            else
+                                            {
+                                                tilePedestal.removeConnection(getStoredPosition(player.getHeldItem(hand)));
+                                                player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successfully Removed"));
+                                            }
                                         }
                                         else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Cannot be Linked to Itsself"));
                                     }

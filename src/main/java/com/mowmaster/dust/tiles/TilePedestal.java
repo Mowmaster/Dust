@@ -1394,6 +1394,29 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
+    public void removeConnection(BlockPos blockToRemove)
+    {
+
+        for(int i=0;i<storedOutputLocations.length;i++) {
+            if (storedOutputLocations[i].equals(blockToRemove)) {
+                storedOutputLocations[i]=defaultPos;
+
+            }
+        }
+
+        BlockPos[] copyArray = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
+        int j = 0;
+        for(int i=0;i<storedOutputLocations.length;i++) {
+            if (!(storedOutputLocations[i].equals(defaultPos))) {
+                copyArray[j] = storedOutputLocations[i];
+                j++;
+            }
+        }
+
+        storedOutputLocations = copyArray;
+
+    }
+    
     public boolean isSamePedestal(BlockPos pedestalToBeLinked)
     {
         BlockPos thisPedestal = this.getPos();
