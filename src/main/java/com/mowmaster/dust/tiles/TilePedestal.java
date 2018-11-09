@@ -1416,7 +1416,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         storedOutputLocations = copyArray;
 
     }
-    
+
     public boolean isSamePedestal(BlockPos pedestalToBeLinked)
     {
         BlockPos thisPedestal = this.getPos();
@@ -1425,21 +1425,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             {
                 return true;
             }
-
-        return false;
-    }
-
-    public boolean removeReciever(BlockPos recieverPedestalToRemove)
-    {
-
-        for(int i=0;i<storedOutputLocations.length;i++)
-        {
-            if(storedOutputLocations[i].equals(recieverPedestalToRemove))
-            {
-                storedOutputLocations[i] = defaultPos;
-                return true;
-            }
-        }
 
         return false;
     }
