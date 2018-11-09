@@ -721,6 +721,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     if(getItemInPedestal().getHasSubtypes()) {
                         stated = block.getStateFromMeta(getItemInPedestal().getMetadata());
                     }
+                    
                     if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace)).getBlock().equals(Blocks.AIR))
                     {
                         if(block instanceof IGrowable)
@@ -757,10 +758,22 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         stated2 = block2.getStateFromMeta(getItemInPedestal().getMetadata());
                     }
 
-                    if(block2 instanceof IGrowable)
+                    if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace)).getBlock().equals(Blocks.AIR))
                     {
-                        if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
+                        if(block2 instanceof IGrowable)
                         {
+                            if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
+                            {
+                                if(getItemInPedestal().getHasSubtypes())
+                                {
+                                    world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated2);
+                                }
+                                else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block2.getDefaultState());
+                                getItemInPedestal().shrink(1);
+                            }
+                        }
+                        else {
+
                             if(getItemInPedestal().getHasSubtypes())
                             {
                                 world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated2);
@@ -768,15 +781,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block2.getDefaultState());
                             getItemInPedestal().shrink(1);
                         }
-                    }
-                    else {
-
-                        if(getItemInPedestal().getHasSubtypes())
-                        {
-                            world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated2);
-                        }
-                        else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block2.getDefaultState());
-                        getItemInPedestal().shrink(1);
                     }
                 }
                 else if(block3!=null)
@@ -786,10 +790,21 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         stated3 = block3.getStateFromMeta(getItemInPedestal().getMetadata());
                     }
 
-                    if(block3 instanceof IGrowable)
+                    if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace)).getBlock().equals(Blocks.AIR))
                     {
-                        if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
+                        if(block3 instanceof IGrowable)
                         {
+                            if(world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.DIRT) || world.getBlockState(getPosOfBlockBelow(rangeOfPlace).add(0,-1,0)).getBlock().equals(Blocks.GRASS))
+                            {
+                                if(getItemInPedestal().getHasSubtypes())
+                                {
+                                    world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated3);
+                                }
+                                else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block3.getDefaultState());
+                                getItemInPedestal().shrink(1);
+                            }
+                        }
+                        else {
                             if(getItemInPedestal().getHasSubtypes())
                             {
                                 world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated3);
@@ -798,14 +813,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             getItemInPedestal().shrink(1);
                         }
                     }
-                    else {
-                        if(getItemInPedestal().getHasSubtypes())
-                        {
-                            world.setBlockState(getPosOfBlockBelow(rangeOfPlace),stated3);
-                        }
-                        else world.setBlockState(getPosOfBlockBelow(rangeOfPlace),block3.getDefaultState());
-                        getItemInPedestal().shrink(1);
-                    }
+
                 }
             }
         }
