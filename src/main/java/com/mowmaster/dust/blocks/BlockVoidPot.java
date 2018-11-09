@@ -7,6 +7,9 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -29,7 +32,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 public class BlockVoidPot extends Block
 {
-    private static AxisAlignedBB pot1 = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    private static AxisAlignedBB pot1 = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.99D, 0.875D);
 
     public BlockVoidPot(String unloc, String registryName)
     {
@@ -38,6 +41,7 @@ public class BlockVoidPot extends Block
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
+        this.setTickRandomly(true);
     }
 
     public boolean isOpaqueCube(IBlockState state)
@@ -75,6 +79,13 @@ public class BlockVoidPot extends Block
 
     }
 
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        if(entityIn instanceof EntityItem || entityIn instanceof EntityXPOrb)
+        {
+            entityIn.setDead();
+        }
+    }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
