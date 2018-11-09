@@ -31,8 +31,8 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 //Result of the dust from a crusher
-public class BlockDust extends BlockFalling {
-    public BlockDust(String unloc, String registryName) {
+public class BlockDustCloud extends BlockFalling {
+    public BlockDustCloud(String unloc, String registryName) {
         super(Material.SAND);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));

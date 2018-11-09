@@ -397,23 +397,23 @@ public class BlockRegistry
         blackCrystalTwo = new BlockCrystal("blockblackcrystaltwo", "black/blockblackcrystaltwo");
         blackCrystalOne = new BlockCrystal("blockblackcrystalone", "black/blockblackcrystalone");
 
-        redDust = new BlockDust("reddust","red/reddust");
-        blueDust = new BlockDust("bluedust","blue/bluedust");
-        yellowDust = new BlockDust("yellowdust","yellow/yellowdust");
-        purpleDust = new BlockDust("purpledust","purple/purpledust");
-        orangeDust = new BlockDust("orangedust","orange/orangedust");
-        greenDust = new BlockDust("greendust","green/greendust");
-        whiteDust = new BlockDust("whitedust","white/whitedust");
-        blackDust = new BlockDust("blackdust","black/blackdust");
+        redDust = new BlockDustCloud("reddust","red/reddust");
+        blueDust = new BlockDustCloud("bluedust","blue/bluedust");
+        yellowDust = new BlockDustCloud("yellowdust","yellow/yellowdust");
+        purpleDust = new BlockDustCloud("purpledust","purple/purpledust");
+        orangeDust = new BlockDustCloud("orangedust","orange/orangedust");
+        greenDust = new BlockDustCloud("greendust","green/greendust");
+        whiteDust = new BlockDustCloud("whitedust","white/whitedust");
+        blackDust = new BlockDustCloud("blackdust","black/blackdust");
 
-        blazeDust = new BlockDust("blazedust","dust/blazedust");
-        carbonDust = new BlockDust("carbondust","dust/carbondust");
-        ironDust = new BlockDust("irondust","dust/irondust");
-        goldDust = new BlockDust("golddust","dust/golddust");
-        redstoneDust = new BlockDust("redstonedust","dust/redstonedust");
-        wheatDust = new BlockDust("wheatdust","dust/wheatdust");
-        potatoDust = new BlockDust("potatodust","dust/potatodust");
-        sugarDust = new BlockDust("sugardust","dust/sugardust");
+        blazeDust = new BlockDustCloud("blazedust","dust/blazedust");
+        carbonDust = new BlockDustCloud("carbondust","dust/carbondust");
+        ironDust = new BlockDustCloud("irondust","dust/irondust");
+        goldDust = new BlockDustCloud("golddust","dust/golddust");
+        redstoneDust = new BlockDustCloud("redstonedust","dust/redstonedust");
+        wheatDust = new BlockDustCloud("wheatdust","dust/wheatdust");
+        potatoDust = new BlockDustCloud("potatodust","dust/potatodust");
+        sugarDust = new BlockDustCloud("sugardust","dust/sugardust");
 
         leaf = new BlockLeaf("leaves");
 
