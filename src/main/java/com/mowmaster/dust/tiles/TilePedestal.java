@@ -175,8 +175,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
-
-
     public boolean hasUpgrade(TilePedestal getReciever, Item coinType)
     {
         if(getReciever.hasCoin())
@@ -1249,6 +1247,76 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
             }
 
         }
+
+        /*
+        List<EntityItem> items = worldIn.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1, pos.getX() + 2, pos.getY() + 1, pos.getZ() + 2));
+            List<EntityXPOrb> orbs = worldIn.getEntitiesWithinAABB(EntityXPOrb.class,new AxisAlignedBB(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1, pos.getX() + 2, pos.getY() + 1, pos.getZ() + 2));
+            for (EntityXPOrb orbo : orbs) {
+                double orbox = pos.getX()-orbo.getPosition().getX();
+                double orboy = pos.getY()-orbo.getPosition().getY();
+                double orboz = pos.getZ()-orbo.getPosition().getZ();
+
+                if(orbox<0)
+                {
+                    orbo.motionX=-0.1;
+                }
+                else
+                {
+                    orbo.motionX=0.1;
+                }
+
+                if(orboy<0)
+                {
+                    orbo.motionY=-0.1;
+                }
+                else
+                {
+                    orbo.motionY=0.1;
+                }
+
+                if(orboz<0)
+                {
+                    orbo.motionZ=-0.1;
+                }
+                else
+                {
+                    orbo.motionZ=0.1;
+                }
+            }
+
+            for (EntityItem item : items) {
+                double itemx = pos.getX()-item.getPosition().getX();
+                double itemy = pos.getY()-item.getPosition().getY();
+                double itemz = pos.getZ()-item.getPosition().getZ();
+
+                if(itemx<0)
+                {
+                    item.motionX=-0.1;
+                }
+                else
+                {
+                    item.motionX=0.1;
+                }
+
+                if(itemy<0)
+                {
+                    item.motionY=-0.1;
+                }
+                else
+                {
+                    item.motionY=0.1;
+                }
+
+                if(itemz<0)
+                {
+                    item.motionZ=-0.1;
+                }
+                else
+                {
+                    item.motionZ=0.1;
+                }
+            }
+         */
     }
 
     public void getItemEntitiesNearby(int rangeIncrease)
