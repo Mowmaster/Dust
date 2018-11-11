@@ -32,7 +32,14 @@ public class BlockRegistry
     public static Block whiteOre;
     public static Block blackOre;
 
-    public static Block redCrystalLamp;
+    public static Block redCrystalTorch;
+    public static Block blueCrystalTorch;
+    public static Block yellowCrystalTorch;
+    public static Block purpleCrystalTorch;
+    public static Block greenCrystalTorch;
+    public static Block orangeCrystalTorch;
+    public static Block whiteCrystalTorch;
+    public static Block blackCrystalTorch;
 
     public static Block logred;
     public static Block logblue;
@@ -351,7 +358,14 @@ public class BlockRegistry
         whiteOre = new BlockCrystalOre("whiteore", "white/whiteore", Material.ROCK, SoundType.STONE, 3, 15, 10);
         blackOre = new BlockCrystalOre("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 3, 15, 10);
 
-        redCrystalLamp = new BlockCrystalLamp("redlamp", "red/redlamp");
+        redCrystalTorch = new BlockCrystalTorch("redtorch", "red/redtorch");
+        blueCrystalTorch = new BlockCrystalTorch("bluetorch", "blue/bluetorch");
+        yellowCrystalTorch = new BlockCrystalTorch("yellowtorch", "yellow/yellowtorch");
+        purpleCrystalTorch = new BlockCrystalTorch("purpletorch", "purple/purpletorch");
+        greenCrystalTorch = new BlockCrystalTorch("greentorch", "green/greentorch");
+        orangeCrystalTorch = new BlockCrystalTorch("orangetorch", "orange/orangetorch");
+        whiteCrystalTorch = new BlockCrystalTorch("whitetorch", "white/whitetorch");
+        blackCrystalTorch = new BlockCrystalTorch("blacktorch", "black/blacktorch");
 
         redCrystalFive = new BlockCrystal("blockredcrystalfive", "red/blockredcrystalfive");
         redCrystalFour = new BlockCrystal("blockredcrystalfour", "red/blockredcrystalfour");
@@ -664,7 +678,14 @@ public class BlockRegistry
         registerBlock(whiteOre);
         registerBlock(blackOre);
 
-        registerBlock(redCrystalLamp);
+        registerBlock(redCrystalTorch);
+        registerBlock(blueCrystalTorch);
+        registerBlock(yellowCrystalTorch);
+        registerBlock(purpleCrystalTorch);
+        registerBlock(greenCrystalTorch);
+        registerBlock(orangeCrystalTorch);
+        registerBlock(whiteCrystalTorch);
+        registerBlock(blackCrystalTorch);
 
         registerBlock(logred);
         registerBlock(logblue);
@@ -975,7 +996,14 @@ public class BlockRegistry
         registerRender(whiteOre);
         registerRender(blackOre);
 
-        registerRender(redCrystalLamp);
+        registerRender(redCrystalTorch);
+        registerRender(blueCrystalTorch);
+        registerRender(yellowCrystalTorch);
+        registerRender(purpleCrystalTorch);
+        registerRender(greenCrystalTorch);
+        registerRender(orangeCrystalTorch);
+        registerRender(whiteCrystalTorch);
+        registerRender(blackCrystalTorch);
 
         registerRenderLog(logred);
         registerRenderLog(logblue);

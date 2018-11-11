@@ -1,5 +1,5 @@
 {
-    "parent" : "dust:block/red/redlamp",
+    "parent" : "dust:block/red/redtorch",
     "display" : {
         "thirdperson" : {
             "rotation" : [10, -45, 170],

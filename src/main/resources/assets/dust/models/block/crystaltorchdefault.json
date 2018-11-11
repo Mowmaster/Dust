@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "dust:items/models/coins/coin",
-		"1": "dust:items/models/crystals/crystal_red",
-		"2": "dust:items/models/crystals/crystalcore_red",
-		"particle": "dust:items/models/coins/coin"
+		"1": "#side",
+		"2": "#core",
+		"particle": "#part"
 	},
 	"elements": [
 		{
@@ -397,6 +397,44 @@
 			}
 		}
 	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.5, 0.5, 0.5],
+			"translation": [0, 2, -1],
+			"rotation": [67, 0, 0]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.5, 0.5, 0.5],
+			"rotation": [67, 0, 0],
+			"translation": [0, 2, -1.5]
+		},
+		"firstperson_righthand": {
+			"scale": [0.75, 0.75, 0.75],
+			"rotation": [-8, 132, 1],
+			"translation": [0, 2.5, -1.5]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.75, 0.75, 0.75],
+			"translation": [0, 2.5, -1.5],
+			"rotation": [-8, 132, 1]
+		},
+		"head": {
+			"translation": [0, 14, 0]
+		},
+		"ground": {
+			"scale": [0.75, 0.75, 0.75],
+			"translation": [0, 2, 0]
+		},
+		"fixed": {
+			"rotation": [0, 0, 0],
+			"translation": [0, 0, -0.5]
+		},
+		"gui": {
+			"rotation": [10, 171, 0],
+			"translation": [0, 0, 0],
+			"scale": [0.75, 0.75, 0.75]
+		}
+	},
 	"groups": [
 		{
 			"name": "crystaltorchdefault",

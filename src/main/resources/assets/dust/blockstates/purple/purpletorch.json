@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=up": {"model": "dust:purple/purpletorch"},
+    "facing=down": {"model": "dust:purple/purpletorchtop","x":180},
+    "facing=north": {"model": "dust:purple/purpletorchside","y":90},
+    "facing=east": {"model": "dust:purple/purpletorchside","y":180},
+    "facing=south": {"model": "dust:purple/purpletorchside","y":270},
+    "facing=west": {"model": "dust:purple/purpletorchside"}
+  }
+}

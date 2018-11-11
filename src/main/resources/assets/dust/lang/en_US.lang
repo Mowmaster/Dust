@@ -131,6 +131,16 @@ item.crystalfurnaceupgrade.name=Machine Block Furnace Upgrade
 item.debug.name=Scroll Of The All Knowing
 item.finnisher.name=The Finnish'er
 
+tile.redtorch.name=Red Crystal Torch
+tile.bluetorch.name=Blue Crystal Torch
+tile.yellowtorch.name=Yellow Crystal Torch
+tile.purpletorch.name=Purple Crystal Torch
+tile.greentorch.name=Green Crystal Torch
+tile.orangetorch.name=Orange Crystal Torch
+tile.whitetorch.name=White Crystal Torch
+tile.blacktorch.name=Black Crystal Torch
+
+
 tile.redore.name=Red Crystal Ore (Ore)
 tile.blockredcrystalfive.name=Red Crystal (5)
 tile.blockredcrystalfour.name=Red Crystal (4)
