@@ -1,11 +1,10 @@
 {
-	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "dust:items/models/coins/coin",
-		"1": "dust:items/models/crystals/crystal_red",
-		"2": "dust:items/models/crystals/crystalcore_red",
+		"1": "#side",
+		"2": "#core",
 		"3": "dust:items/models/crystals/crystal_depleated",
-		"particle": "dust:items/models/coins/coin"
+		"particle": "#part"
 	},
 	"elements": [
 		{

@@ -32,6 +32,8 @@ public class BlockRegistry
     public static Block whiteOre;
     public static Block blackOre;
 
+    public static Block redCrystalLamp;
+
     public static Block logred;
     public static Block logblue;
     public static Block logyellow;
@@ -349,6 +351,8 @@ public class BlockRegistry
         whiteOre = new BlockCrystalOre("whiteore", "white/whiteore", Material.ROCK, SoundType.STONE, 3, 15, 10);
         blackOre = new BlockCrystalOre("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 3, 15, 10);
 
+        redCrystalLamp = new BlockCrystalLamp("redlamp", "red/redlamp");
+
         redCrystalFive = new BlockCrystal("blockredcrystalfive", "red/blockredcrystalfive");
         redCrystalFour = new BlockCrystal("blockredcrystalfour", "red/blockredcrystalfour");
         redCrystalThree = new BlockCrystal("blockredcrystalthree", "red/blockredcrystalthree");
@@ -660,6 +664,8 @@ public class BlockRegistry
         registerBlock(whiteOre);
         registerBlock(blackOre);
 
+        registerBlock(redCrystalLamp);
+
         registerBlock(logred);
         registerBlock(logblue);
         registerBlock(logyellow);
@@ -968,6 +974,8 @@ public class BlockRegistry
         registerRender(greenOre);
         registerRender(whiteOre);
         registerRender(blackOre);
+
+        registerRender(redCrystalLamp);
 
         registerRenderLog(logred);
         registerRenderLog(logblue);
