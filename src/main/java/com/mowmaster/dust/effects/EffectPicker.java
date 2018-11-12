@@ -22,11 +22,19 @@ public class EffectPicker
         getPotency(type,white,black,potencyCap);
         getColor(white,black,percentRed,percentBlue,percentYellow);
 
-        while(EffectGetter.instance().hasPotionEffect(colorToRecipe)==false)
+        if(red>0&&blue>0&&yellow>0)
         {
-            findNextColorForEffect();
-            getColor(white,black,percentRed,percentBlue,percentYellow);
+            return new PotionEffect(PotionRegistry.POTION_SLOWFALL,duration);
         }
+        else
+        {
+            while(EffectGetter.instance().hasPotionEffect(colorToRecipe)==false)
+            {
+                findNextColorForEffect();
+                getColor(white,black,percentRed,percentBlue,percentYellow);
+            }
+        }
+
 
         //System.out.println(colorToRecipe);
         return getEffect(CrystalTypes.EffectTypes.DUST,white,black,potencyCap,duration,ambient,showParticles);
