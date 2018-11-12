@@ -49,11 +49,9 @@ public class BlockCrystalTorch extends BlockDirectional
     }
 
 
-
     @Override
-    public Item getItemDropped(IBlockState state, Random random, int fortune)
-    {
-        return null;
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return super.getItemDropped(state, rand, fortune);
     }
 
     @Override
