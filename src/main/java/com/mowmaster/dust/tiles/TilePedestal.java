@@ -427,7 +427,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                         int itemInStackCount = 0;
                         for(int i = 0; i < gridIterateSize; i++) {
                             ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                            if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1)
+                            if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                             {
                                 itemInStackCount++;
                             }
@@ -438,7 +438,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                             for(int i = 0; i < gridIterateSize; i++) {
                                 ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
 
-                                if(stack.isEmpty())
+                                if(stack.isEmpty() || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                     continue;
 
                                 craft.setInventorySlotContents(i, stack);
@@ -453,7 +453,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                                         for(int i = 0; i < gridIterateSize; i++) {
                                             ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                            if(stack.isEmpty())
+                                            if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                                 continue;
 
                                             if(stack.getItem().hasContainerItem(stack))
@@ -485,7 +485,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                                             for(int i = 0; i < gridIterateSize; i++) {
                                                 ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                                if(stack.isEmpty())
+                                                if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                                     continue;
 
                                                 if(stack.getItem().hasContainerItem(stack))
@@ -524,7 +524,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                 int itemInStackCount = 0;
                                 for(int j = (fin-(gridIterateSize-1)); j <=fin; j++) {
                                     ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(j);
-                                    if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1)
+                                    if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1 || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                     {
                                         itemInStackCount++;
                                     }
@@ -535,7 +535,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                                     for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
                                         ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
 
-                                        if(stack.isEmpty())
+                                        if(stack.isEmpty() || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                             continue;
 
                                         int getCraftingSlot = i-(counter*gridIterateSize);
@@ -551,7 +551,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                                                 for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
                                                     ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                                    if(stack.isEmpty())
+                                                    if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                                         continue;
 
                                                     if(stack.getItem().hasContainerItem(stack))
@@ -583,7 +583,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
 
                                                     for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
                                                         ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-                                                        if(stack.isEmpty())
+                                                        if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
                                                             continue;
 
                                                         if(stack.getItem().hasContainerItem(stack))

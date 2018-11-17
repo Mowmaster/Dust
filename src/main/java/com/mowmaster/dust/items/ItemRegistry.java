@@ -33,6 +33,7 @@ public class ItemRegistry
     public static Item crushingComponents; // fixed the capitalization to use proper camel casing instead of being all lowercase
     public static Item furnaceComponents;
     public static Item finnisher;
+    public static Item craftingPlaceholder;
     //public static Item dustbread;
 
     public static Item ancientCoinA;
@@ -168,6 +169,8 @@ public class ItemRegistry
         effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");
         breakerUpgrade = new ItemCoin("breakerupgrade","breakerupgrade");
 
+        craftingPlaceholder = new ItemBasic("craftingplaceholder","craftingplaceholder",64);
+
         scrollA = new ItemScroll("scrolla","scrolla");
         scrollB = new ItemScroll("scrollb","scrollb");
         scrollC = new ItemScroll("scrollc","scrollc");
@@ -273,6 +276,8 @@ public class ItemRegistry
         registerItem(effectUpgrade);
         registerItem(breakerUpgrade);
 
+        registerItem(craftingPlaceholder);
+
         registerItem(scrollA);
         registerItem(scrollB);
         registerItem(scrollC);
@@ -371,6 +376,8 @@ public class ItemRegistry
         registerRender(filterModBlacklistUpgrade);
         registerRender(effectUpgrade);
         registerRender(breakerUpgrade);
+
+        registerRender(craftingPlaceholder);
 
         registerRender(scrollA);
         registerRender(scrollB);
