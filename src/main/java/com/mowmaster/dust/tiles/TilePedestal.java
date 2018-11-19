@@ -403,12 +403,12 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
     public void crafter(int gridSize)//1x1, 2x2, 3x3
     {
         InventoryCrafting craft = new InventoryCrafting(new Container()
-            {
+        {
             @Override
             public boolean canInteractWith(@Nonnull EntityPlayer player) {
                 return false;
             }
-            }, gridSize, gridSize);
+        }, gridSize, gridSize);
 
         int gridIterateSize = gridSize*gridSize;
 

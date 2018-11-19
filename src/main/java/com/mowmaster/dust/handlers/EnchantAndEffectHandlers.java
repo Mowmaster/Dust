@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentSmelt;
 import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemDust;
@@ -69,6 +70,54 @@ import static net.minecraft.block.BlockFarmland.MOISTURE;
 
 public class EnchantAndEffectHandlers
 {
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void blockHarvestDropsEventLowest(BlockEvent.HarvestDropsEvent event)
+    {
+        World world = event.getWorld();
+        EntityPlayer player = event.getHarvester();
+        BlockPos pos = event.getPos();
+        List<ItemStack> stackie = event.getDrops();
+        if(!world.isRemote) {//Disabled due to Ticking World Error
+            if (player == null) {
+                return;
+            }
+
+            if (player.swingingHand == null) {
+                return;
+            }
+
+            if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter, player.getHeldItem(player.getActiveHand())) != 0)
+            {
+                ItemStack tool = player.getHeldItem(player.getActiveHand());
+
+                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
+                if(tool.getItem() instanceof ItemTool)
+                {
+                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty()) {}
+                    else
+                    {
+                        if(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()>0)
+                        {
+                            world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata())));
+                            event.getDrops().set(0,ItemStack.EMPTY);
+                            player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                            world.setBlockToAir(pos);
+                        }
+                        else
+                        {
+                            world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1)));
+                            event.getDrops().set(0,ItemStack.EMPTY);
+                            player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                            world.setBlockToAir(pos);
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void blockBreakEventLowest(BlockEvent.BreakEvent event)
     {
@@ -138,40 +187,6 @@ public class EnchantAndEffectHandlers
                     }
                 }
             }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void blockHarvestDropsEventLowest(BlockEvent.HarvestDropsEvent event)
-    {
-        World world = event.getWorld();
-        EntityPlayer player = event.getHarvester();
-        BlockPos pos = event.getPos();
-        List<ItemStack> stackie = event.getDrops();
-        if(!world.isRemote)
-        {//Disabled due to Ticking World Error
-            if(player==null){return;}
-
-            if (player.swingingHand == null) {return;}
-            
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()))!=0)
-            {
-                ItemStack tool = player.getHeldItem(player.getActiveHand());
-
-                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
-                if(tool.getItem() instanceof ItemTool)
-                {
-                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty()) {}
-                    else
-                    {
-                        world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0))));
-                        event.getDrops().set(0,ItemStack.EMPTY);
-                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
-                        world.setBlockToAir(pos);
-                    }
-                }
-            }
-
         }
     }
 
