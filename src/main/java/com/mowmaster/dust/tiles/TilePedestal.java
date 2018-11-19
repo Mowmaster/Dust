@@ -1,6 +1,5 @@
 package com.mowmaster.dust.tiles;
 
-import com.mojang.authlib.GameProfile;
 import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
@@ -16,7 +15,6 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.*;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -46,7 +44,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -1004,7 +1001,7 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
                     }
                 }
 
-                getItemEntitiesNearby(3+rangeIncrease);
+                getItemEntitiesNearby(1+rangeIncrease);
             }
         }
     }
