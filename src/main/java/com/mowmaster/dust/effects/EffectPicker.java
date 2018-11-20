@@ -24,7 +24,14 @@ public class EffectPicker
 
         if(red>0&&blue>0&&yellow>0)
         {
-            return new PotionEffect(PotionRegistry.POTION_SLOWFALL,duration);
+            if(red==blue&&blue==yellow&&yellow==red)
+            {
+                return new PotionEffect(PotionRegistry.POTION_FLIGHT,duration);
+            }
+            else
+            {
+                return new PotionEffect(PotionRegistry.POTION_SLOWFALL,duration);
+            }
         }
         else
         {
