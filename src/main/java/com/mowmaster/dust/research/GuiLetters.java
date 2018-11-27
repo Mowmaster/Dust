@@ -1,4 +1,4 @@
-package com.mowmaster.dust.guideBook;
+package com.mowmaster.dust.research;
 
 
 import com.mowmaster.dust.references.Reference;
@@ -10,9 +10,9 @@ import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
 
-public class GuiIndex extends GuiScreen
+public class GuiLetters extends GuiScreen
 {
-    private final ResourceLocation tomeBackground = new ResourceLocation(Reference.MODID, "textures/guis/gui_index_background.png");
+    private final ResourceLocation tomeBackground = new ResourceLocation(Reference.MODID, "textures/guis/gui_letters_background.png");
     private final ResourceLocation elements1 = new ResourceLocation(Reference.MODID, "textures/guis/gui_letters_background.png.png");
     private final ResourceLocation elements2 = new ResourceLocation(Reference.MODID, "textures/guis/gui_letters_background.png.png");
     //private final ResourceLocation elements3 = new ResourceLocation(Reference.MODID, "textures/gui/elements3.png");
@@ -122,7 +122,7 @@ public class GuiIndex extends GuiScreen
                 Minecraft.getMinecraft().displayGuiScreen(new GuiIndex());
                 break;
             case BTNAIR:
-                Minecraft.getMinecraft().displayGuiScreen(new GuiLetters());
+                Minecraft.getMinecraft().displayGuiScreen(new GuiIndex());
                 break;
             case BTNEARTH:
                 drawIcon(elements1,160,0);

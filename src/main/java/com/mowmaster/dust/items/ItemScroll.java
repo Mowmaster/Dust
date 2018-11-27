@@ -1,28 +1,20 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.entity.item.EntityItem;
+import com.mowmaster.dust.research.GuiResearchNote;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 //import static com.mowmaster.dust.misc.AchievementHandler.achievementScrollA;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
@@ -30,12 +22,46 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ItemScroll extends Item
 {
+    String contents = "";
+
     public ItemScroll(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
+    }
+
+    private String[] getScrollsObtained = new String[26];
+    //public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
+    private String[] getContents(EntityPlayer player)
+    {
+        int counter = 0;
+        String letter = "";
+        for(int i=0;i<player.getInventoryEnderChest().getSizeInventory();i++)
+        {
+            if(player.getInventoryEnderChest().getStackInSlot(i).getItem() instanceof ItemScroll)
+            {
+                getScrollsObtained[counter] = player.getInventoryEnderChest().getStackInSlot(i).getItem().getRegistryName().toString().substring(11);
+                counter++;
+            }
+        }
+
+
+        return getScrollsObtained;
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
+
+        String[] stringy = getContents(player);
+        if(world.isRemote)
+        {
+            contents = "Hello World";
+            Minecraft.getMinecraft().displayGuiScreen(new GuiResearchNote(contents.toLowerCase(),stringy));
+        }
+
+        return super.onItemRightClick(world,player,hand);
     }
 
     @SideOnly(Side.CLIENT)

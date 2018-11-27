@@ -1,4 +1,4 @@
-package com.mowmaster.dust.guideBook;
+package com.mowmaster.dust.research;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;

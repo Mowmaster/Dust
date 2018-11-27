@@ -1,6 +1,6 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.guideBook.GuiIndex;
+import com.mowmaster.dust.research.GuiIndex;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
