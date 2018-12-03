@@ -288,6 +288,7 @@ public class BlockRegistry
     public static Block wheatDust;
     public static Block potatoDust;
     public static Block sugarDust;
+    public static Block dustBlock;
 
     public static Block crystalCluster;
     public static Block machineBase;
@@ -432,6 +433,7 @@ public class BlockRegistry
         wheatDust = new BlockDustCloud("wheatdust","dust/wheatdust");
         potatoDust = new BlockDustCloud("potatodust","dust/potatodust");
         sugarDust = new BlockDustCloud("sugardust","dust/sugardust");
+        dustBlock = new BlockDust("blockdust","blockdust");
 
         leaf = new BlockLeaf("leaves");
 
@@ -933,6 +935,7 @@ public class BlockRegistry
         registerBlock(wheatDust);
         registerBlock(potatoDust);
         registerBlock(sugarDust);
+        registerBlock(dustBlock);
 
         registerBlock(crate1);
         registerBlock(pot1);
@@ -1254,6 +1257,7 @@ public class BlockRegistry
         registerRender(wheatDust);
         registerRender(potatoDust);
         registerRender(sugarDust);
+        registerRender(dustBlock);
 
         registerRender(crate1);
         registerRender(pot1);

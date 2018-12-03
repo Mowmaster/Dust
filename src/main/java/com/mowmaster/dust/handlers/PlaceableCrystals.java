@@ -3,9 +3,11 @@ package com.mowmaster.dust.handlers;
 import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
+import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemScroll;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
+import com.mowmaster.dust.tiles.TileDustBlock;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,6 +85,21 @@ public class PlaceableCrystals
                             spawnBasicCluster(event,-1,0,0);
                         }
                     }
+                }
+
+                if(playerIn.getHeldItem(hand).getItem() instanceof ItemDust)
+                {
+                    worldIn.setBlockState(event.getPos(),BlockRegistry.dustBlock.getDefaultState());
+                    TileEntity tileentity = worldIn.getTileEntity(event.getPos());
+                    if (tileentity instanceof TileDustBlock) {
+
+                        ((TileDustBlock) tileentity).addItem(playerIn.getHeldItemMainhand());
+                        if(!playerIn.isCreative())
+                        {
+                            playerIn.getHeldItem(hand).shrink(1);
+                        }
+                    }
+
                 }
             }
         }

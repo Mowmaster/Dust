@@ -276,7 +276,7 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         compound.setInteger("white",whiteCrystals);
         compound.setInteger("black",blackCrystals);
         compound.setBoolean("light",hasGlowstone);
-        compound.setInteger("ticked",ticked);;
+        compound.setInteger("ticked",ticked);
         return compound;
     }
 
