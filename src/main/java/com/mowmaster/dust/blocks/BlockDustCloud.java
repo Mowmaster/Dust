@@ -1,5 +1,6 @@
 package com.mowmaster.dust.blocks;
 
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.BlockFalling;
@@ -75,6 +76,18 @@ public class BlockDustCloud extends BlockFalling {
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune) {
         return Item.getItemFromBlock(this);
+    }
+
+    public ItemStack getDustDropped()
+    {
+        ItemStack stacked = ItemStack.EMPTY;
+
+        if(this.equals(BlockRegistry.redDust))
+        {
+            stacked = new ItemStack(ItemRegistry.dust,1,0);
+        }
+
+        return stacked;
     }
     /*
     @Override

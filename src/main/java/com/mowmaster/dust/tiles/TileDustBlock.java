@@ -1,8 +1,12 @@
 package com.mowmaster.dust.tiles;
 
+import com.mowmaster.dust.blocks.BlockDust;
+import com.mowmaster.dust.blocks.BlockDustCloud;
 import com.mowmaster.dust.items.ItemDust;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -26,6 +30,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
     {
         this.dust = new ItemStackHandler(8);
     }
+
 
     @Nonnull
     @Override
@@ -55,9 +60,20 @@ public class TileDustBlock extends TileEntity implements IItemHandler
         return dust.getSlots();
     }
 
+    public boolean isBlockFull()
+    {
+        if(isFull)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
     public boolean canAddItem(ItemStack stack)
     {
-        if(stack.getItem() instanceof ItemDust)
+        if(Block.getBlockFromItem(stack.getItem()) instanceof BlockDustCloud)
         {
             if(isFull)
             {
@@ -93,6 +109,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
             {
                 dust.insertItem(slot,stack,false);
                 isFull=true;
+                System.out.println("FULL");
                 updateBlock();
             }
             else
@@ -107,7 +124,15 @@ public class TileDustBlock extends TileEntity implements IItemHandler
 
     public ItemStack removeItem()
     {
-        return dust.extractItem(getNextAvailSlot()-1,1,false);
+        int slotted = getNextAvailSlot()-1;
+        ItemStack returned = dust.extractItem(slotted,1,false).copy();
+        ItemStack returner = ItemStack.EMPTY;
+        if(Block.getBlockFromItem(returned.getItem()) instanceof BlockDustCloud)
+        {
+            returner = ((BlockDustCloud) Block.getBlockFromItem(returned.getItem())).getDustDropped();
+        }
+        dust.setStackInSlot(slotted,ItemStack.EMPTY);
+        return returner;
     }
 
 

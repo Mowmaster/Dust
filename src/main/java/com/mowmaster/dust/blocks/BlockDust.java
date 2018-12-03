@@ -62,18 +62,8 @@ public class BlockDust extends Block implements ITileEntityProvider
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-        if(!worldIn.isRemote)
-        {
-            TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof TileDustBlock) {
-                TileDustBlock tileDust = (TileDustBlock) tileEntity;
-
-                worldIn.spawnEntity(new EntityItem(worldIn,pos.getX()+0.5,pos.getY()+1,pos.getZ()+0.5,tileDust.removeItem()));
-                //worldIn.setTileEntity(pos,tileDust);
-            }
-        }
-
+    public Block setBlockUnbreakable() {
+        return super.setBlockUnbreakable();
     }
 
     @Override
@@ -84,16 +74,34 @@ public class BlockDust extends Block implements ITileEntityProvider
             if (tileEntity instanceof TileDustBlock) {
                 TileDustBlock tileDust = (TileDustBlock) tileEntity;
 
-                if(playerIn.getHeldItemMainhand().getItem() instanceof ItemDust)
+
+                if(Block.getBlockFromItem(playerIn.getHeldItemMainhand().getItem()) instanceof BlockDust)
                 {
-                    tileDust.addItem(playerIn.getHeldItemMainhand());
-                    playerIn.getHeldItemMainhand().shrink(1);
+                    if(!tileDust.isBlockFull())
+                    {
+                        tileDust.addItem(playerIn.getHeldItemMainhand());
+                        playerIn.getHeldItemMainhand().shrink(1);
+
+                        return true;
+                    }
+                }
+                else if(playerIn.getHeldItemMainhand().getItem() instanceof ItemSpade)
+                {
+                    worldIn.spawnEntity(new EntityItem(worldIn,pos.getX()+0.5,pos.getY()+1,pos.getZ()+0.5,tileDust.removeItem()));
+                    playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                    if(tileDust.getNextAvailSlot()==0)
+                    {
+                        worldIn.setBlockToAir(pos);
+                    }
+
+                    return true;
                 }
                 else
                 {
                     System.out.println("Next Slot: " + tileDust.getNextAvailSlot());
                     System.out.println("Stacks: " + tileDust.getSlots());
                 }
+
             }
         }
 
