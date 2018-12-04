@@ -75,7 +75,7 @@ public class BlockDust extends Block implements ITileEntityProvider
                 TileDustBlock tileDust = (TileDustBlock) tileEntity;
 
 
-                if(Block.getBlockFromItem(playerIn.getHeldItemMainhand().getItem()) instanceof BlockDust)
+                if(Block.getBlockFromItem(playerIn.getHeldItemMainhand().getItem()) instanceof BlockDustCloud)
                 {
                     if(!tileDust.isBlockFull())
                     {

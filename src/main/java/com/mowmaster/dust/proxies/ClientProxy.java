@@ -8,7 +8,9 @@ import com.mowmaster.dust.particles.ParticleEvents;
 import com.mowmaster.dust.particles.ParticleHandler;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
+import com.mowmaster.dust.tiles.TileDustBlock;
 import com.mowmaster.dust.tiles.TilePedestal;
+import com.mowmaster.dust.tiles.render.RenderDustBlock;
 import com.mowmaster.dust.tiles.render.RenderTileCrystalCluster;
 import com.mowmaster.dust.tiles.render.RenderTilePedestal;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -34,6 +36,7 @@ public class ClientProxy extends CommonProxy
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCluster.class,new RenderTileCrystalCluster());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePedestal.class,new RenderTilePedestal());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileDustBlock.class,new RenderDustBlock());
 
 
         ParticleEvents parts = new ParticleEvents();

@@ -88,21 +88,6 @@ public class PlaceableCrystals
                         }
                     }
                 }
-
-                if(Block.getBlockFromItem(playerIn.getHeldItem(hand).getItem()) instanceof BlockDustCloud)
-                {
-                    worldIn.setBlockState(event.getPos(),BlockRegistry.dustBlock.getDefaultState());
-                    TileEntity tileentity = worldIn.getTileEntity(event.getPos());
-                    if (tileentity instanceof TileDustBlock) {
-
-                        ((TileDustBlock) tileentity).addItem(playerIn.getHeldItemMainhand());
-                        if(!playerIn.isCreative())
-                        {
-                            playerIn.getHeldItem(hand).shrink(1);
-                        }
-                    }
-
-                }
             }
         }
     }

@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileDustBlock;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
@@ -13,6 +14,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -40,7 +42,7 @@ public class BlockDustCloud extends BlockFalling {
         this.setHardness(1);
         this.setResistance(1);
         this.setSoundType(SoundType.SAND);
-        //this.setTickRandomly(true);
+        this.setTickRandomly(true);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
 /*
@@ -82,31 +84,49 @@ public class BlockDustCloud extends BlockFalling {
     {
         ItemStack stacked = ItemStack.EMPTY;
 
-        if(this.equals(BlockRegistry.redDust))
-        {
-            stacked = new ItemStack(ItemRegistry.dust,1,0);
-        }
+        if(this.equals(BlockRegistry.redDust)) { stacked = new ItemStack(ItemRegistry.dust,1,0); }
+        if(this.equals(BlockRegistry.blueDust)) { stacked = new ItemStack(ItemRegistry.dust,1,1); }
+        if(this.equals(BlockRegistry.yellowDust)) { stacked = new ItemStack(ItemRegistry.dust,1,2); }
+        if(this.equals(BlockRegistry.purpleDust)) { stacked = new ItemStack(ItemRegistry.dust,1,3); }
+        if(this.equals(BlockRegistry.greenDust)) { stacked = new ItemStack(ItemRegistry.dust,1,4); }
+        if(this.equals(BlockRegistry.orangeDust)) { stacked = new ItemStack(ItemRegistry.dust,1,5); }
+        if(this.equals(BlockRegistry.whiteDust)) { stacked = new ItemStack(ItemRegistry.dust,1,6); }
+        if(this.equals(BlockRegistry.blackDust)) { stacked = new ItemStack(ItemRegistry.dust,1,7); }
 
         return stacked;
     }
-    /*
+
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
 
         final int CHANCE = 1;
         int rand = random.nextInt(100);
         if (rand <= CHANCE) {
-            if (this.equals(BlockRegistry.redDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(redDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 0)));}}
-            else if (this.equals(blueDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(blueDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 1)));}}
-            else if (this.equals(yellowDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(yellowDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 2)));}}
-            else if (this.equals(BlockRegistry.purpleDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(purpleDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 3)));}}
-            else if (this.equals(BlockRegistry.orangeDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(orangeDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 5)));}}
-            else if (this.equals(greenDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(greenDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 4)));}}
-            else if (this.equals(BlockRegistry.whiteDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(whiteDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 6)));}}
-            else if (this.equals(BlockRegistry.blackDust)) {if(!(worldIn.getBlockState(pos.down()).getBlock().equals(blackDust))) {worldIn.setBlockToAir(pos);worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 7)));}}
+            if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock() instanceof BlockDustCloud) {}//Do nothing
+            else if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock() instanceof BlockDust)
+            {
+                //add this block to the TE and remove it
+                ItemStack blockToAdd = new ItemStack(this.getDefaultState().getBlock(),1);
+                TileEntity tileentity = worldIn.getTileEntity(pos.add(0,-1,0));
+                if (tileentity instanceof TileDustBlock) {
+                    ((TileDustBlock) tileentity).addItem(blockToAdd);
+                    worldIn.setBlockToAir(pos);
+                }
+            }
+            else
+            {
+
+                //Make a new Dust Block
+                ItemStack blockToAdd = new ItemStack(this.getDefaultState().getBlock(),1);
+                worldIn.setBlockState(pos,BlockRegistry.dustBlock.getDefaultState());
+                TileEntity tileentity = worldIn.getTileEntity(pos);
+                if (tileentity instanceof TileDustBlock) {
+                    ((TileDustBlock) tileentity).addItem(blockToAdd);
+                }
+            }
         }
     }
-    */
+
     @Override
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
         worldIn.createExplosion(new EntityItem(worldIn), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,3.0F, true);

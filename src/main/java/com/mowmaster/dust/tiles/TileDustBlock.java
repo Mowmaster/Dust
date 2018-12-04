@@ -132,6 +132,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
             returner = ((BlockDustCloud) Block.getBlockFromItem(returned.getItem())).getDustDropped();
         }
         dust.setStackInSlot(slotted,ItemStack.EMPTY);
+        updateBlock();
         return returner;
     }
 
