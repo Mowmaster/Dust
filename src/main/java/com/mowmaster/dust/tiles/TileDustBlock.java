@@ -120,6 +120,19 @@ public class TileDustBlock extends TileEntity implements IItemHandler
         }
     }
 
+    public ItemStack getBlockAbove()
+    {
+        ItemStack blockAbove = ItemStack.EMPTY;
+        //Use y+2 because the block above will update the tile and the 2nd block above will become the new block above
+        if(world.getBlockState(this.getPos().add(0,2,0)).getBlock() instanceof BlockDustCloud)
+        {
+            Block blocky = world.getBlockState(this.getPos().add(0,2,0)).getBlock();
+            blockAbove = new ItemStack(Item.getItemFromBlock(blocky),1);
+        }
+
+        return blockAbove;
+    }
+
 
 
     public ItemStack removeItem()

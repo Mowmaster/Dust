@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustConfigurationFile.chanceToDust;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 //Result of the dust from a crusher
@@ -47,7 +48,7 @@ public class BlockDustCloud extends BlockFalling {
         this.setTickRandomly(true);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
-/*
+
     @Override
     public boolean canCollideCheck(IBlockState state, boolean b)
     {
@@ -75,7 +76,7 @@ public class BlockDustCloud extends BlockFalling {
     {
         return true;
     }
-*/
+
     //Only until the Crusher is implimented
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune) {
@@ -101,11 +102,10 @@ public class BlockDustCloud extends BlockFalling {
     @Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
 
-        /*
-        final int CHANCE = 50;
+
+        final int CHANCE = chanceToDust;
         int rand = random.nextInt(100);
         if (rand <= CHANCE) {
-         */
             if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock() instanceof BlockDustCloud) {}//Do nothing
             else if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock() instanceof BlockDust)
             {
@@ -128,7 +128,7 @@ public class BlockDustCloud extends BlockFalling {
                     ((TileDustBlock) tileentity).addItem(blockToAdd);
                 }
             }
-        //}
+        }
     }
 
     @Override
@@ -155,37 +155,6 @@ public class BlockDustCloud extends BlockFalling {
         if(entityIn instanceof EntityPlayer)
         {super.canCollideCheck(this.getDefaultState(),true);}
         else {super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, bool);}
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(playerIn.isSneaking() && playerIn.isCreative())
-        {
-            if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock() instanceof BlockDustCloud) {}//Do nothing
-            else if(worldIn.getBlockState(pos.add(0,-1,0)).getBlock() instanceof BlockDust)
-            {
-                //add this block to the TE and remove it
-                ItemStack blockToAdd = new ItemStack(this.getDefaultState().getBlock(),1);
-                TileEntity tileentity = worldIn.getTileEntity(pos.add(0,-1,0));
-                if (tileentity instanceof TileDustBlock) {
-                    ((TileDustBlock) tileentity).addItem(blockToAdd);
-                    worldIn.setBlockToAir(pos);
-                }
-            }
-            else
-            {
-
-                //Make a new Dust Block
-                ItemStack blockToAdd = new ItemStack(this.getDefaultState().getBlock(),1);
-                worldIn.setBlockState(pos,BlockRegistry.dustBlock.getDefaultState());
-                TileEntity tileentity = worldIn.getTileEntity(pos);
-                if (tileentity instanceof TileDustBlock) {
-                    ((TileDustBlock) tileentity).addItem(blockToAdd);
-                }
-            }
-        }
-
-        return false;
     }
 
     @SideOnly(Side.CLIENT)

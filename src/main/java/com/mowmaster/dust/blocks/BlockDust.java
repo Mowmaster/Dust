@@ -66,52 +66,18 @@ public class BlockDust extends Block implements ITileEntityProvider
         return super.setBlockUnbreakable();
     }
 
+    //See if you can edit this to allow a size based on the TE
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(!worldIn.isRemote)
-        {
-            TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof TileDustBlock) {
-                TileDustBlock tileDust = (TileDustBlock) tileEntity;
-
-
-                if(Block.getBlockFromItem(playerIn.getHeldItemMainhand().getItem()) instanceof BlockDustCloud)
-                {
-                    if(!tileDust.isBlockFull())
-                    {
-                        tileDust.addItem(playerIn.getHeldItemMainhand());
-                        playerIn.getHeldItemMainhand().shrink(1);
-
-                        return true;
-                    }
-                }
-                else if(playerIn.getHeldItemMainhand().getItem() instanceof ItemSpade)
-                {
-                    worldIn.spawnEntity(new EntityItem(worldIn,pos.getX()+0.5,pos.getY()+1,pos.getZ()+0.5,tileDust.removeItem()));
-                    playerIn.getHeldItemMainhand().damageItem(1,playerIn);
-                    if(tileDust.getNextAvailSlot()==0)
-                    {
-                        worldIn.setBlockToAir(pos);
-                    }
-
-                    return true;
-                }
-                else
-                {
-                    System.out.println("Next Slot: " + tileDust.getNextAvailSlot());
-                    System.out.println("Stacks: " + tileDust.getSlots());
-                }
-
-            }
-        }
-
-        return false;
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @javax.annotation.Nullable Entity entityIn, boolean bool) {
+        if(entityIn instanceof EntityPlayer)
+        {super.canCollideCheck(this.getDefaultState(),true);}
+        else {super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, bool);}
     }
 
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
-        return BlockRenderLayer.SOLID;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

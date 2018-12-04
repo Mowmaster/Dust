@@ -1,11 +1,16 @@
 package com.mowmaster.dust.tiles.render;
 
+import com.mowmaster.dust.blocks.BlockDustCloud;
 import com.mowmaster.dust.tiles.TileDustBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,6 +35,11 @@ public class RenderDustBlock extends TileEntitySpecialRenderer<TileDustBlock>
         if(!te.getStackInSlot(6).isEmpty()) { renderLayer(itemRenderer,new ItemStack(te.getStackInSlot(6).getItem(),1,te.getStackInSlot(6).getMetadata()),value,0.8125f,value); }
         if(!te.getStackInSlot(7).isEmpty()) { renderLayer(itemRenderer,new ItemStack(te.getStackInSlot(7).getItem(),1,te.getStackInSlot(7).getMetadata()),value,0.9375f,value); }
 
+        if(te.getWorld().getBlockState(te.getPos().add(0,1,0)).getBlock() instanceof BlockDustCloud)
+        {
+            renderBlockAbove(te,itemRenderer,(float)x,(float)y,(float)z);
+        }
+
         GlStateManager.popMatrix();
     }
 
@@ -41,6 +51,27 @@ public class RenderDustBlock extends TileEntitySpecialRenderer<TileDustBlock>
         GlStateManager.pushAttrib();
         RenderHelper.enableStandardItemLighting();
         itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
+    }
+
+    public static void renderBlockAbove(TileDustBlock te, RenderItem itemRenderer, float x, float y, float z) {
+        float yval = (float)(1-(((te.getNextAvailSlot()-1)*0.125)-0.625));
+        float ypos = (float)(((te.getNextAvailSlot()-1)*0.125)-0.625);
+        ItemStack getBlockAbove = te.getBlockAbove();
+
+
+
+
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y+ypos, z);
+        GlStateManager.scale(2.0f,yval,2.0f);
+        if (!itemRenderer.shouldRenderItemIn3D(getBlockAbove)) {GlStateManager.rotate(180f, 0f, 1f, 0f);}
+        GlStateManager.pushAttrib();
+        RenderHelper.enableStandardItemLighting();
+        itemRenderer.renderItem(getBlockAbove, ItemCameraTransforms.TransformType.FIXED);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.popAttrib();
         GlStateManager.popMatrix();

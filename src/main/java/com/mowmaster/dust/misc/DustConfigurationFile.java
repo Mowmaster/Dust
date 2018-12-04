@@ -24,6 +24,7 @@ public class DustConfigurationFile
     public static boolean craftSaplings;
     public static int effectMaximum;
     public static int dustToActivate;
+    public static int chanceToDust;
 
 
 
@@ -54,9 +55,10 @@ public class DustConfigurationFile
         category = "Misc";
         dustConfig.addCustomCategoryComment(category,"Player Interaction");
         funhaters = dustConfig.getBoolean("1.Fun Hater?",category,false,"Do you hate fun and Explosions?");
-        devBlocks = dustConfig.getBoolean("2.Creative Use Dev Blocks?",category,false,"True is you want to use dev blocks while you build custom structures");
-        craftCrystals = dustConfig.getBoolean("2.Craft Crystals?",category,false,"Can you craft Crystals with diamonds and dye?");
-        craftSaplings = dustConfig.getBoolean("2.Craft Crystal Saplings?",category,false,"Can you craft Crystal Saplings with crystals and saplings?");
+        chanceToDust = dustConfig.getInt("2.Chance To Settle", category,50,1,99,"checks if a random num is lower then this and will settle a dust cloud into a dust block");
+        devBlocks = dustConfig.getBoolean("3.Creative Use Dev Blocks?",category,false,"True is you want to use dev blocks while you build custom structures");
+        craftCrystals = dustConfig.getBoolean("4.Craft Crystals?",category,false,"Can you craft Crystals with diamonds and dye?");
+        craftSaplings = dustConfig.getBoolean("5.Craft Crystal Saplings?",category,false,"Can you craft Crystal Saplings with crystals and saplings?");
 
         category = "Effects";
         dustConfig.addCustomCategoryComment(category,"Spells/Effects");
