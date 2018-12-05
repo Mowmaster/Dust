@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileCrystalCrusher;
 import com.mowmaster.dust.tiles.TileDustBlock;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import com.sun.istack.internal.Nullable;
@@ -37,7 +38,6 @@ import java.util.Random;
 
 public class BlockDust extends Block implements ITileEntityProvider
 {
-
     public BlockDust(String unloc, String registryName)
     {
         super(Material.SAND);
@@ -64,6 +64,35 @@ public class BlockDust extends Block implements ITileEntityProvider
     @Override
     public Block setBlockUnbreakable() {
         return super.setBlockUnbreakable();
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(!worldIn.isRemote) {
+            if (playerIn.getHeldItemMainhand().getItem() instanceof ItemSpade) {
+
+                TileEntity tileEntity = worldIn.getTileEntity(pos);
+                if (tileEntity instanceof TileDustBlock) {
+                    TileDustBlock tileDust = (TileDustBlock) tileEntity;
+
+                    if(tileDust.getNextAvailSlot()==1)
+                    {
+                        tileDust.removeItem();
+                        playerIn.getHeldItemMainhand().damageItem(1, playerIn);
+                        worldIn.setBlockToAir(tileDust.getPos());
+                        return true;
+                    }
+                    else{
+                        tileDust.removeItem();
+                        playerIn.getHeldItemMainhand().damageItem(1, playerIn);
+                        return true;
+                    }
+                }
+
+            }
+        }
+
+        return false;
     }
 
     //See if you can edit this to allow a size based on the TE

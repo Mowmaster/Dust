@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockDustCloud;
 import com.mowmaster.dust.items.ItemDust;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -135,7 +136,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
 
 
 
-    public ItemStack removeItem()
+    public void removeItem()
     {
         int slotted = getNextAvailSlot()-1;
         ItemStack returned = dust.extractItem(slotted,1,false).copy();
@@ -146,7 +147,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
         }
         dust.setStackInSlot(slotted,ItemStack.EMPTY);
         updateBlock();
-        return returner;
+        world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, returner));
     }
 
 

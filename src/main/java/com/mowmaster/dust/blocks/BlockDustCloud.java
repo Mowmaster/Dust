@@ -38,7 +38,8 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 //Result of the dust from a crusher
 public class BlockDustCloud extends BlockFalling {
-    public BlockDustCloud(String unloc, String registryName) {
+    ItemStack settledItem = ItemStack.EMPTY;
+    public BlockDustCloud(String unloc, String registryName, ItemStack yielditem) {
         super(Material.SAND);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -47,6 +48,7 @@ public class BlockDustCloud extends BlockFalling {
         this.setSoundType(SoundType.SAND);
         this.setTickRandomly(true);
         this.setCreativeTab(DUSTBLOCKSTABS);
+        this.settledItem = yielditem;
     }
 
     @Override
@@ -85,18 +87,7 @@ public class BlockDustCloud extends BlockFalling {
 
     public ItemStack getDustDropped()
     {
-        ItemStack stacked = ItemStack.EMPTY;
-
-        if(this.equals(BlockRegistry.redDust)) { stacked = new ItemStack(ItemRegistry.dust,1,0); }
-        if(this.equals(BlockRegistry.blueDust)) { stacked = new ItemStack(ItemRegistry.dust,1,1); }
-        if(this.equals(BlockRegistry.yellowDust)) { stacked = new ItemStack(ItemRegistry.dust,1,2); }
-        if(this.equals(BlockRegistry.purpleDust)) { stacked = new ItemStack(ItemRegistry.dust,1,3); }
-        if(this.equals(BlockRegistry.greenDust)) { stacked = new ItemStack(ItemRegistry.dust,1,4); }
-        if(this.equals(BlockRegistry.orangeDust)) { stacked = new ItemStack(ItemRegistry.dust,1,5); }
-        if(this.equals(BlockRegistry.whiteDust)) { stacked = new ItemStack(ItemRegistry.dust,1,6); }
-        if(this.equals(BlockRegistry.blackDust)) { stacked = new ItemStack(ItemRegistry.dust,1,7); }
-
-        return stacked;
+        return settledItem;
     }
 
     @Override

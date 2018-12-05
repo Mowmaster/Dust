@@ -8,14 +8,17 @@ import com.mowmaster.dust.blocks.item.ItemBlockOre;
 import com.mowmaster.dust.blocks.machines.*;
 import com.mowmaster.dust.blocks.sapling.*;
 import com.mowmaster.dust.enums.CrystalBlocks;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -416,23 +419,26 @@ public class BlockRegistry
         blackCrystalTwo = new BlockCrystal("blockblackcrystaltwo", "black/blockblackcrystaltwo");
         blackCrystalOne = new BlockCrystal("blockblackcrystalone", "black/blockblackcrystalone");
 
-        redDust = new BlockDustCloud("reddust","red/reddust");
-        blueDust = new BlockDustCloud("bluedust","blue/bluedust");
-        yellowDust = new BlockDustCloud("yellowdust","yellow/yellowdust");
-        purpleDust = new BlockDustCloud("purpledust","purple/purpledust");
-        orangeDust = new BlockDustCloud("orangedust","orange/orangedust");
-        greenDust = new BlockDustCloud("greendust","green/greendust");
-        whiteDust = new BlockDustCloud("whitedust","white/whitedust");
-        blackDust = new BlockDustCloud("blackdust","black/blackdust");
+        redDust = new BlockDustCloud("reddust","red/reddust", new ItemStack(ItemRegistry.dust,1,0));
+        blueDust = new BlockDustCloud("bluedust","blue/bluedust", new ItemStack(ItemRegistry.dust,1,1));
+        yellowDust = new BlockDustCloud("yellowdust","yellow/yellowdust", new ItemStack(ItemRegistry.dust,1,2));
+        purpleDust = new BlockDustCloud("purpledust","purple/purpledust", new ItemStack(ItemRegistry.dust,1,3));
+        greenDust = new BlockDustCloud("greendust","green/greendust", new ItemStack(ItemRegistry.dust,1,4));
+        orangeDust = new BlockDustCloud("orangedust","orange/orangedust", new ItemStack(ItemRegistry.dust,1,5));
+        whiteDust = new BlockDustCloud("whitedust","white/whitedust", new ItemStack(ItemRegistry.dust,1,6));
+        blackDust = new BlockDustCloud("blackdust","black/blackdust", new ItemStack(ItemRegistry.dust,1,7));
 
-        blazeDust = new BlockDustCloud("blazedust","dust/blazedust");
-        carbonDust = new BlockDustCloud("carbondust","dust/carbondust");
-        ironDust = new BlockDustCloud("irondust","dust/irondust");
-        goldDust = new BlockDustCloud("golddust","dust/golddust");
-        redstoneDust = new BlockDustCloud("redstonedust","dust/redstonedust");
-        wheatDust = new BlockDustCloud("wheatdust","dust/wheatdust");
-        potatoDust = new BlockDustCloud("potatodust","dust/potatodust");
-        sugarDust = new BlockDustCloud("sugardust","dust/sugardust");
+        blazeDust = new BlockDustCloud("blazedust","dust/blazedust",new ItemStack(Items.BLAZE_POWDER,1));
+        carbonDust = new BlockDustCloud("carbondust","dust/carbondust",new ItemStack(Items.COAL,1));
+        ironDust = new BlockDustCloud("irondust","dust/irondust",new ItemStack(Items.IRON_INGOT,1));
+        goldDust = new BlockDustCloud("golddust","dust/golddust",new ItemStack(Items.GOLD_INGOT,1));
+        redstoneDust = new BlockDustCloud("redstonedust","dust/redstonedust",new ItemStack(Items.REDSTONE,1));
+        wheatDust = new BlockDustCloud("wheatdust","dust/wheatdust",new ItemStack(Items.WHEAT,1));
+        potatoDust = new BlockDustCloud("potatodust","dust/potatodust",new ItemStack(Items.POTATO,1));
+        sugarDust = new BlockDustCloud("sugardust","dust/sugardust",new ItemStack(Items.SUGAR,1));
+
+
+
         dustBlock = new BlockDust("blockdust","blockdust");
 
         leaf = new BlockLeaf("leaves");
@@ -614,7 +620,7 @@ public class BlockRegistry
         machineBase = new BlockMachineBase("machinebase", "machinebase");
         enchantmod = new BlockEnchantMod("enchantmod","enchantmod");
         crystalcrusher = new BlockCrystalCrusher("crystalcrusher","crystalcrusher");
-        crystalfurnace = new com.mowmaster.dust.blocks.BlockCrystalFurnace("crystalfurnace","crystalfurnace");
+        crystalfurnace = new BlockCrystalFurnace("crystalfurnace","crystalfurnace");
         blockTrap = new BlockTrap("blocktrap","blocktrap");
 
         crate1 = new BlockCrate("crate1","crate1");

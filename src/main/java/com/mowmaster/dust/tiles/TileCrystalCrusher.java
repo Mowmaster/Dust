@@ -1,5 +1,10 @@
 package com.mowmaster.dust.tiles;
 
+import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.items.ItemCrystal;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -15,114 +20,140 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
-public class TileCrystalCrusher extends TileEntityLockable implements ITickable,ICapabilityProvider
+public class TileCrystalCrusher extends TileEntityBase implements ITickable, IItemHandler
 {
 
-    private ItemStackHandler handler;
+    private ItemStackHandler crystalCrusher;
 
     public TileCrystalCrusher()
     {
-        this.handler = new ItemStackHandler(2);//stacks in tile
+        this.crystalCrusher = new ItemStackHandler(3);//one for input, one for fuel, and the last for the output
     }
 
     @Override
-    public int getFieldCount() {
-        return 0;
+    public int getSlotLimit(int slot) {
+        int limiter = 0;
+
+        switch (slot)
+        {
+            case 0:
+                limiter = 1;
+                break;
+            case 1:
+                limiter = 8;
+                break;
+            case 2:
+                limiter = 64;
+                break;
+        }
+        return limiter;
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
+    public int getSlots() {
+        return crystalCrusher.getSlots();
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return crystalCrusher.getStackInSlot(slot);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
         return null;
     }
 
+    @Nonnull
     @Override
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
         return null;
     }
 
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public boolean canAddItem(ItemStack itemIn)
+    {
+        if(itemIn.getItem() instanceof ItemCrystal)
+        {
+            return true;
+        }
 
-    }
-
-    @Override
-    public boolean isEmpty() {
         return false;
     }
 
-    @Override
-    public String getName() {
-        return null;
+    public void addItem(ItemStack itemIn)
+    {
+        if(itemIn.getItem() instanceof ItemCrystal)
+        {
+            if(crystalCrusher.getStackInSlot(0).isEmpty())
+            {
+                crystalCrusher.insertItem(0,new ItemStack(itemIn.getItem(),1,itemIn.getMetadata()),false);
+                updateBlock();
+            }
+        }
     }
 
+    int ticker = 0;
     @Override
-    public boolean hasCustomName() {
-        return false;
-    }
+    public void update()
+    {
 
-    @Override
-    public void clear() {
+        if (!world.isRemote)
+        {
+            ticker++;
 
-    }
+            if(!crystalCrusher.getStackInSlot(0).isEmpty())
+            {
+                if(ticker>20)
+                {
+                    //if(crystalCrusher.getStackInSlot(0).getMetadata()==0)
+                    //{
+                    crystalCrusher.insertItem(2,new ItemStack(BlockRegistry.redDust,8),false);
+                    crystalCrusher.extractItem(0,1,false);
+                    updateBlock();
+                    //}
+                    ticker=0;
+                }
+            }
 
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return false;
-    }
+            int zmin=-2;
+            int zmax=2;
+            int xmin=-2;
+            int xmax=2;
+            int ymin=0;
+            int ymax=4;
 
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
+            if(!crystalCrusher.getStackInSlot(2).isEmpty())
+            {
 
-    @Override
-    public void setField(int id, int value) {
+                for(int c=zmin;c<=zmax;c++) {
+                    for (int a = xmin; a <= xmax; a++) {
+                        //for (int b = ymin; b <= ymax; b++) {
+                            if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
+                            {
+                                if(ticker>13)
+                                {
+                                    world.setBlockState(getPos().add(a,4,c), Block.getBlockFromItem(crystalCrusher.getStackInSlot(2).getItem()).getDefaultState());
+                                    crystalCrusher.extractItem(2,1,false);
+                                    updateBlock();
+                                    ticker=0;
+                                }
+                            }
+                            //Later on make a bad thing happen if the area is full of dust
+                        //}
+                    }
+                }
 
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 0;
-    }
-
-    @Override
-    public String getGuiID() {
-        return null;
-    }
-
-    @Override
-    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-        return null;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return null;
+            }
+        }
     }
 
     @Override
@@ -130,7 +161,7 @@ public class TileCrystalCrusher extends TileEntityLockable implements ITickable,
     {
         super.writeToNBT(compound);
         //compound.setTag("coin",coin.writeToNBT(new NBTTagCompound()));
-        compound.setTag("ItemStackHandler",this.handler.serializeNBT());
+        compound.setTag("crystalCrusherInventory",this.crystalCrusher.serializeNBT());
 
         return compound;
     }
@@ -142,43 +173,6 @@ public class TileCrystalCrusher extends TileEntityLockable implements ITickable,
         super.readFromNBT(compound);
         //NBTTagCompound itemCoin = compound.getCompoundTag("coin");
         //this.coin = new ItemStack(itemCoin);
-        this.handler.deserializeNBT(compound.getCompoundTag("ItemStackHandler"));
-    }
-
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        readFromNBT(pkt.getNbtCompound());
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return (T) this.handler;
-        return super.getCapability(capability, facing);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return true;
-        return super.hasCapability(capability, facing);
+        this.crystalCrusher.deserializeNBT(compound.getCompoundTag("crystalCrusherInventory"));
     }
 }

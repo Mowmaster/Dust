@@ -6,15 +6,19 @@ import com.mowmaster.dust.tiles.TileCrystalCrusher;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +35,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockCrystalCrusher extends BlockContainer
+public class BlockCrystalCrusher extends Block implements ITileEntityProvider
 {
     private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
@@ -50,11 +54,33 @@ public class BlockCrystalCrusher extends BlockContainer
         return Item.getItemFromBlock(BlockRegistry.crystalcrusher);
     }
 
+    /*
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
+     */
 
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(!worldIn.isRemote) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof TileCrystalCrusher) {
+                TileCrystalCrusher tileCrusher = (TileCrystalCrusher) tileEntity;
+
+                if(tileCrusher.canAddItem(playerIn.getHeldItemMainhand()))
+                {
+                    tileCrusher.addItem(playerIn.getHeldItemMainhand());
+                    playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /*
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileCrystalCrusher te = (TileCrystalCrusher)worldIn.getTileEntity(pos);
@@ -65,6 +91,7 @@ public class BlockCrystalCrusher extends BlockContainer
         }
         super.breakBlock(worldIn, pos, state);
     }
+     */
 
     public boolean isOpaqueCube(IBlockState state)
     {
