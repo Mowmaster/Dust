@@ -49,7 +49,7 @@ import java.util.stream.IntStream;
 
 import static net.minecraft.block.BlockDirectional.FACING;
 
-public class TilePedestal extends TileEntity implements ITickable, ICapabilityProvider
+public class TilePedestal extends TileEntityBase implements ITickable, ICapabilityProvider
 {
     private ItemStackHandler item;
     private ItemStackHandler coin;
@@ -141,37 +141,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         return false;
     }
 
-    public boolean doItemsMatch(ItemStack itemStackIn, ItemStack toCompareTo)
-    {
-        if(itemStackIn.getHasSubtypes())
-        {
-            if(itemStackIn.getItem().equals(toCompareTo.getItem()) && itemStackIn.getMetadata()==toCompareTo.getMetadata())
-            {
-                return true;
-            }
-            else return false;
-        }
-        else if(itemStackIn.hasTagCompound())
-        {
-            NBTTagCompound itemIn = itemStackIn.getTagCompound();
-            NBTTagCompound itemStored = toCompareTo.getTagCompound();
-            if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(toCompareTo.getItem()))
-            {
-                return true;
-            }
-            else return false;
-        }
-        else
-        {
-            if(itemStackIn.getItem().equals(toCompareTo.getItem()))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public boolean hasUpgrade(TilePedestal getReciever, Item coinType)
     {
         if(getReciever.hasCoin())
@@ -196,15 +165,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         }
 
         return false;
-    }
-
-    private void updateBlock()
-    {
-        markDirty();
-        IBlockState state = world.getBlockState(pos);
-        world.getRedstonePower(pos,EnumFacing.UP);
-        world.notifyBlockUpdate(pos, state, state, 3);
-        world.setBlockState(pos,state,3);
     }
 
     public boolean hasEffectUpgrade()
@@ -2522,21 +2482,6 @@ public class TilePedestal extends TileEntity implements ITickable, ICapabilityPr
         this.display = new ItemStack(itemTagD);
     }
 
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        readFromNBT(pkt.getNbtCompound());
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
-    }
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {

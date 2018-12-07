@@ -4,37 +4,35 @@ import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 
 public class TileCrystalCrusher extends TileEntityBase implements ITickable, IItemHandler
 {
 
     private ItemStackHandler crystalCrusher;
+    private int burnTime;
 
     public TileCrystalCrusher()
     {
         this.crystalCrusher = new ItemStackHandler(3);//one for input, one for fuel, and the last for the output
+        this.burnTime = getBurnTimeInStack();
+    }
+
+    private int getBurnTimeInStack()
+    {
+        int burnage = 0;
+        if(!crystalCrusher.getStackInSlot(1).isEmpty())
+        {
+            burnage = getItemBurnTime(crystalCrusher.getStackInSlot(1));
+        }
+        return burnage;
     }
 
     @Override
@@ -69,36 +67,125 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     @Nonnull
     @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        return null;
-    }
+    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) { return null; }
 
     @Nonnull
     @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return null;
-    }
+    public ItemStack extractItem(int slot, int amount, boolean simulate) { return null; }
 
-    public boolean canAddItem(ItemStack itemIn)
+    public boolean canAddItem(int slot, ItemStack itemIn)
     {
-        if(itemIn.getItem() instanceof ItemCrystal)
+        switch (slot)
         {
-            if(crystalCrusher.getStackInSlot(0).isEmpty())
-            {
-                return true;
-            }
+            case 0:
+                if(itemIn.getItem() instanceof ItemCrystal)
+                {
+                    //should only hold 1 item in this slot, so if its not empty it cant hold any more crystals.
+                    if(crystalCrusher.getStackInSlot(0).isEmpty())
+                    {
+                        return true;
+                    }
+                }
+                break;
+            case 1:
+                if(getItemBurnTime(itemIn)>0)
+                {
+                    if(crystalCrusher.getStackInSlot(slot).isEmpty())
+                    {
+                        return true;
+                    }
+                    else if(doItemsMatch(itemIn,crystalCrusher.getStackInSlot(slot)))
+                    {
+                        if((crystalCrusher.getStackInSlot(slot).getCount())<getSlotLimit(slot))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                if(crystalCrusher.getStackInSlot(slot).isEmpty())
+                {
+                    return true;
+                }
+                else if(doItemsMatch(itemIn,crystalCrusher.getStackInSlot(slot)))
+                {
+                    //we're checking to see if when a crystal is processed there is room to output the result
+                    if((crystalCrusher.getStackInSlot(slot).getCount()+itemIn.getCount())<=getSlotLimit(slot))
+                    {
+                        return true;
+                    }
+                }
+                break;
         }
 
         return false;
     }
 
-    public void addItem(ItemStack itemIn)
+    public int addItem(int slot,ItemStack itemIn,boolean simulate)
     {
-        if(canAddItem(itemIn))
+        int countInserted = 0;
+        switch (slot)
         {
-            crystalCrusher.insertItem(0,new ItemStack(itemIn.getItem(),1,itemIn.getMetadata()),false);
-            updateBlock();
+            case 0:
+                if(canAddItem(slot,itemIn))
+                {
+                    //Because this only accepts 1 item at a time it can only take in one if it passes canAddItem()
+                    crystalCrusher.insertItem(slot,new ItemStack(itemIn.getItem(),1,itemIn.getMetadata()),simulate);
+                    countInserted = 1;
+                }
+                break;
+            case 1:
+                //if we can add in fuel items
+                if(canAddItem(slot,itemIn))
+                {
+                    //either the inventory is empty or the fuel items match to pass the first check.
+                    if(crystalCrusher.getStackInSlot(slot).isEmpty())
+                    {
+                        if(itemIn.getCount()>getSlotLimit(slot))
+                        {
+                            //if the stack holds more then we can accept then grab the max available from the stack and return what we got.
+                            crystalCrusher.insertItem(slot,new ItemStack(itemIn.getItem(),getSlotLimit(slot),itemIn.getMetadata()),simulate);
+                            countInserted = getSlotLimit(slot);
+                        }
+                        else
+                        {
+                            //if we cant pull in the max pull in all we can and return the amount there was in the stack.
+                            crystalCrusher.insertItem(slot,new ItemStack(itemIn.getItem(),itemIn.getCount(),itemIn.getMetadata()),simulate);
+                            countInserted = itemIn.getCount();
+                        }
+                    }
+                    else
+                    {
+                        //for if there is already fuel in the slot
+                        //since it passed the first test we know its the same item, now to just add to its number
+                        int getAmmoutPossibleToFill = itemIn.getCount()+getStackInSlot(slot).getCount();
+                        if(getAmmoutPossibleToFill>getSlotLimit(slot))
+                        {
+                            int leftToFill = getSlotLimit(slot)-getStackInSlot(slot).getCount();
+                            //if incomming items plus items already inside exceed the limit fill to the max and return the count of what was used.
+                            crystalCrusher.insertItem(slot,new ItemStack(itemIn.getItem(),leftToFill,itemIn.getMetadata()),simulate);
+                            countInserted = (leftToFill);
+                        }
+                        else
+                        {
+                            crystalCrusher.insertItem(slot,new ItemStack(itemIn.getItem(),itemIn.getCount(),itemIn.getMetadata()),simulate);
+                            countInserted = itemIn.getCount();
+                        }
+                    }
+                }
+                break;
+            case 2:
+                if(canAddItem(slot,itemIn))
+                {
+                    //since it the check sees if it matches and wont overflow we can just add in whatever we are given.
+                    crystalCrusher.insertItem(slot,itemIn,simulate);
+                }
+                break;
         }
+
+        updateBlock();
+        return countInserted;
     }
 
     int ticker = 0;
@@ -116,7 +203,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                 {
                     //if(crystalCrusher.getStackInSlot(0).getMetadata()==0)
                     //{
-                    crystalCrusher.insertItem(2,new ItemStack(BlockRegistry.redDust,8),false);
+                    addItem(2,new ItemStack(BlockRegistry.redDust,8),false);
                     crystalCrusher.extractItem(0,1,false);
                     updateBlock();
                     //}

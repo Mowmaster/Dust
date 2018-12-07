@@ -106,11 +106,18 @@ public class TileDustBlock extends TileEntity implements IItemHandler
         int slot = getNextAvailSlot();
         if(canAddItem(stack))
         {
-            if(slot==7)
+            if(slot>=7)
             {
-                dust.insertItem(slot,stack,false);
-                isFull=true;
-                System.out.println("FULL");
+                if(slot>7)
+                {
+                    dust.insertItem(7,stack,false);
+                    isFull=true;
+                }
+                else
+                {
+                    dust.insertItem(slot,stack,false);
+                    isFull=true;
+                }
                 updateBlock();
             }
             else
@@ -166,6 +173,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
     {
         super.writeToNBT(compound);
         compound.setTag("dustInBlock", this.dust.serializeNBT());
+        compound.setBoolean("isFull",isFull);
         return compound;
     }
 
@@ -173,6 +181,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.dust.deserializeNBT(compound.getCompoundTag("dustInBlock"));
+        this.isFull=compound.getBoolean("isFull");
     }
 
 

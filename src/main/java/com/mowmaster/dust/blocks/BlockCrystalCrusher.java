@@ -68,11 +68,26 @@ public class BlockCrystalCrusher extends Block implements ITileEntityProvider
             if (tileEntity instanceof TileCrystalCrusher) {
                 TileCrystalCrusher tileCrusher = (TileCrystalCrusher) tileEntity;
 
-                if(tileCrusher.canAddItem(playerIn.getHeldItemMainhand()))
+                //adding crystals
+                if(tileCrusher.canAddItem(0,playerIn.getHeldItemMainhand()))
                 {
-                    tileCrusher.addItem(playerIn.getHeldItemMainhand());
-                    playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                    int counter = tileCrusher.addItem(0,playerIn.getHeldItemMainhand(),true);
+                    tileCrusher.addItem(0,playerIn.getHeldItemMainhand(),false);
+                    playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(counter);
                     return true;
+                }
+                //adding fuels
+                if(tileCrusher.canAddItem(1,playerIn.getHeldItemMainhand()))
+                {
+                    int counter = tileCrusher.addItem(1,playerIn.getHeldItemMainhand(),true);
+                    tileCrusher.addItem(1,playerIn.getHeldItemMainhand(),false);
+                    playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(counter);
+                    return true;
+                }
+                //Debugging
+                if(playerIn.getHeldItemMainhand().isEmpty())
+                {
+                    System.out.println(tileCrusher.getStackInSlot(1).getCount());
                 }
             }
         }
