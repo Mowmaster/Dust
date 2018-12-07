@@ -136,7 +136,7 @@ public class TileDustBlock extends TileEntity implements IItemHandler
 
 
 
-    public void removeItem()
+    public ItemStack removeItem()
     {
         int slotted = getNextAvailSlot()-1;
         ItemStack returned = dust.extractItem(slotted,1,false).copy();
@@ -147,7 +147,9 @@ public class TileDustBlock extends TileEntity implements IItemHandler
         }
         dust.setStackInSlot(slotted,ItemStack.EMPTY);
         updateBlock();
-        world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, returner));
+
+        return returner;
+
     }
 
 

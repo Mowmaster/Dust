@@ -77,13 +77,13 @@ public class BlockDust extends Block implements ITileEntityProvider
 
                     if(tileDust.getNextAvailSlot()==1)
                     {
-                        tileDust.removeItem();
+                        worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, tileDust.removeItem()));
                         playerIn.getHeldItemMainhand().damageItem(1, playerIn);
                         worldIn.setBlockToAir(tileDust.getPos());
                         return true;
                     }
                     else{
-                        tileDust.removeItem();
+                        worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, tileDust.removeItem()));
                         playerIn.getHeldItemMainhand().damageItem(1, playerIn);
                         return true;
                     }

@@ -38,7 +38,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 //Result of the dust from a crusher
 public class BlockDustCloud extends BlockFalling {
-    ItemStack settledItem = ItemStack.EMPTY;
+    ItemStack settledItem;
     public BlockDustCloud(String unloc, String registryName, ItemStack yielditem) {
         super(Material.SAND);
         this.setUnlocalizedName(unloc);
@@ -87,7 +87,13 @@ public class BlockDustCloud extends BlockFalling {
 
     public ItemStack getDustDropped()
     {
-        return settledItem;
+        ItemStack stacker = ItemStack.EMPTY;
+        if(this.equals(BlockRegistry.redDust))
+        {
+            stacker = new ItemStack(ItemRegistry.dust,1,0);
+        }
+
+        return stacker;
     }
 
     @Override
