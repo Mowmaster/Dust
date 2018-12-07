@@ -83,7 +83,10 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
     {
         if(itemIn.getItem() instanceof ItemCrystal)
         {
-            return true;
+            if(crystalCrusher.getStackInSlot(0).isEmpty())
+            {
+                return true;
+            }
         }
 
         return false;
@@ -91,13 +94,10 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     public void addItem(ItemStack itemIn)
     {
-        if(itemIn.getItem() instanceof ItemCrystal)
+        if(canAddItem(itemIn))
         {
-            if(crystalCrusher.getStackInSlot(0).isEmpty())
-            {
-                crystalCrusher.insertItem(0,new ItemStack(itemIn.getItem(),1,itemIn.getMetadata()),false);
-                updateBlock();
-            }
+            crystalCrusher.insertItem(0,new ItemStack(itemIn.getItem(),1,itemIn.getMetadata()),false);
+            updateBlock();
         }
     }
 

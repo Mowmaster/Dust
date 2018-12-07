@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -38,8 +39,8 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 //Result of the dust from a crusher
 public class BlockDustCloud extends BlockFalling {
-    ItemStack settledItem;
-    public BlockDustCloud(String unloc, String registryName, ItemStack yielditem) {
+
+    public BlockDustCloud(String unloc, String registryName) {
         super(Material.SAND);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -48,7 +49,6 @@ public class BlockDustCloud extends BlockFalling {
         this.setSoundType(SoundType.SAND);
         this.setTickRandomly(true);
         this.setCreativeTab(DUSTBLOCKSTABS);
-        this.settledItem = yielditem;
     }
 
     @Override
@@ -87,11 +87,26 @@ public class BlockDustCloud extends BlockFalling {
 
     public ItemStack getDustDropped()
     {
+
         ItemStack stacker = ItemStack.EMPTY;
-        if(this.equals(BlockRegistry.redDust))
-        {
-            stacker = new ItemStack(ItemRegistry.dust,1,0);
-        }
+        if(this.equals(BlockRegistry.redDust)) { stacker = new ItemStack(ItemRegistry.dust,1,0); }
+        if(this.equals(BlockRegistry.blueDust)) { stacker = new ItemStack(ItemRegistry.dust,1,1); }
+        if(this.equals(BlockRegistry.yellowDust)) { stacker = new ItemStack(ItemRegistry.dust,1,2); }
+        if(this.equals(BlockRegistry.purpleDust)) { stacker = new ItemStack(ItemRegistry.dust,1,3); }
+        if(this.equals(BlockRegistry.greenDust)) { stacker = new ItemStack(ItemRegistry.dust,1,4); }
+        if(this.equals(BlockRegistry.orangeDust)) { stacker = new ItemStack(ItemRegistry.dust,1,5); }
+        if(this.equals(BlockRegistry.whiteDust)) { stacker = new ItemStack(ItemRegistry.dust,1,6); }
+        if(this.equals(BlockRegistry.blackDust)) { stacker = new ItemStack(ItemRegistry.dust,1,7); }
+
+        if(this.equals(BlockRegistry.blazeDust)) { stacker = new ItemStack(Items.BLAZE_POWDER,1); }
+        if(this.equals(BlockRegistry.carbonDust)) { stacker = new ItemStack(Items.COAL,1); }
+        if(this.equals(BlockRegistry.ironDust)) { stacker = new ItemStack(Items.IRON_INGOT,1); }
+        if(this.equals(BlockRegistry.goldDust)) { stacker = new ItemStack(Items.GOLD_INGOT,1); }
+        if(this.equals(BlockRegistry.redstoneDust)) { stacker = new ItemStack(Items.REDSTONE,1); }
+
+        if(this.equals(BlockRegistry.wheatDust)) { stacker = new ItemStack(Items.WHEAT,1); }
+        if(this.equals(BlockRegistry.potatoDust)) { stacker = new ItemStack(Items.POTATO,1); }
+        if(this.equals(BlockRegistry.sugarDust)) { stacker = new ItemStack(Items.SUGAR,1); }
 
         return stacker;
     }
