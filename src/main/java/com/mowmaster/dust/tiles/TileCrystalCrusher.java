@@ -2,6 +2,7 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
+import com.mowmaster.dust.recipes.crusher_recipes.CrusherRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.item.ItemStack;
@@ -78,7 +79,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         switch (slot)
         {
             case 0:
-                if(itemIn.getItem() instanceof ItemCrystal)
+                if(CrusherRecipes.instance().hasOutput(itemIn))
                 {
                     //should only hold 1 item in this slot, so if its not empty it cant hold any more crystals.
                     if(crystalCrusher.getStackInSlot(0).isEmpty())
@@ -201,12 +202,9 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
             {
                 if(ticker>20)
                 {
-                    //if(crystalCrusher.getStackInSlot(0).getMetadata()==0)
-                    //{
-                    addItem(2,new ItemStack(BlockRegistry.redDust,8),false);
+//                    addItem(2, CrusherRecipes.instance().getOutput(getStackInSlot(0)),false);
                     crystalCrusher.extractItem(0,1,false);
                     updateBlock();
-                    //}
                     ticker=0;
                 }
             }
