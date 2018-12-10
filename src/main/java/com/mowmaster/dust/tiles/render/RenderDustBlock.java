@@ -34,26 +34,21 @@ public class RenderDustBlock extends TileEntitySpecialRenderer<TileDustBlock>
         if(!te.getStackInSlot(5).isEmpty()) { renderLayer(itemRenderer,new ItemStack(te.getStackInSlot(5).getItem(),1,te.getStackInSlot(5).getMetadata()),value,0.6875f,value); }
         if(!te.getStackInSlot(6).isEmpty()) { renderLayer(itemRenderer,new ItemStack(te.getStackInSlot(6).getItem(),1,te.getStackInSlot(6).getMetadata()),value,0.8125f,value); }
 */
-        if(te.getStackInSlot(1).isEmpty() && !te.getStackInSlot(0).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.0625f,value,0); }
+        if(te.getStackInSlot(1).isEmpty() && !te.getStackInSlot(0).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.5f,value,0); }
         else if(!te.getStackInSlot(0).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.0625f,value); }
-        if(te.getStackInSlot(2).isEmpty() && !te.getStackInSlot(1).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.1875f,value,0); }
-        else if(!te.getStackInSlot(1).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.1875f,value); }
-        if(te.getStackInSlot(3).isEmpty() && !te.getStackInSlot(2).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.3125f,value,0); }
-        else if(!te.getStackInSlot(2).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.3125f,value); }
-        if(te.getStackInSlot(4).isEmpty() && !te.getStackInSlot(3).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.4375f,value,0); }
-        else if(!te.getStackInSlot(3).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.4375f,value); }
-        if(te.getStackInSlot(5).isEmpty() && !te.getStackInSlot(4).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.5625f,value,0); }
-        else if(!te.getStackInSlot(4).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.5625f,value); }
-        if(te.getStackInSlot(6).isEmpty() && !te.getStackInSlot(5).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.6875f,value,0); }
-        else if(!te.getStackInSlot(5).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.6875f,value); }
-        if(te.getStackInSlot(7).isEmpty() && !te.getStackInSlot(7).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,0),value,0.8125f,value,0); }
-        else if(!te.getStackInSlot(7).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,0),value,0.8125f,value); }
+        if(te.getStackInSlot(2).isEmpty() && !te.getStackInSlot(1).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,1),value,0.5625f,value,1); }
+        else if(!te.getStackInSlot(1).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,1),value,0.1875f,value); }
+        if(te.getStackInSlot(3).isEmpty() && !te.getStackInSlot(2).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,2),value,0.625f,value,2); }
+        else if(!te.getStackInSlot(2).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,2),value,0.3125f,value); }
+        if(te.getStackInSlot(4).isEmpty() && !te.getStackInSlot(3).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,3),value,0.6875f,value,3); }
+        else if(!te.getStackInSlot(3).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,3),value,0.4375f,value); }
+        if(te.getStackInSlot(5).isEmpty() && !te.getStackInSlot(4).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,4),value,0.75f,value,4); }
+        else if(!te.getStackInSlot(4).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,4),value,0.5625f,value); }
+        if(te.getStackInSlot(6).isEmpty() && !te.getStackInSlot(5).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,5),value,0.8125f,value,5); }
+        else if(!te.getStackInSlot(5).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,5),value,0.6875f,value); }
+        if(te.getStackInSlot(7).isEmpty() && !te.getStackInSlot(7).isEmpty()) { renderLayerLast(itemRenderer,newItemRender(te,6),value,0.875f,value,6); }
+        else if(!te.getStackInSlot(7).isEmpty()) { renderLayer(itemRenderer,newItemRender(te,6),value,0.8125f,value); }
         if(!te.getStackInSlot(7).isEmpty()) { renderLayer(itemRenderer,new ItemStack(te.getStackInSlot(7).getItem(),1,te.getStackInSlot(7).getMetadata()),value,0.9375f,value); }
-
-        if(te.getWorld().getBlockState(te.getPos().add(0,1,0)).getBlock() instanceof BlockDustCloud)
-        {
-            renderBlockAbove(te,itemRenderer,(float)x,(float)y,(float)z);
-        }
 
         GlStateManager.popMatrix();
     }
@@ -82,28 +77,28 @@ public class RenderDustBlock extends TileEntitySpecialRenderer<TileDustBlock>
         switch (slot)
         {
             case 0:
-                y=2.0f;
+                yf=2.0f;
                 break;
             case 1:
-                y=1.75f;
+                yf=1.75f;
                 break;
             case 2:
-                y=1.5f;
+                yf=1.5f;
                 break;
             case 3:
-                y=1.25f;
+                yf=1.25f;
                 break;
             case 4:
-                y=1.0f;
+                yf=1.0f;
                 break;
             case 5:
-                y=0.75f;
+                yf=0.75f;
                 break;
             case 6:
-                y= 0.5f;
+                yf= 0.5f;
                 break;
             case 7:
-                y=0.25f;
+                yf=0.25f;
                 break;
         }
 

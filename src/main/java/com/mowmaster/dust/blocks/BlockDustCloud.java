@@ -68,6 +68,7 @@ public class BlockDustCloud extends BlockFalling {
     {
         return null;
     }
+
     @Override
     public EnumPushReaction getMobilityFlag(IBlockState state)
     {
