@@ -1,12 +1,12 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.recipes.crusher_recipes.CrusherRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -19,6 +19,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     private ItemStackHandler crystalCrusher;
     private int burnTime;
+    private boolean isBurning=false;
 
     public TileCrystalCrusher()
     {
@@ -79,7 +80,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         switch (slot)
         {
             case 0:
-                if(CrusherRecipes.instance().hasOutput(itemIn))
+                if(!CrusherRecipes.instance().getCrushingResult(itemIn).isEmpty())
                 {
                     //should only hold 1 item in this slot, so if its not empty it cant hold any more crystals.
                     if(crystalCrusher.getStackInSlot(0).isEmpty())
@@ -189,25 +190,66 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         return countInserted;
     }
 
+    private void checkBurning()
+    {
+        if(burnTime>0)
+        {
+            isBurning=true;
+            updateBlock();
+        }
+        else {
+            isBurning=false;
+            updateBlock();
+        }
+    }
+
+    private void startBurning(ItemStack fuelSlot)
+    {
+        if(!crystalCrusher.getStackInSlot(0).isEmpty() && isBurning==false)
+        {
+            ItemStack singleFuelItem = new ItemStack(fuelSlot.getItem(),1,fuelSlot.getMetadata());
+            burnTime = getItemBurnTime(singleFuelItem);
+            fuelSlot.shrink(1);
+        }
+    }
+
     int ticker = 0;
+    int ticker2 = 0;
+    int overstuffed = 0;
     @Override
     public void update()
     {
 
         if (!world.isRemote)
         {
-            ticker++;
+            //Checks if is burning or not
+            checkBurning();
+            //if not burning but has items to process it will start it up
+            startBurning(crystalCrusher.getStackInSlot(1));
 
-            if(!crystalCrusher.getStackInSlot(0).isEmpty())
+            if(isBurning)
             {
-                if(ticker>20)
+                burnTime--;
+
+                //world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
+
+
+                ticker++;
+
+                if(!crystalCrusher.getStackInSlot(0).isEmpty())
                 {
-//                    addItem(2, CrusherRecipes.instance().getOutput(getStackInSlot(0)),false);
-                    crystalCrusher.extractItem(0,1,false);
-                    updateBlock();
-                    ticker=0;
+                    if(ticker>20)
+                    {
+                        addItem(2, CrusherRecipes.instance().getCrushingResult(getStackInSlot(0)),false);
+                        crystalCrusher.extractItem(0,1,false);
+                        updateBlock();
+                        ticker=0;
+                    }
                 }
             }
+
+            ticker2++;
+
 
             int zmin=-2;
             int zmax=2;
@@ -224,12 +266,17 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                         //for (int b = ymin; b <= ymax; b++) {
                             if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
                             {
-                                if(ticker>13)
+                                if(ticker2>13)
                                 {
-                                    world.setBlockState(getPos().add(a,4,c), Block.getBlockFromItem(crystalCrusher.getStackInSlot(2).getItem()).getDefaultState());
-                                    crystalCrusher.extractItem(2,1,false);
-                                    updateBlock();
-                                    ticker=0;
+                                    if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
+                                    {
+                                        world.setBlockState(getPos().add(a,4,c), Block.getBlockFromItem(crystalCrusher.getStackInSlot(2).getItem()).getDefaultState());
+                                        crystalCrusher.extractItem(2,1,false);
+                                        updateBlock();
+                                        ticker2=0;
+                                        overstuffed=0;
+                                    }
+                                    else overstuffed++;
                                 }
                             }
                             //Later on make a bad thing happen if the area is full of dust
@@ -237,6 +284,12 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                     }
                 }
 
+            }
+
+            if(overstuffed>10)
+            {
+                System.out.println("BOOM: " + getPos());
+                //world.createExplosion(new EntityItem(world), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,0.5f, true);
             }
         }
     }
