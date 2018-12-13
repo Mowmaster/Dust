@@ -3,9 +3,11 @@ package com.mowmaster.dust.items;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.armors.ItemCrystalArmor;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
+import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
@@ -17,6 +19,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.ItemTool;
 
 
 public class ItemArmorAndToolsRegistry
@@ -50,6 +53,16 @@ public class ItemArmorAndToolsRegistry
         crystalBoots = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.FEET,"crystalboots","crystalboots");
         //crystalBoots = new ItemCrystalArmor(Material, Layer, What Equipment Slot,unlocName,RegName);
 
+        //tools and weapons
+        //Sword
+        crystalSword = new ItemSword(crystalToolMaterial);
+        crystalSword.setUnlocalizedName("crystalsword");
+        crystalSword.setRegistryName("crystalsword");
+        crystalSword.setCreativeTab(DustyTab.DUSTTABS);
+
+        // pick
+
+
     }
 
     public static void register()
@@ -58,6 +71,10 @@ public class ItemArmorAndToolsRegistry
         registerItem(crystalChestplate);
         registerItem(crystalLeggings);
         registerItem(crystalBoots);
+        // tool and weapon section
+        registerItem(crystalSword);
+
+
     }
 
     public static void registerRenders()
@@ -66,6 +83,8 @@ public class ItemArmorAndToolsRegistry
         registerRender(crystalChestplate);
         registerRender(crystalLeggings);
         registerRender(crystalBoots);
+// weapon renders
+//  registerRender(crystalSword);
     }
 
     public static void registerItem(Item item)
