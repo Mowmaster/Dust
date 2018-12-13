@@ -4,7 +4,7 @@
     "facing=down": {"model": "dust:green/ore_green_four","x": 180},
     "facing=north": {"model": "dust:green/ore_green_four","x": 90},
     "facing=east": {"model": "dust:green/ore_green_four","x": 90,"y":90},
-    "facing=south": {"model": "dust:green/ore_green_four","x": 90,"y":180},
+    "facing=south": {"model": "dust:green/ore_green_four","x": 90,"y":180} ,
     "facing=west": {"model": "dust:green/ore_green_four","x": 90,"y":270}
   }
 }
