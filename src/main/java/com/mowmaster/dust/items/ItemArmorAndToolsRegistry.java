@@ -84,7 +84,7 @@ public class ItemArmorAndToolsRegistry
         registerRender(crystalLeggings);
         registerRender(crystalBoots);
 // weapon renders
-//  registerRender(crystalSword);
+        //registerRender(crystalSword);
     }
 
     public static void registerItem(Item item)
