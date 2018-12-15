@@ -209,6 +209,8 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
             ItemStack singleFuelItem = new ItemStack(fuelSlot.getItem(),1,fuelSlot.getMetadata());
             burnTime = getItemBurnTime(singleFuelItem);
             fuelSlot.shrink(1);
+            isBurning=true;
+            updateBlock();
         }
     }
 
@@ -217,13 +219,10 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
     @Override
     public void update()
     {
-
-        /*
         if(burnTime>0)
         {
             world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
         }
-         */
 
         if (!world.isRemote)
         {
