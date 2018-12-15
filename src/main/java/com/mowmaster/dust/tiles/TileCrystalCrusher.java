@@ -3,7 +3,6 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.recipes.crusher_recipes.CrusherRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -215,10 +214,16 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     int ticker = 0;
     int ticker2 = 0;
-    int overstuffed = 0;
     @Override
     public void update()
     {
+
+        /*
+        if(burnTime>0)
+        {
+            world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+        }
+         */
 
         if (!world.isRemote)
         {
@@ -230,9 +235,6 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
             if(isBurning)
             {
                 burnTime--;
-
-                //world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
-
 
                 ticker++;
 
@@ -274,9 +276,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                                         crystalCrusher.extractItem(2,1,false);
                                         updateBlock();
                                         ticker2=0;
-                                        overstuffed=0;
                                     }
-                                    else overstuffed++;
                                 }
                             }
                             //Later on make a bad thing happen if the area is full of dust
@@ -284,12 +284,6 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                     }
                 }
 
-            }
-
-            if(overstuffed>10)
-            {
-                System.out.println("BOOM: " + getPos());
-                //world.createExplosion(new EntityItem(world), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,0.5f, true);
             }
         }
     }
