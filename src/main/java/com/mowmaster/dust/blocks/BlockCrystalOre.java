@@ -9,12 +9,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.Random;
 
@@ -80,15 +84,15 @@ public class BlockCrystalOre extends Block
 
     private Boolean oreToCrystal(World worldIn, BlockPos pos, Block crystalOreBlock, Block crystalState)
     {
-        if(this.equals(crystalOreBlock))
-        {
-            worldIn.setBlockState(pos,crystalState.getDefaultState());
-            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.dust,1,8)));
-            return true;
+        if(!worldIn.isRemote) {
+            if (this.equals(crystalOreBlock)) {
+                worldIn.setBlockState(pos, crystalState.getDefaultState());
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(ItemRegistry.dust, 1, 8)));
+                return true;
+            }
         }
         return false;
     }
-
 
     @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
@@ -104,5 +108,6 @@ public class BlockCrystalOre extends Block
             oreToCrystal(worldIn,pos,BlockRegistry.blackOre,BlockRegistry.blackCrystalFive);
         }
     }
+
 
 }
