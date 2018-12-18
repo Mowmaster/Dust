@@ -28,8 +28,16 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static net.minecraft.block.material.MapColor.COLORS;
 
 
-public class BlockCharcoal extends Block
+public class BlockCharcoal extends BlockBasic
 {
+    public static Block charcoalRed;
+    public static Block charcoalBlue;
+    public static Block charcoalYellow;
+    public static Block charcoalPurple;
+    public static Block charcoalGreen;
+    public static Block charcoalOrange;
+    public static Block charcoalWhite;
+    public static Block charcoalBlack;
 
     public BlockCharcoal(String unloc, String registryName)
     {
@@ -48,5 +56,41 @@ public class BlockCharcoal extends Block
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
         return Item.getItemFromBlock(this);
+    }
+
+    public static void BlockCharcoalInit()
+    {
+        charcoalRed = new BlockCharcoal("blockcharcoalred","blockcharcoalred");
+        charcoalBlue = new BlockCharcoal("blockcharcoalblue","blockcharcoalblue");
+        charcoalYellow = new BlockCharcoal("blockcharcoalyellow","blockcharcoalyellow");
+        charcoalPurple = new BlockCharcoal("blockcharcoalpurple","blockcharcoalpurple");
+        charcoalGreen = new BlockCharcoal("blockcharcoalgreen","blockcharcoalgreen");
+        charcoalOrange = new BlockCharcoal("blockcharcoalorange","blockcharcoalorange");
+        charcoalWhite = new BlockCharcoal("blockcharcoalwhite","blockcharcoalwhite");
+        charcoalBlack = new BlockCharcoal("blockcharcoalblack","blockcharcoalblack");
+    }
+
+    public static void BlockCharcoalRegister()
+    {
+        registerBlock(charcoalRed);
+        registerBlock(charcoalBlue);
+        registerBlock(charcoalYellow);
+        registerBlock(charcoalPurple);
+        registerBlock(charcoalGreen);
+        registerBlock(charcoalOrange);
+        registerBlock(charcoalWhite);
+        registerBlock(charcoalBlack);
+    }
+
+    public static void BlockCharcoalRegisterRender()
+    {
+        registerRender(charcoalRed);
+        registerRender(charcoalBlue);
+        registerRender(charcoalYellow);
+        registerRender(charcoalPurple);
+        registerRender(charcoalGreen);
+        registerRender(charcoalOrange);
+        registerRender(charcoalWhite);
+        registerRender(charcoalBlack);
     }
 }

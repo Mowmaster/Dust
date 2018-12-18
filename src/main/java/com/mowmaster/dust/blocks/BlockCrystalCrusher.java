@@ -92,6 +92,7 @@ public class BlockCrystalCrusher extends Block implements ITileEntityProvider
         return false;
     }
 
+
     /*
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

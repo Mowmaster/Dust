@@ -12,9 +12,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 
-public class BlockBasic extends Block
+public class BlockBasicDirectional extends BlockDirectional
 {
-    public BlockBasic(Material material)
+    public BlockBasicDirectional(Material material)
     {
         super(material);
     }

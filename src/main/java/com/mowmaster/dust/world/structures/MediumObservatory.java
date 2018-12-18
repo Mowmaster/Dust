@@ -1,7 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.ancientblocks.BlockAncientSlabs;
+import com.mowmaster.dust.blocks.BlockDustSlab;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -108,10 +108,10 @@ public class MediumObservatory extends WorldGenerator
         StructureParts.createSolidWall(worldIn,pos,Blocks.AIR.getDefaultState(),-4,0,0,0,8,true);
         StructureParts.createSolidWall(worldIn,pos,Blocks.AIR.getDefaultState(),0,0,-4,0,8,false);
         //slabs
-        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.SOUTH),-1,1,4,0,2,true);
-        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.NORTH),-1,1,-4,0,2,true);
-        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.EAST),4,1,-1,0,2,false);
-        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.WEST),-4,1,-1,0,2,false);
+        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.SOUTH),-1,1,4,0,2,true);
+        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.NORTH),-1,1,-4,0,2,true);
+        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.EAST),4,1,-1,0,2,false);
+        StructureParts.createSolidWall(worldIn,pos,colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.WEST),-4,1,-1,0,2,false);
         StructureParts.createSolidWall(worldIn,pos,Blocks.AIR.getDefaultState(),-4,1,0,0,8,true);
         StructureParts.createSolidWall(worldIn,pos,Blocks.AIR.getDefaultState(),0,1,-4,0,8,false);
         //Stair top ledge
@@ -120,15 +120,15 @@ public class MediumObservatory extends WorldGenerator
         StructureParts.createSolidWall(worldIn,pos,colorStair.withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP),4,2,-1,0,2,false);
         StructureParts.createSolidWall(worldIn,pos,colorStair.withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP),-4,2,-1,0,2,false);
 
-        worldIn.setBlockState(pos.add(0,2,-4),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.NORTH));
-        worldIn.setBlockState(pos.add(0,2,4),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.SOUTH));
-        worldIn.setBlockState(pos.add(-4,2,0),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.WEST));
-        worldIn.setBlockState(pos.add(4,2,0),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.EAST));
+        worldIn.setBlockState(pos.add(0,2,-4),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.NORTH));
+        worldIn.setBlockState(pos.add(0,2,4),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.SOUTH));
+        worldIn.setBlockState(pos.add(-4,2,0),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.WEST));
+        worldIn.setBlockState(pos.add(4,2,0),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.EAST));
 
-        worldIn.setBlockState(pos.add(0,3,-4),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.UP));
-        worldIn.setBlockState(pos.add(0,3,4),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.UP));
-        worldIn.setBlockState(pos.add(-4,3,0),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.UP));
-        worldIn.setBlockState(pos.add(4,3,0),colorSlab.withProperty(BlockAncientSlabs.FACING,EnumFacing.UP));
+        worldIn.setBlockState(pos.add(0,3,-4),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.UP));
+        worldIn.setBlockState(pos.add(0,3,4),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.UP));
+        worldIn.setBlockState(pos.add(-4,3,0),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.UP));
+        worldIn.setBlockState(pos.add(4,3,0),colorSlab.withProperty(BlockDustSlab.FACING,EnumFacing.UP));
 
         StructureParts.createSolidFloor(worldIn,pos,colorWood,0,4,0,-2,2,-2,2);
 

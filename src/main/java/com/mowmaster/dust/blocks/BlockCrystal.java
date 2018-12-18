@@ -34,8 +34,56 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
 
-public class BlockCrystal extends BlockDirectional
+public class BlockCrystal extends BlockBasicDirectional
 {
+
+    public static Block redCrystalFive;
+    public static Block redCrystalFour;
+    public static Block redCrystalThree;
+    public static Block redCrystalTwo;
+    public static Block redCrystalOne;
+
+    public static Block blueCrystalFive;
+    public static Block blueCrystalFour;
+    public static Block blueCrystalThree;
+    public static Block blueCrystalTwo;
+    public static Block blueCrystalOne;
+
+    public static Block yellowCrystalFive;
+    public static Block yellowCrystalFour;
+    public static Block yellowCrystalThree;
+    public static Block yellowCrystalTwo;
+    public static Block yellowCrystalOne;
+
+    public static Block purpleCrystalFive;
+    public static Block purpleCrystalFour;
+    public static Block purpleCrystalThree;
+    public static Block purpleCrystalTwo;
+    public static Block purpleCrystalOne;
+
+    public static Block orangeCrystalFive;
+    public static Block orangeCrystalFour;
+    public static Block orangeCrystalThree;
+    public static Block orangeCrystalTwo;
+    public static Block orangeCrystalOne;
+
+    public static Block greenCrystalFive;
+    public static Block greenCrystalFour;
+    public static Block greenCrystalThree;
+    public static Block greenCrystalTwo;
+    public static Block greenCrystalOne;
+
+    public static Block whiteCrystalFive;
+    public static Block whiteCrystalFour;
+    public static Block whiteCrystalThree;
+    public static Block whiteCrystalTwo;
+    public static Block whiteCrystalOne;
+
+    public static Block blackCrystalFive;
+    public static Block blackCrystalFour;
+    public static Block blackCrystalThree;
+    public static Block blackCrystalTwo;
+    public static Block blackCrystalOne;
 
     public static Boolean funHatersExplode = funhaters;
     //Covers all crystals
@@ -182,11 +230,11 @@ public class BlockCrystal extends BlockDirectional
             EntityArrow entityarrow = (EntityArrow)entityIn;
             if (entityarrow.isBurning() )
             {
-                destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalFive,BlockRegistry.blueCrystalFive,BlockRegistry.yellowCrystalFive,BlockRegistry.purpleCrystalFive,BlockRegistry.greenCrystalFive,BlockRegistry.orangeCrystalFive,BlockRegistry.whiteCrystalFive,BlockRegistry.blackCrystalFive,7.0F);
-                destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalFour,BlockRegistry.blueCrystalFour,BlockRegistry.yellowCrystalFour,BlockRegistry.purpleCrystalFour,BlockRegistry.greenCrystalFour,BlockRegistry.orangeCrystalFour,BlockRegistry.whiteCrystalFour,BlockRegistry.blackCrystalFour,6.0F);
-                destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalThree,BlockRegistry.blueCrystalThree,BlockRegistry.yellowCrystalThree,BlockRegistry.purpleCrystalThree,BlockRegistry.greenCrystalThree,BlockRegistry.orangeCrystalThree,BlockRegistry.whiteCrystalThree,BlockRegistry.blackCrystalThree,5.0F);
-                destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalTwo,BlockRegistry.blueCrystalTwo,BlockRegistry.yellowCrystalTwo,BlockRegistry.purpleCrystalTwo,BlockRegistry.greenCrystalTwo,BlockRegistry.orangeCrystalTwo,BlockRegistry.whiteCrystalTwo,BlockRegistry.blackCrystalTwo,4.0F);
-                destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalOne,BlockRegistry.blueCrystalOne,BlockRegistry.yellowCrystalOne,BlockRegistry.purpleCrystalOne,BlockRegistry.greenCrystalOne,BlockRegistry.orangeCrystalOne,BlockRegistry.whiteCrystalOne,BlockRegistry.blackCrystalOne,3.0F);
+                destroyedByExplosion(worldIn,pos,redCrystalFive,blueCrystalFive,yellowCrystalFive,purpleCrystalFive,greenCrystalFive,orangeCrystalFive,whiteCrystalFive,blackCrystalFive,7.0F);
+                destroyedByExplosion(worldIn,pos,redCrystalFour,blueCrystalFour,yellowCrystalFour,purpleCrystalFour,greenCrystalFour,orangeCrystalFour,whiteCrystalFour,blackCrystalFour,6.0F);
+                destroyedByExplosion(worldIn,pos,redCrystalThree,blueCrystalThree,yellowCrystalThree,purpleCrystalThree,greenCrystalThree,orangeCrystalThree,whiteCrystalThree,blackCrystalThree,5.0F);
+                destroyedByExplosion(worldIn,pos,redCrystalTwo,blueCrystalTwo,yellowCrystalTwo,purpleCrystalTwo,greenCrystalTwo,orangeCrystalTwo,whiteCrystalTwo,blackCrystalTwo,4.0F);
+                destroyedByExplosion(worldIn,pos,redCrystalOne,blueCrystalOne,yellowCrystalOne,purpleCrystalOne,greenCrystalOne,orangeCrystalOne,whiteCrystalOne,blackCrystalOne,3.0F);
             }
         }
 
@@ -196,11 +244,11 @@ public class BlockCrystal extends BlockDirectional
             {
                 if(!(entityIn instanceof EntityZombieHorse)) {
                     if (!(entityIn instanceof EntitySkeletonHorse)) {
-                        destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalFive,BlockRegistry.blueCrystalFive,BlockRegistry.yellowCrystalFive,BlockRegistry.purpleCrystalFive,BlockRegistry.greenCrystalFive,BlockRegistry.orangeCrystalFive,BlockRegistry.whiteCrystalFive,BlockRegistry.blackCrystalFive,7.0F);
-                        destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalFour,BlockRegistry.blueCrystalFour,BlockRegistry.yellowCrystalFour,BlockRegistry.purpleCrystalFour,BlockRegistry.greenCrystalFour,BlockRegistry.orangeCrystalFour,BlockRegistry.whiteCrystalFour,BlockRegistry.blackCrystalFour,6.0F);
-                        destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalThree,BlockRegistry.blueCrystalThree,BlockRegistry.yellowCrystalThree,BlockRegistry.purpleCrystalThree,BlockRegistry.greenCrystalThree,BlockRegistry.orangeCrystalThree,BlockRegistry.whiteCrystalThree,BlockRegistry.blackCrystalThree,5.0F);
-                        destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalTwo,BlockRegistry.blueCrystalTwo,BlockRegistry.yellowCrystalTwo,BlockRegistry.purpleCrystalTwo,BlockRegistry.greenCrystalTwo,BlockRegistry.orangeCrystalTwo,BlockRegistry.whiteCrystalTwo,BlockRegistry.blackCrystalTwo,4.0F);
-                        destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalOne,BlockRegistry.blueCrystalOne,BlockRegistry.yellowCrystalOne,BlockRegistry.purpleCrystalOne,BlockRegistry.greenCrystalOne,BlockRegistry.orangeCrystalOne,BlockRegistry.whiteCrystalOne,BlockRegistry.blackCrystalOne,3.0F);
+                        destroyedByExplosion(worldIn,pos,redCrystalFive,blueCrystalFive,yellowCrystalFive,purpleCrystalFive,greenCrystalFive,orangeCrystalFive,whiteCrystalFive,blackCrystalFive,7.0F);
+                        destroyedByExplosion(worldIn,pos,redCrystalFour,blueCrystalFour,yellowCrystalFour,purpleCrystalFour,greenCrystalFour,orangeCrystalFour,whiteCrystalFour,blackCrystalFour,6.0F);
+                        destroyedByExplosion(worldIn,pos,redCrystalThree,blueCrystalThree,yellowCrystalThree,purpleCrystalThree,greenCrystalThree,orangeCrystalThree,whiteCrystalThree,blackCrystalThree,5.0F);
+                        destroyedByExplosion(worldIn,pos,redCrystalTwo,blueCrystalTwo,yellowCrystalTwo,purpleCrystalTwo,greenCrystalTwo,orangeCrystalTwo,whiteCrystalTwo,blackCrystalTwo,4.0F);
+                        destroyedByExplosion(worldIn,pos,redCrystalOne,blueCrystalOne,yellowCrystalOne,purpleCrystalOne,greenCrystalOne,orangeCrystalOne,whiteCrystalOne,blackCrystalOne,3.0F);
                     }
                 }
             }
@@ -222,11 +270,11 @@ public class BlockCrystal extends BlockDirectional
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
         if (!worldIn.isRemote)
         {
-            destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalFive,BlockRegistry.blueCrystalFive,BlockRegistry.yellowCrystalFive,BlockRegistry.purpleCrystalFive,BlockRegistry.greenCrystalFive,BlockRegistry.orangeCrystalFive,BlockRegistry.whiteCrystalFive,BlockRegistry.blackCrystalFive,7.0F);
-            destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalFour,BlockRegistry.blueCrystalFour,BlockRegistry.yellowCrystalFour,BlockRegistry.purpleCrystalFour,BlockRegistry.greenCrystalFour,BlockRegistry.orangeCrystalFour,BlockRegistry.whiteCrystalFour,BlockRegistry.blackCrystalFour,6.0F);
-            destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalThree,BlockRegistry.blueCrystalThree,BlockRegistry.yellowCrystalThree,BlockRegistry.purpleCrystalThree,BlockRegistry.greenCrystalThree,BlockRegistry.orangeCrystalThree,BlockRegistry.whiteCrystalThree,BlockRegistry.blackCrystalThree,5.0F);
-            destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalTwo,BlockRegistry.blueCrystalTwo,BlockRegistry.yellowCrystalTwo,BlockRegistry.purpleCrystalTwo,BlockRegistry.greenCrystalTwo,BlockRegistry.orangeCrystalTwo,BlockRegistry.whiteCrystalTwo,BlockRegistry.blackCrystalTwo,4.0F);
-            destroyedByExplosion(worldIn,pos,BlockRegistry.redCrystalOne,BlockRegistry.blueCrystalOne,BlockRegistry.yellowCrystalOne,BlockRegistry.purpleCrystalOne,BlockRegistry.greenCrystalOne,BlockRegistry.orangeCrystalOne,BlockRegistry.whiteCrystalOne,BlockRegistry.blackCrystalOne,3.0F);
+            destroyedByExplosion(worldIn,pos,redCrystalFive,blueCrystalFive,yellowCrystalFive,purpleCrystalFive,greenCrystalFive,orangeCrystalFive,whiteCrystalFive,blackCrystalFive,7.0F);
+            destroyedByExplosion(worldIn,pos,redCrystalFour,blueCrystalFour,yellowCrystalFour,purpleCrystalFour,greenCrystalFour,orangeCrystalFour,whiteCrystalFour,blackCrystalFour,6.0F);
+            destroyedByExplosion(worldIn,pos,redCrystalThree,blueCrystalThree,yellowCrystalThree,purpleCrystalThree,greenCrystalThree,orangeCrystalThree,whiteCrystalThree,blackCrystalThree,5.0F);
+            destroyedByExplosion(worldIn,pos,redCrystalTwo,blueCrystalTwo,yellowCrystalTwo,purpleCrystalTwo,greenCrystalTwo,orangeCrystalTwo,whiteCrystalTwo,blackCrystalTwo,4.0F);
+            destroyedByExplosion(worldIn,pos,redCrystalOne,blueCrystalOne,yellowCrystalOne,purpleCrystalOne,greenCrystalOne,orangeCrystalOne,whiteCrystalOne,blackCrystalOne,3.0F);
         }
     }
 
@@ -258,46 +306,46 @@ public class BlockCrystal extends BlockDirectional
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         EnumFacing facing = state.getValue(FACING);
         if (!worldIn.isRemote) {
-            crystalMined(worldIn,pos,state,BlockRegistry.redCrystalFive,BlockRegistry.redCrystalFour,0);
-            crystalMined(worldIn,pos,state,BlockRegistry.redCrystalFour,BlockRegistry.redCrystalThree,0);
-            crystalMined(worldIn,pos,state,BlockRegistry.redCrystalThree,BlockRegistry.redCrystalTwo,0);
-            crystalMined(worldIn,pos,state,BlockRegistry.redCrystalTwo,BlockRegistry.redCrystalOne,0);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.redCrystalOne,0);
-            crystalMined(worldIn,pos,state,BlockRegistry.blueCrystalFive,BlockRegistry.blueCrystalFour,1);
-            crystalMined(worldIn,pos,state,BlockRegistry.blueCrystalFour,BlockRegistry.blueCrystalThree,1);
-            crystalMined(worldIn,pos,state,BlockRegistry.blueCrystalThree,BlockRegistry.blueCrystalTwo,1);
-            crystalMined(worldIn,pos,state,BlockRegistry.blueCrystalTwo,BlockRegistry.blueCrystalOne,1);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.blueCrystalOne,1);
-            crystalMined(worldIn,pos,state,BlockRegistry.yellowCrystalFive,BlockRegistry.yellowCrystalFour,2);
-            crystalMined(worldIn,pos,state,BlockRegistry.yellowCrystalFour,BlockRegistry.yellowCrystalThree,2);
-            crystalMined(worldIn,pos,state,BlockRegistry.yellowCrystalThree,BlockRegistry.yellowCrystalTwo,2);
-            crystalMined(worldIn,pos,state,BlockRegistry.yellowCrystalTwo,BlockRegistry.yellowCrystalOne,2);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.yellowCrystalOne,2);
-            crystalMined(worldIn,pos,state,BlockRegistry.purpleCrystalFive,BlockRegistry.purpleCrystalFour,3);
-            crystalMined(worldIn,pos,state,BlockRegistry.purpleCrystalFour,BlockRegistry.purpleCrystalThree,3);
-            crystalMined(worldIn,pos,state,BlockRegistry.purpleCrystalThree,BlockRegistry.purpleCrystalTwo,3);
-            crystalMined(worldIn,pos,state,BlockRegistry.purpleCrystalTwo,BlockRegistry.purpleCrystalOne,3);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.purpleCrystalOne,3);
-            crystalMined(worldIn,pos,state,BlockRegistry.greenCrystalFive,BlockRegistry.greenCrystalFour,4);
-            crystalMined(worldIn,pos,state,BlockRegistry.greenCrystalFour,BlockRegistry.greenCrystalThree,4);
-            crystalMined(worldIn,pos,state,BlockRegistry.greenCrystalThree,BlockRegistry.greenCrystalTwo,4);
-            crystalMined(worldIn,pos,state,BlockRegistry.greenCrystalTwo,BlockRegistry.greenCrystalOne,4);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.greenCrystalOne,4);
-            crystalMined(worldIn,pos,state,BlockRegistry.orangeCrystalFive,BlockRegistry.orangeCrystalFour,5);
-            crystalMined(worldIn,pos,state,BlockRegistry.orangeCrystalFour,BlockRegistry.orangeCrystalThree,5);
-            crystalMined(worldIn,pos,state,BlockRegistry.orangeCrystalThree,BlockRegistry.orangeCrystalTwo,5);
-            crystalMined(worldIn,pos,state,BlockRegistry.orangeCrystalTwo,BlockRegistry.orangeCrystalOne,5);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.orangeCrystalOne,5);
-            crystalMined(worldIn,pos,state,BlockRegistry.whiteCrystalFive,BlockRegistry.whiteCrystalFour,6);
-            crystalMined(worldIn,pos,state,BlockRegistry.whiteCrystalFour,BlockRegistry.whiteCrystalThree,6);
-            crystalMined(worldIn,pos,state,BlockRegistry.whiteCrystalThree,BlockRegistry.whiteCrystalTwo,6);
-            crystalMined(worldIn,pos,state,BlockRegistry.whiteCrystalTwo,BlockRegistry.whiteCrystalOne,6);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.whiteCrystalOne,6);
-            crystalMined(worldIn,pos,state,BlockRegistry.blackCrystalFive,BlockRegistry.blackCrystalFour,7);
-            crystalMined(worldIn,pos,state,BlockRegistry.blackCrystalFour,BlockRegistry.blackCrystalThree,7);
-            crystalMined(worldIn,pos,state,BlockRegistry.blackCrystalThree,BlockRegistry.blackCrystalTwo,7);
-            crystalMined(worldIn,pos,state,BlockRegistry.blackCrystalTwo,BlockRegistry.blackCrystalOne,7);
-            crystalDepleated(worldIn,pos,state,BlockRegistry.blackCrystalOne,7);
+            crystalMined(worldIn,pos,state,redCrystalFive,redCrystalFour,0);
+            crystalMined(worldIn,pos,state,redCrystalFour,redCrystalThree,0);
+            crystalMined(worldIn,pos,state,redCrystalThree,redCrystalTwo,0);
+            crystalMined(worldIn,pos,state,redCrystalTwo,redCrystalOne,0);
+            crystalDepleated(worldIn,pos,state,redCrystalOne,0);
+            crystalMined(worldIn,pos,state,blueCrystalFive,blueCrystalFour,1);
+            crystalMined(worldIn,pos,state,blueCrystalFour,blueCrystalThree,1);
+            crystalMined(worldIn,pos,state,blueCrystalThree,blueCrystalTwo,1);
+            crystalMined(worldIn,pos,state,blueCrystalTwo,blueCrystalOne,1);
+            crystalDepleated(worldIn,pos,state,blueCrystalOne,1);
+            crystalMined(worldIn,pos,state,yellowCrystalFive,yellowCrystalFour,2);
+            crystalMined(worldIn,pos,state,yellowCrystalFour,yellowCrystalThree,2);
+            crystalMined(worldIn,pos,state,yellowCrystalThree,yellowCrystalTwo,2);
+            crystalMined(worldIn,pos,state,yellowCrystalTwo,yellowCrystalOne,2);
+            crystalDepleated(worldIn,pos,state,yellowCrystalOne,2);
+            crystalMined(worldIn,pos,state,purpleCrystalFive,purpleCrystalFour,3);
+            crystalMined(worldIn,pos,state,purpleCrystalFour,purpleCrystalThree,3);
+            crystalMined(worldIn,pos,state,purpleCrystalThree,purpleCrystalTwo,3);
+            crystalMined(worldIn,pos,state,purpleCrystalTwo,purpleCrystalOne,3);
+            crystalDepleated(worldIn,pos,state,purpleCrystalOne,3);
+            crystalMined(worldIn,pos,state,greenCrystalFive,greenCrystalFour,4);
+            crystalMined(worldIn,pos,state,greenCrystalFour,greenCrystalThree,4);
+            crystalMined(worldIn,pos,state,greenCrystalThree,greenCrystalTwo,4);
+            crystalMined(worldIn,pos,state,greenCrystalTwo,greenCrystalOne,4);
+            crystalDepleated(worldIn,pos,state,greenCrystalOne,4);
+            crystalMined(worldIn,pos,state,orangeCrystalFive,orangeCrystalFour,5);
+            crystalMined(worldIn,pos,state,orangeCrystalFour,orangeCrystalThree,5);
+            crystalMined(worldIn,pos,state,orangeCrystalThree,orangeCrystalTwo,5);
+            crystalMined(worldIn,pos,state,orangeCrystalTwo,orangeCrystalOne,5);
+            crystalDepleated(worldIn,pos,state,orangeCrystalOne,5);
+            crystalMined(worldIn,pos,state,whiteCrystalFive,whiteCrystalFour,6);
+            crystalMined(worldIn,pos,state,whiteCrystalFour,whiteCrystalThree,6);
+            crystalMined(worldIn,pos,state,whiteCrystalThree,whiteCrystalTwo,6);
+            crystalMined(worldIn,pos,state,whiteCrystalTwo,whiteCrystalOne,6);
+            crystalDepleated(worldIn,pos,state,whiteCrystalOne,6);
+            crystalMined(worldIn,pos,state,blackCrystalFive,blackCrystalFour,7);
+            crystalMined(worldIn,pos,state,blackCrystalFour,blackCrystalThree,7);
+            crystalMined(worldIn,pos,state,blackCrystalThree,blackCrystalTwo,7);
+            crystalMined(worldIn,pos,state,blackCrystalTwo,blackCrystalOne,7);
+            crystalDepleated(worldIn,pos,state,blackCrystalOne,7);
         }
     }
 
@@ -323,46 +371,46 @@ public class BlockCrystal extends BlockDirectional
             EnumFacing facing = state.getValue(FACING);
             if (rand < CHANCE)
             {
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.redCrystalOne,BlockRegistry.redCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.redCrystalTwo,BlockRegistry.redCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.redCrystalThree,BlockRegistry.redCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.redCrystalFour,BlockRegistry.redCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.redCrystalFive,BlockRegistry.redOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blueCrystalOne,BlockRegistry.blueCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blueCrystalTwo,BlockRegistry.blueCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blueCrystalThree,BlockRegistry.blueCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blueCrystalFour,BlockRegistry.blueCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.blueCrystalFive,BlockRegistry.blueOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.yellowCrystalOne,BlockRegistry.yellowCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.yellowCrystalTwo,BlockRegistry.yellowCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.yellowCrystalThree,BlockRegistry.yellowCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.yellowCrystalFour,BlockRegistry.yellowCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.yellowCrystalFive,BlockRegistry.yellowOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.purpleCrystalOne,BlockRegistry.purpleCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.purpleCrystalTwo,BlockRegistry.purpleCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.purpleCrystalThree,BlockRegistry.purpleCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.purpleCrystalFour,BlockRegistry.purpleCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.purpleCrystalFive,BlockRegistry.purpleOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.greenCrystalOne,BlockRegistry.greenCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.greenCrystalTwo,BlockRegistry.greenCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.greenCrystalThree,BlockRegistry.greenCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.greenCrystalFour,BlockRegistry.greenCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.greenCrystalFive,BlockRegistry.greenOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.orangeCrystalOne,BlockRegistry.orangeCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.orangeCrystalTwo,BlockRegistry.orangeCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.orangeCrystalThree,BlockRegistry.orangeCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.orangeCrystalFour,BlockRegistry.orangeCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.orangeCrystalFive,BlockRegistry.orangeOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.whiteCrystalOne,BlockRegistry.whiteCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.whiteCrystalTwo,BlockRegistry.whiteCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.whiteCrystalThree,BlockRegistry.whiteCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.whiteCrystalFour,BlockRegistry.whiteCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.whiteCrystalFive,BlockRegistry.whiteOre);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blackCrystalOne,BlockRegistry.blackCrystalTwo);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blackCrystalTwo,BlockRegistry.blackCrystalThree);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blackCrystalThree,BlockRegistry.blackCrystalFour);
-                regrowCrystal(worldIn,pos,facing,BlockRegistry.blackCrystalFour,BlockRegistry.blackCrystalFive);
-                //regrowCrystal(worldIn,pos,facing,BlockRegistry.blackCrystalFive,BlockRegistry.blackOre);
+                regrowCrystal(worldIn,pos,facing,redCrystalOne,redCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,redCrystalTwo,redCrystalThree);
+                regrowCrystal(worldIn,pos,facing,redCrystalThree,redCrystalFour);
+                regrowCrystal(worldIn,pos,facing,redCrystalFour,redCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,redCrystalFive,redOre);
+                regrowCrystal(worldIn,pos,facing,blueCrystalOne,blueCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,blueCrystalTwo,blueCrystalThree);
+                regrowCrystal(worldIn,pos,facing,blueCrystalThree,blueCrystalFour);
+                regrowCrystal(worldIn,pos,facing,blueCrystalFour,blueCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,blueCrystalFive,blueOre);
+                regrowCrystal(worldIn,pos,facing,yellowCrystalOne,yellowCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,yellowCrystalTwo,yellowCrystalThree);
+                regrowCrystal(worldIn,pos,facing,yellowCrystalThree,yellowCrystalFour);
+                regrowCrystal(worldIn,pos,facing,yellowCrystalFour,yellowCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,yellowCrystalFive,yellowOre);
+                regrowCrystal(worldIn,pos,facing,purpleCrystalOne,purpleCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,purpleCrystalTwo,purpleCrystalThree);
+                regrowCrystal(worldIn,pos,facing,purpleCrystalThree,purpleCrystalFour);
+                regrowCrystal(worldIn,pos,facing,purpleCrystalFour,purpleCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,purpleCrystalFive,purpleOre);
+                regrowCrystal(worldIn,pos,facing,greenCrystalOne,greenCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,greenCrystalTwo,greenCrystalThree);
+                regrowCrystal(worldIn,pos,facing,greenCrystalThree,greenCrystalFour);
+                regrowCrystal(worldIn,pos,facing,greenCrystalFour,greenCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,greenCrystalFive,greenOre);
+                regrowCrystal(worldIn,pos,facing,orangeCrystalOne,orangeCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,orangeCrystalTwo,orangeCrystalThree);
+                regrowCrystal(worldIn,pos,facing,orangeCrystalThree,orangeCrystalFour);
+                regrowCrystal(worldIn,pos,facing,orangeCrystalFour,orangeCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,orangeCrystalFive,orangeOre);
+                regrowCrystal(worldIn,pos,facing,whiteCrystalOne,whiteCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,whiteCrystalTwo,whiteCrystalThree);
+                regrowCrystal(worldIn,pos,facing,whiteCrystalThree,whiteCrystalFour);
+                regrowCrystal(worldIn,pos,facing,whiteCrystalFour,whiteCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,whiteCrystalFive,whiteOre);
+                regrowCrystal(worldIn,pos,facing,blackCrystalOne,blackCrystalTwo);
+                regrowCrystal(worldIn,pos,facing,blackCrystalTwo,blackCrystalThree);
+                regrowCrystal(worldIn,pos,facing,blackCrystalThree,blackCrystalFour);
+                regrowCrystal(worldIn,pos,facing,blackCrystalFour,blackCrystalFive);
+                //regrowCrystal(worldIn,pos,facing,blackCrystalFive,blackOre);
             }
         }
     }
@@ -389,6 +437,160 @@ public class BlockCrystal extends BlockDirectional
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
         tooltip.add("Will Explode if Living Passive Entities Collide");
+    }
+
+
+    public static void Init()
+    {
+        redCrystalFive = new BlockCrystal("blockredcrystalfive", "red/blockredcrystalfive");
+        redCrystalFour = new BlockCrystal("blockredcrystalfour", "red/blockredcrystalfour");
+        redCrystalThree = new BlockCrystal("blockredcrystalthree", "red/blockredcrystalthree");
+        redCrystalTwo = new BlockCrystal("blockredcrystaltwo", "red/blockredcrystaltwo");
+        redCrystalOne = new BlockCrystal("blockredcrystalone", "red/blockredcrystalone");
+
+        blueCrystalFive = new BlockCrystal("blockbluecrystalfive", "blue/blockbluecrystalfive");
+        blueCrystalFour = new BlockCrystal("blockbluecrystalfour", "blue/blockbluecrystalfour");
+        blueCrystalThree = new BlockCrystal("blockbluecrystalthree", "blue/blockbluecrystalthree");
+        blueCrystalTwo = new BlockCrystal("blockbluecrystaltwo", "blue/blockbluecrystaltwo");
+        blueCrystalOne = new BlockCrystal("blockbluecrystalone", "blue/blockbluecrystalone");
+
+        yellowCrystalFive = new BlockCrystal("blockyellowcrystalfive", "yellow/blockyellowcrystalfive");
+        yellowCrystalFour = new BlockCrystal("blockyellowcrystalfour", "yellow/blockyellowcrystalfour");
+        yellowCrystalThree = new BlockCrystal("blockyellowcrystalthree", "yellow/blockyellowcrystalthree");
+        yellowCrystalTwo = new BlockCrystal("blockyellowcrystaltwo", "yellow/blockyellowcrystaltwo");
+        yellowCrystalOne = new BlockCrystal("blockyellowcrystalone", "yellow/blockyellowcrystalone");
+
+        purpleCrystalFive = new BlockCrystal("blockpurplecrystalfive", "purple/blockpurplecrystalfive");
+        purpleCrystalFour = new BlockCrystal("blockpurplecrystalfour", "purple/blockpurplecrystalfour");
+        purpleCrystalThree = new BlockCrystal("blockpurplecrystalthree", "purple/blockpurplecrystalthree");
+        purpleCrystalTwo = new BlockCrystal("blockpurplecrystaltwo", "purple/blockpurplecrystaltwo");
+        purpleCrystalOne = new BlockCrystal("blockpurplecrystalone", "purple/blockpurplecrystalone");
+
+        orangeCrystalFive = new BlockCrystal("blockorangecrystalfive", "orange/blockorangecrystalfive");
+        orangeCrystalFour = new BlockCrystal("blockorangecrystalfour", "orange/blockorangecrystalfour");
+        orangeCrystalThree = new BlockCrystal("blockorangecrystalthree", "orange/blockorangecrystalthree");
+        orangeCrystalTwo = new BlockCrystal("blockorangecrystaltwo", "orange/blockorangecrystaltwo");
+        orangeCrystalOne = new BlockCrystal("blockorangecrystalone", "orange/blockorangecrystalone");
+
+        greenCrystalFive = new BlockCrystal("blockgreencrystalfive", "green/blockgreencrystalfive");
+        greenCrystalFour = new BlockCrystal("blockgreencrystalfour", "green/blockgreencrystalfour");
+        greenCrystalThree = new BlockCrystal("blockgreencrystalthree", "green/blockgreencrystalthree");
+        greenCrystalTwo = new BlockCrystal("blockgreencrystaltwo", "green/blockgreencrystaltwo");
+        greenCrystalOne = new BlockCrystal("blockgreencrystalone", "green/blockgreencrystalone");
+
+        whiteCrystalFive = new BlockCrystal("blockwhitecrystalfive", "white/blockwhitecrystalfive");
+        whiteCrystalFour = new BlockCrystal("blockwhitecrystalfour", "white/blockwhitecrystalfour");
+        whiteCrystalThree = new BlockCrystal("blockwhitecrystalthree", "white/blockwhitecrystalthree");
+        whiteCrystalTwo = new BlockCrystal("blockwhitecrystaltwo", "white/blockwhitecrystaltwo");
+        whiteCrystalOne = new BlockCrystal("blockwhitecrystalone", "white/blockWhiteCrystalOne");
+
+        blackCrystalFive = new BlockCrystal("blockblackcrystalfive", "black/blockblackcrystalfive");
+        blackCrystalFour = new BlockCrystal("blockblackcrystalfour", "black/blockblackcrystalfour");
+        blackCrystalThree = new BlockCrystal("blockblackcrystalthree", "black/blockblackcrystalthree");
+        blackCrystalTwo = new BlockCrystal("blockblackcrystaltwo", "black/blockblackcrystaltwo");
+        blackCrystalOne = new BlockCrystal("blockblackcrystalone", "black/blockblackcrystalone");
+    }
+
+    public static void Register()
+    {
+        registerBlock(redCrystalFive);
+        registerBlock(redCrystalFour);
+        registerBlock(redCrystalThree);
+        registerBlock(redCrystalTwo);
+        registerBlock(redCrystalOne);
+
+        registerBlock(blueCrystalFive);
+        registerBlock(blueCrystalFour);
+        registerBlock(blueCrystalThree);
+        registerBlock(blueCrystalTwo);
+        registerBlock(blueCrystalOne);
+
+        registerBlock(yellowCrystalFive);
+        registerBlock(yellowCrystalFour);
+        registerBlock(yellowCrystalThree);
+        registerBlock(yellowCrystalTwo);
+        registerBlock(yellowCrystalOne);
+
+        registerBlock(purpleCrystalFive);
+        registerBlock(purpleCrystalFour);
+        registerBlock(purpleCrystalThree);
+        registerBlock(purpleCrystalTwo);
+        registerBlock(purpleCrystalOne);
+
+        registerBlock(orangeCrystalFive);
+        registerBlock(orangeCrystalFour);
+        registerBlock(orangeCrystalThree);
+        registerBlock(orangeCrystalTwo);
+        registerBlock(orangeCrystalOne);
+
+        registerBlock(greenCrystalFive);
+        registerBlock(greenCrystalFour);
+        registerBlock(greenCrystalThree);
+        registerBlock(greenCrystalTwo);
+        registerBlock(greenCrystalOne);
+
+        registerBlock(whiteCrystalFive);
+        registerBlock(whiteCrystalFour);
+        registerBlock(whiteCrystalThree);
+        registerBlock(whiteCrystalTwo);
+        registerBlock(whiteCrystalOne);
+
+        registerBlock(blackCrystalFive);
+        registerBlock(blackCrystalFour);
+        registerBlock(blackCrystalThree);
+        registerBlock(blackCrystalTwo);
+        registerBlock(blackCrystalOne);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRenderCrystal(redCrystalFive);
+        registerRenderCrystal(redCrystalFour);
+        registerRenderCrystal(redCrystalThree);
+        registerRenderCrystal(redCrystalTwo);
+        registerRenderCrystal(redCrystalOne);
+
+        registerRenderCrystal(blueCrystalFive);
+        registerRenderCrystal(blueCrystalFour);
+        registerRenderCrystal(blueCrystalThree);
+        registerRenderCrystal(blueCrystalTwo);
+        registerRenderCrystal(blueCrystalOne);
+
+        registerRenderCrystal(yellowCrystalFive);
+        registerRenderCrystal(yellowCrystalFour);
+        registerRenderCrystal(yellowCrystalThree);
+        registerRenderCrystal(yellowCrystalTwo);
+        registerRenderCrystal(yellowCrystalOne);
+
+        registerRenderCrystal(purpleCrystalFive);
+        registerRenderCrystal(purpleCrystalFour);
+        registerRenderCrystal(purpleCrystalThree);
+        registerRenderCrystal(purpleCrystalTwo);
+        registerRenderCrystal(purpleCrystalOne);
+
+        registerRenderCrystal(orangeCrystalFive);
+        registerRenderCrystal(orangeCrystalFour);
+        registerRenderCrystal(orangeCrystalThree);
+        registerRenderCrystal(orangeCrystalTwo);
+        registerRenderCrystal(orangeCrystalOne);
+
+        registerRenderCrystal(greenCrystalFive);
+        registerRenderCrystal(greenCrystalFour);
+        registerRenderCrystal(greenCrystalThree);
+        registerRenderCrystal(greenCrystalTwo);
+        registerRenderCrystal(greenCrystalOne);
+
+        registerRenderCrystal(whiteCrystalFive);
+        registerRenderCrystal(whiteCrystalFour);
+        registerRenderCrystal(whiteCrystalThree);
+        registerRenderCrystal(whiteCrystalTwo);
+        registerRenderCrystal(whiteCrystalOne);
+
+        registerRenderCrystal(blackCrystalFive);
+        registerRenderCrystal(blackCrystalFour);
+        registerRenderCrystal(blackCrystalThree);
+        registerRenderCrystal(blackCrystalTwo);
+        registerRenderCrystal(blackCrystalOne);
     }
 
 }

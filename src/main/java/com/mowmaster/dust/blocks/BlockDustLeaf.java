@@ -2,6 +2,7 @@ package com.mowmaster.dust.blocks;
 
 
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
+import com.mowmaster.dust.blocks.item.ItemBlockOre;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
@@ -19,17 +20,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
@@ -38,15 +36,16 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 
-public class BlockLeaf  extends Block implements IMetaBlockName
+public class BlockDustLeaf extends BlockBasic implements IMetaBlockName
 {
+    public static Block leaf;
     public static final PropertyEnum LEAVES = PropertyEnum.create("leaves",CrystalBlocks.CrystalLeaves.class);
     protected boolean leavesFancy;
     public static Boolean funHatersExplode = funhaters;
 
 
 
-    public BlockLeaf(String unloc)
+    public BlockDustLeaf(String unloc)
     {
         super(Material.LEAVES);
         this.setUnlocalizedName(unloc);
@@ -127,35 +126,35 @@ public class BlockLeaf  extends Block implements IMetaBlockName
             }
             if(droped<=1)
             {
-                if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
+                if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingred), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingblue), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingyellow), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingpurple), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingorange), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplinggreen), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingwhite), 1)));
                 }
-                else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
+                else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
                 {
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Item.getItemFromBlock(BlockRegistry.saplingblack), 1)));
                 }
@@ -199,35 +198,35 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         Random rn = new Random();
         int drop = rn.nextInt(25);
         IBlockState state = worldIn.getBlockState(pos);
-        if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
+        if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,0)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,1)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,2)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,3)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,4)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,5)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,6)));}
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
         {
             if(drop==0) {worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.dust, 1,7)));}
         }
@@ -241,49 +240,49 @@ public class BlockLeaf  extends Block implements IMetaBlockName
         Item dropped;
         dropped = null;
         IBlockState state = worldIn.getBlockState(pos);
-        if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
+        if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingred);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblue);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingyellow);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingpurple);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingorange);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplinggreen);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingwhite);}
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(dropped, 1)));
         }
-        else if(state.equals(BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
+        else if(state.equals(leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK)))
         {
             if(drop != 0) {dropped = null;}
             else if(drop==0) {dropped = Item.getItemFromBlock(BlockRegistry.saplingblack);}
@@ -301,6 +300,24 @@ public class BlockLeaf  extends Block implements IMetaBlockName
             worldIn.setBlockToAir(pos);
         }
 
+    }
+
+    public static void Init()
+    {
+        leaf = new BlockDustLeaf("leaves");
+    }
+
+    public static void Register()
+    {
+        registerBlock(leaf, new ItemBlockOre(leaf));
+    }
+
+    public static void RegisterRender()
+    {
+        for (int i = 0; i < CrystalBlocks.CrystalLeaves.values().length; i++)
+        {
+            registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
+        }
     }
 
     /*

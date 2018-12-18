@@ -1,8 +1,9 @@
 package com.mowmaster.dust.blocks.sapling;
 
-import com.mowmaster.dust.blocks.BlockLeaf;
+import com.mowmaster.dust.blocks.BlockDust;
+import com.mowmaster.dust.blocks.BlockDustLeaf;
+import com.mowmaster.dust.blocks.BlockDustLog;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.sapling.SaplingBase;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.enums.TreeTypes;
 import net.minecraft.block.BlockAir;
@@ -15,18 +16,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import scala.reflect.internal.Trees;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockLeaf.LEAVES;
+import static com.mowmaster.dust.blocks.BlockDustLeaf.LEAVES;
 
 
 public class TreeGenerator extends WorldGenAbstractTree
 {
     //Currently unused, but should be usable
     int trunkSize = 1;
-
 
     public TreeGenerator(boolean notify) {
         super(notify);
@@ -41,36 +40,37 @@ public class TreeGenerator extends WorldGenAbstractTree
         IBlockState leafstate;
         switch (type){
             case RED:
-                logstate = BlockRegistry.logred.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED);
+
+                logstate = BlockDustLog.logred.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED);
                 break;
             case BLUE:
-                logstate = BlockRegistry.logblue.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE);
+                logstate = BlockDustLog.logblue.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLUE);
                 break;
             case YELLOW:
-                logstate = BlockRegistry.logyellow.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW);
+                logstate = BlockDustLog.logyellow.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.YELLOW);
                 break;
             case PURPLE:
-                logstate = BlockRegistry.logpurple.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE);
+                logstate = BlockDustLog.logpurple.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.PURPLE);
                 break;
             case ORANGE:
-                logstate = BlockRegistry.logorange.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE);
+                logstate = BlockDustLog.logorange.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.ORANGE);
                 break;
             case GREEN:
-                logstate = BlockRegistry.loggreen.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN);
+                logstate = BlockDustLog.loggreen.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.GREEN);
                 break;
             case WHITE:
-                logstate = BlockRegistry.logwhite.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE);
+                logstate = BlockDustLog.logwhite.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.WHITE);
                 break;
             case BLACK:
-                logstate = BlockRegistry.logblack.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
-                leafstate = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK);
+                logstate = BlockDustLog.logblack.getDefaultState();     /*.withProperty(LogBase.LOG_AXIS, LogBase.EnumAxis.Y)*/;
+                leafstate = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.BLACK);
                 break;
             default:
                 return false;

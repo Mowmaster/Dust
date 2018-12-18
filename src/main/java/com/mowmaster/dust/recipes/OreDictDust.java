@@ -1,5 +1,7 @@
 package com.mowmaster.dust.recipes;
 
+import com.mowmaster.dust.blocks.BlockCharcoal;
+import com.mowmaster.dust.blocks.BlockCrystalOre;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.init.Items;
@@ -39,14 +41,14 @@ public class OreDictDust
 
         OreDictionary.registerOre("treeLeaves", BlockRegistry.leaf);
 
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.redOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.blueOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.yellowOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.purpleOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.orangeOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.greenOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.whiteOre);
-        OreDictionary.registerOre("oreCrystal", BlockRegistry.blackOre);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.redore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blueore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.yellowore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.purpleore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.orangeore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.greenore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.whiteore);
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blackore);
 
         OreDictionary.registerOre("stone", BlockRegistry.redstone);
         OreDictionary.registerOre("stone", BlockRegistry.bluestone);
@@ -70,14 +72,14 @@ public class OreDictDust
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalWhite));
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalBlack));
 
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalRed));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalBlue));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalYellow));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalPurple));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalGreen));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalOrange));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalWhite));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockRegistry.charcoalBlack));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalRed));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalBlue));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalYellow));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalPurple));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalGreen));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalOrange));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalWhite));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalBlack));
 
 
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinA));

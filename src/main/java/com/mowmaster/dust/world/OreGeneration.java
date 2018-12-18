@@ -1,5 +1,6 @@
 package com.mowmaster.dust.world;
 
+import com.mowmaster.dust.blocks.BlockCrystalOre;
 import com.mowmaster.dust.world.structures.*;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallPiller;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallSandWell;
@@ -86,14 +87,14 @@ public class OreGeneration implements IWorldGenerator
     public OreGeneration()
     {
 
-        red_ore = new WorldGenMinable(redOre.getDefaultState(),count);
-        blue_ore = new WorldGenMinable(blueOre.getDefaultState(),count);
-        yellow_ore = new WorldGenMinable(yellowOre.getDefaultState(),count);
-        purple_ore = new WorldGenMinable(purpleOre.getDefaultState(),count);
-        orange_ore = new WorldGenMinable(orangeOre.getDefaultState(),count);
-        green_ore = new WorldGenMinable(greenOre.getDefaultState(),count);
-        white_ore = new WorldGenMinable(whiteOre.getDefaultState(),count);
-        black_ore = new WorldGenMinable(blackOre.getDefaultState(),count);
+        red_ore = new WorldGenMinable(BlockCrystalOre.redore.getDefaultState(),count);
+        blue_ore = new WorldGenMinable(BlockCrystalOre.blueore.getDefaultState(),count);
+        yellow_ore = new WorldGenMinable(BlockCrystalOre.yellowore.getDefaultState(),count);
+        purple_ore = new WorldGenMinable(BlockCrystalOre.purpleore.getDefaultState(),count);
+        orange_ore = new WorldGenMinable(BlockCrystalOre.orangeore.getDefaultState(),count);
+        green_ore = new WorldGenMinable(BlockCrystalOre.greenore.getDefaultState(),count);
+        white_ore = new WorldGenMinable(BlockCrystalOre.whiteore.getDefaultState(),count);
+        black_ore = new WorldGenMinable(BlockCrystalOre.blackore.getDefaultState(),count);
 
 
         // for use in crystal biomes

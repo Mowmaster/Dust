@@ -2,7 +2,9 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -12,9 +14,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 
-public class BlockBasic extends Block
+public class BlockBasicFalling extends BlockFalling
 {
-    public BlockBasic(Material material)
+    public BlockBasicFalling(Material material)
     {
         super(material);
     }

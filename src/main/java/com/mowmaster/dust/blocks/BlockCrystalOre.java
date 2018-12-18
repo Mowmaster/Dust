@@ -25,8 +25,18 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockCrystalOre extends Block
+public class BlockCrystalOre extends BlockBasic
 {
+    public static Block redore;
+    public static Block blueore;
+    public static Block yellowore;
+    public static Block purpleore;
+    public static Block orangeore;
+    public static Block greenore;
+    public static Block whiteore;
+    public static Block blackore;
+
+
     public BlockCrystalOre(String unloc, String registryName, Material material, SoundType soundType, int hardness, int resistance, int lightopacity)
     {
         super(material);
@@ -41,15 +51,15 @@ public class BlockCrystalOre extends Block
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        ItemStack returned = new ItemStack(BlockRegistry.redOre,1);
-        if(state.getBlock().equals(BlockRegistry.redOre)){returned = new ItemStack(BlockRegistry.redOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.blueOre)){returned = new ItemStack(BlockRegistry.blueOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.yellowOre)){returned = new ItemStack(BlockRegistry.yellowOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.purpleOre)){returned = new ItemStack(BlockRegistry.purpleOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.greenOre)){returned = new ItemStack(BlockRegistry.greenOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.orangeOre)){returned = new ItemStack(BlockRegistry.orangeOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.whiteOre)){returned = new ItemStack(BlockRegistry.whiteOre,1);}
-        else if(state.getBlock().equals(BlockRegistry.blackOre)){returned = new ItemStack(BlockRegistry.blackOre,1);}
+        ItemStack returned = new ItemStack(redore,1);
+        if(state.getBlock().equals(redore)){returned = new ItemStack(redore,1);}
+        else if(state.getBlock().equals(blueore)){returned = new ItemStack(blueore,1);}
+        else if(state.getBlock().equals(yellowore)){returned = new ItemStack(yellowore,1);}
+        else if(state.getBlock().equals(purpleore)){returned = new ItemStack(purpleore,1);}
+        else if(state.getBlock().equals(greenore)){returned = new ItemStack(greenore,1);}
+        else if(state.getBlock().equals(orangeore)){returned = new ItemStack(orangeore,1);}
+        else if(state.getBlock().equals(whiteore)){returned = new ItemStack(whiteore,1);}
+        else if(state.getBlock().equals(blackore)){returned = new ItemStack(blackore,1);}
 
         return returned;
     }
@@ -65,14 +75,14 @@ public class BlockCrystalOre extends Block
     @Override
     public int damageDropped(IBlockState state) {
         int count = 0;
-        if(this.getDefaultState().getBlock().equals(BlockRegistry.redOre)) {count=0;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.blueOre)) {count=1;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.yellowOre)) {count=2;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.purpleOre)) {count=3;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.greenOre)) {count=4;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.orangeOre)) {count=5;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.whiteOre)) {count=6;}
-        else if(this.getDefaultState().getBlock().equals(BlockRegistry.blackOre)) {count=7;}
+        if(this.getDefaultState().getBlock().equals(redore)) {count=0;}
+        else if(this.getDefaultState().getBlock().equals(blueore)) {count=1;}
+        else if(this.getDefaultState().getBlock().equals(yellowore)) {count=2;}
+        else if(this.getDefaultState().getBlock().equals(purpleore)) {count=3;}
+        else if(this.getDefaultState().getBlock().equals(greenore)) {count=4;}
+        else if(this.getDefaultState().getBlock().equals(orangeore)) {count=5;}
+        else if(this.getDefaultState().getBlock().equals(whiteore)) {count=6;}
+        else if(this.getDefaultState().getBlock().equals(blackore)) {count=7;}
         return count;
     }
 
@@ -98,15 +108,51 @@ public class BlockCrystalOre extends Block
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         if(!worldIn.isRemote)
         {
-            oreToCrystal(worldIn,pos,BlockRegistry.redOre,BlockRegistry.redCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.blueOre,BlockRegistry.blueCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.yellowOre,BlockRegistry.yellowCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.purpleOre,BlockRegistry.purpleCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.greenOre,BlockRegistry.greenCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.orangeOre,BlockRegistry.orangeCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.whiteOre,BlockRegistry.whiteCrystalFive);
-            oreToCrystal(worldIn,pos,BlockRegistry.blackOre,BlockRegistry.blackCrystalFive);
+            oreToCrystal(worldIn,pos,redore,BlockRegistry.redCrystalFive);
+            oreToCrystal(worldIn,pos,blueore,BlockRegistry.blueCrystalFive);
+            oreToCrystal(worldIn,pos,yellowore,BlockRegistry.yellowCrystalFive);
+            oreToCrystal(worldIn,pos,purpleore,BlockRegistry.purpleCrystalFive);
+            oreToCrystal(worldIn,pos,greenore,BlockRegistry.greenCrystalFive);
+            oreToCrystal(worldIn,pos,orangeore,BlockRegistry.orangeCrystalFive);
+            oreToCrystal(worldIn,pos,whiteore,BlockRegistry.whiteCrystalFive);
+            oreToCrystal(worldIn,pos,blackore,BlockRegistry.blackCrystalFive);
         }
+    }
+
+    public static void BlockCrystalOreInit()
+    {
+        redore = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        blueore = new BlockCrystalOre("blueore", "blue/blueore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        yellowore = new BlockCrystalOre("yellowore", "yellow/yellowore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        purpleore = new BlockCrystalOre("purpleore", "purple/purpleore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        orangeore = new BlockCrystalOre("orangeore", "orange/orangeore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        greenore = new BlockCrystalOre("greenore", "green/greenore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        whiteore = new BlockCrystalOre("whiteore", "white/whiteore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        blackore = new BlockCrystalOre("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+    }
+
+    public static void BlockCrystalOreRegister()
+    {
+        registerBlock(redore);
+        registerBlock(blueore);
+        registerBlock(yellowore);
+        registerBlock(purpleore);
+        registerBlock(orangeore);
+        registerBlock(greenore);
+        registerBlock(whiteore);
+        registerBlock(blackore);
+    }
+
+    public static void BlockCrystalOreRegisterRender()
+    {
+        registerRender(redore);
+        registerRender(blueore);
+        registerRender(yellowore);
+        registerRender(purpleore);
+        registerRender(orangeore);
+        registerRender(greenore);
+        registerRender(whiteore);
+        registerRender(blackore);
     }
 
 

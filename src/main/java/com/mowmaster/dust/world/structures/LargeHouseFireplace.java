@@ -1,7 +1,6 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.ancientblocks.BlockAncientSlabs;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;

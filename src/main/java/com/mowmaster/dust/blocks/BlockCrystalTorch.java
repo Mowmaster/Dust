@@ -7,14 +7,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -24,7 +28,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class BlockCrystalTorch extends BlockDirectional
+public class BlockCrystalTorch extends BlockBasicDirectional
 {
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.75D, 0.75D);
     private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.5D, 0.75D);
@@ -34,6 +38,15 @@ public class BlockCrystalTorch extends BlockDirectional
 
     private static AxisAlignedBB CWEST = new AxisAlignedBB(0.25D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
     private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.75D, 0.25D, 0.75D);
+
+    public static Block redCrystalTorch;
+    public static Block blueCrystalTorch;
+    public static Block yellowCrystalTorch;
+    public static Block purpleCrystalTorch;
+    public static Block greenCrystalTorch;
+    public static Block orangeCrystalTorch;
+    public static Block whiteCrystalTorch;
+    public static Block blackCrystalTorch;
 
     public BlockCrystalTorch(String unloc, String registryName)
     {
@@ -163,5 +176,41 @@ public class BlockCrystalTorch extends BlockDirectional
         {
             worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, d0 + (double)d3, d1 + (double)d3, d2 +d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
         }
+    }
+
+    public static void BlockCrystalTorchInit()
+    {
+        redCrystalTorch = new BlockCrystalTorch("redtorch", "red/redtorch");
+        blueCrystalTorch = new BlockCrystalTorch("bluetorch", "blue/bluetorch");
+        yellowCrystalTorch = new BlockCrystalTorch("yellowtorch", "yellow/yellowtorch");
+        purpleCrystalTorch = new BlockCrystalTorch("purpletorch", "purple/purpletorch");
+        greenCrystalTorch = new BlockCrystalTorch("greentorch", "green/greentorch");
+        orangeCrystalTorch = new BlockCrystalTorch("orangetorch", "orange/orangetorch");
+        whiteCrystalTorch = new BlockCrystalTorch("whitetorch", "white/whitetorch");
+        blackCrystalTorch = new BlockCrystalTorch("blacktorch", "black/blacktorch");
+    }
+
+    public static void BlockCrystalTorchRegister()
+    {
+        registerBlock(redCrystalTorch);
+        registerBlock(blueCrystalTorch);
+        registerBlock(yellowCrystalTorch);
+        registerBlock(purpleCrystalTorch);
+        registerBlock(greenCrystalTorch);
+        registerBlock(orangeCrystalTorch);
+        registerBlock(whiteCrystalTorch);
+        registerBlock(blackCrystalTorch);
+    }
+
+    public static void BlockCrystalTorchRegisterRender()
+    {
+        registerRender(redCrystalTorch);
+        registerRender(blueCrystalTorch);
+        registerRender(yellowCrystalTorch);
+        registerRender(purpleCrystalTorch);
+        registerRender(greenCrystalTorch);
+        registerRender(orangeCrystalTorch);
+        registerRender(whiteCrystalTorch);
+        registerRender(blackCrystalTorch);
     }
 }

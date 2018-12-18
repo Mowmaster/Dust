@@ -2,7 +2,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -12,11 +12,11 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 
-public class BlockBasic extends Block
+public class BlockBasicStairs extends BlockStairs
 {
-    public BlockBasic(Material material)
+    public BlockBasicStairs(Block block)
     {
-        super(material);
+        super(block.getDefaultState());
     }
 
     public static void registerBlock(Block block)
