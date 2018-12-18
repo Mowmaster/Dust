@@ -65,6 +65,7 @@ public class BlockVoidPot extends Block
         return BlockRenderLayer.CUTOUT;
     }
 
+    /*
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
@@ -78,12 +79,23 @@ public class BlockVoidPot extends Block
         //Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRosePetals(worldIn,d0 + (double)enumfacing.getFrontOffsetX() * d3, d1 + (double)enumfacing.getFrontOffsetY() * d3, d2 + (double)enumfacing.getFrontOffsetZ() * d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, 1,1,1));
 
     }
+     */
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        Random rand = new Random();
         if(entityIn instanceof EntityItem || entityIn instanceof EntityXPOrb)
         {
             entityIn.setDead();
+
+            double d0 = (double)pos.getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+            double d1 = (double)pos.getY() + 1.0D - (double)(rand.nextFloat() * 0.1F);
+            double d2 = (double)pos.getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+            double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
+
+
+            worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+            worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
         }
     }
 
