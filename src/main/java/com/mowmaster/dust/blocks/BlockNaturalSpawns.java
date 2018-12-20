@@ -29,8 +29,9 @@ import java.util.*;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockNaturalSpawns extends Block
+public class BlockNaturalSpawns extends BlockBasic
 {
+    public static Block darksoil;
     public BlockNaturalSpawns(String unloc, String registryName)
     {
         super(Material.GROUND);
@@ -223,5 +224,21 @@ public class BlockNaturalSpawns extends Block
                 living.getEntityData().setInteger("SinisterEarth", sinisterSoil);
             }
         }
+    }
+
+
+    public static void Init()
+    {
+        darksoil = new BlockNaturalSpawns("darksoil","darksoil");
+    }
+
+    public static void Register()
+    {
+        registerBlock(darksoil);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(darksoil);
     }
 }

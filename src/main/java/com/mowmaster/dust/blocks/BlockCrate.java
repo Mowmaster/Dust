@@ -27,8 +27,9 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockCrate extends Block
+public class BlockCrate extends BlockBasic
 {
+    public static Block crate1;
     public BlockCrate(String unloc, String registryName)
     {
         super(Material.WOOD);
@@ -49,7 +50,7 @@ public class BlockCrate extends Block
         Random rn = new Random();
         if(!worldIn.isRemote)
         {
-            if(this.equals(BlockRegistry.crate1))
+            if(this.equals(crate1))
             {
                 int rand = rn.nextInt(5);
                 if(rand == 0)
@@ -88,5 +89,20 @@ public class BlockCrate extends Block
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
         tooltip.add("[WIP] Will Eventually Drop Loot based on players current level");
+    }
+
+    public static void Init()
+    {
+        crate1 = new BlockCrate("crate1","crate1");
+    }
+
+    public static void Register()
+    {
+        registerBlock(crate1);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(crate1);
     }
 }

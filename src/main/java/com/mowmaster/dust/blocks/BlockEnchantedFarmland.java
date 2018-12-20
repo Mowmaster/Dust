@@ -22,10 +22,11 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockEnhancedFarmland extends Block
+public class BlockEnchantedFarmland extends BlockBasic
 {
 
-    public BlockEnhancedFarmland(String unloc, String registryName)
+    public static Block farmland;
+    public BlockEnchantedFarmland(String unloc, String registryName)
     {
         super(Material.GRASS);
         this.setUnlocalizedName(unloc);
@@ -72,5 +73,21 @@ public class BlockEnhancedFarmland extends Block
                 }
             }
         }
+    }
+
+
+    public static void Init()
+    {
+        farmland = new BlockEnchantedFarmland("enchantedfarmland","enchantedfarmland");
+    }
+
+    public static void Register()
+    {
+        registerBlock(farmland);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(farmland);
     }
 }

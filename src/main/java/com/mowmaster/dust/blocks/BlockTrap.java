@@ -34,8 +34,9 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class BlockTrap extends Block implements ITileEntityProvider
+public class BlockTrap extends BlockBasic implements ITileEntityProvider
 {
+    public static Block blockTrap;
     public BlockTrap(String unloc, String registryName)
     {
         super(Material.GROUND);
@@ -133,5 +134,21 @@ public class BlockTrap extends Block implements ITileEntityProvider
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileTrapBlock();
+    }
+
+
+    public static void Init()
+    {
+        blockTrap = new BlockTrap("blocktrap","blocktrap");
+    }
+
+    public static void Register()
+    {
+        registerBlock(blockTrap);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(blockTrap);
     }
 }

@@ -19,8 +19,13 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockPath extends Block
+public class BlockPath extends BlockBasic
 {
+
+    public static Block path1;
+    public static Block path2;
+    public static Block path3;
+    public static Block path4;
 
     public BlockPath(String unloc, String registryName)
     {
@@ -50,28 +55,28 @@ public class BlockPath extends Block
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
         Vec3d dir = new Vec3d(entity.motionX, entity.motionY, entity.motionZ);
 
-        if(this.equals(BlockRegistry.path1))
+        if(this.equals(path1))
         {
             if (dir.lengthVector() > 0.25) {
                 dir = dir.normalize();
                 entity.addVelocity(dir.x * 0.25, dir.y * 0.25, dir.z * 0.25);
             }
         }
-        else if(this.equals(BlockRegistry.path2))
+        else if(this.equals(path2))
         {
             if (dir.lengthVector() > 0.25) {
                 dir = dir.normalize();
                 entity.addVelocity(dir.x * 0.5, dir.y * 0.5, dir.z * 0.5);
             }
         }
-        else if(this.equals(BlockRegistry.path3))
+        else if(this.equals(path3))
         {
             if (dir.lengthVector() > 0.25) {
                 dir = dir.normalize();
                 entity.addVelocity(dir.x * 1, dir.y * 1, dir.z * 1);
             }
         }
-        else if(this.equals(BlockRegistry.path4))
+        else if(this.equals(path4))
         {
             if (dir.lengthVector() > 0.25) {
                 dir = dir.normalize();
@@ -102,6 +107,30 @@ public class BlockPath extends Block
         }
          */
 
+    }
+
+    public static void Init()
+    {
+        path1 = new BlockPath("path1","path1");
+        path2 = new BlockPath("path2","path2");
+        path3 = new BlockPath("path3","path3");
+        path4 = new BlockPath("path4","path4");
+    }
+
+    public static void Register()
+    {
+        registerBlock(path1);
+        registerBlock(path2);
+        registerBlock(path3);
+        registerBlock(path4);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(path1);
+        registerRender(path2);
+        registerRender(path3);
+        registerRender(path4);
     }
 
 

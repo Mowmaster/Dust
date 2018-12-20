@@ -30,8 +30,9 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockVoidPot extends Block
+public class BlockVoidPot extends BlockBasic
 {
+    public static Block voidpot;
     private static AxisAlignedBB pot1 = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.99D, 0.875D);
 
     public BlockVoidPot(String unloc, String registryName)
@@ -103,5 +104,21 @@ public class BlockVoidPot extends Block
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add("When looking down inside of the pot it seems to have no bottom, but surely it does! I seem to be able to drop an endless amount of objects into the vessel, and it never fills up! Unfortunately I haven't been able to get any of those back out though...");
         tooltip.add("- Player753");
+    }
+
+
+    public static void Init()
+    {
+        voidpot = new BlockVoidPot("voidpot","voidpot");
+    }
+
+    public static void Register()
+    {
+        registerBlock(voidpot);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(voidpot);
     }
 }

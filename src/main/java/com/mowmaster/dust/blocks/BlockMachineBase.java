@@ -25,8 +25,10 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockMachineBase extends BlockFalling //Temporarily BlockFalling until i get to making machines
+public class BlockMachineBase extends BlockBasicFalling
 {
+
+    public static Block machineBase;
     public BlockMachineBase(String unloc, String registryName)
     {
         super(Material.ROCK);
@@ -61,7 +63,7 @@ public class BlockMachineBase extends BlockFalling //Temporarily BlockFalling un
             if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.furnaceComponents))) {
                     //playerIn.sendMessage(new TextComponentString("You are adding Carbon"));
                     playerIn.getHeldItem(hand).shrink(1);
-                    worldIn.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState());
+                    worldIn.setBlockState(pos, BlockCrystalFurnace.crystalfurnace.getDefaultState());
             }
 
         }
@@ -73,5 +75,21 @@ public class BlockMachineBase extends BlockFalling //Temporarily BlockFalling un
     {
         tooltip.add("[WIP] Mark this block on map for later.");
         tooltip.add("It will turn into a machine in next beta release.");
+    }
+
+
+    public static void Init()
+    {
+        machineBase = new BlockMachineBase("machinebase", "machinebase");
+    }
+
+    public static void Register()
+    {
+        registerBlock(machineBase);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(machineBase);
     }
 }

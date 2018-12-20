@@ -1,4 +1,4 @@
-package com.mowmaster.dust.blocks.machines;
+package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
@@ -19,9 +19,10 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockEnchantMod extends Block
+public class BlockEnchantMod extends BlockBasic
 {
 
+    public static Block enchantmod;
 
     public BlockEnchantMod(String unloc, String registryName)
     {
@@ -61,6 +62,21 @@ public class BlockEnchantMod extends Block
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return block;
+    }
+
+    public static void Init()
+    {
+        enchantmod = new BlockEnchantMod("enchantmod","enchantmod");
+    }
+
+    public static void Register()
+    {
+        registerBlock(enchantmod);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(enchantmod);
     }
 
 }

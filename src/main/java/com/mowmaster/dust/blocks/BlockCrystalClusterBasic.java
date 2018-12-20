@@ -30,8 +30,9 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
-public class BlockCrystalClusterBasic extends BlockDirectional implements ITileEntityProvider
+public class BlockCrystalClusterBasic extends BlockBasicDirectional implements ITileEntityProvider
 {
+    public static Block crystalCluster;
     private static double v1=0.9D;
     private static double v2=0.1D;
 
@@ -252,5 +253,21 @@ public class BlockCrystalClusterBasic extends BlockDirectional implements ITileE
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add("[WIP] Combine Crystals To Create Effects");
 
+    }
+
+
+    public static void Init()
+    {
+        crystalCluster = new BlockCrystalClusterBasic("crystalcluster", "crystalcluster");
+    }
+
+    public static void Register()
+    {
+        registerBlock(crystalCluster);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(crystalCluster);
     }
 }

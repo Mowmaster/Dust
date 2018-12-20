@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class BlockBasic extends Block
 {
+
     public BlockBasic(Material material)
     {
         super(material);

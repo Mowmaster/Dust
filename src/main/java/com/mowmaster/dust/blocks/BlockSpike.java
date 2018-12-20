@@ -35,8 +35,14 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockSpike extends BlockDirectional
+public class BlockSpike extends BlockBasicDirectional
 {
+
+    public static Block spike1;
+    public static Block spike2;
+    public static Block spike3;
+    public static Block spike4;
+    public static Block spike5;
     private static AxisAlignedBB CUP = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
     private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.0D, 1.0D, 0.0D, 1.0D, 0.75D, 1.0D);
 
@@ -61,7 +67,7 @@ public class BlockSpike extends BlockDirectional
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
-        return new ItemStack(BlockRegistry.spike1).getItem();
+        return new ItemStack(spike1).getItem();
     }
 
     @Override
@@ -173,11 +179,11 @@ public class BlockSpike extends BlockDirectional
                 float damage = 0f;
                 DamageSource source = crystalSpikes;
                 int level = 0;
-                if(this.equals(BlockRegistry.spike1)){damage = 1f; level = 0;}
-                else if(this.equals(BlockRegistry.spike2)){damage = 2f; level = 1;}
-                else if(this.equals(BlockRegistry.spike3)){damage = 3f; level = 2;}
-                else if(this.equals(BlockRegistry.spike4)){damage = 5f; level = 3;}
-                else if(this.equals(BlockRegistry.spike5)){damage = 7f; source = crystalSpikes1; level = 4;}
+                if(this.equals(spike1)){damage = 1f; level = 0;}
+                else if(this.equals(spike2)){damage = 2f; level = 1;}
+                else if(this.equals(spike3)){damage = 3f; level = 2;}
+                else if(this.equals(spike4)){damage = 5f; level = 3;}
+                else if(this.equals(spike5)){damage = 7f; source = crystalSpikes1; level = 4;}
                 if(entityIn.fallDistance > 0) {
                     damage += entityIn.fallDistance * 1.5f + 2f;
                 }
@@ -194,15 +200,15 @@ public class BlockSpike extends BlockDirectional
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
 
-        ItemStack spike = new ItemStack(BlockRegistry.spike1);
+        ItemStack spike = new ItemStack(spike1);
 
         if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),spike))
         {
 
-            if(state.equals(BlockRegistry.spike1.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,BlockRegistry.spike2.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
-            else if(state.equals(BlockRegistry.spike2.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,BlockRegistry.spike3.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
-            else if(state.equals(BlockRegistry.spike3.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,BlockRegistry.spike4.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
-            else if(state.equals(BlockRegistry.spike4.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,BlockRegistry.spike5.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
+            if(state.equals(spike1.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,spike2.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
+            else if(state.equals(spike2.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,spike3.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
+            else if(state.equals(spike3.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,spike4.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
+            else if(state.equals(spike4.getDefaultState().withProperty(BlockSpike.FACING, facing))){worldIn.setBlockState(pos,spike5.getDefaultState().withProperty(BlockSpike.FACING,facing));if(!playerIn.isCreative()) {playerIn.getHeldItem(hand).shrink(1);}}
         }
 
         return true;
@@ -212,11 +218,11 @@ public class BlockSpike extends BlockDirectional
     public int quantityDropped(IBlockState state, int fortune, Random random) {
         int drops = 1;
         EnumFacing facing = state.getValue(BlockSpike.FACING);
-        if(state.equals(BlockRegistry.spike1.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops =  1;}
-        else if(state.equals(BlockRegistry.spike2.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 2;}
-        else if(state.equals(BlockRegistry.spike3.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 3;}
-        else if(state.equals(BlockRegistry.spike4.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 4;}
-        else if(state.equals(BlockRegistry.spike5.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 5;}
+        if(state.equals(spike1.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops =  1;}
+        else if(state.equals(spike2.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 2;}
+        else if(state.equals(spike3.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 3;}
+        else if(state.equals(spike4.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 4;}
+        else if(state.equals(spike5.getDefaultState().withProperty(BlockSpike.FACING,facing))) {drops = 5;}
 
         return drops;
     }
@@ -226,4 +232,34 @@ public class BlockSpike extends BlockDirectional
     {
         tooltip.add("Spikes damage Entities that touch them");
     }
+
+    public static void Init()
+    {
+        spike1 = new BlockSpike("spike1","spike1");
+        spike2 = new BlockSpike("spike2","spike2");
+        spike3 = new BlockSpike("spike3","spike3");
+        spike4 = new BlockSpike("spike4","spike4");
+        spike5 = new BlockSpike("spike5","spike5");
+    }
+
+    public static void Register()
+    {
+        registerBlock(spike1);
+        registerBlock(spike2);
+        registerBlock(spike3);
+        registerBlock(spike4);
+        registerBlock(spike5);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(spike1);
+        registerRender(spike2);
+        registerRender(spike3);
+        registerRender(spike4);
+        registerRender(spike5);
+    }
+
+
+
 }

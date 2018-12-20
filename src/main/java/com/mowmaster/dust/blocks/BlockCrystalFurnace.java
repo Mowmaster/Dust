@@ -36,8 +36,9 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockCrystalFurnace extends Block implements ITileEntityProvider
+public class BlockCrystalFurnace extends BlockBasic implements ITileEntityProvider
 {
+    public static Block crystalfurnace;
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     private static boolean keepInventory;
@@ -60,13 +61,13 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
     @Override
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
-        return Item.getItemFromBlock(BlockRegistry.crystalfurnace);
+        return Item.getItemFromBlock(crystalfurnace);
     }
 
 
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(BlockRegistry.crystalfurnace);
+        return new ItemStack(crystalfurnace);
     }
 
     @Override
@@ -108,13 +109,13 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
 
         if (active)
         {
-            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,true),3);
-            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,true),3);
+            world.setBlockState(pos, crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,true),3);
+            world.setBlockState(pos, crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,true),3);
         }
         else
         {
-            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,false),3);
-            world.setBlockState(pos, BlockRegistry.crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,false),3);
+            world.setBlockState(pos, crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,false),3);
+            world.setBlockState(pos, crystalfurnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)).withProperty(ACTIVE,false),3);
         }
 
         keepInventory = false;
@@ -240,5 +241,21 @@ public class BlockCrystalFurnace extends Block implements ITileEntityProvider
                 }
             }
         }
+    }
+
+
+    public static void Init()
+    {
+        crystalfurnace = new BlockCrystalFurnace("crystalfurnace","crystalfurnace");
+    }
+
+    public static void Register()
+    {
+        registerBlock(crystalfurnace);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(crystalfurnace);
     }
 }

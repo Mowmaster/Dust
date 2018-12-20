@@ -32,8 +32,10 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockCrystalCrusher extends Block implements ITileEntityProvider
+public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvider
 {
+
+    public static Block crystalcrusher;
     private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockCrystalCrusher(String unloc, String registryName)
@@ -48,7 +50,7 @@ public class BlockCrystalCrusher extends Block implements ITileEntityProvider
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(BlockRegistry.crystalcrusher);
+        return Item.getItemFromBlock(crystalcrusher);
     }
 
     /*
@@ -136,5 +138,21 @@ public class BlockCrystalCrusher extends Block implements ITileEntityProvider
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileCrystalCrusher();
+    }
+
+
+    public static void Init()
+    {
+        crystalcrusher = new BlockCrystalCrusher("crystalcrusher","crystalcrusher");
+    }
+
+    public static void Register()
+    {
+        registerBlock(crystalcrusher);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(crystalcrusher);
     }
 }

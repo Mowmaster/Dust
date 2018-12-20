@@ -24,9 +24,10 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockPot extends Block
+public class BlockPot extends BlockBasic
 {
-    private static AxisAlignedBB pot1 = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    public static Block pot1;
+    private static AxisAlignedBB potOne = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockPot(String unloc, String registryName)
     {
@@ -61,7 +62,7 @@ public class BlockPot extends Block
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return pot1;
+        return potOne;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class BlockPot extends Block
         Random rn = new Random();
         if(!worldIn.isRemote)
         {
-            if(this.equals(BlockRegistry.pot1))
+            if(this.equals(pot1))
             {
                 int rand = rn.nextInt(6);
 
@@ -113,5 +114,21 @@ public class BlockPot extends Block
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
         tooltip.add("[WIP] Will Eventually Drop Loot based on players current level");
+    }
+
+
+    public static void Init()
+    {
+        pot1 = new BlockPot("pot1","pot1");
+    }
+
+    public static void Register()
+    {
+        registerBlock(pot1);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(pot1);
     }
 }
