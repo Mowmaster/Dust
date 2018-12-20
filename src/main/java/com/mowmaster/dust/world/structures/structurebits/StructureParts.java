@@ -1,9 +1,7 @@
 package com.mowmaster.dust.world.structures.structurebits;
 
-import com.mowmaster.dust.blocks.BlockCrystal;
+import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
-import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesPassive;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

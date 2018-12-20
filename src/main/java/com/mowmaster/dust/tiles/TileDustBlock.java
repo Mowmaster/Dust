@@ -1,20 +1,14 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.BlockDust;
-import com.mowmaster.dust.blocks.BlockDustCloud;
-import com.mowmaster.dust.items.ItemDust;
+import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 

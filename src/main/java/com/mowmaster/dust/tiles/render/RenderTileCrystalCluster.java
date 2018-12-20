@@ -1,6 +1,6 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import net.minecraft.block.state.IBlockState;

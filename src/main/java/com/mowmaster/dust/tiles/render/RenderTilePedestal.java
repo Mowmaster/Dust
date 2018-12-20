@@ -1,6 +1,6 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

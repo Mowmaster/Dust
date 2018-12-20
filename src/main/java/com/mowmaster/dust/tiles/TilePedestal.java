@@ -1,6 +1,7 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.*;
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
@@ -21,8 +22,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;

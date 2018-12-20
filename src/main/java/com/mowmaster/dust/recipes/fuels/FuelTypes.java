@@ -1,7 +1,6 @@
 package com.mowmaster.dust.recipes.fuels;
 
-import com.mowmaster.dust.blocks.BlockCharcoal;
-import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.items.ItemCharcoal;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.item.ItemStack;

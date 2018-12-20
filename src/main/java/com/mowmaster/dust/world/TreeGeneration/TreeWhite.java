@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockDustLeaf.LEAVES;
+import static com.mowmaster.dust.blocks.treebits.BlockDustLeaf.LEAVES;
 
 /**
  * Created by KingMowmaster on 4/3/2017.

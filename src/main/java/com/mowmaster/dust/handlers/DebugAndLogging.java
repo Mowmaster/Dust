@@ -1,36 +1,19 @@
 package com.mowmaster.dust.handlers;
 
-import com.mowmaster.dust.blocks.BlockCrystalClusterBasic;
-import com.mowmaster.dust.blocks.BlockPedestal;
-import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.effects.PotionRegistry;
-import com.mowmaster.dust.items.ItemBasic;
-import com.mowmaster.dust.items.ItemCrystal;
-import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.items.ItemSpellScroll;
-import com.mowmaster.dust.tiles.TileCrystalCluster;
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentKnockback;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityEnchantmentTable;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -39,8 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.mowmaster.dust.items.ItemRegistry.akashic;
 

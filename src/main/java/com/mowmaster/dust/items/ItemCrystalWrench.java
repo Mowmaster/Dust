@@ -1,7 +1,6 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.blocks.BlockPedestal;
-import com.mowmaster.dust.particles.ParticleCreator;
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

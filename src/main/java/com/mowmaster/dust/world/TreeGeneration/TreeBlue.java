@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockDustLeaf.LEAVES;
+import static com.mowmaster.dust.blocks.treebits.BlockDustLeaf.LEAVES;
 
 
 public class TreeBlue extends WorldGenAbstractTree

@@ -1,6 +1,6 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.BlockCrystalFurnace;
+import com.mowmaster.dust.blocks.machines.BlockCrystalFurnace;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.containers.ContainerCrystalFurnace;
@@ -19,7 +19,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;

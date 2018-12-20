@@ -1,6 +1,6 @@
 package com.mowmaster.dust.world;
 
-import com.mowmaster.dust.blocks.BlockCrystalOre;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.world.structures.*;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallPiller;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallSandWell;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static com.mowmaster.dust.blocks.BlockRegistry.*;
 import static com.mowmaster.dust.misc.DustConfigurationFile.*;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 

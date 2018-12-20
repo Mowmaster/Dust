@@ -1,10 +1,9 @@
 package com.mowmaster.dust.recipes;
 
-import com.mowmaster.dust.blocks.BlockCharcoal;
-import com.mowmaster.dust.blocks.BlockCrystalOre;
+import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 

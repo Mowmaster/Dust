@@ -1,6 +1,15 @@
 package com.mowmaster.dust.blocks;
 
-import com.mowmaster.dust.blocks.sapling.*;
+import com.mowmaster.dust.blocks.buildingblocks.*;
+import com.mowmaster.dust.blocks.crystal.BlockCrystal;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
+import com.mowmaster.dust.blocks.utility.BlockEnchantedFarmland;
+import com.mowmaster.dust.blocks.utility.BlockMobSoil;
+import com.mowmaster.dust.blocks.utility.BlockPath;
+import com.mowmaster.dust.blocks.utility.BlockSpike;
+import com.mowmaster.dust.blocks.machines.*;
+import com.mowmaster.dust.blocks.treebits.*;
 
 public class BlockRegistry
 {
@@ -29,7 +38,7 @@ public class BlockRegistry
         BlockCrystalFurnace.Init();
         BlockTrap.Init();
         BlockEnchantedFarmland.Init();
-        BlockNaturalSpawns.Init();
+        BlockMobSoil.Init();
         BlockVoidPot.Init();
         BlockCrystalClusterBasic.Init();
         BlockMachineBase.Init();
@@ -61,7 +70,7 @@ public class BlockRegistry
         BlockCrystalFurnace.Register();
         BlockTrap.Register();
         BlockEnchantedFarmland.Register();
-        BlockNaturalSpawns.Register();
+        BlockMobSoil.Register();
         BlockVoidPot.Register();
         BlockCrystalClusterBasic.Register();
         BlockMachineBase.Register();
@@ -94,7 +103,7 @@ public class BlockRegistry
         BlockCrystalFurnace.RegisterRender();
         BlockTrap.RegisterRender();
         BlockEnchantedFarmland.RegisterRender();
-        BlockNaturalSpawns.RegisterRender();
+        BlockMobSoil.RegisterRender();
         BlockVoidPot.RegisterRender();
         BlockCrystalClusterBasic.RegisterRender();
         BlockMachineBase.RegisterRender();
