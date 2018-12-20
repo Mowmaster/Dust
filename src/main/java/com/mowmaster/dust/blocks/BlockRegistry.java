@@ -1,23 +1,14 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.blocks.sapling.*;
-import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-
 
 public class BlockRegistry
 {
     public static void init() {
 
-        BlockCrystalOre.BlockCrystalOreInit();
-        BlockCrystalTorch.BlockCrystalTorchInit();
-        BlockCharcoal.BlockCharcoalInit();
+        BlockCrystalOre.Init();
+        BlockCrystalTorch.Init();
+        BlockCharcoal.Init();
         BlockCrystal.Init();
         BlockDustSlab.Init();
         BlockDustLeaf.Init();
@@ -47,9 +38,9 @@ public class BlockRegistry
 
     public static void register()
     {
-        BlockCrystalOre.BlockCrystalOreRegister();
-        BlockCrystalTorch.BlockCrystalTorchRegister();
-        BlockCharcoal.BlockCharcoalRegister();
+        BlockCrystalOre.Register();
+        BlockCrystalTorch.Register();
+        BlockCharcoal.Register();
         BlockDustLog.BlockLogRegister();
         BlockCrystal.Register();
         BlockDustLeaf.Register();
@@ -80,9 +71,9 @@ public class BlockRegistry
     public static void registerRenders()
     {
 
-        BlockCrystalOre.BlockCrystalOreRegisterRender();
-        BlockCrystalTorch.BlockCrystalTorchRegisterRender();
-        BlockCharcoal.BlockCharcoalRegisterRender();
+        BlockCrystalOre.RegisterRender();
+        BlockCrystalTorch.RegisterRender();
+        BlockCharcoal.RegisterRender();
         BlockDustLog.BlockLogRegisterRender();
         BlockCrystal.RegisterRender();
         BlockDustLeaf.RegisterRender();

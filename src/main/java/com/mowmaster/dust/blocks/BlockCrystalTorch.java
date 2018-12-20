@@ -178,7 +178,7 @@ public class BlockCrystalTorch extends BlockBasicDirectional
         }
     }
 
-    public static void BlockCrystalTorchInit()
+    public static void Init()
     {
         redCrystalTorch = new BlockCrystalTorch("redtorch", "red/redtorch");
         blueCrystalTorch = new BlockCrystalTorch("bluetorch", "blue/bluetorch");
@@ -190,7 +190,7 @@ public class BlockCrystalTorch extends BlockBasicDirectional
         blackCrystalTorch = new BlockCrystalTorch("blacktorch", "black/blacktorch");
     }
 
-    public static void BlockCrystalTorchRegister()
+    public static void Register()
     {
         registerBlock(redCrystalTorch);
         registerBlock(blueCrystalTorch);
@@ -202,7 +202,7 @@ public class BlockCrystalTorch extends BlockBasicDirectional
         registerBlock(blackCrystalTorch);
     }
 
-    public static void BlockCrystalTorchRegisterRender()
+    public static void RegisterRender()
     {
         registerRender(redCrystalTorch);
         registerRender(blueCrystalTorch);

@@ -58,7 +58,7 @@ public class BlockCharcoal extends BlockBasic
         return Item.getItemFromBlock(this);
     }
 
-    public static void BlockCharcoalInit()
+    public static void Init()
     {
         charcoalRed = new BlockCharcoal("blockcharcoalred","blockcharcoalred");
         charcoalBlue = new BlockCharcoal("blockcharcoalblue","blockcharcoalblue");
@@ -70,7 +70,7 @@ public class BlockCharcoal extends BlockBasic
         charcoalBlack = new BlockCharcoal("blockcharcoalblack","blockcharcoalblack");
     }
 
-    public static void BlockCharcoalRegister()
+    public static void Register()
     {
         registerBlock(charcoalRed);
         registerBlock(charcoalBlue);
@@ -82,7 +82,7 @@ public class BlockCharcoal extends BlockBasic
         registerBlock(charcoalBlack);
     }
 
-    public static void BlockCharcoalRegisterRender()
+    public static void RegisterRender()
     {
         registerRender(charcoalRed);
         registerRender(charcoalBlue);

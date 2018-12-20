@@ -108,18 +108,18 @@ public class BlockCrystalOre extends BlockBasic
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         if(!worldIn.isRemote)
         {
-            oreToCrystal(worldIn,pos,redore,BlockRegistry.redCrystalFive);
-            oreToCrystal(worldIn,pos,blueore,BlockRegistry.blueCrystalFive);
-            oreToCrystal(worldIn,pos,yellowore,BlockRegistry.yellowCrystalFive);
-            oreToCrystal(worldIn,pos,purpleore,BlockRegistry.purpleCrystalFive);
-            oreToCrystal(worldIn,pos,greenore,BlockRegistry.greenCrystalFive);
-            oreToCrystal(worldIn,pos,orangeore,BlockRegistry.orangeCrystalFive);
-            oreToCrystal(worldIn,pos,whiteore,BlockRegistry.whiteCrystalFive);
-            oreToCrystal(worldIn,pos,blackore,BlockRegistry.blackCrystalFive);
+            oreToCrystal(worldIn,pos,redore,BlockCrystal.redCrystalFive);
+            oreToCrystal(worldIn,pos,blueore,BlockCrystal.blueCrystalFive);
+            oreToCrystal(worldIn,pos,yellowore,BlockCrystal.yellowCrystalFive);
+            oreToCrystal(worldIn,pos,purpleore,BlockCrystal.purpleCrystalFive);
+            oreToCrystal(worldIn,pos,greenore,BlockCrystal.greenCrystalFive);
+            oreToCrystal(worldIn,pos,orangeore,BlockCrystal.orangeCrystalFive);
+            oreToCrystal(worldIn,pos,whiteore,BlockCrystal.whiteCrystalFive);
+            oreToCrystal(worldIn,pos,blackore,BlockCrystal.blackCrystalFive);
         }
     }
 
-    public static void BlockCrystalOreInit()
+    public static void Init()
     {
         redore = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
         blueore = new BlockCrystalOre("blueore", "blue/blueore", Material.ROCK, SoundType.STONE, 3, 15, 10);
@@ -131,7 +131,7 @@ public class BlockCrystalOre extends BlockBasic
         blackore = new BlockCrystalOre("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 3, 15, 10);
     }
 
-    public static void BlockCrystalOreRegister()
+    public static void Register()
     {
         registerBlock(redore);
         registerBlock(blueore);
@@ -143,7 +143,7 @@ public class BlockCrystalOre extends BlockBasic
         registerBlock(blackore);
     }
 
-    public static void BlockCrystalOreRegisterRender()
+    public static void RegisterRender()
     {
         registerRender(redore);
         registerRender(blueore);
