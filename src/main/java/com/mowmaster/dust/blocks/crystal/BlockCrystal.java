@@ -442,53 +442,53 @@ public class BlockCrystal extends BlockBasicDirectional
 
     public static void Init()
     {
-        redCrystalFive = new BlockCrystal("blockredcrystalfive", "red/blockredcrystalfive");
-        redCrystalFour = new BlockCrystal("blockredcrystalfour", "red/blockredcrystalfour");
-        redCrystalThree = new BlockCrystal("blockredcrystalthree", "red/blockredcrystalthree");
-        redCrystalTwo = new BlockCrystal("blockredcrystaltwo", "red/blockredcrystaltwo");
-        redCrystalOne = new BlockCrystal("blockredcrystalone", "red/blockredcrystalone");
+        redCrystalFive = new BlockCrystal("redcrystalfive", "red/redcrystalfive");
+        redCrystalFour = new BlockCrystal("redcrystalfour", "red/redcrystalfour");
+        redCrystalThree = new BlockCrystal("redcrystalthree", "red/redcrystalthree");
+        redCrystalTwo = new BlockCrystal("redcrystaltwo", "red/redcrystaltwo");
+        redCrystalOne = new BlockCrystal("redcrystalone", "red/redcrystalone");
 
-        blueCrystalFive = new BlockCrystal("blockbluecrystalfive", "blue/blockbluecrystalfive");
-        blueCrystalFour = new BlockCrystal("blockbluecrystalfour", "blue/blockbluecrystalfour");
-        blueCrystalThree = new BlockCrystal("blockbluecrystalthree", "blue/blockbluecrystalthree");
-        blueCrystalTwo = new BlockCrystal("blockbluecrystaltwo", "blue/blockbluecrystaltwo");
-        blueCrystalOne = new BlockCrystal("blockbluecrystalone", "blue/blockbluecrystalone");
+        blueCrystalFive = new BlockCrystal("bluecrystalfive", "blue/bluecrystalfive");
+        blueCrystalFour = new BlockCrystal("bluecrystalfour", "blue/bluecrystalfour");
+        blueCrystalThree = new BlockCrystal("bluecrystalthree", "blue/bluecrystalthree");
+        blueCrystalTwo = new BlockCrystal("bluecrystaltwo", "blue/bluecrystaltwo");
+        blueCrystalOne = new BlockCrystal("bluecrystalone", "blue/bluecrystalone");
 
-        yellowCrystalFive = new BlockCrystal("blockyellowcrystalfive", "yellow/blockyellowcrystalfive");
-        yellowCrystalFour = new BlockCrystal("blockyellowcrystalfour", "yellow/blockyellowcrystalfour");
-        yellowCrystalThree = new BlockCrystal("blockyellowcrystalthree", "yellow/blockyellowcrystalthree");
-        yellowCrystalTwo = new BlockCrystal("blockyellowcrystaltwo", "yellow/blockyellowcrystaltwo");
-        yellowCrystalOne = new BlockCrystal("blockyellowcrystalone", "yellow/blockyellowcrystalone");
+        yellowCrystalFive = new BlockCrystal("yellowcrystalfive", "yellow/yellowcrystalfive");
+        yellowCrystalFour = new BlockCrystal("yellowcrystalfour", "yellow/yellowcrystalfour");
+        yellowCrystalThree = new BlockCrystal("yellowcrystalthree", "yellow/yellowcrystalthree");
+        yellowCrystalTwo = new BlockCrystal("yellowcrystaltwo", "yellow/yellowcrystaltwo");
+        yellowCrystalOne = new BlockCrystal("yellowcrystalone", "yellow/yellowcrystalone");
 
-        purpleCrystalFive = new BlockCrystal("blockpurplecrystalfive", "purple/blockpurplecrystalfive");
-        purpleCrystalFour = new BlockCrystal("blockpurplecrystalfour", "purple/blockpurplecrystalfour");
-        purpleCrystalThree = new BlockCrystal("blockpurplecrystalthree", "purple/blockpurplecrystalthree");
-        purpleCrystalTwo = new BlockCrystal("blockpurplecrystaltwo", "purple/blockpurplecrystaltwo");
-        purpleCrystalOne = new BlockCrystal("blockpurplecrystalone", "purple/blockpurplecrystalone");
+        purpleCrystalFive = new BlockCrystal("purplecrystalfive", "purple/purplecrystalfive");
+        purpleCrystalFour = new BlockCrystal("purplecrystalfour", "purple/purplecrystalfour");
+        purpleCrystalThree = new BlockCrystal("purplecrystalthree", "purple/purplecrystalthree");
+        purpleCrystalTwo = new BlockCrystal("purplecrystaltwo", "purple/purplecrystaltwo");
+        purpleCrystalOne = new BlockCrystal("purplecrystalone", "purple/purplecrystalone");
 
-        orangeCrystalFive = new BlockCrystal("blockorangecrystalfive", "orange/blockorangecrystalfive");
-        orangeCrystalFour = new BlockCrystal("blockorangecrystalfour", "orange/blockorangecrystalfour");
-        orangeCrystalThree = new BlockCrystal("blockorangecrystalthree", "orange/blockorangecrystalthree");
-        orangeCrystalTwo = new BlockCrystal("blockorangecrystaltwo", "orange/blockorangecrystaltwo");
-        orangeCrystalOne = new BlockCrystal("blockorangecrystalone", "orange/blockorangecrystalone");
+        orangeCrystalFive = new BlockCrystal("orangecrystalfive", "orange/orangecrystalfive");
+        orangeCrystalFour = new BlockCrystal("orangecrystalfour", "orange/orangecrystalfour");
+        orangeCrystalThree = new BlockCrystal("orangecrystalthree", "orange/orangecrystalthree");
+        orangeCrystalTwo = new BlockCrystal("orangecrystaltwo", "orange/orangecrystaltwo");
+        orangeCrystalOne = new BlockCrystal("orangecrystalone", "orange/orangecrystalone");
 
-        greenCrystalFive = new BlockCrystal("blockgreencrystalfive", "green/blockgreencrystalfive");
-        greenCrystalFour = new BlockCrystal("blockgreencrystalfour", "green/blockgreencrystalfour");
-        greenCrystalThree = new BlockCrystal("blockgreencrystalthree", "green/blockgreencrystalthree");
-        greenCrystalTwo = new BlockCrystal("blockgreencrystaltwo", "green/blockgreencrystaltwo");
-        greenCrystalOne = new BlockCrystal("blockgreencrystalone", "green/blockgreencrystalone");
+        greenCrystalFive = new BlockCrystal("greencrystalfive", "green/greencrystalfive");
+        greenCrystalFour = new BlockCrystal("greencrystalfour", "green/greencrystalfour");
+        greenCrystalThree = new BlockCrystal("greencrystalthree", "green/greencrystalthree");
+        greenCrystalTwo = new BlockCrystal("greencrystaltwo", "green/greencrystaltwo");
+        greenCrystalOne = new BlockCrystal("greencrystalone", "green/greencrystalone");
 
-        whiteCrystalFive = new BlockCrystal("blockwhitecrystalfive", "white/blockwhitecrystalfive");
-        whiteCrystalFour = new BlockCrystal("blockwhitecrystalfour", "white/blockwhitecrystalfour");
-        whiteCrystalThree = new BlockCrystal("blockwhitecrystalthree", "white/blockwhitecrystalthree");
-        whiteCrystalTwo = new BlockCrystal("blockwhitecrystaltwo", "white/blockwhitecrystaltwo");
-        whiteCrystalOne = new BlockCrystal("blockwhitecrystalone", "white/blockWhiteCrystalOne");
+        whiteCrystalFive = new BlockCrystal("whitecrystalfive", "white/whitecrystalfive");
+        whiteCrystalFour = new BlockCrystal("whitecrystalfour", "white/whitecrystalfour");
+        whiteCrystalThree = new BlockCrystal("whitecrystalthree", "white/whitecrystalthree");
+        whiteCrystalTwo = new BlockCrystal("whitecrystaltwo", "white/whitecrystaltwo");
+        whiteCrystalOne = new BlockCrystal("whitecrystalone", "white/WhiteCrystalOne");
 
-        blackCrystalFive = new BlockCrystal("blockblackcrystalfive", "black/blockblackcrystalfive");
-        blackCrystalFour = new BlockCrystal("blockblackcrystalfour", "black/blockblackcrystalfour");
-        blackCrystalThree = new BlockCrystal("blockblackcrystalthree", "black/blockblackcrystalthree");
-        blackCrystalTwo = new BlockCrystal("blockblackcrystaltwo", "black/blockblackcrystaltwo");
-        blackCrystalOne = new BlockCrystal("blockblackcrystalone", "black/blockblackcrystalone");
+        blackCrystalFive = new BlockCrystal("blackcrystalfive", "black/blackcrystalfive");
+        blackCrystalFour = new BlockCrystal("blackcrystalfour", "black/blackcrystalfour");
+        blackCrystalThree = new BlockCrystal("blackcrystalthree", "black/blackcrystalthree");
+        blackCrystalTwo = new BlockCrystal("blackcrystaltwo", "black/blackcrystaltwo");
+        blackCrystalOne = new BlockCrystal("blackcrystalone", "black/blackcrystalone");
     }
 
     public static void Register()

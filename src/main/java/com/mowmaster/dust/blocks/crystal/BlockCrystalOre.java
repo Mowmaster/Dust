@@ -117,14 +117,14 @@ public class BlockCrystalOre extends BlockBasic
 
     public static void Init()
     {
-        redore = new BlockCrystalOre("redore", "red/redore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        blueore = new BlockCrystalOre("blueore", "blue/blueore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        yellowore = new BlockCrystalOre("yellowore", "yellow/yellowore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        purpleore = new BlockCrystalOre("purpleore", "purple/purpleore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        orangeore = new BlockCrystalOre("orangeore", "orange/orangeore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        greenore = new BlockCrystalOre("greenore", "green/greenore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        whiteore = new BlockCrystalOre("whiteore", "white/whiteore", Material.ROCK, SoundType.STONE, 3, 15, 10);
-        blackore = new BlockCrystalOre("blackore", "black/blackore", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        redore = new BlockCrystalOre("orered", "red/orered", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        blueore = new BlockCrystalOre("oreblue", "blue/oreblue", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        yellowore = new BlockCrystalOre("oreyellow", "yellow/oreyellow", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        purpleore = new BlockCrystalOre("orepurple", "purple/orepurple", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        orangeore = new BlockCrystalOre("oreorange", "orange/oreorange", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        greenore = new BlockCrystalOre("oregreen", "green/oregreen", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        whiteore = new BlockCrystalOre("orewhite", "white/orewhite", Material.ROCK, SoundType.STONE, 3, 15, 10);
+        blackore = new BlockCrystalOre("oreblack", "black/oreblack", Material.ROCK, SoundType.STONE, 3, 15, 10);
     }
 
     public static void Register()
