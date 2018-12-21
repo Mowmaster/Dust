@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockPurpurSlab;
 import net.minecraft.block.BlockStoneBrick;
@@ -79,7 +80,7 @@ public class MediumCrusherLab extends WorldGenerator
         StructureParts.clearArea(worldIn,pos,0,0,-2,2,-2,2);
         //Fill with dust and spawn machine
         StructureParts.generateFloorLoot(worldIn,pos,0,0,0,-2,2,0,4,-2,2,"dust");
-        worldIn.setBlockState(pos.add(0,0,0), BlockRegistry.machineBase.getDefaultState());
+        worldIn.setBlockState(pos.add(0,0,0), BlockMachineBase.machineBase.getDefaultState());
 
         return true;
     }

@@ -1,8 +1,12 @@
 package com.mowmaster.dust.recipes;
 
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
+import com.mowmaster.dust.blocks.treebits.BlockDustLog;
+import com.mowmaster.dust.blocks.treebits.SaplingRegister;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -11,34 +15,34 @@ public class OreDictDust
 {
     public static void addEntries()
     {
-        OreDictionary.registerOre("plankWood", BlockRegistry.redplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.blueplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.yellowplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.purpleplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.orangeplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.greenplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.whiteplanks);
-        OreDictionary.registerOre("plankWood", BlockRegistry.blackplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.redplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.blueplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.yellowplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.purpleplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.orangeplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.greenplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.whiteplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasic.blackplanks);
 
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingred);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingblue);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingyellow);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingpurple);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingorange);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplinggreen);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingwhite);
-        OreDictionary.registerOre("treeSapling", BlockRegistry.saplingblack);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingred);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingblue);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingyellow);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingpurple);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingorange);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplinggreen);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingwhite);
+        OreDictionary.registerOre("treeSapling", SaplingRegister.saplingblack);
 
-        OreDictionary.registerOre("logWood", BlockRegistry.logred);
-        OreDictionary.registerOre("logWood", BlockRegistry.logblue);
-        OreDictionary.registerOre("logWood", BlockRegistry.logyellow);
-        OreDictionary.registerOre("logWood", BlockRegistry.logpurple);
-        OreDictionary.registerOre("logWood", BlockRegistry.logorange);
-        OreDictionary.registerOre("logWood", BlockRegistry.loggreen);
-        OreDictionary.registerOre("logWood", BlockRegistry.logwhite);
-        OreDictionary.registerOre("logWood", BlockRegistry.logblack);
+        OreDictionary.registerOre("logWood", BlockDustLog.logred);
+        OreDictionary.registerOre("logWood", BlockDustLog.logblue);
+        OreDictionary.registerOre("logWood", BlockDustLog.logyellow);
+        OreDictionary.registerOre("logWood", BlockDustLog.logpurple);
+        OreDictionary.registerOre("logWood", BlockDustLog.logorange);
+        OreDictionary.registerOre("logWood", BlockDustLog.loggreen);
+        OreDictionary.registerOre("logWood", BlockDustLog.logwhite);
+        OreDictionary.registerOre("logWood", BlockDustLog.logblack);
 
-        OreDictionary.registerOre("treeLeaves", BlockRegistry.leaf);
+        OreDictionary.registerOre("treeLeaves", BlockDustLeaf.leaf);
 
         OreDictionary.registerOre("oreCrystal", BlockCrystalOre.redore);
         OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blueore);
@@ -49,14 +53,14 @@ public class OreDictDust
         OreDictionary.registerOre("oreCrystal", BlockCrystalOre.whiteore);
         OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blackore);
 
-        OreDictionary.registerOre("stone", BlockRegistry.redstone);
-        OreDictionary.registerOre("stone", BlockRegistry.bluestone);
-        OreDictionary.registerOre("stone", BlockRegistry.yellowstone);
-        OreDictionary.registerOre("stone", BlockRegistry.purplestone);
-        OreDictionary.registerOre("stone", BlockRegistry.orangestone);
-        OreDictionary.registerOre("stone", BlockRegistry.greenstone);
-        OreDictionary.registerOre("stone", BlockRegistry.whitestone);
-        OreDictionary.registerOre("stone", BlockRegistry.blackstone);
+        OreDictionary.registerOre("stone", BlockDustBasic.redstone);
+        OreDictionary.registerOre("stone", BlockDustBasic.bluestone);
+        OreDictionary.registerOre("stone", BlockDustBasic.yellowstone);
+        OreDictionary.registerOre("stone", BlockDustBasic.purplestone);
+        OreDictionary.registerOre("stone", BlockDustBasic.orangestone);
+        OreDictionary.registerOre("stone", BlockDustBasic.greenstone);
+        OreDictionary.registerOre("stone", BlockDustBasic.whitestone);
+        OreDictionary.registerOre("stone", BlockDustBasic.blackstone);
 
         OreDictionary.registerOre("gemCrystal", ItemRegistry.crystal);
         OreDictionary.registerOre("dustCrystal", ItemRegistry.dust);

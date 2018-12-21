@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -11,9 +12,6 @@ import java.util.Random;
 
 import static com.mowmaster.dust.world.structures.structurebits.StructureParts.*;
 
-/**
- * Created by KingMowmaster on 6/30/2017.
- */
 public class MediumStoneHenge extends WorldGenerator
 {
 
@@ -28,7 +26,7 @@ public class MediumStoneHenge extends WorldGenerator
         StructureParts.clearArea(worldIn,pos,1,4,-4,4,-4,4);
 
         buildFloorThreeByThree(worldIn,rand,pos,0,0,0);
-        worldIn.setBlockState(pos.add(0,1,0),BlockRegistry.machineBase.getDefaultState());
+        worldIn.setBlockState(pos.add(0,1,0), BlockMachineBase.machineBase.getDefaultState());
         buildLootPiller(worldIn,rand,pos,0,0,3);
         buildLootPiller(worldIn,rand,pos,0,0,-3);
         buildLootPiller(worldIn,rand,pos,-4,0,0);

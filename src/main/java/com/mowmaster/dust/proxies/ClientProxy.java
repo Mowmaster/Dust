@@ -1,6 +1,7 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.particles.ParticleCreator;
@@ -86,7 +87,7 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(Reference.MODID,"bit_black")
         );
 
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.leaf),
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustLeaf.leaf),
                 new ResourceLocation(Reference.MODID, "leaves_red"),
                 new ResourceLocation(Reference.MODID, "leaves_blue"),
                 new ResourceLocation(Reference.MODID, "leaves_yellow"),

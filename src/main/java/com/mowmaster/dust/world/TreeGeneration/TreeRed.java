@@ -1,8 +1,11 @@
 package com.mowmaster.dust.world.treegeneration;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
+import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -22,8 +25,8 @@ public class TreeRed extends WorldGenAbstractTree
 {
     private final int minTreeHeight = 4;
 
-    private final IBlockState logBlock = BlockRegistry.logred.getDefaultState();
-    private final IBlockState leafBlock = BlockRegistry.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED);
+    private final IBlockState logBlock = BlockDustLog.logred.getDefaultState();
+    private final IBlockState leafBlock = BlockDustLeaf.leaf.getDefaultState().withProperty(LEAVES, CrystalBlocks.CrystalLeaves.RED);
 
     // this function is copied from WorldGenTrees.java
     // variable names have been changed for readability, and some un-used parts (vine, cocoa generation) have been removed

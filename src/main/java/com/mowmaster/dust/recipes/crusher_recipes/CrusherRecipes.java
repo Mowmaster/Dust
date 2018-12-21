@@ -1,6 +1,7 @@
 package com.mowmaster.dust.recipes.crusher_recipes;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -29,23 +30,23 @@ public class CrusherRecipes
 
     private CrusherRecipes()
     {
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,0),new ItemStack(BlockRegistry.redDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,1),new ItemStack(BlockRegistry.blueDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,2),new ItemStack(BlockRegistry.yellowDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,3),new ItemStack(BlockRegistry.purpleDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,4),new ItemStack(BlockRegistry.greenDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,5),new ItemStack(BlockRegistry.orangeDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,6),new ItemStack(BlockRegistry.whiteDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,7),new ItemStack(BlockRegistry.blackDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,0),new ItemStack(BlockDustCloud.redDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,1),new ItemStack(BlockDustCloud.blueDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,2),new ItemStack(BlockDustCloud.yellowDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,3),new ItemStack(BlockDustCloud.purpleDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,4),new ItemStack(BlockDustCloud.greenDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,5),new ItemStack(BlockDustCloud.orangeDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,6),new ItemStack(BlockDustCloud.whiteDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,7),new ItemStack(BlockDustCloud.blackDust,8));
 
-        this.addCrushingRecipeForBlock(Blocks.REDSTONE_ORE,new ItemStack(BlockRegistry.redstoneDust,4));
-        this.addCrushingRecipeForBlock(Blocks.IRON_ORE,new ItemStack(BlockRegistry.ironDust,2));
-        this.addCrushingRecipeForBlock(Blocks.GOLD_ORE,new ItemStack(BlockRegistry.goldDust,2));
-        this.addCrushing(Items.REEDS,new ItemStack(BlockRegistry.sugarDust,2));
-        this.addCrushing(Items.WHEAT,new ItemStack(BlockRegistry.wheatDust,1));
-        this.addCrushing(Items.POTATO,new ItemStack(BlockRegistry.potatoDust,1));
-        this.addCrushing(Items.POISONOUS_POTATO,new ItemStack(BlockRegistry.potatoDust,1));
-        this.addCrushing(Items.BLAZE_ROD,new ItemStack(BlockRegistry.blazeDust,3));
+        this.addCrushingRecipeForBlock(Blocks.REDSTONE_ORE,new ItemStack(BlockDustCloud.redstoneDust,4));
+        this.addCrushingRecipeForBlock(Blocks.IRON_ORE,new ItemStack(BlockDustCloud.ironDust,2));
+        this.addCrushingRecipeForBlock(Blocks.GOLD_ORE,new ItemStack(BlockDustCloud.goldDust,2));
+        this.addCrushing(Items.REEDS,new ItemStack(BlockDustCloud.sugarDust,2));
+        this.addCrushing(Items.WHEAT,new ItemStack(BlockDustCloud.wheatDust,1));
+        this.addCrushing(Items.POTATO,new ItemStack(BlockDustCloud.potatoDust,1));
+        this.addCrushing(Items.POISONOUS_POTATO,new ItemStack(BlockDustCloud.potatoDust,1));
+        this.addCrushing(Items.BLAZE_ROD,new ItemStack(BlockDustCloud.blazeDust,3));
     }
 
     /**

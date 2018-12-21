@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +59,7 @@ public class MediumCave extends WorldGenerator
         }
 
         StructureParts.clearArea(worldIn,pos,1,2,-1,1,-1,1);
-        worldIn.setBlockState(pos.add(0,0,0), BlockRegistry.machineBase.getDefaultState());
+        worldIn.setBlockState(pos.add(0,0,0), BlockMachineBase.machineBase.getDefaultState());
 
         return true;
     }

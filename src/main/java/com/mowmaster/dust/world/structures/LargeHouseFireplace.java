@@ -1,6 +1,10 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustStair;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
+import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -33,52 +37,52 @@ public class LargeHouseFireplace extends WorldGenerator
 
         if(colorpicked.equals("red"))
         {
-            colorWood = BlockRegistry.redplanks.getDefaultState();
-            colorLog = BlockRegistry.logred.getDefaultState();
-            colorStair = BlockRegistry.redplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.redplanks.getDefaultState();
+            colorLog = BlockDustLog.logred.getDefaultState();
+            colorStair = BlockDustStair.redplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("blue"))
         {
-            colorWood = BlockRegistry.blueplanks.getDefaultState();
-            colorLog = BlockRegistry.logblue.getDefaultState();
-            colorStair = BlockRegistry.blueplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.blueplanks.getDefaultState();
+            colorLog = BlockDustLog.logblue.getDefaultState();
+            colorStair = BlockDustStair.blueplankstairs.getDefaultState();
 
         }
         else if(colorpicked.equals("yellow"))
         {
-            colorWood = BlockRegistry.yellowplanks.getDefaultState();
-            colorLog = BlockRegistry.logyellow.getDefaultState();
-            colorStair = BlockRegistry.yellowplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.yellowplanks.getDefaultState();
+            colorLog = BlockDustLog.logyellow.getDefaultState();
+            colorStair = BlockDustStair.yellowplankstairs.getDefaultState();
 
         }
         else if(colorpicked.equals("purple"))
         {
-            colorWood = BlockRegistry.purpleplanks.getDefaultState();
-            colorLog = BlockRegistry.logpurple.getDefaultState();
-            colorStair = BlockRegistry.purpleplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.purpleplanks.getDefaultState();
+            colorLog = BlockDustLog.logpurple.getDefaultState();
+            colorStair = BlockDustStair.purpleplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("orange"))
         {
-            colorWood = BlockRegistry.orangeplanks.getDefaultState();
-            colorLog = BlockRegistry.logorange.getDefaultState();
-            colorStair = BlockRegistry.orangeplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.orangeplanks.getDefaultState();
+            colorLog = BlockDustLog.logorange.getDefaultState();
+            colorStair = BlockDustStair.orangeplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("green"))
         {
-            colorWood = BlockRegistry.greenplanks.getDefaultState();
-            colorLog = BlockRegistry.loggreen.getDefaultState();
-            colorStair = BlockRegistry.greenplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.greenplanks.getDefaultState();
+            colorLog = BlockDustLog.loggreen.getDefaultState();
+            colorStair = BlockDustStair.greenplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("white"))
         {
-            colorWood = BlockRegistry.whiteplanks.getDefaultState();
-            colorLog = BlockRegistry.logwhite.getDefaultState();
-            colorStair = BlockRegistry.whiteplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.whiteplanks.getDefaultState();
+            colorLog = BlockDustLog.logwhite.getDefaultState();
+            colorStair = BlockDustStair.whiteplankstairs.getDefaultState();
         }else if(colorpicked.equals("black"))
         {
-            colorWood = BlockRegistry.blackplanks.getDefaultState();
-            colorLog = BlockRegistry.logblack.getDefaultState();
-            colorStair = BlockRegistry.blackplankstairs.getDefaultState();
+            colorWood = BlockDustBasic.blackplanks.getDefaultState();
+            colorLog = BlockDustLog.logblack.getDefaultState();
+            colorStair = BlockDustStair.blackplankstairs.getDefaultState();
         }
 
 
@@ -151,7 +155,7 @@ public class LargeHouseFireplace extends WorldGenerator
         worldIn.setBlockState(pos.add(-4,0,0),Blocks.AIR.getDefaultState());
         worldIn.setBlockState(pos.add(-4,1,0),Blocks.AIR.getDefaultState());
 
-        worldIn.setBlockState(pos.add(-5,0,0),BlockRegistry.machineBase.getDefaultState());
+        worldIn.setBlockState(pos.add(-5,0,0), BlockMachineBase.machineBase.getDefaultState());
 
         worldIn.setBlockState(pos.add(-4,0,-1),stoneBrickStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.BOTTOM).withProperty(BlockStairs.FACING, EnumFacing.WEST));
         worldIn.setBlockState(pos.add(-4,1,-1),stoneBrickStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(BlockStairs.FACING, EnumFacing.WEST));

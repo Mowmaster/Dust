@@ -1,6 +1,10 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
+import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
+import com.mowmaster.dust.blocks.crystal.BlockCrystal;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
@@ -84,14 +88,14 @@ public class LargeAuraMachineRoom extends WorldGenerator
         FloorStairMaterialWest.add(Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.BOTTOM));
 
         ArrayList<IBlockState> FloorLoot = new ArrayList<>();
-        FloorLoot.add(BlockRegistry.redCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.greenCrystalFive.getDefaultState());
-        FloorLoot.add(BlockRegistry.pot1.getDefaultState());
-        FloorLoot.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot.add(BlockCrystal.redCrystalFive.getDefaultState());
+        FloorLoot.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        FloorLoot.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        FloorLoot.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        FloorLoot.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        FloorLoot.add(BlockCrystal.greenCrystalFive.getDefaultState());
+        FloorLoot.add(BlockPot.pot1.getDefaultState());
+        FloorLoot.add(BlockCrate.crate1.getDefaultState());
         FloorLoot.add(Blocks.AIR.getDefaultState());
         FloorLoot.add(Blocks.AIR.getDefaultState());
         FloorLoot.add(Blocks.AIR.getDefaultState());
@@ -238,7 +242,7 @@ public class LargeAuraMachineRoom extends WorldGenerator
         }
 
         //Loot on Floor
-        worldIn.setBlockState(pos.add(0, 0, 0), BlockRegistry.machineBase.getDefaultState());
+        worldIn.setBlockState(pos.add(0, 0, 0), BlockMachineBase.machineBase.getDefaultState());
 
         for(int c=-1;c<=1;c++) {
             for (int a = -1; a <= 1; a++)

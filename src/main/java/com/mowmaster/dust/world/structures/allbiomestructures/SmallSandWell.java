@@ -1,6 +1,9 @@
 package com.mowmaster.dust.world.structures.allbiomestructures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
+import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
+import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -28,15 +31,15 @@ public class SmallSandWell extends WorldGenerator
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos pos) {
         IBlockState mobspawnerpicked = Blocks.MOB_SPAWNER.getDefaultState();
-        IBlockState crystalblock = BlockRegistry.redCrystalFive.getDefaultState();
+        IBlockState crystalblock = BlockCrystal.redCrystalFive.getDefaultState();
         ArrayList<IBlockState> BlockLoot = new ArrayList<>();
         BlockLoot.add(mobspawnerpicked);
-        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
-        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
-        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
-        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
-        BlockLoot.add(BlockRegistry.crate1.getDefaultState());
-        BlockLoot.add(BlockRegistry.pot1.getDefaultState());
+        BlockLoot.add(BlockCrate.crate1.getDefaultState());
+        BlockLoot.add(BlockPot.pot1.getDefaultState());
+        BlockLoot.add(BlockCrate.crate1.getDefaultState());
+        BlockLoot.add(BlockPot.pot1.getDefaultState());
+        BlockLoot.add(BlockCrate.crate1.getDefaultState());
+        BlockLoot.add(BlockPot.pot1.getDefaultState());
         BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);
         BlockLoot.add(crystalblock);

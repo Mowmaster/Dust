@@ -2,6 +2,7 @@ package com.mowmaster.dust.blocks.buildingblocks;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
+import com.mowmaster.dust.blocks.machines.BlockVoidPot;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -97,7 +98,7 @@ public class BlockPot extends BlockBasic
                 }
                 else if (rand == 5)
                 {
-                    worldIn.setBlockState(pos, BlockRegistry.voidpot.getDefaultState());
+                    worldIn.setBlockState(pos, BlockVoidPot.voidpot.getDefaultState());
                 }
             }
         }

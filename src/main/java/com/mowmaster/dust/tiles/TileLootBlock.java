@@ -1,6 +1,10 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
+import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
+import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
+import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesPassive;
 import net.minecraft.block.state.IBlockState;
@@ -26,16 +30,16 @@ public class TileLootBlock extends TileEntity implements ITickable
     private IBlockState commonLoot()
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
-        LootBlock.add(BlockRegistry.redCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
 
         Random random = new Random();
         int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
@@ -46,21 +50,21 @@ public class TileLootBlock extends TileEntity implements ITickable
     private IBlockState uncommonLoot()
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
-        LootBlock.add(BlockRegistry.redCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
 
         Random random = new Random();
         int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
@@ -72,38 +76,38 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockRegistry.redCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
 
         Random random = new Random();
         int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
@@ -115,30 +119,30 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockRegistry.lootblockpassivespawner.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.blackCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.whiteCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.blackCrystalOne.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockLootBlock.lootblockpassivespawner.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.blackCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.whiteCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrystal.blackCrystalOne.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
 
         Random random = new Random();
         int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
@@ -150,31 +154,31 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockRegistry.lootblockhostilespawner.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.redCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalFour.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.whiteCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.blackCrystalThree.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
-        LootBlock.add(BlockRegistry.whiteCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.blackCrystalTwo.getDefaultState());
-        LootBlock.add(BlockRegistry.crate1.getDefaultState());
-        LootBlock.add(BlockRegistry.pot1.getDefaultState());
+        LootBlock.add(BlockLootBlock.lootblockhostilespawner.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalFour.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.whiteCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrystal.blackCrystalThree.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
+        LootBlock.add(BlockCrystal.whiteCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrystal.blackCrystalTwo.getDefaultState());
+        LootBlock.add(BlockCrate.crate1.getDefaultState());
+        LootBlock.add(BlockPot.pot1.getDefaultState());
 
         Random random = new Random();
         int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
@@ -186,8 +190,8 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockRegistry.lootblockhostilespawner.getDefaultState());
-        LootBlock.add(BlockRegistry.lootblockpassivespawner.getDefaultState());
+        LootBlock.add(BlockLootBlock.lootblockhostilespawner.getDefaultState());
+        LootBlock.add(BlockLootBlock.lootblockpassivespawner.getDefaultState());
         LootBlock.add(Blocks.DIAMOND_BLOCK.getDefaultState());
         LootBlock.add(Blocks.EMERALD_BLOCK.getDefaultState());
         LootBlock.add(Blocks.GLOWSTONE.getDefaultState());
@@ -216,14 +220,14 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockRegistry.redCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.greenCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.whiteCrystalFive.getDefaultState());
-        LootBlock.add(BlockRegistry.blackCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.redCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.greenCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.whiteCrystalFive.getDefaultState());
+        LootBlock.add(BlockCrystal.blackCrystalFive.getDefaultState());
 
         Random random = new Random();
         int lootchoice = Math.abs(random.nextInt(LootBlock.size()-1));
@@ -272,7 +276,7 @@ public class TileLootBlock extends TileEntity implements ITickable
         {
             if(inDev==false)
             {
-                if(this.getBlockType().equals(BlockRegistry.lootblockaircommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockaircommon))
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -280,7 +284,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockairuncommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockairuncommon))
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -288,7 +292,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockairrare))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockairrare))
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -296,7 +300,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockairlegendary))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockairlegendary))
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -304,7 +308,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockairexotic))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockairexotic))
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -315,47 +319,47 @@ public class TileLootBlock extends TileEntity implements ITickable
 
 
 
-                if(this.getBlockType().equals(BlockRegistry.lootblockcommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockcommon))
                 {
                     this.world.setBlockState(pos,commonLoot());
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockuncommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockuncommon))
                 {
                     this.world.setBlockState(pos,uncommonLoot());
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockrare))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockrare))
                 {
                     this.world.setBlockState(pos,rareLoot());
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblocklegendary))
+                if(this.getBlockType().equals(BlockLootBlock.lootblocklegendary))
                 {
                     this.world.setBlockState(pos,legendaryLoot());
                 }
-                if(this.getBlockType().equals(BlockRegistry.lootblockexotic))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockexotic))
                 {
                     this.world.setBlockState(pos,exoticLoot());
                 }
 
 
-                if(this.getBlockType().equals(BlockRegistry.lootblockhostilespawner))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockhostilespawner))
                 {
                     spawnSpawnerHostile(this.world,pos, Blocks.MOB_SPAWNER.getDefaultState());
                     this.world.setBlockState(pos,Blocks.MOB_SPAWNER.getDefaultState());
                 }
 
-                if(this.getBlockType().equals(BlockRegistry.lootblockpassivespawner))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockpassivespawner))
                 {
                     spawnSpawnerPassive(this.world,pos, Blocks.MOB_SPAWNER.getDefaultState());
                     this.world.setBlockState(pos,Blocks.MOB_SPAWNER.getDefaultState());
                 }
 
 
-                if(this.getBlockType().equals(BlockRegistry.lootblockpillar))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockpillar))
                 {
                     this.world.setBlockState(pos,pillarLoot());
                 }
 
-                if(this.getBlockType().equals(BlockRegistry.lootblockcrystalcluster))
+                if(this.getBlockType().equals(BlockLootBlock.lootblockcrystalcluster))
                 {
                     this.world.setBlockState(pos,crystalLoot());
                 }

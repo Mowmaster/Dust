@@ -1,7 +1,10 @@
 package com.mowmaster.dust.world.structures.structurebits;
 
+import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
+import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -142,43 +145,43 @@ public class StructureParts
     public static void spawnCrystal(World worldIn, Random rand, BlockPos pos, int x, int y, int z, String facing)
     {
         ArrayList<IBlockState> BlockCrystalTop = new ArrayList<>();
-        BlockCrystalTop.add(BlockRegistry.redCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.redCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.greenCrystalFive.getDefaultState());
 
-        BlockCrystalTop.add(BlockRegistry.redCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.redCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.greenCrystalFive.getDefaultState());
 
-        BlockCrystalTop.add(BlockRegistry.redCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.redCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.greenCrystalFive.getDefaultState());
 
-        BlockCrystalTop.add(BlockRegistry.redCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.redCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.greenCrystalFive.getDefaultState());
 
-        BlockCrystalTop.add(BlockRegistry.redCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.greenCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.redCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.greenCrystalFive.getDefaultState());
 
-        BlockCrystalTop.add(BlockRegistry.whiteCrystalFive.getDefaultState());
-        BlockCrystalTop.add(BlockRegistry.blackCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.whiteCrystalFive.getDefaultState());
+        BlockCrystalTop.add(BlockCrystal.blackCrystalFive.getDefaultState());
 
         Random rn = new Random();
         int crystalcolor = Math.abs(rn.nextInt(BlockCrystalTop.size() - 1));
@@ -217,16 +220,16 @@ public class StructureParts
 
         //3air per 1 loot 25%
         ArrayList<IBlockState> FloorLoot1 = new ArrayList<>();
-        FloorLoot1.add(BlockRegistry.redCrystalFive.getDefaultState());
-        FloorLoot1.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        FloorLoot1.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        FloorLoot1.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        FloorLoot1.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        FloorLoot1.add(BlockRegistry.greenCrystalFive.getDefaultState());
-        FloorLoot1.add(BlockRegistry.pot1.getDefaultState());
-        FloorLoot1.add(BlockRegistry.crate1.getDefaultState());
-        FloorLoot1.add(BlockRegistry.pot1.getDefaultState());
-        FloorLoot1.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot1.add(BlockCrystal.redCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockCrystal.greenCrystalFive.getDefaultState());
+        FloorLoot1.add(BlockPot.pot1.getDefaultState());
+        FloorLoot1.add(BlockCrate.crate1.getDefaultState());
+        FloorLoot1.add(BlockPot.pot1.getDefaultState());
+        FloorLoot1.add(BlockCrate.crate1.getDefaultState());
         FloorLoot1.add(Blocks.AIR.getDefaultState());
         FloorLoot1.add(Blocks.AIR.getDefaultState());
         FloorLoot1.add(Blocks.AIR.getDefaultState());
@@ -260,16 +263,16 @@ public class StructureParts
 
         //1/6 ~16.6%
         ArrayList<IBlockState> FloorLoot2 = new ArrayList<>();
-        FloorLoot2.add(BlockRegistry.redCrystalFive.getDefaultState());
-        FloorLoot2.add(BlockRegistry.blueCrystalFive.getDefaultState());
-        FloorLoot2.add(BlockRegistry.yellowCrystalFive.getDefaultState());
-        FloorLoot2.add(BlockRegistry.purpleCrystalFive.getDefaultState());
-        FloorLoot2.add(BlockRegistry.orangeCrystalFive.getDefaultState());
-        FloorLoot2.add(BlockRegistry.greenCrystalFive.getDefaultState());
-        FloorLoot2.add(BlockRegistry.pot1.getDefaultState());
-        FloorLoot2.add(BlockRegistry.crate1.getDefaultState());
-        FloorLoot2.add(BlockRegistry.pot1.getDefaultState());
-        FloorLoot2.add(BlockRegistry.crate1.getDefaultState());
+        FloorLoot2.add(BlockCrystal.redCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockCrystal.blueCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockCrystal.yellowCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockCrystal.purpleCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockCrystal.orangeCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockCrystal.greenCrystalFive.getDefaultState());
+        FloorLoot2.add(BlockPot.pot1.getDefaultState());
+        FloorLoot2.add(BlockCrate.crate1.getDefaultState());
+        FloorLoot2.add(BlockPot.pot1.getDefaultState());
+        FloorLoot2.add(BlockCrate.crate1.getDefaultState());
         FloorLoot2.add(Blocks.AIR.getDefaultState());
         FloorLoot2.add(Blocks.AIR.getDefaultState());
         FloorLoot2.add(Blocks.AIR.getDefaultState());
@@ -322,14 +325,14 @@ public class StructureParts
         FloorLoot2.add(Blocks.AIR.getDefaultState());
 
         ArrayList<IBlockState> DustType = new ArrayList<>();
-        DustType.add(BlockRegistry.redDust.getDefaultState());
-        DustType.add(BlockRegistry.blueDust.getDefaultState());
-        DustType.add(BlockRegistry.yellowDust.getDefaultState());
-        DustType.add(BlockRegistry.purpleDust.getDefaultState());
-        DustType.add(BlockRegistry.orangeDust.getDefaultState());
-        DustType.add(BlockRegistry.greenDust.getDefaultState());
-        DustType.add(BlockRegistry.whiteDust.getDefaultState());
-        DustType.add(BlockRegistry.blackDust.getDefaultState());
+        DustType.add(BlockDustCloud.redDust.getDefaultState());
+        DustType.add(BlockDustCloud.blueDust.getDefaultState());
+        DustType.add(BlockDustCloud.yellowDust.getDefaultState());
+        DustType.add(BlockDustCloud.purpleDust.getDefaultState());
+        DustType.add(BlockDustCloud.orangeDust.getDefaultState());
+        DustType.add(BlockDustCloud.greenDust.getDefaultState());
+        DustType.add(BlockDustCloud.whiteDust.getDefaultState());
+        DustType.add(BlockDustCloud.blackDust.getDefaultState());
         int randomDust = Math.abs(random.nextInt(DustType.size() - 1));
 
         ArrayList<IBlockState> FloorLoot3 = new ArrayList<>();

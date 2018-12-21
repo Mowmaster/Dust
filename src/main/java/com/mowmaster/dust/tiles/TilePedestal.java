@@ -1402,8 +1402,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                 return true;
             }
             //if they arnt then check if one is neutral
-            else if(world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockRegistry.pedestalstone) ||
-                    world.getBlockState(this.getPos()).getBlock().equals(BlockRegistry.pedestalstone))
+            else if(world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalstone) ||
+                    world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalstone))
             {
                 return true;
             }
@@ -1864,15 +1864,15 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     public int getColor()
     {
         int color = 0x808080;
-        if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalstone)){color = 0x808080;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalred)){color = 0xff0008;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalblue)){color = 0x000cff;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalyellow)){color = 0xfff600;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalpurple)){color = 0xb200ff;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalgreen)){color = 0x37b700;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalorange)){color = 0xff6a00;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalwhite)){color = 0xeaeaea;}
-        else if(world.getBlockState(pos).getBlock().equals(BlockRegistry.pedestalblack)){color = 0x3f3f3f;}
+        if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalstone)){color = 0x808080;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalred)){color = 0xff0008;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalblue)){color = 0x000cff;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalyellow)){color = 0xfff600;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalpurple)){color = 0xb200ff;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalgreen)){color = 0x37b700;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalorange)){color = 0xff6a00;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalwhite)){color = 0xeaeaea;}
+        else if(world.getBlockState(pos).getBlock().equals(BlockPedestal.pedestalblack)){color = 0x3f3f3f;}
         return color;
     }
 

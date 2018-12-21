@@ -1,6 +1,8 @@
 package com.mowmaster.dust.misc;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
+import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
@@ -11,7 +13,7 @@ public class DustyTab
         @Override
         public ItemStack getTabIconItem()
         {
-            return new ItemStack(BlockRegistry.redCrystalFive);
+            return new ItemStack(BlockCrystal.redCrystalFive);
         }
     };
 
@@ -19,7 +21,7 @@ public class DustyTab
         @Override
         public ItemStack getTabIconItem()
         {
-            return new ItemStack(BlockRegistry.redbricks);
+            return new ItemStack(BlockDustBasic.redbricks);
         }
     };
 }

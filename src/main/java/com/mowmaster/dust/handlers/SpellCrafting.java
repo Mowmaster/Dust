@@ -2,6 +2,7 @@ package com.mowmaster.dust.handlers;
 
 import com.google.common.collect.Lists;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockTrap;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemCoin;
@@ -150,7 +151,7 @@ public class SpellCrafting
                         //Could use this to impliment more plates that could hold multiple effects???
                          */
                         worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
-                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockRegistry.blockTrap.getDefaultState());
+                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.blockTrap.getDefaultState());
                         TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
                         if (tileentity instanceof TileTrapBlock) {
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));

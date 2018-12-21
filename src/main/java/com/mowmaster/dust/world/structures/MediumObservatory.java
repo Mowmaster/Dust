@@ -1,7 +1,11 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustFence;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustSlab;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustStair;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -34,58 +38,58 @@ public class MediumObservatory extends WorldGenerator
 
         if(colorpicked.equals("red"))
         {
-            colorWood = BlockRegistry.redplanks.getDefaultState();
-            colorStair = BlockRegistry.redstonestairs.getDefaultState();
-            colorSlab = BlockRegistry.redstoneslabs.getDefaultState();
-            colorFence = BlockRegistry.redstonefences.getDefaultState();
+            colorWood = BlockDustBasic.redplanks.getDefaultState();
+            colorStair = BlockDustStair.redstonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.redstoneslabs.getDefaultState();
+            colorFence = BlockDustFence.redstonefences.getDefaultState();
         }
         else if(colorpicked.equals("blue"))
         {
-            colorWood = BlockRegistry.blueplanks.getDefaultState();
-            colorStair = BlockRegistry.bluestonestairs.getDefaultState();
-            colorSlab = BlockRegistry.bluestoneslabs.getDefaultState();
-            colorFence = BlockRegistry.bluestonefences.getDefaultState();
+            colorWood = BlockDustBasic.blueplanks.getDefaultState();
+            colorStair = BlockDustStair.bluestonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.bluestoneslabs.getDefaultState();
+            colorFence = BlockDustFence.bluestonefences.getDefaultState();
         }
         else if(colorpicked.equals("yellow"))
         {
-            colorWood = BlockRegistry.yellowplanks.getDefaultState();
-            colorStair = BlockRegistry.yellowstonestairs.getDefaultState();
-            colorSlab = BlockRegistry.yellowstoneslabs.getDefaultState();
-            colorFence = BlockRegistry.yellowstonefences.getDefaultState();
+            colorWood = BlockDustBasic.yellowplanks.getDefaultState();
+            colorStair = BlockDustStair.yellowstonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.yellowstoneslabs.getDefaultState();
+            colorFence = BlockDustFence.yellowstonefences.getDefaultState();
         }
         else if(colorpicked.equals("purple"))
         {
-            colorWood = BlockRegistry.purpleplanks.getDefaultState();
-            colorStair = BlockRegistry.purplestonestairs.getDefaultState();
-            colorSlab = BlockRegistry.purplestoneslabs.getDefaultState();
-            colorFence = BlockRegistry.purplestonefences.getDefaultState();
+            colorWood = BlockDustBasic.purpleplanks.getDefaultState();
+            colorStair = BlockDustStair.purplestonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.purplestoneslabs.getDefaultState();
+            colorFence = BlockDustFence.purplestonefences.getDefaultState();
         }
         else if(colorpicked.equals("orange"))
         {
-            colorWood = BlockRegistry.orangeplanks.getDefaultState();
-            colorStair = BlockRegistry.orangestonestairs.getDefaultState();
-            colorSlab = BlockRegistry.orangestoneslabs.getDefaultState();
-            colorFence = BlockRegistry.orangestonefences.getDefaultState();
+            colorWood = BlockDustBasic.orangeplanks.getDefaultState();
+            colorStair = BlockDustStair.orangestonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.orangestoneslabs.getDefaultState();
+            colorFence = BlockDustFence.orangestonefences.getDefaultState();
         }
         else if(colorpicked.equals("green"))
         {
-            colorWood = BlockRegistry.greenplanks.getDefaultState();
-            colorStair = BlockRegistry.greenstonestairs.getDefaultState();
-            colorSlab = BlockRegistry.greenstoneslabs.getDefaultState();
-            colorFence = BlockRegistry.greenstonefences.getDefaultState();
+            colorWood = BlockDustBasic.greenplanks.getDefaultState();
+            colorStair = BlockDustStair.greenstonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.greenstoneslabs.getDefaultState();
+            colorFence = BlockDustFence.greenstonefences.getDefaultState();
         }
         else if(colorpicked.equals("white"))
         {
-            colorWood = BlockRegistry.whiteplanks.getDefaultState();
-            colorStair = BlockRegistry.whitestonestairs.getDefaultState();
-            colorSlab = BlockRegistry.whitestoneslabs.getDefaultState();
-            colorFence = BlockRegistry.whitestonefences.getDefaultState();
+            colorWood = BlockDustBasic.whiteplanks.getDefaultState();
+            colorStair = BlockDustStair.whitestonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.whitestoneslabs.getDefaultState();
+            colorFence = BlockDustFence.whitestonefences.getDefaultState();
         }else if(colorpicked.equals("black"))
         {
-            colorWood = BlockRegistry.blackplanks.getDefaultState();
-            colorStair = BlockRegistry.blackstonestairs.getDefaultState();
-            colorSlab = BlockRegistry.blackstoneslabs.getDefaultState();
-            colorFence = BlockRegistry.blackstonefences.getDefaultState();
+            colorWood = BlockDustBasic.blackplanks.getDefaultState();
+            colorStair = BlockDustStair.blackstonestairs.getDefaultState();
+            colorSlab = BlockDustSlab.blackstoneslabs.getDefaultState();
+            colorFence = BlockDustFence.blackstonefences.getDefaultState();
         }
 
 
@@ -180,7 +184,7 @@ public class MediumObservatory extends WorldGenerator
         StructureParts.generateFloorLoot(worldIn,pos,0,0,0,-1,1,0,0,-1,1,"normal");
         StructureParts.generateFloorLoot(worldIn,pos,0,5,0,-1,1,0,0,-1,1,"normal");
         StructureParts.generateFloorLoot(worldIn,pos,0,10,0,-1,1,0,0,-1,1,"normal");
-        worldIn.setBlockState(pos.add(0,10,0),BlockRegistry.machineBase.getDefaultState());
+        worldIn.setBlockState(pos.add(0,10,0), BlockMachineBase.machineBase.getDefaultState());
 
         StructureParts.createSolidWall(worldIn,pos, colorWood,-1,0,2,3,0,true);
         StructureParts.createSolidWall(worldIn,pos, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING,EnumFacing.NORTH),-1,0,1,10,0,true);
