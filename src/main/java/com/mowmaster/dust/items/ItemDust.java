@@ -21,13 +21,11 @@ public class ItemDust extends Item
         this.setCreativeTab(DUSTTABS);
     }
 
-
-    //@Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         for(int i = 0; i < CrystalItems.DustTypes.values().length; i++)
         {
-            list.add(new ItemStack(item,1,i));
+            items.add(new ItemStack(this,1,i));
         }
     }
 

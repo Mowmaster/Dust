@@ -87,13 +87,11 @@ public class BlockDustLeaf extends BlockBasic implements IMetaBlockName
         return this.getDefaultState().withProperty(LEAVES,CrystalBlocks.CrystalLeaves.values()[meta]);
     }
 
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (int i = 0; i < CrystalBlocks.CrystalLeaves.values().length; i++)
         {
-            list.add(new ItemStack(itemIn,1,i));
+            items.add(new ItemStack(this,1,i));
         }
     }
 
