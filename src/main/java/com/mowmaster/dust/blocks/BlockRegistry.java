@@ -56,8 +56,8 @@ public class BlockRegistry
         BlockDustBasic.Register();
         BlockDustStair.Register();
         BlockDustSlab.Register();
-        BlockDustFence.Init();
-        BlockDustWall.Init();
+        BlockDustFence.Register();
+        BlockDustWall.Register();
         BlockLootBlock.Register();
         BlockDustCloud.Register();
         SaplingRegister.Register();
