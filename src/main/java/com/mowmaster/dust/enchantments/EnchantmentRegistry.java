@@ -32,6 +32,7 @@ public class EnchantmentRegistry
         ForgeRegistries.ENCHANTMENTS.register(enchantmentQuickPace);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentFlight);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentSmelter);
+        ForgeRegistries.ENCHANTMENTS.register(new EnchantmentCopy());
 
 
     }
