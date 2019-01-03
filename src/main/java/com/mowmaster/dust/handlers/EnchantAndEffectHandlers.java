@@ -46,6 +46,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -72,7 +73,7 @@ public class EnchantAndEffectHandlers
 {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void blockHarvestDropsEventLowest(BlockEvent.HarvestDropsEvent event)
+    public void blockHarvestDropsEvent(BlockEvent.HarvestDropsEvent event)
     {
         World world = event.getWorld();
         EntityPlayer player = event.getHarvester();
@@ -99,15 +100,15 @@ public class EnchantAndEffectHandlers
                     {
                         if(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()>0)
                         {
-                            world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata())));
-                            event.getDrops().set(0,ItemStack.EMPTY);
+                            //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata())));
+                            event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()));
                             player.getHeldItem(player.getActiveHand()).damageItem(1,player);
                             world.setBlockToAir(pos);
                         }
                         else
                         {
-                            world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1)));
-                            event.getDrops().set(0,ItemStack.EMPTY);
+                            //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1)));
+                            event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1));
                             player.getHeldItem(player.getActiveHand()).damageItem(1,player);
                             world.setBlockToAir(pos);
                         }
