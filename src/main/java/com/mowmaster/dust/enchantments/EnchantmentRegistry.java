@@ -13,14 +13,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class EnchantmentRegistry
 {
 
-    public static EnchantmentDigger enchantDigger = new EnchantmentDigger(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantDigger"));
+    public static EnchantmentDigger enchantDigger = new EnchantmentDigger();
     public static EnchantmentVamperic enchantVamperic = new EnchantmentVamperic(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantVamperic"));
     public static EnchantmentLastResort enchantLastResort = new EnchantmentLastResort(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantLastResort"));
     public static EnchantmentSteadfast enchantSteadfast = new EnchantmentSteadfast(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantSteadfast"));
     public static EnchantmentStepAssist enchantmentStepAssist = new EnchantmentStepAssist(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantStepAssist"));
     public static EnchantmentQuickPace enchantmentQuickPace = new EnchantmentQuickPace(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantQuickPace"));
     public static EnchantmentFlight enchantmentFlight = new EnchantmentFlight(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantFlight"));
-    public static EnchantmentSmelt enchantmentSmelter = new EnchantmentSmelt(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantSmelter"));
+    public static EnchantmentSmelt enchantmentSmelter = new EnchantmentSmelt();
 
     public static void Init(){
         //GameRegistry.register(enchantDigger, );

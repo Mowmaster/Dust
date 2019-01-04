@@ -23,10 +23,10 @@ import java.util.List;
 public class EnchantmentSmelt extends Enchantment
 {
 
-    public EnchantmentSmelt(Rarity rarityIn, ResourceLocation location) {
+    public EnchantmentSmelt() {
         super(Rarity.VERY_RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
         setName("enchantSmelter");
-        setRegistryName(location);
+        setRegistryName(new ResourceLocation("dust", "enchantSmelter"));
     }
 
     /**
@@ -59,5 +59,53 @@ public class EnchantmentSmelt extends Enchantment
     public boolean canApplyTogether(Enchantment ench)
     {
         return super.canApplyTogether(ench) && ench != Enchantments.SILK_TOUCH;
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void smeltEvent(BlockEvent.HarvestDropsEvent event)
+    {
+        World world = event.getWorld();
+        EntityPlayer player = event.getHarvester();
+        BlockPos pos = event.getPos();
+        List<ItemStack> stackie = event.getDrops();
+        int count = 1;
+        if(!world.isRemote) {//Disabled due to Ticking World Error
+            if (player == null) {
+                return;
+            }
+
+            if (player.swingingHand == null) {
+                return;
+            }
+
+            if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter, player.getHeldItem(player.getActiveHand())) != 0)
+            {
+                ItemStack tool = player.getHeldItem(player.getActiveHand());
+
+                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
+                if(tool.getItem() instanceof ItemTool)
+                {
+                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty()) {}
+                    else
+                    {
+                        if(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()>0)
+                        {
+                            //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata())));
+                            event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()));
+                            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))==0) {player.getHeldItem(player.getActiveHand()).damageItem(1,player);}
+                            world.setBlockToAir(pos);
+                        }
+                        else
+                        {
+                            //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1)));
+                            event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1));
+                            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))==0) {player.getHeldItem(player.getActiveHand()).damageItem(1,player);}
+                            world.setBlockToAir(pos);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 }

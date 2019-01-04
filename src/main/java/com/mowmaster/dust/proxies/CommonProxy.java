@@ -1,6 +1,8 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.dust;
+import com.mowmaster.dust.enchantments.EnchantmentDigger;
+import com.mowmaster.dust.enchantments.EnchantmentSmelt;
 import com.mowmaster.dust.handlers.*;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
@@ -31,6 +33,9 @@ public class CommonProxy
         EnchantAndEffectHandlers enchants = new EnchantAndEffectHandlers();
         MinecraftForge.EVENT_BUS.register(enchants);
         FMLCommonHandler.instance().bus().register(enchants);
+
+        MinecraftForge.EVENT_BUS.register(new EnchantmentSmelt());
+        MinecraftForge.EVENT_BUS.register(new EnchantmentDigger());
 
         SpellCrafting spellCrafting = new SpellCrafting();
         MinecraftForge.EVENT_BUS.register(spellCrafting);
