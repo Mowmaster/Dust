@@ -3,7 +3,6 @@ package com.mowmaster.dust.blocks.machines;
 
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileDustBlock;
-import com.sun.istack.internal.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -22,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
