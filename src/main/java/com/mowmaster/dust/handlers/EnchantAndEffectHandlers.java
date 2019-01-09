@@ -210,6 +210,7 @@ public class EnchantAndEffectHandlers
         return startAmount - amount;
     }
 
+    /*
     private boolean runner = false;
     private boolean runnerE = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -258,6 +259,7 @@ public class EnchantAndEffectHandlers
             entity.motionZ *= (1.0f + (0.015f * (float)Math.addExact(amp,level)));
         }
     }
+     */
 
     private boolean waterRunner = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)

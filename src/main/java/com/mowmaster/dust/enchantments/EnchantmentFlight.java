@@ -56,9 +56,4 @@ public class EnchantmentFlight extends Enchantment
     {
         return stack.getItem() instanceof ItemArmor ? true : super.canApply(stack);
     }
-
-    public boolean isTreasureEnchantment()
-    {
-        return true;
-    }
 }

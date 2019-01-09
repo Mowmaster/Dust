@@ -186,11 +186,7 @@ public class SpellCrafting
                             if(!worldIn.isRemote)
                             {
                                 ItemStack stack = ItemStack.EMPTY;
-                                if(coined.getItem().equals(ItemRegistry.enchantUpgrade) || coined.getItem().equals(ItemRegistry.chopperUpgrade))
-                                {
-                                    stack = coined;
-                                }
-                                else stack = new ItemStack(ItemRegistry.effectUpgrade);
+                                stack = new ItemStack(ItemRegistry.effectUpgrade);
 
 
                                 PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);

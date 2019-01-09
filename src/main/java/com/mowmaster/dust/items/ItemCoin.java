@@ -3,11 +3,13 @@ package com.mowmaster.dust.items;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentFishingSpeed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
@@ -38,12 +40,19 @@ public class ItemCoin extends Item
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        if(stack.getItem().equals(ItemRegistry.breakerUpgrade) || stack.getItem().equals(ItemRegistry.enchantUpgrade) || stack.getItem().equals(ItemRegistry.placerUpgrade))
+        if(stack.getItem().equals(ItemRegistry.breakerUpgrade) || stack.getItem().equals(ItemRegistry.enchantUpgrade) ||
+                stack.getItem().equals(ItemRegistry.placerUpgrade)|| stack.getItem().equals(ItemRegistry.effectUpgrade)||
+                stack.getItem().equals(ItemRegistry.chopperUpgrade) || stack.getItem().equals(ItemRegistry.userUpgrade))
         {
             return super.isBookEnchantable(stack, book);
         }
 
         return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public PotionEffect getPotionEffectFromStack(ItemStack stack)
@@ -105,31 +114,19 @@ public class ItemCoin extends Item
             tooltip.add("Pedestal Effect Upgrade");
             if(stack.hasTagCompound())
             {
-                tooltip.add(s1 + " " + s2);
+                if(stack.getTagCompound().hasKey("coineffect"))
+                //tooltip.add(s1 + " " + s2);
+                tooltip.add(s1);
             }
         }
-        else if(stack.getItem().equals(ItemRegistry.enchantUpgrade))
-        {
-            tooltip.add("XP Upgrade");
-            if(stack.hasTagCompound())
-            {
-                tooltip.add(s1 + " " + s2);
-            }
-        }
-        else if(stack.getItem().equals(ItemRegistry.chopperUpgrade))
-        {
-            tooltip.add("Tree Chopper Upgrade");
-            if(stack.hasTagCompound())
-            {
-                tooltip.add(s1 + " " + s2);
-            }
-        }
+        else if(stack.getItem().equals(ItemRegistry.enchantUpgrade)) {tooltip.add("XP Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.chopperUpgrade)) {tooltip.add("Tree Chopper Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.breakerUpgrade)) {tooltip.add("Block Breaker Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.placerUpgrade)) {tooltip.add("Block Placer Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
-        else if(stack.getItem().equals(ItemRegistry.importUpgrade)) {tooltip.add("Item Import Upgrade");}
-        else if(stack.getItem().equals(ItemRegistry.exportUpgrade)) {tooltip.add("Item Export Upgrade");}
-        else if(stack.getItem().equals(ItemRegistry.singleExportUpgrade)) {tooltip.add("Single Item Export Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.importUpgrade)) {tooltip.add("Item Stack Import Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.exportUpgrade)) {tooltip.add("Item Stack Export Upgrade");}
+        else if(stack.getItem().equals(ItemRegistry.singleExportUpgrade)) {tooltip.add("Export Restocking Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.crafter1Upgrade)) {tooltip.add("Crafter (1x1) Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.crafter4Upgrade)) {tooltip.add("Crafter (2x2) Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.crafter9Upgrade)) {tooltip.add("Crafter (3x3) Upgrade");}

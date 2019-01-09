@@ -3,6 +3,7 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.particles.ParticlesInALine;
@@ -198,7 +199,15 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
     public int getUpgradePotency()
     {
-        return getEffectFromUpgrade().getAmplifier()+1;
+        int range = 1;
+        if(hasCoin())
+        {
+            if(getCoinOnPedestal().isItemEnchanted())
+            {
+                range = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,getCoinOnPedestal())+1;
+            }
+        }
+        return range;
     }
 
     public float getEnchantmentPowerFromSorroundings()
@@ -663,7 +672,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             {
                 if(getCoinOnPedestal().isItemEnchanted())
                 {
-                    rangeOfPlace = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+                    rangeOfPlace = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,getCoinOnPedestal())+1;
                 }
             }
 
@@ -804,7 +813,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         {
             if(getCoinOnPedestal().isItemEnchanted())
             {
-                rangeOfBreak = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY,getCoinOnPedestal())+1;
+                rangeOfBreak = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,getCoinOnPedestal())+1;
             }
         }
         int fortune = 0;
