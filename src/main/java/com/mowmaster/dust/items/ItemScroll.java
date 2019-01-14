@@ -1,7 +1,9 @@
 package com.mowmaster.dust.items;
 
+import com.mowmaster.dust.enums.WikiNoteTypes;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.research.GuiResearchNote;
+import com.mowmaster.dust.research.GuiWikiNotes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -57,8 +59,15 @@ public class ItemScroll extends Item
         String[] stringy = getContents(player);
         if(world.isRemote)
         {
-            contents = "Hello World";
-            Minecraft.getMinecraft().displayGuiScreen(new GuiResearchNote(contents.toLowerCase(),stringy));
+            if(player.getHeldItem(hand).getItem().equals(ItemRegistry.scroll))
+            {
+                contents = "Hello World";
+                Minecraft.getMinecraft().displayGuiScreen(new GuiResearchNote(contents.toLowerCase(),stringy));
+            }
+            else if(player.getHeldItem(hand).getItem().equals(ItemRegistry.scrollA))
+            {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(WikiNoteTypes.DUSTSPELLSBASIC));
+            }
         }
 
         return super.onItemRightClick(world,player,hand);
