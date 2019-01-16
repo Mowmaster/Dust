@@ -1,6 +1,7 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.enums.WikiNoteTypes;
+import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.research.GuiResearchNote;
 import com.mowmaster.dust.research.GuiWikiNotes;
@@ -24,7 +25,12 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ItemScroll extends Item
 {
+
+    private final ResourceLocation guiUtils = new ResourceLocation(Reference.MODID, "textures/guis/guiutils.png");
+    String title = "";
     String contents = "";
+    String author = "";
+    ItemStack itemDisplay = ItemStack.EMPTY;
 
     public ItemScroll(String unlocName, String registryName)
     {
@@ -53,6 +59,8 @@ public class ItemScroll extends Item
         return getScrollsObtained;
     }
 
+
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 
@@ -66,7 +74,20 @@ public class ItemScroll extends Item
             }
             else if(player.getHeldItem(hand).getItem().equals(ItemRegistry.scrollA))
             {
-                Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(WikiNoteTypes.DUSTSPELLSBASIC));
+                title = "Dust Spells";
+                contents = "Dust can be dropped on the ground and ignited with flint and steel to make effects. " +
+                        "Mixing differnt colors of dust can make differnt effects. " +
+                        "White Dust augments good effects, Black dust corrupts effects and makes bad ones stronger.";
+                author = "- Player776";
+                itemDisplay = new ItemStack(BlockDustLog.logwhite);
+                Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0xff00ff,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
+            }
+            else if(player.getHeldItem(hand).getItem().equals(ItemRegistry.scrollB))
+            {
+                title = "Crystal Clusters";
+                contents = "Hello World";
+                author = "- Player776";
+                Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0xffff00,guiUtils,35,1,1,126,20,contents,0x000000,60,author,0x0000ff,itemDisplay,90,200,2.0f,2.0f));
             }
         }
 
