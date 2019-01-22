@@ -5,6 +5,7 @@ import com.mowmaster.dust.enums.CrystalTypes;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHealth;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.registries.GameData;
 
@@ -44,7 +45,7 @@ public class EffectPicker
 
 
         //System.out.println(colorToRecipe);
-        return getEffect(CrystalTypes.EffectTypes.DUST,white,black,potencyCap,duration,ambient,showParticles);
+        return getEffect(type,white,black,potencyCap,duration,ambient,showParticles);
     }
 
     private static void calcPercentages(int red, int blue, int yellow)
@@ -125,7 +126,13 @@ public class EffectPicker
             if(potencycount>=450 && potencycount<550){amp=9;}
             if(potencycount>=550){amp=10;}
         }
-        else{amp=Math.abs(white-black);}
+        else{
+            amp=Math.abs(white-black);
+            if(black>0 && white<black)
+            {
+                amp-=1;
+            }
+        }
 
         if(amp>potencyCap)
         {
@@ -193,7 +200,19 @@ public class EffectPicker
 
     private static PotionEffect getEffect(CrystalTypes.EffectTypes type, int white, int black,int potencyCap, int duration, boolean isAmbient, boolean canShowParticles)
     {
-        PotionEffect effect = new PotionEffect(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion(), duration, getPotency(type,white,black,potencyCap), isAmbient, canShowParticles);
+        int time = duration;
+        if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.INSTANT_HEALTH) ||
+                EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.INSTANT_DAMAGE) )
+        {
+            time = 1;
+        }
+
+        if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.SATURATION))
+        {
+            time = 20*getPotency(type,white,black,potencyCap);
+        }
+
+        PotionEffect effect = new PotionEffect(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion(), time, getPotency(type,white,black,potencyCap), isAmbient, canShowParticles);
         return effect;
     }
 }
