@@ -64,6 +64,12 @@ public class BlockMachineBase extends BlockBasicFalling
                     worldIn.setBlockState(pos, BlockCrystalFurnace.crystalfurnace.getDefaultState());
             }
 
+            if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.crushingComponents))) {
+                //playerIn.sendMessage(new TextComponentString("You are adding Carbon"));
+                playerIn.getHeldItem(hand).shrink(1);
+                worldIn.setBlockState(pos, BlockCrystalCrusher.crystalcrusher.getDefaultState());
+            }
+
         }
         return true;
     }

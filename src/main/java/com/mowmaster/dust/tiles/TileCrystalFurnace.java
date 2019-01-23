@@ -165,7 +165,7 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
     {
         if(crystalEffectActive==2)
         {
-            customCookTime =  200-(40*modifier);
+            customCookTime =  (200 / (1 + modifier));
         }
         else customCookTime = 200;
 
