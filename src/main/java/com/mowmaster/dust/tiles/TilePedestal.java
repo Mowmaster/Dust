@@ -2273,9 +2273,12 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             {
                 if(getCoinOnPedestal().getItem().equals(ItemRegistry.enchantUpgrade))
                 {
-                    if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
+                    if(getCoinOnPedestal().isItemEnchanted())
                     {
-                        getXPOrbEntitiesNearby(getUpgradePotency());
+                        if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,getCoinOnPedestal())>0)
+                        {
+                            getXPOrbEntitiesNearby(getUpgradePotency());
+                        }
                     }
                     else getXPOrbEntitiesNearby(0);
                 }
@@ -2288,7 +2291,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
             if(this.hasUpgrade(ItemRegistry.chopperUpgrade))
             {
-                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
+                if(getCoinOnPedestal().isItemEnchanted())
                 {
                     chopper(getUpgradePotency());
                 }
