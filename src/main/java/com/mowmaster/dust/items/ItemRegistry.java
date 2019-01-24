@@ -21,6 +21,10 @@ public class ItemRegistry
     public static Item dust;
     public static Item crystal;
     public static Item bit;
+    public static Item wikiscroll;
+
+
+
     public static Item charcoalRed;
     public static Item charcoalBlue;
     public static Item charcoalYellow;
@@ -207,6 +211,7 @@ public class ItemRegistry
         dust = new ItemDust("dust");
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
+        wikiscroll = new ItemWikiScroll("wikiscroll");
         charcoalRed = new ItemCharcoal("charcoalred","charcoalred");
         charcoalBlue = new ItemCharcoal("charcoalblue","charcoalblue");
         charcoalYellow = new ItemCharcoal("charcoalyellow","charcoalyellow");
@@ -311,6 +316,7 @@ public class ItemRegistry
         registerItem(dust);
         registerItem(crystal);
         registerItem(bit);
+        registerItem(wikiscroll);
         registerItem(charcoalRed);
         registerItem(charcoalBlue);
         registerItem(charcoalYellow);
@@ -422,6 +428,10 @@ public class ItemRegistry
         for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)
         {
             registerRender(bit,i,"bit_" + CrystalItems.BitTypes.values()[i].getName());
+        }
+        for(int i = 0; i < CrystalItems.CountTypes.values().length; i++)
+        {
+            registerRender(wikiscroll,i,"wikiscroll_" + CrystalItems.CountTypes.values()[i].getName());
         }
 
         registerRender(charcoalRed);

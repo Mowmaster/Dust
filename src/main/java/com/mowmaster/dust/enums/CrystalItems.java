@@ -166,4 +166,54 @@ public class CrystalItems
         }
 
     }
+
+    public static enum CountTypes implements IStringSerializable
+    {
+        ONE("one",0),
+        TWO("two",1),
+        THREE("three",2),
+        FOUR("four",3),
+        FIVE("five",4),
+        SIX("six",5),
+        SEVEN("seven",6),
+        EIGHT("eight",7),
+        NINE("nine",8),
+        TEN("ten",9),
+        ELEVEN("eleven",10),
+        TWELVE("twelve",11),
+        THIRTEEN("thirteen",12),
+        FOURTEEN("fourteen",13),
+        FIFTEEN("fifteen",14),
+        SIXTEEN("sixteen",15);
+
+
+
+
+
+        private int ID;
+        private String name;
+        private CountTypes(String name, int ID)
+        {
+            this.ID = ID;
+            this.name = name;
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public int getID()
+        {
+            return ID;
+        }
+
+        @Override
+        public String toString()
+        {
+            return getName();
+        }
+
+    }
 }
