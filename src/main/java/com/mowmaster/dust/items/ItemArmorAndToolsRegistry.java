@@ -2,6 +2,7 @@ package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.armors.ItemCrystalArmor;
+import com.mowmaster.dust.items.trinkets.ItemCrystalPickaxe;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.references.Reference;
@@ -32,11 +33,15 @@ public class ItemArmorAndToolsRegistry
 
 
     public static ItemSword crystalSword;
-    public static ItemBow crystalBow;
-    public static ItemPickaxe crystalPickaxe;
-    public static ItemAxe crystalAxe;
-    public static ItemSpade crystalShovel;
-    public static ItemHoe crystalHoe;
+
+    // will probably become theyre own class respectively
+   // public static ItemBow crystalBow;
+  //  public static ItemAxe crystalAxe;
+   // public static ItemSpade crystalShovel;
+   // public static ItemHoe crystalHoe;
+
+    public static ItemCrystalPickaxe crystalPickaxe;
+
 
     public static ItemArmor crystalHelmet;
     public static ItemArmor crystalChestplate;
@@ -61,6 +66,7 @@ public class ItemArmorAndToolsRegistry
         crystalSword.setCreativeTab(DustyTab.DUSTTABS);
 
         // pick
+        crystalPickaxe = new ItemCrystalPickaxe(crystalToolMaterial);
 
 
     }
@@ -73,7 +79,7 @@ public class ItemArmorAndToolsRegistry
         registerItem(crystalBoots);
         // tool and weapon section
         registerItem(crystalSword);
-
+        registerItem(crystalPickaxe);
 
     }
 
