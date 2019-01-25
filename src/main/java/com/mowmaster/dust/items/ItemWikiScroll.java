@@ -1,37 +1,25 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
-import com.mowmaster.dust.blocks.crystal.BlockCrystal;
-import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
-import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
-import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.machines.BlockCrystalFurnace;
-import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.blocks.machines.BlockVoidPot;
-import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.blocks.treebits.SaplingRegister;
 import com.mowmaster.dust.blocks.utility.BlockPath;
 import com.mowmaster.dust.blocks.utility.BlockSpike;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.research.GuiResearchNote;
+import com.mowmaster.dust.research.GuiIndex;
 import com.mowmaster.dust.research.GuiWikiNotes;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -74,8 +62,8 @@ public class ItemWikiScroll extends Item
         return this.getUnlocalizedName() + "." + CrystalItems.CountTypes.ONE.getName();
     }
 
-
     @Override
+    @SideOnly(Side.CLIENT)
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 
         if(world.isRemote)
@@ -84,15 +72,7 @@ public class ItemWikiScroll extends Item
             {
                 if(player.isSneaking())
                 {
-                       if(player.getHeldItem(hand).getMetadata()!=15)
-                       {
-                           player.getHeldItem(hand).setItemDamage((player.getHeldItem(hand).getMetadata()+1));
-                       }
-                       else
-                       {
-                           player.getHeldItem(hand).setItemDamage(0);
-                       }
-                    player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + player.getHeldItem(hand).getTooltip(player, ITooltipFlag.TooltipFlags.NORMAL).get(1) ),true);
+                    player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + getTitleText(player.getHeldItem(hand).getMetadata()+1) ),true);
                 }
                 else
                 {
@@ -276,14 +256,10 @@ public class ItemWikiScroll extends Item
         return super.onItemRightClick(world,player,hand);
     }
 
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-
+    private String getTitleText(int meta)
+    {
         String displayText;
-
-        switch (stack.getMetadata())
+        switch (meta)
         {
             case 0:
                 displayText = "World Generation";
@@ -337,6 +313,13 @@ public class ItemWikiScroll extends Item
                 displayText = "Getting Started";
         }
 
-        tooltip.add(displayText);
+        return displayText;
+    }
+
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add(getTitleText(stack.getMetadata()));
     }
 }

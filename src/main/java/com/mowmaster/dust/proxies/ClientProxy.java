@@ -87,6 +87,25 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(Reference.MODID,"bit_black")
         );
 
+        ModelBakery.registerItemVariants(ItemRegistry.wikiscroll,
+                new ResourceLocation(Reference.MODID,"wikiscroll_one"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_two"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_three"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_four"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_five"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_six"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_seven"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_eight"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_nine"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_ten"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_eleven"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_twelve"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_thirteen"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_fourteen"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_fifteen"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_sixteen")
+        );
+
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustLeaf.leaf),
                 new ResourceLocation(Reference.MODID, "leaves_red"),
                 new ResourceLocation(Reference.MODID, "leaves_blue"),

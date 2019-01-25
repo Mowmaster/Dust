@@ -1,6 +1,7 @@
 package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
+import com.mowmaster.dust.items.ItemWikiScroll;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import static com.mowmaster.dust.items.ItemRegistry.akashic;
+import static com.mowmaster.dust.items.ItemRegistry.wikiscroll;
 
 
 public class DebugAndLogging
@@ -38,6 +40,20 @@ public class DebugAndLogging
         EnumHand hand = event.getHand();
         IBlockState state = worldIn.getBlockState(event.getPos());
         ItemStack item = playerIn.getHeldItem(EnumHand.MAIN_HAND);
+
+        if(!worldIn.isRemote)
+        {
+            if (playerIn.isSneaking()) {
+                if ((playerIn.getHeldItemMainhand().getItem() instanceof ItemWikiScroll) || (playerIn.getHeldItemOffhand().getItem() instanceof ItemWikiScroll))
+                {
+                    if (playerIn.getHeldItem(hand).getMetadata() != 15) {
+                        playerIn.getHeldItem(hand).setItemDamage((playerIn.getHeldItem(hand).getMetadata() + 1));
+                    } else {
+                        playerIn.getHeldItem(hand).setItemDamage(0);
+                    }
+                }
+            }
+        }
 
         if ((playerIn.getHeldItemOffhand().getItem().equals(akashic))) {
             if ((playerIn.getHeldItemMainhand().isItemEnchanted() || playerIn.getHeldItemMainhand().getItem().equals(Items.ENCHANTED_BOOK))) {
