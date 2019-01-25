@@ -84,6 +84,24 @@ item.scrolly.name=Ancient Scroll
 item.scrollz.name=Ancient Scroll
 item.scroll.name=Ancient Scroll
 
+item.wikiscroll.one.name=Research Note
+item.wikiscroll.two.name=Research Note
+item.wikiscroll.three.name=Research Note
+item.wikiscroll.four.name=Research Note
+item.wikiscroll.five.name=Research Note
+item.wikiscroll.six.name=Research Note
+item.wikiscroll.seven.name=Research Note
+item.wikiscroll.eight.name=Research Note
+item.wikiscroll.nine.name=Research Note
+item.wikiscroll.ten.name=Research Note
+item.wikiscroll.eleven.name=Research Note
+item.wikiscroll.twelve.name=Research Note
+item.wikiscroll.thirteen.name=Research Note
+item.wikiscroll.fourteen.name=Research Note
+item.wikiscroll.fifteen.name=Research Note
+item.wikiscroll.sixteen.name=Research Note
+
+
 item.akashic.name=Akashic Records
 item.guidebook.name=Pile of Research Notes
 item.spellpaper.name=Spell Scroll
@@ -553,3 +571,10 @@ potion.effect.planter=Potion of Sowing
 splash_potion.effect.planter=Splash Potion of Sowing
 lingering_potion.effect.planter=Lingering Potion of Sowing
 tipped_arrow.effect.planter=Arrow of Sowing
+
+
+
+advancements.dust.root.title=World Generation
+advancements.dust.root.description=Dust has so much world gen, go find it all!
+advancements.dust.wiki.title=In Game Documentation at Last!
+advancements.dust.wiki.description=Sneak+R.Click to Cycle Notes

@@ -1,0 +1,7 @@
+{
+    "parent": "dust:item/ancientscroll",
+    "textures": {
+        "letter": "dust:items/models/scrolls/wikivoid",
+        "blank": "dust:items/models/scrolls/scroll"
+    }
+}
