@@ -1,5 +1,6 @@
 package com.mowmaster.dust.items;
 
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
@@ -7,8 +8,11 @@ import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.machines.BlockCrystalFurnace;
 import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
+import com.mowmaster.dust.blocks.machines.BlockVoidPot;
 import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.blocks.treebits.SaplingRegister;
+import com.mowmaster.dust.blocks.utility.BlockPath;
+import com.mowmaster.dust.blocks.utility.BlockSpike;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.research.GuiResearchNote;
@@ -17,6 +21,7 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -197,46 +202,49 @@ public class ItemWikiScroll extends Item
                         Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,140,210,2.0f,2.0f));
                         break;
                     case 10:
-                        title = "11";
-                        contents = "";
+                        title = "Crystal Armor";
+                        contents = "Made using depleated Crystals and Leather Armor, the player, through crafting, can infuse the energy of dust and crystals to make it more powerful.";
                         author = "";
-                        itemDisplay = new ItemStack(ItemRegistry.crystal,1,1);
+                        itemDisplay = new ItemStack(ItemArmorAndToolsRegistry.crystalChestplate);
                         Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
                         break;
                     case 11:
-                        title = "12";
-                        contents = "";
+                        title = "Utility Blocks";
+                        contents = "Enchanted Farmland: Crops can be planted on it, they will grow faster and do not require water nearby." +
+                                " Sinister Soil: Infused with the properties of evil, this block will cause mobs to spawn in low light conditions." +
+                                " Path Blocks: By combining colors of stone together and further infusion dust into it you can make blocks that decrease the friction between your feet and the ground as you run.";
                         author = "";
-                        itemDisplay = new ItemStack(ItemRegistry.crystal,1,1);
-                        Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
+                        itemDisplay = new ItemStack(BlockPath.path4);
+                        Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,205,2.0f,2.0f));
                         break;
                     case 12:
-                        title = "13";
-                        contents = "";
+                        title = "Crystal Spikes";
+                        contents = "Using black crystals and dust you have been able to fabricate a placeable spike that slows and damages entities. The more you place in one area the more deadly they become.";
                         author = "";
-                        itemDisplay = new ItemStack(ItemRegistry.crystal,1,1);
+                        itemDisplay = new ItemStack(BlockSpike.spike5);
                         Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
                         break;
                     case 13:
-                        title = "14";
-                        contents = "";
+                        title = "Enchantments";
+                        contents = "AOE Miner, Flight, Smelter, Step Up, Range (For Pedestal Upgrades)";
                         author = "";
-                        itemDisplay = new ItemStack(ItemRegistry.crystal,1,1);
+                        itemDisplay = new ItemStack(Items.ENCHANTED_BOOK);
                         Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
                         break;
                     case 14:
-                        title = "15";
-                        contents = "";
+                        title = "Spell Effects";
+                        contents = "Drowning, Envigoration[WIP], Flight, Grower, Harvester, Magnetism , Petrified, Planter[Vanilla, Pams HC, & IE crops], Quickness, Slowfall, Step Assist, Tiller, Water Quickness.";
                         author = "";
-                        itemDisplay = new ItemStack(ItemRegistry.crystal,1,1);
+                        itemDisplay = new ItemStack(ItemRegistry.finnisher);
                         Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
                         break;
                     case 15:
-                        title = "16";
-                        contents = "";
-                        author = "";
-                        itemDisplay = new ItemStack(ItemRegistry.crystal,1,1);
-                        Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
+                        title = "Pot of the Abyss";
+                        contents = "When looking down inside of the pot it seems to have no bottom, but surely it does! I seem to be able to drop an endless amount of objects into the vessel," +
+                                " and it never fills up! Unfortunately I haven't been able to get any of those back out though...";
+                        author = "- Player753";
+                        itemDisplay = new ItemStack(BlockVoidPot.voidpot);
+                        Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x61008E,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
                         break;
                     default:
                         title = "Hello World";

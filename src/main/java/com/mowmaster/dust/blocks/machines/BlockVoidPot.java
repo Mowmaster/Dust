@@ -97,13 +97,13 @@ public class BlockVoidPot extends BlockBasic
             worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
         }
     }
-
+/*
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add("When looking down inside of the pot it seems to have no bottom, but surely it does! I seem to be able to drop an endless amount of objects into the vessel, and it never fills up! Unfortunately I haven't been able to get any of those back out though...");
         tooltip.add("- Player753");
     }
-
+*/
 
     public static void Init()
     {
