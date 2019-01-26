@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:spellpaper"
+        },
+        "title": {
+            "translate": "advancements.dust.batchcrafting.title"
+        },
+        "description": {
+            "translate": "advancements.dust.batchcrafting.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/spellcrafting",
+    "criteria": {
+        "spellpaper": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:spellpaper"
+                    }
+                ]
+            }
+        }
+    },
+    "rewards": {
+        "loot": ["dust:wikiscrolls/wiki_spellcrafting3"]
+    }
+}

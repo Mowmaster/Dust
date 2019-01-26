@@ -1,105 +1,95 @@
 {
     "display": {
         "icon": {
-            "item": "dust:red/saplingred"
+            "item": "minecraft:wooden_pressure_plate"
         },
         "title": {
-            "translate": "advancements.dust.root.title"
+            "translate": "advancements.dust.spellcrafting.title"
         },
         "description": {
-            "translate": "advancements.dust.root.description"
-        },
-        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
-        "show_toast": true,
-        "announce_to_chat": true
+            "translate": "advancements.dust.spellcrafting.description"
+        }
     },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/get_dust",
     "criteria": {
-        "red": {
+        "pressurew": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:red/saplingred"
+                        "item": "minecraft:wooden_pressure_plate"
                     }
                 ]
             }
         },
-        "blue": {
+        "pressures": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:blue/saplingblue"
+                        "item": "minecraft:stone_pressure_plate"
                     }
                 ]
             }
         },
-        "yellow": {
+        "pressurei": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:yellow/saplingyellow"
+                        "item": "minecraft:heavy_weighted_pressure_plate"
                     }
                 ]
             }
         },
-        "purple": {
+        "pressureg": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:purple/saplingpurple"
+                        "item": "minecraft:light_weighted_pressure_plate"
                     }
                 ]
             }
         },
-        "green": {
+        "arrow": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:green/saplinggreen"
+                        "item": "minecraft:arrow"
                     }
                 ]
             }
         },
-        "orange": {
+        "paper": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:orange/saplingorange"
+                        "item": "minecraft:paper"
                     }
                 ]
             }
         },
-        "white": {
+        "coin": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:white/saplingwhite"
-                    }
-                ]
-            }
-        },
-        "black": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "dust:black/saplingblack"
+                        "item": "dust:coin"
                     }
                 ]
             }
         }
     },
     "requirements": [
-        ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
+        ["pressurew", "pressures", "pressurei", "pressureg", "arrow", "paper", "coin"]
     ],
     "rewards": {
-        "loot": ["dust:wikiscrolls/wiki_worldgen"]
+        "loot": ["dust:wikiscrolls/wiki_spellcrafting2"]
     }
-
 }

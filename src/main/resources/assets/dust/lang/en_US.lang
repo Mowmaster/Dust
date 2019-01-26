@@ -574,7 +574,11 @@ tipped_arrow.effect.planter=Arrow of Sowing
 
 
 
-advancements.dust.root.title=World Generation
-advancements.dust.root.description=Dust has so much world gen, go find it all!
-advancements.dust.wiki.title=In Game Documentation at Last!
-advancements.dust.wiki.description=Sneak+R.Click to Cycle Notes
+advancements.dust.root.title=Ooooh, Pretty!
+advancements.dust.root.description=Dust adds so much world gen, go find it all!
+advancements.dust.getdust.title=BREAK OUT THE BROOM, ITS GETTING DUSTY IN HERE!!!
+advancements.dust.getdust.description=Sweep up some dust into your inventory.
+advancements.dust.spellcrafting.title=Spell Effect Crafting
+advancements.dust.spellcrafting.description=Use what you know about spells and apply it to other things.
+advancements.dust.batchcrafting.title=When One Just Isn't Enough...
+advancements.dust.batchcrafting.description=When making spells one at a time is just too slow.
