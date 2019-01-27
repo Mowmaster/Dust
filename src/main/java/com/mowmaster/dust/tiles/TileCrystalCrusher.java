@@ -1,16 +1,26 @@
 package com.mowmaster.dust.tiles;
 
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.recipes.crusher_recipes.CrusherRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockFurnace;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+
+import static sun.audio.AudioPlayer.player;
 
 
 public class TileCrystalCrusher extends TileEntityBase implements ITickable, IItemHandler
@@ -202,6 +212,15 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         }
     }
 
+    public boolean checkIsBurning()
+    {
+        if(isBurning)
+        {
+            return true;
+        }
+        else return false;
+    }
+
     private void startBurning(ItemStack fuelSlot)
     {
         if(!crystalCrusher.getStackInSlot(0).isEmpty() && isBurning==false)
@@ -214,18 +233,19 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         }
     }
 
+
+
     int ticker = 0;
     int ticker2 = 0;
     @Override
     public void update()
     {
-        if(burnTime>0)
-        {
-            world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
-        }
+
+        //updateClient();
 
         if (!world.isRemote)
         {
+
             //Checks if is burning or not
             checkBurning();
             //if not burning but has items to process it will start it up

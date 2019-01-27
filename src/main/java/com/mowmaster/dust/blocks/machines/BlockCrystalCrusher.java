@@ -5,11 +5,13 @@ import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCrusher;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -30,6 +32,7 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
 {
 
     public static Block crystalcrusher;
+    public boolean isBurning;
     private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
 
     public BlockCrystalCrusher(String unloc, String registryName)
@@ -53,6 +56,21 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
      */
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof TileCrystalCrusher)
+        {
+            TileCrystalCrusher tileCrusher = (TileCrystalCrusher) tileEntity;
+            if(tileCrusher.checkIsBurning())
+            {
+                worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(),pos.getY()+1,pos.getZ(), 0.0D, 0.0D, 0.0D);
+            }
+        }
+        super.updateTick(worldIn, pos, state, rand);
+    }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -120,7 +138,7 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
-        return BlockRenderLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override
