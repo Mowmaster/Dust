@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,8 +31,6 @@ import static com.mowmaster.dust.items.ItemRegistry.wikiscroll;
 
 public class DebugAndLogging
 {
-
-
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
         World worldIn = event.getWorld();

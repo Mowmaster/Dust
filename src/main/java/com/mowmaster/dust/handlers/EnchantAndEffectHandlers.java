@@ -12,10 +12,17 @@ import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemSpellScroll;
 import com.mowmaster.dust.recipes.CraftingRecipes;
+import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileTrapBlock;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementManager;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.toasts.AdvancementToast;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +33,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
@@ -50,19 +58,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.SyncConfig;
 import static com.mowmaster.dust.misc.DustConfigurationFile.dustToActivate;
@@ -71,6 +77,91 @@ import static net.minecraft.block.BlockFarmland.MOISTURE;
 
 public class EnchantAndEffectHandlers
 {
+
+
+
+    /*
+    Not needed yet
+
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onAdvance(AdvancementEvent event)
+    {
+        if(event.getEntityPlayer() instanceof EntityPlayerMP) {
+            PlayerAdvancements advancements = ((EntityPlayerMP) event.getEntityPlayer()).getAdvancements();
+            AdvancementProgress parent = advancements.getProgress(event.getAdvancement().getParent());
+
+            if(event.getAdvancement().getId().getResourceDomain().equals(Reference.MODID))
+            {
+                if(parent.isDone())
+                {
+
+                }
+                else
+                {
+                    System.out.println("PARENT NOT COMPLETED YET!!!");
+                }
+            }
+
+        }
+
+    }
+
+
+    public static List<ResourceLocation> syncedAdvancements = null;
+    public static Set<String> trackedNamespaces = new HashSet<>();
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onAdvancement(AdvancementEvent event) {
+        System.out.println(event.getAdvancement());
+
+        if(event.getEntityPlayer() instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+            buildSyncSet(player);
+
+            System.out.println(event.getAdvancement().getId());
+            if(syncedAdvancements.contains(event.getAdvancement().getId()))
+            {System.out.println(parentDone(player,event.getAdvancement(), true));}
+        }
+
+}
+
+    private static void buildSyncSet(EntityPlayerMP player) {
+        if(syncedAdvancements == null) {
+            AdvancementManager manager = player.getServer().getAdvancementManager();
+            Iterable<Advancement> allAdvancements = manager.getAdvancements();
+
+            syncedAdvancements = new ArrayList<>();
+            for(Advancement a : allAdvancements)
+                if(trackedNamespaces.contains(a.getId().getResourceDomain()))
+                    syncedAdvancements.add(a.getId());
+        }
+    }
+
+    public static Boolean parentDone(EntityPlayerMP player, Advancement adv,boolean showToast) {
+        PlayerAdvancements advancements = player.getAdvancements();
+        if(advancements == null)
+            return false;
+
+        AdvancementManager manager = player.getServer().getAdvancementManager();
+
+        List<String> completed = new LinkedList<>();
+        for(ResourceLocation res : syncedAdvancements) {
+            AdvancementProgress p = advancements.getProgress(adv.getParent());
+            if(p.isDone())
+                return true;
+        }
+
+        return false;
+    }
+     */
+
+
+
+
+
+
 
 
 

@@ -103,10 +103,93 @@
                     }
                 ]
             }
+        },
+
+
+
+        "tred": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:red/saplingred"
+                    }
+                ]
+            }
+        },
+        "tblue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blue/saplingblue"
+                    }
+                ]
+            }
+        },
+        "tyellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:yellow/saplingyellow"
+                    }
+                ]
+            }
+        },
+        "tpurple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:purple/saplingpurple"
+                    }
+                ]
+            }
+        },
+        "tgreen": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:green/saplinggreen"
+                    }
+                ]
+            }
+        },
+        "torange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:orange/saplingorange"
+                    }
+                ]
+            }
+        },
+        "twhite": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:white/saplingwhite"
+                    }
+                ]
+            }
+        },
+        "tblack": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:black/saplingblack"
+                    }
+                ]
+            }
         }
     },
     "requirements": [
-        ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
+        ["tred", "tyellow", "tblue", "tpurple", "tgreen", "torange", "twhite", "tblack"],["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
     ],
     "rewards": {
         "loot": ["dust:wikiscrolls/wiki_spellcrafting"]

@@ -24,8 +24,83 @@
                     }
                 ]
             }
+        },
+
+
+        "pressurew": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:wooden_pressure_plate"
+                    }
+                ]
+            }
+        },
+        "pressures": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:stone_pressure_plate"
+                    }
+                ]
+            }
+        },
+        "pressurei": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:heavy_weighted_pressure_plate"
+                    }
+                ]
+            }
+        },
+        "pressureg": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:light_weighted_pressure_plate"
+                    }
+                ]
+            }
+        },
+        "arrow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:arrow"
+                    }
+                ]
+            }
+        },
+        "paper": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:paper"
+                    }
+                ]
+            }
+        },
+        "coin": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:coin"
+                    }
+                ]
+            }
         }
     },
+    "requirements": [
+        ["spellpaper"],["pressurew", "pressures", "pressurei", "pressureg", "arrow", "paper", "coin"]
+    ],
     "rewards": {
         "loot": ["dust:wikiscrolls/wiki_spellcrafting3"]
     }

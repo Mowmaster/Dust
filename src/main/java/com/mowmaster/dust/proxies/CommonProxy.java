@@ -4,6 +4,7 @@ import com.mowmaster.dust.dust;
 import com.mowmaster.dust.enchantments.EnchantmentDigger;
 import com.mowmaster.dust.enchantments.EnchantmentSmelt;
 import com.mowmaster.dust.handlers.*;
+import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TileRegistry;

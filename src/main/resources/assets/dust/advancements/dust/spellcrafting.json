@@ -84,10 +84,103 @@
                     }
                 ]
             }
+        },
+
+
+
+
+
+        "red": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "blue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 1
+                    }
+                ]
+            }
+        },
+        "yellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 2
+                    }
+                ]
+            }
+        },
+        "purple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 3
+                    }
+                ]
+            }
+        },
+        "green": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 4
+                    }
+                ]
+            }
+        },
+        "orange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 5
+                    }
+                ]
+            }
+        },
+        "white": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 6
+                    }
+                ]
+            }
+        },
+        "black": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dust",
+                        "data": 7
+                    }
+                ]
+            }
         }
     },
     "requirements": [
-        ["pressurew", "pressures", "pressurei", "pressureg", "arrow", "paper", "coin"]
+        ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"],["pressurew", "pressures", "pressurei", "pressureg", "arrow", "paper", "coin"]
     ],
     "rewards": {
         "loot": ["dust:wikiscrolls/wiki_spellcrafting2"]
