@@ -8,6 +8,8 @@ import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -20,6 +22,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
+import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 import static sun.audio.AudioPlayer.player;
 
 
@@ -28,7 +31,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     private ItemStackHandler crystalCrusher;
     private int burnTime;
-    private boolean isBurning=false;
+    public boolean isBurning=false;
 
     public TileCrystalCrusher()
     {
@@ -237,10 +240,17 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     int ticker = 0;
     int ticker2 = 0;
+    int explody = 0;
     @Override
     public void update()
     {
 
+        if(world.isRemote)
+        {
+            if (!(getStackInSlot(2)==ItemStack.EMPTY)) {
+                world.spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+            }
+        }
         //updateClient();
 
         if (!world.isRemote)
@@ -285,6 +295,9 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                 for(int c=zmin;c<=zmax;c++) {
                     for (int a = xmin; a <= xmax; a++) {
                         //for (int b = ymin; b <= ymax; b++) {
+                        if(a==0 && c==0) {}
+                        else
+                        {
                             if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
                             {
                                 if(ticker2>13)
@@ -298,11 +311,23 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                                     }
                                 }
                             }
+                        }
+
                             //Later on make a bad thing happen if the area is full of dust
                         //}
                     }
                 }
 
+                explody++;
+
+            }
+            else{explody=0;}
+
+
+            if(explody>=300)
+            {
+                if(!funhaters)
+                world.createExplosion(new EntityItem(world), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,2.0f, true);
             }
         }
     }
@@ -313,6 +338,8 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         super.writeToNBT(compound);
         //compound.setTag("coin",coin.writeToNBT(new NBTTagCompound()));
         compound.setTag("crystalCrusherInventory",this.crystalCrusher.serializeNBT());
+        compound.setBoolean("burning",this.isBurning);
+        compound.setInteger("burntime",this.burnTime);
 
         return compound;
     }
@@ -325,5 +352,23 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
         //NBTTagCompound itemCoin = compound.getCompoundTag("coin");
         //this.coin = new ItemStack(itemCoin);
         this.crystalCrusher.deserializeNBT(compound.getCompoundTag("crystalCrusherInventory"));
+        this.isBurning=compound.getBoolean("burning");
+        this.burnTime=compound.getInteger("burntime");
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+        readFromNBT(pkt.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 }

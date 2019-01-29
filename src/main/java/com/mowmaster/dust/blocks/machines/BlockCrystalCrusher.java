@@ -33,7 +33,7 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
 
     public static Block crystalcrusher;
     public boolean isBurning;
-    private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 1.0D, 0.875D);
+    private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
 
     public BlockCrystalCrusher(String unloc, String registryName)
     {
