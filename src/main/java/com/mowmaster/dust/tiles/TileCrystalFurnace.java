@@ -323,7 +323,11 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
     {
         if(crystal.getItem() instanceof ItemCrystal)
         {
-            return true;
+            if(crystal.getMetadata()>5 || crystal.getMetadata()==3)//NO WHITE BLACK DEPLEATED or NO PURPLE
+            {
+                return false;
+            }
+            else return true;//If a crystal but not white, black, clear, or purple
         }
         else return false;
     }

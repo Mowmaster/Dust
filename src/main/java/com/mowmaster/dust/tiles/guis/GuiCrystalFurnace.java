@@ -23,6 +23,13 @@ public class GuiCrystalFurnace extends GuiContainer
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX,mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)//contains the text
     {
         //String tileName = this.tileCrystalFurnace.getDisplayName().getUnformattedComponentText();
@@ -49,7 +56,7 @@ public class GuiCrystalFurnace extends GuiContainer
         int l = this.getCookProgressScaled(86);//lenght of texture from left to right
         this.drawTexturedModalRect(this.guiLeft + 48,this.guiTop + 46,1,166,l+1,16);
 
-        if(this.tileCrystalFurnace.getField(5)>0)
+        if(this.tileCrystalFurnace.getField(5)>=0)
         {
             int color2 = this.tileCrystalFurnace.getField(5);
             int colored2 = (color2*19) + 38;
