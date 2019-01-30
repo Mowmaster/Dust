@@ -1,0 +1,12 @@
+{
+  "variants":{
+    "blockcharcoal=red": {"model": "dust:red/blockcharcoal_red"},
+    "blockcharcoal=blue": {"model": "dust:blue/blockcharcoal_blue"},
+    "blockcharcoal=yellow": {"model": "dust:yellow/blockcharcoal_yellow"},
+    "blockcharcoal=purple": {"model": "dust:purple/blockcharcoal_purple"},
+    "blockcharcoal=orange": {"model": "dust:orange/blockcharcoal_orange"},
+    "blockcharcoal=green": {"model": "dust:green/blockcharcoal_green"},
+    "blockcharcoal=white": {"model": "dust:white/blockcharcoal_white"},
+    "blockcharcoal=black": {"model": "dust:black/blockcharcoal_black"}
+  }
+}

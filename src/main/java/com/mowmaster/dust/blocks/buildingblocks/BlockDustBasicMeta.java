@@ -1,4 +1,4 @@
-package com.mowmaster.dust.blocks.treebits;
+package com.mowmaster.dust.blocks.buildingblocks;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
@@ -30,25 +30,25 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
-public class BlockCharcoal extends BlockBasic implements IMetaBlockName
+public class BlockDustBasicMeta extends BlockBasic implements IMetaBlockName
 {
+    public static final PropertyEnum COLORS = PropertyEnum.create("basicblocks",CrystalBlocks.CrystalColors.class);
+    public static Block duststone;
+    public static Block dustbrick;
+    public static Block dustbricks;
+    public static Block dustplanks;
 
-    public static final PropertyEnum COLORS = PropertyEnum.create("blockcharcoal",CrystalBlocks.CrystalColors.class);
-    public static Block charcoalBlockColors;
-
-    public BlockCharcoal(String unloc)
+    public BlockDustBasicMeta(String unloc, Material material, SoundType soundType, int hardness, int resistance, int lightopacity)
     {
-        super(Material.WOOD);
+        super(material);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(COLORS, CrystalBlocks.CrystalColors.RED));
-        this.setHardness(3);
-        this.setResistance(15);
-        this.setLightOpacity(0);
-        this.setSoundType(SoundType.WOOD);
+        this.setHardness(hardness);
+        this.setResistance(resistance);
+        this.setLightOpacity(lightopacity);
+        this.setSoundType(soundType);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
-
     @Override
     protected BlockStateContainer createBlockState()
     {
@@ -98,26 +98,37 @@ public class BlockCharcoal extends BlockBasic implements IMetaBlockName
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random random, int fortune)
+    public Item getItemDropped(IBlockState state,Random random,int fortune)
     {
         return Item.getItemFromBlock(this);
     }
 
     public static void Init()
     {
-        charcoalBlockColors = new BlockCharcoal("blockcharcoal");
+        dustplanks = new BlockDustBasicMeta("dustplanks",Material.WOOD, SoundType.WOOD, 2, 10, 10);
+        duststone = new BlockDustBasicMeta("duststone",Material.ROCK, SoundType.STONE, 3, 20, 10);
+        dustbrick = new BlockDustBasicMeta("dustbrick",Material.ROCK, SoundType.STONE, 3, 20, 10);
+        dustbricks = new BlockDustBasicMeta("dustbricks",Material.ROCK, SoundType.STONE, 3, 20, 10);
     }
 
     public static void Register()
     {
-        registerBlock(charcoalBlockColors, new ItemBlockOre(charcoalBlockColors));
+        registerBlock(dustplanks, new ItemBlockOre(dustplanks));
+        registerBlock(duststone, new ItemBlockOre(duststone));
+        registerBlock(dustbrick, new ItemBlockOre(dustbrick));
+        registerBlock(dustbricks, new ItemBlockOre(dustbricks));
     }
 
     public static void RegisterRender()
     {
         for (int i = 0; i < CrystalBlocks.CrystalColors.values().length; i++)
         {
-            registerRender(charcoalBlockColors,i,"blockcharcoal_" + CrystalBlocks.CrystalColors.values()[i].getName());
+            registerRender(dustplanks,i,"dustplanks_" + CrystalBlocks.CrystalColors.values()[i].getName());
+            registerRender(duststone,i,"duststone_" + CrystalBlocks.CrystalColors.values()[i].getName());
+            registerRender(dustbrick,i,"dustbrick_" + CrystalBlocks.CrystalColors.values()[i].getName());
+            registerRender(dustbricks,i,"dustbricks_" + CrystalBlocks.CrystalColors.values()[i].getName());
         }
+
     }
+
 }

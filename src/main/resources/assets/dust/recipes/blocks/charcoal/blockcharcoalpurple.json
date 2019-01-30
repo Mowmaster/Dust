@@ -7,7 +7,8 @@
     {"item": "dust:charcoalpurple"},{"item": "dust:charcoalpurple"},{"item": "dust:charcoalpurple"}
   ],
   "result": {
-    "item": "dust:blockcharcoalpurple",
+    "item": "dust:blockcharcoal",
+    "data": 3,
     "count":1
   }
 }

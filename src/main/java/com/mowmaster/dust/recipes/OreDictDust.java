@@ -1,6 +1,7 @@
 package com.mowmaster.dust.recipes;
 
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.BlockRegistry;
@@ -15,14 +16,7 @@ public class OreDictDust
 {
     public static void addEntries()
     {
-        OreDictionary.registerOre("plankWood", BlockDustBasic.redplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.blueplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.yellowplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.purpleplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.orangeplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.greenplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.whiteplanks);
-        OreDictionary.registerOre("plankWood", BlockDustBasic.blackplanks);
+        OreDictionary.registerOre("plankWood", BlockDustBasicMeta.dustplanks);
 
         OreDictionary.registerOre("treeSapling", SaplingRegister.saplingred);
         OreDictionary.registerOre("treeSapling", SaplingRegister.saplingblue);
@@ -53,14 +47,7 @@ public class OreDictDust
         OreDictionary.registerOre("oreCrystal", BlockCrystalOre.whiteore);
         OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blackore);
 
-        OreDictionary.registerOre("stone", BlockDustBasic.redstone);
-        OreDictionary.registerOre("stone", BlockDustBasic.bluestone);
-        OreDictionary.registerOre("stone", BlockDustBasic.yellowstone);
-        OreDictionary.registerOre("stone", BlockDustBasic.purplestone);
-        OreDictionary.registerOre("stone", BlockDustBasic.orangestone);
-        OreDictionary.registerOre("stone", BlockDustBasic.greenstone);
-        OreDictionary.registerOre("stone", BlockDustBasic.whitestone);
-        OreDictionary.registerOre("stone", BlockDustBasic.blackstone);
+        OreDictionary.registerOre("stone", BlockDustBasicMeta.duststone);
 
         OreDictionary.registerOre("gemCrystal", ItemRegistry.crystal);
         OreDictionary.registerOre("dustCrystal", ItemRegistry.dust);
@@ -75,14 +62,7 @@ public class OreDictDust
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalWhite));
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalBlack));
 
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalRed));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalBlue));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalYellow));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalPurple));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalGreen));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalOrange));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalWhite));
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalBlack));
+        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalBlockColors));
 
 
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinA));

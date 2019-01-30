@@ -1,10 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustFence;
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustSlab;
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustStair;
+import com.mowmaster.dust.blocks.buildingblocks.*;
 import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.*;
@@ -38,55 +35,55 @@ public class MediumObservatory extends WorldGenerator
 
         if(colorpicked.equals("red"))
         {
-            colorWood = BlockDustBasic.redplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.redstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.redstoneslabs.getDefaultState();
             colorFence = BlockDustFence.redstonefences.getDefaultState();
         }
         else if(colorpicked.equals("blue"))
         {
-            colorWood = BlockDustBasic.blueplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.bluestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.bluestoneslabs.getDefaultState();
             colorFence = BlockDustFence.bluestonefences.getDefaultState();
         }
         else if(colorpicked.equals("yellow"))
         {
-            colorWood = BlockDustBasic.yellowplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.yellowstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.yellowstoneslabs.getDefaultState();
             colorFence = BlockDustFence.yellowstonefences.getDefaultState();
         }
         else if(colorpicked.equals("purple"))
         {
-            colorWood = BlockDustBasic.purpleplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.purplestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.purplestoneslabs.getDefaultState();
             colorFence = BlockDustFence.purplestonefences.getDefaultState();
         }
         else if(colorpicked.equals("orange"))
         {
-            colorWood = BlockDustBasic.orangeplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.orangestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.orangestoneslabs.getDefaultState();
             colorFence = BlockDustFence.orangestonefences.getDefaultState();
         }
         else if(colorpicked.equals("green"))
         {
-            colorWood = BlockDustBasic.greenplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.greenstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.greenstoneslabs.getDefaultState();
             colorFence = BlockDustFence.greenstonefences.getDefaultState();
         }
         else if(colorpicked.equals("white"))
         {
-            colorWood = BlockDustBasic.whiteplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.whitestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.whitestoneslabs.getDefaultState();
             colorFence = BlockDustFence.whitestonefences.getDefaultState();
         }else if(colorpicked.equals("black"))
         {
-            colorWood = BlockDustBasic.blackplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.blackstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.blackstoneslabs.getDefaultState();
             colorFence = BlockDustFence.blackstonefences.getDefaultState();

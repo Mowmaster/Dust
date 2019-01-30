@@ -2,6 +2,7 @@ package com.mowmaster.dust.world.structures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustStair;
 import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.blocks.treebits.BlockDustLog;
@@ -37,50 +38,50 @@ public class LargeHouseFireplace extends WorldGenerator
 
         if(colorpicked.equals("red"))
         {
-            colorWood = BlockDustBasic.redplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logred.getDefaultState();
             colorStair = BlockDustStair.redplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("blue"))
         {
-            colorWood = BlockDustBasic.blueplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logblue.getDefaultState();
             colorStair = BlockDustStair.blueplankstairs.getDefaultState();
 
         }
         else if(colorpicked.equals("yellow"))
         {
-            colorWood = BlockDustBasic.yellowplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logyellow.getDefaultState();
             colorStair = BlockDustStair.yellowplankstairs.getDefaultState();
 
         }
         else if(colorpicked.equals("purple"))
         {
-            colorWood = BlockDustBasic.purpleplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logpurple.getDefaultState();
             colorStair = BlockDustStair.purpleplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("orange"))
         {
-            colorWood = BlockDustBasic.orangeplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logorange.getDefaultState();
             colorStair = BlockDustStair.orangeplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("green"))
         {
-            colorWood = BlockDustBasic.greenplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.loggreen.getDefaultState();
             colorStair = BlockDustStair.greenplankstairs.getDefaultState();
         }
         else if(colorpicked.equals("white"))
         {
-            colorWood = BlockDustBasic.whiteplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logwhite.getDefaultState();
             colorStair = BlockDustStair.whiteplankstairs.getDefaultState();
         }else if(colorpicked.equals("black"))
         {
-            colorWood = BlockDustBasic.blackplanks.getDefaultState();
+            colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorLog = BlockDustLog.logblack.getDefaultState();
             colorStair = BlockDustStair.blackplankstairs.getDefaultState();
         }

@@ -76,30 +76,30 @@ public class BlockDustWall extends BlockBasicWall
 
     public static void Init()
     {
-        redstonewalls = new BlockDustWall("redstonewalls", "ancient/redstonewalls", BlockDustBasic.redstone, SoundType.STONE, 3, 20, 10);
-        redbrickwalls = new BlockDustWall("redbrickwalls", "ancient/redbrickwalls", BlockDustBasic.redbricks, SoundType.STONE, 3, 20, 10);
-        redbrickwalls2 = new BlockDustWall("redbrickwalls2", "ancient/redbrickwalls2", BlockDustBasic.redbricks2, SoundType.STONE, 3, 20, 10);
-        bluestonewalls = new BlockDustWall("bluestonewalls", "ancient/bluestonewalls", BlockDustBasic.bluestone, SoundType.STONE, 3, 20, 10);
-        bluebrickwalls = new BlockDustWall("bluebrickwalls", "ancient/bluebrickwalls", BlockDustBasic.bluebricks, SoundType.STONE, 3, 20, 10);
-        bluebrickwalls2 = new BlockDustWall("bluebrickwalls2", "ancient/bluebrickwalls2", BlockDustBasic.bluebricks2, SoundType.STONE, 3, 20, 10);
-        yellowstonewalls = new BlockDustWall("yellowstonewalls", "ancient/yellowstonewalls", BlockDustBasic.yellowstone, SoundType.STONE, 3, 20, 10);
-        yellowbrickwalls = new BlockDustWall("yellowbrickwalls", "ancient/yellowbrickwalls", BlockDustBasic.yellowbricks, SoundType.STONE, 3, 20, 10);
-        yellowbrickwalls2 = new BlockDustWall("yellowbrickwalls2", "ancient/yellowbrickwalls2", BlockDustBasic.yellowbricks2, SoundType.STONE, 3, 20, 10);
-        purplestonewalls = new BlockDustWall("purplestonewalls", "ancient/purplestonewalls", BlockDustBasic.purplestone, SoundType.STONE, 3, 20, 10);
-        purplebrickwalls = new BlockDustWall("purplebrickwalls", "ancient/purplebrickwalls", BlockDustBasic.purplebricks, SoundType.STONE, 3, 20, 10);
-        purplebrickwalls2 = new BlockDustWall("purplebrickwalls2", "ancient/purplebrickwalls2", BlockDustBasic.purplebricks2, SoundType.STONE, 3, 20, 10);
-        orangestonewalls = new BlockDustWall("orangestonewalls", "ancient/orangestonewalls", BlockDustBasic.orangestone, SoundType.STONE, 3, 20, 10);
-        orangebrickwalls = new BlockDustWall("orangebrickwalls", "ancient/orangebrickwalls", BlockDustBasic.orangebricks, SoundType.STONE, 3, 20, 10);
-        orangebrickwalls2 = new BlockDustWall("orangebrickwalls2", "ancient/orangebrickwalls2", BlockDustBasic.orangebricks2, SoundType.STONE, 3, 20, 10);
-        greenstonewalls = new BlockDustWall("greenstonewalls", "ancient/greenstonewalls", BlockDustBasic.greenstone, SoundType.STONE, 3, 20, 10);
-        greenbrickwalls = new BlockDustWall("greenbrickwalls", "ancient/greenbrickwalls", BlockDustBasic.greenbricks, SoundType.STONE, 3, 20, 10);
-        greenbrickwalls2 = new BlockDustWall("greenbrickwalls2", "ancient/greenbrickwalls2", BlockDustBasic.greenbricks2, SoundType.STONE, 3, 20, 10);
-        whitestonewalls = new BlockDustWall("whitestonewalls", "ancient/whitestonewalls", BlockDustBasic.whitestone, SoundType.STONE, 3, 20, 10);
-        whitebrickwalls = new BlockDustWall("whitebrickwalls", "ancient/whitebrickwalls", BlockDustBasic.whitebricks, SoundType.STONE, 3, 20, 10);
-        whitebrickwalls2 = new BlockDustWall("whitebrickwalls2", "ancient/whitebrickwalls2", BlockDustBasic.whitebricks2, SoundType.STONE, 3, 20, 10);
-        blackstonewalls = new BlockDustWall("blackstonewalls", "ancient/blackstonewalls", BlockDustBasic.blackstone, SoundType.STONE, 3, 20, 10);
-        blackbrickwalls = new BlockDustWall("blackbrickwalls", "ancient/blackbrickwalls", BlockDustBasic.blackbricks, SoundType.STONE, 3, 20, 10);
-        blackbrickwalls2 = new BlockDustWall("blackbrickwalls2", "ancient/blackbrickwalls2", BlockDustBasic.blackbricks2, SoundType.STONE, 3, 20, 10);
+        redstonewalls = new BlockDustWall("redstonewalls", "ancient/redstonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        redbrickwalls = new BlockDustWall("redbrickwalls", "ancient/redbrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        redbrickwalls2 = new BlockDustWall("redbrickwalls2", "ancient/redbrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        bluestonewalls = new BlockDustWall("bluestonewalls", "ancient/bluestonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        bluebrickwalls = new BlockDustWall("bluebrickwalls", "ancient/bluebrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        bluebrickwalls2 = new BlockDustWall("bluebrickwalls2", "ancient/bluebrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        yellowstonewalls = new BlockDustWall("yellowstonewalls", "ancient/yellowstonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        yellowbrickwalls = new BlockDustWall("yellowbrickwalls", "ancient/yellowbrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        yellowbrickwalls2 = new BlockDustWall("yellowbrickwalls2", "ancient/yellowbrickwalls2",BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        purplestonewalls = new BlockDustWall("purplestonewalls", "ancient/purplestonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        purplebrickwalls = new BlockDustWall("purplebrickwalls", "ancient/purplebrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        purplebrickwalls2 = new BlockDustWall("purplebrickwalls2", "ancient/purplebrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        orangestonewalls = new BlockDustWall("orangestonewalls", "ancient/orangestonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        orangebrickwalls = new BlockDustWall("orangebrickwalls", "ancient/orangebrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        orangebrickwalls2 = new BlockDustWall("orangebrickwalls2", "ancient/orangebrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        greenstonewalls = new BlockDustWall("greenstonewalls", "ancient/greenstonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        greenbrickwalls = new BlockDustWall("greenbrickwalls", "ancient/greenbrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        greenbrickwalls2 = new BlockDustWall("greenbrickwalls2", "ancient/greenbrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        whitestonewalls = new BlockDustWall("whitestonewalls", "ancient/whitestonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        whitebrickwalls = new BlockDustWall("whitebrickwalls", "ancient/whitebrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        whitebrickwalls2 = new BlockDustWall("whitebrickwalls2", "ancient/whitebrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
+        blackstonewalls = new BlockDustWall("blackstonewalls", "ancient/blackstonewalls", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        blackbrickwalls = new BlockDustWall("blackbrickwalls", "ancient/blackbrickwalls", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        blackbrickwalls2 = new BlockDustWall("blackbrickwalls2", "ancient/blackbrickwalls2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
     }
 
     public static void Register()

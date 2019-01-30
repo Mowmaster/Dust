@@ -468,14 +468,14 @@ tile.spike4.name=Crystal Spikes
 tile.spike5.name=Crystal Spikes
 tile.voidpot.name=Pot of the Abyss
 
-tile.blockcharcoalred.name=Red Block of Charcoal
-tile.blockcharcoalblue.name=Blue Block of Charcoal
-tile.blockcharcoalyellow.name=Yellow Block of Charcoal
-tile.blockcharcoalpurple.name=Purple Block of Charcoal
-tile.blockcharcoalgreen.name=Green Block of Charcoal
-tile.blockcharcoalorange.name=Orange Block of Charcoal
-tile.blockcharcoalwhite.name=White Block of Charcoal
-tile.blockcharcoalblack.name=Black Block of Charcoal
+tile.blockcharcoal_red.name=Red Block of Charcoal
+tile.blockcharcoal_blue.name=Blue Block of Charcoal
+tile.blockcharcoal_yellow.name=Yellow Block of Charcoal
+tile.blockcharcoal_purple.name=Purple Block of Charcoal
+tile.blockcharcoal_green.name=Green Block of Charcoal
+tile.blockcharcoal_orange.name=Orange Block of Charcoal
+tile.blockcharcoal_white.name=White Block of Charcoal
+tile.blockcharcoal_black.name=Black Block of Charcoal
 
 item.crystalhelmet.name=Crystal Helmet
 item.crystalchestplate.name=Crystal Chestplate
