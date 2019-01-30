@@ -30,14 +30,14 @@ public class CrusherRecipes
 
     private CrusherRecipes()
     {
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,0),new ItemStack(BlockDustCloud.redDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,1),new ItemStack(BlockDustCloud.blueDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,2),new ItemStack(BlockDustCloud.yellowDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,3),new ItemStack(BlockDustCloud.purpleDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,4),new ItemStack(BlockDustCloud.greenDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,5),new ItemStack(BlockDustCloud.orangeDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,6),new ItemStack(BlockDustCloud.whiteDust,8));
-        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,7),new ItemStack(BlockDustCloud.blackDust,8));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,0),new ItemStack(BlockDustCloud.redDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,1),new ItemStack(BlockDustCloud.blueDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,2),new ItemStack(BlockDustCloud.yellowDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,3),new ItemStack(BlockDustCloud.purpleDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,4),new ItemStack(BlockDustCloud.greenDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,5),new ItemStack(BlockDustCloud.orangeDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,6),new ItemStack(BlockDustCloud.whiteDust,32));
+        this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,7),new ItemStack(BlockDustCloud.blackDust,32));
 
         this.addCrushingRecipeForBlock(Blocks.REDSTONE_ORE,new ItemStack(BlockDustCloud.redstoneDust,4));
         this.addCrushingRecipeForBlock(Blocks.IRON_ORE,new ItemStack(BlockDustCloud.ironDust,2));

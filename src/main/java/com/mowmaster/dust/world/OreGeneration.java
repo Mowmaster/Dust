@@ -39,6 +39,7 @@ public class OreGeneration implements IWorldGenerator
     private WorldGenerator white_ore;
     private WorldGenerator black_ore;
 
+
     //For Use in crystal Biomes above y=70
     private WorldGenerator glowstone_ore;
     private WorldGenerator coal_ore;

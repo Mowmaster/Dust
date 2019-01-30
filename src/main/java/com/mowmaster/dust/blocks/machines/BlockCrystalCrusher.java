@@ -32,7 +32,6 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
 {
 
     public static Block crystalcrusher;
-    public boolean isBurning;
     private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
 
     public BlockCrystalCrusher(String unloc, String registryName)
@@ -42,7 +41,9 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
-        setBlockUnbreakable();//May need to remove this later when adding the higher tier ones.
+        this.setHardness(9999f);
+        this.setBlockUnbreakable();
+        this.setResistance(9999f);
     }
 
     @Override
@@ -56,21 +57,6 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
      */
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (tileEntity instanceof TileCrystalCrusher)
-        {
-            TileCrystalCrusher tileCrusher = (TileCrystalCrusher) tileEntity;
-            if(tileCrusher.checkIsBurning())
-            {
-                worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX(),pos.getY()+1,pos.getZ(), 0.0D, 0.0D, 0.0D);
-            }
-        }
-        super.updateTick(worldIn, pos, state, rand);
-    }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -94,11 +80,6 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
                     tileCrusher.addItem(1,playerIn.getHeldItemMainhand(),false);
                     playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(counter);
                     return true;
-                }
-                //Debugging
-                if(playerIn.getHeldItemMainhand().isEmpty())
-                {
-                    System.out.println(tileCrusher.getStackInSlot(1).getCount());
                 }
             }
         }

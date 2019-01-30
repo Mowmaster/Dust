@@ -1,30 +1,20 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.recipes.crusher_recipes.CrusherRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-
 import javax.annotation.Nonnull;
-
+import java.util.Random;
 import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
-import static sun.audio.AudioPlayer.player;
-
 
 public class TileCrystalCrusher extends TileEntityBase implements ITickable, IItemHandler
 {
@@ -226,7 +216,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
     private void startBurning(ItemStack fuelSlot)
     {
-        if(!crystalCrusher.getStackInSlot(0).isEmpty() && isBurning==false)
+        if(!fuelSlot.isEmpty() && isBurning==false)
         {
             ItemStack singleFuelItem = new ItemStack(fuelSlot.getItem(),1,fuelSlot.getMetadata());
             burnTime = getItemBurnTime(singleFuelItem);
@@ -241,17 +231,23 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
     int ticker = 0;
     int ticker2 = 0;
     int explody = 0;
+    private Integer[] randNums = { -2,-1,0,1,2,3 };
     @Override
     public void update()
     {
-
         if(world.isRemote)
         {
+            if (isBurning) {
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.1, pos.getY() + 0.125, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.9, pos.getY() + 0.125, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.125, pos.getZ() + 0.1, 0.0, 0.0, 0.0, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.125, pos.getZ() + 0.9, 0.0, 0.0, 0.0, new int[0]);
+            }
+
             if (!(getStackInSlot(2)==ItemStack.EMPTY)) {
                 world.spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
             }
         }
-        //updateClient();
 
         if (!world.isRemote)
         {
@@ -269,65 +265,55 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
 
                 if(!crystalCrusher.getStackInSlot(0).isEmpty())
                 {
-                    if(ticker>20)
+                    if(ticker>100)
                     {
-                        addItem(2, CrusherRecipes.instance().getCrushingResult(getStackInSlot(0)),false);
-                        crystalCrusher.extractItem(0,1,false);
-                        updateBlock();
-                        ticker=0;
+                        if(canAddItem(2,CrusherRecipes.instance().getCrushingResult(getStackInSlot(0))))
+                        {
+                            addItem(2, CrusherRecipes.instance().getCrushingResult(getStackInSlot(0)),false);
+                            crystalCrusher.extractItem(0,1,false);
+                            updateBlock();
+                            ticker=0;
+                        }
                     }
                 }
-            }
 
-            ticker2++;
+                ticker2++;
+                if(!crystalCrusher.getStackInSlot(2).isEmpty())
+                {
+                    Random rand = new Random();
+                    int a = randNums[rand.nextInt(5)];
+                    int c = randNums[rand.nextInt(5)];
 
-
-            int zmin=-2;
-            int zmax=2;
-            int xmin=-2;
-            int xmax=2;
-            int ymin=0;
-            int ymax=4;
-
-            if(!crystalCrusher.getStackInSlot(2).isEmpty())
-            {
-
-                for(int c=zmin;c<=zmax;c++) {
-                    for (int a = xmin; a <= xmax; a++) {
-                        //for (int b = ymin; b <= ymax; b++) {
-                        if(a==0 && c==0) {}
-                        else
+                    if(a==0 && c==0) {}
+                    else
+                    {
+                        if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
                         {
-                            if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
+                            if(ticker2>13)
                             {
-                                if(ticker2>13)
-                                {
-                                    if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
-                                    {
-                                        world.setBlockState(getPos().add(a,4,c), Block.getBlockFromItem(crystalCrusher.getStackInSlot(2).getItem()).getDefaultState());
-                                        crystalCrusher.extractItem(2,1,false);
-                                        updateBlock();
-                                        ticker2=0;
-                                    }
-                                }
+                                world.setBlockState(getPos().add(a,4,c), Block.getBlockFromItem(crystalCrusher.getStackInSlot(2).getItem()).getDefaultState());
+                                crystalCrusher.extractItem(2,1,false);
+                                updateBlock();
+                                ticker2=0;
                             }
                         }
-
-                            //Later on make a bad thing happen if the area is full of dust
-                        //}
+                        else
+                        {
+                            //Maybe check again if there are no free spots for blocks???
+                            explody++;
+                        }
                     }
                 }
-
-                explody++;
-
+                else{explody=0;}
             }
-            else{explody=0;}
 
-
-            if(explody>=300)
+            if(!funhaters)
             {
-                if(!funhaters)
-                world.createExplosion(new EntityItem(world), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,2.0f, true);
+                if(explody>=300)
+                {
+                    explody = 0;
+                    world.createExplosion(new EntityItem(world), pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,2.0f, true);
+                }
             }
         }
     }
