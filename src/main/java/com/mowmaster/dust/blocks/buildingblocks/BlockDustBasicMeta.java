@@ -3,6 +3,7 @@ package com.mowmaster.dust.blocks.buildingblocks;
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.blocks.item.ItemBlockOre;
+import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
@@ -12,6 +13,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -129,6 +131,53 @@ public class BlockDustBasicMeta extends BlockBasic implements IMetaBlockName
             registerRender(dustbricks,i,"dustbricks_" + CrystalBlocks.CrystalColors.values()[i].getName());
         }
 
+    }
+
+    public static void bakeBlock()
+    {
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustBasicMeta.dustplanks),
+                new ResourceLocation(Reference.MODID, "dustplanks_red"),
+                new ResourceLocation(Reference.MODID, "dustplanks_blue"),
+                new ResourceLocation(Reference.MODID, "dustplanks_yellow"),
+                new ResourceLocation(Reference.MODID, "dustplanks_purple"),
+                new ResourceLocation(Reference.MODID, "dustplanks_orange"),
+                new ResourceLocation(Reference.MODID, "dustplanks_green"),
+                new ResourceLocation(Reference.MODID, "dustplanks_white"),
+                new ResourceLocation(Reference.MODID, "dustplanks_black")
+        );
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustBasicMeta.duststone),
+                new ResourceLocation(Reference.MODID, "duststone_red"),
+                new ResourceLocation(Reference.MODID, "duststone_blue"),
+                new ResourceLocation(Reference.MODID, "duststone_yellow"),
+                new ResourceLocation(Reference.MODID, "duststone_purple"),
+                new ResourceLocation(Reference.MODID, "duststone_orange"),
+                new ResourceLocation(Reference.MODID, "duststone_green"),
+                new ResourceLocation(Reference.MODID, "duststone_white"),
+                new ResourceLocation(Reference.MODID, "duststone_black")
+        );
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustBasicMeta.dustbrick),
+                new ResourceLocation(Reference.MODID, "dustbrick_red"),
+                new ResourceLocation(Reference.MODID, "dustbrick_blue"),
+                new ResourceLocation(Reference.MODID, "dustbrick_yellow"),
+                new ResourceLocation(Reference.MODID, "dustbrick_purple"),
+                new ResourceLocation(Reference.MODID, "dustbrick_orange"),
+                new ResourceLocation(Reference.MODID, "dustbrick_green"),
+                new ResourceLocation(Reference.MODID, "dustbrick_white"),
+                new ResourceLocation(Reference.MODID, "dustbrick_black")
+        );
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustBasicMeta.dustbricks),
+                new ResourceLocation(Reference.MODID, "dustbricks_red"),
+                new ResourceLocation(Reference.MODID, "dustbricks_blue"),
+                new ResourceLocation(Reference.MODID, "dustbricks_yellow"),
+                new ResourceLocation(Reference.MODID, "dustbricks_purple"),
+                new ResourceLocation(Reference.MODID, "dustbricks_orange"),
+                new ResourceLocation(Reference.MODID, "dustbricks_green"),
+                new ResourceLocation(Reference.MODID, "dustbricks_white"),
+                new ResourceLocation(Reference.MODID, "dustbricks_black")
+        );
     }
 
 }

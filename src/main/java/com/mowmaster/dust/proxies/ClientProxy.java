@@ -1,6 +1,7 @@
 package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
@@ -131,6 +132,8 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(Reference.MODID, "blockcharcoal_white"),
                 new ResourceLocation(Reference.MODID, "blockcharcoal_black")
         );
+
+        BlockDustBasicMeta.bakeBlock();
 
 
 

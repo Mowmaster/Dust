@@ -1,0 +1,12 @@
+{
+  "variants":{
+    "basicblocks=red": {"model": "dust:red/redbricks2"},
+    "basicblocks=blue": {"model": "dust:blue/bluebricks2"},
+    "basicblocks=yellow": {"model": "dust:yellow/yellowbricks2"},
+    "basicblocks=purple": {"model": "dust:purple/purplebricks2"},
+    "basicblocks=orange": {"model": "dust:orange/orangebricks2"},
+    "basicblocks=green": {"model": "dust:green/greenbricks2"},
+    "basicblocks=white": {"model": "dust:white/whitebricks2"},
+    "basicblocks=black": {"model": "dust:black/blackbricks2"}
+  }
+}
