@@ -37,16 +37,7 @@ public class OreDictDust
         OreDictionary.registerOre("logWood", BlockDustLog.logblack);
 
         OreDictionary.registerOre("treeLeaves", BlockDustLeaf.leaf);
-
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.redore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blueore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.yellowore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.purpleore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.orangeore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.greenore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.whiteore);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.blackore);
-
+        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.ore);
         OreDictionary.registerOre("stone", BlockDustBasicMeta.duststone);
 
         OreDictionary.registerOre("gemCrystal", ItemRegistry.crystal);

@@ -1,8 +1,6 @@
 package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
-import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
@@ -58,7 +56,7 @@ public class PlaceableCrystals
         {
             if((playerIn.getHeldItem(hand) != null))
             {
-                if (!(state.getBlock()instanceof BlockCrystalClusterBasic))
+                if (!(state.getBlock()instanceof BlockCrystalCluster))
                 {
                     if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
                     {
@@ -178,7 +176,7 @@ public class PlaceableCrystals
         EnumHand hand = event.getHand();
         EnumFacing facing = event.getFace();
 
-        worldIn.setBlockState(pos.add(x,y,z), BlockCrystalClusterBasic.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
+        worldIn.setBlockState(pos.add(x,y,z), BlockCrystalCluster.crystalCluster.getDefaultState().withProperty(BlockDirectional.FACING, facing));
         TileEntity tileentity = worldIn.getTileEntity(pos.add(x,y,z));
         if (tileentity instanceof TileCrystalCluster) {
             if(((TileCrystalCluster) tileentity).getCrystalCount()==0)

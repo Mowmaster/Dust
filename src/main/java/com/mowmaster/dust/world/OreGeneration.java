@@ -1,6 +1,7 @@
 package com.mowmaster.dust.world;
 
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
+import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.world.structures.*;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallPiller;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallSandWell;
@@ -17,6 +18,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
+import static com.mowmaster.dust.blocks.crystal.BlockCrystalOre.COLORS;
+import static com.mowmaster.dust.blocks.crystal.BlockCrystalOre.ore;
 import static com.mowmaster.dust.misc.DustConfigurationFile.*;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
@@ -86,16 +89,14 @@ public class OreGeneration implements IWorldGenerator
 
     public OreGeneration()
     {
-
-        red_ore = new WorldGenMinable(BlockCrystalOre.redore.getDefaultState(),count);
-        blue_ore = new WorldGenMinable(BlockCrystalOre.blueore.getDefaultState(),count);
-        yellow_ore = new WorldGenMinable(BlockCrystalOre.yellowore.getDefaultState(),count);
-        purple_ore = new WorldGenMinable(BlockCrystalOre.purpleore.getDefaultState(),count);
-        orange_ore = new WorldGenMinable(BlockCrystalOre.orangeore.getDefaultState(),count);
-        green_ore = new WorldGenMinable(BlockCrystalOre.greenore.getDefaultState(),count);
-        white_ore = new WorldGenMinable(BlockCrystalOre.whiteore.getDefaultState(),count);
-        black_ore = new WorldGenMinable(BlockCrystalOre.blackore.getDefaultState(),count);
-
+        red_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.RED),count);
+        blue_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.BLUE),count);
+        yellow_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.YELLOW),count);
+        purple_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.PURPLE),count);
+        green_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.GREEN),count);
+        orange_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.ORANGE),count);
+        white_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.WHITE),count);
+        black_ore = new WorldGenMinable(ore.getDefaultState().withProperty(COLORS, CrystalBlocks.CrystalColors.BLACK),count);
 
         // for use in crystal biomes
         glowstone_ore = new WorldGenMinable(Blocks.GLOWSTONE.getDefaultState(),count);

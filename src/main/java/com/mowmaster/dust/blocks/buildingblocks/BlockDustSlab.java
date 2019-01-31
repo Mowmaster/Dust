@@ -103,18 +103,39 @@ public class BlockDustSlab extends BlockBasicDirectional
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         IBlockState iblockstate = worldIn.getBlockState(pos.offset(facing));
+        EnumFacing enumfacing = facing;
+
+        if(placer.isSneaking())
+        {
+            if(hitY<=0.5)
+            {
+                iblockstate = this.getDefaultState().withProperty(FACING, EnumFacing.UP);
+            }
+            else
+            {
+                iblockstate = this.getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+            }
+        }
+        else
+        {
+            iblockstate = worldIn.getBlockState(pos.offset(facing));
+        }
+
 
         if (iblockstate.getBlock() == this)
         {
-            EnumFacing enumfacing = (EnumFacing)iblockstate.getValue(FACING);
+            enumfacing = (EnumFacing)iblockstate.getValue(FACING);
 
+            /*
             if (enumfacing == facing)
             {
                 return this.getDefaultState().withProperty(FACING, facing);
             }
+             */
         }
 
-        return this.getDefaultState().withProperty(FACING, facing);
+
+        return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
 

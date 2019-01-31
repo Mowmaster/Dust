@@ -1,0 +1,18 @@
+{
+  "variants":{
+    "lootblock=commona": {"model": "dust:loot/lootblockaircommon"},
+    "lootblock=uncommona": {"model": "dust:loot/lootblockairuncommon"},
+    "lootblock=rarea": {"model": "dust:loot/lootblockairrare"},
+    "lootblock=legendarya": {"model": "dust:loot/lootblockairlegendary"},
+    "lootblock=exotica": {"model": "dust:loot/lootblockairexotic"},
+    "lootblock=common": {"model": "dust:loot/lootblockcommon"},
+    "lootblock=uncommon": {"model": "dust:loot/lootblockuncommon"},
+    "lootblock=rare": {"model": "dust:loot/lootblockrare"},
+    "lootblock=legendary": {"model": "dust:loot/lootblocklegendary"},
+    "lootblock=exotic": {"model": "dust:loot/lootblockexotic"},
+    "lootblock=cluster": {"model": "dust:loot/lootblockcrystalcluster"},
+    "lootblock=pillar": {"model": "dust:loot/lootblockpillar"},
+    "lootblock=spawnh": {"model": "dust:loot/lootblockhostilespawner"},
+    "lootblock=spawnp": {"model": "dust:loot/lootblockpassivespawner"}
+  }
+}

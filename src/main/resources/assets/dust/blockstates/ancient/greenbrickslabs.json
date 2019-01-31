@@ -1,10 +1,10 @@
 {
   "variants":{
-    "facing=up": {"model": "dust:ancient/greenbrickslabs"},
-    "facing=down": {"model": "dust:ancient/greenbrickslabs","x": 180},
-    "facing=north": {"model": "dust:ancient/greenbrickslabs","x": 90},
-    "facing=east": {"model": "dust:ancient/greenbrickslabs","x": 90,"y":90},
-    "facing=south": {"model": "dust:ancient/greenbrickslabs","x": 270},
-    "facing=west": {"model": "dust:ancient/greenbrickslabs","x": 90,"y":270}
+    "facing=up": {"model": "dust:green/greenbrickslabs"},
+    "facing=down": {"model": "dust:green/greenbrickslabs","x": 180},
+    "facing=north": {"model": "dust:green/greenbrickslabs","x": 90},
+    "facing=east": {"model": "dust:green/greenbrickslabs","x": 90,"y":90},
+    "facing=south": {"model": "dust:green/greenbrickslabs","x": 270},
+    "facing=west": {"model": "dust:green/greenbrickslabs","x": 90,"y":270}
   }
 }

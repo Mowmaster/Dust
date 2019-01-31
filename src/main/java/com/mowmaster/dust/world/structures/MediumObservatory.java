@@ -38,55 +38,55 @@ public class MediumObservatory extends WorldGenerator
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.redstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.redstoneslabs.getDefaultState();
-            colorFence = BlockDustFence.redstonefences.getDefaultState();
+            colorFence = BlockDustFence.redplankfences.getDefaultState();
         }
         else if(colorpicked.equals("blue"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.bluestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.bluestoneslabs.getDefaultState();
-            colorFence = BlockDustFence.bluestonefences.getDefaultState();
+            colorFence = BlockDustFence.blueplankfences.getDefaultState();
         }
         else if(colorpicked.equals("yellow"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.yellowstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.yellowstoneslabs.getDefaultState();
-            colorFence = BlockDustFence.yellowstonefences.getDefaultState();
+            colorFence = BlockDustFence.yellowplankfences.getDefaultState();
         }
         else if(colorpicked.equals("purple"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.purplestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.purplestoneslabs.getDefaultState();
-            colorFence = BlockDustFence.purplestonefences.getDefaultState();
+            colorFence = BlockDustFence.purpleplankfences.getDefaultState();
         }
         else if(colorpicked.equals("orange"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.orangestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.orangestoneslabs.getDefaultState();
-            colorFence = BlockDustFence.orangestonefences.getDefaultState();
+            colorFence = BlockDustFence.orangeplankfences.getDefaultState();
         }
         else if(colorpicked.equals("green"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.greenstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.greenstoneslabs.getDefaultState();
-            colorFence = BlockDustFence.greenstonefences.getDefaultState();
+            colorFence = BlockDustFence.greenplankfences.getDefaultState();
         }
         else if(colorpicked.equals("white"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.whitestonestairs.getDefaultState();
             colorSlab = BlockDustSlab.whitestoneslabs.getDefaultState();
-            colorFence = BlockDustFence.whitestonefences.getDefaultState();
+            colorFence = BlockDustFence.whiteplankfences.getDefaultState();
         }else if(colorpicked.equals("black"))
         {
             colorWood = BlockDustBasicMeta.dustplanks.getDefaultState();
             colorStair = BlockDustStair.blackstonestairs.getDefaultState();
             colorSlab = BlockDustSlab.blackstoneslabs.getDefaultState();
-            colorFence = BlockDustFence.blackstonefences.getDefaultState();
+            colorFence = BlockDustFence.blackplankfences.getDefaultState();
         }
 
 

@@ -1,11 +1,10 @@
 package com.mowmaster.dust.blocks.crystal;
 
+import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
 import com.mowmaster.dust.items.ItemCrystal;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -31,18 +30,27 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class BlockCrystalCluster extends BlockDirectional implements ITileEntityProvider
-{
-    private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.9D, 0.75D);
-    private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, 0.1D, 0.75D);
-    private static AxisAlignedBB CNORTH = new AxisAlignedBB(0.25D, 0.75D, 0.1D, 0.75D, 0.25D, 1.0D);
-    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, 0.9D);
-    private static AxisAlignedBB CWEST = new AxisAlignedBB(0.1D, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
-    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, 0.9D, 0.25D, 0.75D);
 
-    public BlockCrystalCluster()
+public class BlockCrystalCluster extends BlockBasicDirectional implements ITileEntityProvider
+{
+    public static Block crystalCluster;
+    private static double v1=0.9D;
+    private static double v2=0.1D;
+
+    private static AxisAlignedBB CUP = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, v1, 0.75D);
+    private static AxisAlignedBB CDOWN = new AxisAlignedBB(0.25D, 1.0D, 0.25D, 0.75D, v2, 0.75D);
+    private static AxisAlignedBB CNORTH = new AxisAlignedBB(0.25D, 0.75D, v2, 0.75D, 0.25D, 1.0D);
+    private static AxisAlignedBB CSOUTH = new AxisAlignedBB(0.25D, 0.75D, 0.0D, 0.75D, 0.25D, v1);
+    private static AxisAlignedBB CWEST = new AxisAlignedBB(v2, 0.75D, 0.25D, 1.0D, 0.25D, 0.75D);
+    private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.75D, 0.25D, v1, 0.25D, 0.75D);
+
+
+
+    public BlockCrystalCluster(String unloc, String registryName)
     {
         super(Material.ROCK);
+        this.setUnlocalizedName(unloc);
+        this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setHardness(3);
         this.setResistance(20);
         this.setCreativeTab(DUSTTABS);
@@ -110,22 +118,22 @@ public class BlockCrystalCluster extends BlockDirectional implements ITileEntity
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (((EnumFacing)state.getValue(FACING)))
-        {
-            case UP:
-            default:
-                return CUP;
-            case DOWN:
-                return CDOWN;
-            case NORTH:
-                return CNORTH;
-            case EAST:
-                return CEAST;
-            case SOUTH:
-                return CSOUTH;
-            case WEST:
-                return CWEST;
-        }
+            switch (((EnumFacing)state.getValue(FACING)))
+            {
+                case UP:
+                default:
+                    return CUP;
+                case DOWN:
+                    return CDOWN;
+                case NORTH:
+                    return CNORTH;
+                case EAST:
+                    return CEAST;
+                case SOUTH:
+                    return CSOUTH;
+                case WEST:
+                    return CWEST;
+            }
     }
     public boolean isOpaqueCube(IBlockState state)
     {
@@ -143,21 +151,24 @@ public class BlockCrystalCluster extends BlockDirectional implements ITileEntity
         return true;
     }
 
-    private boolean checkThenAddCrystal(EntityPlayer playerIn,EnumHand hand, TileCrystalCluster cluster, int metaCrystalAllowed)
+    private void checkThenAddCrystal(EntityPlayer playerIn,EnumHand hand, TileCrystalCluster cluster, int metaCrystalAllowed)
     {
         if(playerIn.getHeldItem(hand).getItem() instanceof ItemCrystal)
         {
-            if (playerIn.getHeldItem(hand).getMetadata()==0)//restricts basic cluster to 3 primaries
+            if (playerIn.getHeldItem(hand).getMetadata()==metaCrystalAllowed)//restricts basic cluster to 3 primaries
             {
                 if(cluster.addCrystal(playerIn.getHeldItem(hand).getMetadata()))
                 {
-                    playerIn.getHeldItem(hand).shrink(1);
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
                 }
             }
         }
-        return true;
     }
 
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
         if(!worldIn.isRemote)
@@ -168,17 +179,38 @@ public class BlockCrystalCluster extends BlockDirectional implements ITileEntity
 
                 if (playerIn.isSneaking())
                 {
-                    if (playerIn.getHeldItem(hand) !=null) {cluster.removeCrystal(cluster);}}
 
-                    checkThenAddCrystal(playerIn,hand,cluster,0);
-                    checkThenAddCrystal(playerIn,hand,cluster,1);
-                    checkThenAddCrystal(playerIn,hand,cluster,2);
+                    if (playerIn.getHeldItem(hand).isEmpty())
+                    {
+                        playerIn.inventory.addItemStackToInventory(cluster.removeCrystal(cluster));
+                        return true;
+                    }
+                    else if (!playerIn.inventory.addItemStackToInventory(cluster.removeCrystal(cluster)))
+                    {
+                        playerIn.dropItem(cluster.removeCrystal(cluster), false);
+                        return true;
+                    }
+
+                }
+
+
+                checkThenAddCrystal(playerIn,hand,cluster,0);
+                checkThenAddCrystal(playerIn,hand,cluster,1);
+                checkThenAddCrystal(playerIn,hand,cluster,2);
+                checkThenAddCrystal(playerIn,hand,cluster,3);
+                checkThenAddCrystal(playerIn,hand,cluster,4);
+                checkThenAddCrystal(playerIn,hand,cluster,5);
+                checkThenAddCrystal(playerIn,hand,cluster,6);
+                checkThenAddCrystal(playerIn,hand,cluster,7);
 
                 ItemStack blockGlowstone = new ItemStack(Blocks.GLOWSTONE,1);
-                if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blockGlowstone)) {if(cluster.addGlowstone()) {playerIn.getHeldItem(hand).shrink(1);}
+                if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), blockGlowstone))
+                {
+                    if(cluster.addGlowstone()) {if(!playerIn.isCreative())playerIn.getHeldItem(hand).shrink(1);}
                 }
             }
         }
+
         return true;
     }
 
@@ -220,8 +252,23 @@ public class BlockCrystalCluster extends BlockDirectional implements ITileEntity
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-        tooltip.add("[WIP] Will Allow for The creation of Mixed Crystal Clusters");
-        tooltip.add("Will replace craftable crystals and have effects at tier 2+");
-        tooltip.add("Will be in the Next Beta Release");
+        tooltip.add("[WIP] Combine Crystals To Create Effects");
+
+    }
+
+
+    public static void Init()
+    {
+        crystalCluster = new BlockCrystalCluster("crystalcluster", "crystalcluster");
+    }
+
+    public static void Register()
+    {
+        registerBlock(crystalCluster);
+    }
+
+    public static void RegisterRender()
+    {
+        registerRender(crystalCluster);
     }
 }

@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
 import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
 import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
+import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesPassive;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock.TYPE;
 import static com.mowmaster.dust.misc.DustConfigurationFile.devBlocks;
 import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 
@@ -119,7 +121,7 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockLootBlock.lootblockpassivespawner.getDefaultState());
+        LootBlock.add(BlockLootBlock.lootblock.getDefaultState().withProperty(TYPE, CrystalBlocks.CrystalLoot.SPAWNP));
         LootBlock.add(BlockCrystal.redCrystalFour.getDefaultState());
         LootBlock.add(BlockCrystal.blueCrystalFour.getDefaultState());
         LootBlock.add(BlockCrystal.yellowCrystalFour.getDefaultState());
@@ -154,7 +156,7 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockLootBlock.lootblockhostilespawner.getDefaultState());
+        LootBlock.add(BlockLootBlock.lootblock.getDefaultState().withProperty(TYPE, CrystalBlocks.CrystalLoot.SPAWNH));
         LootBlock.add(BlockCrystal.redCrystalFive.getDefaultState());
         LootBlock.add(BlockCrystal.blueCrystalFive.getDefaultState());
         LootBlock.add(BlockCrystal.yellowCrystalFive.getDefaultState());
@@ -190,8 +192,9 @@ public class TileLootBlock extends TileEntity implements ITickable
     {
         ArrayList<IBlockState> LootBlock = new ArrayList<>();
 
-        LootBlock.add(BlockLootBlock.lootblockhostilespawner.getDefaultState());
-        LootBlock.add(BlockLootBlock.lootblockpassivespawner.getDefaultState());
+
+        LootBlock.add(BlockLootBlock.lootblock.getDefaultState().withProperty(TYPE, CrystalBlocks.CrystalLoot.SPAWNH));
+        LootBlock.add(BlockLootBlock.lootblock.getDefaultState().withProperty(TYPE, CrystalBlocks.CrystalLoot.SPAWNP));
         LootBlock.add(Blocks.DIAMOND_BLOCK.getDefaultState());
         LootBlock.add(Blocks.EMERALD_BLOCK.getDefaultState());
         LootBlock.add(Blocks.GLOWSTONE.getDefaultState());
@@ -276,7 +279,7 @@ public class TileLootBlock extends TileEntity implements ITickable
         {
             if(inDev==false)
             {
-                if(this.getBlockType().equals(BlockLootBlock.lootblockaircommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==0)
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -284,7 +287,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockairuncommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==1)
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -292,7 +295,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockairrare))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==2)
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -300,7 +303,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockairlegendary))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==3)
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -308,7 +311,7 @@ public class TileLootBlock extends TileEntity implements ITickable
                     }
                     else this.world.setBlockToAir(pos);
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockairexotic))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==4)
                 {
                     if(chancetospawnloot<=10)
                     {
@@ -319,47 +322,47 @@ public class TileLootBlock extends TileEntity implements ITickable
 
 
 
-                if(this.getBlockType().equals(BlockLootBlock.lootblockcommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==5)
                 {
                     this.world.setBlockState(pos,commonLoot());
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockuncommon))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==6)
                 {
                     this.world.setBlockState(pos,uncommonLoot());
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockrare))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==7)
                 {
                     this.world.setBlockState(pos,rareLoot());
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblocklegendary))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==8)
                 {
                     this.world.setBlockState(pos,legendaryLoot());
                 }
-                if(this.getBlockType().equals(BlockLootBlock.lootblockexotic))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==9)
                 {
                     this.world.setBlockState(pos,exoticLoot());
                 }
 
 
-                if(this.getBlockType().equals(BlockLootBlock.lootblockhostilespawner))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==12)
                 {
                     spawnSpawnerHostile(this.world,pos, Blocks.MOB_SPAWNER.getDefaultState());
                     this.world.setBlockState(pos,Blocks.MOB_SPAWNER.getDefaultState());
                 }
 
-                if(this.getBlockType().equals(BlockLootBlock.lootblockpassivespawner))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==13)
                 {
                     spawnSpawnerPassive(this.world,pos, Blocks.MOB_SPAWNER.getDefaultState());
                     this.world.setBlockState(pos,Blocks.MOB_SPAWNER.getDefaultState());
                 }
 
 
-                if(this.getBlockType().equals(BlockLootBlock.lootblockpillar))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==11)
                 {
                     this.world.setBlockState(pos,pillarLoot());
                 }
 
-                if(this.getBlockType().equals(BlockLootBlock.lootblockcrystalcluster))
+                if(this.getBlockType().equals(BlockLootBlock.lootblock) && this.getBlockMetadata()==10)
                 {
                     this.world.setBlockState(pos,crystalLoot());
                 }

@@ -1,6 +1,6 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +26,7 @@ public class RenderTileCrystalCluster extends TileEntitySpecialRenderer<TileCrys
             return;
         }
 
-        else if(te.getBlockType() instanceof BlockCrystalClusterBasic)
+        else if(te.getBlockType() instanceof BlockCrystalCluster)
         {
             if(te instanceof TileCrystalCluster)
             {

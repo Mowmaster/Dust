@@ -13,6 +13,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -317,6 +318,20 @@ public class BlockDustLeaf extends BlockBasic implements IMetaBlockName
         {
             registerRender(leaf,i,"leaves_" + CrystalBlocks.CrystalLeaves.values()[i].getName());
         }
+    }
+
+    public static void bakeBlock()
+    {
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustLeaf.leaf),
+                new ResourceLocation(Reference.MODID, "leaves_red"),
+                new ResourceLocation(Reference.MODID, "leaves_blue"),
+                new ResourceLocation(Reference.MODID, "leaves_yellow"),
+                new ResourceLocation(Reference.MODID, "leaves_purple"),
+                new ResourceLocation(Reference.MODID, "leaves_orange"),
+                new ResourceLocation(Reference.MODID, "leaves_green"),
+                new ResourceLocation(Reference.MODID, "leaves_white"),
+                new ResourceLocation(Reference.MODID, "leaves_black")
+        );
     }
 
     /*

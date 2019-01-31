@@ -2,14 +2,14 @@ package com.mowmaster.dust.proxies;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
+import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
-import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
-import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.*;
 import com.mowmaster.dust.particles.ParticleCreator;
 import com.mowmaster.dust.particles.ParticleEvents;
 import com.mowmaster.dust.particles.ParticleHandler;
-import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TileCrystalCrusher;
 import com.mowmaster.dust.tiles.TileDustBlock;
@@ -18,9 +18,6 @@ import com.mowmaster.dust.tiles.render.RenderDustBlock;
 import com.mowmaster.dust.tiles.render.RenderTileCrystalCluster;
 import com.mowmaster.dust.tiles.render.RenderTileCrystalCrusher;
 import com.mowmaster.dust.tiles.render.RenderTilePedestal;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -58,85 +55,16 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerModelBakeryVarients()
     {
-        ModelBakery.registerItemVariants(ItemRegistry.crystal,
-                new ResourceLocation(Reference.MODID,"crystal_red"),
-                new ResourceLocation(Reference.MODID,"crystal_blue"),
-                new ResourceLocation(Reference.MODID,"crystal_yellow"),
-                new ResourceLocation(Reference.MODID,"crystal_purple"),
-                new ResourceLocation(Reference.MODID,"crystal_green"),
-                new ResourceLocation(Reference.MODID,"crystal_orange"),
-                new ResourceLocation(Reference.MODID,"crystal_white"),
-                new ResourceLocation(Reference.MODID,"crystal_black"),
-                new ResourceLocation(Reference.MODID,"crystal_clear")
-        );
+        ItemCrystal.bakeItem();
+        ItemDust.bakeItem();
+        ItemBit.bakeItem();
+        ItemWikiScroll.bakeItem();
 
-        ModelBakery.registerItemVariants(ItemRegistry.dust,
-                new ResourceLocation(Reference.MODID,"dust_red"),
-                new ResourceLocation(Reference.MODID,"dust_blue"),
-                new ResourceLocation(Reference.MODID,"dust_yellow"),
-                new ResourceLocation(Reference.MODID,"dust_purple"),
-                new ResourceLocation(Reference.MODID,"dust_green"),
-                new ResourceLocation(Reference.MODID,"dust_orange"),
-                new ResourceLocation(Reference.MODID,"dust_white"),
-                new ResourceLocation(Reference.MODID,"dust_black"),
-                new ResourceLocation(Reference.MODID,"dust_stone")
-        );
-        ModelBakery.registerItemVariants(ItemRegistry.bit,
-                new ResourceLocation(Reference.MODID,"bit_red"),
-                new ResourceLocation(Reference.MODID,"bit_blue"),
-                new ResourceLocation(Reference.MODID,"bit_yellow"),
-                new ResourceLocation(Reference.MODID,"bit_purple"),
-                new ResourceLocation(Reference.MODID,"bit_green"),
-                new ResourceLocation(Reference.MODID,"bit_orange"),
-                new ResourceLocation(Reference.MODID,"bit_white"),
-                new ResourceLocation(Reference.MODID,"bit_black")
-        );
-
-        ModelBakery.registerItemVariants(ItemRegistry.wikiscroll,
-                new ResourceLocation(Reference.MODID,"wikiscroll_one"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_two"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_three"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_four"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_five"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_six"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_seven"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_eight"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_nine"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_ten"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_eleven"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_twelve"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_thirteen"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_fourteen"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_fifteen"),
-                new ResourceLocation(Reference.MODID,"wikiscroll_sixteen")
-        );
-
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockDustLeaf.leaf),
-                new ResourceLocation(Reference.MODID, "leaves_red"),
-                new ResourceLocation(Reference.MODID, "leaves_blue"),
-                new ResourceLocation(Reference.MODID, "leaves_yellow"),
-                new ResourceLocation(Reference.MODID, "leaves_purple"),
-                new ResourceLocation(Reference.MODID, "leaves_orange"),
-                new ResourceLocation(Reference.MODID, "leaves_green"),
-                new ResourceLocation(Reference.MODID, "leaves_white"),
-                new ResourceLocation(Reference.MODID, "leaves_black")
-        );
-
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockCharcoal.charcoalBlockColors),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_red"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_blue"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_yellow"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_purple"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_orange"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_green"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_white"),
-                new ResourceLocation(Reference.MODID, "blockcharcoal_black")
-        );
-
+        BlockDustLeaf.bakeBlock();
+        BlockCharcoal.bakeBlock();
         BlockDustBasicMeta.bakeBlock();
-
-
-
+        BlockLootBlock.bakeBlock();
+        BlockCrystalOre.bakeBlock();
     }
 
 }

@@ -2,7 +2,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.blocks.buildingblocks.*;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
-import com.mowmaster.dust.blocks.crystal.BlockCrystalClusterBasic;
+import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.utility.BlockEnchantedFarmland;
 import com.mowmaster.dust.blocks.utility.BlockMobSoil;
@@ -24,9 +24,9 @@ public class BlockRegistry
         BlockDustLog.BlockLogInit();
         BlockDustBasic.Init();
         BlockDustBasicMeta.Init();
-        //BlockDustStair.Init();
+        BlockDustStair.Init();
         BlockDustFence.Init();
-        //BlockDustWall.Init();
+        BlockDustWall.Init();
         BlockDustCloud.Init();
         SaplingRegister.Init();
         BlockPedestal.Init();
@@ -41,7 +41,7 @@ public class BlockRegistry
         BlockEnchantedFarmland.Init();
         BlockMobSoil.Init();
         BlockVoidPot.Init();
-        BlockCrystalClusterBasic.Init();
+        BlockCrystalCluster.Init();
         BlockMachineBase.Init();
         BlockEnchantMod.Init();
     }
@@ -56,10 +56,10 @@ public class BlockRegistry
         BlockDustLeaf.Register();
         BlockDustBasic.Register();
         BlockDustBasicMeta.Register();
-        //BlockDustStair.Register();
+        BlockDustStair.Register();
         BlockDustSlab.Register();
         BlockDustFence.Register();
-        //BlockDustWall.Register();
+        BlockDustWall.Register();
         BlockLootBlock.Register();
         BlockDustCloud.Register();
         SaplingRegister.Register();
@@ -74,7 +74,7 @@ public class BlockRegistry
         BlockEnchantedFarmland.Register();
         BlockMobSoil.Register();
         BlockVoidPot.Register();
-        BlockCrystalClusterBasic.Register();
+        BlockCrystalCluster.Register();
         BlockMachineBase.Register();
         BlockEnchantMod.Register();
     }
@@ -90,10 +90,10 @@ public class BlockRegistry
         BlockDustLeaf.RegisterRender();
         BlockDustBasic.RegisterRender();
         BlockDustBasicMeta.RegisterRender();
-        //BlockDustStair.RegisterRender();
+        BlockDustStair.RegisterRender();
         BlockDustSlab.RegisterRender();
         BlockDustFence.RegisterRender();
-        //BlockDustWall.RegisterRender();
+        BlockDustWall.RegisterRender();
         BlockLootBlock.RegisterRender();
         BlockDustCloud.RegisterRender();
         SaplingRegister.RegisterRender();
@@ -108,7 +108,7 @@ public class BlockRegistry
         BlockEnchantedFarmland.RegisterRender();
         BlockMobSoil.RegisterRender();
         BlockVoidPot.RegisterRender();
-        BlockCrystalClusterBasic.RegisterRender();
+        BlockCrystalCluster.RegisterRender();
         BlockMachineBase.RegisterRender();
         BlockEnchantMod.RegisterRender();
     }

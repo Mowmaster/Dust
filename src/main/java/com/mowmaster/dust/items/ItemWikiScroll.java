@@ -11,6 +11,7 @@ import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.research.GuiIndex;
 import com.mowmaster.dust.research.GuiWikiNotes;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -321,5 +322,27 @@ public class ItemWikiScroll extends Item
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         tooltip.add(getTitleText(stack.getMetadata()));
+    }
+
+    public static void bakeItem()
+    {
+        ModelBakery.registerItemVariants(ItemRegistry.wikiscroll,
+                new ResourceLocation(Reference.MODID,"wikiscroll_one"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_two"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_three"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_four"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_five"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_six"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_seven"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_eight"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_nine"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_ten"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_eleven"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_twelve"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_thirteen"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_fourteen"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_fifteen"),
+                new ResourceLocation(Reference.MODID,"wikiscroll_sixteen")
+        );
     }
 }

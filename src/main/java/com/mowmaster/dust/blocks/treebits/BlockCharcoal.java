@@ -12,6 +12,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -119,5 +120,19 @@ public class BlockCharcoal extends BlockBasic implements IMetaBlockName
         {
             registerRender(charcoalBlockColors,i,"blockcharcoal_" + CrystalBlocks.CrystalColors.values()[i].getName());
         }
+    }
+
+    public static void bakeBlock()
+    {
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockCharcoal.charcoalBlockColors),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_red"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_blue"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_yellow"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_purple"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_orange"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_green"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_white"),
+                new ResourceLocation(Reference.MODID, "blockcharcoal_black")
+        );
     }
 }

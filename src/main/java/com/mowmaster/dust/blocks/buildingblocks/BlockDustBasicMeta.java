@@ -45,6 +45,7 @@ public class BlockDustBasicMeta extends BlockBasic implements IMetaBlockName
         super(material);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unloc));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(COLORS, CrystalBlocks.CrystalColors.RED));
         this.setHardness(hardness);
         this.setResistance(resistance);
         this.setLightOpacity(lightopacity);

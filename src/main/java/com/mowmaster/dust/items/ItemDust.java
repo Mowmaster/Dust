@@ -3,6 +3,7 @@ package com.mowmaster.dust.items;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.advancements.AdvancementManager;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,6 +46,21 @@ public class ItemDust extends Item
             }
         }
         return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.RED.getName();
+    }
+
+    public static void bakeItem()
+    {
+        ModelBakery.registerItemVariants(ItemRegistry.dust,
+                new ResourceLocation(Reference.MODID,"dust_red"),
+                new ResourceLocation(Reference.MODID,"dust_blue"),
+                new ResourceLocation(Reference.MODID,"dust_yellow"),
+                new ResourceLocation(Reference.MODID,"dust_purple"),
+                new ResourceLocation(Reference.MODID,"dust_green"),
+                new ResourceLocation(Reference.MODID,"dust_orange"),
+                new ResourceLocation(Reference.MODID,"dust_white"),
+                new ResourceLocation(Reference.MODID,"dust_black"),
+                new ResourceLocation(Reference.MODID,"dust_stone")
+        );
     }
 
 

@@ -72,37 +72,37 @@ public class BlockDustStair extends BlockBasicStair
 
     public static void Init()
     {
-        redstonestairs = new BlockDustStair("redstonestairs", "ancient/redstonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        redbrickstairs = new BlockDustStair("redbrickstairs", "ancient/redbrickstairs", Block.getBlockFromName(Reference.MODID+":dustbrick_red"), SoundType.STONE, 3, 20, 10);
-        redbrickstairs2 = new BlockDustStair("redbrickstairs2", "ancient/redbrickstairs2", Block.getBlockFromName(Reference.MODID+":dustbricks_red"), SoundType.STONE, 3, 20, 10);
+        redstonestairs = new BlockDustStair("redstonestairs", "ancient/redstonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        redbrickstairs = new BlockDustStair("redbrickstairs", "ancient/redbrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        redbrickstairs2 = new BlockDustStair("redbrickstairs2", "ancient/redbrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         redplankstairs = new BlockDustStair("redplankstairs", "ancient/redplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        bluestonestairs = new BlockDustStair("bluestonestairs", "ancient/bluestonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        bluebrickstairs = new BlockDustStair("bluebrickstairs", "ancient/bluebrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        bluebrickstairs2 = new BlockDustStair("bluebrickstairs2", "ancient/bluebrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        bluestonestairs = new BlockDustStair("bluestonestairs", "ancient/bluestonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        bluebrickstairs = new BlockDustStair("bluebrickstairs", "ancient/bluebrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        bluebrickstairs2 = new BlockDustStair("bluebrickstairs2", "ancient/bluebrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         blueplankstairs = new BlockDustStair("blueplankstairs", "ancient/blueplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        yellowstonestairs = new BlockDustStair("yellowstonestairs", "ancient/yellowstonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        yellowbrickstairs = new BlockDustStair("yellowbrickstairs", "ancient/yellowbrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        yellowbrickstairs2 = new BlockDustStair("yellowbrickstairs2", "ancient/yellowbrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        yellowstonestairs = new BlockDustStair("yellowstonestairs", "ancient/yellowstonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        yellowbrickstairs = new BlockDustStair("yellowbrickstairs", "ancient/yellowbrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        yellowbrickstairs2 = new BlockDustStair("yellowbrickstairs2", "ancient/yellowbrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         yellowplankstairs = new BlockDustStair("yellowplankstairs", "ancient/yellowplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        purplestonestairs = new BlockDustStair("purplestonestairs", "ancient/purplestonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        purplebrickstairs = new BlockDustStair("purplebrickstairs", "ancient/purplebrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        purplebrickstairs2 = new BlockDustStair("purplebrickstairs2", "ancient/purplebrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        purplestonestairs = new BlockDustStair("purplestonestairs", "ancient/purplestonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        purplebrickstairs = new BlockDustStair("purplebrickstairs", "ancient/purplebrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        purplebrickstairs2 = new BlockDustStair("purplebrickstairs2", "ancient/purplebrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         purpleplankstairs = new BlockDustStair("purpleplankstairs", "ancient/purpleplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        orangestonestairs = new BlockDustStair("orangestonestairs", "ancient/orangestonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        orangebrickstairs = new BlockDustStair("orangebrickstairs", "ancient/orangebrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        orangebrickstairs2 = new BlockDustStair("orangebrickstairs2", "ancient/orangebrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        orangestonestairs = new BlockDustStair("orangestonestairs", "ancient/orangestonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        orangebrickstairs = new BlockDustStair("orangebrickstairs", "ancient/orangebrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        orangebrickstairs2 = new BlockDustStair("orangebrickstairs2", "ancient/orangebrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         orangeplankstairs = new BlockDustStair("orangeplankstairs", "ancient/orangeplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        greenstonestairs = new BlockDustStair("greenstonestairs", "ancient/greenstonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        greenbrickstairs = new BlockDustStair("greenbrickstairs", "ancient/greenbrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        greenbrickstairs2 = new BlockDustStair("greenbrickstairs2", "ancient/greenbrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        greenstonestairs = new BlockDustStair("greenstonestairs", "ancient/greenstonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        greenbrickstairs = new BlockDustStair("greenbrickstairs", "ancient/greenbrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        greenbrickstairs2 = new BlockDustStair("greenbrickstairs2", "ancient/greenbrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         greenplankstairs = new BlockDustStair("greenplankstairs", "ancient/greenplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        whitestonestairs = new BlockDustStair("whitestonestairs", "ancient/whitestonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        whitebrickstairs = new BlockDustStair("whitebrickstairs", "ancient/whitebrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        whitebrickstairs2 = new BlockDustStair("whitebrickstairs2", "ancient/whitebrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        whitestonestairs = new BlockDustStair("whitestonestairs", "ancient/whitestonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        whitebrickstairs = new BlockDustStair("whitebrickstairs", "ancient/whitebrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        whitebrickstairs2 = new BlockDustStair("whitebrickstairs2", "ancient/whitebrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         whiteplankstairs = new BlockDustStair("whiteplankstairs", "ancient/whiteplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
-        blackstonestairs = new BlockDustStair("blackstonestairs", "ancient/blackstonestairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        blackbrickstairs = new BlockDustStair("blackbrickstairs", "ancient/blackbrickstairs", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
-        blackbrickstairs2 = new BlockDustStair("blackbrickstairs2", "ancient/blackbrickstairs2", Block.getBlockFromName(Reference.MODID+":duststone_red"), SoundType.STONE, 3, 20, 10);
+        blackstonestairs = new BlockDustStair("blackstonestairs", "ancient/blackstonestairs", BlockDustBasicMeta.duststone, SoundType.STONE, 3, 20, 10);
+        blackbrickstairs = new BlockDustStair("blackbrickstairs", "ancient/blackbrickstairs", BlockDustBasicMeta.dustbrick, SoundType.STONE, 3, 20, 10);
+        blackbrickstairs2 = new BlockDustStair("blackbrickstairs2", "ancient/blackbrickstairs2", BlockDustBasicMeta.dustbricks, SoundType.STONE, 3, 20, 10);
         blackplankstairs = new BlockDustStair("blackplankstairs", "ancient/blackplankstairs", BlockDustBasicMeta.dustplanks, SoundType.WOOD, 2, 10, 10);
     }
 
