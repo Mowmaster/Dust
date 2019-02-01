@@ -16,7 +16,6 @@ public class EffectPicker
     static int percentYellow;
     static int colorToRecipe = 0;
 
-    private static Boolean immersiveE = false;
     public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, int potencyCap, Boolean ambient, Boolean showParticles, CrystalTypes.EffectTypes type)
     {
         calcPercentages(red,blue,yellow);
