@@ -5,7 +5,8 @@
     {"item": "dust:black/log_black"}
   ],
   "result": {
-    "item": "dust:ancient/blackplanks",
+    "item": "dust:dustplanks",
+    "data": 7,
     "count":4
   }
 }

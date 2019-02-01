@@ -7,11 +7,13 @@
   ],
   "key": {
     "S": {
-      "item": "dust:ancient/greenstone"
+      "item": "dust:duststone",
+      "data": 4
     }
   },
   "result": {
-    "item": "dust:ancient/greenbricks2",
+    "item": "dust:dustbricks",
+    "data": 4,
     "count": 4
   }
 }

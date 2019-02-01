@@ -6,7 +6,8 @@
   ],
   "key": {
     "S": {
-      "item": "dust:ancient/greenplanks"
+      "item": "dust:dustplanks",
+      "data":4
     }
   },
   "result": {

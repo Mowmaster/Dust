@@ -6,7 +6,8 @@
   ],
   "key": {
     "S": {
-      "item": "dust:ancient/redbricks"
+      "item": "dust:dustbrick",
+      "data":0
     }
   },
   "result": {

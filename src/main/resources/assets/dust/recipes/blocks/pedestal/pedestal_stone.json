@@ -9,14 +9,58 @@
     "G": {
       "item": "minecraft:glowstone_dust"
     },
-    "S": {
-      "item": "minecraft:stone_slab",
-      "data": 0
-    },
-    "B": {
-      "item": "minecraft:stone",
-      "data": 0
-    }
+    "S": [
+      {
+        "item": "minecraft:stone_slab",
+        "data": 0
+      },
+      {
+        "item": "minecraft:stone_slab",
+        "data": 1
+      },
+      {
+        "item": "minecraft:stone_slab",
+        "data": 3
+      },
+      {
+        "item": "minecraft:stone_slab",
+        "data": 4
+      },
+      {
+        "item": "minecraft:stone_slab",
+        "data": 5
+      }
+    ],
+    "B": [
+      {
+        "item": "minecraft:stone",
+        "data": 0
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 1
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 2
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 3
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 4
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 5
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 6
+      }
+    ]
   },
   "result": {
     "item": "dust:pedestal_stone",

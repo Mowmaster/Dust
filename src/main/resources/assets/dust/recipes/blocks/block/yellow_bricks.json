@@ -7,11 +7,13 @@
   ],
   "key": {
     "B": {
-      "item": "dust:ancient/yellowbricks2"
+      "item": "dust:dustbricks",
+      "data": 2
     }
   },
   "result": {
-    "item": "dust:ancient/yellowbricks",
+    "item": "dust:dustbrick",
+    "data": 2,
     "count": 4
   }
 }

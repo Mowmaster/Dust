@@ -99,7 +99,7 @@
         ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
     ],
     "rewards": {
-        "loot": ["dust:wikiscrolls/wiki_paper"]
+        "loot": ["dust:wikiscrolls/wiki_worldgen"]
     }
 
 }

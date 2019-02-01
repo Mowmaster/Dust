@@ -12,7 +12,8 @@
       "data": 7
     },
     "S": {
-      "item": "dust:ancient/blackstone"
+      "item": "dust:duststone",
+      "data":7
     },
     "D": {
       "item": "dust:dust",

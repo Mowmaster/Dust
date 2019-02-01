@@ -7,10 +7,12 @@
   ],
   "key": {
     "B": {
-      "item": "dust:ancient/bluestone"
+      "item": "dust:duststone",
+      "data":1
     },
     "Y": {
-      "item": "dust:ancient/yellowstone"
+      "item": "dust:duststone",
+      "data":2
     }
   },
   "result": {

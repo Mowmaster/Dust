@@ -7,17 +7,44 @@
     "DSD"
   ],
   "key": {
-    "S": {
-      "item": "minecraft:stone",
-      "data": 0
-    },
     "D": {
       "item": "dust:dust",
       "data": 6
-    }
+    },
+    "S": [
+      {
+        "item": "minecraft:stone",
+        "data": 0
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 1
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 2
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 3
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 4
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 5
+      },
+      {
+        "item": "minecraft:stone",
+        "data": 6
+      }
+    ]
   },
   "result": {
-    "item": "dust:ancient/whitestone",
+    "item": "dust:duststone",
+    "data": 6,
     "count": 4
   }
 }

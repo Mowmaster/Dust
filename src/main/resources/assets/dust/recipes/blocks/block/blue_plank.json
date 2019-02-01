@@ -5,7 +5,8 @@
     {"item": "dust:blue/log_blue"}
   ],
   "result": {
-    "item": "dust:ancient/blueplanks",
+    "item": "dust:dustplanks",
+    "data": 1,
     "count":4
   }
 }

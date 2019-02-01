@@ -13,7 +13,8 @@
       "item": "dust:ancient/bluestoneslabs"
     },
     "B": {
-      "item": "dust:ancient/bluestone"
+      "item": "dust:duststone",
+      "data": 1
     }
   },
   "result": {

@@ -6,7 +6,8 @@
   ],
   "key": {
     "S": {
-      "item": "dust:ancient/orangebricks2"
+      "item": "dust:dustbricks",
+      "data":5
     }
   },
   "result": {

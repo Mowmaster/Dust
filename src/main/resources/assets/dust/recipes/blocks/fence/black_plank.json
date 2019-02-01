@@ -7,7 +7,8 @@
   ],
   "key": {
     "S": {
-      "item": "dust:ancient/blackplanks"
+      "item": "dust:dustplanks",
+      "data":7
     },
     "H": {
       "item": "dust:ancient/blackplankslabs"

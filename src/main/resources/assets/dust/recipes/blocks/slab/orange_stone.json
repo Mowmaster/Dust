@@ -6,7 +6,8 @@
   ],
   "key": {
     "S": {
-      "item": "dust:ancient/orangestone"
+      "item": "dust:duststone",
+      "data":5
     }
   },
   "result": {
