@@ -108,99 +108,99 @@ public class EffectGetter
         }
         if(astralSorc)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potionbleed")));//extra mob damage???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potioncheatdeath")));//one free chance to not die when taken enough damage to
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potiondropmodifier")));//more mob drops???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potionspellplague")));//
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potiontimefreeze")));//freezes time for target
+            this.addSpellEffect(2060040000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potionbleed")));//extra mob damage???
+            this.addSpellEffect(1045000055, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potioncheatdeath")));//one free chance to not die when taken enough damage to
+            this.addSpellEffect(1015085000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potiondropmodifier")));//more mob drops???
+            this.addSpellEffect(2085015000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potionspellplague")));//
+            this.addSpellEffect(2075000025, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potiontimefreeze")));//freezes time for target
         }
         if(bloodMagic)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:boost")));//movement buff
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:bounce")));//slime block like bouncing
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:cling")));//
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:constrict")));//
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:deafness")));//muffles all sounds
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:fire_fuse")));//causes player to ignite after effect runs out
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight")));//flight
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:planar_binding")));//disables the ability to teleport
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:plant_leach")));//plants consume blood to grow when walking on them
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:sacrificial_lamb")));//???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:soul_fray")));//prevents you from draining life to an alter
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:soul_snare")));//to get will from mobs
+            this.addSpellEffect(1000085015, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:boost")));//movement buff
+            this.addSpellEffect(1070000030, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:bounce")));//slime block like bouncing
+            this.addSpellEffect(2075025000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:cling")));//
+            this.addSpellEffect(2000015085, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:constrict")));//
+            this.addSpellEffect(2000035065, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:deafness")));//muffles all sounds
+            this.addSpellEffect(2030070000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:fire_fuse")));//causes player to ignite after effect runs out
+            //this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight")));//flight
+            this.addSpellEffect(2030000070, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:planar_binding")));//disables the ability to teleport
+            this.addSpellEffect(2000045055, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:plant_leach")));//plants consume blood to grow when walking on them
+            this.addSpellEffect(2095005000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:sacrificial_lamb")));//???
+            this.addSpellEffect(2080000020, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:soul_fray")));//prevents you from draining life to an alter
+            this.addSpellEffect(1080000020, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:soul_snare")));//to get will from mobs
 
         }
         if(botania)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:allure")));//???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:bloodthirst")));//???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:clear")));//???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:emptiness")));//???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:featherfeet")));//probably slowfall or feather falling type
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:soulcross")));//???
+            this.addSpellEffect(1085015000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:allure")));//???
+            this.addSpellEffect(1060040000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:bloodthirst")));//???
+            this.addSpellEffect(1001099000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:clear")));//???
+            this.addSpellEffect(1095005000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:emptiness")));//???
+            this.addSpellEffect(1000001099, new PotionEffect(Potion.getPotionFromResourceLocation("botania:featherfeet")));//probably slowfall or feather falling type
+            this.addSpellEffect(1083000017, new PotionEffect(Potion.getPotionFromResourceLocation("botania:soulcross")));//???
         }
         if(champions)
         {
             this.addSpellEffect(2050050000, new PotionEffect(Potion.getPotionFromResourceLocation("champions:injured")));//take more damage (anti resist)
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("champions:jailed")));//cant move
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("champions:plague")));//wither+ ?
+            this.addSpellEffect(2070000030, new PotionEffect(Potion.getPotionFromResourceLocation("champions:jailed")));//cant move
+            this.addSpellEffect(2000052048, new PotionEffect(Potion.getPotionFromResourceLocation("champions:plague")));//wither+ ?
         }
         if(naturalPledge)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:drab")));//grey screen
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:everburn")));//take burn damage constantly
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:faithlessness")));//deity's disfavor???
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:featherweight")));//get blown around
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:immorality")));//take like no fall damage
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:overcharged")));//you are a lightning rod
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:rooted")));//cant move
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:trap_seer")));//true sight so see invisible???
+            this.addSpellEffect(2020000080, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:drab")));//grey screen
+            this.addSpellEffect(2020080000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:everburn")));//take burn damage constantly
+            this.addSpellEffect(2015085000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:faithlessness")));//deity's disfavor???
+            this.addSpellEffect(2000001099, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:featherweight")));//get blown around
+            this.addSpellEffect(1065000035, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:immorality")));//take like no fall damage
+            this.addSpellEffect(2026000074, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:overcharged")));//you are a lightning rod
+            this.addSpellEffect(2045055000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:rooted")));//cant move
+            this.addSpellEffect(1020000080, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:trap_seer")));//true sight so see invisible???
         }
-        if(naturesAura){this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("naturesaura:breathless")));}//take suffocation damage
+        if(naturesAura){this.addSpellEffect(2000095005, new PotionEffect(Potion.getPotionFromResourceLocation("naturesaura:breathless")));}//take suffocation damage
         if(quark)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("quark:curse")));//spawns mobs around player
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("quark:danger_sight")));//???
+            this.addSpellEffect(2090000010, new PotionEffect(Potion.getPotionFromResourceLocation("quark:curse")));//spawns mobs around player
+            this.addSpellEffect(1000020080, new PotionEffect(Potion.getPotionFromResourceLocation("quark:danger_sight")));//???
         }
-        if(railCraft){this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("railcraft:creosote")));}//???
+        if(railCraft){this.addSpellEffect(1030070000, new PotionEffect(Potion.getPotionFromResourceLocation("railcraft:creosote")));}//???
         if(rustic)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:blazing_trail")));//leave a trail of fire
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:feather")));//slowfall in place
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:full")));//less damage from starving
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:ironskin")));//absorption hearts (no timer)
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:magic_resistance")));//magic/posion resist
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:shame")));//makes food particles on player
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:tipsy")));//really really bad nausea+blindness
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:wither_ward")));//less wither damage
+            this.addSpellEffect(2022078000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:blazing_trail")));//leave a trail of fire
+            this.addSpellEffect(1000005095, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:feather")));//slowfall in place
+            this.addSpellEffect(1005000095, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:full")));//less damage from starving
+            this.addSpellEffect(1013000087, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:ironskin")));//absorption hearts (no timer)
+            this.addSpellEffect(1000045055, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:magic_resistance")));//magic/posion resist
+            this.addSpellEffect(2005000095, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:shame")));//makes food particles on player
+            this.addSpellEffect(2060000040, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:tipsy")));//really really bad nausea+blindness
+            this.addSpellEffect(1000055045, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:wither_ward")));//less wither damage
         }
         if(thaumcraft)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:blurredvision")));//blurs vision
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:deathgaze")));//damages things you look at
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:fluxtaint")));//taint posion damage
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:infectiousvisexhaust")));//flux phage
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:sunscorned")));//super bright screen and burn in daylight
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:thaumarhia")));//thaumic shits
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:unnaturalhunger")));//have to eat brains or wait it out mega hunger
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:visexhaust")));//non spreadable flux phage
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:warpward")));//keeps warp effects away
+            this.addSpellEffect(2000030070, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:blurredvision")));//blurs vision
+            this.addSpellEffect(2000020080, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:deathgaze")));//damages things you look at
+            this.addSpellEffect(2000028062, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:fluxtaint")));//taint posion damage
+            this.addSpellEffect(2000010090, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:infectiousvisexhaust")));//flux phage
+            this.addSpellEffect(2035065000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:sunscorned")));//super bright screen and burn in daylight
+            this.addSpellEffect(2010000090, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:thaumarhia")));//thaumic shits
+            this.addSpellEffect(2002000098, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:unnaturalhunger")));//have to eat brains or wait it out mega hunger
+            this.addSpellEffect(2000005095, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:visexhaust")));//non spreadable flux phage
+            this.addSpellEffect(2000010090, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:warpward")));//keeps warp effects away
         }
-        if(twilightForest){this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("twilightforest:frosted")));}//super ice slow
+        if(twilightForest){this.addSpellEffect(2000065035, new PotionEffect(Potion.getPotionFromResourceLocation("twilightforest:frosted")));}//super ice slow
         if(wizardry)
         {
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:crash")));//breaks things on falling impact?
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:grace")));//speed
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:low_gravity")));//able to jump super high
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:null_movement")));//cant move at all
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:nullify_gravity")));//hover
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:phase")));//phase through blocks
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:slippery")));//feels like walking on ice
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:steroid")));//says overdrive but idk?
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:suffocate")));//take drowning damage
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:time_slow")));//everything is slow jumps and all
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:vanish")));//full invis but mobs still see you
-            this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:zach_corruption")));//immunity???
+            this.addSpellEffect(1073000027, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:crash")));//breaks things on falling impact?
+            this.addSpellEffect(1035065000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:grace")));//speed
+            this.addSpellEffect(1070030000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:low_gravity")));//able to jump super high
+            //this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:null_movement")));//cant move at all
+            this.addSpellEffect(2070030000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:nullify_gravity")));//hover
+            this.addSpellEffect(1000030070, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:phase")));//phase through blocks
+            this.addSpellEffect(1045055000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:slippery")));//feels like walking on ice
+            this.addSpellEffect(1090010000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:steroid")));//says overdrive but idk?
+            this.addSpellEffect(2000098002, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:suffocate")));//take drowning damage
+            this.addSpellEffect(2000080020, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:time_slow")));//everything is slow jumps and all
+            this.addSpellEffect(1000023077, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:vanish")));//full invis but mobs still see you
+            this.addSpellEffect(1055045000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:zach_corruption")));//immunity???
         }
 
     }
