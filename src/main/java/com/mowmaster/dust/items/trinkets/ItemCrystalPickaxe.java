@@ -1,7 +1,7 @@
 package com.mowmaster.dust.items.trinkets;
 
 import com.mowmaster.dust.misc.DustyTab;
-import net.minecraft.item.ItemPickaxe;;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
 public class ItemCrystalPickaxe extends ItemPickaxe
