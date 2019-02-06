@@ -16,17 +16,20 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ItemDust extends Item
 {
-    public ItemDust(String unlocName)
+    Enum[] enumToUse;
+
+    public ItemDust(String unlocName,Enum[] type)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, unlocName));
+        this.enumToUse = type;
         this.setHasSubtypes(true);
         this.setCreativeTab(DUSTTABS);
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for(int i = 0; i < CrystalItems.DustTypes.values().length; i++)
+        for(int i = 0; i < enumToUse.length; i++)
         {
             items.add(new ItemStack(this,1,i));
         }
@@ -35,17 +38,17 @@ public class ItemDust extends Item
     @Override
     public String getUnlocalizedName(ItemStack stack)
     {
-        for(int i = 0; i <CrystalItems.DustTypes.values().length; i++)
+        for(int i = 0; i <enumToUse.length; i++)
         {
             if(stack.getItemDamage() == i)
             {
-                return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.values()[i].getName();
+                return this.getUnlocalizedName() + "." + enumToUse[i];
             }
             else {
                 continue;
             }
         }
-        return this.getUnlocalizedName() + "." + CrystalItems.DustTypes.RED.getName();
+        return this.getUnlocalizedName() + "." + enumToUse;
     }
 
     public static void bakeItem()
@@ -59,7 +62,9 @@ public class ItemDust extends Item
                 new ResourceLocation(Reference.MODID,"dust_orange"),
                 new ResourceLocation(Reference.MODID,"dust_white"),
                 new ResourceLocation(Reference.MODID,"dust_black"),
-                new ResourceLocation(Reference.MODID,"dust_stone")
+                new ResourceLocation(Reference.MODID,"dust_stone"),
+                new ResourceLocation(Reference.MODID,"dust_iron"),
+                new ResourceLocation(Reference.MODID,"dust_gold")
         );
     }
 

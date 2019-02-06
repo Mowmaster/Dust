@@ -127,6 +127,8 @@ item.dust.orange.name=Orange Dust
 item.dust.white.name=White Dust
 item.dust.black.name=Black Dust
 item.dust.stone.name=Stone Dust
+item.dust.iron.name=Iron Dust
+item.dust.gold.name=Gold Dust
 
 item.bit.red.name=Red Bit
 item.bit.blue.name=Blue Bit

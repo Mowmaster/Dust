@@ -208,7 +208,7 @@ public class ItemRegistry
         crystalWrench = new ItemCrystalWrench("wrench","wrench");
 
         akashic = new ItemBasic("akashic","akashic");
-        dust = new ItemDust("dust");
+        dust = new ItemDust("dust",CrystalItems.DustTypes.values());
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
         wikiscroll = new ItemWikiScroll("wikiscroll");

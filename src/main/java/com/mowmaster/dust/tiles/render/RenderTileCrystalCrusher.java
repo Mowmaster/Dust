@@ -25,11 +25,17 @@ public class RenderTileCrystalCrusher extends TileEntitySpecialRenderer<TileCrys
         else if(te.getBlockType() instanceof BlockCrystalCrusher)
         {
             ItemStack crusherComponents = new ItemStack(ItemRegistry.crushingComponents);
+            ItemStack fuel = te.getStackInSlot(1);
             IBlockState state = te.getWorld().getBlockState(te.getPos());
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
+
+            renderItemScale(itemRenderer,fuel,0.25f,0.25f,0.25f,0.5f,0.15f,0.9f,0,0,0,0);
+            renderItemScale(itemRenderer,fuel,0.25f,0.25f,0.25f,0.9f,0.15f,0.5f,90,0,1f,0);
+            renderItemScale(itemRenderer,fuel,0.25f,0.25f,0.25f,0.5f,0.15f,0.1f,180,0,1f,0);
+            renderItemScale(itemRenderer,fuel,0.25f,0.25f,0.25f,0.1f,0.15f,0.5f,270,0,1f,0);
 
             if(te.isBurning)
             {
@@ -79,6 +85,20 @@ public class RenderTileCrystalCrusher extends TileEntitySpecialRenderer<TileCrys
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         GlStateManager.scale(0.5f,0.5f,0.5f);
+        GlStateManager.rotate(angle, xr, yr, zr);
+        if (!itemRenderer.shouldRenderItemIn3D(itemStack)) {GlStateManager.rotate(180f, 0f, 1f, 0f);}
+        GlStateManager.pushAttrib();
+        RenderHelper.enableStandardItemLighting();
+        itemRenderer.renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
+    }
+
+    public static void renderItemScale(RenderItem itemRenderer, ItemStack itemStack,float sx, float sy, float sz, float x, float y, float z, float angle, float xr, float yr, float zr) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        GlStateManager.scale(sx,sy,sz);
         GlStateManager.rotate(angle, xr, yr, zr);
         if (!itemRenderer.shouldRenderItemIn3D(itemStack)) {GlStateManager.rotate(180f, 0f, 1f, 0f);}
         GlStateManager.pushAttrib();

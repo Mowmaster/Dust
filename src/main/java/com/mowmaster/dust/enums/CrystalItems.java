@@ -56,7 +56,9 @@ public class CrystalItems
         ORANGE("orange",5),
         WHITE("white",6),
         BLACK("black",7),
-        STONE("stone",8);
+        STONE("stone",8),
+        IRON("iron",9),
+        GOLD("gold",10);
 
 
 

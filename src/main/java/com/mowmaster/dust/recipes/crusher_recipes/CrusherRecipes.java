@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockGravel;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -43,10 +44,23 @@ public class CrusherRecipes
         this.addCrushingRecipeForBlock(Blocks.IRON_ORE,new ItemStack(BlockDustCloud.ironDust,2));
         this.addCrushingRecipeForBlock(Blocks.GOLD_ORE,new ItemStack(BlockDustCloud.goldDust,2));
         this.addCrushing(Items.REEDS,new ItemStack(BlockDustCloud.sugarDust,2));
-        this.addCrushing(Items.WHEAT,new ItemStack(BlockDustCloud.wheatDust,1));
-        this.addCrushing(Items.POTATO,new ItemStack(BlockDustCloud.potatoDust,1));
-        this.addCrushing(Items.POISONOUS_POTATO,new ItemStack(BlockDustCloud.potatoDust,1));
+        //this.addCrushing(Items.WHEAT,new ItemStack(BlockDustCloud.wheatDust,1));
+        //this.addCrushing(Items.POTATO,new ItemStack(BlockDustCloud.potatoDust,1));
+        //this.addCrushing(Items.POISONOUS_POTATO,new ItemStack(BlockDustCloud.potatoDust,1));
         this.addCrushing(Items.BLAZE_ROD,new ItemStack(BlockDustCloud.blazeDust,3));
+
+
+        this.addCrushingRecipeForBlock(Blocks.COBBLESTONE,new ItemStack(Blocks.GRAVEL,1));
+        this.addCrushingRecipeForBlock(Blocks.GRAVEL,new ItemStack(Blocks.SAND,1));
+        this.addCrushingRecipeForBlock(Blocks.SANDSTONE,new ItemStack(Blocks.SAND,4,0));
+        this.addCrushingRecipeForBlock(Blocks.RED_SANDSTONE,new ItemStack(Blocks.SAND,4,1));
+
+        for(int i =0;i<16;i++)
+        {
+            this.addCrusherRecipe(new ItemStack(Blocks.CONCRETE,1,i),new ItemStack(Blocks.GRAVEL,1));
+        }
+
+
     }
 
     /**

@@ -244,7 +244,7 @@ public class TileCrystalCrusher extends TileEntityBase implements ITickable, IIt
                 world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.125, pos.getZ() + 0.9, 0.0, 0.0, 0.0, new int[0]);
             }
 
-            if (!(getStackInSlot(2)==ItemStack.EMPTY)) {
+            if (!(getStackInSlot(2).isEmpty())) {
                 world.spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
             }
         }

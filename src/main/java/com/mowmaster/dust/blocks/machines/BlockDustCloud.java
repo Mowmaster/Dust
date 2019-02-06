@@ -93,7 +93,7 @@ public class BlockDustCloud extends BlockBasicFalling {
     @Override
     public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return true;
+        return false;
     }
 
     //Only until the Crusher is implimented
@@ -117,8 +117,8 @@ public class BlockDustCloud extends BlockBasicFalling {
 
         if(this.equals(blazeDust)) { stacker = new ItemStack(Items.BLAZE_POWDER,1); }
         if(this.equals(carbonDust)) { stacker = new ItemStack(Items.COAL,1); }
-        if(this.equals(ironDust)) { stacker = new ItemStack(Items.IRON_INGOT,1); }
-        if(this.equals(goldDust)) { stacker = new ItemStack(Items.GOLD_INGOT,1); }
+        if(this.equals(ironDust)) { stacker = new ItemStack(ItemRegistry.dust,1,9); }
+        if(this.equals(goldDust)) { stacker = new ItemStack(ItemRegistry.dust,1,10); }
         if(this.equals(redstoneDust)) { stacker = new ItemStack(Items.REDSTONE,1); }
 
         if(this.equals(wheatDust)) { stacker = new ItemStack(Items.WHEAT,1); }
@@ -142,8 +142,19 @@ public class BlockDustCloud extends BlockBasicFalling {
                 ItemStack blockToAdd = new ItemStack(this.getDefaultState().getBlock(),1);
                 TileEntity tileentity = worldIn.getTileEntity(pos.add(0,-1,0));
                 if (tileentity instanceof TileDustBlock) {
-                    ((TileDustBlock) tileentity).addItem(blockToAdd);
-                    worldIn.setBlockToAir(pos);
+                    if(((TileDustBlock) tileentity).canAddItem(blockToAdd))
+                    {
+                        ((TileDustBlock) tileentity).addItem(blockToAdd);
+                        worldIn.setBlockToAir(pos);
+                    }
+                    else
+                    {
+                        worldIn.setBlockState(pos,dustBlock.getDefaultState());
+                        TileEntity tileentity2 = worldIn.getTileEntity(pos);
+                        if (tileentity2 instanceof TileDustBlock) {
+                            ((TileDustBlock) tileentity).addItem(blockToAdd);
+                        }
+                    }
                 }
             }
             else
