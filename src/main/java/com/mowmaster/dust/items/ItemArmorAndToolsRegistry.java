@@ -4,6 +4,7 @@ import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.armors.ItemCrystalArmor;
 import com.mowmaster.dust.items.trinkets.ItemCrystalAxe;
 import com.mowmaster.dust.items.trinkets.ItemCrystalPickaxe;
+import com.mowmaster.dust.items.trinkets.ItemCrystalSword;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.references.Reference;
@@ -59,16 +60,13 @@ public class ItemArmorAndToolsRegistry
         crystalBoots = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.FEET,"crystalboots","crystalboots");
         //crystalBoots = new ItemCrystalArmor(Material, Layer, What Equipment Slot,unlocName,RegName);
 
-        //tools and weapons
-        //Sword will prob remove these during a refactor
-        crystalSword = new ItemSword(crystalToolMaterial);
-        crystalSword.setUnlocalizedName("crystalsword");
-        crystalSword.setRegistryName("crystalsword");
-        crystalSword.setCreativeTab(DustyTab.DUSTTABS);
+        //weapons
+        crystalSword = new ItemCrystalSword(crystalToolMaterial);
 
         // tool section
         crystalPickaxe = new ItemCrystalPickaxe(crystalToolMaterial);
         crystalAxe = new ItemCrystalAxe(crystalToolMaterial);
+
 
     }
 
@@ -92,7 +90,9 @@ public class ItemArmorAndToolsRegistry
         registerRender(crystalLeggings);
         registerRender(crystalBoots);
 // weapon renders
-        //registerRender(crystalSword);
+        registerRender(crystalSword);
+        registerRender(crystalPickaxe);
+        registerRender(crystalAxe);
     }
 
     public static void registerItem(Item item)

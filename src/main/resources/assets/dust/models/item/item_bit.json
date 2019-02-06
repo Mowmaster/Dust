@@ -1,20 +1,47 @@
 {
-  "__comment": "Designed by Mowmaster with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "credit": "Made with Blockbench",
   "textures": {
     "crystal_cores": "#core"
   },
   "elements": [
     {
-      "from": [ 7, 1, 8 ],
-      "to": [ 8, 2, 9 ],
+      "from": [7, 1, 8],
+      "to": [8, 2, 9],
       "faces": {
-        "down":  { "uv": [ 1, 1, 0, 0 ], "texture": "#crystal_cores" },
-        "up":    { "uv": [ 0, 0, 1, 1 ], "texture": "#crystal_cores" },
-        "north": { "uv": [ 0, 0, 1, 1 ], "texture": "#crystal_cores" },
-        "south": { "uv": [ 0, 0, 1, 1 ], "texture": "#crystal_cores" },
-        "west":  { "uv": [ 0, 0, 1, 1 ], "texture": "#crystal_cores" },
-        "east":  { "uv": [ 0, 0, 1, 1 ], "texture": "#crystal_cores" }
+        "north": {"uv": [0, 0, 1, 1], "texture": "#crystal_cores"},
+        "east": {"uv": [0, 0, 1, 1], "texture": "#crystal_cores"},
+        "south": {"uv": [0, 0, 1, 1], "texture": "#crystal_cores"},
+        "west": {"uv": [0, 0, 1, 1], "texture": "#crystal_cores"},
+        "up": {"uv": [0, 0, 1, 1], "texture": "#crystal_cores"},
+        "down": {"uv": [1, 1, 0, 0], "texture": "#crystal_cores"}
       }
     }
-  ]
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [0, 7, 0]
+    },
+    "thirdperson_lefthand": {
+      "translation": [0, 7, 0]
+    },
+    "firstperson_righthand": {
+      "translation": [0, 7.25, 0]
+    },
+    "firstperson_lefthand": {
+      "translation": [0, 7.25, 0]
+    },
+    "ground": {
+      "translation": [0, 3.5, 0]
+    },
+    "gui": {
+      "translation": [1, 13, 0],
+      "scale": [2, 2, 2]
+    },
+    "head": {
+      "translation": [0, 13.5, 0]
+    },
+    "fixed": {
+      "translation": [0, 6, -1]
+    }
+  }
 }

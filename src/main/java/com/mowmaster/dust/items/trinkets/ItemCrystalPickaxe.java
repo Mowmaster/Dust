@@ -6,8 +6,6 @@ import net.minecraft.item.ItemStack;
 
 public class ItemCrystalPickaxe extends ItemPickaxe
 {
-
-
     public ItemCrystalPickaxe(ToolMaterial material)
     {
         super(material);

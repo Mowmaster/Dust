@@ -482,7 +482,8 @@ tile.blockloot_spawnp.name=Structure Loot Block
 tile.blockdust.name=Dust Cloud
 
 item.crystalPickaxe.name=Crystal Pickaxe [WIP]
-item.crystalsword.name=Crystal Sword [WIP]
+item.crystalSword.name=Crystal Sword [WIP]
+item.crystalAxe.name=Crystal Axe [WIP]
 
 item.crystalhelmet.name=Crystal Helmet
 item.crystalchestplate.name=Crystal Chestplate
