@@ -25,6 +25,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,7 +74,10 @@ public class BlockDustLeaf extends BlockBasic implements IMetaBlockName
         return getStateFromMeta(blockmeta);
     }
 
-
+    @Override
+    public boolean isLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
 
     @Override
     public int getMetaFromState(IBlockState state)
