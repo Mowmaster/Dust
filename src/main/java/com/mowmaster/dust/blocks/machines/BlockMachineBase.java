@@ -1,6 +1,7 @@
 package com.mowmaster.dust.blocks.machines;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasicFalling;
+import com.mowmaster.dust.blocks.machines.TierZero.TierZeroCrusher;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
@@ -67,7 +68,7 @@ public class BlockMachineBase extends BlockBasicFalling
             if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.crushingComponents))) {
                 //playerIn.sendMessage(new TextComponentString("You are adding Carbon"));
                 playerIn.getHeldItem(hand).shrink(1);
-                worldIn.setBlockState(pos, BlockCrystalCrusher.crystalcrusher.getDefaultState());
+                worldIn.setBlockState(pos, TierZeroCrusher.crystalcrusher.getDefaultState());
             }
 
         }

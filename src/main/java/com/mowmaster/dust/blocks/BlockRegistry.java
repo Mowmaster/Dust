@@ -4,6 +4,8 @@ import com.mowmaster.dust.blocks.buildingblocks.*;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
+import com.mowmaster.dust.blocks.machines.TierZero.TierZeroCrusher;
+import com.mowmaster.dust.blocks.machines.TierZero.TierZeroFurnace;
 import com.mowmaster.dust.blocks.utility.BlockEnchantedFarmland;
 import com.mowmaster.dust.blocks.utility.BlockMobSoil;
 import com.mowmaster.dust.blocks.utility.BlockPath;
@@ -35,7 +37,8 @@ public class BlockRegistry
         BlockPot.Init();
         BlockPath.Init();
         BlockSpike.Init();
-        BlockCrystalCrusher.Init();
+        TierZeroCrusher.Init();
+        TierZeroFurnace.Init();
         BlockCrystalFurnace.Init();
         BlockTrap.Init();
         BlockEnchantedFarmland.Init();
@@ -68,7 +71,8 @@ public class BlockRegistry
         BlockPot.Register();
         BlockPath.Register();
         BlockSpike.Register();
-        BlockCrystalCrusher.Register();
+        TierZeroCrusher.Register();
+        TierZeroFurnace.Register();
         BlockCrystalFurnace.Register();
         BlockTrap.Register();
         BlockEnchantedFarmland.Register();
@@ -102,7 +106,8 @@ public class BlockRegistry
         BlockPot.RegisterRender();
         BlockPath.RegisterRender();
         BlockSpike.RegisterRender();
-        BlockCrystalCrusher.RegisterRender();
+        TierZeroCrusher.RegisterRender();
+        TierZeroFurnace.RegisterRender();
         BlockCrystalFurnace.RegisterRender();
         BlockTrap.RegisterRender();
         BlockEnchantedFarmland.RegisterRender();

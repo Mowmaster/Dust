@@ -1,17 +1,15 @@
-package com.mowmaster.dust.blocks.machines;
+package com.mowmaster.dust.blocks.machines.TierZero;
 
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalCrusher;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -28,13 +26,13 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvider
+public class TierZeroCrusher extends BlockBasic implements ITileEntityProvider
 {
 
     public static Block crystalcrusher;
     private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
 
-    public BlockCrystalCrusher(String unloc, String registryName)
+    public TierZeroCrusher(String unloc, String registryName)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
@@ -136,7 +134,7 @@ public class BlockCrystalCrusher extends BlockBasic implements ITileEntityProvid
 
     public static void Init()
     {
-        crystalcrusher = new BlockCrystalCrusher("crystalcrusher","crystalcrusher");
+        crystalcrusher = new TierZeroCrusher("crystalcrusher","crystalcrusher");
     }
 
     public static void Register()
