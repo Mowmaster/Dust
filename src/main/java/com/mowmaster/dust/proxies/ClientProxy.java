@@ -11,7 +11,7 @@ import com.mowmaster.dust.particles.ParticleCreator;
 import com.mowmaster.dust.particles.ParticleEvents;
 import com.mowmaster.dust.particles.ParticleHandler;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
-import com.mowmaster.dust.tiles.TileCrystalCrusher;
+import com.mowmaster.dust.tiles.TileCrystalCrusherBasic;
 import com.mowmaster.dust.tiles.TileDustBlock;
 import com.mowmaster.dust.tiles.TilePedestal;
 import com.mowmaster.dust.tiles.render.RenderDustBlock;
@@ -39,7 +39,7 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCluster.class,new RenderTileCrystalCluster());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePedestal.class,new RenderTilePedestal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileDustBlock.class,new RenderDustBlock());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCrusher.class,new RenderTileCrystalCrusher());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCrusherBasic.class,new RenderTileCrystalCrusher());
 
 
         ParticleEvents parts = new ParticleEvents();

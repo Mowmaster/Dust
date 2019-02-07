@@ -3,7 +3,7 @@ package com.mowmaster.dust.blocks.machines.TierZero;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TileCrystalCrusher;
+import com.mowmaster.dust.tiles.TileCrystalFurnaceBasic;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -12,7 +12,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -21,18 +24,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-public class TierZeroCrusher extends BlockBasic implements ITileEntityProvider
+public class CrystalFurnaceBasic extends BlockBasic implements ITileEntityProvider
 {
 
-    public static Block crystalcrusher;
+    public static Block tilecrystalfurnacebasic;
     private static AxisAlignedBB bounds = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.5D, 0.875D);
 
-    public TierZeroCrusher(String unloc, String registryName)
+    public CrystalFurnaceBasic(String unloc, String registryName)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
@@ -46,7 +48,7 @@ public class TierZeroCrusher extends BlockBasic implements ITileEntityProvider
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(crystalcrusher);
+        return Item.getItemFromBlock(tilecrystalfurnacebasic);
     }
 
     /*
@@ -60,22 +62,22 @@ public class TierZeroCrusher extends BlockBasic implements ITileEntityProvider
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof TileCrystalCrusher) {
-                TileCrystalCrusher tileCrusher = (TileCrystalCrusher) tileEntity;
+            if (tileEntity instanceof TileCrystalFurnaceBasic) {
+                TileCrystalFurnaceBasic tileFurnace = (TileCrystalFurnaceBasic) tileEntity;
 
                 //adding crystals
-                if(tileCrusher.canAddItem(0,playerIn.getHeldItemMainhand()))
+                if(tileFurnace.canAddItem(0,playerIn.getHeldItemMainhand()))
                 {
-                    int counter = tileCrusher.addItem(0,playerIn.getHeldItemMainhand(),true);
-                    tileCrusher.addItem(0,playerIn.getHeldItemMainhand(),false);
+                    int counter = tileFurnace.addItem(0,playerIn.getHeldItemMainhand(),true);
+                    tileFurnace.addItem(0,playerIn.getHeldItemMainhand(),false);
                     playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(counter);
                     return true;
                 }
                 //adding fuels
-                if(tileCrusher.canAddItem(1,playerIn.getHeldItemMainhand()))
+                if(tileFurnace.canAddItem(1,playerIn.getHeldItemMainhand()))
                 {
-                    int counter = tileCrusher.addItem(1,playerIn.getHeldItemMainhand(),true);
-                    tileCrusher.addItem(1,playerIn.getHeldItemMainhand(),false);
+                    int counter = tileFurnace.addItem(1,playerIn.getHeldItemMainhand(),true);
+                    tileFurnace.addItem(1,playerIn.getHeldItemMainhand(),false);
                     playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(counter);
                     return true;
                 }
@@ -89,7 +91,7 @@ public class TierZeroCrusher extends BlockBasic implements ITileEntityProvider
     /*
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        TileCrystalCrusher te = (TileCrystalCrusher)worldIn.getTileEntity(pos);
+        TileCrystalCrusherBasic te = (TileCrystalCrusherBasic)worldIn.getTileEntity(pos);
         IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
         for(int slot = 0; slot <handler.getSlots() -1; slot++){
             ItemStack stack = handler.getStackInSlot(slot);
@@ -122,28 +124,28 @@ public class TierZeroCrusher extends BlockBasic implements ITileEntityProvider
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileCrystalCrusher();
+        return new TileCrystalFurnaceBasic();
     }
 
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileCrystalCrusher();
+        return new TileCrystalFurnaceBasic();
     }
 
 
     public static void Init()
     {
-        crystalcrusher = new TierZeroCrusher("crystalcrusher","crystalcrusher");
+        tilecrystalfurnacebasic = new CrystalFurnaceBasic("crystalfurnacebasic","crystalfurnacebasic");
     }
 
     public static void Register()
     {
-        registerBlock(crystalcrusher);
+        registerBlock(tilecrystalfurnacebasic);
     }
 
     public static void RegisterRender()
     {
-        registerRender(crystalcrusher);
+        registerRender(tilecrystalfurnacebasic);
     }
 }

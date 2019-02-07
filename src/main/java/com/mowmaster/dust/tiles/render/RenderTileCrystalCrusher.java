@@ -1,8 +1,8 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.machines.TierZero.TierZeroCrusher;
+import com.mowmaster.dust.blocks.machines.TierZero.CrystalCrusherBasic;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.tiles.TileCrystalCrusher;
+import com.mowmaster.dust.tiles.TileCrystalCrusherBasic;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,16 +13,16 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 
 
-public class RenderTileCrystalCrusher extends TileEntitySpecialRenderer<TileCrystalCrusher>
+public class RenderTileCrystalCrusher extends TileEntitySpecialRenderer<TileCrystalCrusherBasic>
 {
     @Override
-    public void render(TileCrystalCrusher te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TileCrystalCrusherBasic te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if(te==null)
         {
             return;
         }
 
-        else if(te.getBlockType() instanceof TierZeroCrusher)
+        else if(te.getBlockType() instanceof CrystalCrusherBasic)
         {
             ItemStack crusherComponents = new ItemStack(ItemRegistry.crushingComponents);
             ItemStack fuel = te.getStackInSlot(1);

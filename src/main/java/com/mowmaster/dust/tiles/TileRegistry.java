@@ -9,11 +9,11 @@ public class TileRegistry
     {
         GameRegistry.registerTileEntity(TileCrystalCluster.class, Reference.MODID + "tilecrystalcluster");
         GameRegistry.registerTileEntity(TilePedestal.class, Reference.MODID + "tilepedestal");
-        GameRegistry.registerTileEntity(TileCrystalCrusher.class, Reference.MODID + "tilecrystalcrusher");
+        GameRegistry.registerTileEntity(TileCrystalCrusherBasic.class, Reference.MODID + "tilecrystalcrusherbasic");
         GameRegistry.registerTileEntity(TileCrystalFurnace.class, Reference.MODID + "tilecrystalfurnace");
         GameRegistry.registerTileEntity(TileLootBlock.class, Reference.MODID + "tilelootblock");
         GameRegistry.registerTileEntity(TileTrapBlock.class, Reference.MODID + "tiletrapblock");
         GameRegistry.registerTileEntity(TileDustBlock.class, Reference.MODID + "tiledustblock");
-        GameRegistry.registerTileEntity(TileTierZeroFurnace.class, Reference.MODID + "tiletierzerofurnace");
+        GameRegistry.registerTileEntity(TileCrystalFurnaceBasic.class, Reference.MODID + "tilecrystalfurnacebasic");
     }
 }
