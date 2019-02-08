@@ -10,14 +10,8 @@ import com.mowmaster.dust.items.*;
 import com.mowmaster.dust.particles.ParticleCreator;
 import com.mowmaster.dust.particles.ParticleEvents;
 import com.mowmaster.dust.particles.ParticleHandler;
-import com.mowmaster.dust.tiles.TileCrystalCluster;
-import com.mowmaster.dust.tiles.TileCrystalCrusherBasic;
-import com.mowmaster.dust.tiles.TileDustBlock;
-import com.mowmaster.dust.tiles.TilePedestal;
-import com.mowmaster.dust.tiles.render.RenderDustBlock;
-import com.mowmaster.dust.tiles.render.RenderTileCrystalCluster;
-import com.mowmaster.dust.tiles.render.RenderTileCrystalCrusher;
-import com.mowmaster.dust.tiles.render.RenderTilePedestal;
+import com.mowmaster.dust.tiles.*;
+import com.mowmaster.dust.tiles.render.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -40,6 +34,7 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TilePedestal.class,new RenderTilePedestal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileDustBlock.class,new RenderDustBlock());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalCrusherBasic.class,new RenderTileCrystalCrusher());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalFurnaceBasic.class,new RenderTileCrystalFurnaceBasic());
 
 
         ParticleEvents parts = new ParticleEvents();

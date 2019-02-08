@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -84,7 +85,8 @@ public class TileCrystalFurnaceBasic extends TileEntityBase implements ITickable
         switch (slot)
         {
             case 0:
-                if(!CrusherRecipes.instance().getCrushingResult(itemIn).isEmpty())
+                //System.out.println(FurnaceRecipes.instance().getSmeltingResult(itemIn));
+                if(!(FurnaceRecipes.instance().getSmeltingResult(itemIn).isEmpty()))
                 {
                     //should only hold 1 item in this slot, so if its not empty it cant hold any more crystals.
                     if(tierZeroFurnace.getStackInSlot(0).isEmpty())
@@ -233,7 +235,8 @@ public class TileCrystalFurnaceBasic extends TileEntityBase implements ITickable
     int ticker = 0;
     int ticker2 = 0;
     int explody = 0;
-    private Integer[] randNums = { -2,-1,0,1,2,3 };
+    private Float[] randNums = { -0.1f,-0.09f,-0.08f,-0.07f,-0.06f,-0.05f,-0.04f,-0.03f,-0.02f,-0.01f,0.0f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,0.1f };
+    private Float[] randPosNums = { 0.1f,0.2f,0.3f,0.4f,0.5f };
     @Override
     public void update()
     {
@@ -245,7 +248,7 @@ public class TileCrystalFurnaceBasic extends TileEntityBase implements ITickable
                 world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.125, pos.getZ() + 0.1, 0.0, 0.0, 0.0, new int[0]);
                 world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.125, pos.getZ() + 0.9, 0.0, 0.0, 0.0, new int[0]);
                 //Gets Bigger with core temp
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 0.875, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
             }
         }
 
@@ -265,46 +268,33 @@ public class TileCrystalFurnaceBasic extends TileEntityBase implements ITickable
 
                 if(!tierZeroFurnace.getStackInSlot(0).isEmpty())
                 {
-                    if(ticker>100)
+                    if(ticker>200)
                     {
-                        if(canAddItem(2,CrusherRecipes.instance().getCrushingResult(getStackInSlot(0))))
+                        if(canAddItem(2,FurnaceRecipes.instance().getSmeltingResult((ItemStack)this.tierZeroFurnace.getStackInSlot(0))))
                         {
-                            addItem(2, CrusherRecipes.instance().getCrushingResult(getStackInSlot(0)),false);
+                            addItem(2, FurnaceRecipes.instance().getSmeltingResult((ItemStack)this.tierZeroFurnace.getStackInSlot(0)),false);
                             tierZeroFurnace.extractItem(0,1,false);
                             updateBlock();
                             ticker=0;
                         }
                     }
                 }
-
                 ticker2++;
-                if(!tierZeroFurnace.getStackInSlot(2).isEmpty())
+                if(!tierZeroFurnace.getStackInSlot(2).isEmpty() && ticker2>=20)
                 {
                     Random rand = new Random();
-                    int a = randNums[rand.nextInt(5)];
-                    int c = randNums[rand.nextInt(5)];
-
-                    if(a==0 && c==0) {}
-                    else
-                    {
-                        if(world.getBlockState(getPos().add(a,4,c)).getBlock() instanceof BlockAir)
-                        {
-                            if(ticker2>13)
-                            {
-                                world.setBlockState(getPos().add(a,4,c), Block.getBlockFromItem(tierZeroFurnace.getStackInSlot(2).getItem()).getDefaultState());
-                                tierZeroFurnace.extractItem(2,1,false);
-                                updateBlock();
-                                ticker2=0;
-                            }
-                        }
-                        else
-                        {
-                            //Maybe check again if there are no free spots for blocks???
-                            explody++;
-                        }
-                    }
+                    ItemStack stacked = tierZeroFurnace.getStackInSlot(2).copy();
+                    stacked.setCount(1);
+                    EntityItem meme = new EntityItem(world,pos.getX()+0.5,pos.getY()+1.0,pos.getZ()+0.5,stacked);
+                    meme.motionY = randPosNums[rand.nextInt(4)];
+                    meme.motionX = rand.nextInt(10)*randNums[rand.nextInt(20)];
+                    meme.motionZ = rand.nextInt(10)*randNums[rand.nextInt(20)];
+                    meme.setNoPickupDelay();
+                    world.spawnEntity(meme);
+                    tierZeroFurnace.extractItem(2,1,false);
+                    ticker2=0;
+                    updateBlock();
                 }
-                else{explody=0;}
             }
 
             if(!funhaters)
