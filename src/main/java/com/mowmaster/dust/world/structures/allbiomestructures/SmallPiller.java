@@ -1,6 +1,8 @@
 package com.mowmaster.dust.world.structures.allbiomestructures;
 
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
+import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockStoneBrick;
@@ -21,17 +23,8 @@ public class SmallPiller extends WorldGenerator
 {
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos pos) {
-        IBlockState mobspawnerpicked = Blocks.MOB_SPAWNER.getDefaultState();
-        ArrayList<IBlockState> BlockLoot = new ArrayList<>();
-        BlockLoot.add(mobspawnerpicked);
-        BlockLoot.add(Blocks.EMERALD_BLOCK.getDefaultState());
-        BlockLoot.add(Blocks.DIAMOND_BLOCK.getDefaultState());
-        BlockLoot.add(Blocks.GOLD_BLOCK.getDefaultState());
-        BlockLoot.add(Blocks.IRON_BLOCK.getDefaultState());
 
         Random rn = new Random();
-
-        int lootblock = Math.abs(rn.nextInt(BlockLoot.size() - 1));
 
         while (!(worldIn.getBlockState(pos).equals(Blocks.GRASS.getDefaultState()) || worldIn.getBlockState(pos).equals(Blocks.SAND.getDefaultState()))&& pos.getY() > -50)
         {
@@ -39,26 +32,32 @@ public class SmallPiller extends WorldGenerator
         }
 
         StructureParts.clearArea(worldIn,pos,1,4,-1,1,-1,1);
-        //mobspawnerlocation
-        int x = 0;
-        int y = 0;
-        int z = 0;
+
+        IBlockState blockToSpawn = BlockLootBlock.lootblock.getDefaultState().withProperty(BlockLootBlock.TYPE, CrystalBlocks.CrystalLoot.CLUSTER);
+
+        switch (rn.nextInt(5))
+        {
+            case 0:
+            case 1:
+            case 2:
+                blockToSpawn = BlockLootBlock.lootblock.getDefaultState().withProperty(BlockLootBlock.TYPE, CrystalBlocks.CrystalLoot.PILLAR);
+                break;
+            case 3:
+                blockToSpawn = BlockLootBlock.lootblock.getDefaultState().withProperty(BlockLootBlock.TYPE, CrystalBlocks.CrystalLoot.SPAWNH);
+                break;
+            case 4:
+                blockToSpawn = BlockLootBlock.lootblock.getDefaultState().withProperty(BlockLootBlock.TYPE, CrystalBlocks.CrystalLoot.SPAWNP);
+                break;
+            default:
+                blockToSpawn = BlockLootBlock.lootblock.getDefaultState().withProperty(BlockLootBlock.TYPE, CrystalBlocks.CrystalLoot.PILLAR);
+                break;
+        }
 
         StructureParts.buildLootPiller(worldIn, rand,pos,0,0,0);
-        worldIn.setBlockState(pos.add(x,y,z),BlockLoot.get(lootblock));
+        worldIn.setBlockState(pos.add(0,0,0),blockToSpawn);
         worldIn.setBlockState(pos.add(0,3,0),Blocks.STONEBRICK.getDefaultState().withProperty(VARIANT, BlockStoneBrick.EnumType.CHISELED));
-        StructureParts.spawnCrystal(worldIn,rand,pos,0,4,0,"UP");
+        worldIn.setBlockState(pos.add(0,4,0), BlockLootBlock.lootblock.getDefaultState().withProperty(BlockLootBlock.TYPE, CrystalBlocks.CrystalLoot.CLUSTER));
 
-        if(BlockLoot.get(lootblock).equals(mobspawnerpicked))
-        {
-            worldIn.setBlockState(pos.add(x,y,z), mobspawnerpicked, 2);
-            TileEntity tileentity = worldIn.getTileEntity(pos.add(x,y,z));
-
-            if (tileentity instanceof TileEntityMobSpawner)
-            {
-                ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(SpawnerTypesHostile.getRandomDungeonMob(rand));
-            }
-        }
 
         return true;
     }
