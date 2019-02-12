@@ -75,7 +75,7 @@ public class EffectGetter
 
 
 
-        this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_FLIGHT));//3 way split
+        //this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_FLIGHT));//3 way split
         this.addSpellEffect(1025025050, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
         this.addSpellEffect(1025050025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
         this.addSpellEffect(1050025025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
@@ -122,7 +122,7 @@ public class EffectGetter
             this.addSpellEffect(2000015085, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:constrict")));//
             this.addSpellEffect(2000035065, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:deafness")));//muffles all sounds
             this.addSpellEffect(2030070000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:fire_fuse")));//causes player to ignite after effect runs out
-            //this.addSpellEffect(2000000000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight")));//flight
+            this.addSpellEffect(1033033033, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight")));//flight
             this.addSpellEffect(2030000070, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:planar_binding")));//disables the ability to teleport
             this.addSpellEffect(2000045055, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:plant_leach")));//plants consume blood to grow when walking on them
             this.addSpellEffect(2095005000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:sacrificial_lamb")));//???
