@@ -1,85 +1,43 @@
 package com.mowmaster.dust.handlers;
 
-import com.google.common.collect.Lists;
-import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.effects.EffectPicker;
+import com.mowmaster.dust.capabilities.CapabilityFlightHandler;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import com.mowmaster.dust.enchantments.EnchantmentSmelt;
-import com.mowmaster.dust.enums.CrystalTypes;
-import com.mowmaster.dust.items.ItemCoin;
-import com.mowmaster.dust.items.ItemDust;
-import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.items.ItemSpellScroll;
-import com.mowmaster.dust.recipes.CraftingRecipes;
-import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TileTrapBlock;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementManager;
-import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.toasts.AdvancementToast;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.*;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
-import static com.mowmaster.dust.misc.DustConfigurationFile.SyncConfig;
-import static com.mowmaster.dust.misc.DustConfigurationFile.dustToActivate;
-import static com.mowmaster.dust.misc.DustConfigurationFile.effectMaximum;
 import static net.minecraft.block.BlockFarmland.MOISTURE;
 
 public class EnchantAndEffectHandlers
 {
-
-
-
     /*
     Not needed yet
 
@@ -157,12 +115,28 @@ public class EnchantAndEffectHandlers
     }
      */
 
+    /*
+    @SubscribeEvent
+    public static void onEntityCapabilitiesAttach (AttachCapabilitiesEvent<Entity> event) {
+        Entity entity = event.getObject();
+        int level = 0;
+        int expLoss = 0;
 
+        if (entity instanceof EntityLivingBase) {
+            if (((EntityLivingBase) entity).isPotionActive(PotionRegistry.POTION_FLIGHT)) {
+                event.addCapability(CapabilityFlightHandler.FLIGHT, new CapabilityFlightHandler());
+            }
 
-
-
-
-
+            if (entity instanceof EntityPlayer) {
+                if (((EntityPlayer) entity).inventory.armorInventory.get(2).isItemEnchanted()) {
+                    if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentFlight, ((EntityPlayer) entity).inventory.armorInventory.get(2)) != 0 && ((EntityPlayer) entity).experienceTotal > 0)
+                    {
+                        event.addCapability(CapabilityFlightHandler.FLIGHT, new CapabilityFlightHandler());
+                    }
+                }
+            }
+        }
+    }
 
 
     private boolean flight = false;
@@ -211,9 +185,8 @@ public class EnchantAndEffectHandlers
             player.capabilities.isFlying = false;
             player.capabilities.allowFlying = false;
         }
-
-
     }
+     */
 
     private boolean stepup = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -398,7 +371,7 @@ public class EnchantAndEffectHandlers
             {
                 if(((EntityPlayer) entity).capabilities.isFlying && !((EntityPlayer) entity).isCreative())
                 {
-                    flight=false;
+                    //flight=false;
                     ((EntityPlayer) entity).capabilities.isFlying = false;
                     ((EntityPlayer) entity).capabilities.allowFlying = false;
                 }

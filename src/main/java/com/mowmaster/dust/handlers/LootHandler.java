@@ -34,7 +34,7 @@ public class LootHandler
             final LootPool simpleDungeonPool1 = event.getTable().getPool("pool1");
             if (simpleDungeonPool1 != null) {
                 int i=0;
-                for(Item scroll : scrolls) {i++;simpleDungeonPool1.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
+                //for(Item scroll : scrolls) {i++;simpleDungeonPool1.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
                 simpleDungeonPool1.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
@@ -42,7 +42,7 @@ public class LootHandler
             final LootPool mineshaftPool1 = event.getTable().getPool("pool1");
             if (mineshaftPool1 != null) {
                 int i=0;
-                for(Item scroll : scrolls) {i++;mineshaftPool1.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
+                //for(Item scroll : scrolls) {i++;mineshaftPool1.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
                 mineshaftPool1.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
@@ -50,7 +50,7 @@ public class LootHandler
             final LootPool desertPyramidMain = event.getTable().getPool("main");
             if (desertPyramidMain != null) {
                 int i=0;
-                for(Item scroll : scrolls) {i++;desertPyramidMain.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
+                //for(Item scroll : scrolls) {i++;desertPyramidMain.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
                 i++;desertPyramidMain.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
@@ -58,7 +58,7 @@ public class LootHandler
             final LootPool spawnChestPool2 = event.getTable().getPool("pool2");
             if (spawnChestPool2 != null) {
                 int i=0;
-                for(Item scroll : scrolls) {i++;spawnChestPool2.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
+                //for(Item scroll : scrolls) {i++;spawnChestPool2.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
                 spawnChestPool2.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }
@@ -66,7 +66,7 @@ public class LootHandler
             final LootPool spawnChestEndCity = event.getTable().getPool("pool1");
             if (spawnChestEndCity != null) {
                 int i=0;
-                for(Item scroll : scrolls) {i++;spawnChestEndCity.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
+                //for(Item scroll : scrolls) {i++;spawnChestEndCity.addEntry(new LootEntryItem(scroll, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:scroll" + i));}
                 spawnChestEndCity.addEntry(new LootEntryItem(ItemRegistry.ancientCoin, 1, 0, new LootFunction[0], new LootCondition[0], "loottable:coin" + i));
             }
         }

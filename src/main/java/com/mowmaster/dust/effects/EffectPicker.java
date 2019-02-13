@@ -9,6 +9,8 @@ import net.minecraft.potion.PotionHealth;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.registries.GameData;
 
+import java.util.Random;
+
 public class EffectPicker
 {
     static int percentRed;
@@ -22,11 +24,19 @@ public class EffectPicker
         getPotency(type,white,black,potencyCap);
         getColor(white,black,percentRed,percentBlue,percentYellow);
 
+
         if(red>0&&blue>0&&yellow>0)
         {
             if(red==blue&&blue==yellow&&yellow==red)
             {
-                return new PotionEffect(PotionRegistry.POTION_FLIGHT,duration);
+                if(Loader.isModLoaded("bloodmagic"))
+                {
+                    return new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight"));//flight
+                }
+                else
+                {
+                    return new PotionEffect(PotionRegistry.POTION_SLOWFALL,duration);
+                }
             }
             else
             {
@@ -40,6 +50,13 @@ public class EffectPicker
                 findNextColorForEffect();
                 getColor(white,black,percentRed,percentBlue,percentYellow);
             }
+        }
+
+
+        while(EffectGetter.instance().hasPotionEffect(colorToRecipe)==false)
+        {
+            findNextColorForEffect();
+            getColor(white,black,percentRed,percentBlue,percentYellow);
         }
 
 
@@ -153,6 +170,7 @@ public class EffectPicker
         colorToRecipe += (percentBlue*1000);
         colorToRecipe += (percentYellow);
     }
+
 
     private static void findNextColorForEffect()
     {

@@ -75,6 +75,10 @@ public class EffectGetter
 
 
 
+        if(!bloodMagic)
+        {
+            this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_SLOWFALL));//until flight is fixed
+        }
         //this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_FLIGHT));//3 way split
         this.addSpellEffect(1025025050, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
         this.addSpellEffect(1025050025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));

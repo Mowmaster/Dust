@@ -32,7 +32,7 @@ public class EnchantmentRegistry
         //ForgeRegistries.ENCHANTMENTS.register(new EnchantmentCopy());
         ForgeRegistries.ENCHANTMENTS.register(enchantDigger);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentStepAssist);
-        ForgeRegistries.ENCHANTMENTS.register(enchantmentFlight);
+        //ForgeRegistries.ENCHANTMENTS.register(enchantmentFlight);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentSmelter);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentRange);
 

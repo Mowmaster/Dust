@@ -16,7 +16,14 @@ public class OreDictDust
 {
     public static void addEntries()
     {
-        OreDictionary.registerOre("plankWood", BlockDustBasicMeta.dustplanks);
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,0));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,1));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,2));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,3));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,4));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,5));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,6));
+        OreDictionary.registerOre("plankWood", new ItemStack(BlockDustBasicMeta.dustplanks,1,7));
 
         OreDictionary.registerOre("treeSapling", SaplingRegister.saplingred);
         OreDictionary.registerOre("treeSapling", SaplingRegister.saplingblue);
