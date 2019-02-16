@@ -72,6 +72,18 @@ public class dust {
  */
 package com.mowmaster.dust;
 
+        import com.mowmaster.dust.blocks.BlockRegistry;
+        import com.mowmaster.dust.effects.PotionRegistry;
+        import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+        import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
+        import com.mowmaster.dust.items.ItemRegistry;
+        import com.mowmaster.dust.misc.DustConfigurationFile;
+        import com.mowmaster.dust.recipes.BrewingRecipes;
+        import com.mowmaster.dust.recipes.OreDictDust;
+        import com.mowmaster.dust.recipes.SmeltingRecipes;
+        import com.mowmaster.dust.recipes.fuels.FuelRegistry;
+        import com.mowmaster.dust.references.Reference;
+        import com.mowmaster.dust.world.biome.BiomeRegistry;
         import net.minecraft.block.Block;
         import net.minecraft.init.Blocks;
         import net.minecraftforge.common.MinecraftForge;
@@ -88,10 +100,11 @@ package com.mowmaster.dust;
         import org.apache.logging.log4j.LogManager;
         import org.apache.logging.log4j.Logger;
 
+        import java.io.File;
         import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("examplemod")
+@Mod(Reference.MODID)
 public class dust
 {
     // Directly reference a log4j logger.
@@ -113,14 +126,31 @@ public class dust
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        //dustConfig = new File(event.getModConfigurationDirectory() + "/" + Reference.MODID + "/" + "configs");
+        //dustConfig.mkdirs();
+        //DustConfigurationFile.InitConfig(new File(dustConfig.getPath(),Reference.MODID +".cfg"));
+        //BlockRegistry.init();
+        //BlockRegistry.register();
+        ItemRegistry.init();
+        ItemRegistry.register();
+        //ItemArmorAndToolsRegistry.init();
+        //ItemArmorAndToolsRegistry.register();
+        //OreDictDust.addEntries();
+        //EnchantmentRegistry.Init();
+        //PotionRegistry.init();
+        //PotionRegistry.registerPotionTypes();
+        //proxy.PreInit();
+        //proxy.registerTile();
+        //FuelRegistry.init();
+        //SmeltingRecipes.init();
+        //BrewingRecipes.registerPotionRecipes();
+        //BiomeRegistry.BiomeReg();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+        ItemRegistry.registerRenders();
+        //LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

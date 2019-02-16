@@ -37,9 +37,11 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalFurnaceBasic.class,new RenderTileCrystalFurnaceBasic());
 
 
+        /*
         ParticleEvents parts = new ParticleEvents();
         MinecraftForge.EVENT_BUS.register(parts);
         FMLCommonHandler.instance().bus().register(parts);
+         */
     }
 
     @Override
