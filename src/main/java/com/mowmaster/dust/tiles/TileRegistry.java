@@ -15,5 +15,7 @@ public class TileRegistry
         GameRegistry.registerTileEntity(TileTrapBlock.class, Reference.MODID + "tiletrapblock");
         GameRegistry.registerTileEntity(TileDustBlock.class, Reference.MODID + "tiledustblock");
         GameRegistry.registerTileEntity(TileCrystalFurnaceBasic.class, Reference.MODID + "tilecrystalfurnacebasic");
+        GameRegistry.registerTileEntity(TileDustStructureSpawner.class, Reference.MODID + "tileduststructurespawner");
+
     }
 }

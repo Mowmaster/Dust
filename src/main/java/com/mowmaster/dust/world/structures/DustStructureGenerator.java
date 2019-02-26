@@ -35,7 +35,7 @@ import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
  * @author CJMinecraft
  *
  */
-public class StructureGenerator extends WorldGenerator {
+public class DustStructureGenerator extends WorldGenerator {
 
     /**
      * Creates a range from the ground Y level where the structure can spawn
@@ -54,7 +54,7 @@ public class StructureGenerator extends WorldGenerator {
      * @param structureName
      *            The name of the structure to generate
      */
-    public StructureGenerator(String structureName) {
+    public DustStructureGenerator(String structureName) {
         this.structureName = structureName;
     }
 
@@ -67,18 +67,20 @@ public class StructureGenerator extends WorldGenerator {
                 new ResourceLocation(Reference.MODID, this.structureName));
 
         if (template == null) {
-            System.out.println("Structure Doesnt Exist" + this.structureName);
+            System.out.println("Structure Doesn't Exist: " + this.structureName);
             return false;
         }
 
-        if (canSpawnHere(template, worldServer, position)) {
+        //if (canSpawnHere(template, worldServer, pos)) {
 
-            Rotation rotation = Rotation.values()[rand.nextInt(3)];
+            //Rotation rotation = Rotation.values()[rand.nextInt(3)];
 
-            PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setRotation(rotation)
-                    .setIgnoreStructureBlock(false);
+            //PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setRotation(rotation).setIgnoreStructureBlock(false);
+
+            PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setIgnoreStructureBlock(false);
 
             template.addBlocksToWorld(world, position, settings);
+
 
             Map<BlockPos, String> dataBlocks = template.getDataBlocks(position, settings);
 
@@ -97,7 +99,7 @@ public class StructureGenerator extends WorldGenerator {
                             .entrySet()) {
                         if (entry2.getKey().getValueClass().equals(EnumFacing.class)
                                 && entry2.getKey().getName().equals("facing")) {
-                            state = state.withRotation(rotation.add(Rotation.CLOCKWISE_180));
+                            //state = state.withRotation(rotation.add(Rotation.CLOCKWISE_180));
                             break;
                         }
                     }
@@ -113,9 +115,9 @@ public class StructureGenerator extends WorldGenerator {
                 }
             }
             return true;
-        }
+        //}
 
-        return false;
+        //return false;
     }
 
     /**

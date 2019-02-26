@@ -482,6 +482,9 @@ tile.blockloot_pillar.name=Structure Loot Block
 tile.blockloot_spawnh.name=Structure Loot Block
 tile.blockloot_spawnp.name=Structure Loot Block
 
+tile.structure1.name=Structure Block
+tile.structure2.name=Structure Block
+
 tile.blockdust.name=Dust Cloud
 
 item.crystalPickaxe.name=Crystal Pickaxe [WIP]

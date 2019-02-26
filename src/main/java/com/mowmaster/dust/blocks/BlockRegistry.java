@@ -6,10 +6,7 @@ import com.mowmaster.dust.blocks.crystal.BlockCrystalCluster;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.machines.TierZero.CrystalCrusherBasic;
 import com.mowmaster.dust.blocks.machines.TierZero.CrystalFurnaceBasic;
-import com.mowmaster.dust.blocks.utility.BlockEnchantedFarmland;
-import com.mowmaster.dust.blocks.utility.BlockMobSoil;
-import com.mowmaster.dust.blocks.utility.BlockPath;
-import com.mowmaster.dust.blocks.utility.BlockSpike;
+import com.mowmaster.dust.blocks.utility.*;
 import com.mowmaster.dust.blocks.machines.*;
 import com.mowmaster.dust.blocks.treebits.*;
 
@@ -47,6 +44,7 @@ public class BlockRegistry
         BlockCrystalCluster.Init();
         BlockMachineBase.Init();
         BlockEnchantMod.Init();
+        BlockStructureSpawner.Init();
     }
 
     public static void register()
@@ -81,6 +79,7 @@ public class BlockRegistry
         BlockCrystalCluster.Register();
         BlockMachineBase.Register();
         BlockEnchantMod.Register();
+        BlockStructureSpawner.Register();
     }
 
     public static void registerRenders()
@@ -116,6 +115,7 @@ public class BlockRegistry
         BlockCrystalCluster.RegisterRender();
         BlockMachineBase.RegisterRender();
         BlockEnchantMod.RegisterRender();
+        BlockStructureSpawner.RegisterRender();
     }
 
 }

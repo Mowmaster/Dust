@@ -1,6 +1,5 @@
 package com.mowmaster.dust.world;
 
-import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.world.structures.*;
 import com.mowmaster.dust.world.structures.allbiomestructures.SmallPiller;
@@ -72,18 +71,18 @@ public class OreGeneration implements IWorldGenerator
     private LargeHouseFireplace largeHouseFireplace;
     private MediumCrusherLab mediumCrusherLab;
 
-    private StructureGenerator tester;//the same as tester1 atm
-    private StructureGenerator tester1;
-    private StructureGenerator tester2;
-    private StructureGenerator tester3;
-    private StructureGenerator tester4;
-    private StructureGenerator tester5;
-    private StructureGenerator tester6;
-    private StructureGenerator tester7;
-    private StructureGenerator tester8;
-    private StructureGenerator tester9;
-    private StructureGenerator tester10;
-    private StructureGenerator tester11;
+    private DustStructureGenerator tester;//the same as tester1 atm
+    private DustStructureGenerator tester1;
+    private DustStructureGenerator tester2;
+    private DustStructureGenerator tester3;
+    private DustStructureGenerator tester4;
+    private DustStructureGenerator tester5;
+    private DustStructureGenerator tester6;
+    private DustStructureGenerator tester7;
+    private DustStructureGenerator tester8;
+    private DustStructureGenerator tester9;
+    private DustStructureGenerator tester10;
+    private DustStructureGenerator tester11;
 
 
 
@@ -129,20 +128,20 @@ public class OreGeneration implements IWorldGenerator
         mediumCrusherLab = new MediumCrusherLab();
 
 
-        tester = new StructureGenerator("pillarchiseled1");
-        tester1 = new StructureGenerator("pillarchiseled1");
-        tester2 = new StructureGenerator("pillarchiseled2");
-        tester3 = new StructureGenerator("pillarchiseled3");
-        tester4 = new StructureGenerator("pillarchiseled4");
+        tester = new DustStructureGenerator("pillarchiseled1");
+        tester1 = new DustStructureGenerator("pillarchiseled1");
+        tester2 = new DustStructureGenerator("pillarchiseled2");
+        tester3 = new DustStructureGenerator("pillarchiseled3");
+        tester4 = new DustStructureGenerator("pillarchiseled4");
 
-        tester5 = new StructureGenerator("pillarcobble1");
-        tester6 = new StructureGenerator("pillarcobble2");
-        tester7 = new StructureGenerator("pillarcobble3");
+        tester5 = new DustStructureGenerator("pillarcobble1");
+        tester6 = new DustStructureGenerator("pillarcobble2");
+        tester7 = new DustStructureGenerator("pillarcobble3");
 
-        tester8 = new StructureGenerator("pillarstone1");
-        tester9 = new StructureGenerator("pillarstone2");
-        tester10 = new StructureGenerator("pillarstone3");
-        tester11 = new StructureGenerator("pillarstone4");
+        tester8 = new DustStructureGenerator("pillarstone1");
+        tester9 = new DustStructureGenerator("pillarstone2");
+        tester10 = new DustStructureGenerator("pillarstone3");
+        tester11 = new DustStructureGenerator("pillarstone4");
 
 
     }
