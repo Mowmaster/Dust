@@ -28,14 +28,10 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
 
-/**
- * Generate a structure with a random rotation, and automatically filled loot
- * tabled contains (if set up correctly using data structure blocks)
- *
- * @author CJMinecraft
- *
- */
-public class DustStructureGenerator extends WorldGenerator {
+public class DustStructureGenerator //extends WorldGenerator
+{
+
+    //private int rotater = 0;
 
     /**
      * Creates a range from the ground Y level where the structure can spawn
@@ -58,8 +54,15 @@ public class DustStructureGenerator extends WorldGenerator {
         this.structureName = structureName;
     }
 
-    @Override
-    public boolean generate(World world, Random rand, BlockPos position) {
+    /*
+    public void rotate(int rotate)
+    {
+        rotater = rotate;
+    }
+     */
+
+    //@Override
+    public boolean generate(World world, Random rand, BlockPos position, int rot) {
         WorldServer worldServer = (WorldServer) world;
         MinecraftServer minecraftServer = world.getMinecraftServer();
         TemplateManager templateManager = worldServer.getStructureTemplateManager();
@@ -73,11 +76,11 @@ public class DustStructureGenerator extends WorldGenerator {
 
         //if (canSpawnHere(template, worldServer, pos)) {
 
-            //Rotation rotation = Rotation.values()[rand.nextInt(3)];
+            Rotation rotation = Rotation.values()[rot];
 
-            //PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setRotation(rotation).setIgnoreStructureBlock(false);
+            PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setRotation(rotation).setIgnoreStructureBlock(false);
 
-            PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setIgnoreStructureBlock(false);
+            //PlacementSettings settings = new PlacementSettings().setMirror(Mirror.NONE).setIgnoreStructureBlock(false);
 
             template.addBlocksToWorld(world, position, settings);
 
@@ -99,7 +102,7 @@ public class DustStructureGenerator extends WorldGenerator {
                             .entrySet()) {
                         if (entry2.getKey().getValueClass().equals(EnumFacing.class)
                                 && entry2.getKey().getName().equals("facing")) {
-                            //state = state.withRotation(rotation.add(Rotation.CLOCKWISE_180));
+                            state = state.withRotation(rotation.add(Rotation.CLOCKWISE_180));
                             break;
                         }
                     }
