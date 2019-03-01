@@ -17,9 +17,11 @@ public class EffectPicker
     static int percentBlue;
     static int percentYellow;
     static int colorToRecipe = 0;
+    public static PotionEffect feffect = new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight"));
 
     public static PotionEffect getEffectFromInputs(int red, int blue, int yellow, int white, int black, int duration, int potencyCap, Boolean ambient, Boolean showParticles, CrystalTypes.EffectTypes type)
     {
+
         calcPercentages(red,blue,yellow);
         getPotency(type,white,black,potencyCap);
         getColor(white,black,percentRed,percentBlue,percentYellow);
@@ -29,14 +31,7 @@ public class EffectPicker
         {
             if(red==blue&&blue==yellow&&yellow==red)
             {
-                if(Loader.isModLoaded("bloodmagic"))
-                {
-                    return new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight"));//flight
-                }
-                else
-                {
-                    return new PotionEffect(PotionRegistry.POTION_SLOWFALL,duration);
-                }
+                getEffect(type,white,black,potencyCap,duration,ambient,showParticles);
             }
             else
             {

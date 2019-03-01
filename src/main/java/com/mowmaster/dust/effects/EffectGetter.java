@@ -73,12 +73,6 @@ public class EffectGetter
         this.addSpellEffect(1040060000, new PotionEffect(PotionRegistry.POTION_WATERQUICKNESS));
         this.addSpellEffect(1050050000, new PotionEffect(MobEffects.RESISTANCE));//purple 50/50
 
-
-
-        if(!bloodMagic)
-        {
-            this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_SLOWFALL));//until flight is fixed
-        }
         //this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_FLIGHT));//3 way split
         this.addSpellEffect(1025025050, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
         this.addSpellEffect(1025050025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
@@ -134,6 +128,12 @@ public class EffectGetter
             this.addSpellEffect(1080000020, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:soul_snare")));//to get will from mobs
 
         }
+        else
+        {
+            this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_SLOWFALL));//until flight is fixed
+        }
+
+
         if(botania)
         {
             this.addSpellEffect(1085015000, new PotionEffect(Potion.getPotionFromResourceLocation("botania:allure")));//???
