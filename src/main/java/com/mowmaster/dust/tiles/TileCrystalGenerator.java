@@ -6,13 +6,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileCrystalGenerator extends TileEntity implements ITickable,IEnergyStorage {
+public class TileCrystalGenerator extends TileEntity implements ITickable,IEnergyStorage, ICapabilityProvider {
+
+
+
+    // Return to this later
+    //https://github.com/MoSadie/ExponentialPower/blob/master/src/main/java/io/github/mosadie/ExponentialPower/energy/generator/ForgeEnergyConnection.java
+    //https://github.com/MoSadie/ExponentialPower/blob/master/src/main/java/io/github/mosadie/ExponentialPower/TileEntitys/BaseClasses/GeneratorTE.java
 
     private ItemStackHandler crystalStackHandler;
     private EnergyStorage storedEnergy;
@@ -20,6 +27,7 @@ public class TileCrystalGenerator extends TileEntity implements ITickable,IEnerg
     public TileCrystalGenerator()
     {
         this.crystalStackHandler = new ItemStackHandler(2);
+        this.storedEnergy = new EnergyStorage(100000,0,10000);//Capacity, receive, extract
     }
 
     public ItemStack getFromInv(int num)
