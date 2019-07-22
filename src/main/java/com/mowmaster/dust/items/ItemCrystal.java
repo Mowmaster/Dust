@@ -29,6 +29,7 @@ public class ItemCrystal extends Item
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (getCreativeTab() != tab) return;
         for(int i = 0; i < CrystalItems.CrystalTypes.values().length; i++)
         {
             items.add(new ItemStack(this,1,i));

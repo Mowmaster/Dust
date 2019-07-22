@@ -26,6 +26,7 @@ public class ItemBit extends Item
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (getCreativeTab() != tab) return;
         for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)
         {
             items.add(new ItemStack(this,1,i));
