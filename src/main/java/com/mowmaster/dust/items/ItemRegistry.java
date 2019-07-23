@@ -1,6 +1,7 @@
 package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
@@ -161,7 +162,7 @@ public class ItemRegistry
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");
         singleExportUpgrade = new ItemCoin("singleexportupgrade","singleexportupgrade");
         exportUpgrade = new ItemCoin("exportupgrade","exportupgrade");
-        importUpgrade = new ItemCoin("importupgrade","importupgrade");
+        importUpgrade = new ipuImport("importupgrade","importupgrade");
         dropperUpgrade = new ItemCoin("dropperupgrade","dropperupgrade");
         placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");

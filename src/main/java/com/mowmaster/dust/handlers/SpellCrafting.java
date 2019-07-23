@@ -8,6 +8,7 @@ import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
@@ -123,7 +124,7 @@ public class SpellCrafting
                             item.setDead();
                         }
 
-                        if(stack.getItem()instanceof ItemCoin)//&& !(arrow>0) || !(pressurePlate>0)
+                        if(stack.getItem()instanceof ItemCoin || stack.getItem()instanceof ipuBasic)//&& !(arrow>0) || !(pressurePlate>0)
                         {
                             coined = stack.copy();
                             coin += stack.getCount();
@@ -186,18 +187,19 @@ public class SpellCrafting
                         {
                             if(!worldIn.isRemote)
                             {
+                                /*
                                 ItemStack stack = ItemStack.EMPTY;
                                 stack = new ItemStack(ItemRegistry.effectUpgrade);
-
+                                */
 
                                 PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
-                                stack.setTagCompound(cmpd);
+                                coined.setTagCompound(cmpd);
 
                                 for(int i=0; i<coin; i++)
                                 {
-                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, stack.copy());
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, coined.copy());
                                     items1.onCollideWithPlayer(player);
                                     //worldIn.spawnEntity(items1);
                                 }

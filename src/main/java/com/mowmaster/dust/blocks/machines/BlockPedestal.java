@@ -4,6 +4,7 @@ package com.mowmaster.dust.blocks.machines;
 import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.*;
@@ -174,7 +175,8 @@ public class BlockPedestal extends BlockBasicDirectional implements ITileEntityP
                 }
                 else if(!tilePedestal.hasCoin())
                 {
-                    if(playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCoin)
+                    if(playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCoin ||
+                            playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ipuBasic)
                     {
                         if(tilePedestal.addCoin(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
                         {

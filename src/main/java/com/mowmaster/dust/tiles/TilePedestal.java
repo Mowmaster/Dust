@@ -6,6 +6,7 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
 import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -2246,6 +2247,19 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         if(!world.isRemote)
         {
 
+
+            if(this.hasUpgrade(ItemRegistry.importUpgrade))
+            {
+                Item coinI = getCoinOnPedestal().getItem();
+                if (coinI instanceof ipuImport)
+                {
+                    ((ipuImport) coinI).update(world,getPos(),getPosOfBlockBelow(1),getCoinOnPedestal());
+                }
+
+                //addStackFromBelowInvToPedestal();
+            }
+
+
             if(hasEffectUpgrade())
             {
                 if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
@@ -2341,11 +2355,6 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                     if(this.hasUpgrade(ItemRegistry.placerUpgrade))
                     {
                         placeBlockFromInventory();
-                    }
-
-                    if(this.hasUpgrade(ItemRegistry.importUpgrade))
-                    {
-                        addStackFromBelowInvToPedestal();
                     }
 
                     if(this.hasUpgrade(ItemRegistry.exportUpgrade))
