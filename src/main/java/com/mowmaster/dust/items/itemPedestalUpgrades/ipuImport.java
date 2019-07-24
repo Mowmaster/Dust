@@ -86,7 +86,7 @@ public class ipuImport extends ipuBasic
 
                                 if(getStackInPedestal(world,posOfPedestal) == ItemStack.EMPTY)
                                 {
-                                    if(itemFromInv.getCount()> getTransferRate(coinInPedestal))
+                                    if(itemFromInv.getCount() > getTransferRate(coinInPedestal))
                                     {
                                         ItemStack copyIncoming = itemFromInv.copy();
                                         copyIncoming.setCount(getTransferRate(coinInPedestal));
@@ -107,7 +107,7 @@ public class ipuImport extends ipuBasic
                                         itemFromInv.setCount(0);
                                     }
                                 }
-                                else if(getStackInPedestal(world,posOfPedestal) == itemFromInv)
+                                else if(doItemsMatch(getStackInPedestal(world,posOfPedestal),itemFromInv))
                                 {
                                     int leftTillFilled = 64 - getStackInPedestal(world,posOfPedestal).getCount();
                                     if(leftTillFilled > itemFromInv.getCount())
@@ -171,7 +171,7 @@ public class ipuImport extends ipuBasic
     public void update(World world, BlockPos posOfPedestal, BlockPos posOfInventory, ItemStack coinInPedestal)
     {
         ticker++;
-        if(ticker>=10)
+        if(ticker>=20)
         {
             upgradeAction(world, posOfPedestal, posOfInventory, coinInPedestal);
             ticker=0;

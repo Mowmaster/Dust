@@ -8,6 +8,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -100,6 +101,42 @@ public class ipuBasic extends Item
         }
 
         return stackInPedestal;
+    }
+
+    public boolean doItemsMatch(ItemStack stackPedestal, ItemStack itemStackIn)
+    {
+        if(!stackPedestal.equals(ItemStack.EMPTY))
+        {
+            if(itemStackIn.getHasSubtypes())
+            {
+                if(itemStackIn.getItem().equals(stackPedestal.getItem()) && itemStackIn.getMetadata()==stackPedestal.getMetadata())
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else if(itemStackIn.hasTagCompound())
+            {
+                NBTTagCompound itemIn = itemStackIn.getTagCompound();
+                NBTTagCompound itemStored = stackPedestal.getTagCompound();
+                if(itemIn.equals(itemStored) && itemStackIn.getItem().equals(stackPedestal.getItem()))
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else
+            {
+                if(itemStackIn.getItem().equals(stackPedestal.getItem()))
+                {
+                    return true;
+                }
+            }
+        }
+        else{return true;}
+
+
+        return false;
     }
 
 
