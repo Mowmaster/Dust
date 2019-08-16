@@ -3,6 +3,7 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.MobEffects;
@@ -20,17 +21,19 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static net.minecraft.block.BlockDirectional.FACING;
+
 public class ipuBasic extends Item
 {
     public ipuBasic() {}
 
     public boolean isFilter;
 
-    private boolean hasEnchant;
+    public boolean hasEnchant;
 
-    private boolean hasEffect;
+    public boolean hasEffect;
 
-    private int intRate = 0;
+    public int intRate = 0;
 
 
 
@@ -88,6 +91,7 @@ public class ipuBasic extends Item
                 intRate = getPotency(stack);
             }
         }
+        else intRate = 0;
 
         return intRate;
     }
@@ -137,6 +141,30 @@ public class ipuBasic extends Item
 
 
         return false;
+    }
+
+    public BlockPos getPosOfBlockBelow(World world,BlockPos posOfPedestal, int numBelow)
+    {
+        IBlockState state = world.getBlockState(posOfPedestal);
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockPos blockBelow = posOfPedestal;
+        switch (enumfacing)
+        {
+            case UP:
+                return blockBelow.add(0,-numBelow,0);
+            case DOWN:
+                return blockBelow.add(0,numBelow,0);
+            case NORTH:
+                return blockBelow.add(0,0,numBelow);
+            case SOUTH:
+                return blockBelow.add(0,0,-numBelow);
+            case EAST:
+                return blockBelow.add(-numBelow,0,0);
+            case WEST:
+                return blockBelow.add(numBelow,0,0);
+            default:
+                return blockBelow;
+        }
     }
 
 

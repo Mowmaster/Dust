@@ -7,7 +7,6 @@ import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuaImport;
 import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -232,7 +231,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                 }
             }
         }
-        return enchantPower;
+                return enchantPower;
     }
 
     public void useExpToBottleEnchantRepair()
@@ -1464,10 +1463,10 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     {
         BlockPos thisPedestal = this.getPos();
 
-        if(thisPedestal.equals(pedestalToBeLinked))
-        {
-            return true;
-        }
+            if(thisPedestal.equals(pedestalToBeLinked))
+            {
+                return true;
+            }
 
         return false;
     }
@@ -1758,7 +1757,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             case UP:
                 return blockBelow.add(0,-numBelow,0);
             case DOWN:
-                return blockBelow.add(0,numBelow,0);
+                 return blockBelow.add(0,numBelow,0);
             case NORTH:
                 return blockBelow.add(0,0,numBelow);
             case SOUTH:
@@ -1904,7 +1903,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             float k = dir.y;
 
             //world.spawnParticle(EnumParticleTypes.CLOUD, (double)storedOutputLocations[reciever].getX() + 0.5D, (double)storedOutputLocations[reciever].getY() + 1.0D, (double)storedOutputLocations[reciever].getZ() + 0.5D,
-            //(double)((float)i ), (double)((float)k -1f), (double)((float)j ), new int[0]);
+                    //(double)((float)i ), (double)((float)k -1f), (double)((float)j ), new int[0]);
 
             new ParticlesInALine(world,pos.getX()+0.5f,pos.getY()+1f,pos.getZ()+0.5f,storedOutputLocations[0].getX()+0.5f,storedOutputLocations[0].getY()+1f,storedOutputLocations[0].getZ()+0.5f,1.0f,getColor(),1.0f);
         }
@@ -2241,158 +2240,180 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         return false;
     }
 
-    int impTicker = 0;
     @Override
     public void update() {
 
+        getRedstoneSignalIn();
         if(!world.isRemote)
         {
 
 
             if(this.hasUpgrade(ItemRegistry.importUpgrade))
             {
-
-                /*
-                ItemStack stack = this.getCoinOnPedestal();
-                Item tmp = stack.getItem();
-                ipuImport obj = (ipuImport) tmp;
-
-                obj.update(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal());
-                 */
-
-
-                impTicker++;
                 Item coinI = this.getCoinOnPedestal().getItem();
                 if (coinI instanceof ipuImport)
                 {
-
-                    int rate = ((ipuImport) coinI).getTransferRate(this.getCoinOnPedestal());
-
-                    ipuaImport upgrade = new ipuaImport();
-
-                    if(impTicker>=20)
-                    {
-                        upgrade.upgradeAction(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal(),rate);
-                        impTicker=0;
-                    }
-
+                    ((ipuImport) coinI).update(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal());
                 }
-
-                /*
-                if(impTicker>=20)
-                    {
-                        //Only works when block is NOT powered
-                        if(!world.isBlockPowered(this.getPos()))
-                        {
-                            ItemStack itemFromInv = ItemStack.EMPTY;
-                            if(world.getTileEntity(this.getPos()) !=null)
-                            {
-                                if(world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
-                                {
-
-                                    TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
-                                    if(invToPullFrom instanceof TilePedestal) {
-                                        itemFromInv = ItemStack.EMPTY;
-
-                                    }
-                                    else {
-                                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
-                                        {
-                                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
-                                            {
-                                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-
-                                                if(getItemInPedestal() == ItemStack.EMPTY)
-                                                {
-                                                    if(itemFromInv.getCount() > rate)
-                                                    {
-                                                        ItemStack copyIncoming = itemFromInv.copy();
-                                                        copyIncoming.setCount(rate);
-                                                        TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                        if(pedestalInv instanceof TilePedestal) {
-                                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                        }
-                                                        int counted = itemFromInv.getCount()-rate;
-                                                        itemFromInv.setCount(counted);
-                                                    }
-                                                    else
-                                                    {
-                                                        ItemStack copyIncoming = itemFromInv.copy();
-                                                        TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                        if(pedestalInv instanceof TilePedestal) {
-                                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                        }
-                                                        itemFromInv.setCount(0);
-                                                    }
-                                                }
-                                                else if(doItemsMatch(getItemInPedestal(),itemFromInv))
-                                                {
-                                                    int leftTillFilled = 64 - getItemInPedestal().getCount();
-                                                    if(leftTillFilled > itemFromInv.getCount())
-                                                    {
-                                                        if(itemFromInv.getCount()> rate)
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            copyIncoming.setCount(rate);
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            int counted = itemFromInv.getCount()-rate;
-                                                            itemFromInv.setCount(counted);
-                                                        }
-                                                        else
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            itemFromInv.setCount(0);
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        if(leftTillFilled >= rate)
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            copyIncoming.setCount(rate);
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            int counted = itemFromInv.getCount()-rate;
-                                                            itemFromInv.setCount(counted);
-                                                        }
-                                                        else
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            copyIncoming.setCount(leftTillFilled);
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            int counted = itemFromInv.getCount()-leftTillFilled;
-                                                            itemFromInv.setCount(counted);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        impTicker=0;
-                    }
-                 */
-
 
                 //addStackFromBelowInvToPedestal();
             }
 
-            display = getItemInPedestal();
-            updateBlock();
+
+            if(hasEffectUpgrade())
+            {
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_MAGNETISM))
+                {
+                    getItemEntitiesNearby(getUpgradePotency());
+                }
+
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_GROWER))
+                {
+                    grower(getUpgradePotency());
+                }
+
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_HARVESTER))
+                {
+                    harvester(getUpgradePotency());
+                }
+
+                if(getEffectFromUpgrade().getPotion().equals(PotionRegistry.POTION_PLANTER))
+                {
+                    planter(getUpgradePotency());
+                }
+
+            }
+            if(hasCoin())
+            {
+                if(getCoinOnPedestal().getItem().equals(ItemRegistry.enchantUpgrade))
+                {
+                    if(getCoinOnPedestal().isItemEnchanted())
+                    {
+                        if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,getCoinOnPedestal())>0)
+                        {
+                            getXPOrbEntitiesNearby(getUpgradePotency());
+                        }
+                    }
+                    else getXPOrbEntitiesNearby(0);
+                }
+            }
+
+            if(this.hasUpgrade(ItemRegistry.singleExportUpgrade))
+            {
+                addItemToBelowInvFromPedestal();
+            }
+
+            if(this.hasUpgrade(ItemRegistry.chopperUpgrade))
+            {
+                if(getCoinOnPedestal().isItemEnchanted())
+                {
+                    chopper(getUpgradePotency());
+                }
+                else chopper(0);
+            }
+
+            ticker4++;
+            if(ticker4>10)
+            {
+                if(this.hasCoin())
+                {
+                    if(this.hasUpgrade(ItemRegistry.dropperUpgrade))
+                    {
+                        summonItemFromInventory();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.crafter9Upgrade))
+                    {
+                        crafter(3);
+                    }
+                    if(this.hasUpgrade(ItemRegistry.crafter4Upgrade))
+                    {
+                        crafter(2);
+                    }
+                    if(this.hasUpgrade(ItemRegistry.crafter1Upgrade))
+                    {
+                        crafter(1);
+                    }
+                }
+                ticker4=0;
+            }
+
+            ticker3++;
+            if(ticker3>20)
+            {
+
+
+                if(this.hasCoin())
+                {
+                    tryToSendItemToPedestal();
+
+                    if(this.hasUpgrade(ItemRegistry.breakerUpgrade))
+                    {
+                        getDropsFromBlock();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.placerUpgrade))
+                    {
+                        placeBlockFromInventory();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.exportUpgrade))
+                    {
+                        addStackToBelowInvFromPedestal();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.enchantUpgrade))
+                    {
+                        useExpToBottleEnchantRepair();
+                    }
+
+                    if(this.hasUpgrade(ItemRegistry.userUpgrade))
+                    {
+                        useItemFromInvBelow();
+                    }
+                }
+                else
+                {
+                    if(!world.isBlockPowered(pos))
+                    {
+                        tryToSendItemToPedestal();
+                    }
+                }
+
+
+                ticker3=0;
+            }
+        }
+
+
+
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        EnumFacing enumfacing = state.getValue(FACING);
+        if(!world.isRemote)
+        {
+            if(!getItemInPedestal().isEmpty())
+            {
+                if(getItemInPedestal().getCount()!=getMaxStackSize())
+                {
+                    ticker2++;
+                    if(ticker2>=5)
+                    {
+                        display = item.getStackInSlot(0);
+                        updateBlock();
+                        ticker2=0;
+                    }
+                }
+            }
+            else
+            {
+                ticker2++;
+                if(ticker2>=20)
+                {
+                    display = ItemStack.EMPTY;
+                    updateBlock();
+                    ticker2=0;
+                }
+            }
         }
     }
 
@@ -2418,9 +2439,9 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             }
             else {
                 stack = IntStream.range(0,tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots())//Int Range
-                        .mapToObj((tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))::getStackInSlot)//Function being applied to each interval
-                        .filter(itemStack -> !itemStack.isEmpty())
-                        .findFirst().orElse(ItemStack.EMPTY);}
+                    .mapToObj((tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))::getStackInSlot)//Function being applied to each interval
+                    .filter(itemStack -> !itemStack.isEmpty())
+                    .findFirst().orElse(ItemStack.EMPTY);}
         }
         return stack;
     }
@@ -2486,8 +2507,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         //if(!hasCoin())
         //{
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return (T) this.item;
+            if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                return (T) this.item;
 
         //}
         return super.getCapability(capability, facing);
@@ -2497,8 +2518,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         //if(!hasCoin())
         //{
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            return true;
+            if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                return true;
         //}
         return super.hasCapability(capability, facing);
     }
