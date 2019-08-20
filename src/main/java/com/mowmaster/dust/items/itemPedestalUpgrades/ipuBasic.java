@@ -107,6 +107,15 @@ public class ipuBasic extends Item
         return stackInPedestal;
     }
 
+    public void removeFromPedestal(World world, BlockPos posOfPedestal,int count)
+    {
+        ItemStack stackInPedestal = ItemStack.EMPTY;
+        TileEntity pedestalInventory = world.getTileEntity(posOfPedestal);
+        if(pedestalInventory instanceof TilePedestal) {
+            ((TilePedestal) pedestalInventory).removeItem(count);
+        }
+    }
+
     public boolean doItemsMatch(ItemStack stackPedestal, ItemStack itemStackIn)
     {
         if(!stackPedestal.equals(ItemStack.EMPTY))

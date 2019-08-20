@@ -154,6 +154,8 @@ public class ItemRegistry
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
         ancientCoin = new ItemCoin("coin","coin");
 
+        importUpgrade = new ipuImport("importupgrade","importupgrade");
+
         userUpgrade = new ItemCoin("userupgrade","userupgrade");
         chopperUpgrade = new ItemCoin("chopperupgrade","chopperupgrade");
         crafter1Upgrade = new ItemCoin("crafter1upgrade","crafter1upgrade");
@@ -162,7 +164,6 @@ public class ItemRegistry
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");
         singleExportUpgrade = new ItemCoin("singleexportupgrade","singleexportupgrade");
         exportUpgrade = new ItemCoin("exportupgrade","exportupgrade");
-        importUpgrade = new ipuImport("importupgrade","importupgrade");
         dropperUpgrade = new ItemCoin("dropperupgrade","dropperupgrade");
         placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");

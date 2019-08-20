@@ -1504,6 +1504,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         return connections;
     }
 
+    /*
     public void addStackFromBelowInvToPedestal()
     {
         if(!world.isBlockPowered(pos))
@@ -1555,6 +1556,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             }
         }
     }
+     */
 
     public void addStackToBelowInvFromPedestal()
     {
@@ -2241,161 +2243,6 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         return false;
     }
 
-    int impTicker = 0;
-    @Override
-    public void update() {
-
-        if(!world.isRemote)
-        {
-
-
-            if(this.hasUpgrade(ItemRegistry.importUpgrade))
-            {
-
-                /*
-                ItemStack stack = this.getCoinOnPedestal();
-                Item tmp = stack.getItem();
-                ipuImport obj = (ipuImport) tmp;
-
-                obj.update(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal());
-                 */
-
-
-                impTicker++;
-                Item coinI = this.getCoinOnPedestal().getItem();
-                if (coinI instanceof ipuImport)
-                {
-
-                    int rate = ((ipuImport) coinI).getTransferRate(this.getCoinOnPedestal());
-
-                    ipuaImport upgrade = new ipuaImport();
-
-                    if(impTicker>=20)
-                    {
-                        upgrade.upgradeAction(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal(),rate);
-                        impTicker=0;
-                    }
-
-                }
-
-                /*
-                if(impTicker>=20)
-                    {
-                        //Only works when block is NOT powered
-                        if(!world.isBlockPowered(this.getPos()))
-                        {
-                            ItemStack itemFromInv = ItemStack.EMPTY;
-                            if(world.getTileEntity(this.getPos()) !=null)
-                            {
-                                if(world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
-                                {
-
-                                    TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
-                                    if(invToPullFrom instanceof TilePedestal) {
-                                        itemFromInv = ItemStack.EMPTY;
-
-                                    }
-                                    else {
-                                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
-                                        {
-                                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
-                                            {
-                                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-
-                                                if(getItemInPedestal() == ItemStack.EMPTY)
-                                                {
-                                                    if(itemFromInv.getCount() > rate)
-                                                    {
-                                                        ItemStack copyIncoming = itemFromInv.copy();
-                                                        copyIncoming.setCount(rate);
-                                                        TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                        if(pedestalInv instanceof TilePedestal) {
-                                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                        }
-                                                        int counted = itemFromInv.getCount()-rate;
-                                                        itemFromInv.setCount(counted);
-                                                    }
-                                                    else
-                                                    {
-                                                        ItemStack copyIncoming = itemFromInv.copy();
-                                                        TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                        if(pedestalInv instanceof TilePedestal) {
-                                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                        }
-                                                        itemFromInv.setCount(0);
-                                                    }
-                                                }
-                                                else if(doItemsMatch(getItemInPedestal(),itemFromInv))
-                                                {
-                                                    int leftTillFilled = 64 - getItemInPedestal().getCount();
-                                                    if(leftTillFilled > itemFromInv.getCount())
-                                                    {
-                                                        if(itemFromInv.getCount()> rate)
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            copyIncoming.setCount(rate);
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            int counted = itemFromInv.getCount()-rate;
-                                                            itemFromInv.setCount(counted);
-                                                        }
-                                                        else
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            itemFromInv.setCount(0);
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        if(leftTillFilled >= rate)
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            copyIncoming.setCount(rate);
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            int counted = itemFromInv.getCount()-rate;
-                                                            itemFromInv.setCount(counted);
-                                                        }
-                                                        else
-                                                        {
-                                                            ItemStack copyIncoming = itemFromInv.copy();
-                                                            copyIncoming.setCount(leftTillFilled);
-                                                            TileEntity pedestalInv = world.getTileEntity(this.getPos());
-                                                            if(pedestalInv instanceof TilePedestal) {
-                                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                                            }
-                                                            int counted = itemFromInv.getCount()-leftTillFilled;
-                                                            itemFromInv.setCount(counted);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        impTicker=0;
-                    }
-                 */
-
-
-                //addStackFromBelowInvToPedestal();
-            }
-
-            display = getItemInPedestal();
-            updateBlock();
-        }
-    }
-
     public boolean isBlockUnder(int x,int y,int z)
     {
         TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
@@ -2423,6 +2270,38 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                         .findFirst().orElse(ItemStack.EMPTY);}
         }
         return stack;
+    }
+
+    int impTicker = 0;
+    @Override
+    public void update() {
+
+        if(!world.isRemote)
+        {
+
+            if(this.hasUpgrade(ItemRegistry.importUpgrade))
+            {
+                impTicker++;
+                Item coinI = this.getCoinOnPedestal().getItem();
+                if (coinI instanceof ipuImport)
+                {
+
+                    int rate = ((ipuImport) coinI).getTransferRate(this.getCoinOnPedestal());
+
+                    ipuaImport upgrade = new ipuaImport();
+
+                    if(impTicker>=20)
+                    {
+                        upgrade.upgradeAction(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal(),rate);
+                        impTicker=0;
+                    }
+
+                }
+            }
+
+            display = getItemInPedestal();
+            updateBlock();
+        }
     }
 
     @Override
