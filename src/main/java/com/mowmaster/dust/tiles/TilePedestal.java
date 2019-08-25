@@ -1,12 +1,12 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuaDropper;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuaImport;
 import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
@@ -2298,6 +2298,20 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
                 }
             }
+
+            if(this.hasUpgrade(ItemRegistry.dropperUpgrade))
+            {
+                impTicker++;
+
+                    ipuaDropper upgrade = new ipuaDropper();
+
+                    if(impTicker>=20)
+                    {
+                        upgrade.upgradeAction(this.world,this.getPos(),5,2);
+                        impTicker=0;
+                    }
+            }
+
 
             display = getItemInPedestal();
             updateBlock();
