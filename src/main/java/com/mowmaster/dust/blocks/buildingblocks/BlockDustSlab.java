@@ -9,16 +9,23 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.Sys;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 
@@ -107,33 +114,20 @@ public class BlockDustSlab extends BlockBasicDirectional
 
         if(placer.isSneaking())
         {
-            if(hitY<=0.5)
-            {
-                iblockstate = this.getDefaultState().withProperty(FACING, EnumFacing.UP);
-            }
-            else
-            {
-                iblockstate = this.getDefaultState().withProperty(FACING, EnumFacing.DOWN);
-            }
+            int var24 = MathHelper.floor((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+            //Sets to oppisite direction that player is facing
+            if(var24 == 2) enumfacing = EnumFacing.SOUTH;
+            else if(var24 == 3) enumfacing = EnumFacing.WEST;
+            else if(var24 == 0) enumfacing = EnumFacing.NORTH;
+            else if(var24 == 1) enumfacing = EnumFacing.EAST;
         }
         else
         {
-            iblockstate = worldIn.getBlockState(pos.offset(facing));
+            if(hitY == 1.0) enumfacing = EnumFacing.UP;
+            if(hitY >= 0.5 && hitY < 1.0) enumfacing = EnumFacing.DOWN;
+            if(hitY < 0.5  && hitY > 0.0) enumfacing = EnumFacing.UP;
+            if(hitY == 0.0) enumfacing = EnumFacing.DOWN;
         }
-
-
-        if (iblockstate.getBlock() == this)
-        {
-            enumfacing = (EnumFacing)iblockstate.getValue(FACING);
-
-            /*
-            if (enumfacing == facing)
-            {
-                return this.getDefaultState().withProperty(FACING, facing);
-            }
-             */
-        }
-
 
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
@@ -197,6 +191,12 @@ public class BlockDustSlab extends BlockBasicDirectional
         return true;
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add("While placing, hold shift to place Vertical Slabs");
+    }
+
     public static void Init()
     {
         redstoneslabs = new BlockDustSlab("redstoneslabs", "ancient/redstoneslabs",Material.ROCK, SoundType.STONE, 3, 20, 10);
@@ -210,7 +210,7 @@ public class BlockDustSlab extends BlockBasicDirectional
         yellowstoneslabs = new BlockDustSlab("yellowstoneslabs", "ancient/yellowstoneslabs",Material.ROCK, SoundType.STONE, 3, 20, 10);
         yellowbrickslabs = new BlockDustSlab("yellowbrickslabs", "ancient/yellowbrickslabs",Material.ROCK, SoundType.STONE, 3, 20, 10);
         yellowbrickslabs2 = new BlockDustSlab("yellowbrickslabs2", "ancient/yellowbrickslabs2",Material.ROCK, SoundType.STONE, 3, 20, 10);
-        yellowplankslabs = new BlockDustSlab("yellowplankslabs", "ancient/yellowplankslabs",Material.ROCK, SoundType.STONE, 3, 20, 10);
+        yellowplankslabs = new BlockDustSlab("yellowplankslabs", "ancient/yellowplankslabs",Material.WOOD, SoundType.WOOD, 2, 10, 10);
         purplestoneslabs = new BlockDustSlab("purplestoneslabs", "ancient/purplestoneslabs",Material.ROCK, SoundType.STONE, 3, 20, 10);
         purplebrickslabs = new BlockDustSlab("purplebrickslabs", "ancient/purplebrickslabs",Material.ROCK, SoundType.STONE, 3, 20, 10);
         purplebrickslabs2 = new BlockDustSlab("purplebrickslabs2", "ancient/purplebrickslabs2",Material.ROCK, SoundType.STONE, 3, 20, 10);
