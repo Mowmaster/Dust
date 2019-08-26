@@ -15,6 +15,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,10 +28,16 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
+
+import static com.mowmaster.dust.misc.DustyTab.DUSTCREATIVE;
 
 
 public class BlockLootBlock extends BlockBasic implements ITileEntityProvider, IMetaBlockName
@@ -47,6 +54,7 @@ public class BlockLootBlock extends BlockBasic implements ITileEntityProvider, I
         this.setHardness(50);
         this.setResistance(50);
         this.setSoundType(SoundType.STONE);
+        this.setCreativeTab(DUSTCREATIVE);
     }
 
     @Override
@@ -112,6 +120,67 @@ public class BlockLootBlock extends BlockBasic implements ITileEntityProvider, I
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileLootBlock();
+    }
+
+    private String getTitleText(int meta)
+    {
+        String displayText;
+        switch (meta)
+        {
+            case 0:
+                displayText = "Common (Air)";
+                break;
+            case 1:
+                displayText = "Uncommon (Air)";
+                break;
+            case 2:
+                displayText = "Rare (Air)";
+                break;
+            case 3:
+                displayText = "Legendary (Air)";
+                break;
+            case 4:
+                displayText = "Exotic (Air)";
+                break;
+            case 5:
+                displayText = "Common";
+                break;
+            case 6:
+                displayText = "Uncommon";
+                break;
+            case 7:
+                displayText = "Rare";
+                break;
+            case 8:
+                displayText = "Legendary";
+                break;
+            case 9:
+                displayText = "Exotic";
+                break;
+            case 10:
+                displayText = "Crystal Cluster";
+                break;
+            case 11:
+                displayText = "Pillar Loot";
+                break;
+            case 12:
+                displayText = "Spawner Hostile";
+                break;
+            case 13:
+                displayText = "Spawner Passive";
+                break;
+            default:
+                displayText = "Loot Block";
+        }
+
+        return displayText;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add(TextFormatting.GOLD + getTitleText(stack.getMetadata()));
+        tooltip.add("Shift + R-Click in world to change page");
     }
 
     public static void Init()

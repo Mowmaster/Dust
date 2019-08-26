@@ -2,8 +2,9 @@ item.crystal_red.name=Red Crystal
 
 death.attack.crystal=%1$s was Skewered by a bunch of Crystals
 
-itemGroup.dusttabs=Crystals, Dusts, & Items
-itemGroup.dustblockstabs=Crystal & Dust Blocks
+itemGroup.dusttabs=Dust Items
+itemGroup.dustblockstabs=Dust Blocks
+itemGroup.dustcreative=Dust Creative Blocks
 
 item.ancientcoina.name=Ancient Coin
 item.ancientcoinb.name=Ancient Coin
