@@ -321,7 +321,8 @@ public class ItemWikiScroll extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-        tooltip.add(getTitleText(stack.getMetadata()));
+        tooltip.add(TextFormatting.GOLD + getTitleText(stack.getMetadata()));
+        tooltip.add("Shift + R-Click in world to change page");
     }
 
     public static void bakeItem()
