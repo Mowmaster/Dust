@@ -1,6 +1,9 @@
 package com.mowmaster.dust.enums;
 
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by KingMowmaster on 2/25/2017.
@@ -52,24 +55,28 @@ public class CrystalBlocks
     public static enum CrystalColors implements IStringSerializable
     {
 
-        RED("red",0),
-        BLUE("blue",1),
-        YELLOW("yellow",2),
-        PURPLE("purple",3),
-        GREEN("green",4),
-        ORANGE("orange",5),
-        WHITE("white",6),
-        BLACK("black",7);
+        RED("red",0, 11546150, TextFormatting.DARK_RED),
+        BLUE("blue",1, 3949738, TextFormatting.DARK_BLUE),
+        YELLOW("yellow",2, 16701501, TextFormatting.YELLOW),
+        PURPLE("purple",3, 8991416, TextFormatting.DARK_PURPLE),
+        GREEN("green",4, 6192150, TextFormatting.DARK_GREEN),
+        ORANGE("orange",5, 16351261, TextFormatting.GOLD),
+        WHITE("white",6, 16383998, TextFormatting.WHITE),
+        BLACK("black",7, 1908001, TextFormatting.BLACK);
 
 
 
 
         private int ID;
         private String name;
-        private CrystalColors(String name, int ID)
+        private int color;
+        private TextFormatting chatColor;
+        private CrystalColors(String name, int ID, int colorValueIn, TextFormatting chatColorIn)
         {
             this.ID = ID;
             this.name = name;
+            this.color = colorValueIn;
+            this.chatColor = chatColorIn;
         }
 
         @Override
@@ -82,6 +89,11 @@ public class CrystalBlocks
         {
             return ID;
         }
+
+        @SideOnly(Side.CLIENT)
+        public int getColor(){return color;}
+
+        public TextFormatting getChatColor(){return chatColor;}
 
         @Override
         public String toString()

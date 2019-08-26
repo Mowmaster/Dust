@@ -7,7 +7,9 @@ import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -25,6 +27,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -52,26 +55,23 @@ public class BlockDustBasicMeta extends BlockBasic implements IMetaBlockName
         this.setSoundType(soundType);
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
-    @Override
-    protected BlockStateContainer createBlockState()
+
+    public String getSpecialName(ItemStack stack)
     {
-        return new BlockStateContainer(this,new IProperty[]{COLORS});
+        return CrystalBlocks.CrystalColors.values()[stack.getItemDamage()].getName();
     }
 
-
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public int damageDropped(IBlockState state)
     {
-        int blockmeta = placer.getHeldItem(EnumHand.MAIN_HAND).getMetadata();
-        return getStateFromMeta(blockmeta);
+        return ((CrystalBlocks.CrystalColors)state.getValue(COLORS)).getID();
     }
 
-
-
-    @Override
-    public int getMetaFromState(IBlockState state)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
-        CrystalBlocks.CrystalColors colors = (CrystalBlocks.CrystalColors) state.getValue(COLORS);
-        return colors.getID();
+        for (CrystalBlocks.CrystalColors enumdyecolor : CrystalBlocks.CrystalColors.values())
+        {
+            items.add(new ItemStack(this, 1, enumdyecolor.getID()));
+        }
     }
 
     @Override
@@ -80,30 +80,14 @@ public class BlockDustBasicMeta extends BlockBasic implements IMetaBlockName
         return this.getDefaultState().withProperty(COLORS,CrystalBlocks.CrystalColors.values()[meta]);
     }
 
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (int i = 0; i < CrystalBlocks.CrystalColors.values().length; i++)
-        {
-            items.add(new ItemStack(this,1,i));
-        }
+    public int getMetaFromState(IBlockState state)
+    {
+        return ((CrystalBlocks.CrystalColors)state.getValue(COLORS)).getID();
     }
 
-    public String getSpecialName(ItemStack stack)
+    protected BlockStateContainer createBlockState()
     {
-        return CrystalBlocks.CrystalColors.values()[stack.getItemDamage()].getName();
-    }
-
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-    {
-        return new ItemStack(Item.getItemFromBlock(this),1,getMetaFromState(world.getBlockState(pos)));
-    }
-
-    @Override
-    public Item getItemDropped(IBlockState state,Random random,int fortune)
-    {
-        return Item.getItemFromBlock(this);
+        return new BlockStateContainer(this, new IProperty[] {COLORS});
     }
 
     public static void Init()
