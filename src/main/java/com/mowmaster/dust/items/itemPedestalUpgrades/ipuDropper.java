@@ -4,8 +4,12 @@ import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -14,11 +18,12 @@ import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuImport extends ipuBasic
+public class ipuDropper extends ipuBasic
 {
-    public int transferRate = 0;
+    public int summonRate = 0;
+    public int range = 0;
 
-    public ipuImport(String unlocName, String registryName)
+    public ipuDropper(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -29,12 +34,7 @@ public class ipuImport extends ipuBasic
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        if(stack.getItem().equals(ItemRegistry.importUpgrade))
-        {
-            return super.isBookEnchantable(stack, book);
-        }
-
-        return false;
+        return super.isBookEnchantable(stack, book);
     }
 
     @Override
@@ -47,44 +47,86 @@ public class ipuImport extends ipuBasic
         switch (getRateModifier(MobEffects.SPEED,stack))
         {
             case 0:
-                transferRate = 1;
+                summonRate = 1;
                 break;
             case 1:
-                transferRate=4;
+                summonRate=4;
                 break;
             case 2:
-                transferRate = 8;
+                summonRate = 8;
                 break;
             case 3:
-                transferRate = 16;
+                summonRate = 16;
                 break;
             case 4:
-                transferRate = 32;
+                summonRate = 32;
                 break;
             case 5:
-                transferRate=64;
+                summonRate=64;
                 break;
-            default: transferRate=1;
+            default: summonRate=1;
         }
 
-        return  transferRate;
+        return  summonRate;
     }
+
+    public int getRange(ItemStack stack)
+    {
+        switch (getRangeModifier(stack))
+        {
+            case 0:
+                range = 1;
+                break;
+            case 1:
+                range=2;
+                break;
+            case 2:
+                range = 4;
+                break;
+            case 3:
+                range = 8;
+                break;
+            case 4:
+                range = 12;
+                break;
+            case 5:
+                range=16;
+                break;
+            default: range=1;
+        }
+
+        return  range;
+    }
+
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s2 = getTransferRate(stack);
+        int s3 = getRange(stack);
 
         String tr = "" + s2 + "";
-        tooltip.add("Item Stack Import Upgrade");
+        String trr = "" + s3 + "";
+
+        tooltip.add("Item Stack Dropper Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))
-                tooltip.add("Transfer Rate: " + tr);
+                tooltip.add("Dropped Stack Size: " + tr);
         }
         else
         {
-            tooltip.add("Transfer Rate: 1");
+            tooltip.add("Dropped Stack Size: 1");
+        }
+
+        if(s3>0)
+        {
+            tooltip.add("Dropper Range: " + trr);
+        }
+        else
+        {
+            tooltip.add("Dropper Range: " + trr);
         }
     }
+
 
 }

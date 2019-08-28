@@ -123,7 +123,7 @@ public class ItemCoin extends Item
         else if(stack.getItem().equals(ItemRegistry.chopperUpgrade)) {tooltip.add("Tree Chopper Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.breakerUpgrade)) {tooltip.add("Block Breaker Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.placerUpgrade)) {tooltip.add("Block Placer Upgrade");}
-        else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
+        //else if(stack.getItem().equals(ItemRegistry.dropperUpgrade)) {tooltip.add("Item Dropper Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.importUpgrade)) {tooltip.add("Item Stack Import Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.exportUpgrade)) {tooltip.add("Item Stack Export Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.singleExportUpgrade)) {tooltip.add("Export Restocking Upgrade");}
