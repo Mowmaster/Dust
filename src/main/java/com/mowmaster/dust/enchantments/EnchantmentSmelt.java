@@ -78,11 +78,11 @@ public class EnchantmentSmelt extends Enchantment
                 return;
             }
 
-            if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter, player.getHeldItem(player.getActiveHand())) != 0)
-            {
+            //if (EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter, player.getHeldItem(player.getActiveHand())) != 0)
+            //{
                 ItemStack tool = player.getHeldItem(player.getActiveHand());
 
-                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
+                //int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
                 if(tool.getItem() instanceof ItemTool)
                 {
                     if(!stackie.isEmpty())
@@ -116,7 +116,7 @@ public class EnchantmentSmelt extends Enchantment
                         world.setBlockToAir(pos);
                     }
                 }
-            }
+            //}
         }
     }
 }
