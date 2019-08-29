@@ -1,9 +1,18 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -17,69 +26,36 @@ public class ipuaChopper extends ipuBasic{
 
     public ipuaChopper(){}
 
-    public void upgradeAction(World world, BlockPos posOfPedestal, BlockPos posOfInventory, ItemStack coinInPedestal, int rangeWidth, int rangeHeight)
+    public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal, BlockPos blockToChopPos, IBlockState blockToChop)
     {
-
             WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
             FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-
-            if(!world.isRemote)
+            ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
+            if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
             {
-                if(!world.isBlockPowered(posOfPedestal))
-                {
-                    for(int x=-(rangeWidth);x<=(rangeWidth);x++)
-                    {
-                        for(int z=-(rangeWidth);z<=(rangeWidth);z++)
-                        {
-                            for(int y=-(rangeHeight);y<=(rangeHeight);y++) {
-                                block = world.getBlockState(posThis.add(x, y, z));
-                                if(tickChopper>84)
-                                {
-                                    if(hasItem())
-                                    {
-                                        if(Item.getItemFromBlock(block.getBlock()).getHasSubtypes())
-                                        {
-                                            if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0),1,block.getBlock().getMetaFromState(block))))
-                                            {
-
-                                                if (world.getTileEntity(posThis.add(x,y,z))==null && block.getMaterial().equals(Material.WOOD) && block.getBlock().getLocalizedName().toLowerCase().contains("log") ||
-                                                        block.getMaterial().equals(Material.LEAVES) && block.getBlock().getLocalizedName().toLowerCase().contains("leaves")) {
-                                                    block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                                    world.setBlockToAir(posThis.add(x,y,z));
-                                                    tickChopper=0;
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0))))
-                                            {
-                                                if (world.getTileEntity(posThis.add(x,y,z))==null &&block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
-                                                    block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                                    world.setBlockToAir(posThis.add(x,y,z));
-                                                    tickChopper=0;
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        if (world.getTileEntity(posThis.add(x,y,z))==null &&block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
-                                            block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                            world.setBlockToAir(posThis.add(x,y,z));
-                                            tickChopper=0;
-                                        }
-                                    }
-
-                                }
-                                else tickChopper++;
-                            }
-                        }
-                    }
-
-                    getItemEntitiesNearby(1+rangeIncrease);
-                }
+                choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
             }
+            else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
+            {
+                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
+                choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+            else
+            {
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+
+
+
+
+        if(blockToChop.getMaterial().equals(Material.WOOD) && blockToChop.getBlock().getUnlocalizedName().toLowerCase().contains("log")
+                || blockToChop.getMaterial().equals(Material.LEAVES) && blockToChop.getBlock().getUnlocalizedName().toLowerCase().contains("leaves")
+                || blockToChop.getMaterial().equals(Material.VINE) && blockToChop.getBlock().getUnlocalizedName().toLowerCase().contains("vine"))
+        {
+            blockToChop.getBlock().harvestBlock(world, fakePlayer, blockToChopPos, blockToChop, null, fakePlayer.getHeldItemMainhand());
+            world.setBlockToAir(blockToChopPos);
+        }
     }
 }

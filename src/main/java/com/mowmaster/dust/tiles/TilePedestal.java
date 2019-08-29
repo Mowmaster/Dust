@@ -5,10 +5,7 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuDropper;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuaDropper;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuaImport;
+import com.mowmaster.dust.items.itemPedestalUpgrades.*;
 import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -2172,6 +2169,48 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                         impTicker=0;
                     }
 
+                }
+            }
+
+            if(this.hasUpgrade(ItemRegistry.chopperUpgrade))
+            {
+                Item coinI = this.getCoinOnPedestal().getItem();
+                if (coinI instanceof ipuChopper)
+                {
+
+                    int rangeWidth = ((ipuChopper) coinI).getRangeWidth(this.getCoinOnPedestal());
+                    int rangeHeight = ((ipuChopper) coinI).getRangeHeight(this.getCoinOnPedestal());
+
+                    ipuaChopper upgrade = new ipuaChopper();
+
+                //BlockPos negNums = ((ipuChopper) coinI).getNegCornerofArea(world,getPos(),rangeWidth,rangeWidth,rangeHeight);
+                //BlockPos posNums = ((ipuChopper) coinI).getPosCornerofArea(world,getPos(),rangeWidth,rangeWidth,rangeHeight);
+
+                if(!world.isRemote)
+                {
+                    if(!world.isBlockPowered(getPos()))
+                    {
+                        for(int x=-(rangeWidth);x<=(rangeWidth);x++)
+                        {
+                            for(int z=-(rangeWidth);z<=(rangeWidth);z++)
+                            {
+                                for(int y=0;y<=(rangeHeight);y++) {
+                                    BlockPos blockToChopPos = this.getPos().add(x, y, z);
+                                    IBlockState blockToChop = world.getBlockState(blockToChopPos);
+                                    if(impTicker >84)
+                                    {
+                                        upgrade.upgradeAction(this.world,this.getPos(),this.getCoinOnPedestal(),blockToChopPos,blockToChop);
+                                        impTicker=0;
+                                    }
+                                    else
+                                    {
+                                        impTicker++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 }
             }
 

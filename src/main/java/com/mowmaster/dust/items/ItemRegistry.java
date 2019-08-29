@@ -1,6 +1,7 @@
 package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuChopper;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuDropper;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
@@ -157,9 +158,9 @@ public class ItemRegistry
 
         importUpgrade = new ipuImport("importupgrade","importupgrade");
         dropperUpgrade = new ipuDropper("dropperupgrade","dropperupgrade");
+        chopperUpgrade = new ipuChopper("chopperupgrade","chopperupgrade");
 
         userUpgrade = new ItemCoin("userupgrade","userupgrade");
-        chopperUpgrade = new ItemCoin("chopperupgrade","chopperupgrade");
         crafter1Upgrade = new ItemCoin("crafter1upgrade","crafter1upgrade");
         crafter4Upgrade = new ItemCoin("crafter4upgrade","crafter4upgrade");
         crafter9Upgrade = new ItemCoin("crafter9upgrade","crafter9upgrade");

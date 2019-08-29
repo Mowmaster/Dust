@@ -107,7 +107,7 @@ public class ipuDropper extends ipuBasic
         String tr = "" + s2 + "";
         String trr = "" + s3 + "";
 
-        tooltip.add("Item Stack Dropper Upgrade");
+        tooltip.add("Item Dropper Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))

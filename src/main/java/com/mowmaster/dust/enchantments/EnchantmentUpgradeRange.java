@@ -1,6 +1,7 @@
 package com.mowmaster.dust.enchantments;
 
 import com.mowmaster.dust.items.ItemCoin;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Enchantments;
@@ -34,14 +35,16 @@ public class EnchantmentUpgradeRange extends Enchantment
 
     @Override
     public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof ItemCoin;
+        return stack.getItem() instanceof ipuBasic;
     }
 
     @Override
     public boolean canApplyTogether(Enchantment ench)
     {
         return super.canApplyTogether(ench)
-                && ench == Enchantments.MENDING;
+                //&& ench == Enchantments.MENDING
+                && ench == Enchantments.SILK_TOUCH || ench == Enchantments.MENDING || ench == Enchantments.FORTUNE;
+                //&& ench == Enchantments.FORTUNE;
     }
 
     @Override
