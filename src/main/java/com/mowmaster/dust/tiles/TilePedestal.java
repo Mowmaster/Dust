@@ -785,29 +785,6 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
     }
 
-    public void summonItemFromInventory()
-    {
-
-        if(!world.isRemote)
-        {
-            if(!world.isBlockPowered(pos))
-            {
-                if(hasItem())
-                {
-                    ItemStack itemToSummon = getItemInPedestal().copy();
-                    itemToSummon.setCount(1);
-                    EntityItem itemEntity = new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ() + 0.5,itemToSummon);
-                    itemEntity.motionX = 0;
-                    itemEntity.motionY = 0;
-                    itemEntity.motionZ = 0;
-                    world.spawnEntity(itemEntity);
-                    this.removeItem(itemToSummon.getCount());
-                }
-            }
-        }
-
-    }
-
     public void getDropsFromBlock()
     {
 
@@ -907,75 +884,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
     }
 
-    int tickChopper = 0;
-    public void chopper(int rangeIncrease)
-    {
-        World world = this.world;
-        BlockPos posThis = this.getPos();
-        IBlockState block = world.getBlockState(posThis);
-        ItemStack stack = getItemInPedestal();
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
 
-        if(!world.isRemote)
-        {
-            if(!world.isBlockPowered(posThis))
-            {
-                for(int x=-(1+rangeIncrease);x<=(1+rangeIncrease);x++)
-                {
-                    for(int z=-(1+rangeIncrease);z<=(1+rangeIncrease);z++)
-                    {
-                        for(int y=-(3+rangeIncrease);y<=(3+rangeIncrease);y++) {
-                            block = world.getBlockState(posThis.add(x, y, z));
-                            if(tickChopper>84)
-                            {
-                                if(hasItem())
-                                {
-                                    if(Item.getItemFromBlock(block.getBlock()).getHasSubtypes())
-                                    {
-                                        if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0),1,block.getBlock().getMetaFromState(block))))
-                                        {
-
-                                            if (world.getTileEntity(posThis.add(x,y,z))==null && block.getMaterial().equals(Material.WOOD) && block.getBlock().getLocalizedName().toLowerCase().contains("log") ||
-                                                    block.getMaterial().equals(Material.LEAVES) && block.getBlock().getLocalizedName().toLowerCase().contains("leaves")) {
-                                                block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                                world.setBlockToAir(posThis.add(x,y,z));
-                                                tickChopper=0;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if(doItemsMatch(new ItemStack(block.getBlock().getItemDropped(block,null,0))))
-                                        {
-                                            if (world.getTileEntity(posThis.add(x,y,z))==null &&block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
-                                                block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                                world.setBlockToAir(posThis.add(x,y,z));
-                                                tickChopper=0;
-                                            }
-                                        }
-                                    }
-
-                                }
-                                else
-                                {
-                                    if (world.getTileEntity(posThis.add(x,y,z))==null &&block.getMaterial().equals(Material.WOOD) || block.getMaterial().equals(Material.LEAVES)) {
-                                        block.getBlock().harvestBlock(world,fakePlayer,posThis.add(x,y,z),block,null,getItemInPedestal());
-                                        world.setBlockToAir(posThis.add(x,y,z));
-                                        tickChopper=0;
-                                    }
-                                }
-
-                            }
-                            else tickChopper++;
-                        }
-                    }
-                }
-
-                getItemEntitiesNearby(1+rangeIncrease);
-            }
-        }
-    }
 
     int tickPlanter = 0;
     public void planter(int rangeIncrease)
@@ -1504,60 +1413,6 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
         return connections;
     }
-
-    /*
-    public void addStackFromBelowInvToPedestal()
-    {
-        if(!world.isBlockPowered(pos))
-        {
-            ItemStack itemFromInv = ItemStack.EMPTY;
-            if(world.getTileEntity(getPosOfBlockBelow(1)) !=null)
-            {
-                if(world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
-                {
-
-                    TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
-                    if(invToPullFrom instanceof TilePedestal) {
-                        itemFromInv = ItemStack.EMPTY;
-
-                    }
-                    else {
-                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
-                        {
-                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
-                            {
-                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-
-                                if(!hasItem())
-                                {
-                                    ItemStack copyIncoming = itemFromInv.copy();
-                                    item.insertItem(0,copyIncoming,false);
-                                    itemFromInv.setCount(0);
-                                }
-                                else if(doItemsMatch(itemFromInv))
-                                {
-                                    int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
-                                    if(leftTillFilled>itemFromInv.getCount())
-                                    {
-                                        item.insertItem(0,itemFromInv,false);
-                                        itemFromInv.setCount(0);
-                                    }
-                                    else
-                                    {
-                                        ItemStack copyIncoming = itemFromInv.copy();
-                                        copyIncoming.setCount(leftTillFilled);
-                                        item.insertItem(0,copyIncoming,false);
-                                        itemFromInv.shrink(leftTillFilled);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-     */
 
     public void addStackToBelowInvFromPedestal()
     {
