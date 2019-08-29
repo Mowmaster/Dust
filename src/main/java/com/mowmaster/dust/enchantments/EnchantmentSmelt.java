@@ -85,24 +85,35 @@ public class EnchantmentSmelt extends Enchantment
                 int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentSmelter,player.getHeldItem(player.getActiveHand()));
                 if(tool.getItem() instanceof ItemTool)
                 {
-                    if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty()) {}
-                    else
+                    if(!stackie.isEmpty())
                     {
-                        if(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()>0)
-                        {
-                            //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata())));
-                            event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()));
-                            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))==0) {player.getHeldItem(player.getActiveHand()).damageItem(1,player);}
+                        if(player.isSneaking() || FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).isEmpty()) {
+                            event.getState().getBlock().harvestBlock(world,player,event.getPos(),event.getState(),null,player.getHeldItemMainhand());
                             world.setBlockToAir(pos);
                         }
                         else
                         {
-                            //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1)));
-                            event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1));
-                            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))==0) {player.getHeldItem(player.getActiveHand()).damageItem(1,player);}
-                            world.setBlockToAir(pos);
-                        }
+                            if(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()>0)
+                            {
+                                //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata())));
+                                event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1,FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getMetadata()));
+                                if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))==0) {player.getHeldItem(player.getActiveHand()).damageItem(1,player);}
+                                world.setBlockToAir(pos);
+                            }
+                            else
+                            {
+                                //world.spawnEntity(new EntityItem(world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1)));
+                                event.getDrops().set(0,new ItemStack(FurnaceRecipes.instance().getSmeltingResult(stackie.get(0)).getItem(),1));
+                                if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))==0) {player.getHeldItem(player.getActiveHand()).damageItem(1,player);}
+                                world.setBlockToAir(pos);
+                            }
 
+                        }
+                    }
+                    else
+                    {
+                        event.getState().getBlock().harvestBlock(world,player,event.getPos(),event.getState(),null,player.getHeldItemMainhand());
+                        world.setBlockToAir(pos);
                     }
                 }
             }
