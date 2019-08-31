@@ -61,6 +61,7 @@ public class EnchantmentSmelt extends Enchantment
         return super.canApplyTogether(ench) && ench != Enchantments.SILK_TOUCH;
     }
 
+    /*
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void smeltEvent(BlockEvent.HarvestDropsEvent event)
     {
@@ -119,4 +120,5 @@ public class EnchantmentSmelt extends Enchantment
             //}
         }
     }
+     */
 }
