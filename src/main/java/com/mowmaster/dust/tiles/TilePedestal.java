@@ -2183,34 +2183,36 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
                     ipuaChopper upgrade = new ipuaChopper();
 
-                //BlockPos negNums = ((ipuChopper) coinI).getNegCornerofArea(world,getPos(),rangeWidth,rangeWidth,rangeHeight);
-                //BlockPos posNums = ((ipuChopper) coinI).getPosCornerofArea(world,getPos(),rangeWidth,rangeWidth,rangeHeight);
+                    BlockPos negNums = ((ipuChopper) coinI).getNegRangePos(world,getPos(),rangeWidth,rangeHeight);
+                    BlockPos posNums = ((ipuChopper) coinI).getPosRangePos(world,getPos(),rangeWidth,rangeHeight);
 
-                if(!world.isRemote)
-                {
-                    if(!world.isBlockPowered(getPos()))
+                    if(!world.isRemote)
                     {
-                        for(int x=-(rangeWidth);x<=(rangeWidth);x++)
+                        if(!world.isBlockPowered(getPos()))
                         {
-                            for(int z=-(rangeWidth);z<=(rangeWidth);z++)
+                            for(int x=negNums.getX();x<=posNums.getX();x++)
                             {
-                                for(int y=0;y<=(rangeHeight);y++) {
-                                    BlockPos blockToChopPos = this.getPos().add(x, y, z);
-                                    IBlockState blockToChop = world.getBlockState(blockToChopPos);
-                                    if(impTicker >84)
+                                for(int z=negNums.getZ();z<=posNums.getZ();z++)
+                                {
+                                    for(int y=negNums.getY();y<=posNums.getY();y++)
                                     {
-                                        upgrade.upgradeAction(this.world,this.getPos(),this.getCoinOnPedestal(),blockToChopPos,blockToChop);
-                                        impTicker=0;
-                                    }
-                                    else
-                                    {
-                                        impTicker++;
+                                        BlockPos blockToChopPos = new BlockPos(x,y,z);
+                                        //BlockPos blockToChopPos = this.getPos().add(x, y, z);
+                                        IBlockState blockToChop = world.getBlockState(blockToChopPos);
+                                        if(impTicker >84)
+                                        {
+                                            upgrade.upgradeAction(this.world,this.getItemInPedestal(),this.getCoinOnPedestal(),blockToChopPos,blockToChop);
+                                            impTicker=0;
+                                        }
+                                        else
+                                        {
+                                            impTicker++;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
                 }
             }
 
