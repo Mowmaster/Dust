@@ -21,7 +21,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 public class BlockPath extends BlockBasic
 {
-
+//Look at Block.addRunningeffects
     public static Block path1;
     public static Block path2;
     public static Block path3;
