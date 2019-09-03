@@ -129,6 +129,31 @@ public class ipuBasic extends Item
         }
     }
 
+    public void addToPedestal(World world, BlockPos posOfPedestal,ItemStack itemStackToAdd)
+    {
+        ItemStack stackInPedestal = ItemStack.EMPTY;
+        TileEntity pedestalInventory = world.getTileEntity(posOfPedestal);
+        if(pedestalInventory instanceof TilePedestal) {
+            ((TilePedestal) pedestalInventory).addItem(itemStackToAdd);
+        }
+    }
+
+    public void addExpToPedestal(World world, BlockPos posOfPedestal,int expToAdd)
+    {
+        TileEntity pedestalInventory = world.getTileEntity(posOfPedestal);
+        if(pedestalInventory instanceof TilePedestal) {
+            ((TilePedestal) pedestalInventory).addExpToPedestal(expToAdd);
+        }
+    }
+
+    public void removeExpFromPedestal(World world, BlockPos posOfPedestal,int expToRemove)
+    {
+        TileEntity pedestalInventory = world.getTileEntity(posOfPedestal);
+        if(pedestalInventory instanceof TilePedestal) {
+            ((TilePedestal) pedestalInventory).removeExpFromPedestal(expToRemove);
+        }
+    }
+
     public boolean doItemsMatch(ItemStack stackPedestal, ItemStack itemStackIn)
     {
         if(!stackPedestal.equals(ItemStack.EMPTY))
