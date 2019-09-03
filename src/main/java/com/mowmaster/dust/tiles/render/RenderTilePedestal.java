@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-import static net.minecraft.block.BlockDirectional.FACING;
+import static com.mowmaster.dust.blocks.machines.BlockPedestal.FACING;
 
 
 public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
@@ -32,7 +32,7 @@ public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
             ItemStack itemInBlockBelow = te.getDisplay();
             ItemStack coin = te.getCoinOnPedestal();
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
             GlStateManager.pushMatrix();

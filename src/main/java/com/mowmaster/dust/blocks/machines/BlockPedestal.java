@@ -1,7 +1,7 @@
 package com.mowmaster.dust.blocks.machines;
 
 
-import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
+import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
@@ -10,6 +10,7 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,7 +34,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
 
-public class BlockPedestal extends BlockBasicDirectional implements ITileEntityProvider//, IItemHandler
+public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, IItemHandler
 {
     public static Block pedestalstone;
     public static Block pedestalred;
@@ -65,6 +66,8 @@ public class BlockPedestal extends BlockBasicDirectional implements ITileEntityP
         this.setSoundType(SoundType.STONE);
         this.setLightLevel(3f);
     }
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
     @Override
     protected BlockStateContainer createBlockState()
