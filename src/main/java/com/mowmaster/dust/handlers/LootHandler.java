@@ -2,7 +2,6 @@ package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -217,6 +216,22 @@ public class LootHandler
                 pzombie.addEntry(new LootEntryItem(ItemRegistry.bit, 1, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1,3)),new SetMetadata(new LootCondition[0], new RandomValueRange(7))}, new LootCondition[0], "loottable:pzombiebl"));
             }
         }
+        /*
+
+        else if (name.equals(LootTableList.ENTITIES_EVOCATION_ILLAGER)) {
+            final LootPool evoker = event.getTable().getPool("main");
+            if (evoker != null) {
+                evoker.addEntry(new LootEntryItem(ItemRegistry.bit, 1, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1,5)),new SetMetadata(new LootCondition[0], new RandomValueRange(3))}, new LootCondition[0], "loottable:devoker"));
+                evoker.addEntry(new LootEntryItem(ItemRegistry.bit, 1, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1,3)),new SetMetadata(new LootCondition[0], new RandomValueRange(7))}, new LootCondition[0], "loottable:devoker"));
+            }
+        }else if (name.equals(LootTableList.ENTITIES_VINDICATION_ILLAGER)) {
+            final LootPool vindicator = event.getTable().getPool("main");
+            if (vindicator != null) {
+                vindicator.addEntry(new LootEntryItem(ItemRegistry.bit, 1, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1,5)),new SetMetadata(new LootCondition[0], new RandomValueRange(3))}, new LootCondition[0], "loottable:dvindicator"));
+                vindicator.addEntry(new LootEntryItem(ItemRegistry.bit, 1, 0, new LootFunction[]{new SetCount(new LootCondition[0], new RandomValueRange(1,3)),new SetMetadata(new LootCondition[0], new RandomValueRange(7))}, new LootCondition[0], "loottable:dvindicator"));
+            }
+        }
+         */
 
 
 
