@@ -13,7 +13,10 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -97,7 +100,62 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         return this.getDefaultState().withProperty(FACING, facing);
     }
 
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (tileentity instanceof TilePedestal)
+        {
+            TilePedestal tilePedestal = (TilePedestal) tileentity;
+
+            int returner = 0;
+            if(entityIn instanceof EntityItem)
+            {
+                ItemStack incomingItem = ((EntityItem) entityIn).getItem();
+                if(!hasItem())
+                {
+                    item.insertItem(0,incomingItem,false);
+                    returner = incomingItem.getCount();
+                    if(incomingItem.getCount()-returner>0)
+                    {
+                        incomingItem.setCount(incomingItem.getCount()-returner);
+                    }
+                    else entityIn.setDead();
+                }
+                else if(doItemsMatch(incomingItem))
+                {
+                    int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
+                    if(leftTillFilled>incomingItem.getCount())
+                    {
+
+                        item.insertItem(0,incomingItem,false);
+                        returner = incomingItem.getCount();
+                    }
+                    else
+                    {
+                        ItemStack copyIncoming = incomingItem.copy();
+                        copyIncoming.setCount(leftTillFilled);
+                        item.insertItem(0,copyIncoming,false);
+                        returner = incomingItem.getCount()-leftTillFilled;
+                    }
+
+                    if(incomingItem.getCount()-returner>0)
+                    {
+                        incomingItem.setCount(incomingItem.getCount()-returner);
+                    }
+                    else entityIn.setDead();
+                }
+            }
+            else if(entityIn instanceof EntityXPOrb)
+            {
+                EntityXPOrb getOrb = (EntityXPOrb)entityIn;
+                int valueXP = getOrb.getXpValue();
+                tilePedestal.addExpToPedestal(valueXP);
+                getOrb.setDead();
+            }
+        }
+    }
 
     @Override
     public int getMetaFromState(IBlockState state)
