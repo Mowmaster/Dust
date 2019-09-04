@@ -564,6 +564,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
     }
 
+    /*
     private boolean sendItemsToReciever(int listIndex)
     {
         if(!world.isRemote)
@@ -713,9 +714,11 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
         return false;
     }
+     */
 
     private void tryToSendItemToPedestal()
     {
+        /*
         if(this.hasItem())
         {
             if(numConnections()>0)
@@ -730,6 +733,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                 else if(sendItemsToReciever(7)){}
             }
         }
+         */
     }
 
     public void getStoredBlockPoss()
@@ -927,7 +931,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
                     if(impTicker>=20)
                     {
-                        upgrade.upgradeAction(this.world,this.getPos(),this.getPosOfBlockBelow(1),this.getCoinOnPedestal(),rate);
+                        BlockPos posBelow = upgrade.getPosOfBlockBelow(world,getPos(),1);
+                        upgrade.upgradeAction(this.world,this.getPos(),posBelow,this.getCoinOnPedestal(),rate);
                         impTicker=0;
                     }
 

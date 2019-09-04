@@ -32,48 +32,46 @@ public class ipuaShearer extends ipuBasic {
 
     public void upgradeAction(World world, BlockPos posOfPedestal, int summonRange, int summonCount)
     {
-        //Range comes from enchant
-        //ammount comes from...speed?
+        BlockPos posOfInvBelow = getPosOfBlockBelow(world,posOfPedestal,1);
 
         if(!world.isRemote)
         {
             if(!world.isBlockPowered(posOfPedestal))
             {
                 ItemStack itemFromInv = ItemStack.EMPTY;
-                if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
-                    if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+                if (world.getTileEntity(posOfInvBelow) != null) {
+                    if (world.getTileEntity(posOfInvBelow).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
 
-                        TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
+                        TileEntity invToPullFrom = world.getTileEntity(posOfInvBelow);
                         if (invToPullFrom instanceof TilePedestal) {
                             itemFromInv = ItemStack.EMPTY;
                         }
                         else {
-                            itemFromInv = getNextSlotInChest(getPosOfBlockBelow(1));
+                            //itemFromInv = getNextSlotInChest(posOfInvBelow);
                         }
 
                         if(itemFromInv.getItem() instanceof ItemShears)
                         {
 
-                            List<EntitySheep> baa = world.getEntitiesWithinAABB(EntitySheep.class,new AxisAlignedBB(getPosOfBlockBelow(-1)));
+                            List<EntitySheep> baa = world.getEntitiesWithinAABB(EntitySheep.class,new AxisAlignedBB(getPosOfBlockBelow(world,posOfPedestal,-1)));
                             for(EntitySheep baaaaaa : baa)
                             {
                                 if (!baaaaaa.getSheared() && !baaaaaa.isChild())
                                 {
-                                    if(!hasItem())
+                                    if(getStackInPedestal(world,posOfPedestal).equals(ItemStack.EMPTY))
                                     {
-                                        if (!this.world.isRemote)
-                                        {
+
                                             baaaaaa.setSheared(true);
                                             Random rando = new Random();
                                             int i = 1 + rando.nextInt(3);
 
                                             for (int j = 0; j < i; ++j)
                                             {
-                                                addItem(new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 1, baaaaaa.getFleeceColor().getMetadata()));
+                                                addToPedestal(world,posOfPedestal,new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 1, baaaaaa.getFleeceColor().getMetadata()));
                                             }
-                                        }
+
                                         itemFromInv.setItemDamage(itemFromInv.getItemDamage()+1);
-                                        world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                        world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 0.5F, 1.0F);
                                     }
                                 }
                             }

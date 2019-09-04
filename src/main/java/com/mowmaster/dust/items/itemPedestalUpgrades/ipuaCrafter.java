@@ -27,6 +27,7 @@ public class ipuaCrafter extends ipuBasic {
     protected int counter = 0;
     public void upgradeAction(World world, BlockPos posOfPedestal, int gridSize)
     {
+        BlockPos posOfBlockBelow = getPosOfBlockBelow(world,posOfPedestal,1);
         InventoryCrafting craft = new InventoryCrafting(new Container()
         {
             @Override
@@ -41,9 +42,9 @@ public class ipuaCrafter extends ipuBasic {
         {
             if(!world.isBlockPowered(posOfPedestal))
             {
-                if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
-                    if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
-                        TileEntity invToPushTo = world.getTileEntity(getPosOfBlockBelow(1));
+                if (world.getTileEntity(posOfBlockBelow) != null) {
+                    if (world.getTileEntity(posOfBlockBelow).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+                        TileEntity invToPushTo = world.getTileEntity(posOfBlockBelow);
                         if (invToPushTo instanceof TilePedestal) {
                             return;
                         }
@@ -73,9 +74,9 @@ public class ipuaCrafter extends ipuBasic {
                                 for(IRecipe recipe : ForgeRegistries.RECIPES)
                                 {
                                     if(recipe.matches(craft, world)) {
-                                        if(!hasItem())
+                                        if(getStackInPedestal(world,posOfPedestal).equals(ItemStack.EMPTY))
                                         {
-                                            this.addItem(recipe.getCraftingResult(craft));
+                                            addToPedestal(world,posOfPedestal,recipe.getCraftingResult(craft));
 
                                             for(int i = 0; i < gridIterateSize; i++) {
                                                 ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
@@ -88,7 +89,7 @@ public class ipuaCrafter extends ipuBasic {
                                                     ItemStack container = stack.getItem().getContainerItem(stack);
                                                     if(!world.isRemote)
                                                     {
-                                                        world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                        world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-1).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getY(),getPosOfBlockBelow(world,posOfPedestal,-1).getZ()+ 0.5,container));
                                                     }
                                                     stack.shrink(1);
                                                 }
@@ -101,11 +102,11 @@ public class ipuaCrafter extends ipuBasic {
                                         }
                                         else
                                         {
-                                            if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                            if(doItemsMatch(getStackInPedestal(world,posOfPedestal),recipe.getCraftingResult(craft)))
                                             {
-                                                if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                if(getStackInPedestal(world,posOfPedestal).getCount()< getStackInPedestal(world,posOfPedestal).getMaxStackSize())
                                                 {
-                                                    this.addItem(recipe.getCraftingResult(craft));
+                                                    addToPedestal(world,posOfPedestal,recipe.getCraftingResult(craft));
                                                 }
 
 
@@ -120,7 +121,7 @@ public class ipuaCrafter extends ipuBasic {
                                                         ItemStack container = stack.getItem().getContainerItem(stack);
                                                         if(!world.isRemote)
                                                         {
-                                                            world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                            world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-1).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getY(),getPosOfBlockBelow(world,posOfPedestal,-1).getZ()+ 0.5,container));
                                                         }
                                                         stack.shrink(1);
                                                     }
@@ -141,7 +142,7 @@ public class ipuaCrafter extends ipuBasic {
                             int counted = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()/gridIterateSize;
                             if(counter<counted)
                             {
-                                if(!hasItem())
+                                if(getStackInPedestal(world,posOfPedestal).equals(ItemStack.EMPTY))
                                 {
                                     // 0 1 2 3 4 5 6 7 8
                                     // 9 10 11 12 13 14 15 16 17
@@ -171,9 +172,9 @@ public class ipuaCrafter extends ipuBasic {
                                         for(IRecipe recipe : ForgeRegistries.RECIPES)
                                         {
                                             if(recipe.matches(craft, world)) {
-                                                if(!hasItem())
+                                                if(getStackInPedestal(world,posOfPedestal).equals(ItemStack.EMPTY))
                                                 {
-                                                    this.addItem(recipe.getCraftingResult(craft));
+                                                    addToPedestal(world,posOfPedestal,recipe.getCraftingResult(craft));
 
                                                     for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
                                                         ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
@@ -186,7 +187,7 @@ public class ipuaCrafter extends ipuBasic {
                                                             ItemStack container = stack.getItem().getContainerItem(stack);
                                                             if(!world.isRemote)
                                                             {
-                                                                world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                                world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-1).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getY(),getPosOfBlockBelow(world,posOfPedestal,-1).getZ()+ 0.5,container));
                                                             }
                                                             stack.shrink(1);
                                                         }
@@ -199,11 +200,11 @@ public class ipuaCrafter extends ipuBasic {
                                                 }
                                                 else
                                                 {
-                                                    if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                                    if(doItemsMatch(getStackInPedestal(world,posOfPedestal),recipe.getCraftingResult(craft)))
                                                     {
-                                                        if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                        if(getStackInPedestal(world,posOfPedestal).getCount()<= getStackInPedestal(world,posOfPedestal).getMaxStackSize())
                                                         {
-                                                            this.addItem(recipe.getCraftingResult(craft));
+                                                            addToPedestal(world,posOfPedestal,recipe.getCraftingResult(craft));
                                                         }
 
 
@@ -217,7 +218,7 @@ public class ipuaCrafter extends ipuBasic {
                                                                 ItemStack container = stack.getItem().getContainerItem(stack);
                                                                 if(!world.isRemote)
                                                                 {
-                                                                    world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                                    world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-1).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getY(),getPosOfBlockBelow(world,posOfPedestal,-1).getZ()+ 0.5,container));
                                                                 }
                                                                 stack.shrink(1);
                                                             }
