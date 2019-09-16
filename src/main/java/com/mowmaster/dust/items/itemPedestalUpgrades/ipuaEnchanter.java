@@ -27,7 +27,7 @@ public class ipuaEnchanter extends ipuBasic {
 
 
 
-    public void getXPOrbEntitiesNearby(int rangeIncrease)
+    /*public void getXPOrbEntitiesNearby(int rangeIncrease)
     {
         World world = this.world;
         ItemStack stack = ItemStack.EMPTY;
@@ -43,7 +43,7 @@ public class ipuaEnchanter extends ipuBasic {
 
         }
 
-        /*
+        *//*
         List<EntityItem> items = worldIn.getEntitiesWithinAABB(EntityItem.class,new AxisAlignedBB(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1, pos.getX() + 2, pos.getY() + 1, pos.getZ() + 2));
             List<EntityXPOrb> orbs = worldIn.getEntitiesWithinAABB(EntityXPOrb.class,new AxisAlignedBB(pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1, pos.getX() + 2, pos.getY() + 1, pos.getZ() + 2));
             for (EntityXPOrb orbo : orbs) {
@@ -111,7 +111,7 @@ public class ipuaEnchanter extends ipuBasic {
                     item.motionZ=0.1;
                 }
             }
-         */
+         *//*
     }
 
     public void upgradeAction(World world, BlockPos posOfPedestal,BlockPos blockBelow, ItemStack itemInPedestal, ItemStack coinInPedestal, float enchantPower, int expInPedestal)
@@ -246,6 +246,6 @@ public class ipuaEnchanter extends ipuBasic {
             }
         }
 
-    }
+    }*/
 
 }

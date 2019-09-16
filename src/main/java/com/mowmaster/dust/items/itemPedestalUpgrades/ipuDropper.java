@@ -5,12 +5,14 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -96,6 +98,33 @@ public class ipuDropper extends ipuBasic
         }
 
         return  range;
+    }
+
+    public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
+    {
+        if (tick%20 == 0) {
+            upgradeAction(world,pedestalPos,coinInPedestal);
+        }
+    }
+
+    public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinOnPedestal)
+    {
+        int rate = getTransferRate(coinOnPedestal);
+        int range = getRange(coinOnPedestal);
+        if(!world.isBlockPowered(posOfPedestal))
+        {
+            if(!getStackInPedestal(world,posOfPedestal).isEmpty())//hasItem
+            {
+                ItemStack itemToSummon = getStackInPedestal(world,posOfPedestal).copy();
+                itemToSummon.setCount(rate);
+                EntityItem itemEntity = new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-range).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-range).getY(),getPosOfBlockBelow(world,posOfPedestal,-range).getZ() + 0.5,itemToSummon);
+                itemEntity.motionX = 0;
+                itemEntity.motionY = 0;
+                itemEntity.motionZ = 0;
+                world.spawnEntity(itemEntity);
+                this.removeFromPedestal(world,posOfPedestal,itemToSummon.getCount());
+            }
+        }
     }
 
 

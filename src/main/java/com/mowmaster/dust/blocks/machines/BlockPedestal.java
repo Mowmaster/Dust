@@ -113,9 +113,9 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
             if(entityIn instanceof EntityItem)
             {
                 ItemStack incomingItem = ((EntityItem) entityIn).getItem();
-                if(!hasItem())
+                if(tilePedestal.getItemInPedestal().isEmpty())
                 {
-                    item.insertItem(0,incomingItem,false);
+                    tilePedestal.addItem(incomingItem);
                     returner = incomingItem.getCount();
                     if(incomingItem.getCount()-returner>0)
                     {
@@ -123,20 +123,20 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                     }
                     else entityIn.setDead();
                 }
-                else if(doItemsMatch(incomingItem))
+                else if(tilePedestal.doItemsMatch(tilePedestal.getItemInPedestal(),incomingItem))
                 {
-                    int leftTillFilled = roomLeftInStack(this.item.getStackInSlot(0));
+                    int leftTillFilled = tilePedestal.roomLeftInStack(tilePedestal.getItemInPedestal());
                     if(leftTillFilled>incomingItem.getCount())
                     {
 
-                        item.insertItem(0,incomingItem,false);
+                        tilePedestal.addItem(incomingItem);
                         returner = incomingItem.getCount();
                     }
                     else
                     {
                         ItemStack copyIncoming = incomingItem.copy();
                         copyIncoming.setCount(leftTillFilled);
-                        item.insertItem(0,copyIncoming,false);
+                        tilePedestal.addItem(copyIncoming);
                         returner = incomingItem.getCount()-leftTillFilled;
                     }
 

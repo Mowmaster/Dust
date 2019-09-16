@@ -15,6 +15,7 @@ public class ipuaCraftingReStocker extends ipuBasic {
 
     }
 
+    /*
     private int currentslot = 0;
     public void upgradeAction(World world, BlockPos posOfPedestal, int summonRange, int summonCount)
     {
@@ -75,5 +76,6 @@ public class ipuaCraftingReStocker extends ipuBasic {
         }
 
     }
+     */
 
 }

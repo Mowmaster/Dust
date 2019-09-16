@@ -4,11 +4,19 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -121,6 +129,80 @@ public class ipuChopper extends ipuBasic
         else
         {
             tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
+        }
+    }
+
+    public int ticked = 0;
+
+    public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
+    {
+        int rangeWidth = getRangeWidth(coinInPedestal);
+        int rangeHeight = getRangeHeight(coinInPedestal);
+
+        BlockPos negNums = getNegRangePos(world,pedestalPos,rangeWidth,rangeHeight);
+        BlockPos posNums = getPosRangePos(world,pedestalPos,rangeWidth,rangeHeight);
+
+        if(!world.isBlockPowered(pedestalPos)) {
+            for (int x = negNums.getX(); x <= posNums.getX(); x++) {
+                for (int z = negNums.getZ(); z <= posNums.getZ(); z++) {
+                    for (int y = negNums.getY(); y <= posNums.getY(); y++) {
+                        BlockPos blockToChopPos = new BlockPos(x, y, z);
+                        //BlockPos blockToChopPos = this.getPos().add(x, y, z);
+                        IBlockState blockToChop = world.getBlockState(blockToChopPos);
+                        if (tick%1 == 0) {
+                            ticked++;
+                        }
+
+                        if(ticked >84)
+                        {
+                            upgradeAction(world, itemInPedestal, coinInPedestal, blockToChopPos, blockToChop);
+                            ticked=0;
+                        }
+                        else
+                        {
+                            ticked++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos blockToChopPos, IBlockState blockToChop)
+    {
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+        ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
+        if(!itemInPedestal.isEmpty())
+        {
+            fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
+        }
+        else
+        {
+            if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
+            {
+                choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+            else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
+            {
+                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
+                choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+            else
+            {
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+        }
+
+        if(blockToChop.getBlock().isWood(world,blockToChopPos) || blockToChop.getBlock().isLeaves(blockToChop,world,blockToChopPos))
+        {
+            if(fakePlayer.canHarvestBlock(blockToChop))
+            {
+                blockToChop.getBlock().harvestBlock(world, fakePlayer, blockToChopPos, blockToChop, null, fakePlayer.getHeldItemMainhand());
+            }
+            blockToChop.getBlock().removedByPlayer(blockToChop,world,blockToChopPos,fakePlayer,false);
         }
     }
 

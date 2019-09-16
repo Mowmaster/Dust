@@ -21,7 +21,7 @@ public class ipuaPlacer extends ipuBasic {
 
     }
 
-    public void upgradeAction(World world, BlockPos posOfPedestal, int summonRange, int summonCount)
+    /*public void upgradeAction(World world, BlockPos posOfPedestal, int summonRange, int summonCount)
     {
         //Range comes from enchant
         //ammount comes from...speed?
@@ -159,6 +159,6 @@ public class ipuaPlacer extends ipuBasic {
             }
         }
 
-    }
+    }*/
 
 }

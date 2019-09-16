@@ -17,7 +17,7 @@ public class ipuaEffectMagnet extends ipuBasic {
 
 
 
-    public void upgradeAction(World world, BlockPos posOfPedestal, int summonRange, int summonCount)
+    /*public void upgradeAction(World world, BlockPos posOfPedestal, int summonRange, int summonCount)
     {
         World world = this.world;
         ItemStack stack = ItemStack.EMPTY;
@@ -37,6 +37,6 @@ public class ipuaEffectMagnet extends ipuBasic {
             }
         }
 
-    }
+    }*/
 
 }

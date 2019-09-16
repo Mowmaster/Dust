@@ -21,7 +21,7 @@ public class ipuaFilter extends ipuBasic {
 
     }
 
-    public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn, FilterTypes enumType)
+    /*public Boolean areFilteredItemsEqual(TilePedestal recievingPedestal, ItemStack itemStackIn, FilterTypes enumType)
     {
         BlockPos filterInv = recievingPedestal.getPosOfBlockBelow(1);
         if(world.getTileEntity(filterInv).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
@@ -137,6 +137,6 @@ public class ipuaFilter extends ipuBasic {
             }
         }
 
-    }
+    }*/
 
 }

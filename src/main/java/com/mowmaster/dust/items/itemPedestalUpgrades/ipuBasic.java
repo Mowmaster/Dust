@@ -213,4 +213,9 @@ public class ipuBasic extends Item
                 return blockBelow;
         }
     }
+
+    public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
+    {
+
+    }
 }

@@ -918,93 +918,13 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
         if(!world.isRemote)
         {
-            if(this.hasUpgrade(ItemRegistry.importUpgrade))
+            Item coinInPed = getCoinOnPedestal().getItem();
+            if(coinInPed instanceof ipuBasic)
             {
                 impTicker++;
-                Item coinI = this.getCoinOnPedestal().getItem();
-                if (coinI instanceof ipuImport)
-                {
-
-                    int rate = ((ipuImport) coinI).getTransferRate(this.getCoinOnPedestal());
-
-                    ipuaImport upgrade = new ipuaImport();
-
-                    if(impTicker>=20)
-                    {
-                        BlockPos posBelow = upgrade.getPosOfBlockBelow(world,getPos(),1);
-                        upgrade.upgradeAction(this.world,this.getPos(),posBelow,this.getCoinOnPedestal(),rate);
-                        impTicker=0;
-                    }
-
-                }
+                ((ipuBasic) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
+                if(impTicker >=20){impTicker=0;}
             }
-
-            if(this.hasUpgrade(ItemRegistry.dropperUpgrade))
-            {
-                impTicker++;
-                Item coinI = this.getCoinOnPedestal().getItem();
-                if (coinI instanceof ipuDropper)
-                {
-
-                    int rate = ((ipuDropper) coinI).getTransferRate(this.getCoinOnPedestal());
-                    int range = ((ipuDropper) coinI).getRange(this.getCoinOnPedestal());
-
-                    ipuaDropper upgrade = new ipuaDropper();
-
-                    if(impTicker>=20)
-                    {
-                        upgrade.upgradeAction(this.world,this.getPos(),range,rate);
-                        impTicker=0;
-                    }
-
-                }
-            }
-
-            if(this.hasUpgrade(ItemRegistry.chopperUpgrade))
-            {
-                Item coinI = this.getCoinOnPedestal().getItem();
-                if (coinI instanceof ipuChopper)
-                {
-
-                    int rangeWidth = ((ipuChopper) coinI).getRangeWidth(this.getCoinOnPedestal());
-                    int rangeHeight = ((ipuChopper) coinI).getRangeHeight(this.getCoinOnPedestal());
-
-                    ipuaChopper upgrade = new ipuaChopper();
-
-                    BlockPos negNums = ((ipuChopper) coinI).getNegRangePos(world,getPos(),rangeWidth,rangeHeight);
-                    BlockPos posNums = ((ipuChopper) coinI).getPosRangePos(world,getPos(),rangeWidth,rangeHeight);
-
-                    if(!world.isRemote)
-                    {
-                        if(!world.isBlockPowered(getPos()))
-                        {
-                            for(int x=negNums.getX();x<=posNums.getX();x++)
-                            {
-                                for(int z=negNums.getZ();z<=posNums.getZ();z++)
-                                {
-                                    for(int y=negNums.getY();y<=posNums.getY();y++)
-                                    {
-                                        BlockPos blockToChopPos = new BlockPos(x,y,z);
-                                        //BlockPos blockToChopPos = this.getPos().add(x, y, z);
-                                        IBlockState blockToChop = world.getBlockState(blockToChopPos);
-                                        if(impTicker >84)
-                                        {
-                                            upgrade.upgradeAction(this.world,this.getItemInPedestal(),this.getCoinOnPedestal(),blockToChopPos,blockToChop);
-                                            impTicker=0;
-                                        }
-                                        else
-                                        {
-                                            impTicker++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
             display = getItemInPedestal();
             updateBlock();
         }
