@@ -799,4 +799,44 @@ public class EnchantAndEffectHandlers
             }
         }
     }
+
+    Boolean storage;
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onStore(TickEvent.PlayerTickEvent event)
+    {
+
+        EntityPlayer player = event.player;
+
+        World world = player.getEntityWorld();
+        int amp=0;
+        if(player.isPotionActive(PotionRegistry.POTION_VOIDSTORAGE))
+        {
+            storage=true;
+            amp = 1+player.getActivePotionEffect(PotionRegistry.POTION_VOIDSTORAGE).getAmplifier();
+        }
+        else{storage=false;}
+
+        if(storage==true)
+        {
+            float range = 5;
+            float verticalRange = 3;
+            float posX = Math.round(player.posX);
+            float posY = (float) (player.posY - player.getEyeHeight());
+            float posZ = Math.round(player.posZ);
+
+            /*List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+
+            for (EntityItem entity : entities) {
+                if (entity != null && !world.isRemote && !entity.isDead) {
+                    entity.onCollideWithPlayer(player);
+                }
+            }
+
+            for (EntityXPOrb xpOrb : xpOrbs) {
+                if (xpOrb != null && !world.isRemote) {
+                    xpOrb.onCollideWithPlayer(player);
+                }
+            }*/
+        }
+    }
 }
