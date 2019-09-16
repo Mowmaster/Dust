@@ -1,6 +1,6 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
-import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
@@ -19,12 +19,11 @@ import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuImport extends ipuBasic
+public class ipuExport extends ipuBasic
 {
     public int transferRate = 0;
-    public int transferSpeed = 0;
 
-    public ipuImport(String unlocName, String registryName)
+    public ipuExport(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -35,12 +34,17 @@ public class ipuImport extends ipuBasic
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        if(stack.getItem().equals(ItemRegistry.importUpgrade))
+        {
+            return super.isBookEnchantable(stack, book);
+        }
+
         return false;
     }
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return false;
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public int getTransferRate(ItemStack stack)
@@ -71,38 +75,9 @@ public class ipuImport extends ipuBasic
         return  transferRate;
     }
 
-    public int getTransferSpeed(ItemStack stack)
-    {
-        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
-        {
-            case 0:
-                transferSpeed = 20;//normal speed
-                break;
-            case 1:
-                transferSpeed=10;//2x faster
-                break;
-            case 2:
-                transferSpeed = 5;//4x faster
-                break;
-            case 3:
-                transferSpeed = 3;//6x faster
-                break;
-            case 4:
-                transferSpeed = 2;//10x faster
-                break;
-            case 5:
-                transferSpeed=1;//20x faster
-                break;
-            default: transferSpeed=20;
-        }
-
-        return  transferSpeed;
-    }
-
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        int speed = getTransferSpeed(coinInPedestal);
-        if (tick%speed == 0) {
+        if (tick%20 == 0) {
             upgradeAction(world,pedestalPos,coinInPedestal);
         }
     }
@@ -216,56 +191,17 @@ public class ipuImport extends ipuBasic
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s2 = getTransferRate(stack);
-        int s3 = 0;
-
-        switch (getTransferSpeed(stack))
-        {
-            case 1:
-                s3 = 1;//normal speed
-                break;
-            case 2:
-                s3=2;//2x faster
-                break;
-            case 3:
-                s3 = 4;//4x faster
-                break;
-            case 5:
-                s3 = 6;//6x faster
-                break;
-            case 10:
-                s3 = 10;//10x faster
-                break;
-            case 20:
-                s3=20;//20x faster
-                break;
-            default: s3=1;
-        }
-
 
         String tr = "" + s2 + "";
-        String trr = "" + s3 + "";
         tooltip.add("Item Stack Import Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))
-            {
                 tooltip.add("Transfer Rate: " + tr);
-                if(s3 == 1)
-                {
-                    tooltip.add("Transfer Speed: " + trr + "1x Base Speed");
-                }
-                else{
-                    tooltip.add("Transfer Speed: " + trr + "x Times Faster");
-                }
-            }
-
-
-
         }
         else
         {
             tooltip.add("Transfer Rate: 1");
-            tooltip.add("Transfer Speed: 1x Base Speed");
         }
     }
 
