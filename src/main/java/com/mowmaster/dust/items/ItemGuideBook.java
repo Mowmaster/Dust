@@ -37,10 +37,10 @@ public class ItemGuideBook extends Item
     @Override
     @SideOnly(Side.CLIENT)
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
-        if(world.isRemote)
+        /*if(world.isRemote)
         {
             Minecraft.getMinecraft().displayGuiScreen(new GuiIndex());
-        }
+        }*/
 
         return super.onItemRightClick(world,player,hand);
     }
