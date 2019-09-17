@@ -2,20 +2,26 @@ package com.mowmaster.dust.handlers;
 
 import com.google.common.collect.Lists;
 import com.mowmaster.dust.blocks.BlockRegistry;
+import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.blocks.machines.BlockTrap;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
+import com.mowmaster.dust.items.ItemSpellScroll;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.tiles.TileTrapBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +29,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -34,6 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.dustToActivate;
 import static com.mowmaster.dust.misc.DustConfigurationFile.effectMaximum;
@@ -55,6 +63,9 @@ public class SpellCrafting
         int red=0;
         int blue=0;
         int yellow=0;
+        int purple=0;
+        int green=0;
+        int orange=0;
         int white=0;
         int black=0;
         int pressurePlate = 0;
@@ -92,14 +103,17 @@ public class SpellCrafting
                                 red += stack.getCount();
                                 blue += stack.getCount();
                                 count += stack.getCount();
+                                purple++;
                             } else if (stack.getItemDamage() == 4) {
                                 yellow += stack.getCount();
                                 blue += stack.getCount();
                                 count += stack.getCount();
+                                green++;
                             } else if (stack.getItemDamage() == 5) {
                                 yellow += stack.getCount();
                                 red += stack.getCount();
                                 count += stack.getCount();
+                                orange++;
                             } else if (stack.getItemDamage() == 6) {
                                 white += stack.getCount();
                                 count += stack.getCount();
@@ -109,37 +123,38 @@ public class SpellCrafting
                             }
                             item.setDead();
                         }
-                        if(stack.getItem().equals(new ItemStack(Blocks.WOODEN_PRESSURE_PLATE).getItem())
-                                || stack.getItem().equals(new ItemStack(Blocks.STONE_PRESSURE_PLATE).getItem())
-                                || stack.getItem().equals(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE).getItem())
-                                || stack.getItem().equals(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).getItem())
-                        )//&& !(arrow>0) || !(paper>0)
+                        if(containsPressurePlate(stack))//&& !(arrow>0) || !(paper>0)
                         {
                             pressurePlate++;
                             item.setDead();
                         }
-                        if(stack.getItem().equals(Items.PAPER) )//&& !(arrow>0) || !(pressurePlate>0)
+                        if(containsPaper(stack))//&& !(arrow>0) || !(pressurePlate>0)
                         {
                             paper += stack.getCount();
                             item.setDead();
                         }
 
-                        if(stack.getItem()instanceof ItemCoin || stack.getItem()instanceof ipuBasic)//&& !(arrow>0) || !(pressurePlate>0)
+                        if(containsCoin(stack))//&& !(arrow>0) || !(pressurePlate>0)
                         {
                             coined = stack.copy();
                             coin += stack.getCount();
                             item.setDead();
                         }
 
-                        if(stack.getItem().equals(Items.ARROW) )//&& !(paper>0) || !(pressurePlate>0)
+                        if(containsArrow(stack))//&& !(paper>0) || !(pressurePlate>0)
                         {
                             arrow += stack.getCount();
                             item.setDead();
                         }
 
                     }
-
-                    if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0 && coin==0) {
+                    if(red>0 || blue>0 || yellow>0 || purple>0|| green>0 || orange >0|| white>0||black>0)
+                    {
+                        worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
+                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockMachineBase.machineBase.getDefaultState());
+                        worldIn.createExplosion(new EntityItem(worldIn), posX + 0.5,posY + 2.0,posZ + 0.5,1.0F, false);
+                    }
+                    else if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0 && coin==0) {
                         player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                     }
                     else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0 && coin==0)
@@ -249,5 +264,41 @@ public class SpellCrafting
                 }
             }
         }
+    }
+
+    public boolean containsPaper(ItemStack stack)
+    {
+        if(stack.getItem().equals(Items.PAPER))
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean containsArrow(ItemStack stack)
+    {
+        if(stack.getItem() instanceof ItemArrow)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean containsPressurePlate(ItemStack stack)
+    {
+        if(Block.getBlockFromItem(stack.getItem()) instanceof BlockBasePressurePlate)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean containsCoin(ItemStack stack)
+    {
+        if(stack.getItem() instanceof ipuBasic || stack.getItem() instanceof ItemCoin)
+        {
+            return true;
+        }
+        else return false;
     }
 }
