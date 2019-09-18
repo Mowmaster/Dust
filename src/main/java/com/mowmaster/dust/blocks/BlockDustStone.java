@@ -2,14 +2,13 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +23,7 @@ public class BlockDustStone extends Block
         super(builder);
     }
 
-    public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune) {
+    public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune) {
         return this;
     }
 
@@ -47,7 +46,7 @@ public class BlockDustStone extends Block
             .sound(SoundType.STONE))
             .setRegistryName(RES_STONE_RED);
 
-    public static final Item STONE_RED_ITEM = new ItemBlock(STONE_RED, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS))
+    public static final Item STONE_RED_ITEM = new BlockItem(STONE_RED, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS))
     {
 
 
