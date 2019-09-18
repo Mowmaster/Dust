@@ -26,8 +26,8 @@ import static com.mowmaster.dust.blocks.BlockDustStone.STONE_RED;
 @Mod.EventBusSubscriber
 public class SpellCraftingBasic
 {
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void SpellCrafting(PlayerInteractEvent.RightClickItem event)
+    @SubscribeEvent()
+    public static void SpellCrafting(PlayerInteractEvent.RightClickBlock event)
     {
         World worldIn = event.getWorld();
         Hand hand = event.getHand();
@@ -68,10 +68,12 @@ public class SpellCraftingBasic
                         ItemStack stack = item.getItem();
                         if(stack.getItem().equals(Items.STONE))
                         {
+                            item.remove();
                             count++;
                         }
                         else if(stack.getItem().equals(Items.RED_DYE))
                         {
+                            item.remove();
                             counting++;
                         }
                         //System.out.println(stack.getItem() instanceof ItemDust);
