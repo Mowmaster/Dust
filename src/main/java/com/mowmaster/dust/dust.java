@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.crafting.SpellCraftingBasic;
+import com.mowmaster.dust.item.ItemDust;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -30,6 +31,7 @@ public class dust
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
         BlockDustStone.onItemRegistryReady(event);
+        ItemDust.onItemRegistryReady(event);
     }
 
     @SubscribeEvent
