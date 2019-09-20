@@ -4,29 +4,43 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.Hand;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.capabilities.CapabilityProvider;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
+
+import static com.mowmaster.dust.references.Reference.MODID;
+
+
 
 
 public class BlockDustStone extends Block
 {
+    public static int blockcolor = 16711680;//16711680
+
+
     public BlockDustStone(Properties builder) {
         super(builder);
     }
 
-    private static final ResourceLocation RESLOC_STONE_RED = new ResourceLocation(Reference.MODID, "stonered");
-    private static final ResourceLocation RESLOC_STONE_GREEN = new ResourceLocation(Reference.MODID, "stonegreen");
-    private static final ResourceLocation RESLOC_STONE_BLUE = new ResourceLocation(Reference.MODID, "stoneblue");
-    private static final ResourceLocation RESLOC_STONE_WHITE = new ResourceLocation(Reference.MODID, "stonewhite");
-    private static final ResourceLocation RESLOC_STONE_BLACK = new ResourceLocation(Reference.MODID, "stoneblack");
+    private static final ResourceLocation RESLOC_STONE_RED = new ResourceLocation(MODID, "stonered");
+    private static final ResourceLocation RESLOC_STONE_GREEN = new ResourceLocation(MODID, "stonegreen");
+    private static final ResourceLocation RESLOC_STONE_BLUE = new ResourceLocation(MODID, "stoneblue");
+    private static final ResourceLocation RESLOC_STONE_WHITE = new ResourceLocation(MODID, "stonewhite");
+    private static final ResourceLocation RESLOC_STONE_BLACK = new ResourceLocation(MODID, "stoneblack");
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
@@ -51,7 +65,7 @@ public class BlockDustStone extends Block
     public static void handleBlockColors(ColorHandlerEvent.Block event) {
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {
             if (tintIndex == 1) {
-                return 16711680;
+                return blockcolor;
             } else {
                 return -1;
             }
@@ -62,7 +76,7 @@ public class BlockDustStone extends Block
 
         event.getItemColors().register((itemstack, tintIndex) -> {
             if (tintIndex == 1) {
-                return 16711680;
+                return blockcolor;
             } else {
                 return -1;
             }
