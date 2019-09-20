@@ -1,9 +1,7 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -13,6 +11,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -21,10 +20,6 @@ public class BlockDustStone extends Block
 {
     public BlockDustStone(Properties builder) {
         super(builder);
-    }
-
-    public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune) {
-        return this;
     }
 
     private static final ResourceLocation RESLOC_STONE_RED = new ResourceLocation(Reference.MODID, "stonered");
@@ -51,6 +46,27 @@ public class BlockDustStone extends Block
         event.getRegistry().register(STONE_BLUE);
         event.getRegistry().register(STONE_WHITE);
         event.getRegistry().register(STONE_BLACK);
+    }
+
+    public static void handleBlockColors(ColorHandlerEvent.Block event) {
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {
+            if (tintIndex == 1) {
+                return 16711680;
+            } else {
+                return -1;
+            }
+        },  STONE_RED);
+    }
+
+    public static void handleItemColors(ColorHandlerEvent.Item event) {
+
+        event.getItemColors().register((itemstack, tintIndex) -> {
+            if (tintIndex == 1) {
+                return 16711680;
+            } else {
+                return -1;
+            }
+        },  ITEM_STONE_RED);
     }
 
     public static final Block STONE_RED = new Block(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(RESLOC_STONE_RED);
