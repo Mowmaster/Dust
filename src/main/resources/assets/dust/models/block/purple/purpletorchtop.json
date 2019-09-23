@@ -1,8 +1,0 @@
-{
-    "parent": "dust:block/crystaltorchceling",
-    "textures": {
-        "core": "dust:items/models/crystals/crystalcore_purple",
-        "side": "dust:items/models/crystals/crystal_purple",
-        "part": "dust:items/models/crystals/crystal_purple"
-    }
-}

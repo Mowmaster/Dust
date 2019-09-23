@@ -1,8 +1,0 @@
-{
-    "parent": "dust:block/pot",
-    "textures": {
-        "outside": "dust:blocks/stone/stone/greenstone",
-        "inside": "dust:blocks/stone/stone/blackstone",
-        "part": "dust:blocks/stone/stone/greenstone"
-    }
-}

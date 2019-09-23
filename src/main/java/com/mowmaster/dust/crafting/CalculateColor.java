@@ -3,16 +3,16 @@ package com.mowmaster.dust.crafting;
 public class CalculateColor
 {
 
-    public static int getColorFromRGB(int red, int green, int blue)
+    public static int getColorFromRGB(float red, float green, float blue)
     {
         int rgbInt = 0;
         int r = 0;
         int g = 0;
         int b = 0;
 
-        r= Math.multiplyExact(red,65536);
-        g= Math.multiplyExact(green,256);
-        b= blue;
+        r= Math.round(red*65536);
+        g= Math.round(green*256);
+        b= Math.round(blue);
 
         rgbInt = r+g+b;
 
@@ -21,25 +21,22 @@ public class CalculateColor
 
 
 
-    public static int getColorValueFromDust(int count)
+    public static float getColorValueFromDust(int count)
     {
         float colorcount = 0;
-        int colorINT = 0;
 
         if(count>0)
         {
             //System.out.println("Color: "+count);
-            float value1 = (count%6);
+            float value1 = (count%5);
             if(value1 == 0.0f)
             {
-                value1 = 6;
+                value1 = 5;
             }
             //System.out.println("Value: "+value1);
-            colorcount=(value1*(42.66f))-1;
+            colorcount=(value1*(51.2f))-1;
             //System.out.println("ColorCount: "+colorcount);
         }
-
-        colorINT = Math.round(colorcount);
 
         //1red 41
         //2red 84
@@ -48,7 +45,7 @@ public class CalculateColor
         //5red
         //6red
 
-        return colorINT;
+        return colorcount;
     }
 
     public static int[] getRGBColorFromInt(int getINTColor)

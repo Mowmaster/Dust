@@ -1,6 +1,0 @@
-{
-    "parent": "dust:block/leaves",
-    "textures": {
-        "all": "dust:blocks/dust/reddust"
-    }
-}

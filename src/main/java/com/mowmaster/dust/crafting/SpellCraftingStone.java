@@ -25,17 +25,20 @@ public class SpellCraftingStone
 
     private SpellCraftingStone()
     {
-        this.addSpellCraftingStoneRecipe(16711680,new ItemStack(BlockDustStone.ITEM_STONE_RED,1));
-        this.addSpellCraftingStoneRecipe(2752512,new ItemStack(BlockDustStone.ITEM_STONE_RED1,1));
-        this.addSpellCraftingStoneRecipe(5505024,new ItemStack(BlockDustStone.ITEM_STONE_RED2,1));
-        this.addSpellCraftingStoneRecipe(8323072,new ItemStack(BlockDustStone.ITEM_STONE_RED3,1));
-        this.addSpellCraftingStoneRecipe(11141120,new ItemStack(BlockDustStone.ITEM_STONE_RED4,1));
-        this.addSpellCraftingStoneRecipe(13893632,new ItemStack(BlockDustStone.ITEM_STONE_RED5,1));
+        this.addSpellCraftingStoneRecipe(0,new ItemStack(BlockDustStone.ITEM_STONE_000,1));
+        this.addSpellCraftingStoneRecipe(50,new ItemStack(BlockDustStone.ITEM_STONE_001,1));
+        this.addSpellCraftingStoneRecipe(101,new ItemStack(BlockDustStone.ITEM_STONE_002,1));
+        this.addSpellCraftingStoneRecipe(153,new ItemStack(BlockDustStone.ITEM_STONE_003,1));
+        this.addSpellCraftingStoneRecipe(204,new ItemStack(BlockDustStone.ITEM_STONE_004,1));
+        this.addSpellCraftingStoneRecipe(255,new ItemStack(BlockDustStone.ITEM_STONE_005,1));
 
-        this.addSpellCraftingStoneRecipe(65280,new ItemStack(BlockDustStone.ITEM_STONE_GREEN,1));
-        this.addSpellCraftingStoneRecipe(255,new ItemStack(BlockDustStone.ITEM_STONE_BLUE,1));
-        this.addSpellCraftingStoneRecipe(16777215,new ItemStack(BlockDustStone.ITEM_STONE_WHITE,1));
-        this.addSpellCraftingStoneRecipe(2105376,new ItemStack(BlockDustStone.ITEM_STONE_BLACK,1));
+        this.addSpellCraftingStoneRecipe(12851,new ItemStack(BlockDustStone.ITEM_STONE_010,1));
+        this.addSpellCraftingStoneRecipe(12901,new ItemStack(BlockDustStone.ITEM_STONE_011,1));
+        this.addSpellCraftingStoneRecipe(12952,new ItemStack(BlockDustStone.ITEM_STONE_012,1));
+        this.addSpellCraftingStoneRecipe(13004,new ItemStack(BlockDustStone.ITEM_STONE_013,1));
+        this.addSpellCraftingStoneRecipe(13055,new ItemStack(BlockDustStone.ITEM_STONE_014,1));
+        this.addSpellCraftingStoneRecipe(13106,new ItemStack(BlockDustStone.ITEM_STONE_015,1));
+
     }
 
 

@@ -1,7 +1,0 @@
-{
-    "parent": "dust:item/ancientscroll",
-    "textures": {
-        "letter": "dust:items/models/scrolls/scrolln",
-        "blank": "dust:items/models/scrolls/scroll"
-    }
-}

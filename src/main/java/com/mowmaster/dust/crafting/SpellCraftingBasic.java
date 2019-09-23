@@ -12,16 +12,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
-import static com.mowmaster.dust.blocks.BlockDustStone.STONE_RED;
 
 @Mod.EventBusSubscriber
 public class SpellCraftingBasic
@@ -90,18 +86,18 @@ public class SpellCraftingBasic
 
                     }
 
-                    int rgbRed = CalculateColor.getColorValueFromDust(red);
-                    int rgbGreen = CalculateColor.getColorValueFromDust(green);
-                    int rgbBlue = CalculateColor.getColorValueFromDust(blue);
+                    float rgbRed = CalculateColor.getColorValueFromDust(red);
+                    float rgbGreen = CalculateColor.getColorValueFromDust(green);
+                    float rgbBlue = CalculateColor.getColorValueFromDust(blue);
                     count = red+green+blue;
 
                     if(black>0 || white>0)
                     {
                         if (black>white)
                         {
-                            rgbRed = 32;
-                            rgbGreen = 32;
-                            rgbBlue = 32;
+                            rgbRed = 0;
+                            rgbGreen = 0;
+                            rgbBlue = 0;
                             count = black;
                         }
                         else
@@ -114,9 +110,9 @@ public class SpellCraftingBasic
                     }
 
                     int color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
-                    //System.out.println("Red: " + red + " rgb: " +rgbRed);
-                    //System.out.println("Green: "  + green + " rgb: " + rgbGreen);
-                    //System.out.println("Blue: " + blue + " rgb: " + rgbBlue);
+                    /*System.out.println("Red: " + red + " rgb: " +rgbRed);
+                    System.out.println("Green: "  + green + " rgb: " + rgbGreen);
+                    System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
                     System.out.println(color);
 
 
