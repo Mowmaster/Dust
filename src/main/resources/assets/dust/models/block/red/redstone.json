@@ -2,7 +2,8 @@
   "parent": "block/cube_all",
   "textures": {
     "all": "dust:blocks/stone/stone/redstone",
-    "colored": "dust:blocks/stone/stone/tintstone"
+    "colored": "dust:blocks/stone/stone/tintstone",
+    "particle": "dust:blocks/stone/stone/tintstone"
   },
   "elements":[
     {
@@ -15,6 +16,7 @@
         "south":{"tintindex":1, "texture": "#colored", "cullface": "south"},
         "west":{"tintindex":1, "texture": "#colored", "cullface": "west"},
         "east":{"tintindex":1, "texture": "#colored", "cullface": "east"}
-        }
-    }]
+      }
+    }
+  ]
 }

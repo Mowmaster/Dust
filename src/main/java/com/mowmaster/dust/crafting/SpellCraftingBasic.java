@@ -44,6 +44,7 @@ public class SpellCraftingBasic
         int white=0;
         int black=0;
         int stone=0;
+        int count=0;
 
         if(!worldIn.isRemote) {
             //List<EntityItem> item = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
@@ -88,12 +89,37 @@ public class SpellCraftingBasic
                             }
 
                     }
-                    System.out.println("Stone: " + stone);
-                    System.out.println("Red: " + red);
-                    System.out.println("Green: " + green);
-                    System.out.println("Blue: " + blue);
-                    System.out.println("White: " + white);
-                    System.out.println("Black: " + black);
+
+                    int rgbRed = CalculateColor.getColorValueFromDust(red);
+                    int rgbGreen = CalculateColor.getColorValueFromDust(green);
+                    int rgbBlue = CalculateColor.getColorValueFromDust(blue);
+                    count = red+green+blue;
+
+                    if(black>0 || white>0)
+                    {
+                        if (black>white)
+                        {
+                            rgbRed = 32;
+                            rgbGreen = 32;
+                            rgbBlue = 32;
+                            count = black;
+                        }
+                        else
+                        {
+                            rgbRed = 255;
+                            rgbGreen = 255;
+                            rgbBlue = 255;
+                            count = white;
+                        }
+                    }
+
+                    int color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+                    //System.out.println("Red: " + red + " rgb: " +rgbRed);
+                    //System.out.println("Green: "  + green + " rgb: " + rgbGreen);
+                    //System.out.println("Blue: " + blue + " rgb: " + rgbBlue);
+                    System.out.println(color);
+
+
                     worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                     worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
                     if (stone > 0) {
@@ -101,54 +127,18 @@ public class SpellCraftingBasic
                         //{
                             for(int i=stone;i>0;i--)
                             {
-
-
-                                if(red>=2)
+                                if(count>=2)
                                 {
-                                    stone--;
-                                    red-=2;
-                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,SpellCraftingStone.instance().getResult(new ItemStack(ItemDust.DUST_RED,2)));
-                                    itemEn.setInvulnerable(true);
-                                    worldIn.addEntity(itemEn);
-
-                                }
-
-                                if (green >= 2) {
-                                    stone--;
-                                    green -= 2;
-                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,SpellCraftingStone.instance().getResult(new ItemStack(ItemDust.DUST_GREEN,2)));
+                                    count-=2;
+                                    stone-=1;
+                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(SpellCraftingStone.instance().getResult(color).getItem(),1));
                                     itemEn.setInvulnerable(true);
                                     worldIn.addEntity(itemEn);
                                 }
-
-                                if(blue>=2)
-                                {
-                                    stone--;
-                                    blue-=2;
-                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,SpellCraftingStone.instance().getResult(new ItemStack(ItemDust.DUST_BLUE,2)));
-                                    itemEn.setInvulnerable(true);
-                                    worldIn.addEntity(itemEn);                                }
-
-                                if(white>=2)
-                                {
-                                    stone--;
-                                    white-=2;
-                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,SpellCraftingStone.instance().getResult(new ItemStack(ItemDust.DUST_WHITE,2)));
-                                    itemEn.setInvulnerable(true);
-                                    worldIn.addEntity(itemEn);                                }
-
-                                if(black>=2)
-                                {
-                                    stone--;
-                                    black-=2;
-                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,SpellCraftingStone.instance().getResult(new ItemStack(ItemDust.DUST_BLACK,2)));
-                                    itemEn.setInvulnerable(true);
-                                    worldIn.addEntity(itemEn);                                }
-
-                                if(red<2 && green <2 && blue<2 && white <2 && black<2 && stone>0)
+                                else
                                 {
                                     ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(Items.STONE,stone));
-                                    stone=0;
+                                    stone-=stone;
                                     itemEn.setInvulnerable(true);
                                     worldIn.addEntity(itemEn);
                                 }

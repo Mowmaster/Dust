@@ -13,7 +13,7 @@ public class SpellCraftingStone
 {
     private static final SpellCraftingStone SPELL_CRAFTING_STONE = new SpellCraftingStone();
     /** The list of smelting results. */
-    private final Map<ItemStack, ItemStack> spellCraftingStoneList = Maps.<ItemStack, ItemStack>newHashMap();
+    private final Map<Integer, ItemStack> spellCraftingStoneList = Maps.<Integer, ItemStack>newHashMap();
 
     /**
      * Returns an instance of FurnaceRecipes.
@@ -25,48 +25,46 @@ public class SpellCraftingStone
 
     private SpellCraftingStone()
     {
+        this.addSpellCraftingStoneRecipe(16711680,new ItemStack(BlockDustStone.ITEM_STONE_RED,1));
+        this.addSpellCraftingStoneRecipe(2752512,new ItemStack(BlockDustStone.ITEM_STONE_RED1,1));
+        this.addSpellCraftingStoneRecipe(5505024,new ItemStack(BlockDustStone.ITEM_STONE_RED2,1));
+        this.addSpellCraftingStoneRecipe(8323072,new ItemStack(BlockDustStone.ITEM_STONE_RED3,1));
+        this.addSpellCraftingStoneRecipe(11141120,new ItemStack(BlockDustStone.ITEM_STONE_RED4,1));
+        this.addSpellCraftingStoneRecipe(13893632,new ItemStack(BlockDustStone.ITEM_STONE_RED5,1));
 
-        this.addSpellCraftingStoneRecipe(new ItemStack(ItemDust.DUST_RED,2),new ItemStack(BlockDustStone.ITEM_STONE_RED,1));
-        this.addSpellCraftingStoneRecipe(new ItemStack(ItemDust.DUST_GREEN,2),new ItemStack(BlockDustStone.ITEM_STONE_GREEN,1));
-        this.addSpellCraftingStoneRecipe(new ItemStack(ItemDust.DUST_BLUE,2),new ItemStack(BlockDustStone.ITEM_STONE_BLUE,1));
-        this.addSpellCraftingStoneRecipe(new ItemStack(ItemDust.DUST_WHITE,2),new ItemStack(BlockDustStone.ITEM_STONE_WHITE,1));
-        this.addSpellCraftingStoneRecipe(new ItemStack(ItemDust.DUST_BLACK,2),new ItemStack(BlockDustStone.ITEM_STONE_BLACK,1));
-
+        this.addSpellCraftingStoneRecipe(65280,new ItemStack(BlockDustStone.ITEM_STONE_GREEN,1));
+        this.addSpellCraftingStoneRecipe(255,new ItemStack(BlockDustStone.ITEM_STONE_BLUE,1));
+        this.addSpellCraftingStoneRecipe(16777215,new ItemStack(BlockDustStone.ITEM_STONE_WHITE,1));
+        this.addSpellCraftingStoneRecipe(2105376,new ItemStack(BlockDustStone.ITEM_STONE_BLACK,1));
     }
 
-    /**
-     * Adds a smelting recipe, where the input item is an instance of Block.
-     */
-    public void addCrushingRecipeForBlock(Block input, ItemStack stack)
-    {
-        this.addCrushing(Item.getItemFromBlock(input), stack);
-    }
+
 
     /**
      * Adds a smelting recipe using an Item as the input item.
      */
-    public void addCrushing(Item input, ItemStack stack)
+    public void addColorRecipe(int colorIn, ItemStack stack)
     {
-        this.addSpellCraftingStoneRecipe(new ItemStack(input), stack);
+        this.addSpellCraftingStoneRecipe(colorIn, stack);
     }
 
     /**
      * Adds a smelting recipe using an ItemStack as the input for the recipe.
      */
-    public void addSpellCraftingStoneRecipe(ItemStack input, ItemStack stack)
+    public void addSpellCraftingStoneRecipe(int colorIn, ItemStack stack)
     {
-        if (getResult(input) != ItemStack.EMPTY) { return;}
-        this.spellCraftingStoneList.put(input, stack);
+        if (getResult(colorIn) != ItemStack.EMPTY) { return;}
+        this.spellCraftingStoneList.put(colorIn, stack);
     }
 
     /**
      * Returns the smelting result of an item.
      */
-    public ItemStack getResult(ItemStack stack)
+    public ItemStack getResult(int colorIn)
     {
-        for (Map.Entry<ItemStack, ItemStack> entry : this.spellCraftingStoneList.entrySet())
+        for (Map.Entry<Integer, ItemStack> entry : this.spellCraftingStoneList.entrySet())
         {
-            if (this.compareItemStacks(stack, entry.getKey()))
+            if (colorIn == entry.getKey())
             {
                 return entry.getValue();
             }
@@ -75,15 +73,7 @@ public class SpellCraftingStone
         return ItemStack.EMPTY;
     }
 
-    /**
-     * Compares two itemstacks to ensure that they are the same. This checks both the item and the metadata of the item.
-     */
-    private boolean compareItemStacks(ItemStack stack1, ItemStack stack2)
-    {
-        return stack2.getItem() == stack1.getItem();
-    }
-
-    public Map<ItemStack, ItemStack> getCrushingList()
+    public Map<Integer, ItemStack> getCrushingList()
     {
         return this.spellCraftingStoneList;
     }

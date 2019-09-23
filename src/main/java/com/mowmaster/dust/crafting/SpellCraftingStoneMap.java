@@ -5,18 +5,18 @@ import net.minecraft.item.ItemStack;
 public class SpellCraftingStoneMap
 {
 
-    public ItemStack inputItem;
+    public int colorIn;
     public ItemStack outputBlock;
 
-    public SpellCraftingStoneMap(ItemStack inputInsertedItem, ItemStack outputDustBlock)
+    public SpellCraftingStoneMap(int getColor, ItemStack outputDustBlock)
     {
-        this.inputItem=inputInsertedItem;
+        this.colorIn=getColor;
         this.outputBlock=outputDustBlock;
     }
 
-    public ItemStack getInput()
+    public int getInputColor()
     {
-        return inputItem;
+        return colorIn;
     }
 
     public ItemStack getOutput()
@@ -26,6 +26,6 @@ public class SpellCraftingStoneMap
 
     @Override
     public String toString() {
-        return "CrystalCrusher [input=" + inputItem + ", output=" + outputBlock + "]";
+        return "DustStone [input=" + colorIn + ", output=" + outputBlock + "]";
     }
 }
