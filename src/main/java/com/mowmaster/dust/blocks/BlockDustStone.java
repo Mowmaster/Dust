@@ -835,7 +835,7 @@ public class BlockDustStone extends Block
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10039910;} else {return -1;}},STONE_331);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10039961;} else {return -1;}},STONE_332);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10040013;} else {return -1;}},STONE_333);
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10010064;} else {return -1;}},STONE_334);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10040064;} else {return -1;}},STONE_334);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10040115;} else {return -1;}},STONE_335);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10052967;} else {return -1;}},STONE_340);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10053017;} else {return -1;}},STONE_341);
@@ -1061,7 +1061,7 @@ public class BlockDustStone extends Block
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10039910;} else {return -1;}},ITEM_STONE_331);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10039961;} else {return -1;}},ITEM_STONE_332);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10040013;} else {return -1;}},ITEM_STONE_333);
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10010064;} else {return -1;}},ITEM_STONE_334);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10040064;} else {return -1;}},ITEM_STONE_334);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10040115;} else {return -1;}},ITEM_STONE_335);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10052967;} else {return -1;}},ITEM_STONE_340);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10053017;} else {return -1;}},ITEM_STONE_341);

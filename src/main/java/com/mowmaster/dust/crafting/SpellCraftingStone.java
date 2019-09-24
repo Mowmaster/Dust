@@ -160,7 +160,7 @@ public class SpellCraftingStone
         this.addSpellCraftingStoneRecipe(10039910,new ItemStack(BlockDustStone.ITEM_STONE_331));
         this.addSpellCraftingStoneRecipe(10039961,new ItemStack(BlockDustStone.ITEM_STONE_332));
         this.addSpellCraftingStoneRecipe(10040013,new ItemStack(BlockDustStone.ITEM_STONE_333));
-        this.addSpellCraftingStoneRecipe(10010064,new ItemStack(BlockDustStone.ITEM_STONE_334));
+        this.addSpellCraftingStoneRecipe(10040064,new ItemStack(BlockDustStone.ITEM_STONE_334));
         this.addSpellCraftingStoneRecipe(10040115,new ItemStack(BlockDustStone.ITEM_STONE_335));
         this.addSpellCraftingStoneRecipe(10052967,new ItemStack(BlockDustStone.ITEM_STONE_340));
         this.addSpellCraftingStoneRecipe(10053017,new ItemStack(BlockDustStone.ITEM_STONE_341));

@@ -86,9 +86,9 @@ public class SpellCraftingBasic
 
                     }
 
-                    float rgbRed = CalculateColor.getColorValueFromDust(red);
-                    float rgbGreen = CalculateColor.getColorValueFromDust(green);
-                    float rgbBlue = CalculateColor.getColorValueFromDust(blue);
+                    double rgbRed = CalculateColor.getColorValueFromDust(red);
+                    double rgbGreen = CalculateColor.getColorValueFromDust(green);
+                    double rgbBlue = CalculateColor.getColorValueFromDust(blue);
                     count = red+green+blue;
 
                     if(black>0 || white>0)
