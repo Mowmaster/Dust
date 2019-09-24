@@ -2,12 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "stone013",
+      "name": "stone000",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:stone013"
+          "name": "dust:stone000"
         }
       ],
       "conditions": [
