@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.crafting.SpellCraftingBasic;
+import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemDust;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
@@ -36,6 +37,7 @@ public class dust
     {
         BlockDustStone.onItemRegistryReady(event);
         ItemDust.onItemRegistryReady(event);
+        ItemColorDust.onItemRegistryReady(event);
     }
 
     @SubscribeEvent
@@ -54,6 +56,7 @@ public class dust
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
     {
         BlockDustStone.handleItemColors(event);
+        ItemColorDust.handleItemColors(event);
     }
 
 

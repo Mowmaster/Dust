@@ -1,5 +1,6 @@
 package com.mowmaster.dust.crafting;
 
+import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemDust;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
@@ -18,6 +19,8 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
+import static com.mowmaster.dust.references.Reference.MODID;
+
 
 @Mod.EventBusSubscriber
 public class SpellCraftingBasic
@@ -34,6 +37,9 @@ public class SpellCraftingBasic
         int posY = event.getPos().getY();
         int posZ = event.getPos().getZ();
 
+        int r = 0;
+        int g = 0;
+        int b = 0;
         int red=0;
         int blue=0;
         int green=0;
@@ -57,34 +63,35 @@ public class SpellCraftingBasic
                             item.remove();
                         }
 
-
-                            if(stack.getItem().equals(ItemDust.DUST_RED))
-                            {
-                                red+=stack.getCount();
-                                item.remove();
-                            }
-                            if(stack.getItem().equals(ItemDust.DUST_GREEN))
-                            {
-                                green+=stack.getCount();
-                                item.remove();
-                            }
-                            if(stack.getItem().equals(ItemDust.DUST_BLUE))
-                            {
-                                blue+=stack.getCount();
-                                item.remove();
-                            }
-                             if(stack.getItem().equals(ItemDust.DUST_WHITE))
-                            {
-                                white+=stack.getCount();
-                                item.remove();
-                            }
-                            if(stack.getItem().equals(ItemDust.DUST_BLACK))
+                        if(stack.getItem() instanceof ItemColorDust)
+                        {
+                            if(stack.getTag().getInt(MODID + "color") == 0)
                             {
                                 black+=stack.getCount();
                                 item.remove();
                             }
+                            else if(stack.getTag().getInt(MODID + "color") == 16777215)
+                            {
+                                white+=stack.getCount();
+                                item.remove();
+                            }
+                            else
+                            {
+                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt(MODID + "color"));
+                                r+=rgbColors[0];
+                                g+=rgbColors[10];
+                                b+=rgbColors[2];
+
+                            }
+
+                        }
+
 
                     }
+
+                    red = Math.round(r%256);
+                    green = Math.round(g%256);
+                    blue = Math.round(b%256);
 
                     double rgbRed = CalculateColor.getColorValueFromDust(red);
                     double rgbGreen = CalculateColor.getColorValueFromDust(green);
