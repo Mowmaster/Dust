@@ -65,22 +65,24 @@ public class SpellCraftingBasic
 
                         if(stack.getItem() instanceof ItemColorDust)
                         {
-                            if(stack.getTag().getInt(MODID + "color") == 0)
+                            if(stack.getTag().getInt("color") == 0)
                             {
                                 black+=stack.getCount();
                                 item.remove();
                             }
-                            else if(stack.getTag().getInt(MODID + "color") == 16777215)
+                            else if(stack.getTag().getInt("color") == 16777215)
                             {
                                 white+=stack.getCount();
                                 item.remove();
                             }
                             else
                             {
-                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt(MODID + "color"));
+                                System.out.println(stack.getTag().getInt("color"));
+                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
                                 r+=rgbColors[0];
-                                g+=rgbColors[10];
+                                g+=rgbColors[1];
                                 b+=rgbColors[2];
+                                item.remove();
 
                             }
 
@@ -120,7 +122,6 @@ public class SpellCraftingBasic
                     /*System.out.println("Red: " + red + " rgb: " +rgbRed);
                     System.out.println("Green: "  + green + " rgb: " + rgbGreen);
                     System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
-                    System.out.println(color);
 
 
                     worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);

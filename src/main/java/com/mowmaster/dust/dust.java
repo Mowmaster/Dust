@@ -1,12 +1,14 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
+import com.mowmaster.dust.crafting.Recipes;
 import com.mowmaster.dust.crafting.SpellCraftingBasic;
 import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemDust;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,6 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.registries.IRegistryDelegate;
 
@@ -57,6 +60,13 @@ public class dust
     {
         BlockDustStone.handleItemColors(event);
         ItemColorDust.handleItemColors(event);
+    }
+
+    @SubscribeEvent
+    public static void onDataGatheredReady(GatherDataEvent event)
+    {
+        DataGenerator gen = event.getGenerator();
+        gen.addProvider(new Recipes(gen));
     }
 
 
