@@ -77,28 +77,24 @@ public class SpellCraftingBasic
                             }
                             else
                             {
-                                System.out.println(stack.getTag().getInt("color"));
+                                //System.out.println(stack.getTag().getInt("color"));
                                 int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
                                 r+=rgbColors[0];
                                 g+=rgbColors[1];
                                 b+=rgbColors[2];
+                                count+=stack.getCount();
                                 item.remove();
-
                             }
-
                         }
-
-
                     }
 
                     red = Math.round(r%256);
                     green = Math.round(g%256);
                     blue = Math.round(b%256);
 
-                    double rgbRed = CalculateColor.getColorValueFromDust(red);
-                    double rgbGreen = CalculateColor.getColorValueFromDust(green);
-                    double rgbBlue = CalculateColor.getColorValueFromDust(blue);
-                    count = red+green+blue;
+                    double rgbRed = red;
+                    double rgbGreen = green;
+                    double rgbBlue = blue;
 
                     if(black>0 || white>0)
                     {
@@ -122,6 +118,7 @@ public class SpellCraftingBasic
                     /*System.out.println("Red: " + red + " rgb: " +rgbRed);
                     System.out.println("Green: "  + green + " rgb: " + rgbGreen);
                     System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
+                    System.out.println(color);
 
 
                     worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);

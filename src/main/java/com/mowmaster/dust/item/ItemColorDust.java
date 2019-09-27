@@ -43,11 +43,33 @@ public class ItemColorDust extends Item {
                         System.out.println(getColorFromNBT(playerIn.getHeldItem(handIn)));
                     }
                 }
-                else setColorToNBT(playerIn.getHeldItem(handIn),16711680 );
             }
             else
             {
-                setColorToNBT(playerIn.getHeldItem(handIn),65280 );
+                if(playerIn.getHeldItemOffhand().getItem().equals(Items.RED_DYE))
+                {
+                    setColorToNBT(playerIn.getHeldItem(handIn),16711680 );
+                }
+
+                if(playerIn.getHeldItemOffhand().getItem().equals(Items.GREEN_DYE))
+                {
+                    setColorToNBT(playerIn.getHeldItem(handIn),65280 );
+                }
+
+                if(playerIn.getHeldItemOffhand().getItem().equals(Items.BLUE_DYE))
+                {
+                    setColorToNBT(playerIn.getHeldItem(handIn),255 );
+                }
+
+                if(playerIn.getHeldItemOffhand().getItem().equals(Items.WHITE_DYE))
+                {
+                    setColorToNBT(playerIn.getHeldItem(handIn),1677215 );
+                }
+
+                if(playerIn.getHeldItemOffhand().getItem().equals(Items.BLACK_DYE))
+                {
+                    setColorToNBT(playerIn.getHeldItem(handIn),0 );
+                }
             }
 
         return super.onItemRightClick(worldIn, playerIn, handIn);
