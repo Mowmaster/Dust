@@ -1,16 +1,27 @@
 package com.mowmaster.dust.item;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.RandomObjectDescriptor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.Random;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemColorDust extends Item {
+    public static int color = 0;
     public ItemColorDust(Properties builder) {
         super(builder);
     }
@@ -20,23 +31,61 @@ public class ItemColorDust extends Item {
 
     }
 
-    /*public static int getColor(ItemStack stack, int tintIndex) {
-        if (stack == null || stack.isEmpty()) {
-            return -1;
-        }
-        CompoundNBT tag = stack.getTag();
-        return tag != null && tag.contains("color", Constants.NBT.TAG_INT) ? tag.getInt("color") : 8606770;
-    }*/
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 
-    public void setColorToNBT(int color)
+            if(playerIn.isSneaking())
+            {
+                if(playerIn.getHeldItemMainhand().hasTag())
+                {
+                    if(playerIn.getHeldItemMainhand().getTag().contains(MODID+"color"))
+                    {
+                        System.out.println(getColorFromNBT(playerIn.getHeldItemMainhand()));
+                    }
+                }
+                else setColorToNBT(playerIn.getHeldItemMainhand(),16777215 );
+
+            }
+            else
+            {
+                setColorToNBT(playerIn.getHeldItemMainhand(),65280 );
+            }
+
+
+
+        return super.onItemRightClick(worldIn, playerIn, handIn);
+    }
+
+    public void setColorToNBT(ItemStack stack, int color)
     {
-        ItemStack stack = new ItemStack(this);
-        stack.getOrCreateTag().putInt(MODID+"color", color);
+        CompoundNBT nbt;
+        if (stack.hasTag())
+        {
+            nbt = stack.getTag();
+        }
+        else
+        {
+            nbt = new CompoundNBT();
+        }
+
+        if(nbt.contains(MODID+"color"))
+        {
+            nbt.putInt(MODID+"color",16777215 );
+        }
+        else
+        {
+            nbt.putInt(MODID+"color",255 );
+        }
+
+        /*//ItemStack stack = new ItemStack(this);
+        nbt = stack.getOrCreateTag();
+        nbt.putInt(MODID+"color", color);*/
+
     }
 
     public static int getColorFromNBT(ItemStack stack)
     {
-        int color = 0;
+
         if(stack.hasTag())
         {
             if(stack.getTag().contains(MODID))
