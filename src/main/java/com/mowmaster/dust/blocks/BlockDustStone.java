@@ -739,7 +739,7 @@ public class BlockDustStone extends Block
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 65484;} else {return -1;}},STONE_054);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 65535;} else {return -1;}},STONE_055);
 
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3289907;} else {return -1;}},STONE_100);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3342336;} else {return -1;}},STONE_100);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3289957;} else {return -1;}},STONE_101);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3290008;} else {return -1;}},STONE_102);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3290060;} else {return -1;}},STONE_103);
@@ -776,7 +776,7 @@ public class BlockDustStone extends Block
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3355391;} else {return -1;}},STONE_154);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 3355442;} else {return -1;}},STONE_155);
 
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6645350;} else {return -1;}},STONE_200);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6684672;} else {return -1;}},STONE_200);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6645400;} else {return -1;}},STONE_201);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6645451;} else {return -1;}},STONE_202);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6645503;} else {return -1;}},STONE_203);
@@ -813,7 +813,7 @@ public class BlockDustStone extends Block
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6710834;} else {return -1;}},STONE_254);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 6710885;} else {return -1;}},STONE_255);
 
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10000794;} else {return -1;}},STONE_300);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10027008;} else {return -1;}},STONE_300);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10000844;} else {return -1;}},STONE_301);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10000895;} else {return -1;}},STONE_302);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10000947;} else {return -1;}},STONE_303);
@@ -850,7 +850,7 @@ public class BlockDustStone extends Block
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10066278;} else {return -1;}},STONE_354);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 10066329;} else {return -1;}},STONE_355);
 
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 13356237;} else {return -1;}},STONE_400);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 13369344;} else {return -1;}},STONE_400);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 13356287;} else {return -1;}},STONE_401);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 13356338;} else {return -1;}},STONE_402);
         event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 13356390;} else {return -1;}},STONE_403);
@@ -965,7 +965,7 @@ public class BlockDustStone extends Block
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 65484;} else {return -1;}},ITEM_STONE_054);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 65535;} else {return -1;}},ITEM_STONE_055);
 
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3289907;} else {return -1;}},ITEM_STONE_100);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3342336;} else {return -1;}},ITEM_STONE_100);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3289957;} else {return -1;}},ITEM_STONE_101);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3290008;} else {return -1;}},ITEM_STONE_102);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3290060;} else {return -1;}},ITEM_STONE_103);
@@ -1002,7 +1002,7 @@ public class BlockDustStone extends Block
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3355391;} else {return -1;}},ITEM_STONE_154);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 3355442;} else {return -1;}},ITEM_STONE_155);
 
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6645350;} else {return -1;}},ITEM_STONE_200);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6684672;} else {return -1;}},ITEM_STONE_200);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6645400;} else {return -1;}},ITEM_STONE_201);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6645451;} else {return -1;}},ITEM_STONE_202);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6645503;} else {return -1;}},ITEM_STONE_203);
@@ -1039,7 +1039,7 @@ public class BlockDustStone extends Block
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6710834;} else {return -1;}},ITEM_STONE_254);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 6710885;} else {return -1;}},ITEM_STONE_255);
 
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10000794;} else {return -1;}},ITEM_STONE_300);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10027008;} else {return -1;}},ITEM_STONE_300);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10000844;} else {return -1;}},ITEM_STONE_301);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10000895;} else {return -1;}},ITEM_STONE_302);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10000947;} else {return -1;}},ITEM_STONE_303);
@@ -1076,7 +1076,7 @@ public class BlockDustStone extends Block
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10066278;} else {return -1;}},ITEM_STONE_354);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 10066329;} else {return -1;}},ITEM_STONE_355);
 
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 13356237;} else {return -1;}},ITEM_STONE_400);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 13369344;} else {return -1;}},ITEM_STONE_400);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 13356287;} else {return -1;}},ITEM_STONE_401);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 13356338;} else {return -1;}},ITEM_STONE_402);
         event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 13356390;} else {return -1;}},ITEM_STONE_403);

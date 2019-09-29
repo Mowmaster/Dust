@@ -63,7 +63,7 @@ public class ItemColorDust extends Item {
 
                 if(playerIn.getHeldItemOffhand().getItem().equals(Items.WHITE_DYE))
                 {
-                    setColorToNBT(playerIn.getHeldItem(handIn),1677215 );
+                    setColorToNBT(playerIn.getHeldItem(handIn),16777215 );
                 }
 
                 if(playerIn.getHeldItemOffhand().getItem().equals(Items.BLACK_DYE))
