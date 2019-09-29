@@ -85,10 +85,19 @@ public class SpellCraftingBasic
                                 white+=stack.getCount();
                                 item.remove();
                             }
-                            else
+                            else if(stack.getTag().getInt("color") == 16711680 || stack.getTag().getInt("color") == 65280 || stack.getTag().getInt("color") == 255)
                             {
                                 //System.out.println(stack.getTag().getInt("color"));
                                 double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
+                                r+=rgbColors[0];
+                                g+=rgbColors[1];
+                                b+=rgbColors[2];
+                                count+=stack.getCount();
+                                item.remove();
+                            }
+                            else
+                            {
+                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
                                 r+=rgbColors[0];
                                 g+=rgbColors[1];
                                 b+=rgbColors[2];
