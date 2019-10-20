@@ -212,6 +212,10 @@ public class SpellCrafting
                                 if(coined.hasTagCompound())
                                 {
                                     cmpd =coined.getTagCompound();
+                                    if(cmpd.hasKey("coined"))
+                                    {
+
+                                    }
                                 }
                                 PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
