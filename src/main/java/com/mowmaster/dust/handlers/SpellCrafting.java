@@ -21,6 +21,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -73,6 +74,7 @@ public class SpellCrafting
         int coin = 0;
         //int spellpaper = 0;
         int arrow = 0;
+        int stone = 0;
         int count=0;
         ItemStack keepStack = ItemStack.EMPTY;
 
@@ -148,7 +150,7 @@ public class SpellCrafting
                         }
 
                     }
-                    if(red>0 || blue>0 || yellow>0 || purple>0|| green>0 || orange >0|| white>0||black>0)
+                    if(red>0 && blue>0 && yellow>0 && purple>0 && green>0 && orange >0 && white>0 && black>0)
                     {
                         worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
                         worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockMachineBase.machineBase.getDefaultState());
@@ -206,9 +208,12 @@ public class SpellCrafting
                                 ItemStack stack = ItemStack.EMPTY;
                                 stack = new ItemStack(ItemRegistry.effectUpgrade);
                                 */
-
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 NBTTagCompound cmpd = new NBTTagCompound();
+                                if(coined.hasTagCompound())
+                                {
+                                    cmpd =coined.getTagCompound();
+                                }
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 coined.setTagCompound(cmpd);
 
@@ -296,6 +301,15 @@ public class SpellCrafting
     public boolean containsCoin(ItemStack stack)
     {
         if(stack.getItem() instanceof ipuBasic || stack.getItem() instanceof ItemCoin)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean containsStone(ItemStack stack)
+    {
+        if(stack.getItem().equals(Item.getItemFromBlock(Blocks.STONE)))
         {
             return true;
         }
