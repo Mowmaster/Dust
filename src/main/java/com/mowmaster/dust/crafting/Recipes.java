@@ -16,8 +16,10 @@ public class Recipes extends RecipeProvider
         super(genIn);
     }
 
+
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+
         ShapelessRecipeBuilder.shapelessRecipe(ItemColorDust.DUST)
                 .addIngredient(Items.STICK)
                 .addIngredient(Items.RED_DYE)

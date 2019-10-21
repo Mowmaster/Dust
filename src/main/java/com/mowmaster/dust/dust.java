@@ -67,6 +67,7 @@ public class dust
     {
         DataGenerator gen = event.getGenerator();
         gen.addProvider(new Recipes(gen));
+
     }
 
 

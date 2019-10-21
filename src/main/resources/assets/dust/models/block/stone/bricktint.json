@@ -1,0 +1,22 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "dust:blocks/stone/brick/tintbrick",
+    "colored": "dust:blocks/stone/brick/tintbrick",
+    "particle": "dust:blocks/stone/brick/tintbrick"
+  },
+  "elements":[
+    {
+      "from": [0,0,0],
+      "to":[16,16,16],
+      "faces":{
+        "down":{"tintindex":1, "texture": "#colored", "cullface": "down"},
+        "up":{"tintindex":1, "texture": "#colored", "cullface": "up"},
+        "north":{"tintindex":1, "texture": "#colored", "cullface": "north"},
+        "south":{"tintindex":1, "texture": "#colored", "cullface": "south"},
+        "west":{"tintindex":1, "texture": "#colored", "cullface": "west"},
+        "east":{"tintindex":1, "texture": "#colored", "cullface": "east"}
+      }
+    }
+  ]
+}
