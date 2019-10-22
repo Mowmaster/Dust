@@ -7,6 +7,7 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -114,9 +115,14 @@ public class ipuImport extends ipuBasic
         int transferRate = getItemTransferRate(coinInPedestal);
 
             ItemStack itemFromInv = ItemStack.EMPTY;
+            IInventory inventory = null;
             if(world.getTileEntity(posInventory) !=null)
             {
-                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
+                if(world.getTileEntity(posInventory) instanceof IInventory)
+                {
+                    inventory = (IInventory) world.getTileEntity(posInventory);
+                }
+                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
                 {
 
                     TileEntity invToPullFrom = world.getTileEntity(posInventory);
@@ -125,41 +131,17 @@ public class ipuImport extends ipuBasic
 
                     }
                     else {
-                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
+                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getSlots();i++)
                         {
-                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
+                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i).equals(ItemStack.EMPTY))
                             {
-                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i);
 
-                                if(getStackInPedestal(world,posOfPedestal) == ItemStack.EMPTY)
+                                if(canExtractItemFromSlot(inventory,itemFromInv,i,getPedestalFacing(world, posOfPedestal)))
                                 {
-                                    if(itemFromInv.getCount() > transferRate)
+                                    if(getStackInPedestal(world,posOfPedestal) == ItemStack.EMPTY)
                                     {
-                                        ItemStack copyIncoming = itemFromInv.copy();
-                                        copyIncoming.setCount(transferRate);
-                                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                        if(pedestalInv instanceof TilePedestal) {
-                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                        }
-                                        int counted = itemFromInv.getCount()-transferRate;
-                                        itemFromInv.setCount(counted);
-                                    }
-                                    else
-                                    {
-                                        ItemStack copyIncoming = itemFromInv.copy();
-                                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                        if(pedestalInv instanceof TilePedestal) {
-                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                        }
-                                        itemFromInv.setCount(0);
-                                    }
-                                }
-                                else if(doItemsMatch(getStackInPedestal(world,posOfPedestal),itemFromInv))
-                                {
-                                    int leftTillFilled = 64 - getStackInPedestal(world,posOfPedestal).getCount();
-                                    if(leftTillFilled > itemFromInv.getCount())
-                                    {
-                                        if(itemFromInv.getCount()> transferRate)
+                                        if(itemFromInv.getCount() > transferRate)
                                         {
                                             ItemStack copyIncoming = itemFromInv.copy();
                                             copyIncoming.setCount(transferRate);
@@ -180,29 +162,56 @@ public class ipuImport extends ipuBasic
                                             itemFromInv.setCount(0);
                                         }
                                     }
-                                    else
+                                    else if(doItemsMatch(getStackInPedestal(world,posOfPedestal),itemFromInv))
                                     {
-                                        if(leftTillFilled >= transferRate)
+                                        int leftTillFilled = 64 - getStackInPedestal(world,posOfPedestal).getCount();
+                                        if(leftTillFilled > itemFromInv.getCount())
                                         {
-                                            ItemStack copyIncoming = itemFromInv.copy();
-                                            copyIncoming.setCount(transferRate);
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                            if(itemFromInv.getCount()> transferRate)
+                                            {
+                                                ItemStack copyIncoming = itemFromInv.copy();
+                                                copyIncoming.setCount(transferRate);
+                                                TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                                if(pedestalInv instanceof TilePedestal) {
+                                                    ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                                }
+                                                int counted = itemFromInv.getCount()-transferRate;
+                                                itemFromInv.setCount(counted);
                                             }
-                                            int counted = itemFromInv.getCount()-transferRate;
-                                            itemFromInv.setCount(counted);
+                                            else
+                                            {
+                                                ItemStack copyIncoming = itemFromInv.copy();
+                                                TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                                if(pedestalInv instanceof TilePedestal) {
+                                                    ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                                }
+                                                itemFromInv.setCount(0);
+                                            }
                                         }
                                         else
                                         {
-                                            ItemStack copyIncoming = itemFromInv.copy();
-                                            copyIncoming.setCount(leftTillFilled);
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                            if(leftTillFilled >= transferRate)
+                                            {
+                                                ItemStack copyIncoming = itemFromInv.copy();
+                                                copyIncoming.setCount(transferRate);
+                                                TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                                if(pedestalInv instanceof TilePedestal) {
+                                                    ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                                }
+                                                int counted = itemFromInv.getCount()-transferRate;
+                                                itemFromInv.setCount(counted);
                                             }
-                                            int counted = itemFromInv.getCount()-leftTillFilled;
-                                            itemFromInv.setCount(counted);
+                                            else
+                                            {
+                                                ItemStack copyIncoming = itemFromInv.copy();
+                                                copyIncoming.setCount(leftTillFilled);
+                                                TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                                if(pedestalInv instanceof TilePedestal) {
+                                                    ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                                }
+                                                int counted = itemFromInv.getCount()-leftTillFilled;
+                                                itemFromInv.setCount(counted);
+                                            }
                                         }
                                     }
                                 }
