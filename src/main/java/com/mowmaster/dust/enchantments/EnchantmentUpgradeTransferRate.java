@@ -1,21 +1,19 @@
 package com.mowmaster.dust.enchantments;
 
-import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 
-public class EnchantmentUpgradeRange extends Enchantment
+public class EnchantmentUpgradeTransferRate extends Enchantment
 {
-    public EnchantmentUpgradeRange() {
+    public EnchantmentUpgradeTransferRate() {
         super(Rarity.COMMON, EnumEnchantmentType.ALL, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
-        this.setName("upgraderange");
-        this.setRegistryName("upgraderange");
+        this.setName("upgradetransferrate");
+        this.setRegistryName("upgradetransferrate");
     }
 
     @Override
@@ -43,7 +41,7 @@ public class EnchantmentUpgradeRange extends Enchantment
     {
         return super.canApplyTogether(ench)
                 //&& ench == Enchantments.MENDING
-                && ench == Enchantments.SILK_TOUCH || ench == Enchantments.MENDING || ench == Enchantments.FORTUNE || ench == EnchantmentRegistry.enchantmentTransferRate;
+                && ench == Enchantments.SILK_TOUCH || ench == Enchantments.MENDING || ench == Enchantments.FORTUNE || ench == EnchantmentRegistry.enchantmentRange;
                 //&& ench == Enchantments.FORTUNE;
     }
 

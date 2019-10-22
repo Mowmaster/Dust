@@ -55,6 +55,16 @@ public class ipuBasic extends Item
         return range;
     }
 
+    public int getTransferRateModifier(ItemStack stack)
+    {
+        int rate = 0;
+        if(stack.isItemEnchanted())
+        {
+            rate = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentTransferRate,stack);
+        }
+        return rate;
+    }
+
     public boolean hasCoinEffect(ItemStack stack)
     {
         hasEffect = false;

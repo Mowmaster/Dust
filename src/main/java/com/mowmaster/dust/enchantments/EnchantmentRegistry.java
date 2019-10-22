@@ -22,6 +22,7 @@ public class EnchantmentRegistry
     public static EnchantmentFlight enchantmentFlight = new EnchantmentFlight(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantFlight"));
     //public static EnchantmentSmelt enchantmentSmelter = new EnchantmentSmelt();
     public static EnchantmentUpgradeRange enchantmentRange = new EnchantmentUpgradeRange();
+    public static EnchantmentUpgradeTransferRate enchantmentTransferRate = new EnchantmentUpgradeTransferRate();
 
     public static void Init(){
         //GameRegistry.register(enchantDigger, );
@@ -35,6 +36,7 @@ public class EnchantmentRegistry
         //ForgeRegistries.ENCHANTMENTS.register(enchantmentFlight);
         //ForgeRegistries.ENCHANTMENTS.register(enchantmentSmelter);
         ForgeRegistries.ENCHANTMENTS.register(enchantmentRange);
+        ForgeRegistries.ENCHANTMENTS.register(enchantmentTransferRate);
 
 
     }

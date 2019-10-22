@@ -800,7 +800,7 @@ public class EnchantAndEffectHandlers
         }
     }
 
-    Boolean storage;
+    /*Boolean storage;
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onStore(TickEvent.PlayerTickEvent event)
     {
@@ -824,7 +824,7 @@ public class EnchantAndEffectHandlers
             float posY = (float) (player.posY - player.getEyeHeight());
             float posZ = Math.round(player.posZ);
 
-            /*List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+            *//*List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
 
             for (EntityItem entity : entities) {
                 if (entity != null && !world.isRemote && !entity.isDead) {
@@ -836,7 +836,7 @@ public class EnchantAndEffectHandlers
                 if (xpOrb != null && !world.isRemote) {
                     xpOrb.onCollideWithPlayer(player);
                 }
-            }*/
+            }*//*
         }
-    }
+    }*/
 }

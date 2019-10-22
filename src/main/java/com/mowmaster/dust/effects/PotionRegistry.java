@@ -1,13 +1,7 @@
 package com.mowmaster.dust.effects;
 
-import com.mowmaster.dust.items.ItemRegistry;
-import javafx.geometry.VPos;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -28,7 +22,7 @@ public class PotionRegistry
     public static final Potion POTION_TILLER = new PotionBase("effect.tiller","potiontiller",false,11898433,11,0);
     public static final Potion POTION_PLANTER = new PotionBase("effect.planter","potionplanter",false,11898800,12,0);
     //Make a planter effect that uses items off of the ground on tilled soil, might also place blocks but whatever xD
-    public static final Potion POTION_VOIDSTORAGE = new PotionBase("effect.voidstorage","potionvoidstorage",false,4391011,13,0);
+    //public static final Potion POTION_VOIDSTORAGE = new PotionBase("effect.voidstorage","potionvoidstorage",false,4391011,13,0);
 
     public static final PotionType FLIGHT = new PotionType("flight",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_FLIGHT,3600)}).setRegistryName("flight");
     public static final PotionType QUICKNESS = new PotionType("quickness",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_QUICKNESS,3600)}).setRegistryName("quickness");
@@ -46,7 +40,7 @@ public class PotionRegistry
     public static final PotionType GROWER = new PotionType("grower",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_GROWER,3600)}).setRegistryName("grower");
     public static final PotionType TILLER = new PotionType("tiller",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_TILLER,3600)}).setRegistryName("tiller");
     public static final PotionType PLANTER = new PotionType("planter",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_PLANTER,3600)}).setRegistryName("planter");
-    public static final PotionType VOIDSTORAGE = new PotionType("voidstorage",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE,3600)}).setRegistryName("voidstorage");
+    //public static final PotionType VOIDSTORAGE = new PotionType("voidstorage",new PotionEffect[]{new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE,3600)}).setRegistryName("voidstorage");
 
 
 
@@ -64,7 +58,7 @@ public class PotionRegistry
         ForgeRegistries.POTIONS.register(POTION_GROWER);
         ForgeRegistries.POTIONS.register(POTION_TILLER);
         ForgeRegistries.POTIONS.register(POTION_PLANTER);
-        ForgeRegistries.POTIONS.register(POTION_VOIDSTORAGE);
+        //ForgeRegistries.POTIONS.register(POTION_VOIDSTORAGE);
     }
 
 
@@ -84,7 +78,7 @@ public class PotionRegistry
         ForgeRegistries.POTION_TYPES.register(GROWER);
         ForgeRegistries.POTION_TYPES.register(TILLER);
         ForgeRegistries.POTION_TYPES.register(PLANTER);
-        ForgeRegistries.POTION_TYPES.register(VOIDSTORAGE);
+        //ForgeRegistries.POTION_TYPES.register(VOIDSTORAGE);
     }
 
 }

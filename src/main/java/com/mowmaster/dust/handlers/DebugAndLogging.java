@@ -2,6 +2,7 @@ package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.items.ItemWikiScroll;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
@@ -119,11 +121,23 @@ public class DebugAndLogging
             }
 
 
-                if (worldIn.isRemote) {
-                    if (playerIn.getHeldItemMainhand().getItem() instanceof ItemTippedArrow) {
-                        playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + PotionUtils.getEffectsFromStack(playerIn.getHeldItemMainhand()).toString()));
+            if (worldIn.isRemote) {
+                if (playerIn.getHeldItemMainhand().getItem() instanceof ItemTippedArrow) {
+                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + PotionUtils.getEffectsFromStack(playerIn.getHeldItemMainhand()).toString()));
+                }
+            }
+
+            if (worldIn.isRemote) {
+                if (playerIn.getHeldItemMainhand().getItem() instanceof ipuBasic) {
+                    if(playerIn.getHeldItemMainhand().hasTagCompound())
+                    {
+                        if(playerIn.getHeldItemMainhand().getTagCompound().hasKey("coineffect"))
+                        {
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + PotionEffect.readCustomPotionEffectFromNBT(playerIn.getHeldItemMainhand().getTagCompound().getCompoundTag("coineffect")).toString()));
+                        }
                     }
                 }
+            }
 
         }
     }

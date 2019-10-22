@@ -27,6 +27,7 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
@@ -208,16 +209,13 @@ public class SpellCrafting
                                 ItemStack stack = ItemStack.EMPTY;
                                 stack = new ItemStack(ItemRegistry.effectUpgrade);
                                 */
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 if(coined.hasTagCompound())
                                 {
                                     cmpd =coined.getTagCompound();
-                                    if(cmpd.hasKey("coined"))
-                                    {
-
-                                    }
                                 }
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 coined.setTagCompound(cmpd);
 
