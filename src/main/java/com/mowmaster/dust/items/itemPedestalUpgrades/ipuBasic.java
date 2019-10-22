@@ -7,12 +7,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
@@ -200,6 +204,29 @@ public class ipuBasic extends Item
         return false;
     }
 
+    /**
+     * Can this hopper insert the specified item from the specified slot on the specified side?
+     */
+    public static boolean canInsertItemInSlot(IInventory inventoryIn, ItemStack stack, int index, EnumFacing side)
+    {
+        if (!inventoryIn.isItemValidForSlot(index, stack))
+        {
+            return false;
+        }
+        else
+        {
+            return !(inventoryIn instanceof ISidedInventory) || ((ISidedInventory)inventoryIn).canInsertItem(index, stack, side);
+        }
+    }
+
+    /**
+     * Can this hopper extract the specified item from the specified slot on the specified side?
+     */
+    public static boolean canExtractItemFromSlot(IInventory inventoryIn, ItemStack stack, int index, EnumFacing side)
+    {
+        return !(inventoryIn instanceof ISidedInventory) || ((ISidedInventory)inventoryIn).canExtractItem(index, stack, side);
+    }
+
     public BlockPos getPosOfBlockBelow(World world,BlockPos posOfPedestal, int numBelow)
     {
         IBlockState state = world.getBlockState(posOfPedestal);
@@ -222,6 +249,12 @@ public class ipuBasic extends Item
             default:
                 return blockBelow;
         }
+    }
+
+    public EnumFacing getPedestalFacing(World world,BlockPos posOfPedestal)
+    {
+        IBlockState state = world.getBlockState(posOfPedestal);
+        return state.getValue(FACING);
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)

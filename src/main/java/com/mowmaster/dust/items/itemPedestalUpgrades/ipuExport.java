@@ -7,6 +7,7 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -104,7 +105,7 @@ public class ipuExport extends ipuBasic
 
         return  transferSpeed;
     }
-
+//                          impTicker,this.world,   getItemInPedestal(),      getCoinOnPedestal(),     this.getPos()
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getTransferSpeed(coinInPedestal);
@@ -116,100 +117,49 @@ public class ipuExport extends ipuBasic
     public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
     {
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
-        int transferRate = getTransferRate(coinInPedestal);
+        int upgradeTransferRate = getTransferRate(coinInPedestal);
+        ItemStack itemFromPedestal = ItemStack.EMPTY;
+        IInventory inventory = null;
 
-            ItemStack itemFromInv = ItemStack.EMPTY;
+            //Checks to make sure a TE exists
             if(world.getTileEntity(posInventory) !=null)
             {
-                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
+                if(world.getTileEntity(posInventory) instanceof IInventory)
                 {
-
-                    TileEntity invToPullFrom = world.getTileEntity(posInventory);
-                    if(invToPullFrom instanceof TilePedestal) {
-                        itemFromInv = ItemStack.EMPTY;
+                    inventory = (IInventory) world.getTileEntity(posInventory);
+                }
+                //Checks to make sure TE is an inventory and can be pulled from facing side
+                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
+                {
+                    //Gets inventory TE then makes sure its not a pedestal
+                    TileEntity invToPushInto = world.getTileEntity(posInventory);
+                    if(invToPushInto instanceof TilePedestal) {
+                        itemFromPedestal = ItemStack.EMPTY;
 
                     }
                     else {
-                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots();i++)
+                        //iterates through list of item slots available to us from selected side
+                        for(int i =0;i<invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getSlots();i++)
                         {
-                            if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i).equals(ItemStack.EMPTY))
+                            //Just checks to see if item can be inserted into slot(doesnt check stack size or if they match???)
+                            if(canInsertItemInSlot(inventory,itemFromPedestal,i,getPedestalFacing(world, posOfPedestal)))
                             {
-                                itemFromInv = invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
-
-                                if(getStackInPedestal(world,posOfPedestal) == ItemStack.EMPTY)
+                                //if Slot is Empty
+                                if(invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i).equals(ItemStack.EMPTY))
                                 {
-                                    if(itemFromInv.getCount() > transferRate)
+                                    itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
+                                    if(itemFromPedestal.getCount()>=upgradeTransferRate)
                                     {
-                                        ItemStack copyIncoming = itemFromInv.copy();
-                                        copyIncoming.setCount(transferRate);
-                                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                        if(pedestalInv instanceof TilePedestal) {
-                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                        }
-                                        int counted = itemFromInv.getCount()-transferRate;
-                                        itemFromInv.setCount(counted);
+                                        itemFromPedestal.setCount(upgradeTransferRate);
                                     }
-                                    else
-                                    {
-                                        ItemStack copyIncoming = itemFromInv.copy();
-                                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                        if(pedestalInv instanceof TilePedestal) {
-                                            ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                        }
-                                        itemFromInv.setCount(0);
-                                    }
+                                    removeFromPedestal(world,posOfPedestal ,itemFromPedestal.getCount() );
+                                    invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).insertItem(i,itemFromPedestal,false );
                                 }
-                                else if(doItemsMatch(getStackInPedestal(world,posOfPedestal),itemFromInv))
+                                //if slot isnt empty, since it passes canInsertItemInSlot we know it matches
+                                else if(invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i).equals(getStackInPedestal(world,posOfPedestal)))
                                 {
-                                    int leftTillFilled = 64 - getStackInPedestal(world,posOfPedestal).getCount();
-                                    if(leftTillFilled > itemFromInv.getCount())
-                                    {
-                                        if(itemFromInv.getCount()> transferRate)
-                                        {
-                                            ItemStack copyIncoming = itemFromInv.copy();
-                                            copyIncoming.setCount(transferRate);
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                            }
-                                            int counted = itemFromInv.getCount()-transferRate;
-                                            itemFromInv.setCount(counted);
-                                        }
-                                        else
-                                        {
-                                            ItemStack copyIncoming = itemFromInv.copy();
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                            }
-                                            itemFromInv.setCount(0);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if(leftTillFilled >= transferRate)
-                                        {
-                                            ItemStack copyIncoming = itemFromInv.copy();
-                                            copyIncoming.setCount(transferRate);
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                            }
-                                            int counted = itemFromInv.getCount()-transferRate;
-                                            itemFromInv.setCount(counted);
-                                        }
-                                        else
-                                        {
-                                            ItemStack copyIncoming = itemFromInv.copy();
-                                            copyIncoming.setCount(leftTillFilled);
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                            }
-                                            int counted = itemFromInv.getCount()-leftTillFilled;
-                                            itemFromInv.setCount(counted);
-                                        }
-                                    }
+                                    //if slot has less items then we transfer in at once
+
                                 }
                             }
                         }
