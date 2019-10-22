@@ -1,5 +1,6 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
@@ -24,6 +25,7 @@ public class ipuDropper extends ipuBasic
 {
     public int summonRate = 0;
     public int range = 0;
+    public int transferSpeed = 0;
 
     public ipuDropper(String unlocName, String registryName)
     {
@@ -46,7 +48,7 @@ public class ipuDropper extends ipuBasic
 
     public int getTransferRate(ItemStack stack)
     {
-        switch (getRateModifier(MobEffects.SPEED,stack))
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
                 summonRate = 1;
@@ -100,9 +102,38 @@ public class ipuDropper extends ipuBasic
         return  range;
     }
 
+    public int getTransferSpeed(ItemStack stack)
+    {
+        switch (getTransferRateModifier(stack))
+        {
+            case 0:
+                transferSpeed = 20;//normal speed
+                break;
+            case 1:
+                transferSpeed=10;//2x faster
+                break;
+            case 2:
+                transferSpeed = 5;//4x faster
+                break;
+            case 3:
+                transferSpeed = 3;//6x faster
+                break;
+            case 4:
+                transferSpeed = 2;//10x faster
+                break;
+            case 5:
+                transferSpeed=1;//20x faster
+                break;
+            default: transferSpeed=20;
+        }
+
+        return  transferSpeed;
+    }
+
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        if (tick%20 == 0) {
+        int speed = getTransferSpeed(coinInPedestal);
+        if (tick%speed == 0) {
             upgradeAction(world,pedestalPos,coinInPedestal);
         }
     }
@@ -136,24 +167,74 @@ public class ipuDropper extends ipuBasic
         String tr = "" + s2 + "";
         String trr = "" + s3 + "";
 
+        String s5 = "";
+
+        switch (getTransferSpeed(stack))
+        {
+            case 1:
+                s5 = "20x Faster";
+                break;
+            case 2:
+                s5="10x Faster";
+                break;
+            case 3:
+                s5 = "6x Faster";
+                break;
+            case 5:
+                s5 = "4x Faster";
+                break;
+            case 10:
+                s5 = "2x Faster";
+                break;
+            case 20:
+                s5="Normal Speed";
+                break;
+            default: s5="Normal Speed";
+        }
+
         tooltip.add("Item Dropper Upgrade");
         if(stack.hasTagCompound())
         {
-            if(stack.getTagCompound().hasKey("coineffect"))
+            if(getTransferRate(stack)>0)
+            {
                 tooltip.add("Dropped Stack Size: " + tr);
+            }
+            else
+            {
+                tooltip.add("Dropped Stack Size: 1");
+            }
+
+            if(stack.isItemEnchanted())
+            {
+                if(getRange(stack) >0)
+                {
+                    tooltip.add("Dropper Range: " + trr);
+                }
+                else
+                {
+                    tooltip.add("Dropper Range: " + trr);
+                }
+
+                if(getTransferSpeed(stack) >0)
+                {
+                    tooltip.add("Transfer Speed: " + s5);
+                }
+                else
+                {
+                    tooltip.add("Transfer Speed: Normal Speed");
+                }
+            }
+            else
+            {
+                tooltip.add("Dropper Range: " + trr);
+                tooltip.add("Transfer Speed: Normal Speed");
+            }
         }
         else
         {
             tooltip.add("Dropped Stack Size: 1");
-        }
-
-        if(s3>0)
-        {
             tooltip.add("Dropper Range: " + trr);
-        }
-        else
-        {
-            tooltip.add("Dropper Range: " + trr);
+            tooltip.add("Transfer Speed: Normal Speed");
         }
     }
 

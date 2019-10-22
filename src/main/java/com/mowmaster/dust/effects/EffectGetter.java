@@ -88,7 +88,7 @@ public class EffectGetter
         this.addSpellEffect(2000025075, new PotionEffect(MobEffects.GLOWING));
         this.addSpellEffect(2000040060, new PotionEffect(MobEffects.POISON));
         this.addSpellEffect(2000050050, new PotionEffect(MobEffects.WITHER));//green 50/50
-        //this.addSpellEffect(2040060000, new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE));//darkpurple 40r 60b
+        this.addSpellEffect(2040060000, new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE));//darkpurple 40r 60b
         this.addSpellEffect(2000100000, new PotionEffect(PotionRegistry.POTION_DROWNING));//100% Blue
         this.addSpellEffect(2000090010, new PotionEffect(MobEffects.SLOWNESS));
         this.addSpellEffect(2005095000, new PotionEffect(MobEffects.UNLUCK));

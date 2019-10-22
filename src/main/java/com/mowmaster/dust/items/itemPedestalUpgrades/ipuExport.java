@@ -1,5 +1,6 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
@@ -22,6 +23,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExport extends ipuBasic
 {
     public int transferRate = 0;
+    public int transferSpeed = 0;
 
     public ipuExport(String unlocName, String registryName)
     {
@@ -49,7 +51,7 @@ public class ipuExport extends ipuBasic
 
     public int getTransferRate(ItemStack stack)
     {
-        switch (getRateModifier(MobEffects.SPEED,stack))
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
                 transferRate = 1;
@@ -75,9 +77,38 @@ public class ipuExport extends ipuBasic
         return  transferRate;
     }
 
+    public int getTransferSpeed(ItemStack stack)
+    {
+        switch (getTransferRateModifier(stack))
+        {
+            case 0:
+                transferSpeed = 20;//normal speed
+                break;
+            case 1:
+                transferSpeed=10;//2x faster
+                break;
+            case 2:
+                transferSpeed = 5;//4x faster
+                break;
+            case 3:
+                transferSpeed = 3;//6x faster
+                break;
+            case 4:
+                transferSpeed = 2;//10x faster
+                break;
+            case 5:
+                transferSpeed=1;//20x faster
+                break;
+            default: transferSpeed=20;
+        }
+
+        return  transferSpeed;
+    }
+
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        if (tick%20 == 0) {
+        int speed = getTransferSpeed(coinInPedestal);
+        if (tick%speed == 0) {
             upgradeAction(world,pedestalPos,coinInPedestal);
         }
     }
@@ -191,17 +222,59 @@ public class ipuExport extends ipuBasic
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s2 = getTransferRate(stack);
+        String s3 = "";
+
+        switch (getTransferSpeed(stack))
+            {
+            case 1:
+                s3 = "20x Faster";
+                break;
+            case 2:
+                s3="10x Faster";
+                break;
+            case 3:
+                s3 = "6x Faster";
+                break;
+            case 5:
+                s3 = "4x Faster";
+                break;
+            case 10:
+                s3 = "2x Faster";
+                break;
+            case 20:
+                s3="Normal Speed";
+                break;
+            default: s3="Normal Speed";
+        }
+
 
         String tr = "" + s2 + "";
-        tooltip.add("Item Stack Import Upgrade");
+        String trr = s3;
+        tooltip.add("Item Stack Export Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))
+            {
                 tooltip.add("Transfer Rate: " + tr);
+            }
+            else
+            {
+                tooltip.add("Transfer Rate: 1");
+            }
+
+            if(stack.isItemEnchanted() && getTransferRate(stack) >0)
+            {
+                tooltip.add("Transfer Speed: " + trr);
+            }
+            else
+            {
+                tooltip.add("Transfer Speed: Normal Speed");
+            }
         }
         else
         {
             tooltip.add("Transfer Rate: 1");
+            tooltip.add("Transfer Speed: Normal Speed");
         }
     }
 

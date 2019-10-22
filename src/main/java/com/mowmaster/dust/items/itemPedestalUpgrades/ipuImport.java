@@ -1,6 +1,7 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
@@ -45,7 +46,7 @@ public class ipuImport extends ipuBasic
 
     public int getItemTransferRate(ItemStack stack)
     {
-        switch (getRateModifier(MobEffects.SPEED,stack))
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
                 transferRate = 1;
@@ -227,7 +228,7 @@ public class ipuImport extends ipuBasic
                 s3="10x Faster";
                 break;
             case 3:
-                s3 = "5x Faster";
+                s3 = "6x Faster";
                 break;
             case 5:
                 s3 = "4x Faster";

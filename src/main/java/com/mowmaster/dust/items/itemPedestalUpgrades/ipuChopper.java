@@ -28,6 +28,7 @@ public class ipuChopper extends ipuBasic
 {
     public int rangeWidth = 0;
     public int rangeHeight = 0;
+    public int transferSpeed = 0;
 
     public ipuChopper(String unlocName, String registryName)
     {
@@ -110,11 +111,63 @@ public class ipuChopper extends ipuBasic
         }
     }
 
+    public int getTransferSpeed(ItemStack stack)
+    {
+        switch (getTransferRateModifier(stack))
+        {
+            case 0:
+                transferSpeed = 20;//normal speed
+                break;
+            case 1:
+                transferSpeed=10;//2x faster
+                break;
+            case 2:
+                transferSpeed = 5;//4x faster
+                break;
+            case 3:
+                transferSpeed = 3;//6x faster
+                break;
+            case 4:
+                transferSpeed = 2;//10x faster
+                break;
+            case 5:
+                transferSpeed=1;//20x faster
+                break;
+            default: transferSpeed=20;
+        }
+
+        return  transferSpeed;
+    }
+
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s3 = getRangeWidth(stack);
         int s4 = getRangeHeight(stack);
+        String s5 = "";
+
+        switch (getTransferSpeed(stack))
+        {
+            case 1:
+                s5 = "20x Faster";
+                break;
+            case 2:
+                s5="10x Faster";
+                break;
+            case 3:
+                s5 = "6x Faster";
+                break;
+            case 5:
+                s5 = "4x Faster";
+                break;
+            case 10:
+                s5 = "2x Faster";
+                break;
+            case 20:
+                s5="Normal Speed";
+                break;
+            default: s5="Normal Speed";
+        }
 
         String tr = "" + (s3+s3+1) + "";
         String trr = "" + (s4+1) + "";
@@ -130,6 +183,15 @@ public class ipuChopper extends ipuBasic
         {
             tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
         }
+
+        if(stack.isItemEnchanted() && getTransferSpeed(stack) >0)
+        {
+            tooltip.add("Transfer Speed: " + s5);
+        }
+        else
+        {
+            tooltip.add("Transfer Speed: Normal Speed");
+        }
     }
 
     public int ticked = 0;
@@ -138,6 +200,7 @@ public class ipuChopper extends ipuBasic
     {
         int rangeWidth = getRangeWidth(coinInPedestal);
         int rangeHeight = getRangeHeight(coinInPedestal);
+        int speed = getTransferSpeed(coinInPedestal);
 
         BlockPos negNums = getNegRangePos(world,pedestalPos,rangeWidth,rangeHeight);
         BlockPos posNums = getPosRangePos(world,pedestalPos,rangeWidth,rangeHeight);
@@ -149,11 +212,11 @@ public class ipuChopper extends ipuBasic
                         BlockPos blockToChopPos = new BlockPos(x, y, z);
                         //BlockPos blockToChopPos = this.getPos().add(x, y, z);
                         IBlockState blockToChop = world.getBlockState(blockToChopPos);
-                        if (tick%1 == 0) {
+                        if (tick%speed == 0) {
                             ticked++;
                         }
 
-                        if(ticked >84)
+                        if(ticked > 84)
                         {
                             upgradeAction(world, itemInPedestal, coinInPedestal, blockToChopPos, blockToChop);
                             ticked=0;
