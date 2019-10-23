@@ -1,10 +1,7 @@
 package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuChopper;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuDropper;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuExport;
-import com.mowmaster.dust.items.itemPedestalUpgrades.ipuImport;
+import com.mowmaster.dust.items.itemPedestalUpgrades.*;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
@@ -159,6 +156,7 @@ public class ItemRegistry
 
         importUpgrade = new ipuImport("importupgrade","importupgrade");
         exportUpgrade = new ipuExport("exportupgrade","exportupgrade");
+        singleExportUpgrade = new ipuExportRestock("singleexportupgrade","singleexportupgrade");
         dropperUpgrade = new ipuDropper("dropperupgrade","dropperupgrade");
         chopperUpgrade = new ipuChopper("chopperupgrade","chopperupgrade");
 
@@ -167,7 +165,7 @@ public class ItemRegistry
         crafter4Upgrade = new ItemCoin("crafter4upgrade","crafter4upgrade");
         crafter9Upgrade = new ItemCoin("crafter9upgrade","crafter9upgrade");
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");
-        singleExportUpgrade = new ItemCoin("singleexportupgrade","singleexportupgrade");
+
         placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
         fuzzyFilterUpgrade = new ItemCoin("fuzzyfilterupgrade","fuzzyfilterupgrade");

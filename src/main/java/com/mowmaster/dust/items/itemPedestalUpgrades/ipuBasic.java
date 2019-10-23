@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
@@ -166,6 +167,25 @@ public class ipuBasic extends Item
         if(pedestalInventory instanceof TilePedestal) {
             ((TilePedestal) pedestalInventory).removeExpFromPedestal(expToRemove);
         }
+    }
+
+    public void setIntValueToPedestal(World world, BlockPos posOfPedestal,int value)
+    {
+        TileEntity pedestal = world.getTileEntity(posOfPedestal);
+        if(pedestal instanceof TilePedestal) {
+            ((TilePedestal) pedestal).setStoredValueForUpgrades(value);
+        }
+    }
+
+    public int getIntValueFromPedestal(World world, BlockPos posOfPedestal)
+    {
+        int value = 0;
+        TileEntity pedestal = world.getTileEntity(posOfPedestal);
+        if(pedestal instanceof TilePedestal) {
+            value = ((TilePedestal) pedestal).getStoredValueForUpgrades();
+        }
+
+        return value;
     }
 
     public boolean doItemsMatch(ItemStack stackPedestal, ItemStack itemStackIn)

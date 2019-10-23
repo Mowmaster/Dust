@@ -3,20 +3,12 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import com.mowmaster.dust.enums.FilterTypes;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.*;
 import com.mowmaster.dust.particles.ParticlesInALine;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -58,10 +50,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     public ItemStack display = ItemStack.EMPTY;
     private int transferSizeCount = 4;
     private static int getPedestalRange = 8;
-    private int ticker=0;
-    private int ticker2=0;
-    private int ticker3=0;
-    private int ticker4=0;
+    private int storedValueForUpgrades = 0;
     private static final BlockPos defaultPos = new BlockPos(0,-2000,0);
     public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
 
@@ -70,6 +59,19 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         this.item = new ItemStackHandler(1);
         this.coin = new ItemStackHandler(1);
     }
+
+    public int getStoredValueForUpgrades()
+    {
+        return storedValueForUpgrades;
+    }
+
+    public void setStoredValueForUpgrades(int value)
+    {
+        storedValueForUpgrades = value;
+    }
+
+
+
     public boolean hasItem()
     {
         if(item.getStackInSlot(0).isEmpty())
@@ -138,6 +140,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
     public ItemStack removeCoin() {
         ItemStack stack = coin.extractItem(0,coin.getStackInSlot(0).getCount(),false);
+        setStoredValueForUpgrades(0);
         updateBlock();
         return stack;
     }
@@ -163,6 +166,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         ItemStack itemFromBlock = coinFromBlock.copy();
         itemFromBlock.setCount(1);
         if(hasCoin()){} else coin.insertItem(0,itemFromBlock,false);
+        setStoredValueForUpgrades(0);
         updateBlock();
         return true;
     }
@@ -938,6 +942,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         compound.setTag("ItemStackCoinInventoryHandler", this.coin.serializeNBT());
         compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
         compound.setInteger("expPedestal",expInPedestal);
+        compound.setInteger("storedUpgradeValue",storedValueForUpgrades);
         int counter = 0;
         for(int i=0;i<storedOutputLocations.length;i++)
         {
@@ -969,6 +974,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         this.expInPedestal = compound.getInteger("expPedestal");
         NBTTagCompound itemTagD = compound.getCompoundTag("display");
         int counter = compound.getInteger("storedBlockPosCounter");
+        this.storedValueForUpgrades = compound.getInteger("storedUpgradeValue");
 
         for(int i=0;i<counter;i++)
         {
