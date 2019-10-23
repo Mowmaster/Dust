@@ -101,6 +101,32 @@ public class ipuImport extends ipuBasic
         return  transferSpeed;
     }
 
+    private int getNextSlotWithItems(int range, TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack stackInPedestal)
+    {
+        int slot = -1;
+        for(int i=0;i<range;i++)
+        {
+            ItemStack stackInSlot = invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot).getStackInSlot(i);
+            //find a slot with items
+            if(!stackInSlot.isEmpty())
+            {
+                //If pedestal is empty accept any items
+                if(stackInPedestal.isEmpty())
+                {
+                    slot=i;
+                    break;
+                }
+                //if stack in pedestal matches items in slot
+                else if(doItemsMatch(stackInPedestal,stackInSlot))
+                {
+                    slot=i;
+                    break;
+                }
+            }
+        }
+        return slot;
+    }
+
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getTransferRate(coinInPedestal);
@@ -131,7 +157,8 @@ public class ipuImport extends ipuBasic
 
                     }
                     else {
-                        for(int i =0;i<invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getSlots();i++)
+                        int i = getNextSlotWithItems(invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getSlots(),invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
+                        if(i>=0)
                         {
                             if(!invToPullFrom.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i).equals(ItemStack.EMPTY))
                             {
