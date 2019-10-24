@@ -249,6 +249,46 @@ public class ipuBasic extends Item
         return !(inventoryIn instanceof ISidedInventory) || ((ISidedInventory)inventoryIn).canExtractItem(index, stack, side);
     }
 
+    public int[] getSlotsForSide(World world, BlockPos posOfPedestal, IInventory inventory)
+    {
+        int[] slots = new int[]{};
+
+        if(inventory instanceof ISidedInventory)
+        {
+            slots= ((ISidedInventory) inventory).getSlotsForFace(getPedestalFacing(world, posOfPedestal));
+        }
+
+        return slots;
+    }
+
+
+    /*public boolean canInsertIntoSide(World world, BlockPos posOfPedestal, IInventory inventory, ItemStack itemFromPedestal, int slot)
+    {
+        boolean value = false;
+        if(inventory instanceof ISidedInventory)
+        {
+            int[] slots= ((ISidedInventory) inventory).getSlotsForFace(getPedestalFacing(world, posOfPedestal));
+            for(int i=0;i<slots.length;i++)
+            {
+                if(canInsertItemInSlot(inventory,itemFromPedestal,slots[i],getPedestalFacing(world, posOfPedestal)))
+                {
+                    value=true;
+                }
+                else
+                {
+                    value=false;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            if(canInsertItemInSlot(inventory,itemFromPedestal,slot,getPedestalFacing(world, posOfPedestal))) value=true;
+        }
+
+        return value;
+    }*/
+
     public BlockPos getPosOfBlockBelow(World world,BlockPos posOfPedestal, int numBelow)
     {
         IBlockState state = world.getBlockState(posOfPedestal);

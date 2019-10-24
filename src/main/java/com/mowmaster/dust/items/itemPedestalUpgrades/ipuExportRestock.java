@@ -178,7 +178,7 @@ public class ipuExportRestock extends ipuBasic
                                             {
                                                 ItemStack stackInSlotI = invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i);
                                                 //Just checks to see if item can be inserted into slot(doesnt check stack size or if they match???)
-                                                if(canInsertItemInSlot(inventory,itemFromPedestal,i,getPedestalFacing(world, posOfPedestal)))
+                                                if(canInsertItemInSlot(inventory, itemFromPedestal,i,getPedestalFacing(world,posOfPedestal )))
                                                 {
                                                     itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
                                                     //if Slot is Empty

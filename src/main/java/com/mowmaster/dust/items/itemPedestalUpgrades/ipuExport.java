@@ -135,32 +135,7 @@ public class ipuExport extends ipuBasic
         return slot;
     }
 
-    public boolean canInsertIntoSide(World world, BlockPos posOfPedestal, IInventory inventory, ItemStack itemFromPedestal, int slot)
-    {
-        boolean value = false;
-        if(inventory instanceof ISidedInventory)
-        {
-            int[] slots= ((ISidedInventory) inventory).getSlotsForFace(getPedestalFacing(world, posOfPedestal));
-            for(int i=0;i<slots.length;i++)
-            {
-                if(canInsertItemInSlot(inventory,itemFromPedestal,slots[i],getPedestalFacing(world, posOfPedestal)))
-                {
-                    value=true;
-                }
-                else
-                {
-                    value=false;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            if(canInsertItemInSlot(inventory,itemFromPedestal,slot,getPedestalFacing(world, posOfPedestal))) value=true;
-        }
 
-        return value;
-    }
 
 
 //                          impTicker,this.world,   getItemInPedestal(),      getCoinOnPedestal(),     this.getPos()
@@ -217,9 +192,7 @@ public class ipuExport extends ipuBasic
                                                 {
                                                     ItemStack stackInSlotI = invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i);
                                                     //Just checks to see if item can be inserted into slot(doesnt check stack size or if they match???)
-                                                    System.out.println(canInsertItemInSlot(inventory,itemFromPedestal,i,getPedestalFacing(world, posOfPedestal)) + "Slot#: "+i);
-
-                                                    if(canInsertIntoSide(world,posOfPedestal,inventory, itemFromPedestal,i))
+                                                    if(canInsertItemInSlot(inventory, itemFromPedestal,i,getPedestalFacing(world,posOfPedestal )))
                                                     {
                                                         itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
                                                         //if Slot is Empty
