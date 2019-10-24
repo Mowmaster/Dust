@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -109,28 +110,39 @@ public class ipuExport extends ipuBasic
         return  transferSpeed;
     }
 
-    private int getNextSlotEmptyOrMatching(int range, TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack itemInPedestal)
+    private int getNextSlotEmptyOrMatching(TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack itemInPedestal)
     {
-        int slot = 0;
-        for(int i=0;i<range;i++)
+        int slot = -1;
+        if(invBeingChecked.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot))
         {
-            ItemStack stackInSlot = invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot).getStackInSlot(i);
-            if(doItemsMatch(stackInSlot,itemInPedestal) && stackInSlot.getCount()<stackInSlot.getMaxStackSize())
+            IItemHandlerModifiable handler = (IItemHandlerModifiable) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
+            int range = handler.getSlots();
+            for(int i=0;i<=range;i++)
             {
-                slot = i;
-                break;
-            }
-            else if(stackInSlot.isEmpty())
-            {
-                slot = i;
-                break;
-            }
-            //if chest is full
-            else if(i==range)
-            {
-                slot=-1;
+                ItemStack stackInSlot = handler.getStackInSlot(i);
+                int maxSizeSlot = handler.getSlotLimit(i);
+                if(maxSizeSlot>0)
+                {
+                    if(doItemsMatch(stackInSlot,itemInPedestal) && stackInSlot.getCount() < handler.getSlotLimit(i))
+                    {
+                        slot = i;
+                        break;
+                    }
+                    else if(stackInSlot.isEmpty())
+                    {
+                        slot = i;
+                        break;
+                    }
+                    //if chest is full
+                    else if(i==range)
+                    {
+                        slot=-1;
+                    }
+                }
             }
         }
+
+
 
         return slot;
     }
@@ -142,8 +154,12 @@ public class ipuExport extends ipuBasic
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getTransferSpeed(coinInPedestal);
-        if (tick%speed == 0) {
-            upgradeAction(world,pedestalPos,coinInPedestal);
+
+        if(!world.isBlockPowered(pedestalPos))
+        {
+            if (tick%speed == 0) {
+                upgradeAction(world,pedestalPos,coinInPedestal);
+            }
         }
     }
 
@@ -152,97 +168,59 @@ public class ipuExport extends ipuBasic
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         int upgradeTransferRate = getTransferRate(coinInPedestal);
         ItemStack itemFromPedestal = ItemStack.EMPTY;
-        IInventory inventory = null;
             //Checks to make sure a TE exists
             if(world.getTileEntity(posInventory) !=null)
             {
-                if(world.getTileEntity(posInventory) instanceof IInventory)
-                {
-                    inventory = (IInventory) world.getTileEntity(posInventory);
+                //Gets inventory TE then makes sure its not a pedestal
+                TileEntity invToPushInto = world.getTileEntity(posInventory);
+                if(invToPushInto instanceof TilePedestal) {
+                    itemFromPedestal = ItemStack.EMPTY;
                 }
-                //Checks to make sure TE is an inventory and can be pulled from facing side
-                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
-                {
-                    //Gets inventory TE then makes sure its not a pedestal
-                    TileEntity invToPushInto = world.getTileEntity(posInventory);
-                    if(invToPushInto instanceof TilePedestal) {
+                else {
+                    TileEntity invToPushTo = world.getTileEntity(posInventory);
+                    if(invToPushTo instanceof TilePedestal) {
                         itemFromPedestal = ItemStack.EMPTY;
-
                     }
                     else {
-
-                        if(!world.isBlockPowered(posOfPedestal))
+                        itemFromPedestal = getStackInPedestal(world,posOfPedestal);
+                        //IF pedestal is empty and has nothing to transfer then dont do anything
+                        if(!itemFromPedestal.isEmpty() && !itemFromPedestal.equals(ItemStack.EMPTY))
                         {
-                            if(world.getTileEntity(posInventory) !=null)
+                            if(invToPushTo.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
                             {
-                                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN))
+                                IItemHandlerModifiable handler = (IItemHandlerModifiable) invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+
+                                //gets next empty or partially filled matching slot
+                                int i = getNextSlotEmptyOrMatching(invToPushInto, getPedestalFacing(world, posOfPedestal), itemFromPedestal);
+                                if(handler != null)
                                 {
-                                    TileEntity invToPushTo = world.getTileEntity(posInventory);
-                                    if(invToPushTo instanceof TilePedestal) {
-                                        itemFromPedestal = ItemStack.EMPTY;
-                                    }
-                                    else {
-                                        itemFromPedestal = getStackInPedestal(world,posOfPedestal);
-                                        if(!itemFromPedestal.isEmpty())
+                                    if(i>=0)
+                                    {
+                                        if(handler.isItemValid(i, itemFromPedestal))
                                         {
+                                            itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
+                                            ItemStack itemFromInventory = handler.getStackInSlot(i);
+                                            int spaceInInventoryStack = handler.getSlotLimit(i) - itemFromInventory.getCount();
 
-                                                //gets next empty or partially filled matching slot
-                                                int i = getNextSlotEmptyOrMatching(invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getSlots(), invToPushInto, getPedestalFacing(world, posOfPedestal), itemFromPedestal);
-                                                if(i>=0)
-                                                {
-                                                    ItemStack stackInSlotI = invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).getStackInSlot(i);
-                                                    //Just checks to see if item can be inserted into slot(doesnt check stack size or if they match???)
-                                                    if(canInsertItemInSlot(inventory, itemFromPedestal,i,getPedestalFacing(world,posOfPedestal )))
-                                                    {
-                                                        itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
-                                                        //if Slot is Empty
+                                            //if inv slot is empty it should be able to handle as much as we can give it
+                                            int allowedTransferRate = upgradeTransferRate;
+                                            //checks allowed slot size amount and sets it if its lower then transfer rate
+                                            if(handler.getSlotLimit(i) <= allowedTransferRate) allowedTransferRate = handler.getSlotLimit(i);
+                                            //never have to check to see if pedestal and stack match because the slot checker does it for us
+                                            //if our transfer rate is bigger then what can go in the slot if its partially full we set the transfer size to what can fit
+                                            //Otherwise if space is bigger then rate we know it can accept as much as we're putting in
+                                            if(allowedTransferRate> spaceInInventoryStack) allowedTransferRate = spaceInInventoryStack;
+                                            //IF items in pedestal are less then the allowed transfer amount then set it as the amount
+                                            if(allowedTransferRate > itemFromPedestal.getCount()) allowedTransferRate = itemFromPedestal.getCount();
 
-                                                        if(stackInSlotI.isEmpty())
-                                                        {
-                                                            if(itemFromPedestal.getCount()>=upgradeTransferRate)
-                                                            {
-                                                                itemFromPedestal.setCount(upgradeTransferRate);
-                                                            }
-                                                            removeFromPedestal(world,posOfPedestal ,itemFromPedestal.getCount() );
-                                                            invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).insertItem(i,itemFromPedestal,false );
-                                                        }
-                                                        //if slot isnt empty, since it passes canInsertItemInSlot we know it matches
-                                                        //check if items match
-                                                        else if(doItemsMatch(itemFromPedestal,stackInSlotI))
-                                                        {
-                                                            //if stacks match, then we need to add to stack but not over fill it
-                                                            //check if pedestal can send full transfer
-                                                            int transfersize = upgradeTransferRate;
-                                                            if(transfersize >= itemFromPedestal.getCount())
-                                                            {
-                                                                transfersize = itemFromPedestal.getCount();
-                                                            }
-                                                            //check if selected stack can hold a full transfer
-                                                            if (stackInSlotI.getMaxStackSize() >= (transfersize+stackInSlotI.getCount()))
-                                                            {
-                                                                if(itemFromPedestal.getCount()>=transfersize)
-                                                                {
-                                                                    itemFromPedestal.setCount(transfersize);
-                                                                }
-                                                                removeFromPedestal(world,posOfPedestal ,itemFromPedestal.getCount() );
-                                                                invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).insertItem(i,itemFromPedestal,false );
-                                                            }
-                                                            //if it cant handle a full transfer we need to modify transfer size
-                                                            else
-                                                            {
 
-                                                                transfersize = stackInSlotI.getMaxStackSize()-stackInSlotI.getCount();
-                                                                if(itemFromPedestal.getCount()>=transfersize)
-                                                                {
-                                                                    itemFromPedestal.setCount(transfersize);
-                                                                }
-                                                                removeFromPedestal(world,posOfPedestal ,itemFromPedestal.getCount() );
-                                                                invToPushInto.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,getPedestalFacing(world, posOfPedestal)).insertItem(i,itemFromPedestal,false );
-                                                            }
-                                                        }
-                                                    }
-                                                }
 
+                                            //After all calculations for transfer rate, set stack size to transfer and transfer the items
+                                            itemFromPedestal.setCount(allowedTransferRate);
+                                            if(handler.insertItem(i,itemFromPedestal,true ).equals(ItemStack.EMPTY)){
+                                                removeFromPedestal(world,posOfPedestal ,allowedTransferRate);
+                                                handler.insertItem(i,itemFromPedestal,false );
+                                            }
                                         }
                                     }
                                 }

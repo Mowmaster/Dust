@@ -133,8 +133,11 @@ public class ipuDropper extends ipuBasic
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getTransferSpeed(coinInPedestal);
-        if (tick%speed == 0) {
-            upgradeAction(world,pedestalPos,coinInPedestal);
+        if(!world.isBlockPowered(pedestalPos))
+        {
+            if (tick%speed == 0) {
+                upgradeAction(world,pedestalPos,coinInPedestal);
+            }
         }
     }
 
@@ -142,19 +145,16 @@ public class ipuDropper extends ipuBasic
     {
         int rate = getTransferRate(coinOnPedestal);
         int range = getRange(coinOnPedestal);
-        if(!world.isBlockPowered(posOfPedestal))
+        if(!getStackInPedestal(world,posOfPedestal).isEmpty())//hasItem
         {
-            if(!getStackInPedestal(world,posOfPedestal).isEmpty())//hasItem
-            {
-                ItemStack itemToSummon = getStackInPedestal(world,posOfPedestal).copy();
-                itemToSummon.setCount(rate);
-                EntityItem itemEntity = new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-range).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-range).getY(),getPosOfBlockBelow(world,posOfPedestal,-range).getZ() + 0.5,itemToSummon);
-                itemEntity.motionX = 0;
-                itemEntity.motionY = 0;
-                itemEntity.motionZ = 0;
-                world.spawnEntity(itemEntity);
-                this.removeFromPedestal(world,posOfPedestal,itemToSummon.getCount());
-            }
+            ItemStack itemToSummon = getStackInPedestal(world,posOfPedestal).copy();
+            itemToSummon.setCount(rate);
+            EntityItem itemEntity = new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-range).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-range).getY(),getPosOfBlockBelow(world,posOfPedestal,-range).getZ() + 0.5,itemToSummon);
+            itemEntity.motionX = 0;
+            itemEntity.motionY = 0;
+            itemEntity.motionZ = 0;
+            world.spawnEntity(itemEntity);
+            this.removeFromPedestal(world,posOfPedestal,itemToSummon.getCount());
         }
     }
 

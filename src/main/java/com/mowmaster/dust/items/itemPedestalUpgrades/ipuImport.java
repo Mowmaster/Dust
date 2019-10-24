@@ -103,37 +103,51 @@ public class ipuImport extends ipuBasic
         return  transferSpeed;
     }
 
-    private int getNextSlotWithItems(int range, TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack stackInPedestal)
+    private int getNextSlotWithItems(TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack stackInPedestal)
     {
         int slot = -1;
-        for(int i=0;i<range;i++)
-        {
-            ItemStack stackInSlot = invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot).getStackInSlot(i);
-            //find a slot with items
-            if(!stackInSlot.isEmpty())
+
+        if(invBeingChecked.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot)) {
+            IItemHandlerModifiable handler = (IItemHandlerModifiable) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
+            int range = handler.getSlots();
+            for(int i=0;i<range;i++)
             {
-                //If pedestal is empty accept any items
-                if(stackInPedestal.isEmpty())
+                ItemStack stackInSlot = handler.getStackInSlot(i);
+                //find a slot with items
+                if(!stackInSlot.isEmpty())
                 {
-                    slot=i;
-                    break;
-                }
-                //if stack in pedestal matches items in slot
-                else if(doItemsMatch(stackInPedestal,stackInSlot))
-                {
-                    slot=i;
-                    break;
+                    //check if it could pull the item out or not
+                    if(!handler.extractItem(i,1 ,true ).equals(ItemStack.EMPTY))
+                    {
+                        //If pedestal is empty accept any items
+                        if(stackInPedestal.isEmpty())
+                        {
+                            slot=i;
+                            break;
+                        }
+                        //if stack in pedestal matches items in slot
+                        else if(doItemsMatch(stackInPedestal,stackInSlot))
+                        {
+                            slot=i;
+                            break;
+                        }
+                    }
                 }
             }
         }
+
         return slot;
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getTransferRate(coinInPedestal);
-        if (tick%speed == 0) {
-            upgradeAction(world,pedestalPos,coinInPedestal);
+
+        if(!world.isBlockPowered(pedestalPos))
+        {
+            if (tick%speed == 0) {
+                upgradeAction(world,pedestalPos,coinInPedestal);
+            }
         }
     }
 
@@ -156,8 +170,7 @@ public class ipuImport extends ipuBasic
                     else {
                         if(handler != null)
                         {
-                            int invSize = handler.getSlots();
-                            int i = getNextSlotWithItems(invSize,invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
+                            int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
                             if(i>=0)
                             {
                                 int maxInSlot = handler.getSlotLimit(i);
@@ -178,9 +191,9 @@ public class ipuImport extends ipuBasic
                                     copyIncoming.setCount(allowedTransferRate);
                                     TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
                                     if(pedestalInv instanceof TilePedestal) {
+                                        handler.extractItem(i,allowedTransferRate ,false );
                                         ((TilePedestal) pedestalInv).addItem(copyIncoming);
                                     }
-                                    handler.extractItem(i,allowedTransferRate ,false );
                                 }
                             }
                         }
