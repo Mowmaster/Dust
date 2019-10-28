@@ -15,6 +15,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShulkerBoxRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -181,16 +182,15 @@ public class ipuCrafter extends ipuBasic
 
                     for(IRecipe recipe : ForgeRegistries.RECIPES)
                     {
-                        //Checks to make sure the stack we are about to return will fit in the pedestal
-                        ItemStack stackOutput = recipe.getCraftingResult(craft);
-                        while((stackOutput.getCount() * sizeAttemptToCraft) > spaceInPedestal) {
-                            sizeAttemptToCraft--;
-                        }
-
                         //If recipe is valid and we can craft recipe and stick it in pedestal
-                        if(recipe.matches(craft, world) && sizeAttemptToCraft>0) {
+                        if(recipe.matches(craft, world)) {
+                            //Checks to make sure the stack we are about to return will fit in the pedestal
+                            ItemStack stackOutput = recipe.getCraftingResult(craft);
+                            while((stackOutput.getCount() * sizeAttemptToCraft) > spaceInPedestal) {
+                                sizeAttemptToCraft--;
+                            }
                             //since result will fit in pedestal, is the pedestal empty or do the items match?
-                            if(stackInPedestal.equals(ItemStack.EMPTY) || doItemsMatch(stackInPedestal, stackOutput))
+                            if(stackInPedestal.equals(ItemStack.EMPTY) || doItemsMatch(stackInPedestal, stackOutput)  && sizeAttemptToCraft>0)
                             {
                                 int sizeToCraft = stackOutput.getCount() * sizeAttemptToCraft;
                                 stackOutput.setCount(sizeToCraft);
