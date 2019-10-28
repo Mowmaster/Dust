@@ -159,13 +159,15 @@ public class ItemRegistry
         singleExportUpgrade = new ipuExportRestock("singleexportupgrade","singleexportupgrade");
         dropperUpgrade = new ipuDropper("dropperupgrade","dropperupgrade");
         chopperUpgrade = new ipuChopper("chopperupgrade","chopperupgrade");
+        craftingPlaceholder = new ItemBasic("craftingplaceholder","craftingplaceholder",64);
+        crafter1Upgrade = new ipuCrafter("crafter1upgrade","crafter1upgrade",1);
+        crafter4Upgrade = new ipuCrafter("crafter4upgrade","crafter4upgrade",2);
+        crafter9Upgrade = new ipuCrafter("crafter9upgrade","crafter9upgrade",3);
+
+
 
         userUpgrade = new ItemCoin("userupgrade","userupgrade");
-        crafter1Upgrade = new ItemCoin("crafter1upgrade","crafter1upgrade");
-        crafter4Upgrade = new ItemCoin("crafter4upgrade","crafter4upgrade");
-        crafter9Upgrade = new ItemCoin("crafter9upgrade","crafter9upgrade");
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");
-
         placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
         filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
         fuzzyFilterUpgrade = new ItemCoin("fuzzyfilterupgrade","fuzzyfilterupgrade");
@@ -176,7 +178,6 @@ public class ItemRegistry
         effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");
         breakerUpgrade = new ItemCoin("breakerupgrade","breakerupgrade");
 
-        craftingPlaceholder = new ItemBasic("craftingplaceholder","craftingplaceholder",64);
 
         scrollA = new ItemScroll("scrolla","scrolla");
         scrollB = new ItemScroll("scrollb","scrollb");
