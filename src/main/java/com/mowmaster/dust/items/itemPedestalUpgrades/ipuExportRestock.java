@@ -191,9 +191,14 @@ public class ipuExportRestock extends ipuBasic
                             //gets next empty or partially filled matching slot
                             if(handler != null)
                             {
+                                ItemStack itemFromInventory = ItemStack.EMPTY;
                                 itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
-                                ItemStack itemFromInventory = handler.getStackInSlot(i);
-                                if(i>=0)
+                                if(i < handler.getSlots() && handler.getStackInSlot(i) != null)
+                                {
+                                    itemFromInventory = handler.getStackInSlot(i);
+                                }
+
+                                if(i>=0 && i < handler.getSlots())
                                 {
                                     if(handler.isItemValid(i, itemFromPedestal))
                                     {
