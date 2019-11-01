@@ -52,6 +52,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     private static int getPedestalRange = 8;
     private int storedValueForUpgrades = 0;
     private static final BlockPos defaultPos = new BlockPos(0,-2000,0);
+    private int intTransferAmount = 4;
+    private int intTransferSpeed = 20;
     public BlockPos[] storedOutputLocations = {defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos,defaultPos};
 
     public TilePedestal()
@@ -69,6 +71,12 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     {
         storedValueForUpgrades = value;
     }
+
+    public int getPedestalTransferAmount(){return intTransferAmount;}
+    public void setPedestalTransferAmount(int transferAmount){intTransferAmount = transferAmount;}
+    public int getPedestalTransferSpeed(){return intTransferSpeed;}
+    public void setPedestalTransferSpeed(int transferSpeed){intTransferSpeed = transferSpeed;}
+
 
 
 
@@ -943,6 +951,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
         compound.setInteger("expPedestal",expInPedestal);
         compound.setInteger("storedUpgradeValue",storedValueForUpgrades);
+        compound.setInteger("intTransferAmount",intTransferAmount);
+        compound.setInteger("intTransferSpeedt",intTransferSpeed);
         int counter = 0;
         for(int i=0;i<storedOutputLocations.length;i++)
         {
@@ -975,6 +985,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         NBTTagCompound itemTagD = compound.getCompoundTag("display");
         int counter = compound.getInteger("storedBlockPosCounter");
         this.storedValueForUpgrades = compound.getInteger("storedUpgradeValue");
+        this.intTransferAmount = compound.getInteger("intTransferAmount");
+        this.intTransferSpeed = compound.getInteger("intTransferSpeed");
 
         for(int i=0;i<counter;i++)
         {

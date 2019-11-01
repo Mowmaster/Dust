@@ -2,6 +2,8 @@ package com.mowmaster.dust.blocks.machines;
 
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
+import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
@@ -13,13 +15,18 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -109,50 +116,13 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         {
             TilePedestal tilePedestal = (TilePedestal) tileentity;
 
-            int returner = 0;
-            if(entityIn instanceof EntityItem)
+            if(!worldIn.isRemote)
             {
-                ItemStack incomingItem = ((EntityItem) entityIn).getItem();
-                if(tilePedestal.getItemInPedestal().isEmpty())
+                Item coinInPed = tilePedestal.getCoinOnPedestal().getItem();
+                if(coinInPed instanceof ipuBasic)
                 {
-                    tilePedestal.addItem(incomingItem);
-                    returner = incomingItem.getCount();
-                    if(incomingItem.getCount()-returner>0)
-                    {
-                        incomingItem.setCount(incomingItem.getCount()-returner);
-                    }
-                    else entityIn.setDead();
+                    ((ipuBasic) coinInPed).actionOnColideWithBlock(worldIn, tilePedestal, pos, state, entityIn);
                 }
-                else if(tilePedestal.doItemsMatch(tilePedestal.getItemInPedestal(),incomingItem))
-                {
-                    int leftTillFilled = tilePedestal.roomLeftInStack(tilePedestal.getItemInPedestal());
-                    if(leftTillFilled>incomingItem.getCount())
-                    {
-
-                        tilePedestal.addItem(incomingItem);
-                        returner = incomingItem.getCount();
-                    }
-                    else
-                    {
-                        ItemStack copyIncoming = incomingItem.copy();
-                        copyIncoming.setCount(leftTillFilled);
-                        tilePedestal.addItem(copyIncoming);
-                        returner = incomingItem.getCount()-leftTillFilled;
-                    }
-
-                    if(incomingItem.getCount()-returner>0)
-                    {
-                        incomingItem.setCount(incomingItem.getCount()-returner);
-                    }
-                    else entityIn.setDead();
-                }
-            }
-            else if(entityIn instanceof EntityXPOrb)
-            {
-                EntityXPOrb getOrb = (EntityXPOrb)entityIn;
-                int valueXP = getOrb.getXpValue();
-                tilePedestal.addExpToPedestal(valueXP);
-                getOrb.setDead();
             }
         }
     }
@@ -187,8 +157,76 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         super.breakBlock(worldIn, pos, state);
     }
 
+    public PotionEffect getCoinEffect(ItemStack stack)
+    {
+        PotionEffect potionEffect = new PotionEffect(MobEffects.LUCK);
+
+
+        if(hasCoinEffect(stack))
+        {
+            potionEffect = PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("coineffect"));
+        }
+
+        return potionEffect;
+    }
+
+    public boolean hasEffect;
+
+    public boolean hasCoinEffect(ItemStack stack)
+    {
+        hasEffect = false;
+        if(stack.hasTagCompound())
+        {
+            hasEffect = stack.getTagCompound().hasKey("coineffect");
+        }
+        return hasEffect;
+    }
+
+    public int getPotency(ItemStack stack)
+    {
+        return getCoinEffect(stack).getAmplifier()+1;
+    }
+
+    public int intRate = 0;
+
+    public int getRateModifier(Potion effect, ItemStack stack)
+    {
+        if(hasCoinEffect(stack))
+        {
+            if(getCoinEffect(stack).getPotion().equals(effect))
+            {
+                intRate = getPotency(stack);
+            }
+        }
+        else intRate = 0;
+
+        return intRate;
+    }
+
+    public int getTransferRateModifier(ItemStack stack)
+    {
+        int rate = 0;
+        if(stack.isItemEnchanted())
+        {
+            rate = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentTransferRate,stack);
+        }
+        return rate;
+    }
+
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (tileentity instanceof TilePedestal)
+        {
+            TilePedestal tilePedestal = (TilePedestal) tileentity;
+
+            if(!worldIn.isRemote)
+            {
+                tilePedestal.setPedestalTransferAmount(getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack));
+                tilePedestal.setPedestalTransferSpeed(getTransferRateModifier(stack));
+            }
+        }
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 

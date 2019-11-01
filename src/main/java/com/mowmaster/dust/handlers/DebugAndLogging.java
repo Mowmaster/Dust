@@ -1,6 +1,7 @@
 package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemWikiScroll;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.tiles.TilePedestal;
@@ -53,10 +54,33 @@ public class DebugAndLogging
                         playerIn.getHeldItem(hand).setItemDamage(0);
                     }
                 }
+
+                if(playerIn.getHeldItemMainhand().getItem().equals(ItemRegistry.akashic))
+                {
+                    System.out.println(pos);
+                    System.out.println(event.getPos());
+
+                    if (worldIn.getBlockState(pos).getBlock() instanceof BlockPedestal) {
+                        TileEntity tileEntity = worldIn.getTileEntity(pos);
+                        if (tileEntity instanceof TilePedestal) {
+                            TilePedestal tilePedestal = (TilePedestal) tileEntity;
+                            //tilePedestal.getStoredBlockPoss();
+                            System.out.println(tilePedestal.getPedestalTransferAmount());
+                            System.out.println(tilePedestal.getPedestalTransferSpeed());
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.RED + "" + tilePedestal.getPedestalTransferAmount()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.DARK_RED + "" + tilePedestal.getPedestalTransferSpeed() ));
+                        }
+                    }
+                }
+
+
             }
         }
 
         if ((playerIn.getHeldItemOffhand().getItem().equals(akashic))) {
+
+
+
             if ((playerIn.getHeldItemMainhand().isItemEnchanted() || playerIn.getHeldItemMainhand().getItem().equals(Items.ENCHANTED_BOOK))) {
                 NBTTagList list = playerIn.getHeldItemMainhand().getEnchantmentTagList();
                 if (playerIn.getHeldItemMainhand().getItem().equals(Items.ENCHANTED_BOOK)) {
@@ -97,20 +121,8 @@ public class DebugAndLogging
                 }
             }
 
-
-
-            if (playerIn.isSneaking()) {
-                if (worldIn.getBlockState(pos).getBlock() instanceof BlockPedestal) {
-                    TileEntity tileEntity = worldIn.getTileEntity(pos);
-                    if (tileEntity instanceof TilePedestal) {
-                        TilePedestal tilePedestal = (TilePedestal) tileEntity;
-                        tilePedestal.getStoredBlockPoss();
-                    }
-                }
-            }
-
             if (worldIn.isRemote) {
-                if (playerIn.getHeldItemMainhand().isEmpty()) {
+                if (!playerIn.isSneaking() && playerIn.getHeldItemMainhand().isEmpty()) {
                     int expL = playerIn.experienceLevel;
                     float exp = playerIn.experience;
                     int expT = playerIn.experienceTotal;
@@ -138,6 +150,8 @@ public class DebugAndLogging
                     }
                 }
             }
+
+
 
         }
     }
