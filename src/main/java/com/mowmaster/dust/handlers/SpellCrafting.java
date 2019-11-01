@@ -3,6 +3,7 @@ package com.mowmaster.dust.handlers;
 import com.google.common.collect.Lists;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.machines.BlockMachineBase;
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.blocks.machines.BlockTrap;
 import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.enums.CrystalTypes;
@@ -11,24 +12,26 @@ import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemSpellScroll;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
+import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -73,6 +76,7 @@ public class SpellCrafting
         int pressurePlate = 0;
         int paper = 0;
         int coin = 0;
+        int pedestal = 0;
         //int spellpaper = 0;
         int arrow = 0;
         int stone = 0;
@@ -85,6 +89,7 @@ public class SpellCrafting
             //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
             List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3, posY - 3, posZ - 3, posX + 3, posY + 3, posZ + 3));
             ItemStack coined = ItemStack.EMPTY;
+            ItemStack peded = ItemStack.EMPTY;
             if ((player.getHeldItem(hand) != null)) {
                 if (player.getHeldItem(hand).getItem() instanceof ItemFlintAndSteel) {
 
@@ -137,11 +142,19 @@ public class SpellCrafting
                             item.setDead();
                         }
 
-                        if(containsCoin(stack))//&& !(arrow>0) || !(pressurePlate>0)
+                        if(containsCoin(stack))
                         {
                             coined = stack.copy();
                             coin += stack.getCount();
                             item.setDead();
+                        }
+
+                        if(containsPedestal(stack))
+                        {
+                            peded = stack.copy();
+                            pedestal += stack.getCount();
+                            item.setDead();
+                            System.out.println(peded.getItem().getUnlocalizedName() + peded.getCount());
                         }
 
                         if(containsArrow(stack))//&& !(paper>0) || !(pressurePlate>0)
@@ -157,10 +170,10 @@ public class SpellCrafting
                         worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockMachineBase.machineBase.getDefaultState());
                         worldIn.createExplosion(new EntityItem(worldIn), posX + 0.5,posY + 2.0,posZ + 0.5,1.0F, false);
                     }
-                    else if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0 && coin==0) {
+                    else if (count >= minimumDustRequired && pressurePlate==0 && paper==0 && arrow==0 && coin==0 && pedestal==0) {
                         player.addPotionEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                     }
-                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0 && coin==0)
+                    else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0 && coin==0 && pedestal==0)
                     {
 
                         /*
@@ -177,7 +190,7 @@ public class SpellCrafting
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
                         }
                     }
-                    else if(pressurePlate==0 && arrow==0 && coin==0 && paper>=1)
+                    else if(pressurePlate==0 && arrow==0 && coin==0 && pedestal==0&& paper>=1)
                     {
                         if(count/paper >= minimumDustRequired)
                         {
@@ -199,7 +212,33 @@ public class SpellCrafting
                         }
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Scroll"),true);
                     }
-                    else if(pressurePlate==0 && arrow==0 &&  paper==0 && coin>=1)
+                    else if(pressurePlate==0 && arrow==0 && coin==0 &&  paper==0 && pedestal>=1)
+                    {
+                        if(count/pedestal >= minimumDustRequired)
+                        {
+                            if(!worldIn.isRemote)
+                            {
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/pedestal, blue/pedestal, yellow/pedestal, white/pedestal, black/pedestal, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                NBTTagCompound cmpd = new NBTTagCompound();
+                                if(peded.hasTagCompound())
+                                {
+                                    cmpd =peded.getTagCompound();
+                                }
+
+                                cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                                peded.setTagCompound(cmpd);
+
+                                for(int i=0; i<pedestal; i++)
+                                {
+                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, peded.copy());
+                                    items1.onCollideWithPlayer(player);
+                                    //worldIn.spawnEntity(items1);
+                                }
+                            }
+                        }
+                        else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Effect Upgrade"),true);
+                    }
+                    else if(pressurePlate==0 && arrow==0 &&  paper==0 && pedestal==0&& coin>=1)
                     {
                         if(count/coin >= minimumDustRequired)
                         {
@@ -230,20 +269,19 @@ public class SpellCrafting
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Effect Upgrade"),true);
                     }
 
-                    else if(pressurePlate==0 && paper>=0 && coin==0&& arrow>=1)
+                    else if(pressurePlate==0 && paper>=0 && coin==0&& pedestal==0&& arrow>=1)
                     {
                         if(count/arrow >= minimumDustRequired)
                         {
                             if(!worldIn.isRemote)
                             {
                                 List<PotionEffect> effects = Lists.<PotionEffect>newArrayList();
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white/arrow, black/arrow, 20 * count/arrow * 8,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white/arrow, black/arrow, 20 * count/arrow,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 effects.add(effect);
                                 //NBTTagCompound cmpd = new NBTTagCompound();
                                 //cmpd.setTag("CustomPotionEffects",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 //cmpd.setTag("Potion",new NBTTagString(effect.getPotion().getRegistryName().toString()));
                                 //stack.setTagCompound(cmpd);
-
                                 ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW);
                                 //PotionUtils.addPotionToItemStack(itemstack1, new PotionType(new PotionEffect[]{effect}));
                                 NBTTagCompound cmpd = new NBTTagCompound();
@@ -252,6 +290,12 @@ public class SpellCrafting
                                 PotionUtils.appendEffects(itemstack1, effects);
                                 String s1 = I18n.translateToLocal(effect.getEffectName()).trim();
                                 itemstack1.setStackDisplayName("Arrow of " + s1);
+
+                                //From Custom Arrow Crafting Manager
+                                /*ItemStack itemstack2 = new ItemStack(Items.TIPPED_ARROW, count);
+                                PotionUtils.addPotionToItemStack(itemstack2, PotionType.getPotionTypeForName(effect.getEffectName()));
+                                PotionUtils.appendEffects(itemstack2, PotionUtils.getFullEffectsFromItem(itemstack));
+                                */
 
                                 for(int i=0; i<arrow; i++)
                                 {
@@ -303,6 +347,15 @@ public class SpellCrafting
     public boolean containsCoin(ItemStack stack)
     {
         if(stack.getItem() instanceof ipuBasic || stack.getItem() instanceof ItemCoin)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean containsPedestal(ItemStack stack)
+    {
+        if(Block.getBlockFromItem(stack.getItem()) instanceof BlockPedestal)
         {
             return true;
         }
