@@ -1,0 +1,269 @@
+package com.mowmaster.dust.items.itemPedestalUpgrades;
+
+
+import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
+
+public class ipuFurnace extends ipuBasic
+{
+    public int itemsPerSmelt = 0;
+    public int smeltingSpeed = 0;
+    public final int burnTimeCostPerItemSmelted = 200;
+
+    public ipuFurnace(String unlocName, String registryName)
+    {
+        this.setUnlocalizedName(unlocName);
+        this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
+        this.maxStackSize = 64;
+        this.setCreativeTab(DUSTTABS);
+        this.isFilter=false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return false;
+    }
+
+    public int getItemTransferRate(ItemStack stack)
+    {
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        {
+            case 0:
+                itemsPerSmelt = 1;
+                break;
+            case 1:
+                itemsPerSmelt=2;
+                break;
+            case 2:
+                itemsPerSmelt = 4;
+                break;
+            case 3:
+                itemsPerSmelt = 8;
+                break;
+            case 4:
+                itemsPerSmelt = 12;
+                break;
+            case 5:
+                itemsPerSmelt=16;
+                break;
+            default: itemsPerSmelt=1;
+        }
+
+        return  itemsPerSmelt;
+    }
+
+    public int getSmeltingSpeed(ItemStack stack)
+    {
+        switch (getTransferRateModifier(stack))
+        {
+            case 0:
+                smeltingSpeed = 200;//normal speed
+                break;
+            case 1:
+                smeltingSpeed=100;//2x faster
+                break;
+            case 2:
+                smeltingSpeed = 50;//4x faster
+                break;
+            case 3:
+                smeltingSpeed = 33;//6x faster
+                break;
+            case 4:
+                smeltingSpeed = 20;//10x faster
+                break;
+            case 5:
+                smeltingSpeed=10;//20x faster
+                break;
+            default: smeltingSpeed=200;
+        }
+
+        return  smeltingSpeed;
+    }
+
+    private int getNextSlotWithItems(TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack stackInPedestal)
+    {
+        int slot = -1;
+
+        if(invBeingChecked.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot)) {
+            IItemHandlerModifiable handler = (IItemHandlerModifiable) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
+            int range = handler.getSlots();
+            for(int i=0;i<range;i++)
+            {
+                ItemStack stackInSlot = handler.getStackInSlot(i);
+                //find a slot with items
+                if(!stackInSlot.isEmpty())
+                {
+                    //check if it could pull the item out or not
+                    if(!handler.extractItem(i,1 ,true ).equals(ItemStack.EMPTY))
+                    {
+                        //If pedestal is empty accept any items
+                        if(stackInPedestal.isEmpty())
+                        {
+                            slot=i;
+                            break;
+                        }
+                        //if stack in pedestal matches items in slot
+                        else if(doItemsMatch(stackInPedestal,stackInSlot))
+                        {
+                            slot=i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return slot;
+    }
+
+    public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
+    {
+        int speed = getSmeltingSpeed(coinInPedestal);
+
+        if(!world.isBlockPowered(pedestalPos))
+        {
+            if (tick%speed == 0) {
+                upgradeAction(world,pedestalPos,coinInPedestal);
+            }
+        }
+    }
+
+    public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
+    {
+        //Get Items from inventory, check if they can be smelted, if so check if they can fit in pedestal,
+
+        //MAYBE make it smart and skip stacks not smeltable??? using restock code???
+
+
+        BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
+        int itemsPerSmelt = getItemTransferRate(coinInPedestal);
+
+            ItemStack itemFromInv = ItemStack.EMPTY;
+            if(world.getTileEntity(posInventory) !=null)
+            {
+                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
+                {
+                    IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+                    TileEntity invToPullFrom = world.getTileEntity(posInventory);
+                    if(invToPullFrom instanceof TilePedestal) {
+                        itemFromInv = ItemStack.EMPTY;
+
+                    }
+                    else {
+                        if(handler != null)
+                        {
+                            int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
+                            if(i>=0)
+                            {
+                                int maxInSlot = handler.getSlotLimit(i);
+                                itemFromInv = handler.getStackInSlot(i);
+                                ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
+                                if(handler.getStackInSlot(i) != null && !handler.getStackInSlot(i).isEmpty() && handler.getStackInSlot(i).getItem() != Items.AIR)
+                                {
+                                    int roomLeftInPedestal = 64-itemFromPedestal.getCount();
+                                    if(itemFromPedestal.isEmpty() || itemFromPedestal.equals(ItemStack.EMPTY)) roomLeftInPedestal = 64;
+                                    int itemCountInInv = itemFromInv.getCount();
+                                    int allowedTransferRate = itemsPerSmelt;
+                                    //Checks to see if pedestal can accept as many items as itemsPerSmelt IF NOT it sets the new rate to what it can accept
+                                    if(roomLeftInPedestal < itemsPerSmelt) allowedTransferRate = roomLeftInPedestal;
+                                    //Checks to see how many items are left in the slot IF ITS UNDER the allowedTransferRate then sent the max rate to that.
+                                    if(itemCountInInv < allowedTransferRate) allowedTransferRate = itemCountInInv;
+
+                                    ItemStack copyIncoming = itemFromInv.copy();
+                                    copyIncoming.setCount(allowedTransferRate);
+                                    TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                    if(pedestalInv instanceof TilePedestal) {
+                                        handler.extractItem(i,allowedTransferRate ,false );
+                                        ((TilePedestal) pedestalInv).addItem(copyIncoming);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        int s2 = getItemTransferRate(stack);
+        String s3 = "";
+
+        switch (getSmeltingSpeed(stack))
+        {
+            case 1:
+                s3 = "20x Faster";
+                break;
+            case 2:
+                s3="10x Faster";
+                break;
+            case 3:
+                s3 = "6x Faster";
+                break;
+            case 5:
+                s3 = "4x Faster";
+                break;
+            case 10:
+                s3 = "2x Faster";
+                break;
+            case 20:
+                s3="Normal Speed";
+                break;
+            default: s3="Normal Speed";
+        }
+
+
+        String tr = "" + s2 + "";
+        String trr = s3;
+        tooltip.add("Item Stack Import Upgrade");
+        if(stack.hasTagCompound())
+        {
+            if(stack.getTagCompound().hasKey("coineffect"))
+            {
+                tooltip.add("Transfer Rate: " + tr);
+            }
+            else
+            {
+                tooltip.add("Transfer Rate: 1");
+            }
+
+            if(stack.isItemEnchanted() && getSmeltingSpeed(stack) >0)
+            {
+                tooltip.add("Transfer Speed: " + trr);
+            }
+            else
+            {
+                tooltip.add("Transfer Speed: Normal Speed");
+            }
+        }
+        else
+        {
+            tooltip.add("Transfer Rate: 1");
+            tooltip.add("Transfer Speed: Normal Speed");
+        }
+    }
+
+}
