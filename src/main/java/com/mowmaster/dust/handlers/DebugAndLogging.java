@@ -5,6 +5,7 @@ import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemWikiScroll;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -38,152 +39,75 @@ public class DebugAndLogging
     public void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
         World worldIn = event.getWorld();
         EntityPlayer playerIn = event.getEntityPlayer();
-        BlockPos pos = playerIn.getPosition();
-        EnumHand hand = event.getHand();
-        IBlockState state = worldIn.getBlockState(event.getPos());
-        ItemStack item = playerIn.getHeldItem(EnumHand.MAIN_HAND);
+        BlockPos blockAtFeetLocation = event.getPos();
+        //BlockPos pos = playerIn.getPosition();
+        //EnumHand hand = event.getHand();
+        //IBlockState state = worldIn.getBlockState(event.getPos());
+        //ItemStack item = playerIn.getHeldItem(EnumHand.MAIN_HAND);
 
         if(!worldIn.isRemote)
         {
-            if (playerIn.isSneaking()) {
-                if ((playerIn.getHeldItemMainhand().getItem() instanceof ItemWikiScroll) || (playerIn.getHeldItemOffhand().getItem() instanceof ItemWikiScroll))
+            if(playerIn.getHeldItemOffhand().getItem().equals(akashic))
+            {
+                if(playerIn.isSneaking())
                 {
-                    if (playerIn.getHeldItem(hand).getMetadata() != 15) {
-                        playerIn.getHeldItem(hand).setItemDamage((playerIn.getHeldItem(hand).getMetadata() + 1));
-                    } else {
-                        playerIn.getHeldItem(hand).setItemDamage(0);
-                    }
+                    //System.out.println("Block At Event Location: " + worldIn.getBlockState(blockAtFeetLocation).getBlock().getUnlocalizedName());
+                    //System.out.println("POS At Event Location: " + blockAtFeetLocation);
                 }
-
-                if(playerIn.getHeldItemMainhand().getItem().equals(ItemRegistry.akashic))
+                else
                 {
-                    System.out.println(pos);
-                    System.out.println(event.getPos());
-
-                    if (worldIn.getBlockState(pos).getBlock() instanceof BlockPedestal) {
-                        TileEntity tileEntity = worldIn.getTileEntity(pos);
-                        if (tileEntity instanceof TilePedestal) {
-                            TilePedestal tilePedestal = (TilePedestal) tileEntity;
-                            //tilePedestal.getStoredBlockPoss();
-                            System.out.println(tilePedestal.getPedestalTransferAmount());
-                            System.out.println(tilePedestal.getPedestalTransferSpeed());
-                            playerIn.sendMessage(new TextComponentString(TextFormatting.RED + "" + tilePedestal.getPedestalTransferAmount()));
-                            playerIn.sendMessage(new TextComponentString(TextFormatting.DARK_RED + "" + tilePedestal.getPedestalTransferSpeed() ));
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-        if ((playerIn.getHeldItemOffhand().getItem().equals(akashic))) {
-
-
-
-            if ((playerIn.getHeldItemMainhand().isItemEnchanted() || playerIn.getHeldItemMainhand().getItem().equals(Items.ENCHANTED_BOOK))) {
-                NBTTagList list = playerIn.getHeldItemMainhand().getEnchantmentTagList();
-                if (playerIn.getHeldItemMainhand().getItem().equals(Items.ENCHANTED_BOOK)) {
-                    list = ItemEnchantedBook.getEnchantments(item);
-                }
-
-
-                if (list == null) {
-                    return;
-                }
-
-
-                int id = 0;
-                int lvl = 0;
-                Enchantment e = Enchantment.getEnchantmentByID(id);
-                for (int i = 0; i < list.tagCount(); i++) {
-                    NBTTagCompound compound = list.getCompoundTagAt(i);
-                    id = compound.getShort("id");
-                    lvl = compound.getShort("lvl");
-                    e = Enchantment.getEnchantmentByID(id);
-
-                    if (e.getName().contains("enchantment.knockback")) {
-                        lvl = lvl + 100;
-                        ItemStack stack = new ItemStack(item.getItem(), 1);
-                        stack.addEnchantment(Enchantment.getEnchantmentByID(id), lvl);
-
-                        if (!worldIn.isRemote) {
-                            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 0.0, pos.getZ() + 0.5, stack));
-                        }
-
-                    }
-
-                    if (!worldIn.isRemote) {
-                        playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + e.getName().replace("enchantment.", "") + ": " + TextFormatting.GOLD + lvl));
-                        playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "ID" + ": " + TextFormatting.GREEN + id));
-                    }
-
-                }
-            }
-
-            if (worldIn.isRemote) {
-                if (!playerIn.isSneaking() && playerIn.getHeldItemMainhand().isEmpty()) {
-                    int expL = playerIn.experienceLevel;
-                    float exp = playerIn.experience;
-                    int expT = playerIn.experienceTotal;
-                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "Level: " + expL));
-                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "Exp: " + exp));
-                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + "Total: " + expT));
-                }
-            }
-
-
-            if (worldIn.isRemote) {
-                if (playerIn.getHeldItemMainhand().getItem() instanceof ItemTippedArrow) {
-                    playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + PotionUtils.getEffectsFromStack(playerIn.getHeldItemMainhand()).toString()));
-                }
-            }
-
-            if (worldIn.isRemote) {
-                if (playerIn.getHeldItemMainhand().getItem() instanceof ipuBasic) {
-                    if(playerIn.getHeldItemMainhand().hasTagCompound())
+                    if(playerIn.getHeldItemMainhand() != ItemStack.EMPTY)
                     {
-                        if(playerIn.getHeldItemMainhand().getTagCompound().hasKey("coineffect"))
+                        ItemStack stackMain = playerIn.getHeldItemMainhand();
+                        if(stackMain.hasTagCompound())
                         {
-                            playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + PotionEffect.readCustomPotionEffectFromNBT(playerIn.getHeldItemMainhand().getTagCompound().getCompoundTag("coineffect")).toString()));
+                            System.out.println(stackMain.getTagCompound().toString());
                         }
                     }
                 }
             }
+            else if (playerIn.getHeldItemMainhand().getItem().equals(akashic))
+            {
+                if(playerIn.isSneaking())
+                {
 
-
-
+                }
+            }
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onItemRightClick(PlayerInteractEvent.RightClickBlock event)
-    {
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onItemRightClick(PlayerInteractEvent.RightClickBlock event) {
         World worldIn = event.getWorld();
         EntityPlayer playerIn = event.getEntityPlayer();
-        BlockPos pos = event.getPos();
-        EnumHand hand = event.getHand();
-        IBlockState state = worldIn.getBlockState(event.getPos());
-        ItemStack item = playerIn.getHeldItem(EnumHand.MAIN_HAND);
+        BlockPos blockClickedOn = event.getPos();
 
-
-
+        if(!worldIn.isRemote)
+        {
             if(playerIn.getHeldItemOffhand().getItem().equals(akashic))
             {
-                TileEntity tileEntity = worldIn.getTileEntity(pos);
-                if(tileEntity instanceof TilePedestal)
+                if(playerIn.isSneaking())
                 {
-                    if(((TilePedestal) tileEntity).hasCoin())
+                    //System.out.println("Block At Event Location: " + worldIn.getBlockState(blockClickedOn).getBlock().getUnlocalizedName());
+                    //System.out.println("POS At Event Location: " + blockClickedOn);
+                    TileEntity tileEntity = worldIn.getTileEntity(blockClickedOn);
+                    if(tileEntity instanceof TilePedestal)
                     {
-                        playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + ((TilePedestal) tileEntity).getCoinOnPedestal().getUnlocalizedName()));
-                    }
-                    if(((TilePedestal) tileEntity).hasItem())
-                    {
-                        playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE + ((TilePedestal) tileEntity).getItemInPedestal().getDisplayName()));
+                        TilePedestal getTilePedestal = (TilePedestal)tileEntity;
+                        //System.out.println("Transfer Speed: " + getTilePedestal.getOperationSpeed()+" ticks per operation");
+                        //System.out.println("Transfer Amount: " + getTilePedestal.getItemTransferRate());
+                        System.out.println("Transfer Speed: " + getTilePedestal.getPedestalTransferSpeed());
+                        System.out.println("Transfer Amount: " + getTilePedestal.getPedestalTransferAmount());
                     }
                 }
             }
+            else if (playerIn.getHeldItemMainhand().getItem().equals(akashic))
+            {
+                if(playerIn.isSneaking())
+                {
 
-
+                }
+            }
+        }
     }
 }
