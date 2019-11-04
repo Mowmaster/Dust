@@ -153,6 +153,64 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         return stack;
     }
 
+    public int getItemTransferRate()
+    {
+        int itemRate = 4;
+        switch (intTransferAmount)
+        {
+            case 0:
+                itemRate = 4;
+                break;
+            case 1:
+                itemRate=8;
+                break;
+            case 2:
+                itemRate = 16;
+                break;
+            case 3:
+                itemRate = 32;
+                break;
+            case 4:
+                itemRate = 48;
+                break;
+            case 5:
+                itemRate=64;
+                break;
+            default: itemRate=4;
+        }
+
+        return  itemRate;
+    }
+
+    public int getOperationSpeed()
+    {
+        int speed = 20;
+        switch (intTransferSpeed)
+        {
+            case 0:
+                speed = 20;//normal speed
+                break;
+            case 1:
+                speed=10;//2x faster
+                break;
+            case 2:
+                speed = 5;//4x faster
+                break;
+            case 3:
+                speed = 3;//6x faster
+                break;
+            case 4:
+                speed = 2;//10x faster
+                break;
+            case 5:
+                speed=1;//20x faster
+                break;
+            default: speed=20;
+        }
+
+        return  speed;
+    }
+
     public int getMaxStackSize(){return 64;}
 
     public boolean addItem(ItemStack itemFromBlock)

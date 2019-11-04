@@ -25,8 +25,11 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHelper;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -150,11 +153,35 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
 
         if (tileentity instanceof TilePedestal)
         {
-            InventoryHelper.spawnItemStack(worldIn,pos.getX(),pos.getY(),pos.getZ(),((TilePedestal) tileentity).getItemInPedestal());
-            InventoryHelper.spawnItemStack(worldIn,pos.getX(),pos.getY(),pos.getZ(),((TilePedestal) tileentity).getCoinOnPedestal());
+            TilePedestal pedestal = (TilePedestal)tileentity;
+
+
+            ItemStack pedestalItemToDrop = new ItemStack(Item.getItemFromBlock(state.getBlock()),1);
+            if(pedestal.getPedestalTransferAmount()>0)
+            {
+                PotionEffect effect = new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE,1 ,pedestal.getPedestalTransferAmount()-1);
+                NBTTagCompound cmpd = new NBTTagCompound();
+                cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+                pedestalItemToDrop.setTagCompound(cmpd);
+            }
+
+            if(pedestal.getPedestalTransferSpeed()>0)
+            {
+                pedestalItemToDrop.addEnchantment(EnchantmentRegistry.enchantmentTransferRate, pedestal.getPedestalTransferSpeed());
+            }
+
+            InventoryHelper.spawnItemStack(worldIn,pos.getX(),pos.getY(),pos.getZ(),pedestal.getItemInPedestal());
+            InventoryHelper.spawnItemStack(worldIn,pos.getX(),pos.getY(),pos.getZ(),pedestal.getCoinOnPedestal());
+            InventoryHelper.spawnItemStack(worldIn,pos.getX(),pos.getY(),pos.getZ(),pedestalItemToDrop);
         }
 
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        ItemStack noStack = ItemStack.EMPTY;
+        return noStack.getItem();
     }
 
     public PotionEffect getCoinEffect(ItemStack stack)
@@ -404,54 +431,141 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         return BlockRenderLayer.CUTOUT;
     }
 
+    public int getItemTransferRate(ItemStack stack)
+    {
+        int itemRate = 4;
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack ))
+        {
+            case 0:
+                itemRate = 4;
+                break;
+            case 1:
+                itemRate=8;
+                break;
+            case 2:
+                itemRate = 16;
+                break;
+            case 3:
+                itemRate = 32;
+                break;
+            case 4:
+                itemRate = 48;
+                break;
+            case 5:
+                itemRate=64;
+                break;
+            default: itemRate=4;
+        }
+
+        return  itemRate;
+    }
+
+    public int getOperationSpeed(ItemStack stack)
+    {
+        int speed = 20;
+        switch (getTransferRateModifier(stack))
+        {
+            case 0:
+                speed = 20;//normal speed
+                break;
+            case 1:
+                speed=10;//2x faster
+                break;
+            case 2:
+                speed = 5;//4x faster
+                break;
+            case 3:
+                speed = 3;//6x faster
+                break;
+            case 4:
+                speed = 2;//10x faster
+                break;
+            case 5:
+                speed=1;//20x faster
+                break;
+            default: speed=20;
+        }
+
+        return  speed;
+    }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
-        tooltip.add("Used To Display Items");
+        int s2 = getItemTransferRate(stack);
+        String s3 = "";
+
+        switch (getOperationSpeed(stack))
+        {
+            case 1:
+                s3 = "20x Faster";
+                break;
+            case 2:
+                s3="10x Faster";
+                break;
+            case 3:
+                s3 = "6x Faster";
+                break;
+            case 5:
+                s3 = "4x Faster";
+                break;
+            case 10:
+                s3 = "2x Faster";
+                break;
+            case 20:
+                s3="Normal Speed";
+                break;
+            default: s3="Normal Speed";
+        }
+
+
+        String tr = "" + s2 + "";
+        String trr = s3;
+        tooltip.add("Item Stack Import Upgrade");
+        if(stack.hasTagCompound())
+        {
+            if(stack.getTagCompound().hasKey("coineffect"))
+            {
+                tooltip.add("Transfer Rate: " + tr);
+            }
+            else
+            {
+                tooltip.add("Transfer Rate: 1");
+            }
+
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
+            {
+                tooltip.add("Transfer Speed: " + trr);
+            }
+            else
+            {
+                tooltip.add("Transfer Speed: Normal Speed");
+            }
+        }
+        else
+        {
+            tooltip.add("Transfer Rate: 1");
+            tooltip.add("Transfer Speed: Normal Speed");
+        }
     }
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        boolean hasRequiredUpgrade = false;
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if(tileEntity instanceof TilePedestal) {
             TilePedestal pedestal = (TilePedestal) tileEntity;
-            hasRequiredUpgrade = pedestal.hasUpgrade(ItemRegistry.enchantUpgrade);
-        }
-        super.randomDisplayTick(stateIn, worldIn, pos, rand);
 
-        if(hasRequiredUpgrade)
-        {
-            for (int i = -2; i <= 2; ++i)
+            if(!worldIn.isRemote)
             {
-                for (int j = -2; j <= 2; ++j)
+                Item coinInPed = pedestal.getCoinOnPedestal().getItem();
+                if(coinInPed instanceof ipuBasic)
                 {
-                    if (i > -2 && i < 2 && j == -1)
-                    {
-                        j = 2;
-                    }
-
-                    if (rand.nextInt(16) == 0)
-                    {
-                        for (int k = 0; k <= 2; ++k)
-                        {
-                            BlockPos blockpos = pos.add(i, k, j);
-
-                            if (net.minecraftforge.common.ForgeHooks.getEnchantPower(worldIn, blockpos) > 0)
-                            {
-                                if (!worldIn.isAirBlock(pos.add(i / 2, 0, j / 2)))
-                                {
-                                    break;
-                                }
-
-                                worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D, (double)((float)i + rand.nextFloat()) - 0.5D, (double)((float)k - rand.nextFloat() - 1.0F), (double)((float)j + rand.nextFloat()) - 0.5D);
-                            }
-                        }
-                    }
+                    ((ipuBasic) coinInPed).onRandomDisplayTick(pedestal,stateIn,worldIn,pos,rand);
                 }
             }
         }
+        super.randomDisplayTick(stateIn, worldIn, pos, rand);
     }
 
 

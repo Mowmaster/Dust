@@ -29,6 +29,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 import static net.minecraft.block.BlockDirectional.FACING;
 
@@ -71,6 +72,10 @@ public class ipuBasic extends Item
         return rate;
     }
 
+    public void onRandomDisplayTick(TilePedestal pedestal, IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    {
+
+    }
     public boolean hasCoinEffect(ItemStack stack)
     {
         hasEffect = false;

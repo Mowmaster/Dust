@@ -108,5 +108,45 @@ public class ipuEnchanter extends ipuBasic
         }
     }
 
+    /*random display tick
+    boolean hasRequiredUpgrade = false;
+    TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if(tileEntity instanceof TilePedestal) {
+    TilePedestal pedestal = (TilePedestal) tileEntity;
+    hasRequiredUpgrade = pedestal.hasUpgrade(ItemRegistry.enchantUpgrade);
+}
+        super.randomDisplayTick(stateIn, worldIn, pos, rand);
+
+        if(hasRequiredUpgrade)
+    {
+        for (int i = -2; i <= 2; ++i)
+        {
+            for (int j = -2; j <= 2; ++j)
+            {
+                if (i > -2 && i < 2 && j == -1)
+                {
+                    j = 2;
+                }
+
+                if (rand.nextInt(16) == 0)
+                {
+                    for (int k = 0; k <= 2; ++k)
+                    {
+                        BlockPos blockpos = pos.add(i, k, j);
+
+                        if (net.minecraftforge.common.ForgeHooks.getEnchantPower(worldIn, blockpos) > 0)
+                        {
+                            if (!worldIn.isAirBlock(pos.add(i / 2, 0, j / 2)))
+                            {
+                                break;
+                            }
+
+                            worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D, (double)((float)i + rand.nextFloat()) - 0.5D, (double)((float)k - rand.nextFloat() - 1.0F), (double)((float)j + rand.nextFloat()) - 0.5D);
+                        }
+                    }
+                }
+            }
+        }
+    }*/
 
 }
