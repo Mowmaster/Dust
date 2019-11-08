@@ -993,10 +993,20 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             {
                 impTicker++;
                 ((ipuBasic) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
-                if(impTicker >=20){impTicker=0;}
+                if(impTicker >=200){impTicker=0;}
             }
             display = getItemInPedestal();
             updateBlock();
+        }
+
+        if(world.isRemote)
+        {
+            Item coinInPed = getCoinOnPedestal().getItem();
+            if(coinInPed instanceof ipuBasic)
+            {
+                Random rand = new Random();
+                ((ipuBasic) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
+            }
         }
     }
 

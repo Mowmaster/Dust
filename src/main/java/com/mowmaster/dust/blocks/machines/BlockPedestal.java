@@ -112,7 +112,6 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
         if (tileentity instanceof TilePedestal)
@@ -549,7 +548,7 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -562,11 +561,14 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                 if(coinInPed instanceof ipuBasic)
                 {
                     ((ipuBasic) coinInPed).onRandomDisplayTick(pedestal,stateIn,worldIn,pos,rand);
+
                 }
             }
         }
+
+
         super.randomDisplayTick(stateIn, worldIn, pos, rand);
-    }
+    }*/
 
 
     /*

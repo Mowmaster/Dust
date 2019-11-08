@@ -89,6 +89,8 @@ public class ItemRegistry
     public static Item fuzzyFilterBlacklistUpgrade;
     public static Item filterModBlacklistUpgrade;
 
+    public static Item furnaceUpgrade;
+
     public static Item scrollA;
     public static Item scrollB;
     public static Item scrollC;
@@ -163,6 +165,8 @@ public class ItemRegistry
         crafter1Upgrade = new ipuCrafter("crafter1upgrade","crafter1upgrade",1);
         crafter4Upgrade = new ipuCrafter("crafter4upgrade","crafter4upgrade",2);
         crafter9Upgrade = new ipuCrafter("crafter9upgrade","crafter9upgrade",3);
+        furnaceUpgrade = new ipuFurnace("upgradefurnace","upgradefurnace");
+
 
 
 
@@ -284,6 +288,7 @@ public class ItemRegistry
         registerItem(filterModBlacklistUpgrade);
         registerItem(effectUpgrade);
         registerItem(breakerUpgrade);
+        registerItem(furnaceUpgrade);
 
         registerItem(craftingPlaceholder);
 
@@ -386,6 +391,7 @@ public class ItemRegistry
         registerRender(filterModBlacklistUpgrade);
         registerRender(effectUpgrade);
         registerRender(breakerUpgrade);
+        registerRender(furnaceUpgrade);
 
         registerRender(craftingPlaceholder);
 

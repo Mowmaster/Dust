@@ -76,6 +76,7 @@ public class ipuBasic extends Item
     {
 
     }
+
     public boolean hasCoinEffect(ItemStack stack)
     {
         hasEffect = false;

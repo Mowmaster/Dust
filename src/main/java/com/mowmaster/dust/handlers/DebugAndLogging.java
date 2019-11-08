@@ -14,6 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
@@ -72,6 +73,10 @@ public class DebugAndLogging
                 {
 
                 }
+                else if (!(FurnaceRecipes.instance().getSmeltingResult(playerIn.getHeldItemOffhand()).equals(ItemStack.EMPTY)))
+                {
+                    System.out.println(FurnaceRecipes.instance().getSmeltingResult(playerIn.getHeldItemOffhand()).getCount());
+                }
             }
         }
     }
@@ -90,22 +95,43 @@ public class DebugAndLogging
                 {
                     //System.out.println("Block At Event Location: " + worldIn.getBlockState(blockClickedOn).getBlock().getUnlocalizedName());
                     //System.out.println("POS At Event Location: " + blockClickedOn);
-                    TileEntity tileEntity = worldIn.getTileEntity(blockClickedOn);
-                    if(tileEntity instanceof TilePedestal)
+                    if(worldIn.getBlockState(blockClickedOn) instanceof BlockPedestal)
                     {
-                        TilePedestal getTilePedestal = (TilePedestal)tileEntity;
-                        //System.out.println("Transfer Speed: " + getTilePedestal.getOperationSpeed()+" ticks per operation");
-                        //System.out.println("Transfer Amount: " + getTilePedestal.getItemTransferRate());
-                        System.out.println("Transfer Speed: " + getTilePedestal.getPedestalTransferSpeed());
-                        System.out.println("Transfer Amount: " + getTilePedestal.getPedestalTransferAmount());
+                        TileEntity tileEntity = worldIn.getTileEntity(blockClickedOn);
+
+                        if(tileEntity instanceof TilePedestal)
+                        {
+                            TilePedestal getTilePedestal = (TilePedestal)tileEntity;
+                            //System.out.println("Transfer Speed: " + getTilePedestal.getOperationSpeed()+" ticks per operation");
+                            //System.out.println("Transfer Amount: " + getTilePedestal.getItemTransferRate());
+                            System.out.println("Transfer Speed: " + getTilePedestal.getPedestalTransferSpeed());
+                            System.out.println("Transfer Amount: " + getTilePedestal.getPedestalTransferAmount());
+                        }
                     }
                 }
             }
             else if (playerIn.getHeldItemMainhand().getItem().equals(akashic))
             {
+                //System.out.println("MainHand");
                 if(playerIn.isSneaking())
                 {
+                    //System.out.println("Main Sneaking");
+                    if(worldIn.getBlockState(blockClickedOn).getBlock() instanceof BlockPedestal)
+                    {
+                        //System.out.println("Main Snek BlockPed");
+                        TileEntity tileEntity = worldIn.getTileEntity(blockClickedOn);
 
+                        if(tileEntity instanceof TilePedestal)
+                        {
+                            //System.out.println("Main Snek TilePed");
+                            TilePedestal getTilePedestal = (TilePedestal)tileEntity;
+
+                            if(playerIn.getHeldItemOffhand().getItem().equals(ItemRegistry.charcoalRed))
+                            {
+                                System.out.println("Fuel Inside: " + getTilePedestal.getStoredValueForUpgrades());
+                            }
+                        }
+                    }
                 }
             }
         }
