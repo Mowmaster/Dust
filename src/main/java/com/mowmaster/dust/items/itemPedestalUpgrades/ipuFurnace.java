@@ -341,48 +341,51 @@ public class ipuFurnace extends ipuBasic
     @Override
     public void onRandomDisplayTick(TilePedestal pedestal, IBlockState stateIn, World world, BlockPos pos, Random rand)
     {
-        int fuelValue = pedestal.getStoredValueForUpgrades();
+        if(!world.isBlockPowered(pos))
+        {
+            int fuelValue = pedestal.getStoredValueForUpgrades();
 
-                double d0 = (double)getPosOfBlockBelow(world,pos,-1 ).getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
-                double d1 = (double)getPosOfBlockBelow(world,pos,-1 ).getY() + 0.0D - (double)(rand.nextFloat() * 0.1F);
-                double d2 = (double)getPosOfBlockBelow(world,pos,-1 ).getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
-                double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
+            double d0 = (double)getPosOfBlockBelow(world,pos,-1 ).getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+            double d1 = (double)getPosOfBlockBelow(world,pos,-1 ).getY() + 0.0D - (double)(rand.nextFloat() * 0.1F);
+            double d2 = (double)getPosOfBlockBelow(world,pos,-1 ).getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+            double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
 
-                //If fuel is less then 8 normal charcoal
-                if(fuelValue<=12800 && fuelValue>0)
-                {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                }
-                //If fuel has less then a stack of normal charcoal
-                if(fuelValue>12800 && fuelValue<=102400)
-                {
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+            //If fuel is less then 8 normal charcoal
+            if(fuelValue<=12800 && fuelValue>0)
+            {
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+            }
+            //If fuel has less then a stack of normal charcoal
+            if(fuelValue>12800 && fuelValue<=102400)
+            {
+                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
 
-                }
-                //If fuel has less then 256 worth of normal charcoal
-                if(fuelValue>102400 && fuelValue<=409600)
-                {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                }
-                //If fuel has less then 1024 worth of normal charcoal
-                if(fuelValue>409600 && fuelValue<=1638400)
-                {
-                    world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                }
-                //If fuel has more then 1024 worth of normal charcoal
-                if(fuelValue>1638400)
-                {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                }
+            }
+            //If fuel has less then 256 worth of normal charcoal
+            if(fuelValue>102400 && fuelValue<=409600)
+            {
+                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+            }
+            //If fuel has less then 1024 worth of normal charcoal
+            if(fuelValue>409600 && fuelValue<=1638400)
+            {
+                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+            }
+            //If fuel has more then 1024 worth of normal charcoal
+            if(fuelValue>1638400)
+            {
+                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+            }
+        }
     }
 
     @Override
