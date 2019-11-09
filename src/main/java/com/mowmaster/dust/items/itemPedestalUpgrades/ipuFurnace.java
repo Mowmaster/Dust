@@ -21,6 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -183,11 +184,6 @@ public class ipuFurnace extends ipuBasic
 
     public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
     {
-        //Get Items from inventory, check if they can be smelted, if so check if they can fit in pedestal,
-
-        //MAYBE make it smart and skip stacks not smeltable??? using restock code???
-
-
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         int itemsPerSmelt = getItemTransferRate(coinInPedestal);
 
@@ -395,55 +391,55 @@ public class ipuFurnace extends ipuBasic
 
         switch (getSmeltingSpeed(stack))
         {
-            case 1:
-                s3 = "20x Faster";
+            case 200:
+                s3 = "Normal Speed";
                 break;
-            case 2:
-                s3="10x Faster";
+            case 100:
+                s3="2x Faster";
                 break;
-            case 3:
+            case 50:
+                s3 = "46x Faster";
+                break;
+            case 33:
                 s3 = "6x Faster";
                 break;
-            case 5:
-                s3 = "4x Faster";
+            case 20:
+                s3 = "10x Faster";
                 break;
             case 10:
-                s3 = "2x Faster";
+                s3="20x Faster";
                 break;
-            case 20:
-                s3="Normal Speed";
-                break;
-            default: s3="Normal Speed";
+            default: s3= "Normal Speed";
         }
 
 
         String tr = "" + s2 + "";
         String trr = s3;
-        tooltip.add("Item Stack Import Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Furnace Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))
             {
-                tooltip.add("Transfer Rate: " + tr);
+                tooltip.add("Items Per Smelt: " + tr);
             }
             else
             {
-                tooltip.add("Transfer Rate: 1");
+                tooltip.add("Items Per Smelt: 1");
             }
 
             if(stack.isItemEnchanted() && getSmeltingSpeed(stack) >0)
             {
-                tooltip.add("Transfer Speed: " + trr);
+                tooltip.add("Smelting Speed: " + trr);
             }
             else
             {
-                tooltip.add("Transfer Speed: Normal Speed");
+                tooltip.add("Smelting Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Transfer Rate: 1");
-            tooltip.add("Transfer Speed: Normal Speed");
+            tooltip.add("Items Per Smelt: 1");
+            tooltip.add("Smelting Speed: Normal Speed");
         }
     }
 

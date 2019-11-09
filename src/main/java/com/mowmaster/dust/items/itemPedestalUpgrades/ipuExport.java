@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -263,7 +264,7 @@ public class ipuExport extends ipuBasic
 
         String tr = "" + s2 + "";
         String trr = s3;
-        tooltip.add("Item Stack Export Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Item Stack Export Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))

@@ -54,6 +54,8 @@ item.filterblacklistupgrade.name=Pedestal Upgrade
 item.fuzzyfilterblacklistupgrade.name=Pedestal Upgrade
 item.filtermodblacklistupgrade.name=Pedestal Upgrade
 
+item.upgradefurnace.name=Pedestal Upgrade
+
 item.craftingplaceholder.name=Crafting Placeholder
 
 

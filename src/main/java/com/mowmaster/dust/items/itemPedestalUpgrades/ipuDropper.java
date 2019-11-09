@@ -14,6 +14,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -192,7 +193,7 @@ public class ipuDropper extends ipuBasic
             default: s5="Normal Speed";
         }
 
-        tooltip.add("Item Dropper Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Item Dropper Upgrade");
         if(stack.hasTagCompound())
         {
             if(getTransferRate(stack)>0)

@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -234,7 +235,7 @@ public class ipuImport extends ipuBasic
 
         String tr = "" + s2 + "";
         String trr = s3;
-        tooltip.add("Item Stack Import Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Item Stack Import Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))

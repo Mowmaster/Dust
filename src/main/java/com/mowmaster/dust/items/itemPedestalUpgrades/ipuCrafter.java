@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -255,7 +256,7 @@ public class ipuCrafter extends ipuBasic
 
         String tr = "" + s2 + "";
         String trr = s3;
-        tooltip.add("Item Stack Crafter Upgrade - "+gridSize+"x"+gridSize);
+        tooltip.add(TextFormatting.GOLD + "Item Stack Crafter Upgrade - "+gridSize+"x"+gridSize);
 
         if(stack.hasTagCompound())
         {

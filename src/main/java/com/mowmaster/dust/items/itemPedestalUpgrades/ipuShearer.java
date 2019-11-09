@@ -25,13 +25,13 @@ import java.util.List;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockDirectional.FACING;
 
-public class ipuChopper extends ipuBasic
+public class ipuShearer extends ipuBasic
 {
     public int rangeWidth = 0;
     public int rangeHeight = 0;
     public int transferSpeed = 0;
 
-    public ipuChopper(String unlocName, String registryName)
+    public ipuShearer(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -141,59 +141,6 @@ public class ipuChopper extends ipuBasic
     }
 
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s3 = getRangeWidth(stack);
-        int s4 = getRangeHeight(stack);
-        String s5 = "";
-
-        switch (getTransferSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
-
-        String tr = "" + (s3+s3+1) + "";
-        String trr = "" + (s4+1) + "";
-
-        tooltip.add(TextFormatting.GOLD + "Chopper Upgrade");
-
-
-        if(s3>0)
-        {
-            tooltip.add("Effected Area: " + tr+"x"+tr+"x"+trr);
-        }
-        else
-        {
-            tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
-        }
-
-        if(stack.isItemEnchanted() && getTransferSpeed(stack) >0)
-        {
-            tooltip.add("Transfer Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add("Transfer Speed: Normal Speed");
-        }
-    }
 
     public int ticked = 0;
 
@@ -269,6 +216,62 @@ public class ipuChopper extends ipuBasic
             blockToChop.getBlock().removedByPlayer(blockToChop,world,blockToChopPos,fakePlayer,false);
         }
     }
+
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        int s3 = getRangeWidth(stack);
+        int s4 = getRangeHeight(stack);
+        String s5 = "";
+
+        switch (getTransferSpeed(stack))
+        {
+            case 1:
+                s5 = "20x Faster";
+                break;
+            case 2:
+                s5="10x Faster";
+                break;
+            case 3:
+                s5 = "6x Faster";
+                break;
+            case 5:
+                s5 = "4x Faster";
+                break;
+            case 10:
+                s5 = "2x Faster";
+                break;
+            case 20:
+                s5="Normal Speed";
+                break;
+            default: s5="Normal Speed";
+        }
+
+        String tr = "" + (s3+s3+1) + "";
+        String trr = "" + (s4+1) + "";
+
+        tooltip.add(TextFormatting.GOLD + "Chopper Upgrade");
+
+
+        if(s3>0)
+        {
+            tooltip.add("Effected Area: " + tr+"x"+tr+"x"+trr);
+        }
+        else
+        {
+            tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
+        }
+
+        if(stack.isItemEnchanted() && getTransferSpeed(stack) >0)
+        {
+            tooltip.add("Transfer Speed: " + s5);
+        }
+        else
+        {
+            tooltip.add("Transfer Speed: Normal Speed");
+        }
+    }
+
 
 
 }
