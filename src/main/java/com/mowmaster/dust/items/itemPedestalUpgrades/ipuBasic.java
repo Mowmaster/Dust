@@ -160,7 +160,7 @@ public class ipuBasic extends Item
         }
     }
 
-    public void addExpToPedestal(World world, BlockPos posOfPedestal,int expToAdd)
+    /*public void addExpToPedestal(World world, BlockPos posOfPedestal,int expToAdd)
     {
         TileEntity pedestalInventory = world.getTileEntity(posOfPedestal);
         if(pedestalInventory instanceof TilePedestal) {
@@ -174,7 +174,7 @@ public class ipuBasic extends Item
         if(pedestalInventory instanceof TilePedestal) {
             ((TilePedestal) pedestalInventory).removeExpFromPedestal(expToRemove);
         }
-    }
+    }*/
 
     public void setIntValueToPedestal(World world, BlockPos posOfPedestal,int value)
     {

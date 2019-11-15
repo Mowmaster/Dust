@@ -54,6 +54,23 @@ public class ItemCrystalWrench extends Item
             int ymin = -8;
             int ymax = 8;
 
+            if(worldIn.isBlockLoaded(pos))
+            {
+                if(worldIn.getTileEntity(pos) instanceof TilePedestal)
+                {
+                    TilePedestal pedestal = (TilePedestal)worldIn.getTileEntity(pos);
+                    int range = pedestal.getPedestalTransferRange();
+                    zmin = -range;
+                    zmax = range;
+                    xmin = -range;
+                    xmax = range;
+                    ymin = -range;
+                    ymax = range;
+                }
+            }
+
+
+
 
             if(storedPosition!=defaultPos)
             {
@@ -95,6 +112,26 @@ public class ItemCrystalWrench extends Item
         return storedPosition;
     }
 
+    public boolean isPedestalInRange(TilePedestal pedestal, BlockPos pedestalToBeLinked)
+    {
+        int range = pedestal.getPedestalTransferRange();
+        int x = pedestalToBeLinked.getX();
+        int y = pedestalToBeLinked.getY();
+        int z = pedestalToBeLinked.getZ();
+        int x1 = pedestal.getPos().getX();
+        int y1 = pedestal.getPos().getY();
+        int z1 = pedestal.getPos().getZ();
+        int xF = Math.abs(Math.subtractExact(x,x1));
+        int yF = Math.abs(Math.subtractExact(y,y1));
+        int zF = Math.abs(Math.subtractExact(z,z1));
+
+        if(xF>range || yF>range || zF>range)
+        {
+            return false;
+        }
+        else return true;
+    }
+
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -129,7 +166,8 @@ public class ItemCrystalWrench extends Item
                                 TilePedestal tilePedestal = (TilePedestal) tileEntity;
 
                                 //checks if connecting pedestal is out of range of the senderPedestal
-                                if(tilePedestal.isPedestalInRange(getStoredPosition(player.getHeldItem(hand))))
+                                System.out.println(isPedestalInRange(tilePedestal,getStoredPosition(player.getHeldItem(hand))));
+                                if(isPedestalInRange(tilePedestal,getStoredPosition(player.getHeldItem(hand))))
                                 {
                                     //Checks if pedestals to be linked are on same networks or if one is neutral
                                     if(tilePedestal.canLinkToPedestalNetwork(getStoredPosition(player.getHeldItem(hand))))
@@ -138,10 +176,10 @@ public class ItemCrystalWrench extends Item
                                         if(!tilePedestal.isSamePedestal(getStoredPosition(player.getHeldItem(hand))))
                                         {
                                             //Checks if the conenction hasnt been made once already yet
-                                            if(!tilePedestal.hasConnectionAlready(getStoredPosition(player.getHeldItem(hand))))
+                                            if(!tilePedestal.isAlreadyLinked(getStoredPosition(player.getHeldItem(hand))))
                                             {
                                                 //Checks if senderPedestal has locationSlots available
-                                                if(tilePedestal.addOutputLocation(getStoredPosition(player.getHeldItem(hand))))
+                                                if(tilePedestal.storeNewLocation(getStoredPosition(player.getHeldItem(hand))))
                                                 {
                                                     //If slots are available then set wrench properties back to a default value
                                                     this.storedPosition = defaultPos;
@@ -156,11 +194,11 @@ public class ItemCrystalWrench extends Item
                                                     }
                                                     player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successful"));
                                                 }
-                                                else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful"));
+                                                else player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Unsuccessful - Maximum Links Reached"));
                                             }
                                             else
                                             {
-                                                tilePedestal.removeConnection(getStoredPosition(player.getHeldItem(hand)));
+                                                tilePedestal.removeLocation(getStoredPosition(player.getHeldItem(hand)));
                                                 player.sendMessage(new TextComponentString(TextFormatting.WHITE + "Link Successfully Removed"));
                                             }
                                         }
@@ -189,17 +227,6 @@ public class ItemCrystalWrench extends Item
                             player.getHeldItem(hand).removeSubCompound("ench");
                         }
                     }
-                }
-            }
-            else
-            {
-                TileEntity tile = worldIn.getTileEntity(pos);
-                if(tile instanceof TilePedestal)
-                {
-                    TilePedestal pedestal = (TilePedestal)tile;
-                    int xp = pedestal.getXPInPedestal();
-
-                    player.sendMessage(new TextComponentString(TextFormatting.WHITE + "XP in Pedestal: " + xp));
                 }
             }
         }

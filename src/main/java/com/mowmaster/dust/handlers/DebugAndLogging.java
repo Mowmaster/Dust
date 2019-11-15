@@ -130,6 +130,12 @@ public class DebugAndLogging
                             {
                                 System.out.println("Fuel Inside: " + getTilePedestal.getStoredValueForUpgrades());
                             }
+
+                            if(playerIn.getHeldItemOffhand().getItem().equals(ItemRegistry.crystal))
+                            {
+                                System.out.println("Number of Positions: " + getTilePedestal.getNumberOfStoredLocations());
+                                System.out.println("List Of Positions: " + getTilePedestal.debugLocationList());
+                            }
                         }
                     }
                 }
