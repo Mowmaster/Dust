@@ -27,7 +27,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     private int storedValueForUpgrades = 0;
     private int intTransferAmount = 4;
     private int intTransferSpeed = 20;
-    private static int intTransferRange = 8;
+    private int intTransferRange = 8;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
 
     public TilePedestal()

@@ -48,11 +48,11 @@ public class ItemCrystalWrench extends Item
             Random rand = new Random();
 
             int zmin = -8;
-            int zmax = 8;
+            int zmax = 8+1;
             int xmin = -8;
-            int xmax = 8;
+            int xmax = 8+1;
             int ymin = -8;
-            int ymax = 8;
+            int ymax = 8+1;
 
             if(worldIn.isBlockLoaded(pos))
             {
@@ -91,7 +91,7 @@ public class ItemCrystalWrench extends Item
                                         double d1 = (double) pos.getY() + 0.55D - (double) (rand.nextFloat() * 0.1F);
                                         double d2 = (double) pos.getZ() + 0.55D - (double) (rand.nextFloat() * 0.1F);
                                         double d3 = (double) (0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
-                                        worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.add(a,b,c).getX(),pos.add(a,b,c).getY(),pos.add(a,b,c).getZ(), rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+                                        worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.add(a,b,c).getX()+0.5f,pos.add(a,b,c).getY()+0.5f,pos.add(a,b,c).getZ()+0.5f, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
 
                                     }
                                 }
@@ -124,6 +124,9 @@ public class ItemCrystalWrench extends Item
         int xF = Math.abs(Math.subtractExact(x,x1));
         int yF = Math.abs(Math.subtractExact(y,y1));
         int zF = Math.abs(Math.subtractExact(z,z1));
+        System.out.println("X: "+xF);
+        System.out.println("Y: "+yF);
+        System.out.println("Z: "+zF);
 
         if(xF>range || yF>range || zF>range)
         {
