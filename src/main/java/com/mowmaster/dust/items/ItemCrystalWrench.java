@@ -124,9 +124,9 @@ public class ItemCrystalWrench extends Item
         int xF = Math.abs(Math.subtractExact(x,x1));
         int yF = Math.abs(Math.subtractExact(y,y1));
         int zF = Math.abs(Math.subtractExact(z,z1));
-        System.out.println("X: "+xF);
-        System.out.println("Y: "+yF);
-        System.out.println("Z: "+zF);
+        //System.out.println("X: "+xF);
+        //System.out.println("Y: "+yF);
+        //System.out.println("Z: "+zF);
 
         if(xF>range || yF>range || zF>range)
         {
@@ -169,7 +169,7 @@ public class ItemCrystalWrench extends Item
                                 TilePedestal tilePedestal = (TilePedestal) tileEntity;
 
                                 //checks if connecting pedestal is out of range of the senderPedestal
-                                System.out.println(isPedestalInRange(tilePedestal,getStoredPosition(player.getHeldItem(hand))));
+                                //System.out.println(isPedestalInRange(tilePedestal,getStoredPosition(player.getHeldItem(hand))));
                                 if(isPedestalInRange(tilePedestal,getStoredPosition(player.getHeldItem(hand))))
                                 {
                                     //Checks if pedestals to be linked are on same networks or if one is neutral
@@ -182,6 +182,7 @@ public class ItemCrystalWrench extends Item
                                             if(!tilePedestal.isAlreadyLinked(getStoredPosition(player.getHeldItem(hand))))
                                             {
                                                 //Checks if senderPedestal has locationSlots available
+                                                //System.out.println("Stored Locations: "+ tilePedestal.getNumberOfStoredLocations());
                                                 if(tilePedestal.storeNewLocation(getStoredPosition(player.getHeldItem(hand))))
                                                 {
                                                     //If slots are available then set wrench properties back to a default value

@@ -40,7 +40,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     public boolean storeNewLocation(BlockPos pos)
     {
         boolean returner = false;
-        if(getNumberOfStoredLocations() <= 8)
+        if(getNumberOfStoredLocations() < 8)
         {
             storedLocations.add(pos);
             returner=true;
