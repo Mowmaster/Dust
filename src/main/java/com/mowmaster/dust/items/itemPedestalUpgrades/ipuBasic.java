@@ -231,6 +231,13 @@ public class ipuBasic extends Item
         return false;
     }
 
+    //For Filters to return if they can or cannot allow items to pass
+    //Will probably need overwritten
+    public boolean canAcceptItem(ItemStack itemStackIn)
+    {
+        return false;
+    }
+
 
 
     /**

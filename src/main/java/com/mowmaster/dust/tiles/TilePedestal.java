@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -48,6 +49,17 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
 
         return returner;
+    }
+
+    public BlockPos getStoredPositionAt(int index)
+    {
+        BlockPos sendToPos = getPos();
+        if(index<getNumberOfStoredLocations())
+        {
+            sendToPos = storedLocations.get(index);
+        }
+
+        return sendToPos;
     }
 
     public boolean removeLocation(BlockPos pos)
@@ -90,6 +102,21 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
     public void setPedestalTransferSpeed(int transferSpeed){intTransferSpeed = transferSpeed;}
     public int getPedestalTransferRange(){return intTransferRange;}
     public void setPedestalTransferRange(int transferSpeed){intTransferRange = transferSpeed;}
+    public int spaceInPedestal()
+    {
+        int space = 0;
+
+        if(getItemInPedestal().isEmpty() || getItemInPedestal().equals(ItemStack.EMPTY))
+        {
+            space = 64;
+        }
+        else
+        {
+            space = (getMaxStackSize() - getItemInPedestal().getCount());
+        }
+
+        return space;
+    }
 
     public boolean hasItem()
     {
@@ -301,24 +328,6 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         return false;
     }
 
-    public boolean hasFilter(){
-        boolean hasFilter = false;
-
-        if(hasCoin())
-        {
-            Item coinInPed = getCoinOnPedestal().getItem();
-            if(coinInPed instanceof ipuBasic)
-            {
-                if(((ipuBasic) coinInPed).isFilter)
-                {
-                    hasFilter = true;
-                }
-            }
-        }
-
-        return hasFilter;
-    }
-
     //Returns items available to be insert, 0 if false
     public int canAcceptItems(ItemStack itemsIncoming)
     {
@@ -342,6 +351,24 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         return canAccept;
     }
 
+    public boolean hasFilter(TilePedestal pedestalSendingTo)
+    {
+        boolean returner = false;
+        if(pedestalSendingTo.hasCoin())
+        {
+            Item coinInPed = pedestalSendingTo.getCoinOnPedestal().getItem();
+            if(coinInPed instanceof ipuBasic)
+            {
+                if(((ipuBasic) coinInPed).isFilter)
+                {
+                    returner = true;
+                }
+            }
+        }
+
+        return returner;
+    }
+
     private boolean canSendToPedestal(BlockPos pedestalToSendTo)
     {
         boolean returner = false;
@@ -363,12 +390,22 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                         //Checks if pedestal is empty or if not then checks if items match and how many can be insert
                         if(tilePedestalToSendTo.canAcceptItems(getItemInPedestal()) > 0)
                         {
-                            /*
-                            * NEED TO FIGURE OUT HOW TO MATCH TO ANY FILTER TYPE
-                            * */
-                            if(tilePedestalToSendTo.hasFilter())
+                            //Check if it has filter, if not return true
+                            if(hasFilter(tilePedestalToSendTo))
                             {
-
+                                Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
+                                if(coinInPed instanceof ipuBasic)
+                                {
+                                    //Already checked if its a filter, so now check if it can accept items.
+                                    if(((ipuBasic) coinInPed).canAcceptItem(getItemInPedestal()))
+                                    {
+                                        returner = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                returner = true;
                             }
                         }
                     }
@@ -376,10 +413,39 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             }
         }
 
-
-
-
         return returner;
+    }
+
+    public void sendItemsToPedestal(BlockPos pedestalToSendTo)
+    {
+        if(world.getTileEntity(pedestalToSendTo) instanceof TilePedestal)
+        {
+            TilePedestal tileToSendTo = ((TilePedestal)world.getTileEntity(pedestalToSendTo));
+
+            //Max that can be recieved
+            int countToSend = tileToSendTo.spaceInPedestal();
+            ItemStack copyStackToSend = getItemInPedestal().copy();
+            //Max that is available to send
+            if(copyStackToSend.getCount()<countToSend)
+            {
+                countToSend = copyStackToSend.getCount();
+            }
+            //Get max that can be sent
+            if(countToSend > getItemTransferRate())
+            {
+                countToSend = getItemTransferRate();
+            }
+
+
+            if(countToSend >=1)
+            {
+                //Send items
+                copyStackToSend.setCount(countToSend);
+                removeItem(copyStackToSend.getCount());
+                tileToSendTo.addItem(copyStackToSend);
+                tileToSendTo.updateBlock();
+            }
+        }
     }
 
 
@@ -407,6 +473,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
 
     int impTicker = 0;
+    int pedTicker = 0;
     @Override
     public void update() {
 
@@ -414,6 +481,38 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         {
             if(world.isBlockLoaded(pos))
             {
+                int speed = getOperationSpeed();
+                if(speed<1){speed = 20;}
+
+                //dont bother unless pedestal has items in it.
+                if(!getItemInPedestal().isEmpty())
+                {
+                    if(!world.isBlockPowered(pos))
+                    {
+                        if(getNumberOfStoredLocations()>0)
+                        {
+                            pedTicker++;
+                            if (pedTicker%speed == 0) {
+
+                                for(int i=0; i<getNumberOfStoredLocations();i++)
+                                {
+                                    if(getStoredPositionAt(i) != getPos())
+                                    {
+                                        //check for any slots that can accept items if not then keep trying
+                                        if(canSendToPedestal(getStoredPositionAt(i)))
+                                        {
+                                            //Once a slot is found and items transfered, stop loop(so it restarts next check)
+                                            sendItemsToPedestal(getStoredPositionAt(i));
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(pedTicker >=20){pedTicker=0;}
+                            }
+                        }
+                    }
+                }
+
                 if(hasCoin())
                 {
                     Item coinInPed = getCoinOnPedestal().getItem();
@@ -424,6 +523,8 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                         if(impTicker >=200){impTicker=0;}
                     }
                 }
+
+                
                 display = getItemInPedestal();
                 updateBlock();
             }

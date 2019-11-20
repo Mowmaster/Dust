@@ -135,6 +135,8 @@ public class DebugAndLogging
                             {
                                 System.out.println("Number of Positions: " + getTilePedestal.getNumberOfStoredLocations());
                                 System.out.println("List Of Positions: " + getTilePedestal.debugLocationList());
+                                System.out.println("Transfer Speed: " + getTilePedestal.getOperationSpeed());
+                                System.out.println("Transfer Amount: " + getTilePedestal.getItemTransferRate());
                             }
                         }
                     }
