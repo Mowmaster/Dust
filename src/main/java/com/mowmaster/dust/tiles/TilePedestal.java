@@ -524,7 +524,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                     }
                 }
 
-                
+
                 display = getItemInPedestal();
                 updateBlock();
             }
