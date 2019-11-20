@@ -1,5 +1,6 @@
 package com.mowmaster.dust.tiles;
 
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.items.itemPedestalUpgrades.*;
 import net.minecraft.item.*;
@@ -299,6 +300,99 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
         return false;
     }
+
+    public boolean hasFilter(){
+        boolean hasFilter = false;
+
+        if(hasCoin())
+        {
+            Item coinInPed = getCoinOnPedestal().getItem();
+            if(coinInPed instanceof ipuBasic)
+            {
+                if(((ipuBasic) coinInPed).isFilter)
+                {
+                    hasFilter = true;
+                }
+            }
+        }
+
+        return hasFilter;
+    }
+
+    //Returns items available to be insert, 0 if false
+    public int canAcceptItems(ItemStack itemsIncoming)
+    {
+        int canAccept = 0;
+
+        if(getItemInPedestal().isEmpty() || getItemInPedestal().equals(ItemStack.EMPTY))
+        {
+            canAccept = 64;
+        }
+        else
+        {
+            if(doItemsMatch(itemsIncoming))
+            {
+                if(getItemInPedestal().getCount() < getMaxStackSize())
+                {
+                    canAccept = (getMaxStackSize() - getItemInPedestal().getCount());
+                }
+            }
+        }
+
+        return canAccept;
+    }
+
+    private boolean canSendToPedestal(BlockPos pedestalToSendTo)
+    {
+        boolean returner = false;
+
+        //Check if Block is Loaded in World
+        if(world.isBlockLoaded(pedestalToSendTo,false))
+        {
+            //If block ISNT powered
+            if(!world.isBlockPowered(pedestalToSendTo))
+            {
+                //Make sure its a pedestal before getting the tile
+                if(world.getBlockState(pedestalToSendTo).getBlock() instanceof BlockPedestal)
+                {
+                    //Get the tile before checking other things
+                    if(world.getTileEntity(pedestalToSendTo) instanceof TilePedestal)
+                    {
+                        TilePedestal tilePedestalToSendTo = (TilePedestal)world.getTileEntity(pedestalToSendTo);
+
+                        //Checks if pedestal is empty or if not then checks if items match and how many can be insert
+                        if(tilePedestalToSendTo.canAcceptItems(getItemInPedestal()) > 0)
+                        {
+                            /*
+                            * NEED TO FIGURE OUT HOW TO MATCH TO ANY FILTER TYPE
+                            * */
+                            if(tilePedestalToSendTo.hasFilter())
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+        return returner;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     //Needed for Rendering Tile Stuff
     public boolean isBlockUnder(int x,int y,int z)
     {
