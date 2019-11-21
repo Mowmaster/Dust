@@ -488,6 +488,50 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         return  speed;
     }
 
+    public boolean hasBookEntry(ItemStack getBook)
+    {
+        boolean returner = false;
+
+        if(getBook.hasTagCompound())
+        {
+            NBTTagCompound bookList = getBook.getTagCompound();
+            if(bookList.hasKey("bookList"))
+            {
+                String strList = bookList.getString("bookList");
+                if(strList.contains("blockpedestal"))
+                {
+                    returner = true;
+                }
+            }
+        }
+
+        return  returner;
+    }
+
+    public boolean addBookEntry(ItemStack getBook)
+    {
+        boolean returner = false;
+
+        if(getBook.hasTagCompound())
+        {
+            NBTTagCompound bookList = getBook.getTagCompound();
+            if(bookList.hasKey("bookList"))
+            {
+                String strList = bookList.getString("bookList");
+                if(strList.length()>5)
+                {
+                    strList = strList + ",blockpedestal";
+                }
+                else
+                {
+                    strList = "blockpedestal";
+                }
+            }
+        }
+
+        return  returner;
+    }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
@@ -548,63 +592,7 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         }
     }
 
-    /*@SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-    {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TilePedestal) {
-            TilePedestal pedestal = (TilePedestal) tileEntity;
 
-            if(!worldIn.isRemote)
-            {
-                Item coinInPed = pedestal.getCoinOnPedestal().getItem();
-                if(coinInPed instanceof ipuBasic)
-                {
-                    ((ipuBasic) coinInPed).onRandomDisplayTick(pedestal,stateIn,worldIn,pos,rand);
-
-                }
-            }
-        }
-
-
-        super.randomDisplayTick(stateIn, worldIn, pos, rand);
-    }*/
-
-
-    /*
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-
-        return getStackInSlot(0);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return extractItem(0,amount,false);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-        if(stack.getItem().equals(Items.WHEAT))
-        {
-            return insertItem(0, stack.copy(), false);
-        }
-        else return null;
-    }
-
-    @Override
-    public int getSlotLimit(int slot) {
-        return 64;
-    }
-
-    @Override
-    public int getSlots() {
-        return 0;
-    }
-     */
 
     public static void Init()
     {
