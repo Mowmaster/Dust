@@ -4,8 +4,11 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.IInventory;
@@ -202,6 +205,24 @@ public class ipuImport extends ipuBasic
                 }
             }
 
+    }
+
+    @Override
+    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
+    {
+        if(entityIn instanceof EntityItem)
+        {
+            ItemStack getItemStack = ((EntityItem) entityIn).getItem();
+            ItemStack itemFromPedestal = getStackInPedestal(world,posPedestal);
+            if(itemFromPedestal.isEmpty())
+            {
+                TileEntity pedestalInv = world.getTileEntity(posPedestal);
+                if(pedestalInv instanceof TilePedestal) {
+                    entityIn.setDead();
+                    ((TilePedestal) pedestalInv).addItem(getItemStack);
+                }
+            }
+        }
     }
 
     @Override
