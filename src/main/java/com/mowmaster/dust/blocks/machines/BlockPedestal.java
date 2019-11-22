@@ -1,6 +1,7 @@
 package com.mowmaster.dust.blocks.machines;
 
 
+import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
@@ -518,19 +519,33 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
             if(bookList.hasKey("bookList"))
             {
                 String strList = bookList.getString("bookList");
-                if(strList.length()>5)
-                {
-                    strList = strList + ",blockpedestal";
-                }
-                else
-                {
-                    strList = "blockpedestal";
-                }
+                strList = strList + ",blockpedestal";
+                bookList.setString("booklist",strList );
             }
+            else
+            {
+                String strList = "blockpedestal";
+                bookList.setString("booklist",strList );
+            }
+
+            //compound.setTag("ItemStackItemInventoryHandler", this.item.serializeNBT());
+            //        this.item.deserializeNBT(compound.getCompoundTag("ItemStackItemInventoryHandler"));
+            ItemStack itemIcon = new ItemStack(BlockPedestal.pedestalstone);
+            bookList.setTag("blockpedestalIcon",itemIcon.serializeNBT() );
+            String strTitle = "Pedestals";
+            bookList.setString("blockpedestalTitle",strTitle );
+            String strEntry = "Pedestals have a few uses in dust, 1. They can be used to display items. " +
+                    "2. You can slot upgrades into them to make them do work for you. " +
+                    "3. Finally you can link them together to transport items around your base.";
+            bookList.setString("blockpedestalEntry",strEntry );
+
+
         }
 
         return  returner;
     }
+
+
 
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
