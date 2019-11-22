@@ -6,6 +6,7 @@ import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemCoin;
+import com.mowmaster.dust.items.ItemGuideBook;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.references.Reference;
@@ -35,6 +36,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -297,7 +300,6 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                             playerIn.inventory.addItemStackToInventory(tilePedestal.removeCoin());
                         }
                     }
-
                 }
                 else if(!tilePedestal.hasCoin())
                 {
@@ -489,19 +491,20 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         return  speed;
     }
 
-    public boolean hasBookEntry(ItemStack getBook)
+    @Override
+    public int hasBookEntry(ItemStack getBook)
     {
-        boolean returner = false;
+        int returner = 0;
 
         if(getBook.hasTagCompound())
         {
             NBTTagCompound bookList = getBook.getTagCompound();
-            if(bookList.hasKey("bookList"))
+            if(bookList.hasKey("booklist"))
             {
-                String strList = bookList.getString("bookList");
+                String strList = bookList.getString("booklist");
                 if(strList.contains("blockpedestal"))
                 {
-                    returner = true;
+                    returner = 1;
                 }
             }
         }
@@ -509,6 +512,7 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         return  returner;
     }
 
+    @Override
     public boolean addBookEntry(ItemStack getBook)
     {
         boolean returner = false;
@@ -516,9 +520,9 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         if(getBook.hasTagCompound())
         {
             NBTTagCompound bookList = getBook.getTagCompound();
-            if(bookList.hasKey("bookList"))
+            if(bookList.hasKey("booklist"))
             {
-                String strList = bookList.getString("bookList");
+                String strList = bookList.getString("booklist");
                 strList = strList + ",blockpedestal";
                 bookList.setString("booklist",strList );
             }
@@ -528,8 +532,7 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                 bookList.setString("booklist",strList );
             }
 
-            //compound.setTag("ItemStackItemInventoryHandler", this.item.serializeNBT());
-            //        this.item.deserializeNBT(compound.getCompoundTag("ItemStackItemInventoryHandler"));
+
             ItemStack itemIcon = new ItemStack(BlockPedestal.pedestalstone);
             bookList.setTag("blockpedestalIcon",itemIcon.serializeNBT() );
             String strTitle = "Pedestals";
@@ -539,7 +542,28 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                     "3. Finally you can link them together to transport items around your base.";
             bookList.setString("blockpedestalEntry",strEntry );
 
+            getBook.setTagCompound(bookList);
+            returner = true;
 
+
+        }
+        else
+        {
+            NBTTagCompound bookList = new NBTTagCompound();
+            String strList = "blockpedestal";
+            bookList.setString("booklist",strList );
+
+            ItemStack itemIcon = new ItemStack(BlockPedestal.pedestalstone);
+            bookList.setTag("blockpedestalIcon",itemIcon.serializeNBT() );
+            String strTitle = "Pedestals";
+            bookList.setString("blockpedestalTitle",strTitle );
+            String strEntry = "Pedestals have a few uses in dust, 1. They can be used to display items. " +
+                    "2. You can slot upgrades into them to make them do work for you. " +
+                    "3. Finally you can link them together to transport items around your base.";
+            bookList.setString("blockpedestalEntry",strEntry );
+
+            getBook.setTagCompound(bookList);
+            returner = true;
         }
 
         return  returner;

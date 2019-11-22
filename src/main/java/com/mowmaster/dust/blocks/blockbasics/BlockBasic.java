@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -77,6 +78,16 @@ public class BlockBasic extends Block
     public static void RegisterRender()
     {
 
+    }
+
+    public int hasBookEntry(ItemStack getBook)
+    {
+        return  -1;
+    }
+
+    public boolean addBookEntry(ItemStack getBook)
+    {
+        return  false;
     }
 
 
