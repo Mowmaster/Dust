@@ -397,7 +397,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                                 if(coinInPed instanceof ipuBasic)
                                 {
                                     //Already checked if its a filter, so now check if it can accept items.
-                                    if(((ipuBasic) coinInPed).canAcceptItem(getItemInPedestal()))
+                                    if(((ipuBasic) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
                                     {
                                         returner = true;
                                     }

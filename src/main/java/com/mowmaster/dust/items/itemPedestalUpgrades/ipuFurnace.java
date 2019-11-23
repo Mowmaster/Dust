@@ -321,10 +321,10 @@ public class ipuFurnace extends ipuBasic
                 int CurrentBurnTime = tilePedestal.getStoredValueForUpgrades();
                 int getBurnTimeForStack = getItemFuelBurnTime(getItemStack) * getItemStack.getCount();
                 tilePedestal.setStoredValueForUpgrades(CurrentBurnTime + getBurnTimeForStack);
-                if(((EntityItem) entityIn).getItem().equals(Items.LAVA_BUCKET))
+                if(getItemStack.getItem().equals(Items.LAVA_BUCKET))
                 {
                     ItemStack getReturned = new ItemStack(Items.BUCKET,getItemStack.getCount());
-                    EntityItem items1 = new EntityItem(world, posPedestal.getX() + 0.5, posPedestal.getY() + 1.0, posPedestal.getZ() + 0.5, getReturned.copy());
+                    EntityItem items1 = new EntityItem(world, posPedestal.getX() + 0.5, posPedestal.getY() + 1.0, posPedestal.getZ() + 0.5, getReturned);
                     entityIn.setDead();
                     world.spawnEntity(items1);
                 }

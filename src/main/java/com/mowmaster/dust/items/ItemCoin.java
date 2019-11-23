@@ -103,13 +103,14 @@ public class ItemCoin extends Item
                 count = "X";
                 break;
         }
-        if(stack.getItem().equals(ItemRegistry.filterUpgrade)) {tooltip.add("Filter Upgrade");}
+        /*if(stack.getItem().equals(ItemRegistry.filterUpgrade)) {tooltip.add("Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.fuzzyFilterUpgrade)) {tooltip.add("Fuzzy Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.filterModUpgrade)) {tooltip.add("Mod Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.filterBlacklistUpgrade)) {tooltip.add("Blacklist Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.fuzzyFilterBlacklistUpgrade)) {tooltip.add("Fuzzy Blacklist Filter Upgrade");}
         else if(stack.getItem().equals(ItemRegistry.filterModBlacklistUpgrade)) {tooltip.add("Mod Blacklist Filter Upgrade");}
-        else if(stack.getItem().equals(ItemRegistry.effectUpgrade))
+        else */
+        if(stack.getItem().equals(ItemRegistry.effectUpgrade))
         {
             tooltip.add("Pedestal Effect Upgrade");
             if(stack.hasTagCompound())

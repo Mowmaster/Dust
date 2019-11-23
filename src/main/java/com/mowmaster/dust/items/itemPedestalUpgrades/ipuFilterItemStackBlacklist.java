@@ -1,15 +1,10 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 
-import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -19,13 +14,14 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuFilterEnchanted extends ipuBasic
+public class ipuFilterItemStackBlacklist extends ipuBasic
 {
 
-    public ipuFilterEnchanted(String unlocName, String registryName)
+    public ipuFilterItemStackBlacklist(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -53,11 +49,29 @@ public class ipuFilterEnchanted extends ipuBasic
     @Override
     public boolean canAcceptItem(World world, BlockPos posPedestal, ItemStack itemStackIn)
     {
-        boolean returner = false;
+        boolean returner = true;
+        BlockPos posInventory = getPosOfBlockBelow(world, posPedestal, 1);
 
-        if(itemStackIn.isItemEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+        if(world.getTileEntity(posInventory) !=null)
         {
-            returner = true;
+            if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestal)))
+            {
+                IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestal));
+
+
+                int range = handler.getSlots();
+
+                ItemStack itemFromInv = ItemStack.EMPTY;
+                itemFromInv = IntStream.range(0,range)//Int Range
+                        .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
+                        .filter(itemStack -> doItemsMatch(itemStack,itemStackIn))
+                        .findFirst().orElse(ItemStack.EMPTY);
+
+                if(!itemFromInv.isEmpty())
+                {
+                    returner = false;
+                }
+            }
         }
 
         return returner;
@@ -71,7 +85,7 @@ public class ipuFilterEnchanted extends ipuBasic
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
-        tooltip.add(TextFormatting.GOLD + "Filter: Enchanted");
+        tooltip.add(TextFormatting.GOLD + "Filter: Exact Blacklist");
     }
 
 }

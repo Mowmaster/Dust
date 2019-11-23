@@ -217,6 +217,17 @@ public class ipuBasic extends Item
                 }
                 else return false;
             }
+            else if(itemStackIn.isItemDamaged())
+            {
+                if(itemStackIn.getItemDamage()==stackPedestal.getItemDamage() && itemStackIn.getMetadata()==stackPedestal.getMetadata())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
             else
             {
                 if(itemStackIn.getItem().equals(stackPedestal.getItem()))
@@ -233,7 +244,7 @@ public class ipuBasic extends Item
 
     //For Filters to return if they can or cannot allow items to pass
     //Will probably need overwritten
-    public boolean canAcceptItem(ItemStack itemStackIn)
+    public boolean canAcceptItem(World world, BlockPos posPedestal, ItemStack itemStackIn)
     {
         return false;
     }

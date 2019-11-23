@@ -124,20 +124,23 @@ public class ipuExport extends ipuBasic
                 int maxSizeSlot = handler.getSlotLimit(i);
                 if(maxSizeSlot>0)
                 {
-                    if(doItemsMatch(stackInSlot,itemInPedestal) && stackInSlot.getCount() < handler.getSlotLimit(i))
+                    if(stackInSlot.getMaxStackSize()>1)
                     {
-                        slot = i;
-                        break;
-                    }
-                    else if(stackInSlot.isEmpty())
-                    {
-                        slot = i;
-                        break;
-                    }
-                    //if chest is full
-                    else if(i==range)
-                    {
-                        slot=-1;
+                        if(doItemsMatch(stackInSlot,itemInPedestal) && stackInSlot.getCount() < handler.getSlotLimit(i))
+                        {
+                            slot = i;
+                            break;
+                        }
+                        else if(stackInSlot.isEmpty())
+                        {
+                            slot = i;
+                            break;
+                        }
+                        //if chest is full
+                        else if(i==range)
+                        {
+                            slot=-1;
+                        }
                     }
                 }
             }

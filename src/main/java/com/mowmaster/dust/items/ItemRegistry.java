@@ -90,6 +90,8 @@ public class ItemRegistry
     public static Item filterModBlacklistUpgrade;
 
     public static Item furnaceUpgrade;
+    public static Item upgradeEnchanted;
+    public static Item upgradeEnchantedBlacklist;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -166,21 +168,21 @@ public class ItemRegistry
         crafter4Upgrade = new ipuCrafter("crafter4upgrade","crafter4upgrade",2);
         crafter9Upgrade = new ipuCrafter("crafter9upgrade","crafter9upgrade",3);
         furnaceUpgrade = new ipuFurnace("upgradefurnace","upgradefurnace");
+        upgradeEnchanted = new ipuFilterEnchanted("upgradeenchanted","upgradeenchanted");
+        upgradeEnchantedBlacklist = new ipuFilterEnchantedBlacklist("upgradeenchantedblacklist","upgradeenchantedblacklist");
+        filterModUpgrade = new ipuFilterMod("filtermodupgrade","filtermodupgrade");
+        filterModBlacklistUpgrade = new ipuFilterModBlacklist("filtermodblacklistupgrade","filtermodblacklistupgrade");
+        filterUpgrade = new ipuFilterItemStack("filterupgrade","filterupgrade");
+        filterBlacklistUpgrade = new ipuFilterItemStackBlacklist("filterblacklistupgrade","filterblacklistupgrade");
+        fuzzyFilterUpgrade = new ipuFilterItem("fuzzyfilterupgrade","fuzzyfilterupgrade");
+        fuzzyFilterBlacklistUpgrade = new ipuFilterItemBlacklist("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
 
 
-
-
-        userUpgrade = new ItemCoin("userupgrade","userupgrade");
-        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");
-        placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");
-        filterUpgrade = new ItemCoin("filterupgrade","filterupgrade");
-        fuzzyFilterUpgrade = new ItemCoin("fuzzyfilterupgrade","fuzzyfilterupgrade");
-        filterModUpgrade = new ItemCoin("filtermodupgrade","filtermodupgrade");
-        filterBlacklistUpgrade = new ItemCoin("filterblacklistupgrade","filterblacklistupgrade");
-        fuzzyFilterBlacklistUpgrade = new ItemCoin("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
-        filterModBlacklistUpgrade = new ItemCoin("filtermodblacklistupgrade","filtermodblacklistupgrade");
-        effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");
-        breakerUpgrade = new ItemCoin("breakerupgrade","breakerupgrade");
+        userUpgrade = new ItemCoin("userupgrade","userupgrade");//Milk/Shear x2
+        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
+        placerUpgrade = new ItemCoin("placerupgrade","placerupgrade");//x1
+        effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");//x4
+        breakerUpgrade = new ItemCoin("breakerupgrade","breakerupgrade");//x1
 
 
         scrollA = new ItemScroll("scrolla","scrolla");
@@ -289,6 +291,8 @@ public class ItemRegistry
         registerItem(effectUpgrade);
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
+        registerItem(upgradeEnchanted);
+        registerItem(upgradeEnchantedBlacklist);
 
         registerItem(craftingPlaceholder);
 
@@ -392,6 +396,8 @@ public class ItemRegistry
         registerRender(effectUpgrade);
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);
+        registerRender(upgradeEnchanted);
+        registerRender(upgradeEnchantedBlacklist);
 
         registerRender(craftingPlaceholder);
 

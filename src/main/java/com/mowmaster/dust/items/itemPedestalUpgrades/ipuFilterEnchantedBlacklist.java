@@ -1,31 +1,25 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 
-import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuFilterEnchanted extends ipuBasic
+public class ipuFilterEnchantedBlacklist extends ipuBasic
 {
 
-    public ipuFilterEnchanted(String unlocName, String registryName)
+    public ipuFilterEnchantedBlacklist(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -53,11 +47,11 @@ public class ipuFilterEnchanted extends ipuBasic
     @Override
     public boolean canAcceptItem(World world, BlockPos posPedestal, ItemStack itemStackIn)
     {
-        boolean returner = false;
+        boolean returner = true;
 
-        if(itemStackIn.isItemEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+        if(itemStackIn.isItemEnchanted()  || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
         {
-            returner = true;
+            returner = false;
         }
 
         return returner;
@@ -71,7 +65,7 @@ public class ipuFilterEnchanted extends ipuBasic
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
-        tooltip.add(TextFormatting.GOLD + "Filter: Enchanted");
+        tooltip.add(TextFormatting.GOLD + "Filter: Enchanted Blacklist");
     }
 
 }
