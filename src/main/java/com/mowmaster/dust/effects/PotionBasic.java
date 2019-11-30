@@ -11,9 +11,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-public class PotionBase extends Potion
+public class PotionBasic extends Potion
 {
-    public PotionBase(String potionName, String registryName, Boolean harmfulToUndead, int decimalPotionColor, int iconXCord, int iconYCord)
+    public PotionBasic(String potionName, String registryName, Boolean harmfulToUndead, int decimalPotionColor, int iconXCord, int iconYCord)
     {
         super(harmfulToUndead,decimalPotionColor);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -40,6 +40,16 @@ public class PotionBase extends Potion
     public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha) {
         mc.getTextureManager().bindTexture(iconTexture);
         Gui.drawModalRectWithCustomSizedTexture(x+3, y+3, xIcon*18, yIcon*18, 18, 18, 288, 288);
+    }
+
+    public void effectOnPlayer()
+    {
+
+    }
+
+    public void effectOnPedestal()
+    {
+
     }
 
 }

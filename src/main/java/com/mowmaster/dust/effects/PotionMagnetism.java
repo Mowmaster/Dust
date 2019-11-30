@@ -1,6 +1,7 @@
 package com.mowmaster.dust.effects;
 
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.item.EntityItem;
@@ -20,54 +21,50 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 
-public class PotionMagnetism extends Potion
+public class PotionMagnetism extends PotionBasic
 {
-
-    public PotionMagnetism(String potionName, String registryName)
+    public PotionMagnetism(String potionName, String registryName, Boolean harmfulToUndead, int decimalPotionColor, int iconXCord, int iconYCord)
     {
-        super(false,1393400);//does it hurt dead mobs?T/F, decimal color or hexadecimal
-        this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        setPotionName(potionName);
+        super(potionName,registryName,harmfulToUndead,decimalPotionColor,iconXCord,iconYCord);
     }
 
-    private ResourceLocation iconTexture = new ResourceLocation(Reference.MODID, "textures/icons/icons.png");
+    public void effectOnPlayer(World world, EntityPlayer player, Boolean effectactive)
+    {
+        int amp=0;
+        if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM) && !player.isSneaking())
+        {
+            effectactive=true;
+            amp = 1+player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
+        }
+        else{effectactive=false;}
 
+        if(effectactive==true)
+        {
+            float range = Math.multiplyExact(5,amp);
+            float verticalRange = Math.multiplyExact(3,amp);
+            float posX = Math.round(player.posX);
+            float posY = (float) (player.posY - player.getEyeHeight());
+            float posZ = Math.round(player.posZ);
 
-    /**
-     * Called to draw the this Potion onto the player's inventory when it's active.
-     * This can be used to e.g. render Potion icons from your own texture.
-     *
-     * @param x      the x coordinate
-     * @param y      the y coordinate
-     * @param effect the active PotionEffect
-     * @param mc     the Minecraft instance, for convenience
-     */
-    private int xIcon=0;
-    private int yIcon=0;
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
-        if (mc.currentScreen != null) {
-            mc.getTextureManager().bindTexture(iconTexture);
-            Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, xIcon*18, yIcon*18, 18, 18, 288, 288);
+            List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+            List<EntityXPOrb> xpOrbs = player.getEntityWorld().getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+
+            for (EntityItem entity : entities) {
+                if (entity != null && !world.isRemote && !entity.isDead) {
+                    entity.onCollideWithPlayer(player);
+                }
+            }
+
+            for (EntityXPOrb xpOrb : xpOrbs) {
+                if (xpOrb != null && !world.isRemote) {
+                    xpOrb.onCollideWithPlayer(player);
+                }
+            }
         }
     }
 
-    /**
-     * Called to draw the this Potion onto the player's ingame HUD when it's active.
-     * This can be used to e.g. render Potion icons from your own texture.
-     *
-     * @param x      the x coordinate
-     * @param y      the y coordinate
-     * @param effect the active PotionEffect
-     * @param mc     the Minecraft instance, for convenience
-     * @param alpha  the alpha value, blinks when the potion is about to run out
-     */
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha) {
-        mc.getTextureManager().bindTexture(iconTexture);
-        Gui.drawModalRectWithCustomSizedTexture(x+3, y+3, xIcon*18, yIcon*18, 18, 18, 288, 288);
-        //public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight)
+    public void effectOnPedestal(World world, TilePedestal pedestal)
+    {
+
     }
 }
