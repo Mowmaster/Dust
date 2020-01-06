@@ -35,6 +35,10 @@ public class EnchantmentUpgradeTransferRate extends Enchantment
     public boolean canApply(ItemStack stack) {
         return stack.getItem() instanceof ipuBasic;
     }
+    /*@Override
+    public boolean canApply(ItemStack stack) {
+        return stack.getItem() instanceof ipuBasic ? true : super.canApply(stack);
+    }*/
 
     @Override
     public boolean canApplyTogether(Enchantment ench)
