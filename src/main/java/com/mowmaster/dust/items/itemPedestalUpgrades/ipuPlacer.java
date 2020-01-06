@@ -8,16 +8,20 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -42,6 +46,7 @@ public class ipuPlacer extends ipuBasic
         this.isFilter=false;
     }
 
+
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return super.isBookEnchantable(stack, book);
@@ -60,7 +65,7 @@ public class ipuPlacer extends ipuBasic
                 range = 1;
                 break;
             case 1:
-                range=2;
+                range = 2;
                 break;
             case 2:
                 range = 4;
@@ -72,9 +77,9 @@ public class ipuPlacer extends ipuBasic
                 range = 12;
                 break;
             case 5:
-                range=16;
+                range = 16;
                 break;
-            default: range=1;
+            default: range = 1;
         }
 
         return  range;
@@ -112,7 +117,13 @@ public class ipuPlacer extends ipuBasic
     {
         IBlockState stated = Blocks.AIR.getDefaultState();
 
-        if(itemForBlock.getHasSubtypes())
+
+        //Redstone
+        if(itemForBlock.getItem() == Items.REDSTONE)
+        {
+            stated = Blocks.REDSTONE_WIRE.getDefaultState();
+        }
+        else if(itemForBlock.getHasSubtypes())
         {
             stated = getBlock.getStateFromMeta(itemForBlock.getMetadata());
         }
@@ -149,18 +160,19 @@ public class ipuPlacer extends ipuBasic
             Block blockBelow = world.getBlockState(blockPosBelow).getBlock();
 
             Block block = Block.getBlockFromItem(itemInPedestal.getItem());
-            String itemName = itemInPedestal.getUnlocalizedName();
+            /*String itemName = itemInPedestal.getUnlocalizedName();
             String displayName = itemInPedestal.getDisplayName();
             String domainName = itemInPedestal.getItem().getRegistryName().getResourceDomain();
             Block block2 = Block.getBlockFromName(itemName.replace("item.",domainName + ":"));
-            Block block3 = Block.getBlockFromName(domainName + ":" + displayName.replace(" ","_").toLowerCase());
+            Block block3 = Block.getBlockFromName(domainName + ":" + displayName.replace(" ","_").toLowerCase());*/
             IBlockState stated = Blocks.AIR.getDefaultState();
             Block getBlockToUse = Blocks.AIR;
+
             if(block != Blocks.AIR){
                 getBlockToUse = block;
                 stated = getState(block,itemInPedestal);
             }
-            else if(block2 != Blocks.AIR)
+            /*else if(block2 != Blocks.AIR)
             {
                 getBlockToUse = block2;
                 stated = getState(block2,itemInPedestal);
@@ -169,23 +181,18 @@ public class ipuPlacer extends ipuBasic
             {
                 getBlockToUse = block3;
                 stated = getState(block3,itemInPedestal);
-            }
+            }*/
 
             //If We have a block
             if(getBlockToUse != Blocks.AIR)
             {
                 if(blockBelow.isReplaceable(world,blockPosBelow))
                 {
-                    //Redstone causes error LOL
-                    //Redstone
-                    if (replaceable && stack.getItem() == Items.REDSTONE) {
-                        world.setBlockState(offsetPos, Blocks.REDSTONE_WIRE.getDefaultState(), 2);
-                        return StackUtil.shrink(stack, 1);
-                    }
-
-                    if(getBlockToUse instanceof IGrowable)
+                    if(getBlockToUse instanceof IPlantable)
                     {
-                        if(blockBelow.canPlaceBlockAt(world,blockPosBelow))
+                        IPlantable plantMe = (IPlantable)getBlockToUse;
+                        IBlockState soil = world.getBlockState(blockPosBelow.down());
+                        if(soil.getBlock().canSustainPlant(soil, world, blockPosBelow.down(), net.minecraft.util.EnumFacing.UP, plantMe))
                         {
                             //Place Sapling???
                             this.removeFromPedestal(world,posOfPedestal,1);
