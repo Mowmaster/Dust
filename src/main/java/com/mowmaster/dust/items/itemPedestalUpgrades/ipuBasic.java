@@ -5,7 +5,9 @@ import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.IInventory;
@@ -338,6 +340,18 @@ public class ipuBasic extends Item
         }
     }
 
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return !EnchantmentRegistry.UPGRADES.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public int getItemEnchantability()
+    {
+        return 10;
+    }
+
+
     public EnumFacing getPedestalFacing(World world,BlockPos posOfPedestal)
     {
         IBlockState state = world.getBlockState(posOfPedestal);
@@ -353,4 +367,5 @@ public class ipuBasic extends Item
     {
 
     }
+
 }

@@ -2,8 +2,7 @@ package com.mowmaster.dust.enchantments;
 
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.enchantment.*;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -33,14 +32,16 @@ public class EnchantmentUpgradeRange extends Enchantment
         return super.getMinEnchantability(enchantmentLevel) + 25;
     }
 
+
+    @Override
+    public boolean isAllowedOnBooks() {
+        return super.isAllowedOnBooks();
+    }
+
     @Override
     public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof ipuBasic;
-    }
-    /*@Override
-    public boolean canApply(ItemStack stack) {
         return stack.getItem() instanceof ipuBasic ? true : super.canApply(stack);
-    }*/
+    }
 
     @Override
     public boolean canApplyTogether(Enchantment ench)
@@ -53,7 +54,10 @@ public class EnchantmentUpgradeRange extends Enchantment
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-
-        return canApply(stack);
+        if(stack.getItem() instanceof ipuBasic)
+        {
+            return super.canApplyAtEnchantingTable(stack);
+        }
+        else return false;
     }
 }

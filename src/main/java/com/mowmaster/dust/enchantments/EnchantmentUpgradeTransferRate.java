@@ -1,6 +1,8 @@
 package com.mowmaster.dust.enchantments;
 
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Enchantments;
@@ -32,13 +34,14 @@ public class EnchantmentUpgradeTransferRate extends Enchantment
     }
 
     @Override
-    public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof ipuBasic;
+    public boolean isAllowedOnBooks() {
+        return super.isAllowedOnBooks();
     }
-    /*@Override
+
+    @Override
     public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof ipuBasic ? true : super.canApply(stack);
-    }*/
+        return stack.getItem() instanceof ipuBasic || Block.getBlockFromItem(stack.getItem()) instanceof BlockPedestal ? true : super.canApply(stack);
+    }
 
     @Override
     public boolean canApplyTogether(Enchantment ench)
@@ -51,7 +54,11 @@ public class EnchantmentUpgradeTransferRate extends Enchantment
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-
-        return canApply(stack);
+        if(stack.getItem() instanceof ipuBasic || Block.getBlockFromItem(stack.getItem()) instanceof BlockPedestal)
+        {
+            return super.canApplyAtEnchantingTable(stack);
+        }
+        else return false;
+        //return stack.getItem() instanceof ipuBasic || Block.getBlockFromItem(stack.getItem()) instanceof BlockPedestal ? true : super.canApplyAtEnchantingTable(stack);
     }
 }

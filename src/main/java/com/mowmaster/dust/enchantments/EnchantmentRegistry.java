@@ -1,11 +1,16 @@
 package com.mowmaster.dust.enchantments;
 
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.dust;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatBasic;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -23,6 +28,9 @@ public class EnchantmentRegistry
     //public static EnchantmentSmelt enchantmentSmelter = new EnchantmentSmelt();
     public static EnchantmentUpgradeRange enchantmentRange = new EnchantmentUpgradeRange();
     public static EnchantmentUpgradeTransferRate enchantmentTransferRate = new EnchantmentUpgradeTransferRate();
+
+    public static final EnumEnchantmentType UPGRADES = EnumHelper.addEnchantmentType("upgrades", (item)->(item instanceof ipuBasic));
+    public static final EnumEnchantmentType PEDESTALS = EnumHelper.addEnchantmentType("pedestals", (item)->(Block.getBlockFromItem(item) instanceof BlockPedestal));
 
     public static void Init(){
         //GameRegistry.register(enchantDigger, );
