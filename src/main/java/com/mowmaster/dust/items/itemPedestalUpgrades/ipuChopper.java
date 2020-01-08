@@ -1,6 +1,8 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeRange;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;

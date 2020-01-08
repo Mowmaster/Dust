@@ -2,11 +2,15 @@ package com.mowmaster.dust.enchantments;
 
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuChopper;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuDropper;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuPlacer;
 import net.minecraft.enchantment.*;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
 
 
 public class EnchantmentUpgradeRange extends Enchantment
@@ -16,6 +20,7 @@ public class EnchantmentUpgradeRange extends Enchantment
         this.setName("upgraderange");
         this.setRegistryName("upgraderange");
     }
+
 
     @Override
     public int getMaxLevel() {
@@ -40,7 +45,9 @@ public class EnchantmentUpgradeRange extends Enchantment
 
     @Override
     public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof ipuBasic ? true : super.canApply(stack);
+        return (stack.getItem() instanceof ipuChopper
+                || stack.getItem() instanceof ipuDropper
+                || stack.getItem() instanceof ipuPlacer) || super.canApply(stack);
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuFilterModBlacklist extends ipuBasic
+public class ipuFilterModBlacklist extends ipuBasicFilter
 {
 
     public ipuFilterModBlacklist(String unlocName, String registryName)
@@ -29,17 +29,6 @@ public class ipuFilterModBlacklist extends ipuBasic
         this.setCreativeTab(DUSTTABS);
         this.isFilter=true;
     }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return false;
-    }
-
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {

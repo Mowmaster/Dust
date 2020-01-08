@@ -42,18 +42,14 @@ public class ipuExport extends ipuBasic
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        if(stack.getItem().equals(ItemRegistry.importUpgrade))
-        {
-            return super.isBookEnchantable(stack, book);
-        }
-
-        return false;
+        return super.isBookEnchantable(stack, book);
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
     }
+
 
     public int getTransferRate(ItemStack stack)
     {

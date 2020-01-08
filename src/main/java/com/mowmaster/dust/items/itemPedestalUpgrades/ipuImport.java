@@ -43,12 +43,12 @@ public class ipuImport extends ipuBasic
 
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
+        return super.isBookEnchantable(stack, book);
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return false;
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
     }
 
     public int getItemTransferRate(ItemStack stack)

@@ -1,6 +1,8 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeRange;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
@@ -46,15 +48,14 @@ public class ipuPlacer extends ipuBasic
         this.isFilter=false;
     }
 
-
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return super.isBookEnchantable(stack, book);
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
     }
 
     public int getRange(ItemStack stack)

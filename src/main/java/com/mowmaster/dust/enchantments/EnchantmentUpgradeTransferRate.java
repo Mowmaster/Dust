@@ -8,6 +8,7 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
 
 
 public class EnchantmentUpgradeTransferRate extends Enchantment

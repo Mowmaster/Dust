@@ -22,7 +22,7 @@ import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuFilterEnchanted extends ipuBasic
+public class ipuFilterEnchanted extends ipuBasicFilter
 {
 
     public ipuFilterEnchanted(String unlocName, String registryName)
@@ -33,17 +33,6 @@ public class ipuFilterEnchanted extends ipuBasic
         this.setCreativeTab(DUSTTABS);
         this.isFilter=true;
     }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return false;
-    }
-
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {

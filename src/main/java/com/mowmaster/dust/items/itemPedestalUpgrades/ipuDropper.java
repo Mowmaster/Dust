@@ -1,6 +1,8 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeRange;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
@@ -43,9 +45,10 @@ public class ipuDropper extends ipuBasic
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
     }
+
 
     public int getTransferRate(ItemStack stack)
     {

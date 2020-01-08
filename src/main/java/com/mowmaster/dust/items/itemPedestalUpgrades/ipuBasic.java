@@ -1,6 +1,7 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
