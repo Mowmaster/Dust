@@ -26,6 +26,7 @@ import java.util.Random;
 
 public class EnchantmentDigger extends Enchantment
 {
+    // DOES NOT WORK IN PEDESTAL WITH BREAKER UPGRADE
     public EnchantmentDigger() {
         super(Rarity.VERY_RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND});
         setName("enchantDigger");

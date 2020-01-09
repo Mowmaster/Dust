@@ -177,13 +177,14 @@ public class ItemRegistry
         fuzzyFilterUpgrade = new ipuFilterItem("fuzzyfilterupgrade","fuzzyfilterupgrade");
         fuzzyFilterBlacklistUpgrade = new ipuFilterItemBlacklist("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
         placerUpgrade = new ipuPlacer("placerupgrade","placerupgrade");//x1
+        breakerUpgrade = new ipuBreaker("breakerupgrade","breakerupgrade");//x1
 
 
         userUpgrade = new ItemCoin("userupgrade","userupgrade");//Milk/Shear x2
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
 
         effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");//x4
-        breakerUpgrade = new ItemCoin("breakerupgrade","breakerupgrade");//x1
+
 
 
         scrollA = new ItemScroll("scrolla","scrolla");

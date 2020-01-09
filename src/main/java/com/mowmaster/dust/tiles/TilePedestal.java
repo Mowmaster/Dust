@@ -448,17 +448,6 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
     //Needed for Rendering Tile Stuff
     public boolean isBlockUnder(int x,int y,int z)
     {
