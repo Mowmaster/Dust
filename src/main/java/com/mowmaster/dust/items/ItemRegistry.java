@@ -181,8 +181,8 @@ public class ItemRegistry
 
 
         userUpgrade = new ItemCoin("userupgrade","userupgrade");//Milk/Shear x2
-        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
 
+        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
         effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");//x4
 
 

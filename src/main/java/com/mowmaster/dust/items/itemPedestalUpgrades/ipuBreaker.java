@@ -3,6 +3,8 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBarrier;
+import net.minecraft.block.BlockBeacon;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -136,7 +138,7 @@ public class ipuBreaker extends ipuBasic
         IBlockState blockToBreak = world.getBlockState(posOfBlock);
 
         /*
-        If ItemPickaxe is in inventory, use that(drops in world), otherwise break blocks and put result in inventory(extra results dropped in world)
+        BREAKS BLOCKS AND DROPS THEM IN WORLD FOR PICKUP LATER
          */
 
         if(itemInPedestal.getItem() instanceof ItemPickaxe)
@@ -162,11 +164,14 @@ public class ipuBreaker extends ipuBasic
             }
         }
 
-        if(fakePlayer.canHarvestBlock(blockToBreak))
+        if(blockToBreak.getBlockHardness(world,posOfBlock) != -1.0F)
         {
-            blockToBreak.getBlock().harvestBlock(world, fakePlayer, posOfBlock, blockToBreak, null, fakePlayer.getHeldItemMainhand());
+            if(fakePlayer.canHarvestBlock(blockToBreak))
+            {
+                blockToBreak.getBlock().harvestBlock(world, fakePlayer, posOfBlock, blockToBreak, null, fakePlayer.getHeldItemMainhand());
+            }
+            blockToBreak.getBlock().removedByPlayer(blockToBreak,world,posOfBlock,fakePlayer,false);
         }
-        blockToBreak.getBlock().removedByPlayer(blockToBreak,world,posOfBlock,fakePlayer,false);
 
         /*if(itemInPedestal.isEmpty())//If pedestal inv is empty
         {
