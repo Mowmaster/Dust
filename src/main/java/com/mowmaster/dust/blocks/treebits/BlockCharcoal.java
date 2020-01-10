@@ -50,6 +50,8 @@ public class BlockCharcoal extends BlockBasic implements IMetaBlockName
         this.setCreativeTab(DUSTBLOCKSTABS);
     }
 
+
+
     @Override
     protected BlockStateContainer createBlockState()
     {

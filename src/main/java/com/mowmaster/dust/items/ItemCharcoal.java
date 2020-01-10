@@ -18,12 +18,19 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ItemCharcoal extends Item
 {
-    public ItemCharcoal(String unlocName, String registryName)
+    int fuelValue = -1;
+    public ItemCharcoal(String unlocName, String registryName, int fuelBurnTime)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
+        this.fuelValue = fuelBurnTime;
+    }
+
+    @Override
+    public int getItemBurnTime(ItemStack itemStack) {
+        return fuelValue;
     }
 
     @SideOnly(Side.CLIENT)

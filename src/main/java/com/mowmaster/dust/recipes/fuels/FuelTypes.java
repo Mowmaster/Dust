@@ -11,7 +11,7 @@ public class FuelTypes implements IFuelHandler
 {
     @Override
     public int getBurnTime(ItemStack fuel){
-        if(fuel.getItem() instanceof ItemCharcoal)
+        /*if(fuel.getItem() instanceof ItemCharcoal)
         {
             if(fuel.getItem().equals(ItemRegistry.charcoalRed)){return 1800;}
             else if(fuel.getItem().equals(ItemRegistry.charcoalBlue)){return 2400;}
@@ -21,7 +21,7 @@ public class FuelTypes implements IFuelHandler
             else if(fuel.getItem().equals(ItemRegistry.charcoalOrange)){return 2000;}
             else if(fuel.getItem().equals(ItemRegistry.charcoalWhite)){return 2600;}
             else if(fuel.getItem().equals(ItemRegistry.charcoalBlack)){return 1200;}
-        }
+        }*/
 
         if(Block.getBlockFromItem(fuel.getItem()) instanceof BlockCharcoal)
         {
