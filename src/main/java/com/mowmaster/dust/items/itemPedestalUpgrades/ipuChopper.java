@@ -6,11 +6,10 @@ import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.enchantment.*;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -52,6 +51,12 @@ public class ipuChopper extends ipuBasic
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return !Enchantments.FORTUNE.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+        //return !EnchantmentRegistry.UPGRADES.equals(enchantment.type) || enchantment.equals(Enchantments.FORTUNE) || enchantment.equals(Enchantments.SILK_TOUCH) && super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public int getRangeWidth(ItemStack stack)
