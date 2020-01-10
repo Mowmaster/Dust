@@ -51,6 +51,11 @@ public class BlockPath extends BlockBasic
         return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9D, 1.0D);
     }
 
+    /*@Override
+    public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
+        return super.addRunningEffects(state, world, pos, entity);
+    }*/
+
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
         Vec3d dir = new Vec3d(entity.motionX, entity.motionY, entity.motionZ);
