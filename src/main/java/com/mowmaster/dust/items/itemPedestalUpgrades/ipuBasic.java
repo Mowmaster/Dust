@@ -4,6 +4,7 @@ import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;

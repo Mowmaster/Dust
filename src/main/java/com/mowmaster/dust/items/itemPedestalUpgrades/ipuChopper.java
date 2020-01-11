@@ -11,6 +11,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -51,12 +52,6 @@ public class ipuChopper extends ipuBasic
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return !Enchantments.FORTUNE.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
-        //return !EnchantmentRegistry.UPGRADES.equals(enchantment.type) || enchantment.equals(Enchantments.FORTUNE) || enchantment.equals(Enchantments.SILK_TOUCH) && super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public int getRangeWidth(ItemStack stack)
