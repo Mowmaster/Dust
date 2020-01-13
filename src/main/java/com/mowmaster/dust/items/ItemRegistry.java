@@ -70,6 +70,7 @@ public class ItemRegistry
     public static Item ancientCoin;
 
     public static Item userUpgrade;
+    public static Item shearingUpgrade;
     public static Item chopperUpgrade;
     public static Item crafter1Upgrade;
     public static Item crafter4Upgrade;
@@ -178,9 +179,10 @@ public class ItemRegistry
         fuzzyFilterBlacklistUpgrade = new ipuFilterItemBlacklist("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
         placerUpgrade = new ipuPlacer("placerupgrade","placerupgrade");//x1
         breakerUpgrade = new ipuBreaker("breakerupgrade","breakerupgrade");//x1
+        shearingUpgrade = new ipuShearer("shearingupgrade","shearingupgrade");//Milker x2
 
 
-        userUpgrade = new ItemCoin("userupgrade","userupgrade");//Milk/Shear x2
+        userUpgrade = new ItemCoin("userupgrade","userupgrade");//Milker x2
 
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
         effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");//x4
@@ -274,6 +276,7 @@ public class ItemRegistry
         registerItem(ancientCoin);
 
         registerItem(userUpgrade);
+        registerItem(shearingUpgrade);
         registerItem(chopperUpgrade);
         registerItem(crafter1Upgrade);
         registerItem(crafter4Upgrade);
@@ -379,6 +382,7 @@ public class ItemRegistry
         registerRender(ancientCoin);
 
         registerRender(userUpgrade);
+        registerRender(shearingUpgrade);
         registerRender(chopperUpgrade);
         registerRender(crafter1Upgrade);
         registerRender(crafter4Upgrade);

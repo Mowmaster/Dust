@@ -5,12 +5,20 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -21,6 +29,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockDirectional.FACING;
@@ -28,8 +37,8 @@ import static net.minecraft.block.BlockDirectional.FACING;
 public class ipuShearer extends ipuBasic
 {
     public int rangeWidth = 0;
-    public int rangeHeight = 0;
-    public int transferSpeed = 0;
+    public int rangeHeight = 1;
+    public int operationalSpeed = 0;
 
     public ipuShearer(String unlocName, String registryName)
     {
@@ -46,8 +55,8 @@ public class ipuShearer extends ipuBasic
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
     }
 
     public int getRangeWidth(ItemStack stack)
@@ -55,13 +64,6 @@ public class ipuShearer extends ipuBasic
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
-    }
-
-    public int getRangeHeight(ItemStack stack)
-    {
-        int rH = getRangeModifier(stack);
-        rangeHeight = ((rH*6)+4);
-        return rangeHeight;
     }
 
     public BlockPos getNegRangePos(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
@@ -72,9 +74,9 @@ public class ipuShearer extends ipuBasic
         switch (enumfacing)
         {
             case UP:
-                return blockBelow.add(-intWidth,0,-intWidth);
+                return blockBelow.add(-intWidth,intHeight,-intWidth);
             case DOWN:
-                return blockBelow.add(-intWidth,-intHeight,-intWidth);
+                return blockBelow.add(-intWidth,0,-intWidth);
             case NORTH:
                 return blockBelow.add(-intWidth,-intWidth,-intHeight);
             case SOUTH:
@@ -96,48 +98,48 @@ public class ipuShearer extends ipuBasic
         switch (enumfacing)
         {
             case UP:
-                return blockBelow.add(intWidth,intHeight,intWidth);
+                return blockBelow.add(intWidth+1,intHeight+1,intWidth+1);
             case DOWN:
-                return blockBelow.add(intWidth,0,intWidth);
+                return blockBelow.add(intWidth+1,intHeight,intWidth+1);
             case NORTH:
-                return blockBelow.add(intWidth,intWidth,0);
+                return blockBelow.add(intWidth+1,intWidth,0+1);
             case SOUTH:
-                return blockBelow.add(intWidth,intWidth,intHeight);
+                return blockBelow.add(intWidth+1,intWidth,intHeight+1);
             case EAST:
-                return blockBelow.add(intHeight,intWidth,intWidth);
+                return blockBelow.add(intHeight+1,intWidth,intWidth+1);
             case WEST:
-                return blockBelow.add(0,intWidth,intWidth);
+                return blockBelow.add(0+1,intWidth,intWidth+1);
             default:
                 return blockBelow;
         }
     }
 
-    public int getTransferSpeed(ItemStack stack)
+    public int getOperationSpeed(ItemStack stack)
     {
         switch (getTransferRateModifier(stack))
         {
             case 0:
-                transferSpeed = 20;//normal speed
+                operationalSpeed = 20;//normal speed
                 break;
             case 1:
-                transferSpeed=10;//2x faster
+                operationalSpeed=10;//2x faster
                 break;
             case 2:
-                transferSpeed = 5;//4x faster
+                operationalSpeed = 5;//4x faster
                 break;
             case 3:
-                transferSpeed = 3;//6x faster
+                operationalSpeed = 3;//6x faster
                 break;
             case 4:
-                transferSpeed = 2;//10x faster
+                operationalSpeed = 2;//10x faster
                 break;
             case 5:
-                transferSpeed=1;//20x faster
+                operationalSpeed=1;//20x faster
                 break;
-            default: transferSpeed=20;
+            default: operationalSpeed=20;
         }
 
-        return  transferSpeed;
+        return  operationalSpeed;
     }
 
 
@@ -146,32 +148,44 @@ public class ipuShearer extends ipuBasic
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        int rangeWidth = getRangeWidth(coinInPedestal);
-        int rangeHeight = getRangeHeight(coinInPedestal);
-        int speed = getTransferSpeed(coinInPedestal);
+        int speed = getOperationSpeed(coinInPedestal);
+        if(!world.isBlockPowered(pedestalPos))
+        {
+            if (tick%speed == 0) {
+                upgradeAction(world, itemInPedestal,pedestalPos, coinInPedestal);
+            }
+        }
+    }
 
-        BlockPos negNums = getNegRangePos(world,pedestalPos,rangeWidth,rangeHeight);
-        BlockPos posNums = getPosRangePos(world,pedestalPos,rangeWidth,rangeHeight);
+    public void upgradeAction(World world, ItemStack itemInPedestal,BlockPos pedestalPos, ItemStack coinInPedestal)
+    {
+        int width = getRangeWidth(coinInPedestal);
+        BlockPos negBlockPos = getNegRangePos(world,pedestalPos,width,rangeHeight);
+        BlockPos posBlockPos = getPosRangePos(world,pedestalPos,width,rangeHeight);
 
-        if(!world.isBlockPowered(pedestalPos)) {
-            for (int x = negNums.getX(); x <= posNums.getX(); x++) {
-                for (int z = negNums.getZ(); z <= posNums.getZ(); z++) {
-                    for (int y = negNums.getY(); y <= posNums.getY(); y++) {
-                        BlockPos blockToChopPos = new BlockPos(x, y, z);
-                        //BlockPos blockToChopPos = this.getPos().add(x, y, z);
-                        IBlockState blockToChop = world.getBlockState(blockToChopPos);
-                        if (tick%speed == 0) {
-                            ticked++;
-                        }
+        AxisAlignedBB getBox = new AxisAlignedBB(negBlockPos,posBlockPos);
+        List<EntitySheep> baa = world.getEntitiesWithinAABB(EntitySheep.class,getBox);
+        for(EntitySheep baaaaaa : baa)
+        {
+            if (baaaaaa.isShearable(new ItemStack(Items.SHEARS),world,baaaaaa.getPosition()))
+            {
+                if(getStackInPedestal(world,pedestalPos).equals(ItemStack.EMPTY))
+                {
+                    Random rando = new Random();
+                    int i = 1 + rando.nextInt(3);
+                    List<ItemStack> drops = baaaaaa.onSheared(new ItemStack(Items.SHEARS),world,baaaaaa.getPosition(),0);
 
-                        if(ticked > 84)
+                    for (int j = 0; j < i; ++j)
+                    {
+                        if(drops.size()>0)
                         {
-                            upgradeAction(world, itemInPedestal, coinInPedestal, blockToChopPos, blockToChop);
-                            ticked=0;
-                        }
-                        else
-                        {
-                            ticked++;
+                            for (int d=0;d<drops.size();d++)
+                            {
+                                if(itemInPedestal.isEmpty() || drops.get(d).equals(new ItemStack(itemInPedestal.getItem(),1,itemInPedestal.getMetadata())))
+                                {
+                                    addToPedestal(world,pedestalPos,drops.get(d));
+                                }
+                            }
                         }
                     }
                 }
@@ -179,52 +193,13 @@ public class ipuShearer extends ipuBasic
         }
     }
 
-    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos blockToChopPos, IBlockState blockToChop)
-    {
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-        ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
-        if(!itemInPedestal.isEmpty())
-        {
-            fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
-        }
-        else
-        {
-            if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
-            {
-                choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-            else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
-            {
-                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
-                choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-            else
-            {
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-        }
-
-        if(blockToChop.getBlock().isWood(world,blockToChopPos) || blockToChop.getBlock().isLeaves(blockToChop,world,blockToChopPos))
-        {
-            if(fakePlayer.canHarvestBlock(blockToChop))
-            {
-                blockToChop.getBlock().harvestBlock(world, fakePlayer, blockToChopPos, blockToChop, null, fakePlayer.getHeldItemMainhand());
-            }
-            blockToChop.getBlock().removedByPlayer(blockToChop,world,blockToChopPos,fakePlayer,false);
-        }
-    }
-
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s3 = getRangeWidth(stack);
-        int s4 = getRangeHeight(stack);
         String s5 = "";
 
-        switch (getTransferSpeed(stack))
+        switch (getOperationSpeed(stack))
         {
             case 1:
                 s5 = "20x Faster";
@@ -248,9 +223,9 @@ public class ipuShearer extends ipuBasic
         }
 
         String tr = "" + (s3+s3+1) + "";
-        String trr = "" + (s4+1) + "";
+        String trr = "" + (1) + "";
 
-        tooltip.add(TextFormatting.GOLD + "Chopper Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Shearing Upgrade");
 
 
         if(s3>0)
@@ -262,13 +237,13 @@ public class ipuShearer extends ipuBasic
             tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
         }
 
-        if(stack.isItemEnchanted() && getTransferSpeed(stack) >0)
+        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
         {
-            tooltip.add("Transfer Speed: " + s5);
+            tooltip.add("Operational Speed: " + s5);
         }
         else
         {
-            tooltip.add("Transfer Speed: Normal Speed");
+            tooltip.add("Operational Speed: Normal Speed");
         }
     }
 
