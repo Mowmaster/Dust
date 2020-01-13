@@ -114,7 +114,7 @@ public class ipuExport extends ipuBasic
         {
             IItemHandlerModifiable handler = (IItemHandlerModifiable) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
             int range = handler.getSlots();
-            for(int i=0;i<=range;i++)
+            for(int i=0;i<range;i++)
             {
                 ItemStack stackInSlot = handler.getStackInSlot(i);
                 int maxSizeSlot = handler.getSlotLimit(i);
