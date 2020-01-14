@@ -5,6 +5,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -164,26 +168,31 @@ public class ipuShearer extends ipuBasic
         BlockPos posBlockPos = getPosRangePos(world,pedestalPos,width,rangeHeight);
 
         AxisAlignedBB getBox = new AxisAlignedBB(negBlockPos,posBlockPos);
-        List<EntitySheep> baa = world.getEntitiesWithinAABB(EntitySheep.class,getBox);
-        for(EntitySheep baaaaaa : baa)
+        //Entity Creature could be used to cover creepers for better with mods and such
+        List<EntityAnimal> baa = world.getEntitiesWithinAABB(EntityAnimal.class,getBox);
+        for(EntityAnimal baaaaaa : baa)
         {
-            if (baaaaaa.isShearable(new ItemStack(Items.SHEARS),world,baaaaaa.getPosition()))
+            if(baaaaaa instanceof IShearable)
             {
-                if(getStackInPedestal(world,pedestalPos).equals(ItemStack.EMPTY))
+                IShearable baabaa = (IShearable)baaaaaa;
+                if (baabaa.isShearable(new ItemStack(Items.SHEARS),world,baaaaaa.getPosition()))
                 {
-                    Random rando = new Random();
-                    int i = 1 + rando.nextInt(3);
-                    List<ItemStack> drops = baaaaaa.onSheared(new ItemStack(Items.SHEARS),world,baaaaaa.getPosition(),0);
-
-                    for (int j = 0; j < i; ++j)
+                    if(getStackInPedestal(world,pedestalPos).equals(ItemStack.EMPTY))
                     {
-                        if(drops.size()>0)
+                        Random rando = new Random();
+                        int i = 1 + rando.nextInt(3);
+                        List<ItemStack> drops = baabaa.onSheared(new ItemStack(Items.SHEARS),world,baaaaaa.getPosition(),0);
+
+                        for (int j = 0; j < i; ++j)
                         {
-                            for (int d=0;d<drops.size();d++)
+                            if(drops.size()>0)
                             {
-                                if(itemInPedestal.isEmpty() || drops.get(d).equals(new ItemStack(itemInPedestal.getItem(),1,itemInPedestal.getMetadata())))
+                                for (int d=0;d<drops.size();d++)
                                 {
-                                    addToPedestal(world,pedestalPos,drops.get(d));
+                                    if(itemInPedestal.isEmpty() || drops.get(d).equals(new ItemStack(itemInPedestal.getItem(),1,itemInPedestal.getMetadata())))
+                                    {
+                                        addToPedestal(world,pedestalPos,drops.get(d));
+                                    }
                                 }
                             }
                         }
