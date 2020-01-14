@@ -5,11 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -169,8 +165,8 @@ public class ipuShearer extends ipuBasic
 
         AxisAlignedBB getBox = new AxisAlignedBB(negBlockPos,posBlockPos);
         //Entity Creature could be used to cover creepers for better with mods and such
-        List<EntityAnimal> baa = world.getEntitiesWithinAABB(EntityAnimal.class,getBox);
-        for(EntityAnimal baaaaaa : baa)
+        List<EntityLivingBase> baa = world.getEntitiesWithinAABB(EntityLivingBase.class,getBox);
+        for(EntityLivingBase baaaaaa : baa)
         {
             if(baaaaaa instanceof IShearable)
             {
