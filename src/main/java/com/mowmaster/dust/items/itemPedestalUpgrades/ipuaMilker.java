@@ -39,37 +39,7 @@ public class ipuaMilker extends ipuBasic {
         {
             if(!world.isBlockPowered(posOfPedestal))
             {
-                ItemStack itemFromInv = ItemStack.EMPTY;
-                if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
-                    if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
 
-                        TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
-                        if (invToPullFrom instanceof TilePedestal) {
-                            itemFromInv = ItemStack.EMPTY;
-                        }
-                        else {
-                            itemFromInv = getNextSlotInChest(getPosOfBlockBelow(1));
-                        }
-
-                        if(itemFromInv.getItem() instanceof ItemBucket)
-                        {
-                            List<EntityCow> moo = world.getEntitiesWithinAABB(EntityCow.class,new AxisAlignedBB(getPosOfBlockBelow(-1)));
-                            for(EntityCow moomoo : moo)
-                            {
-
-                                if (itemFromInv.getItem() == Items.BUCKET && !moomoo.isChild())
-                                {
-                                    if (!hasItem())
-                                    {
-                                        world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                        itemFromInv.shrink(1);
-                                        addItem(new ItemStack(Items.MILK_BUCKET,1));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
 
