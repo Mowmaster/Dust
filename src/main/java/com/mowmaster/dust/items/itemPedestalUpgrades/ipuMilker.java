@@ -5,11 +5,15 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -143,85 +147,63 @@ public class ipuMilker extends ipuBasic
         if(!world.isBlockPowered(pedestalPos))
         {
             if (tick%speed == 0) {
-                upgradeAction(world, itemInPedestal,pedestalPos, coinInPedestal, pedestalPos);
+                upgradeAction(world, itemInPedestal, coinInPedestal, pedestalPos);
             }
         }
     }
 
-    public void upgradeAction(World world, ItemStack itemInPedestal,BlockPos pedestalPos, ItemStack coinInPedestal, BlockPos posOfPedestal)
+    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
+        int width = getRangeWidth(coinInPedestal);
+        BlockPos negBlockPos = getNegRangePos(world,posOfPedestal,width,rangeHeight);
+        BlockPos posBlockPos = getPosRangePos(world,posOfPedestal,width,rangeHeight);
+
+        AxisAlignedBB getBox = new AxisAlignedBB(negBlockPos,posBlockPos);
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
 
         ItemStack itemFromInv = ItemStack.EMPTY;
-        if(world.getTileEntity(posInventory) !=null)
+
+        //Make Sure Pedestal Is Empty Before Doing This
+        if(itemInPedestal.isEmpty())
         {
-            if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
+            if(world.getTileEntity(posInventory) !=null)
             {
-                IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
-                TileEntity invToPullFrom = world.getTileEntity(posInventory);
-                if(invToPullFrom instanceof TilePedestal) {
-                    itemFromInv = ItemStack.EMPTY;
-                }
-                else {
-                    if(handler != null)
-                    {
-                        int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
-                        if(i>=0)
-                        {
-                            int maxInSlot = handler.getSlotLimit(i);
-                            itemFromInv = handler.getStackInSlot(i);
-                            ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
-                            if(handler.getStackInSlot(i) != null && !handler.getStackInSlot(i).isEmpty() && handler.getStackInSlot(i).getItem() != Items.AIR)
-                            {
-                                int roomLeftInPedestal = 64-itemFromPedestal.getCount();
-                                if(itemFromPedestal.isEmpty() || itemFromPedestal.equals(ItemStack.EMPTY)) roomLeftInPedestal = 64;
-                                int itemCountInInv = itemFromInv.getCount();
-                                int allowedTransferRate = transferRate;
-                                //Checks to see if pedestal can accept as many items as transferRate IF NOT it sets the new rate to what it can accept
-                                if(roomLeftInPedestal < transferRate) allowedTransferRate = roomLeftInPedestal;
-                                //Checks to see how many items are left in the slot IF ITS UNDER the allowedTransferRate then sent the max rate to that.
-                                if(itemCountInInv < allowedTransferRate) allowedTransferRate = itemCountInInv;
-
-                                ItemStack copyIncoming = itemFromInv.copy();
-                                copyIncoming.setCount(allowedTransferRate);
-                                TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                if(pedestalInv instanceof TilePedestal) {
-                                    handler.extractItem(i,allowedTransferRate ,false );
-                                    ((TilePedestal) pedestalInv).addItem(copyIncoming);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        ItemStack itemFromInv = ItemStack.EMPTY;
-        if (world.getTileEntity(getPosOfBlockBelow(1)) != null) {
-            if (world.getTileEntity(getPosOfBlockBelow(1)).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
-
-                TileEntity invToPullFrom = world.getTileEntity(getPosOfBlockBelow(1));
-                if (invToPullFrom instanceof TilePedestal) {
-                    itemFromInv = ItemStack.EMPTY;
-                }
-                else {
-                    itemFromInv = getNextSlotInChest(getPosOfBlockBelow(1));
-                }
-
-                if(itemFromInv.getItem() instanceof ItemBucket)
+                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
                 {
-                    List<EntityCow> moo = world.getEntitiesWithinAABB(EntityCow.class,new AxisAlignedBB(getPosOfBlockBelow(-1)));
-                    for(EntityCow moomoo : moo)
-                    {
-
-                        if (itemFromInv.getItem() == Items.BUCKET && !moomoo.isChild())
+                    IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+                    TileEntity invToPullFrom = world.getTileEntity(posInventory);
+                    if(invToPullFrom instanceof TilePedestal) {
+                        itemFromInv = ItemStack.EMPTY;
+                    }
+                    else {
+                        if(handler != null)
                         {
-                            if (!hasItem())
+                            int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
+                            if(i>=0)
                             {
-                                world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                itemFromInv.shrink(1);
-                                addItem(new ItemStack(Items.MILK_BUCKET,1));
+                                itemFromInv = handler.getStackInSlot(i);
+                                if(itemFromInv.getItem().equals(Items.BUCKET))
+                                {
+                                    /*
+                                    IS MILKING 4 COWS AND USING 4 BUCKETS each BUT ONLY ABLE TO ADD 1 TO PEDESTAL
+                                    NEED TO MILK INDIVIDUALLY
+                                     */
+                                    //Milking Code Here
+                                    ItemStack milkBucket = new ItemStack(Items.MILK_BUCKET,1);
+                                    List<EntityCow> moo = world.getEntitiesWithinAABB(EntityCow.class,getBox);
+                                    for(EntityCow moomoo : moo)
+                                    {
+                                        if (!moomoo.isChild())
+                                        {
+                                            world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                            if(pedestalInv instanceof TilePedestal) {
+                                                handler.extractItem(i,1 ,false );
+                                                ((TilePedestal) pedestalInv).addItem(milkBucket);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -260,18 +242,17 @@ public class ipuMilker extends ipuBasic
         }
 
         String tr = "" + (s3+s3+1) + "";
-        String trr = "" + (1) + "";
 
-        tooltip.add(TextFormatting.GOLD + "Shearing Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Milking Upgrade");
 
 
         if(s3>0)
         {
-            tooltip.add("Effected Area: " + tr+"x"+tr+"x"+trr);
+            tooltip.add("Effected Area: " + tr+"x"+"2x"+tr);
         }
         else
         {
-            tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
+            tooltip.add("Effected Are: " + tr+"x"+"2x"+tr);
         }
 
         if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)

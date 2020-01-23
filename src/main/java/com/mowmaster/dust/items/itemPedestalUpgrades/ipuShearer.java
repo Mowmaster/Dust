@@ -4,6 +4,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -144,6 +145,7 @@ public class ipuShearer extends ipuBasic
         }
     }
 
+    //Note: Could use getEntitieswithingAABB one method that nulls entity and just needs aabb box
     public void upgradeAction(World world, ItemStack itemInPedestal,BlockPos pedestalPos, ItemStack coinInPedestal)
     {
         int width = getRangeWidth(coinInPedestal);
@@ -215,18 +217,17 @@ public class ipuShearer extends ipuBasic
         }
 
         String tr = "" + (s3+s3+1) + "";
-        String trr = "" + (1) + "";
 
         tooltip.add(TextFormatting.GOLD + "Shearing Upgrade");
 
 
         if(s3>0)
         {
-            tooltip.add("Effected Area: " + tr+"x"+tr+"x"+trr);
+            tooltip.add("Effected Area: " + tr+"x"+"2x"+tr);
         }
         else
         {
-            tooltip.add("Effected Are: " + tr+"x"+tr+"x"+trr);
+            tooltip.add("Effected Are: " + tr+"x"+"2x"+tr);
         }
 
         if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
