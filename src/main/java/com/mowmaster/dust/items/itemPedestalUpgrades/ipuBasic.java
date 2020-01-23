@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -253,6 +254,45 @@ public class ipuBasic extends Item
         return false;
     }
 
+    //Mainly Used in the Import, Furnace, and  Milker Upgrades
+    /*
+        This Method gets the next slot with items in the given tile
+     */
+    public int getNextSlotWithItems(TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack stackInPedestal)
+    {
+        int slot = -1;
+
+        if(invBeingChecked.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot)) {
+            IItemHandlerModifiable handler = (IItemHandlerModifiable) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
+            int range = handler.getSlots();
+            for(int i=0;i<range;i++)
+            {
+                ItemStack stackInSlot = handler.getStackInSlot(i);
+                //find a slot with items
+                if(!stackInSlot.isEmpty())
+                {
+                    //check if it could pull the item out or not
+                    if(!handler.extractItem(i,1 ,true ).equals(ItemStack.EMPTY))
+                    {
+                        //If pedestal is empty accept any items
+                        if(stackInPedestal.isEmpty())
+                        {
+                            slot=i;
+                            break;
+                        }
+                        //if stack in pedestal matches items in slot
+                        else if(doItemsMatch(stackInPedestal,stackInSlot))
+                        {
+                            slot=i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return slot;
+    }
 
 
     /**

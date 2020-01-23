@@ -113,49 +113,6 @@ public class ipuFurnace extends ipuBasic
         return  smeltingSpeed;
     }
 
-    private int getNextSlotWithItems(TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack stackInPedestal)
-    {
-        int slot = -1;
-
-        if(invBeingChecked.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot)) {
-            IItemHandlerModifiable handler = (IItemHandlerModifiable) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
-            int range = handler.getSlots();
-            for(int i=0;i<range;i++)
-            {
-
-                //Get Item In Slot
-                ItemStack stackInSlot = handler.getStackInSlot(i);
-
-                //find a slot with items
-                if(!stackInSlot.isEmpty())
-                {
-                    //check if it could pull the item out or not
-                    if(!handler.extractItem(i,1 ,true ).equals(ItemStack.EMPTY))
-                    {
-                        //Check if it can be smelted
-                        if(!(FurnaceRecipes.instance().getSmeltingResult(stackInSlot).equals(ItemStack.EMPTY)))
-                        {
-                            //If pedestal is empty accept any items
-                            if(stackInPedestal.isEmpty())
-                            {
-                                slot=i;
-                                break;
-                            }
-                            //if stack in pedestal matches items in slot when smelted
-                            else if(doItemsMatch(stackInPedestal,FurnaceRecipes.instance().getSmeltingResult(stackInSlot)))
-                            {
-                                slot=i;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return slot;
-    }
-
     public int removeFuel(TilePedestal pedestal, int amountToRemove, boolean simulate)
     {
         int fuelLeft = pedestal.getStoredValueForUpgrades();
