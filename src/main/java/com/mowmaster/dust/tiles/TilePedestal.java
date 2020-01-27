@@ -3,6 +3,7 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.items.itemPedestalUpgrades.*;
+import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -341,9 +342,13 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         {
             if(doItemsMatch(itemsIncoming))
             {
-                if(getItemInPedestal().getCount() < getMaxStackSize())
+                //Two buckets match but cant be stacked since max stack size is 1
+                if(itemsIncoming.getMaxStackSize() > 1)
                 {
-                    canAccept = (getMaxStackSize() - getItemInPedestal().getCount());
+                    if(getItemInPedestal().getCount() < getMaxStackSize())
+                    {
+                        canAccept = (getMaxStackSize() - getItemInPedestal().getCount());
+                    }
                 }
             }
         }
