@@ -141,14 +141,23 @@ public class ipuImport extends ipuBasic
                             int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
                             if(i>=0)
                             {
-                                int maxInSlot = handler.getSlotLimit(i);
+                                int maxStackSizeAllowedInPedestal = 0;
+                                int roomLeftInPedestal = 0;
                                 itemFromInv = handler.getStackInSlot(i);
                                 ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
+                                //if there IS a valid item in the inventory to pull out
                                 if(itemFromInv != null && !itemFromInv.isEmpty() && itemFromInv.getItem() != Items.AIR)
                                 {
-                                    int roomLeftInPedestal = 64-itemFromPedestal.getCount();
-                                    if(itemFromPedestal.isEmpty() || itemFromPedestal.equals(ItemStack.EMPTY)) roomLeftInPedestal = 64;
+                                    //If pedestal is empty, if not then set max possible stack size for pedestal itemstack(64)
+                                    if(itemFromPedestal.isEmpty() || itemFromPedestal.equals(ItemStack.EMPTY))
+                                    {maxStackSizeAllowedInPedestal = 64;}
+                                    else
+                                    {maxStackSizeAllowedInPedestal = itemFromPedestal.getMaxStackSize();}
+                                    //Get Room left in pedestal
+                                    roomLeftInPedestal = maxStackSizeAllowedInPedestal-itemFromPedestal.getCount();
+                                    //Get items stack count(from inventory)
                                     int itemCountInInv = itemFromInv.getCount();
+                                    //Allowed transfer rate (from coin)
                                     int allowedTransferRate = transferRate;
                                     //Checks to see if pedestal can accept as many items as transferRate IF NOT it sets the new rate to what it can accept
                                     if(roomLeftInPedestal < transferRate) allowedTransferRate = roomLeftInPedestal;
