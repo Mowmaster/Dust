@@ -9,6 +9,7 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -163,45 +164,38 @@ public class ipuMilker extends ipuBasic
 
         ItemStack itemFromInv = ItemStack.EMPTY;
 
-        //Make Sure Pedestal Is Empty Before Doing This
-        if(itemInPedestal.isEmpty())
+        if(world.getTileEntity(posInventory) !=null)
         {
-            if(world.getTileEntity(posInventory) !=null)
+            if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
             {
-                if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
-                {
-                    IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
-                    TileEntity invToPullFrom = world.getTileEntity(posInventory);
-                    if(invToPullFrom instanceof TilePedestal) {
-                        itemFromInv = ItemStack.EMPTY;
-                    }
-                    else {
-                        if(handler != null)
+                IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+                TileEntity invToPullFrom = world.getTileEntity(posInventory);
+                if(invToPullFrom instanceof TilePedestal) {
+                    itemFromInv = ItemStack.EMPTY;
+                }
+                else {
+                    if(handler != null)
+                    {
+                        int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
+                        if(i>=0)
                         {
-                            int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
-                            if(i>=0)
+                            itemFromInv = handler.getStackInSlot(i);
+                            if(itemFromInv.getItem().equals(Items.BUCKET))
                             {
-                                itemFromInv = handler.getStackInSlot(i);
-                                if(itemFromInv.getItem().equals(Items.BUCKET))
+                                //Milking Code Here
+                                ItemStack milkBucket = new ItemStack(Items.MILK_BUCKET,1);
+                                List<EntityCow> moo = world.getEntitiesWithinAABB(EntityCow.class,getBox);
+                                for(EntityCow moomoo : moo)
                                 {
-                                    /*
-                                    IS MILKING 4 COWS AND USING 4 BUCKETS each BUT ONLY ABLE TO ADD 1 TO PEDESTAL
-                                    NEED TO MILK INDIVIDUALLY
-                                     */
-                                    //Milking Code Here
-                                    ItemStack milkBucket = new ItemStack(Items.MILK_BUCKET,1);
-                                    List<EntityCow> moo = world.getEntitiesWithinAABB(EntityCow.class,getBox);
-                                    for(EntityCow moomoo : moo)
+                                    if (!moomoo.isChild() && itemInPedestal.equals(ItemStack.EMPTY))
                                     {
-                                        if (!moomoo.isChild())
-                                        {
-                                            world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                            if(pedestalInv instanceof TilePedestal) {
-                                                handler.extractItem(i,1 ,false );
-                                                ((TilePedestal) pedestalInv).addItem(milkBucket);
-                                            }
+                                        world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_COW_MILK, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                        if(pedestalInv instanceof TilePedestal) {
+                                            handler.extractItem(i,1 ,false );
+                                            ((TilePedestal) pedestalInv).addItem(milkBucket);
                                         }
+                                        break;
                                     }
                                 }
                             }
