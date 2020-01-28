@@ -82,17 +82,20 @@ public class ItemRegistry
     public static Item dropperUpgrade;
     public static Item placerUpgrade;
     public static Item breakerUpgrade;
-    public static Item effectUpgrade;
     public static Item filterUpgrade;
     public static Item fuzzyFilterUpgrade;
     public static Item filterModUpgrade;
     public static Item filterBlacklistUpgrade;
     public static Item fuzzyFilterBlacklistUpgrade;
     public static Item filterModBlacklistUpgrade;
-
     public static Item furnaceUpgrade;
     public static Item upgradeEnchanted;
     public static Item upgradeEnchantedBlacklist;
+
+    public static Item effectUpgrade;
+    public static Item growerUpgrade;
+    //public static Item planterUpgrade;
+    //public static Item harvesterUpgrade;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -186,7 +189,13 @@ public class ItemRegistry
 
 
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
-        effectUpgrade = new ItemCoin("effectupgrade","effectupgrade");//x4
+
+        effectUpgrade = new ipuEffectMagnet("effectupgrade","effectupgrade");//Magnetism
+        growerUpgrade = new ipuEffectGrower("effectgrower","effectgrower");//
+        //planterUpgrade = new ItemCoin("effectupgrade","effectupgrade");//
+        //harvesterUpgrade = new ItemCoin("effectupgrade","effectupgrade");//
+
+
 
 
 
@@ -294,7 +303,12 @@ public class ItemRegistry
         registerItem(filterBlacklistUpgrade);
         registerItem(fuzzyFilterBlacklistUpgrade);
         registerItem(filterModBlacklistUpgrade);
+
         registerItem(effectUpgrade);
+        registerItem(growerUpgrade);
+        //registerItem(planterUpgrade);
+        //registerItem(harvesterUpgrade);
+
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
         registerItem(upgradeEnchanted);
@@ -400,7 +414,12 @@ public class ItemRegistry
         registerRender(filterBlacklistUpgrade);
         registerRender(fuzzyFilterBlacklistUpgrade);
         registerRender(filterModBlacklistUpgrade);
+
         registerRender(effectUpgrade);
+        registerRender(growerUpgrade);
+        //registerRender(planterUpgrade);
+        //registerRender(harvesterUpgrade);
+
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);
         registerRender(upgradeEnchanted);
