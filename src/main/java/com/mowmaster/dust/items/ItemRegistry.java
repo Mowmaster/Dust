@@ -94,8 +94,8 @@ public class ItemRegistry
 
     public static Item effectUpgrade;
     public static Item growerUpgrade;
-    //public static Item planterUpgrade;
-    //public static Item harvesterUpgrade;
+    public static Item planterUpgrade;
+    public static Item harvesterUpgrade;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -192,8 +192,8 @@ public class ItemRegistry
 
         effectUpgrade = new ipuEffectMagnet("effectupgrade","effectupgrade");//Magnetism
         growerUpgrade = new ipuEffectGrower("effectgrower","effectgrower");//
-        //planterUpgrade = new ItemCoin("effectupgrade","effectupgrade");//
-        //harvesterUpgrade = new ItemCoin("effectupgrade","effectupgrade");//
+        planterUpgrade = new ipuEffectSower("effectplanter","effectplanter");//
+        harvesterUpgrade = new ipuEffectHarvester("effectharvester","effectharvester");//
 
 
 
@@ -306,8 +306,8 @@ public class ItemRegistry
 
         registerItem(effectUpgrade);
         registerItem(growerUpgrade);
-        //registerItem(planterUpgrade);
-        //registerItem(harvesterUpgrade);
+        registerItem(planterUpgrade);
+        registerItem(harvesterUpgrade);
 
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
@@ -417,8 +417,8 @@ public class ItemRegistry
 
         registerRender(effectUpgrade);
         registerRender(growerUpgrade);
-        //registerRender(planterUpgrade);
-        //registerRender(harvesterUpgrade);
+        registerRender(planterUpgrade);
+        registerRender(harvesterUpgrade);
 
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);

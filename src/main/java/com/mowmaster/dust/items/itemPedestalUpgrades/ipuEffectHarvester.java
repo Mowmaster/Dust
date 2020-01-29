@@ -1,33 +1,29 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.BlockCactus;
-import net.minecraft.block.BlockReed;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemSeedFood;
-import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.event.entity.player.BonemealEvent;
-import org.lwjgl.Sys;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,12 +32,12 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockDirectional.FACING;
 
-public class ipuEffectGrower extends ipuBasic
+public class ipuEffectHarvester extends ipuBasic
 {
     public int rangeWidth = 0;
     public int operationalSpeed = 0;
 
-    public ipuEffectGrower(String unlocName, String registryName)
+    public ipuEffectHarvester(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -144,7 +140,6 @@ public class ipuEffectGrower extends ipuBasic
     }
 
 
-
     public int ticked = 0;
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
@@ -169,7 +164,7 @@ public class ipuEffectGrower extends ipuBasic
 
                         if(ticked > 84)
                         {
-                            upgradeAction(world, itemInPedestal, pedestalPos, posTargetBlock, targetBlock);
+                            upgradeAction(world, itemInPedestal,coinInPedestal, pedestalPos, posTargetBlock, targetBlock);
                             ticked=0;
                         }
                         else
@@ -182,33 +177,43 @@ public class ipuEffectGrower extends ipuBasic
         }
     }
 
-    public void upgradeAction(World world, ItemStack itemInPedestal, BlockPos posOfPedestal, BlockPos posTarget, IBlockState target)
+    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal, BlockPos posTarget, IBlockState target)
     {
-        ItemStack bonemeal = new ItemStack(Items.DYE,1,15);
-        Random rand = new Random();
-
-        if(target.getBlock() instanceof IGrowable || target.getBlock() instanceof IPlantable)
+        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+        ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
+        if(!itemInPedestal.isEmpty())
         {
-            if (target.getBlock() instanceof IGrowable) {
-                if(((IGrowable) target.getBlock()).canGrow(world,posTarget,target,false))
-                {
-                    if(doItemsMatch(itemInPedestal,bonemeal))
-                    {
-                        ((IGrowable) target.getBlock()).grow(world,rand,posTarget,target);
-                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                        if(pedestalInv instanceof TilePedestal) {
-                            ((TilePedestal) pedestalInv).removeItem(1);
-                        }
-                    }
-                    else
-                    {
-                        target.getBlock().updateTick(world,posTarget,target,rand);
-                    }
-                }
+            fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
+        }
+        else
+        {
+            if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
+            {
+                choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+            else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
+            {
+                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
+                choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
             }
             else
             {
-                target.getBlock().updateTick(world,posTarget,target,rand);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+            }
+        }
+
+        if(target.getBlock() instanceof IGrowable)
+        {
+            if(!((IGrowable) target.getBlock()).canGrow(world,posTarget,target,false))
+            {
+                if(fakePlayer.canHarvestBlock(target))
+                {
+                    target.getBlock().harvestBlock(world, fakePlayer, posTarget, target, null, fakePlayer.getHeldItemMainhand());
+                }
+                target.getBlock().removedByPlayer(target,world,posTarget,fakePlayer,false);
             }
         }
     }
@@ -244,7 +249,7 @@ public class ipuEffectGrower extends ipuBasic
 
         String tr = "" + (s3+s3+1) + "";
 
-        tooltip.add(TextFormatting.GOLD + "Grower Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Harvester Upgrade");
 
 
         if(s3>0)

@@ -2,32 +2,23 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.BlockCactus;
-import net.minecraft.block.BlockReed;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemSeedFood;
-import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.event.entity.player.BonemealEvent;
-import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,12 +27,12 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockDirectional.FACING;
 
-public class ipuEffectGrower extends ipuBasic
+public class ipuEffectSower extends ipuBasic
 {
     public int rangeWidth = 0;
     public int operationalSpeed = 0;
 
-    public ipuEffectGrower(String unlocName, String registryName)
+    public ipuEffectSower(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -184,31 +175,23 @@ public class ipuEffectGrower extends ipuBasic
 
     public void upgradeAction(World world, ItemStack itemInPedestal, BlockPos posOfPedestal, BlockPos posTarget, IBlockState target)
     {
-        ItemStack bonemeal = new ItemStack(Items.DYE,1,15);
         Random rand = new Random();
+        Item singleItemInPedestal = itemInPedestal.getItem();
 
-        if(target.getBlock() instanceof IGrowable || target.getBlock() instanceof IPlantable)
+        if(world.getBlockState(posTarget).getBlock().equals(Blocks.AIR))
         {
-            if (target.getBlock() instanceof IGrowable) {
-                if(((IGrowable) target.getBlock()).canGrow(world,posTarget,target,false))
-                {
-                    if(doItemsMatch(itemInPedestal,bonemeal))
-                    {
-                        ((IGrowable) target.getBlock()).grow(world,rand,posTarget,target);
-                        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                        if(pedestalInv instanceof TilePedestal) {
-                            ((TilePedestal) pedestalInv).removeItem(1);
-                        }
-                    }
-                    else
-                    {
-                        target.getBlock().updateTick(world,posTarget,target,rand);
-                    }
-                }
-            }
-            else
+            if(singleItemInPedestal instanceof IPlantable)
             {
-                target.getBlock().updateTick(world,posTarget,target,rand);
+                IPlantable plantMe = (IPlantable)singleItemInPedestal;
+                IBlockState soil = world.getBlockState(posTarget.down());
+                IBlockState plantToPlant = plantMe.getPlant(world,posTarget);
+                if(soil.getBlock().canSustainPlant(soil, world, posTarget.down(), net.minecraft.util.EnumFacing.UP, plantMe))
+                {
+                    //Place Seed???
+                    this.removeFromPedestal(world,posOfPedestal,1);
+                    world.setBlockState(posTarget,plantToPlant);
+                    world.playSound((EntityPlayer)null, posTarget.getX(), posTarget.getY(), posTarget.getZ(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                }
             }
         }
     }
@@ -244,7 +227,7 @@ public class ipuEffectGrower extends ipuBasic
 
         String tr = "" + (s3+s3+1) + "";
 
-        tooltip.add(TextFormatting.GOLD + "Grower Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Planter Upgrade");
 
 
         if(s3>0)
