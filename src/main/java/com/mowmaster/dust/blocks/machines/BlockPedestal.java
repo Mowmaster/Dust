@@ -63,6 +63,17 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
     public static Block pedestalgreen;
     public static Block pedestalwhite;
     public static Block pedestalblack;
+
+    public static Block pedestalstoneunlit;
+    public static Block pedestalredunlit;
+    public static Block pedestalblueunlit;
+    public static Block pedestalyellowunlit;
+    public static Block pedestalpurpleunlit;
+    public static Block pedestalorangeunlit;
+    public static Block pedestalgreenunlit;
+    public static Block pedestalwhiteunlit;
+    public static Block pedestalblackunlit;
+
     private static double lengthWidth = 0.625;
     private static double height = 0.75;
     private static AxisAlignedBB CUP = new AxisAlignedBB((1-lengthWidth)/2, 0.0D, (1-lengthWidth)/2, 1-((1-lengthWidth)/2), height, 1-((1-lengthWidth)/2));
@@ -72,7 +83,7 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
     private static AxisAlignedBB CWEST = new AxisAlignedBB(1.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, 1-height, (1-lengthWidth)/2, 1-((1-lengthWidth)/2));
     private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, height, (1-lengthWidth)/2, 1-((1-lengthWidth)/2));
 
-    public BlockPedestal(String unloc, String registryName)
+    public BlockPedestal(String unloc, String registryName, float lightLevel)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
@@ -82,7 +93,7 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         this.setResistance(10);
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
-        this.setLightLevel(3f);
+        this.setLightLevel(lightLevel);
     }
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
@@ -636,15 +647,25 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
 
     public static void Init()
     {
-        pedestalstone = new BlockPedestal("pedestal_stone","pedestal_stone");
-        pedestalred = new BlockPedestal("pedestal_red","pedestal_red");
-        pedestalblue = new BlockPedestal("pedestal_blue","pedestal_blue");
-        pedestalyellow = new BlockPedestal("pedestal_yellow","pedestal_yellow");
-        pedestalpurple = new BlockPedestal("pedestal_purple","pedestal_purple");
-        pedestalorange = new BlockPedestal("pedestal_orange","pedestal_orange");
-        pedestalgreen = new BlockPedestal("pedestal_green","pedestal_green");
-        pedestalwhite = new BlockPedestal("pedestal_white","pedestal_white");
-        pedestalblack = new BlockPedestal("pedestal_black","pedestal_black");
+        pedestalstone = new BlockPedestal("pedestal_stone","pedestal_stone",3f);
+        pedestalred = new BlockPedestal("pedestal_red","pedestal_red",3f);
+        pedestalblue = new BlockPedestal("pedestal_blue","pedestal_blue",3f);
+        pedestalyellow = new BlockPedestal("pedestal_yellow","pedestal_yellow",3f);
+        pedestalpurple = new BlockPedestal("pedestal_purple","pedestal_purple",3f);
+        pedestalorange = new BlockPedestal("pedestal_orange","pedestal_orange",3f);
+        pedestalgreen = new BlockPedestal("pedestal_green","pedestal_green",3f);
+        pedestalwhite = new BlockPedestal("pedestal_white","pedestal_white",3f);
+        pedestalblack = new BlockPedestal("pedestal_black","pedestal_black",3f);
+
+        pedestalstoneunlit = new BlockPedestal("pedestal_stone_unlit","pedestal_stone_unlit",0f);
+        pedestalredunlit = new BlockPedestal("pedestal_red_unlit","pedestal_red_unlit",0f);
+        pedestalblueunlit = new BlockPedestal("pedestal_blue_unlit","pedestal_blue_unlit",0f);
+        pedestalyellowunlit = new BlockPedestal("pedestal_yellow_unlit","pedestal_yellow_unlit",0f);
+        pedestalpurpleunlit = new BlockPedestal("pedestal_purple_unlit","pedestal_purple_unlit",0f);
+        pedestalorangeunlit = new BlockPedestal("pedestal_orange_unlit","pedestal_orange_unlit",0f);
+        pedestalgreenunlit = new BlockPedestal("pedestal_green_unlit","pedestal_green_unlit",0f);
+        pedestalwhiteunlit = new BlockPedestal("pedestal_white_unlit","pedestal_white_unlit",0f);
+        pedestalblackunlit = new BlockPedestal("pedestal_black_unlit","pedestal_black_unlit",0f);
     }
 
     public static void Register()
@@ -658,6 +679,16 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         registerBlock(pedestalgreen);
         registerBlock(pedestalwhite);
         registerBlock(pedestalblack);
+
+        registerBlock(pedestalstoneunlit);
+        registerBlock(pedestalredunlit);
+        registerBlock(pedestalblueunlit);
+        registerBlock(pedestalyellowunlit);
+        registerBlock(pedestalpurpleunlit);
+        registerBlock(pedestalorangeunlit);
+        registerBlock(pedestalgreenunlit);
+        registerBlock(pedestalwhiteunlit);
+        registerBlock(pedestalblackunlit);
     }
 
     public static void RegisterRender()
@@ -671,5 +702,15 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
         registerRender(pedestalgreen);
         registerRender(pedestalwhite);
         registerRender(pedestalblack);
+
+        registerRender(pedestalstoneunlit);
+        registerRender(pedestalredunlit);
+        registerRender(pedestalblueunlit);
+        registerRender(pedestalyellowunlit);
+        registerRender(pedestalpurpleunlit);
+        registerRender(pedestalorangeunlit);
+        registerRender(pedestalgreenunlit);
+        registerRender(pedestalwhiteunlit);
+        registerRender(pedestalblackunlit);
     }
 }

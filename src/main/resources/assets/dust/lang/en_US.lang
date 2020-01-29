@@ -427,6 +427,16 @@ tile.potatodust.name=Potato Flour Cloud
 tile.wheatdust.name=Flour Cloud
 tile.sugardust.name=Sugar Cloud
 
+tile.pedestal_stone_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_red_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_blue_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_yellow_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_purple_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_orange_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_green_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_white_unlit.name=Item Pedestal (Dark Mode)
+tile.pedestal_black_unlit.name=Item Pedestal (Dark Mode)
+
 tile.pedestal_stone.name=Item Pedestal
 tile.pedestal_red.name=Item Pedestal
 tile.pedestal_blue.name=Item Pedestal
