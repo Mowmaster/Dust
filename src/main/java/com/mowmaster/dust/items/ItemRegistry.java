@@ -98,6 +98,7 @@ public class ItemRegistry
     public static Item enchantUpgrade;
     public static Item expCollector;
     public static Item expDropper;
+    public static Item expRelay;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -196,7 +197,7 @@ public class ItemRegistry
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Enchanter
         expCollector = new ipuExpCollector("expcollector","expcollector");//Collector
         expDropper = new ipuExpDropper("expdropper","expdropper");//Relay
-        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Tank
+        expRelay = new ipuExpRelay("exprelay","exprelay");//Tank
         //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Dropper
         //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Bottler
         //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Anvil
@@ -318,6 +319,7 @@ public class ItemRegistry
         registerItem(enchantUpgrade);
         registerItem(expCollector);
         registerItem(expDropper);
+        registerItem(expRelay);
 
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
@@ -432,6 +434,7 @@ public class ItemRegistry
         registerRender(enchantUpgrade);
         registerRender(expCollector);
         registerRender(expDropper);
+        registerRender(expRelay);
 
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);

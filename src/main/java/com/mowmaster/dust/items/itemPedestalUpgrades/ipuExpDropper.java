@@ -30,6 +30,7 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
     public int range = 0;
     public int summonRate = 7;
     public int operationalSpeed = 0;
+    public int maxXP = 160;
 
 
     public ipuExpDropper(String unlocName, String registryName)
@@ -51,10 +52,9 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
         return true;
     }
 
-    //10 Levels Max Stored
     @Override
-    public void setMaxXP(int value) {
-        super.setMaxXP(160);
+    public int getMaxXP() {
+        return maxXP;
     }
 
     public int getTransferRate(ItemStack stack)

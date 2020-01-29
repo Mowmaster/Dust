@@ -2,18 +2,21 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.effects.PotionRegistry;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 
 public class ipuBasicExpUpgrade extends ipuBasic
 {
     private int summonRate;
-    private int maxXP;
+    public int maxXP;
     public ipuBasicExpUpgrade() {}
 
     public void setMaxXP(int value)
     {
         maxXP = value;
     }
+
 
     public int getMaxXP()
     {
