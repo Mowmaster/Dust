@@ -130,6 +130,10 @@ public class DebugAndLogging
                             {
                                 System.out.println("Fuel Inside: " + getTilePedestal.getStoredValueForUpgrades());
                             }
+                            else if(playerIn.getHeldItemOffhand().getItem().equals(Items.EXPERIENCE_BOTTLE))
+                            {
+                                System.out.println("Exp Inside: " + getTilePedestal.getStoredValueForUpgrades());
+                            }
 
                             if(playerIn.getHeldItemOffhand().getItem().equals(ItemRegistry.crystal))
                             {

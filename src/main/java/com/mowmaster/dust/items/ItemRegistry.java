@@ -97,6 +97,8 @@ public class ItemRegistry
     public static Item planterUpgrade;
     public static Item harvesterUpgrade;
 
+    public static Item expCollector;
+
     public static Item scrollA;
     public static Item scrollB;
     public static Item scrollC;
@@ -184,16 +186,22 @@ public class ItemRegistry
         breakerUpgrade = new ipuBreaker("breakerupgrade","breakerupgrade");//
         shearingUpgrade = new ipuShearer("shearingupgrade","shearingupgrade");//Shearing
         userUpgrade = new ipuMilker("userupgrade","userupgrade");//Milking
-
-
-
-
-        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//x7
-
         effectUpgrade = new ipuEffectMagnet("effectupgrade","effectupgrade");//Magnetism
         growerUpgrade = new ipuEffectGrower("effectgrower","effectgrower");//
         planterUpgrade = new ipuEffectSower("effectplanter","effectplanter");//
         harvesterUpgrade = new ipuEffectHarvester("effectharvester","effectharvester");//
+
+
+
+        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Enchanter
+        expCollector = new ipuExpCollector("expcollector","expcollector");//Collector
+        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Relay
+        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Tank
+        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Dropper
+        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Bottler
+        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Anvil
+
+
 
 
 
@@ -291,7 +299,6 @@ public class ItemRegistry
         registerItem(crafter1Upgrade);
         registerItem(crafter4Upgrade);
         registerItem(crafter9Upgrade);
-        registerItem(enchantUpgrade);
         registerItem(singleExportUpgrade);
         registerItem(exportUpgrade);
         registerItem(importUpgrade);
@@ -303,11 +310,13 @@ public class ItemRegistry
         registerItem(filterBlacklistUpgrade);
         registerItem(fuzzyFilterBlacklistUpgrade);
         registerItem(filterModBlacklistUpgrade);
-
         registerItem(effectUpgrade);
         registerItem(growerUpgrade);
         registerItem(planterUpgrade);
         registerItem(harvesterUpgrade);
+
+        registerItem(enchantUpgrade);
+        registerItem(expCollector);
 
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
@@ -402,7 +411,7 @@ public class ItemRegistry
         registerRender(crafter1Upgrade);
         registerRender(crafter4Upgrade);
         registerRender(crafter9Upgrade);
-        registerRender(enchantUpgrade);
+
         registerRender(singleExportUpgrade);
         registerRender(exportUpgrade);
         registerRender(importUpgrade);
@@ -414,11 +423,13 @@ public class ItemRegistry
         registerRender(filterBlacklistUpgrade);
         registerRender(fuzzyFilterBlacklistUpgrade);
         registerRender(filterModBlacklistUpgrade);
-
         registerRender(effectUpgrade);
         registerRender(growerUpgrade);
         registerRender(planterUpgrade);
         registerRender(harvesterUpgrade);
+
+        registerRender(enchantUpgrade);
+        registerRender(expCollector);
 
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);
