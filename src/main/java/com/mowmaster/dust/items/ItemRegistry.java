@@ -75,7 +75,6 @@ public class ItemRegistry
     public static Item crafter1Upgrade;
     public static Item crafter4Upgrade;
     public static Item crafter9Upgrade;
-    public static Item enchantUpgrade;
     public static Item exportUpgrade;
     public static Item singleExportUpgrade;
     public static Item importUpgrade;
@@ -91,13 +90,14 @@ public class ItemRegistry
     public static Item furnaceUpgrade;
     public static Item upgradeEnchanted;
     public static Item upgradeEnchantedBlacklist;
-
     public static Item effectUpgrade;
     public static Item growerUpgrade;
     public static Item planterUpgrade;
     public static Item harvesterUpgrade;
 
+    public static Item enchantUpgrade;
     public static Item expCollector;
+    public static Item expDropper;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -195,7 +195,7 @@ public class ItemRegistry
 
         enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Enchanter
         expCollector = new ipuExpCollector("expcollector","expcollector");//Collector
-        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Relay
+        expDropper = new ipuExpDropper("expdropper","expdropper");//Relay
         //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Tank
         //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Dropper
         //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Bottler
@@ -317,6 +317,7 @@ public class ItemRegistry
 
         registerItem(enchantUpgrade);
         registerItem(expCollector);
+        registerItem(expDropper);
 
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
@@ -430,6 +431,7 @@ public class ItemRegistry
 
         registerRender(enchantUpgrade);
         registerRender(expCollector);
+        registerRender(expDropper);
 
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);
