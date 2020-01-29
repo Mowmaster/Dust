@@ -251,13 +251,17 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         if(entityIn instanceof EntityPlayer)
         {
             EntityPlayer getPlayer = ((EntityPlayer)entityIn);
-            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
             int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
             if(currentlyStoredExp < getMaxXP())
             {
                 int transferRate = getSuckiRate(tilePedestal.getCoinOnPedestal());
                 int value = removeXp(getPlayer, transferRate);
-                tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
+                if(value > 0)
+                {
+                    world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                    tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
+                }
+
             }
         }
     }

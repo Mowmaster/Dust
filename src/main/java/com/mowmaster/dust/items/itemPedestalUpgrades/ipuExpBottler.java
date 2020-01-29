@@ -150,26 +150,33 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
                         if(i>=0)
                         {
                             itemFromInv = handler.getStackInSlot(i);
+                            int slotCount = itemFromInv.getCount();
                             if(itemFromInv.getItem().equals(Items.GLASS_BOTTLE))
                             {
                                 //BottlingCodeHere
                                 //11 exp per bottle
                                 int modifier = getTransferRate(coinInPedestal);
-                                int rate = (modifier * 11);
-                                ItemStack getBottle = new ItemStack(Items.EXPERIENCE_BOTTLE,modifier);
-                                TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                if(pedestalInv instanceof TilePedestal) {
-                                    if(((TilePedestal) pedestalInv).canAcceptItems(getBottle)>0)
-                                    {
-                                        int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-                                        if(currentlyStoredExp > 0)
+
+                                //If we can extract the correct amount of bottles(If it returns empty then it CANT work)
+                                if(!(handler.extractItem(i,modifier ,true ).equals(ItemStack.EMPTY)))
+                                {
+                                    int rate = (modifier * 11);
+                                    ItemStack getBottle = new ItemStack(Items.EXPERIENCE_BOTTLE,modifier);
+                                    TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                                    if(pedestalInv instanceof TilePedestal) {
+                                        if(((TilePedestal) pedestalInv).canAcceptItems(getBottle)>=rate)
                                         {
-                                            if(rate >= currentlyStoredExp)
+                                            int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
+                                            if(currentlyStoredExp > 0)
                                             {
-                                                int getExpLeftInPedestal = currentlyStoredExp - rate;
-                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                ((TilePedestal) pedestalInv).addItem(getBottle);
+                                                if(currentlyStoredExp >= rate)
+                                                {
+                                                    int getExpLeftInPedestal = currentlyStoredExp - rate;
+                                                    world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                                    ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
+                                                    handler.extractItem(i,modifier ,false );
+                                                    ((TilePedestal) pedestalInv).addItem(getBottle);
+                                                }
                                             }
                                         }
                                     }
@@ -231,7 +238,7 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
 
 
-        tooltip.add(TextFormatting.GOLD + "Exp Dropper Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Exp Bottler Upgrade");
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels");
 
