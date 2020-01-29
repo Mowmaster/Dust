@@ -1,10 +1,16 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forge:ore_shapeless",
   "ingredients": [
-    {"item": "dust:scrollg"},
-    {"item": "dust:coin"}
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {
+      "item": "dust:scrollg"
+    }
   ],
   "result": {
-    "item": "dust:ancientcoing"
+    "item": "dust:ancientcoing",
+    "count": 1
   }
 }

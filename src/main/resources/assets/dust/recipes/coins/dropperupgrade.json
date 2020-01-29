@@ -1,10 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forge:ore_shapeless",
   "ingredients": [
-    {"item": "minecraft:dropper"},
-    {"item": "dust:coin"}
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {"item": "minecraft:dropper"}
   ],
   "result": {
-    "item": "dust:dropperupgrade"
+    "item": "dust:dropperupgrade",
+    "count": 1
   }
 }

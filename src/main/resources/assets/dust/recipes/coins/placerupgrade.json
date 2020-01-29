@@ -1,10 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forge:ore_shapeless",
   "ingredients": [
-    {"item": "minecraft:dispenser"},
-    {"item": "dust:coin"}
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {"item": "minecraft:dispenser"}
   ],
   "result": {
-    "item": "dust:placerupgrade"
+    "item": "dust:placerupgrade",
+    "count": 1
   }
 }

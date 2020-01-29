@@ -261,6 +261,9 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
         }
 
         tooltip.add(TextFormatting.GOLD + "Exp Dropper Upgrade");
+
+        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels");
+
         if(stack.hasTagCompound())
         {
             if(getTransferRate(stack)>0)

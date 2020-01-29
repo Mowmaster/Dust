@@ -5,12 +5,10 @@
       "type": "forge:ore_dict",
       "ore": "ancientCoin"
     },
-    {
-      "item": "dust:scrolls"
-    }
+    {"item": "minecraft:experience_bottle"}
   ],
   "result": {
-    "item": "dust:ancientcoins",
+    "item": "dust:expbottler",
     "count": 1
   }
 }

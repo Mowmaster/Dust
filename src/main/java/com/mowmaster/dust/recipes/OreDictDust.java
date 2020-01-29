@@ -89,6 +89,40 @@ public class OreDictDust
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinX));
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinY));
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinZ));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoin));
+
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.userUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.shearingUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.chopperUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.crafter1Upgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.crafter4Upgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.crafter9Upgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.exportUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.singleExportUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.importUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.dropperUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.placerUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.breakerUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.filterUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.fuzzyFilterUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.filterModUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.filterBlacklistUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.fuzzyFilterBlacklistUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.filterModBlacklistUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.furnaceUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.upgradeEnchanted));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.upgradeEnchantedBlacklist));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.effectUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.growerUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.planterUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.harvesterUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.enchantUpgrade));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.expCollector));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.expDropper));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.expRelay));
+        OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.expTank));
+
+
 
 
     }

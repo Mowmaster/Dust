@@ -1,10 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forge:ore_shapeless",
   "ingredients": [
-    {"item": "minecraft:crafting_table"},
-    {"item": "dust:coin"}
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {"item": "minecraft:crafting_table"}
   ],
   "result": {
-    "item": "dust:crafter1upgrade"
+    "item": "dust:crafter1upgrade",
+    "count": 1
   }
 }

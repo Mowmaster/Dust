@@ -1,11 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forge:ore_shapeless",
   "ingredients": [
-    {"item": "minecraft:bucket"},
-    {"item": "minecraft:shears"},
-    {"item": "dust:coin"}
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {"item": "minecraft:bucket"}
   ],
   "result": {
-    "item": "dust:userupgrade"
+    "item": "dust:userupgrade",
+    "count": 1
   }
 }

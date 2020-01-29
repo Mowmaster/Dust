@@ -233,6 +233,8 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
 
         tooltip.add(TextFormatting.GOLD + "Exp Relay Upgrade");
 
+        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
+
         if(getExpTransferRate(stack)>0)
         {
             tooltip.add("Exp Transfer Ammount: " + tr);

@@ -1,11 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forge:ore_shapeless",
   "ingredients": [
-    {"item": "minecraft:diamond_axe"},
-    {"item": "minecraft:shears"},
-    {"item": "dust:coin"}
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {"item": "minecraft:diamond_axe"}
   ],
   "result": {
-    "item": "dust:chopperupgrade"
+    "item": "dust:chopperupgrade",
+    "count": 1
   }
 }

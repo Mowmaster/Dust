@@ -5,12 +5,11 @@
       "type": "forge:ore_dict",
       "ore": "ancientCoin"
     },
-    {
-      "item": "dust:scrolls"
-    }
+    {"item": "minecraft:anvil",
+      "data":0}
   ],
   "result": {
-    "item": "dust:ancientcoins",
+    "item": "dust:expanvil",
     "count": 1
   }
 }

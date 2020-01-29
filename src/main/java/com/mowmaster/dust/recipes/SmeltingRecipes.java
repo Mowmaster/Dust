@@ -24,6 +24,6 @@ public class SmeltingRecipes
         GameRegistry.addSmelting(new ItemStack(ItemRegistry.dust,1,9),new ItemStack(Items.IRON_INGOT,1),0.35f);
         GameRegistry.addSmelting(new ItemStack(ItemRegistry.dust,1,10),new ItemStack(Items.GOLD_INGOT,1),0.35f);
 
-        for(ItemStack stack : OreDictionary.getOres("ancientCoin")){ GameRegistry.addSmelting(stack, new ItemStack(Items.GOLD_INGOT,1), 0.05f); }
+        for(ItemStack stack : OreDictionary.getOres("ancientCoin")){ GameRegistry.addSmelting(stack, new ItemStack(Items.GOLD_INGOT,1), 0.10f); }
     }
 }
