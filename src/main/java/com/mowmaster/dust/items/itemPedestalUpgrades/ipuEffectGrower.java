@@ -67,53 +67,7 @@ public class ipuEffectGrower extends ipuBasic
         return  rangeWidth;
     }
 
-    public BlockPos getNegRangePos(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
-    {
-        IBlockState state = world.getBlockState(posOfPedestal);
-        EnumFacing enumfacing = state.getValue(FACING);
-        BlockPos blockBelow = posOfPedestal;
-        switch (enumfacing)
-        {
-            case UP:
-                return blockBelow.add(-intWidth,0,-intWidth);
-            case DOWN:
-                return blockBelow.add(-intWidth,-intHeight,-intWidth);
-            case NORTH:
-                return blockBelow.add(-intWidth,-intWidth,-intHeight);
-            case SOUTH:
-                return blockBelow.add(-intWidth,-intWidth,0);
-            case EAST:
-                return blockBelow.add(0,-intWidth,-intWidth);
-            case WEST:
-                return blockBelow.add(-intHeight,-intWidth,-intWidth);
-            default:
-                return blockBelow;
-        }
-    }
 
-    public BlockPos getPosRangePos(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
-    {
-        IBlockState state = world.getBlockState(posOfPedestal);
-        EnumFacing enumfacing = state.getValue(FACING);
-        BlockPos blockBelow = posOfPedestal;
-        switch (enumfacing)
-        {
-            case UP:
-                return blockBelow.add(intWidth+1,intHeight,intWidth+1);
-            case DOWN:
-                return blockBelow.add(intWidth+1,0,intWidth+1);
-            case NORTH:
-                return blockBelow.add(intWidth+1,intWidth,0+1);
-            case SOUTH:
-                return blockBelow.add(intWidth+1,intWidth,intHeight+1);
-            case EAST:
-                return blockBelow.add(intHeight+1,intWidth,intWidth+1);
-            case WEST:
-                return blockBelow.add(0+1,intWidth,intWidth+1);
-            default:
-                return blockBelow;
-        }
-    }
 
     public int getOperationSpeed(ItemStack stack)
     {

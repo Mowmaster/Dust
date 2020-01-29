@@ -68,54 +68,6 @@ public class ipuChopper extends ipuBasic
         return rangeHeight;
     }
 
-    public BlockPos getNegRangePos(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
-    {
-        IBlockState state = world.getBlockState(posOfPedestal);
-        EnumFacing enumfacing = state.getValue(FACING);
-        BlockPos blockBelow = posOfPedestal;
-        switch (enumfacing)
-        {
-            case UP:
-                return blockBelow.add(-intWidth,0,-intWidth);
-            case DOWN:
-                return blockBelow.add(-intWidth,-intHeight,-intWidth);
-            case NORTH:
-                return blockBelow.add(-intWidth,-intWidth,-intHeight);
-            case SOUTH:
-                return blockBelow.add(-intWidth,-intWidth,0);
-            case EAST:
-                return blockBelow.add(0,-intWidth,-intWidth);
-            case WEST:
-                return blockBelow.add(-intHeight,-intWidth,-intWidth);
-            default:
-                return blockBelow;
-        }
-    }
-
-    public BlockPos getPosRangePos(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
-    {
-        IBlockState state = world.getBlockState(posOfPedestal);
-        EnumFacing enumfacing = state.getValue(FACING);
-        BlockPos blockBelow = posOfPedestal;
-        switch (enumfacing)
-        {
-            case UP:
-                return blockBelow.add(intWidth,intHeight,intWidth);
-            case DOWN:
-                return blockBelow.add(intWidth,0,intWidth);
-            case NORTH:
-                return blockBelow.add(intWidth,intWidth,0);
-            case SOUTH:
-                return blockBelow.add(intWidth,intWidth,intHeight);
-            case EAST:
-                return blockBelow.add(intHeight,intWidth,intWidth);
-            case WEST:
-                return blockBelow.add(0,intWidth,intWidth);
-            default:
-                return blockBelow;
-        }
-    }
-
     public int getTransferSpeed(ItemStack stack)
     {
         switch (getTransferRateModifier(stack))
