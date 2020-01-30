@@ -317,9 +317,25 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
             {
                 return true;
             }
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalred) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalredunlit)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalredunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalred)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblue) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblueunlit)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblueunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblue)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalyellow) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalyellowunlit)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalyellowunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalyellow)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalpurple) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalpurpleunlit)){return true;}
+            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalpurpleunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalpurple)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalgreen) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalgreenunlit)){return true;}
+            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalgreenunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalgreen)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalorange) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalorangeunlit)){return true;}
+            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalorangeunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalorange)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalwhite) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalwhiteunlit)){return true;}
+            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalwhiteunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalwhite)){return true;}
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblack) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblackunlit)){return true;}
+            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblackunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblack)){return true;}
             //if they arnt then check if one is neutral
-            else if(world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalstone) ||
-                    world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalstone))
+            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalstone) || world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalstoneunlit)
+                    || world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalstone) || world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalstoneunlit))
             {
                 return true;
             }

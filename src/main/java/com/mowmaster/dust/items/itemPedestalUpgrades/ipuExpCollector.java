@@ -272,6 +272,7 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         int s3 = getRangeWidth(stack);
         String s5 = "";
         String tr = "";
+        String sr = "";
 
         switch (getOperationSpeed(stack))
         {
@@ -319,13 +320,44 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
             default: tr="5 Levels";
         }
 
+        /*switch (getSuckiRate(stack))
+        {
+            case 7:
+                sr = "1 Level";
+                break;
+            case 16:
+                sr="2 Levels";
+                break;
+            case 27:
+                sr = "3 Levels";
+                break;
+            case 40:
+                sr = "4 Levels";
+                break;
+            case 55:
+                sr = "5 Levels";
+                break;
+            case 160:
+                sr="10 Levels";
+                break;
+            default: sr="1 Level";
+        }*/
+
         String trr = "" + (s3+s3+1) + "";
 
         tooltip.add(TextFormatting.GOLD + "Exp Collector Upgrade");
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
 
-        if(s3>0)
+        /*if(stack.hasTagCompound()) {
+            if (getSuckiRate(stack) > 0) {
+                tooltip.add("???: " + sr);
+            } else {
+                tooltip.add("???: 1 Level");
+            }
+        }*/
+
+            if(s3>0)
         {
             tooltip.add("Effected Area: " + trr+"x"+trr+"x"+trr);
         }
