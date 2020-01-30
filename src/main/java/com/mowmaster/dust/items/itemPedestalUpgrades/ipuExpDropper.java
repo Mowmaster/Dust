@@ -142,9 +142,6 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
     }
 
 
-
-    public int ticked = 0;
-
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getOperationSpeed(coinInPedestal);

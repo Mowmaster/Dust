@@ -1,18 +1,22 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
-import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityEnchantmentTable;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -23,17 +27,17 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuExpBottler extends ipuBasicExpUpgrade
+public class ipuExpEnchanter extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    public int maxXP = 160;
-    public int bottlingRate = 1;
+    public int maxXP = 1395;
 
 
-    public ipuExpBottler(String unlocName, String registryName)
+    public ipuExpEnchanter(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -48,41 +52,13 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     @Override
     public int getMaxXP() {
         return maxXP;
-    }
-
-    public int getTransferRate(ItemStack stack)
-    {
-        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
-        {
-            case 0:
-                bottlingRate = 1;
-                break;
-            case 1:
-                bottlingRate=2;
-                break;
-            case 2:
-                bottlingRate = 4;
-                break;
-            case 3:
-                bottlingRate = 8;
-                break;
-            case 4:
-                bottlingRate = 12;
-                break;
-            case 5:
-                bottlingRate=16;
-                break;
-            default: bottlingRate=1;
-        }
-
-        return  bottlingRate;
     }
 
     public int getOperationSpeed(ItemStack stack)
@@ -113,9 +89,48 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
         return  operationalSpeed;
     }
 
+    public float getEnchantmentPowerFromSorroundings(World world, BlockPos posOfPedestal)
+    {
+        float enchantPower = 0;
 
+        for (int i = -2; i <= 2; ++i) {
+            for (int j = -2; j <= 2; ++j) {
+                if (i > -2 && i < 2 && j == -1) {
+                    j = 2;
+                }
+                for (int k = 0; k <= 2; ++k) {
+                    BlockPos blockpos = posOfPedestal.add(i, k, j);
+                    Block blockNearBy = world.getBlockState(blockpos).getBlock();
 
-    public int ticked = 0;
+                    if (blockNearBy.getEnchantPowerBonus(world, blockpos)>0)
+                    {
+                        enchantPower +=blockNearBy.getEnchantPowerBonus(world, blockpos);
+                    }
+                }
+            }
+        }
+        return enchantPower;
+    }
+
+    public int getExpUseByLevel(int level)
+    {
+        int expUsed = 0;
+
+        if(level <= 16)
+        {
+            expUsed = (level*level) + (6 * level);
+        }
+        else if(level > 16 && level <=31)
+        {
+            expUsed = (int)(((2.5 * (level*level)) - (40.5 * level))+360);
+        }
+        else if(level > 31)
+        {
+            expUsed = (int)(((4.5 * (level*level)) - (162.5 * level))+2220);
+        }
+
+        return expUsed;
+    }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
@@ -123,13 +138,14 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
         if(!world.isBlockPowered(pedestalPos))
         {
             if (tick%speed == 0) {
-                upgradeAction(world, coinInPedestal, pedestalPos);
+                upgradeAction(world, itemInPedestal, coinInPedestal, pedestalPos);
             }
         }
     }
 
-    public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
+    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
+
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         ItemStack itemFromInv = ItemStack.EMPTY;
 
@@ -150,34 +166,32 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
                         {
                             itemFromInv = handler.getStackInSlot(i);
                             int slotCount = itemFromInv.getCount();
-                            if(itemFromInv.getItem().equals(Items.GLASS_BOTTLE))
-                            {
-                                //BottlingCodeHere
-                                //11 exp per bottle
-                                int modifier = getTransferRate(coinInPedestal);
-
-                                //If we can extract the correct amount of bottles(If it returns empty then it CANT work)
-                                if(!(handler.extractItem(i,modifier ,true ).equals(ItemStack.EMPTY)))
+                            TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+                            if(pedestalInv instanceof TilePedestal) {
+                                if(!((TilePedestal) pedestalInv).hasItem())
                                 {
-                                    int rate = (modifier * 11);
-                                    ItemStack getBottle = new ItemStack(Items.EXPERIENCE_BOTTLE,modifier);
-                                    TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-                                    if(pedestalInv instanceof TilePedestal) {
-                                        if(((TilePedestal) pedestalInv).canAcceptItems(getBottle)>=rate)
+                                    if(itemFromInv.isItemEnchantable() || itemFromInv.getItem().equals(Items.BOOK))
+                                    {
+                                        float level = getEnchantmentPowerFromSorroundings(world,posOfPedestal);
+                                        int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
+                                        int expNeeded = getExpUseByLevel((int)level);
+                                        if(currentlyStoredExp >= expNeeded)
                                         {
-                                            int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-                                            if(currentlyStoredExp > 0)
-                                            {
-                                                if(currentlyStoredExp >= rate)
-                                                {
-                                                    int getExpLeftInPedestal = currentlyStoredExp - rate;
-                                                    world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                                    ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                    handler.extractItem(i,modifier ,false );
-                                                    ((TilePedestal) pedestalInv).addItem(getBottle);
-                                                }
-                                            }
+                                            //Enchanting Code Here
+                                            Random rand = new Random();
+                                            ItemStack stackToReturn = EnchantmentHelper.addRandomEnchantment(rand,itemFromInv ,(int)level ,true );
+                                            int getExpLeftInPedestal = currentlyStoredExp - expNeeded;
+                                            ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
+                                            handler.extractItem(i,stackToReturn.getCount() ,false );
+                                            world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                            ((TilePedestal) pedestalInv).addItem(stackToReturn);
+
                                         }
+                                    }
+                                    else
+                                    {
+                                        handler.extractItem(i,itemFromInv.getCount() ,false );
+                                        ((TilePedestal) pedestalInv).addItem(itemFromInv);
                                     }
                                 }
                             }
@@ -187,6 +201,7 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
             }
         }
     }
+
 
     @Override
     public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
@@ -205,11 +220,8 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
         }
     }
 
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int trr = getTransferRate(stack);
-        String tr = ""+ trr +"";
         String s5 = "";
 
         switch (getOperationSpeed(stack))
@@ -235,23 +247,12 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
             default: s5="Normal Speed";
         }
 
+        tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
 
-
-        tooltip.add(TextFormatting.GOLD + "Exp Bottler Upgrade");
-
-        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels");
+        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
 
         if(stack.hasTagCompound())
         {
-            if(getTransferRate(stack)>0)
-            {
-                tooltip.add("Bottled per Opperation: " + tr);
-            }
-            else
-            {
-                tooltip.add("Bottled per Opperation: 1");
-            }
-
             if(stack.isItemEnchanted())
             {
                 if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
@@ -270,11 +271,46 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
         }
         else
         {
-            tooltip.add("Bottled per Opperation: 1");
             tooltip.add("Operational Speed: Normal Speed");
         }
     }
 
 
+
+    @Override
+    public void onRandomDisplayTick(TilePedestal pedestal, IBlockState stateIn, World world, BlockPos pos, Random rand)
+    {
+        if(!world.isBlockPowered(pos))
+        {
+            for (int i = -2; i <= 2; ++i)
+            {
+                for (int j = -2; j <= 2; ++j)
+                {
+                    if (i > -2 && i < 2 && j == -1)
+                    {
+                        j = 2;
+                    }
+
+                    if (rand.nextInt(16) == 0)
+                    {
+                        for (int k = 0; k <= 2; ++k)
+                        {
+                            BlockPos blockpos = pos.add(i, k, j);
+
+                            if (net.minecraftforge.common.ForgeHooks.getEnchantPower(world, blockpos) > 0)
+                            {
+                                if (!world.isAirBlock(pos.add(i / 2, 0, j / 2)))
+                                {
+                                    break;
+                                }
+
+                                world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D, (double)((float)i + rand.nextFloat()) - 0.5D, (double)((float)k - rand.nextFloat() - 1.0F), (double)((float)j + rand.nextFloat()) - 0.5D);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

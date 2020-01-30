@@ -291,7 +291,7 @@ public class ipuFurnace extends ipuBasic
         }
     }
 
-    @Override
+   @Override
     public void onRandomDisplayTick(TilePedestal pedestal, IBlockState stateIn, World world, BlockPos pos, Random rand)
     {
         if(!world.isBlockPowered(pos))

@@ -196,7 +196,7 @@ public class ItemRegistry
 
 
 
-        enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Enchanter
+        enchantUpgrade = new ipuExpEnchanter("enchantupgrade","enchantupgrade");//Enchanter
         expCollector = new ipuExpCollector("expcollector","expcollector");//Collector
         expDropper = new ipuExpDropper("expdropper","expdropper");//Relay
         expRelay = new ipuExpRelay("exprelay","exprelay");//Tank
