@@ -31,7 +31,7 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
 {
     public int rangeWidth = 0;
     public int operationalSpeed = 0;
-    public int maxXP = 1395;
+    public int maxXP;
     public int suckiRate = 0;
 
 
@@ -52,11 +52,6 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public int getMaxXP() {
-        return maxXP;
     }
 
     public int getRangeWidth(ItemStack stack)
@@ -140,6 +135,7 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
 
     public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
+        setMaxXP(coinInPedestal,getExpCountByLevel(30) );
         int width = getRangeWidth(coinInPedestal);
         int height = (2*width)+1;
         BlockPos negBlockPos = getNegRangePosEntity(world,posOfPedestal,width,height);
@@ -150,11 +146,11 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         List<EntityXPOrb> xpList = world.getEntitiesWithinAABB(EntityXPOrb.class,getBox);
         for(EntityXPOrb getXPFromList : xpList)
         {
-            world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
+            world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
             TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
             if(pedestalInv instanceof TilePedestal) {
                 int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-                if(currentlyStoredExp < getMaxXP())
+                if(currentlyStoredExp < getMaxXP(coinInPedestal))
                 {
                     int value = getXPFromList.getXpValue();
                     getXPFromList.setDead();
@@ -165,82 +161,16 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         }
     }
 
-    public void upgradeActionSendExp(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
-    {
-        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
-        if(pedestalInv instanceof TilePedestal) {
-            //If this Pedestal has any Exp
-            int expInPedestal = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-            if(expInPedestal>0)
-            {
-                //Grab the connected pedestals to send to
-                if(((TilePedestal) pedestalInv).getNumberOfStoredLocations()>0)
-                {
-                    for(int i=0; i<((TilePedestal) pedestalInv).getNumberOfStoredLocations();i++)
-                    {
-                        BlockPos getStoredPedestalPos = ((TilePedestal) pedestalInv).getStoredPositionAt(i);
-                        //Make sure pedestal ISNOT powered and IS loaded in world
-                        if(!world.isBlockPowered(getStoredPedestalPos) && world.isBlockLoaded(getStoredPedestalPos))
-                        {
-                            if(getStoredPedestalPos != posOfPedestal)
-                            {
-                                TileEntity storedPedestal = world.getTileEntity(getStoredPedestalPos);
-                                if(storedPedestal instanceof TilePedestal) {
-                                    Item coinOnStoredPedestal = ((TilePedestal) storedPedestal).getCoinOnPedestal().getItem();
-                                    TilePedestal storedPed = ((TilePedestal) storedPedestal);
-                                    //Check if pedestal to send to can even be sent exp
-                                    if(coinOnStoredPedestal instanceof ipuBasicExpUpgrade)
-                                    {
-                                        int coinExpMax = ((ipuBasicExpUpgrade)coinOnStoredPedestal).getMaxXP();
-                                        int storedExp = storedPed.getStoredValueForUpgrades();
-                                        //if Stored Pedestal has room for exp (will be lazy sending exp here)
-                                        if(storedExp < coinExpMax)
-                                        {
-                                            int transferRate = getExpTransferRate(coinInPedestal);
-                                            //If we have more then 5 levels in the pedestal we're sending from
-                                            if(((TilePedestal) pedestalInv).getStoredValueForUpgrades() >= transferRate)
-                                            {
-                                                int getExpLeftInPedestal = expInPedestal - transferRate;
-                                                int getExpInStoredPed = storedPed.getStoredValueForUpgrades();
-                                                int getSetValueforStoredPed = getExpInStoredPed + transferRate;
-                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                world.playSound((EntityPlayer)null, getStoredPedestalPos.getX(), getStoredPedestalPos.getY(), getStoredPedestalPos.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                                storedPed.setStoredValueForUpgrades(getSetValueforStoredPed);
-                                            }
-                                            else
-                                            {
-                                                //If we have less then 5 levels, just send them all.
-                                                int getExpLeftInPedestal = 0;
-                                                int getExpInStoredPed = storedPed.getStoredValueForUpgrades();
-                                                int getSetValueforStoredPed = getExpInStoredPed + expInPedestal;
-                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                world.playSound((EntityPlayer)null, getStoredPedestalPos.getX(), getStoredPedestalPos.getY(), getStoredPedestalPos.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                                storedPed.setStoredValueForUpgrades(getSetValueforStoredPed);
-                                            }
-
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
     {
         if(entityIn instanceof EntityXPOrb)
         {
             EntityXPOrb getXPFromList = ((EntityXPOrb)entityIn);
-            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
+            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
             int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
-            if(currentlyStoredExp < getMaxXP())
+            ItemStack coin = tilePedestal.getCoinOnPedestal();
+            if(currentlyStoredExp < getMaxXP(coin))
             {
                 int value = getXPFromList.getXpValue();
                 getXPFromList.setDead();
@@ -252,13 +182,14 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         {
             EntityPlayer getPlayer = ((EntityPlayer)entityIn);
             int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
-            if(currentlyStoredExp < getMaxXP())
+            ItemStack coin = tilePedestal.getCoinOnPedestal();
+            if(currentlyStoredExp < getMaxXP(coin))
             {
                 int transferRate = getSuckiRate(tilePedestal.getCoinOnPedestal());
                 int value = removeXp(getPlayer, transferRate);
                 if(value > 0)
                 {
-                    world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                    world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
                     tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
                 }
 

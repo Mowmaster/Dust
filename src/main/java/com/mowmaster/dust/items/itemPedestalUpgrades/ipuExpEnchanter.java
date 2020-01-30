@@ -1,5 +1,6 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
@@ -34,7 +35,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpEnchanter extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    public int maxXP = 1395;
+    private int maxXP;
 
 
     public ipuExpEnchanter(String unlocName, String registryName)
@@ -56,9 +57,33 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
-    @Override
-    public int getMaxXP() {
-        return maxXP;
+    public int getExpBuffer(ItemStack stack)
+    {
+        int value = 0;
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        {
+            case 0:
+                value = 30;//30
+                break;
+            case 1:
+                value=44;//44
+                break;
+            case 2:
+                value = 58;//58
+                break;
+            case 3:
+                value = 72;//72
+                break;
+            case 4:
+                value = 86;//86
+                break;
+            case 5:
+                value=100;//100
+                break;
+            default: value=30;
+        }
+
+        return  value;
     }
 
     public int getOperationSpeed(ItemStack stack)
@@ -101,7 +126,6 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
                 for (int k = 0; k <= 2; ++k) {
                     BlockPos blockpos = posOfPedestal.add(i, k, j);
                     Block blockNearBy = world.getBlockState(blockpos).getBlock();
-
                     if (blockNearBy.getEnchantPowerBonus(world, blockpos)>0)
                     {
                         enchantPower +=blockNearBy.getEnchantPowerBonus(world, blockpos);
@@ -110,26 +134,6 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
             }
         }
         return enchantPower;
-    }
-
-    public int getExpUseByLevel(int level)
-    {
-        int expUsed = 0;
-
-        if(level <= 16)
-        {
-            expUsed = (level*level) + (6 * level);
-        }
-        else if(level > 16 && level <=31)
-        {
-            expUsed = (int)(((2.5 * (level*level)) - (40.5 * level))+360);
-        }
-        else if(level > 31)
-        {
-            expUsed = (int)(((4.5 * (level*level)) - (162.5 * level))+2220);
-        }
-
-        return expUsed;
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
@@ -145,7 +149,8 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
 
     public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
-
+        int getMaxXpValue = getExpCountByLevel(getExpBuffer(coinInPedestal));
+        setMaxXP(coinInPedestal, getMaxXpValue);
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         ItemStack itemFromInv = ItemStack.EMPTY;
 
@@ -172,26 +177,32 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
                                 {
                                     if(itemFromInv.isItemEnchantable() || itemFromInv.getItem().equals(Items.BOOK))
                                     {
+                                        //This is Book Shelf Enchanting level, not enchantment level (15 bookshelfves = 30 levels of enchantability)
                                         float level = getEnchantmentPowerFromSorroundings(world,posOfPedestal);
                                         int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-                                        int expNeeded = getExpUseByLevel((int)level);
+                                        int expNeeded = getExpCountByLevel((int)(level * 2));
                                         if(currentlyStoredExp >= expNeeded)
                                         {
                                             //Enchanting Code Here
                                             Random rand = new Random();
-                                            ItemStack stackToReturn = EnchantmentHelper.addRandomEnchantment(rand,itemFromInv ,(int)level ,true );
-                                            int getExpLeftInPedestal = currentlyStoredExp - expNeeded;
-                                            ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                            handler.extractItem(i,stackToReturn.getCount() ,false );
-                                            world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                                            ((TilePedestal) pedestalInv).addItem(stackToReturn);
-
+                                            ItemStack itemToEnchant = itemFromInv.copy();
+                                            itemToEnchant.setCount(1);
+                                            ItemStack stackToReturn = EnchantmentHelper.addRandomEnchantment(rand,itemToEnchant ,(int)(level * 2) ,true );
+                                            if(!stackToReturn.isEmpty())
+                                            {
+                                                int getExpLeftInPedestal = currentlyStoredExp - expNeeded;
+                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
+                                                handler.extractItem(i,stackToReturn.getCount() ,false );
+                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 0.25F, 1.0F);
+                                                ((TilePedestal) pedestalInv).addItem(stackToReturn);
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        handler.extractItem(i,itemFromInv.getCount() ,false );
-                                        ((TilePedestal) pedestalInv).addItem(itemFromInv);
+                                        ItemStack toReturn = itemFromInv.copy();
+                                        handler.extractItem(i,toReturn.getCount() ,false );
+                                        ((TilePedestal) pedestalInv).addItem(toReturn);
                                     }
                                 }
                             }
@@ -202,27 +213,10 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
         }
     }
 
-
-    @Override
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
-    {
-        if(entityIn instanceof EntityXPOrb)
-        {
-            EntityXPOrb getXPFromList = ((EntityXPOrb)entityIn);
-            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
-            int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
-            if(currentlyStoredExp < getMaxXP())
-            {
-                int value = getXPFromList.getXpValue();
-                getXPFromList.setDead();
-                tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
-            }
-        }
-    }
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String s5 = "";
+        int buffer = getExpBuffer(stack);
 
         switch (getOperationSpeed(stack))
         {
@@ -249,7 +243,7 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
 
         tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
 
-        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
+        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: "+buffer+" Levels");
 
         if(stack.hasTagCompound())
         {

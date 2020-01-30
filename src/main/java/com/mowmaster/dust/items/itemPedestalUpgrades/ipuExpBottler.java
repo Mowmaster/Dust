@@ -29,7 +29,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpBottler extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    public int maxXP = 160;
+    public int maxXP;
     public int bottlingRate = 1;
 
 
@@ -50,11 +50,6 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public int getMaxXP() {
-        return maxXP;
     }
 
     public int getTransferRate(ItemStack stack)
@@ -130,6 +125,7 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
     public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
+        setMaxXP(coinInPedestal,getExpCountByLevel(15) );
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         ItemStack itemFromInv = ItemStack.EMPTY;
 
@@ -171,7 +167,7 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
                                                 if(currentlyStoredExp >= rate)
                                                 {
                                                     int getExpLeftInPedestal = currentlyStoredExp - rate;
-                                                    world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                                    world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.25F, 1.0F);
                                                     ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
                                                     handler.extractItem(i,modifier ,false );
                                                     ((TilePedestal) pedestalInv).addItem(getBottle);
@@ -184,23 +180,6 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
                         }
                     }
                 }
-            }
-        }
-    }
-
-    @Override
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
-    {
-        if(entityIn instanceof EntityXPOrb)
-        {
-            EntityXPOrb getXPFromList = ((EntityXPOrb)entityIn);
-            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
-            int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
-            if(currentlyStoredExp < getMaxXP())
-            {
-                int value = getXPFromList.getXpValue();
-                getXPFromList.setDead();
-                tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
             }
         }
     }
@@ -239,7 +218,7 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
         tooltip.add(TextFormatting.GOLD + "Exp Bottler Upgrade");
 
-        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels");
+        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 15 Levels");
 
         if(stack.hasTagCompound())
         {

@@ -30,7 +30,7 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
     public int range = 0;
     public int summonRate = 7;
     public int operationalSpeed = 0;
-    public int maxXP = 160;
+    public int maxXP;
 
 
     public ipuExpDropper(String unlocName, String registryName)
@@ -50,11 +50,6 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public int getMaxXP() {
-        return maxXP;
     }
 
     public int getTransferRate(ItemStack stack)
@@ -155,6 +150,7 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
     public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
+        setMaxXP(coinInPedestal,getExpCountByLevel(10) );
         int rate = getTransferRate(coinInPedestal);
         int range = getRange(coinInPedestal);
 
@@ -175,27 +171,10 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
                 expEntity.motionZ = 0;
 
                 int getExpLeftInPedestal = currentlyStoredExp - rate;
-                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.25F, 1.0F);
                 ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                world.playSound((EntityPlayer)null, expEntity.getPosition().getX(), expEntity.getPosition().getY(), expEntity.getPosition().getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                world.playSound((EntityPlayer)null, expEntity.getPosition().getX(), expEntity.getPosition().getY(), expEntity.getPosition().getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
                 world.spawnEntity(expEntity);
-            }
-        }
-    }
-
-    @Override
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
-    {
-        if(entityIn instanceof EntityXPOrb)
-        {
-            EntityXPOrb getXPFromList = ((EntityXPOrb)entityIn);
-            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.5F, 1.0F);
-            int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
-            if(currentlyStoredExp < getMaxXP())
-            {
-                int value = getXPFromList.getXpValue();
-                getXPFromList.setDead();
-                tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
             }
         }
     }
