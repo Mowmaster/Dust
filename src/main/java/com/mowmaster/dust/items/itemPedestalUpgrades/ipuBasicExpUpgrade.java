@@ -202,7 +202,7 @@ public class ipuBasicExpUpgrade extends ipuBasic
         {
             maths = (int)Math.sqrt(Math.addExact(36, Math.addExact(4,value )));
             i = (int)(Math.addExact(-6 , maths) / 2);
-            j = (int)(Math.subtractExact(-6, maths) / 2);
+            /*j = (int)(Math.subtractExact(-6, maths) / 2);
 
             if(i>j)
             {
@@ -210,13 +210,13 @@ public class ipuBasicExpUpgrade extends ipuBasic
             }
             else {
                 level = Math.abs(j);
-            }
+            }*/
         }
         if(value > 352 && value <= 1507)
         {
             maths = (int)Math.sqrt(Math.addExact(164025, Math.addExact(360000,Math.multiplyExact(1000,value ) )));
             i = (int)(Math.addExact(405 , maths) / 50);
-            j = (int)(Math.subtractExact(405, maths) / 50);
+            /*j = (int)(Math.subtractExact(405, maths) / 50);
 
             if(i>j)
             {
@@ -224,14 +224,14 @@ public class ipuBasicExpUpgrade extends ipuBasic
             }
             else {
                 level = Math.abs(j);
-            }
+            }*/
         }
         if(value > 1507)
         {
 
             maths = (int)Math.sqrt(Math.addExact(2640625,Math.multiplyExact(180, Math.addExact(22200,Math.multiplyExact(10,value)))));
             i = (int)(Math.addExact(1625 , maths) / 90);
-            j = (int)(Math.subtractExact(1625, maths) / 90);
+            /*j = (int)(Math.subtractExact(1625, maths) / 90);
 
             if(i>j)
             {
@@ -239,10 +239,10 @@ public class ipuBasicExpUpgrade extends ipuBasic
             }
             else {
                 level = Math.abs(j);
-            }
+            }*/
         }
 
-        return level;
+        return Math.abs(i);
     }
 
     public void setXPStored(ItemStack stack, int value)
