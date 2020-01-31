@@ -264,24 +264,24 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
                 if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
                 {
-                    tooltip.add("Operational Speed: " + s5);
+                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
                 }
                 else
                 {
-                    tooltip.add("Operational Speed: Normal Speed");
+                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
                 }
             }
             else
             {
                 tooltip.add("Dropper Range: " + trr);
-                tooltip.add("Operational Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
             tooltip.add("Exp Dropped Ammount: 1 Level");
             tooltip.add("Dropper Range: " + trr);
-            tooltip.add("Operational Speed: Normal Speed");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

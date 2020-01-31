@@ -235,22 +235,22 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
             {
                 if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
                 {
-                    tooltip.add("Operational Speed: " + s5);
+                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
                 }
                 else
                 {
-                    tooltip.add("Operational Speed: Normal Speed");
+                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
                 }
             }
             else
             {
-                tooltip.add("Operational Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
             tooltip.add("Bottled per Opperation: 1");
-            tooltip.add("Operational Speed: Normal Speed");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

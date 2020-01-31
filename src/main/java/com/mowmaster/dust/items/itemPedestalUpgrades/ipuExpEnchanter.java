@@ -243,7 +243,7 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
 
         tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
 
-        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: "+buffer+" Levels");
+        tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels");
 
         if(stack.hasTagCompound())
         {
@@ -251,21 +251,21 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
             {
                 if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
                 {
-                    tooltip.add("Operational Speed: " + s5);
+                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
                 }
                 else
                 {
-                    tooltip.add("Operational Speed: Normal Speed");
+                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
                 }
             }
             else
             {
-                tooltip.add("Operational Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Operational Speed: Normal Speed");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 
