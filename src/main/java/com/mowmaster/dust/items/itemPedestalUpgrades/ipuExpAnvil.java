@@ -4,19 +4,16 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -32,13 +29,13 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuExpEnchanter extends ipuBasicExpUpgrade
+public class ipuExpAnvil extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
     private int maxXP;
 
 
-    public ipuExpEnchanter(String unlocName, String registryName)
+    public ipuExpAnvil(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
@@ -112,29 +109,6 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
         }
 
         return  operationalSpeed;
-    }
-
-    public float getEnchantmentPowerFromSorroundings(World world, BlockPos posOfPedestal)
-    {
-
-        float enchantPower = 0;
-
-        for (int i = -2; i <= 2; ++i) {
-            for (int j = -2; j <= 2; ++j) {
-                if (i > -2 && i < 2 && j == -1) {
-                    j = 2;
-                }
-                for (int k = 0; k <= 2; ++k) {
-                    BlockPos blockpos = posOfPedestal.add(i, k, j);
-                    Block blockNearBy = world.getBlockState(blockpos).getBlock();
-                    if (blockNearBy.getEnchantPowerBonus(world, blockpos)>0)
-                    {
-                        enchantPower +=blockNearBy.getEnchantPowerBonus(world, blockpos);
-                    }
-                }
-            }
-        }
-        return enchantPower;
     }
 
     public float getEnchantmentPowerFromSorroundings(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)

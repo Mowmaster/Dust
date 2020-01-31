@@ -26,7 +26,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpTank extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    //10000 levels
     public int maxXP;
 
 
@@ -55,22 +54,22 @@ public class ipuExpTank extends ipuBasicExpUpgrade
         switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
-                value = 100;//30
+                value = 100;//
                 break;
             case 1:
-                value=250;//44
+                value=250;//
                 break;
             case 2:
-                value = 500;//58
+                value = 500;//
                 break;
             case 3:
-                value = 1000;//72
+                value = 1000;//
                 break;
             case 4:
-                value = 10000;//86
+                value = 10000;//
                 break;
             case 5:
-                value=100000;//100
+                value=100000;//
                 break;
             default: value=100;
         }
