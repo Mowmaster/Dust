@@ -21,14 +21,7 @@ import net.minecraft.world.World;
 public class ipuBasicExpUpgrade extends ipuBasic
 {
     private int summonRate;
-    public int maxXP;
     public ipuBasicExpUpgrade() {}
-
-    public int getMaxXP(ItemStack stack)
-    {
-        readMaxXpFromNBT(stack);
-        return maxXP;
-    }
 
     public void setMaxXP(ItemStack stack, int value)
     {
@@ -64,6 +57,7 @@ public class ipuBasicExpUpgrade extends ipuBasic
     }
 
     public static int removeXp(EntityPlayer player, int amount) {
+        //Someday consider using player.addExpierence()
         int startAmount = amount;
         while(amount > 0) {
             int barCap = player.xpBarCap();
@@ -71,12 +65,7 @@ public class ipuBasicExpUpgrade extends ipuBasic
             int removeXp = Math.min(barXp, amount);
             int newBarXp = barXp - removeXp;
             amount -= removeXp;//amount = amount-removeXp
-/*
-        System.out.println(event.player.xpBarCap());//7         9       11      11          xp to next level
-        System.out.println(event.player.experience);//0.14285   0.0     0.0     0.0909      1/expierence = xp to next level
-        System.out.println(event.player.experienceLevel);//0    1       2       2           #of levels
-        System.out.println(event.player.experienceTotal);//1    7       16      17          total xp
- */
+
             player.experienceTotal -= removeXp;
             if(player.experienceTotal < 0) {
                 player.experienceTotal = 0;
@@ -124,7 +113,7 @@ public class ipuBasicExpUpgrade extends ipuBasic
                                     //Check if pedestal to send to can even be sent exp
                                     if(coinOnStoredPedestal.getItem() instanceof ipuBasicExpUpgrade)
                                     {
-                                        int coinExpMax = ((ipuBasicExpUpgrade)coinOnStoredPedestal.getItem()).getMaxXP(coinOnStoredPedestal);
+                                        int coinExpMax = ((ipuBasicExpUpgrade)coinOnStoredPedestal.getItem()).readMaxXpFromNBT(coinInPedestal);
                                         int storedExp = storedPed.getStoredValueForUpgrades();
                                         //if Stored Pedestal has room for exp (will be lazy sending exp here)
                                         if(storedExp < coinExpMax)
@@ -169,15 +158,15 @@ public class ipuBasicExpUpgrade extends ipuBasic
     {
         if(entityIn instanceof EntityXPOrb)
         {
-            EntityXPOrb getXPFromList = ((EntityXPOrb)entityIn);
-            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
-            int currentlyStoredExp = tilePedestal.getStoredValueForUpgrades();
             ItemStack coin = tilePedestal.getCoinOnPedestal();
-            if(currentlyStoredExp < getMaxXP(coin))
+            EntityXPOrb getXPFromList = ((EntityXPOrb)entityIn);
+            world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.15F, 1.0F);
+            int currentlyStoredExp = getXPStored(coin);
+            if(currentlyStoredExp < readMaxXpFromNBT(coin))
             {
                 int value = getXPFromList.getXpValue();
                 getXPFromList.setDead();
-                tilePedestal.setStoredValueForUpgrades(currentlyStoredExp + value);
+                setXPStored(coin, currentlyStoredExp + value);
             }
         }
     }
@@ -202,6 +191,83 @@ public class ipuBasicExpUpgrade extends ipuBasic
         return expUsed;
     }
 
+    public int getExpLevelFromCount(int value)
+    {
+        int level = 0;
+        int maths = 0;
+        int i = 0;
+        int j = 0;
+
+        if(value > 0 && value <= 352)
+        {
+            maths = (int)Math.sqrt(Math.addExact(36, Math.addExact(4,value )));
+            i = (int)(Math.addExact(-6 , maths) / 2);
+            j = (int)(Math.subtractExact(-6, maths) / 2);
+
+            if(i>j)
+            {
+                level = Math.abs(i);
+            }
+            else {
+                level = Math.abs(j);
+            }
+        }
+        if(value > 352 && value <= 1507)
+        {
+            maths = (int)Math.sqrt(Math.addExact(164025, Math.addExact(360000,Math.multiplyExact(1000,value ) )));
+            i = (int)(Math.addExact(405 , maths) / 50);
+            j = (int)(Math.subtractExact(405, maths) / 50);
+
+            if(i>j)
+            {
+                level = Math.abs(i);
+            }
+            else {
+                level = Math.abs(j);
+            }
+        }
+        if(value > 1507)
+        {
+
+            maths = (int)Math.sqrt(Math.addExact(2640625,Math.multiplyExact(180, Math.addExact(22200,Math.multiplyExact(10,value)))));
+            i = (int)(Math.addExact(1625 , maths) / 90);
+            j = (int)(Math.subtractExact(1625, maths) / 90);
+
+            if(i>j)
+            {
+                level = Math.abs(i);
+            }
+            else {
+                level = Math.abs(j);
+            }
+        }
+
+        return level;
+    }
+
+    public void setXPStored(ItemStack stack, int value)
+    {
+        NBTTagCompound compound = new NBTTagCompound();
+        if(stack.hasTagCompound())
+        {
+            compound = stack.getTagCompound();
+        }
+
+        compound.setInteger("xpstored",value);
+        stack.setTagCompound(compound);
+    }
+
+    public int getXPStored(ItemStack stack)
+    {
+        int storedxp = 0;
+        if(stack.hasTagCompound())
+        {
+            NBTTagCompound getCompound = stack.getTagCompound();
+            storedxp = getCompound.getInteger("xpstored");
+        }
+        return storedxp;
+    }
+
     public void writeMaxXpToNBT(ItemStack stack, int value)
     {
         NBTTagCompound compound = new NBTTagCompound();
@@ -214,12 +280,14 @@ public class ipuBasicExpUpgrade extends ipuBasic
         stack.setTagCompound(compound);
     }
 
-    public void readMaxXpFromNBT(ItemStack stack)
+    public int readMaxXpFromNBT(ItemStack stack)
     {
+        int maxxp = 0;
         if(stack.hasTagCompound())
         {
             NBTTagCompound getCompound = stack.getTagCompound();
-            maxXP = getCompound.getInteger("maxxp");
+            maxxp = getCompound.getInteger("maxxp");
         }
+        return maxxp;
     }
 }

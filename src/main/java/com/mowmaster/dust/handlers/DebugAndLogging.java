@@ -4,6 +4,7 @@ import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.ItemWikiScroll;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
+import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasicExpUpgrade;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -133,6 +134,10 @@ public class DebugAndLogging
                             else if(playerIn.getHeldItemOffhand().getItem().equals(Items.GLASS_BOTTLE))
                             {
                                 System.out.println("Exp Inside: " + getTilePedestal.getStoredValueForUpgrades());
+                            }
+                            else if(playerIn.getHeldItemOffhand().getItem() instanceof ipuBasicExpUpgrade)
+                            {
+                                System.out.println("Exp Stored: " + ((ipuBasicExpUpgrade)playerIn.getHeldItemOffhand().getItem()).getXPStored(playerIn.getHeldItemOffhand()));
                             }
 
                             if(playerIn.getHeldItemOffhand().getItem().equals(ItemRegistry.crystal))
