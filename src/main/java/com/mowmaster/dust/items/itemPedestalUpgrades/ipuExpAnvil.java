@@ -32,7 +32,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpAnvil extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    private int maxXP;
 
 
     public ipuExpAnvil(String unlocName, String registryName)
@@ -42,16 +41,6 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public int getExpBuffer(ItemStack stack)
@@ -222,6 +211,8 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String s5 = "";
         int buffer = getExpBuffer(stack);
+        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
 
         switch (getOperationSpeed(stack))
         {
@@ -247,8 +238,10 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         }
 
         tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels");
+
 
         if(stack.hasTagCompound())
         {

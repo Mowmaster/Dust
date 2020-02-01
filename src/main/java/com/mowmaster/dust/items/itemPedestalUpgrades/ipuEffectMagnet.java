@@ -29,7 +29,7 @@ import java.util.List;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockDirectional.FACING;
 
-public class ipuEffectMagnet extends ipuBasic
+public class ipuEffectMagnet extends ipuBasicEffect
 {
     public int rangeWidth = 0;
     public int operationalSpeed = 0;

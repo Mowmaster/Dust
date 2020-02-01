@@ -29,7 +29,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpBottler extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    public int maxXP;
     public int bottlingRate = 1;
 
 
@@ -40,16 +39,6 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
     }
 
     public int getTransferRate(ItemStack stack)
@@ -161,14 +150,14 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
                                     if(pedestalInv instanceof TilePedestal) {
                                         if(((TilePedestal) pedestalInv).canAcceptItems(getBottle)>=rate)
                                         {
-                                            int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
+                                            int currentlyStoredExp = getXPStored(coinInPedestal);
                                             if(currentlyStoredExp > 0)
                                             {
                                                 if(currentlyStoredExp >= rate)
                                                 {
                                                     int getExpLeftInPedestal = currentlyStoredExp - rate;
                                                     world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                                                    ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
+                                                    setXPStored(coinInPedestal,getExpLeftInPedestal);
                                                     handler.extractItem(i,modifier ,false );
                                                     ((TilePedestal) pedestalInv).addItem(getBottle);
                                                 }
@@ -190,6 +179,8 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
         int trr = getTransferRate(stack);
         String tr = ""+ trr +"";
         String s5 = "";
+
+        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
 
         switch (getOperationSpeed(stack))
         {
@@ -217,8 +208,10 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
 
         tooltip.add(TextFormatting.GOLD + "Exp Bottler Upgrade");
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 15 Levels");
+
 
         if(stack.hasTagCompound())
         {

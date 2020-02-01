@@ -58,7 +58,11 @@ public class DebugAndLogging
                 }
                 else
                 {
-                    if(playerIn.getHeldItemMainhand() != ItemStack.EMPTY)
+                    if(playerIn.getHeldItemMainhand().getItem() instanceof ipuBasicExpUpgrade)
+                    {
+                        System.out.println("Exp Stored: " + ((ipuBasicExpUpgrade)playerIn.getHeldItemMainhand().getItem()).getXPStored(playerIn.getHeldItemMainhand()));
+                    }
+                    else if(playerIn.getHeldItemMainhand() != ItemStack.EMPTY)
                     {
                         ItemStack stackMain = playerIn.getHeldItemMainhand();
                         if(stackMain.hasTagCompound())
@@ -134,10 +138,6 @@ public class DebugAndLogging
                             else if(playerIn.getHeldItemOffhand().getItem().equals(Items.GLASS_BOTTLE))
                             {
                                 System.out.println("Exp Inside: " + getTilePedestal.getStoredValueForUpgrades());
-                            }
-                            else if(playerIn.getHeldItemOffhand().getItem() instanceof ipuBasicExpUpgrade)
-                            {
-                                System.out.println("Exp Stored: " + ((ipuBasicExpUpgrade)playerIn.getHeldItemOffhand().getItem()).getXPStored(playerIn.getHeldItemOffhand()));
                             }
 
                             if(playerIn.getHeldItemOffhand().getItem().equals(ItemRegistry.crystal))

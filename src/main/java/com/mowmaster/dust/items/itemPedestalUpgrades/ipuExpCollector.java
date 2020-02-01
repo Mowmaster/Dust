@@ -43,16 +43,6 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         this.isFilter=false;
     }
 
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
-    }
-
     public int getRangeWidth(ItemStack stack)
     {
         int rW = getRangeModifier(stack);
@@ -144,7 +134,7 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
             world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.15F, 1.0F);
             TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
             if(pedestalInv instanceof TilePedestal) {
-                int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
+                int currentlyStoredExp = getXPStored(coinInPedestal);
                 if(currentlyStoredExp < readMaxXpFromNBT(coinInPedestal))
                 {
                     int value = getXPFromList.getXpValue();
@@ -169,8 +159,7 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
             {
                 int value = getXPFromList.getXpValue();
                 getXPFromList.setDead();
-                int xpvalue= currentlyStoredExp + value;
-                setXPStored(coin, xpvalue);
+                setXPStored(coin, currentlyStoredExp + value);
             }
         }
 
@@ -178,16 +167,18 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         {
             EntityPlayer getPlayer = ((EntityPlayer)entityIn);
             ItemStack coin = tilePedestal.getCoinOnPedestal();
-            int currentlyStoredExp = getXPStored(coin);
-            if(currentlyStoredExp < readMaxXpFromNBT(coin))
+            if(!getPlayer.isSneaking())
             {
-                int transferRate = getSuckiRate(coin);
-                int value = removeXp(getPlayer, transferRate);
-                if(value > 0)
+                int currentlyStoredExp = getXPStored(coin);
+                if(currentlyStoredExp < readMaxXpFromNBT(coin))
                 {
-                    world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.15F, 1.0F);
-                    int xpvalue= currentlyStoredExp + value;
-                    setXPStored(coin, xpvalue);
+                    int transferRate = getSuckiRate(coin);
+                    int value = removeXp(getPlayer, transferRate);
+                    if(value > 0)
+                    {
+                        world.playSound((EntityPlayer)null, posPedestal.getX(), posPedestal.getY(), posPedestal.getZ(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                        setXPStored(coin, currentlyStoredExp + value);
+                    }
                 }
             }
         }
@@ -274,10 +265,10 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         String trr = "" + (s3+s3+1) + "";
 
         tooltip.add(TextFormatting.GOLD + "Exp Collector Upgrade");
-
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
 
-        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
+
         /*if(stack.hasTagCompound()) {
             if (getSuckiRate(stack) > 0) {
                 tooltip.add("???: " + sr);

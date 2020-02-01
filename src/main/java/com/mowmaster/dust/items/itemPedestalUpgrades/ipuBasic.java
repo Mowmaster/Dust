@@ -536,6 +536,16 @@ public class ipuBasic extends Item
         return 10;
     }
 
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return super.isBookEnchantable(stack, book);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
+
 
     public EnumFacing getPedestalFacing(World world,BlockPos posOfPedestal)
     {

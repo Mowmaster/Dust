@@ -32,7 +32,7 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static net.minecraft.block.BlockDirectional.FACING;
 
-public class ipuEffectHarvester extends ipuBasic
+public class ipuEffectHarvester extends ipuBasicEffect
 {
     public int rangeWidth = 0;
     public int operationalSpeed = 0;

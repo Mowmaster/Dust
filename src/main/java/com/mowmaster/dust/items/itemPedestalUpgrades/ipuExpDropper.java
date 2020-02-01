@@ -30,7 +30,6 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
     public int range = 0;
     public int summonRate = 7;
     public int operationalSpeed = 0;
-    public int maxXP;
 
 
     public ipuExpDropper(String unlocName, String registryName)
@@ -40,16 +39,6 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
     }
 
     public int getTransferRate(ItemStack stack)
@@ -157,7 +146,7 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
         TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
         if(pedestalInv instanceof TilePedestal) {
-            int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
+            int currentlyStoredExp = getXPStored(coinInPedestal);
             if(currentlyStoredExp > 0)
             {
                 if(currentlyStoredExp < rate)
@@ -172,11 +161,17 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
                 int getExpLeftInPedestal = currentlyStoredExp - rate;
                 world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
+                setXPStored(coinInPedestal,getExpLeftInPedestal);
                 world.playSound((EntityPlayer)null, expEntity.getPosition().getX(), expEntity.getPosition().getY(), expEntity.getPosition().getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
                 world.spawnEntity(expEntity);
             }
         }
+    }
+
+    @Override
+    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
+    {
+
     }
 
 
@@ -189,6 +184,8 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
         String tr = "";
         String s5 = "";
+        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+
 
         switch (getOperationSpeed(stack))
         {
@@ -237,8 +234,10 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
         }
 
         tooltip.add(TextFormatting.GOLD + "Exp Dropper Upgrade");
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels");
+
 
         if(stack.hasTagCompound())
         {

@@ -23,6 +23,16 @@ public class ipuBasicExpUpgrade extends ipuBasic
     private int summonRate;
     public ipuBasicExpUpgrade() {}
 
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return super.isBookEnchantable(stack, book);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
+
     public void setMaxXP(ItemStack stack, int value)
     {
         writeMaxXpToNBT(stack, value);
@@ -87,59 +97,58 @@ public class ipuBasicExpUpgrade extends ipuBasic
         return startAmount - amount;
     }
 
-    public void upgradeActionSendExp(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
+    public void upgradeActionSendExp(World world, ItemStack coinMainPedestal, BlockPos posMainPedestal)
     {
-        TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
+        TileEntity pedestalInv = world.getTileEntity(posMainPedestal);
         if(pedestalInv instanceof TilePedestal) {
+            TilePedestal tileMainPedestal = ((TilePedestal) pedestalInv);
             //If this Pedestal has any Exp
-            int expInPedestal = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-            if(expInPedestal>0)
+            int xpMainPedestal = getXPStored(coinMainPedestal);
+            if(xpMainPedestal>0)
             {
                 //Grab the connected pedestals to send to
-                if(((TilePedestal) pedestalInv).getNumberOfStoredLocations()>0)
+                if(tileMainPedestal.getNumberOfStoredLocations()>0)
                 {
-                    for(int i=0; i<((TilePedestal) pedestalInv).getNumberOfStoredLocations();i++)
+                    for(int i=0; i<tileMainPedestal.getNumberOfStoredLocations();i++)
                     {
-                        BlockPos getStoredPedestalPos = ((TilePedestal) pedestalInv).getStoredPositionAt(i);
+                        BlockPos posStoredPedestal = tileMainPedestal.getStoredPositionAt(i);
                         //Make sure pedestal ISNOT powered and IS loaded in world
-                        if(!world.isBlockPowered(getStoredPedestalPos) && world.isBlockLoaded(getStoredPedestalPos))
+                        if(!world.isBlockPowered(posStoredPedestal) && world.isBlockLoaded(posStoredPedestal))
                         {
-                            if(getStoredPedestalPos != posOfPedestal)
+                            if(posStoredPedestal != posMainPedestal)
                             {
-                                TileEntity storedPedestal = world.getTileEntity(getStoredPedestalPos);
+                                TileEntity storedPedestal = world.getTileEntity(posStoredPedestal);
                                 if(storedPedestal instanceof TilePedestal) {
-                                    ItemStack coinOnStoredPedestal = ((TilePedestal) storedPedestal).getCoinOnPedestal();
-                                    TilePedestal storedPed = ((TilePedestal) storedPedestal);
+                                    TilePedestal tileStoredPedestal = ((TilePedestal) storedPedestal);
+                                    ItemStack coinStoredPedestal = tileStoredPedestal.getCoinOnPedestal();
                                     //Check if pedestal to send to can even be sent exp
-                                    if(coinOnStoredPedestal.getItem() instanceof ipuBasicExpUpgrade)
+                                    if(coinStoredPedestal.getItem() instanceof ipuBasicExpUpgrade)
                                     {
-                                        int coinExpMax = ((ipuBasicExpUpgrade)coinOnStoredPedestal.getItem()).readMaxXpFromNBT(coinInPedestal);
-                                        int storedExp = storedPed.getStoredValueForUpgrades();
+                                        int xpMaxStoredPedestal = ((ipuBasicExpUpgrade)coinStoredPedestal.getItem()).readMaxXpFromNBT(coinStoredPedestal);
+                                        int xpStoredPedestal = getXPStored(coinStoredPedestal);
                                         //if Stored Pedestal has room for exp (will be lazy sending exp here)
-                                        if(storedExp < coinExpMax)
+                                        if(xpStoredPedestal < xpMaxStoredPedestal)
                                         {
-                                            int transferRate = getExpTransferRate(coinInPedestal);
-                                            //If we have more then 5 levels in the pedestal we're sending from
-                                            if(((TilePedestal) pedestalInv).getStoredValueForUpgrades() >= transferRate)
+                                            int transferRate = getExpTransferRate(coinMainPedestal);
+                                            //If we have more then X levels in the pedestal we're sending from
+                                            if(xpMainPedestal >= transferRate)
                                             {
-                                                int getExpLeftInPedestal = expInPedestal - transferRate;
-                                                int getExpInStoredPed = storedPed.getStoredValueForUpgrades();
-                                                int getSetValueforStoredPed = getExpInStoredPed + transferRate;
-                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                world.playSound((EntityPlayer)null, getStoredPedestalPos.getX(), getStoredPedestalPos.getY(), getStoredPedestalPos.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                                                storedPed.setStoredValueForUpgrades(getSetValueforStoredPed);
+                                                int xpRemainingMainPedestal = xpMainPedestal - transferRate;
+                                                int xpRemainingStoredPedestal = xpStoredPedestal + transferRate;
+                                                world.playSound((EntityPlayer)null, posMainPedestal.getX(), posMainPedestal.getY(), posMainPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                                                setXPStored(coinMainPedestal,xpRemainingMainPedestal);
+                                                world.playSound((EntityPlayer)null, posStoredPedestal.getX(), posStoredPedestal.getY(), posStoredPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                                                setXPStored(coinStoredPedestal,xpRemainingStoredPedestal);
                                             }
                                             else
                                             {
-                                                //If we have less then 5 levels, just send them all.
-                                                int getExpLeftInPedestal = 0;
-                                                int getExpInStoredPed = storedPed.getStoredValueForUpgrades();
-                                                int getSetValueforStoredPed = getExpInStoredPed + expInPedestal;
-                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                world.playSound((EntityPlayer)null, getStoredPedestalPos.getX(), getStoredPedestalPos.getY(), getStoredPedestalPos.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                                                storedPed.setStoredValueForUpgrades(getSetValueforStoredPed);
+                                                //If we have less then X levels, just send them all.
+                                                int xpRemainingMainPedestal = 0;
+                                                int xpRemainingStoredPedestal = xpStoredPedestal + xpMainPedestal;
+                                                world.playSound((EntityPlayer)null, posMainPedestal.getX(), posMainPedestal.getY(), posMainPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                                                setXPStored(coinMainPedestal,xpRemainingMainPedestal);
+                                                world.playSound((EntityPlayer)null, posStoredPedestal.getX(), posStoredPedestal.getY(), posStoredPedestal.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                                                setXPStored(coinStoredPedestal,xpRemainingStoredPedestal);
                                             }
 
                                             break;
@@ -194,52 +203,26 @@ public class ipuBasicExpUpgrade extends ipuBasic
     public int getExpLevelFromCount(int value)
     {
         int level = 0;
-        int maths = 0;
+        long maths = 0;
         int i = 0;
         int j = 0;
 
         if(value > 0 && value <= 352)
         {
-            maths = (int)Math.sqrt(Math.addExact(36, Math.addExact(4,value )));
-            i = (int)(Math.addExact(-6 , maths) / 2);
-            /*j = (int)(Math.subtractExact(-6, maths) / 2);
-
-            if(i>j)
-            {
-                level = Math.abs(i);
-            }
-            else {
-                level = Math.abs(j);
-            }*/
+            maths = (long)Math.sqrt(Math.addExact((long)36, Math.addExact((long)4,(long)value )));
+            i = (int)(Math.addExact((long)-6 , maths) / 2);
         }
         if(value > 352 && value <= 1507)
         {
-            maths = (int)Math.sqrt(Math.addExact(164025, Math.addExact(360000,Math.multiplyExact(1000,value ) )));
-            i = (int)(Math.addExact(405 , maths) / 50);
-            /*j = (int)(Math.subtractExact(405, maths) / 50);
+            maths = (long)Math.sqrt(Math.subtractExact((long)164025, Math.multiplyExact((long)100,Math.subtractExact((long)3600,Math.multiplyExact((long)10,(long)value)))));
 
-            if(i>j)
-            {
-                level = Math.abs(i);
-            }
-            else {
-                level = Math.abs(j);
-            }*/
+            i = (int)(Math.addExact((long)405 , maths) / 50);
         }
         if(value > 1507)
         {
 
-            maths = (int)Math.sqrt(Math.addExact(2640625,Math.multiplyExact(180, Math.addExact(22200,Math.multiplyExact(10,value)))));
-            i = (int)(Math.addExact(1625 , maths) / 90);
-            /*j = (int)(Math.subtractExact(1625, maths) / 90);
-
-            if(i>j)
-            {
-                level = Math.abs(i);
-            }
-            else {
-                level = Math.abs(j);
-            }*/
+            maths = (long)Math.sqrt(Math.subtractExact((long)2640625,Math.multiplyExact((long)180, Math.subtractExact((long)22200,Math.multiplyExact((long)10,(long)value)))));
+            i = (int)(Math.addExact((long)1625 , maths) / 90);
         }
 
         return Math.abs(i);

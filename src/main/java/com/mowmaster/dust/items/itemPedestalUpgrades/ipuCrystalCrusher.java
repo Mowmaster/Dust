@@ -2,13 +2,14 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.recipes.crusher_recipes.CrusherRecipes;
+import com.mowmaster.dust.recipes.crusher_recipes.CrusherUpgradeRecipes;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -16,8 +17,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -32,29 +31,19 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
-public class ipuFurnace extends ipuBasic
+public class ipuCrystalCrusher extends ipuBasic
 {
     public int itemsPerSmelt = 0;
     public int smeltingSpeed = 0;
     public final int burnTimeCostPerItemSmelted = 200;
 
-    public ipuFurnace(String unlocName, String registryName)
+    public ipuCrystalCrusher(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
     }
 
     public int getItemTransferRate(ItemStack stack)
@@ -164,8 +153,10 @@ public class ipuFurnace extends ipuBasic
                                 int maxInSlot = handler.getSlotLimit(i);
                                 itemFromInv = handler.getStackInSlot(i);
                                 //Should work without catch since we null check this in our GetNextSlotFunction
-                                ItemStack smeltedItemResult = FurnaceRecipes.instance().getSmeltingResult(itemFromInv);
+                                //ItemStack smeltedItemResult = FurnaceRecipes.instance().getSmeltingResult(itemFromInv);
+                                ItemStack smeltedItemResult = CrusherUpgradeRecipes.instance().getCrushingResult(itemFromInv);
                                 ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
+
                                 if(!smeltedItemResult.equals(ItemStack.EMPTY))
                                 {
                                     //Null check our slot again, which is probably redundant
@@ -374,7 +365,7 @@ public class ipuFurnace extends ipuBasic
 
         String tr = "" + s2 + "";
         String trr = s3;
-        tooltip.add(TextFormatting.GOLD + "Furnace Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Crusher Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))

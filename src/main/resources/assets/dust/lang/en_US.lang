@@ -53,13 +53,22 @@ item.fuzzyfilterupgrade.name=Pedestal Upgrade
 item.filterblacklistupgrade.name=Pedestal Upgrade
 item.fuzzyfilterblacklistupgrade.name=Pedestal Upgrade
 item.filtermodblacklistupgrade.name=Pedestal Upgrade
-
 item.upgradefurnace.name=Pedestal Upgrade
+item.upgradecrusher.name=Pedestal Upgrade
 item.upgradeenchanted.name=Pedestal Upgrade
 item.upgradeenchantedblacklist.name=Pedestal Upgrade
 
-item.craftingplaceholder.name=Crafting Placeholder
+item.shearingupgrade.name=Pedestal Upgrade
+item.effectgrower.name=Pedestal Upgrade
+item.effectplanter.name=Pedestal Upgrade
+item.effectharvester.name=Pedestal Upgrade
+item.expcollector.name=Pedestal Upgrade
+item.expdropper.name=Pedestal Upgrade
+item.exprelay.name=Pedestal Upgrade
+item.exptank.name=Pedestal Upgrade
+item.expbottler.name=Pedestal Upgrade
 
+item.craftingplaceholder.name=Crafting Placeholder
 
 item.scrolla.name=Ancient Scroll
 item.scrollb.name=Ancient Scroll
@@ -518,7 +527,10 @@ enchantment.enchantSteadfast=Steadfast
 enchantment.enchantLastResort=Last Resort
 enchantment.enchantStepAssist=Step Up
 enchantment.enchantSmelter=Smelter
-enchantment.rangeupgrade=Range
+enchantment.upgraderange=Range
+enchantment.upgradetransferrate=Operation Speed
+
+
 
 potion.potency.2=III
 potion.potency.3=IV

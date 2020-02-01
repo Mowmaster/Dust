@@ -35,7 +35,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpEnchanter extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    private int maxXP;
 
 
     public ipuExpEnchanter(String unlocName, String registryName)
@@ -45,16 +44,6 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public int getExpBuffer(ItemStack stack)
@@ -210,7 +199,7 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
                                     {
                                         //This is Book Shelf Enchanting level, not enchantment level (15 bookshelfves = 30 levels of enchantability)
                                         float level = getEnchantmentPowerFromSorroundings(world,posOfPedestal,coinInPedestal);
-                                        int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
+                                        int currentlyStoredExp = getXPStored(coinInPedestal);
                                         int expNeeded = getExpCountByLevel((int)(level * 2));
                                         if(currentlyStoredExp >= expNeeded)
                                         {
@@ -222,7 +211,7 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
                                             if(!stackToReturn.isEmpty())
                                             {
                                                 int getExpLeftInPedestal = currentlyStoredExp - expNeeded;
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
+                                                setXPStored(coinInPedestal,getExpLeftInPedestal);
                                                 handler.extractItem(i,stackToReturn.getCount() ,false );
                                                 world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 0.25F, 1.0F);
                                                 ((TilePedestal) pedestalInv).addItem(stackToReturn);
@@ -248,6 +237,7 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String s5 = "";
         int buffer = getExpBuffer(stack);
+        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
 
         switch (getOperationSpeed(stack))
         {
@@ -273,8 +263,10 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
         }
 
         tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels");
+
 
         if(stack.hasTagCompound())
         {

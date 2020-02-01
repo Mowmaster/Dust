@@ -26,7 +26,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExpRelay extends ipuBasicExpUpgrade
 {
     public int operationalSpeed = 0;
-    public int maxXP;
 
 
     public ipuExpRelay(String unlocName, String registryName)
@@ -36,16 +35,6 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
     }
 
     public int getOperationSpeed(ItemStack stack)
@@ -101,6 +90,7 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
 
         String tr = "";
         String s5 = "";
+        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
 
         switch (getOperationSpeed(stack))
         {
@@ -149,8 +139,10 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
         }
 
         tooltip.add(TextFormatting.GOLD + "Exp Relay Upgrade");
+        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
 
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
+
 
         if(getExpTransferRate(stack)>0)
         {

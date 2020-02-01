@@ -88,6 +88,7 @@ public class ItemRegistry
     public static Item fuzzyFilterBlacklistUpgrade;
     public static Item filterModBlacklistUpgrade;
     public static Item furnaceUpgrade;
+    public static Item crusherUpgrade;
     public static Item upgradeEnchanted;
     public static Item upgradeEnchantedBlacklist;
     public static Item effectUpgrade;
@@ -177,6 +178,7 @@ public class ItemRegistry
         crafter4Upgrade = new ipuCrafter("crafter4upgrade","crafter4upgrade",2);
         crafter9Upgrade = new ipuCrafter("crafter9upgrade","crafter9upgrade",3);
         furnaceUpgrade = new ipuFurnace("upgradefurnace","upgradefurnace");
+        crusherUpgrade = new ipuCrystalCrusher("upgradecrusher","upgradecrusher");
         upgradeEnchanted = new ipuFilterEnchanted("upgradeenchanted","upgradeenchanted");
         upgradeEnchantedBlacklist = new ipuFilterEnchantedBlacklist("upgradeenchantedblacklist","upgradeenchantedblacklist");
         filterModUpgrade = new ipuFilterMod("filtermodupgrade","filtermodupgrade");
@@ -187,22 +189,22 @@ public class ItemRegistry
         fuzzyFilterBlacklistUpgrade = new ipuFilterItemBlacklist("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
         placerUpgrade = new ipuPlacer("placerupgrade","placerupgrade");//
         breakerUpgrade = new ipuBreaker("breakerupgrade","breakerupgrade");//
+
         shearingUpgrade = new ipuShearer("shearingupgrade","shearingupgrade");//Shearing
         userUpgrade = new ipuMilker("userupgrade","userupgrade");//Milking
         effectUpgrade = new ipuEffectMagnet("effectupgrade","effectupgrade");//Magnetism
         growerUpgrade = new ipuEffectGrower("effectgrower","effectgrower");//
         planterUpgrade = new ipuEffectSower("effectplanter","effectplanter");//
         harvesterUpgrade = new ipuEffectHarvester("effectharvester","effectharvester");//
-
-
-
         enchantUpgrade = new ipuExpEnchanter("enchantupgrade","enchantupgrade");//Enchanter
         expCollector = new ipuExpCollector("expcollector","expcollector");//Collector
         expDropper = new ipuExpDropper("expdropper","expdropper");//Relay
         expRelay = new ipuExpRelay("exprelay","exprelay");//Tank
         expTank = new ipuExpTank("exptank","exptank");//Dropper
         expBottler = new ipuExpBottler("expbottler","expbottler");//Bottler
-        //enchantUpgrade = new ItemCoin("enchantupgrade","enchantupgrade");//Anvil
+
+
+        //enchantUpgrade = new ipuExpAnvil("enchantupgrade","enchantupgrade");//Anvil
 
 
 
@@ -327,6 +329,7 @@ public class ItemRegistry
 
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
+        registerItem(crusherUpgrade);
         registerItem(upgradeEnchanted);
         registerItem(upgradeEnchantedBlacklist);
 
@@ -444,6 +447,7 @@ public class ItemRegistry
 
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);
+        registerRender(crusherUpgrade);
         registerRender(upgradeEnchanted);
         registerRender(upgradeEnchantedBlacklist);
 
