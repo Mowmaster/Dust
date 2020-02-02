@@ -35,7 +35,7 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuCrafter extends ipuBasic
 {
     public int transferRate = 0;
-    private int gridSize = 0;
+    public int gridSize = 0;
 
     public ipuCrafter(String unlocName, String registryName, int sizeOfGrid)
     {
@@ -186,9 +186,257 @@ public class ipuCrafter extends ipuBasic
         }
     }
 
+    /*protected int counter = 0;
+    public void crafter(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal)//1x1, 2x2, 3x3
+    {
+        //Iterate size is 1,4,9 effectivly
+        int gridIterateSize = gridSize*gridSize;
+        BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
+        ItemStack itemFromInv = ItemStack.EMPTY;
+
+        //Setup crafting Container with grid size
+        InventoryCrafting craft = new InventoryCrafting(new Container()
+        {
+            @Override
+            public boolean canInteractWith(@Nonnull EntityPlayer player) {
+                return false;
+            }
+        }, gridSize, gridSize);
+
+        if(world.getTileEntity(posInventory) !=null)
+        {
+            if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
+            {
+                IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+                TileEntity invToPullFrom = world.getTileEntity(posInventory);
+                if(invToPullFrom instanceof TilePedestal) {
+                    itemFromInv = ItemStack.EMPTY;
+                }
+                else {
+                    if(handler != null)
+                    {
+                        int intInventorySlots = handler.getSlots();
+                        //int i = getNextSlotWithItems(invToPullFrom,getPedestalFacing(world, posOfPedestal),getStackInPedestal(world,posOfPedestal));
+
+                        //If the container is the same size as the grid
+                        if(intInventorySlots==gridIterateSize)
+                        {
+                            int itemInStackCount = 0;
+                            for(int i = 0; i < gridIterateSize; i++) {
+                                ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                {
+                                    itemInStackCount++;
+                                }
+                            }
+
+                            if(itemInStackCount>=gridIterateSize)
+                            {
+                                for(int i = 0; i < gridIterateSize; i++) {
+                                    ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+
+                                    if(stack.isEmpty() || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                        continue;
+
+                                    craft.setInventorySlotContents(i, stack);
+                                }
+
+                                for(IRecipe recipe : ForgeRegistries.RECIPES)
+                                {
+                                    if(recipe.matches(craft, world)) {
+                                        if(!hasItem())
+                                        {
+                                            this.addItem(recipe.getCraftingResult(craft));
+
+                                            for(int i = 0; i < gridIterateSize; i++) {
+                                                ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                                    continue;
+
+                                                if(stack.getItem().hasContainerItem(stack))
+                                                {
+                                                    System.out.println(stack.getDisplayName());
+                                                    ItemStack container = stack.getItem().getContainerItem(stack);
+                                                    if(!world.isRemote)
+                                                    {
+                                                        world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                    }
+                                                    stack.shrink(1);
+                                                }
+                                                else
+                                                {
+                                                    stack.shrink(1);
+                                                }
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                            {
+                                                if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                {
+                                                    this.addItem(recipe.getCraftingResult(craft));
+                                                }
+
+
+                                                for(int i = 0; i < gridIterateSize; i++) {
+                                                    ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                    if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                                        continue;
+
+                                                    if(stack.getItem().hasContainerItem(stack))
+                                                    {
+                                                        System.out.println(stack.getDisplayName());
+                                                        ItemStack container = stack.getItem().getContainerItem(stack);
+                                                        if(!world.isRemote)
+                                                        {
+                                                            world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                        }
+                                                        stack.shrink(1);
+                                                    }
+                                                    else
+                                                    {
+                                                        stack.shrink(1);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //Counter is the currently selected slot
+                            int counted = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getSlots()/gridIterateSize;
+                            if(counter<counted)
+                            {
+                                if(!hasItem())
+                                {
+                                    // 0 1 2 3 4 5 6 7 8
+                                    // 9 10 11 12 13 14 15 16 17
+                                    // 18 19 20 21 22 23 24 25 26
+
+                                    //Pretend we use a 3x3 grid and counter = 0 and so fin =8
+                                    int fin = ((counter+1)*gridIterateSize)-1;
+                                    int itemInStackCount = 0;
+                                    //j = 8-(9-1) == 0
+                                    for(int j = (fin-(gridIterateSize-1)); j <=fin; j++) {
+                                        ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(j);
+                                        //Checks to make sure we have a possible recipe in slots 0-8
+                                        if(stack.getCount()>=2 || stack.isEmpty() || stack.getMaxStackSize()==1 || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                        {
+                                            itemInStackCount++;
+                                        }
+                                    }
+
+                                    //IF we have a potential recipe available to craft
+                                    if(itemInStackCount>=gridIterateSize)
+                                    {
+                                        //Iterating 0-8 again
+                                        for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+
+                                            if(stack.isEmpty() || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                                continue;
+
+                                            //Sets the craftign slots up with items (Should just make a crafting array first with a counter and then simplify this with a loop through array)
+                                            int getCraftingSlot = i-(counter*gridIterateSize);
+                                            craft.setInventorySlotContents(getCraftingSlot, stack);
+                                        }
+
+                                        //iterate through forge registered recipes
+                                        for(IRecipe recipe : ForgeRegistries.RECIPES)
+                                        {
+                                            //if our recipe has a match
+                                            if(recipe.matches(craft, world)) {
+                                                //if pedestal is empty
+                                                if(!hasItem())
+                                                {
+                                                    //add crafting result to pedestal
+                                                    this.addItem(recipe.getCraftingResult(craft));
+
+                                                    //deal with removing items, expelling container items, and keeping placeholders in place
+                                                    for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                                        ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                        if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                                            continue;
+
+                                                        if(stack.getItem().hasContainerItem(stack))
+                                                        {
+                                                            System.out.println(stack.getDisplayName());
+                                                            ItemStack container = stack.getItem().getContainerItem(stack);
+                                                            if(!world.isRemote)
+                                                            {
+                                                                world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                            }
+                                                            stack.shrink(1);
+                                                        }
+                                                        else
+                                                        {
+                                                            stack.shrink(1);
+                                                        }
+
+                                                    }
+                                                }
+                                                //if pedestal has items inside (Could skip this if we wanted to)
+                                                else
+                                                {
+                                                    if(doItemsMatch(recipe.getCraftingResult(craft)))
+                                                    {
+                                                        if(getItemInPedestal().getCount()<getMaxStackSize())
+                                                        {
+                                                            this.addItem(recipe.getCraftingResult(craft));
+                                                        }
+
+
+                                                        for(int i = (fin-(gridIterateSize-1)); i <=fin; i++) {
+                                                            ItemStack stack = invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.DOWN).getStackInSlot(i);
+                                                            if(stack.isEmpty()  || stack.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                                                continue;
+
+                                                            if(stack.getItem().hasContainerItem(stack))
+                                                            {
+                                                                ItemStack container = stack.getItem().getContainerItem(stack);
+                                                                if(!world.isRemote)
+                                                                {
+                                                                    world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(-1).getX() + 0.5,getPosOfBlockBelow(-1).getY(),getPosOfBlockBelow(-1).getZ()+ 0.5,container));
+                                                                }
+                                                                stack.shrink(1);
+                                                            }
+                                                            else
+                                                            {
+                                                                stack.shrink(1);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+                                    counter++;
+                                }
+                            }
+
+                            if(counter>=counted)
+                            {
+                                counter=0;
+                            }
+                        }
+                        //sets the items from the inventory as a crafting pattern WE WILL CHECK the below inv and set the first 9 slots as this
+
+                    }
+                }
+            }
+        }
+    }*/
+
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s3 = "";
         String s5 = getOperationSpeedString(stack);
         String tr = "" + getItemTransferRate(stack) + "";
 
@@ -198,11 +446,11 @@ public class ipuCrafter extends ipuBasic
         {
             if(stack.getTagCompound().hasKey("coineffect"))
             {
-                tooltip.add("Bulk Crafting Rate: " + tr);
+                tooltip.add(TextFormatting.GRAY + "Bulk Crafting Rate: " + tr);
             }
             else
             {
-                tooltip.add("Bulk Crafting Rate: 1");
+                tooltip.add(TextFormatting.GRAY + "Bulk Crafting Rate: 1");
             }
 
             if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
@@ -216,11 +464,9 @@ public class ipuCrafter extends ipuBasic
         }
         else
         {
-            tooltip.add("Bulk Crafting Rate: 1");
-            tooltip.add("Operational Speed: Normal Speed");
+            tooltip.add(TextFormatting.GRAY + "Bulk Crafting Rate: 1");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
-
-
     }
 
 }
