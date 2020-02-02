@@ -30,7 +30,6 @@ import static net.minecraft.block.BlockDirectional.FACING;
 public class ipuExpCollector extends ipuBasicExpUpgrade
 {
     public int rangeWidth = 0;
-    public int operationalSpeed = 0;
     public int suckiRate = 0;
 
 
@@ -48,34 +47,6 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
-    }
-
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
     }
 
     public int getSuckiRate(ItemStack stack)
@@ -188,33 +159,10 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s3 = getRangeWidth(stack);
-        String s5 = "";
+        String s5 = getOperationSpeedString(stack);
         String tr = "";
         String sr = "";
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
 
         switch (getExpTransferRate(stack))
         {
@@ -277,22 +225,22 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
             }
         }*/
 
-            if(s3>0)
+        if(stack.isItemEnchanted() && s3 > 0)
         {
-            tooltip.add("Effected Area: " + trr+"x"+trr+"x"+trr);
+            tooltip.add(TextFormatting.WHITE + "Effected Area: " + trr+"x"+trr+"x"+trr);
         }
         else
         {
-            tooltip.add("Effected Area: " + trr+"x"+trr+"x"+trr);
+            tooltip.add(TextFormatting.WHITE + "Effected Area: " + trr+"x"+trr+"x"+trr);
         }
 
         if(getExpTransferRate(stack)>0)
         {
-            tooltip.add("Exp Transfer Ammount: " + tr);
+            tooltip.add(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr);
         }
         else
         {
-            tooltip.add("Exp Transfer Ammount: 5 Levels");
+            tooltip.add(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels");
         }
 
         if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)

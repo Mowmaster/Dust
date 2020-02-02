@@ -28,10 +28,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ipuExpBottler extends ipuBasicExpUpgrade
 {
-    public int operationalSpeed = 0;
-    public int bottlingRate = 1;
-
-
     public ipuExpBottler(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
@@ -43,6 +39,7 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
     public int getTransferRate(ItemStack stack)
     {
+        int bottlingRate = 1;
         switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
@@ -68,38 +65,6 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
         return  bottlingRate;
     }
-
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
-    }
-
-
-
-    public int ticked = 0;
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
@@ -176,42 +141,13 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int trr = getTransferRate(stack);
-        String tr = ""+ trr +"";
-        String s5 = "";
-
-        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
-
-
+        String tr = "" + getTransferRate(stack) + "";
+        String s5 = getOperationSpeedString(stack);
+        String xp = "" + getExpLevelFromCount(getXPStored(stack)) + "";
 
         tooltip.add(TextFormatting.GOLD + "Exp Bottler Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
-
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 15 Levels");
-
 
         if(stack.hasTagCompound())
         {
@@ -224,16 +160,9 @@ public class ipuExpBottler extends ipuBasicExpUpgrade
                 tooltip.add("Bottled per Opperation: 1");
             }
 
-            if(stack.isItemEnchanted())
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
             {
-                if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-                }
-                else
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-                }
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
             }
             else
             {

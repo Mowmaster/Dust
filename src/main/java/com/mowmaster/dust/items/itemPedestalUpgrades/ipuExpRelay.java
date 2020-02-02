@@ -25,9 +25,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ipuExpRelay extends ipuBasicExpUpgrade
 {
-    public int operationalSpeed = 0;
-
-
     public ipuExpRelay(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
@@ -36,36 +33,6 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
     }
-
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
-    }
-
-    public int ticked = 0;
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
@@ -84,36 +51,11 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
         setMaxXP(coinInPedestal,getExpCountByLevel(30));
     }
 
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
         String tr = "";
-        String s5 = "";
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
+        String s5 = getOperationSpeedString(stack);
 
         switch (getExpTransferRate(stack))
         {
@@ -140,27 +82,35 @@ public class ipuExpRelay extends ipuBasicExpUpgrade
 
         tooltip.add(TextFormatting.GOLD + "Exp Relay Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
-
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
 
 
-        if(getExpTransferRate(stack)>0)
+        if(stack.hasTagCompound())
         {
-            tooltip.add("Exp Transfer Ammount: " + tr);
-        }
-        else
-        {
-            tooltip.add("Exp Transfer Ammount: 5 Levels");
-        }
+            if(stack.isItemEnchanted() && getExpTransferRate(stack) > 0)
+            {
+                tooltip.add(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr);
+            }
+            else
+            {
+                tooltip.add(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels");
+            }
 
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
+            {
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
+            }
+            else
+            {
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
+            }
         }
         else
         {
+            tooltip.add(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels");
             tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
+
     }
 
 

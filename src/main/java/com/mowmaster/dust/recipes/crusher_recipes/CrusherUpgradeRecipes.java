@@ -49,6 +49,7 @@ public class CrusherUpgradeRecipes
         this.addCrushing(Items.POTATO,new ItemStack(Items.POTATO,1));
         this.addCrushing(Items.POISONOUS_POTATO,new ItemStack(Items.POTATO,1));
         this.addCrushing(Items.BLAZE_ROD,new ItemStack(Items.BLAZE_POWDER,3));
+        this.addCrushing(Items.BONE,new ItemStack(Items.DYE,4,15));
 
         this.addCrushingRecipeForBlock(Blocks.COBBLESTONE,new ItemStack(Blocks.GRAVEL,1));
         this.addCrushingRecipeForBlock(Blocks.GRAVEL,new ItemStack(Blocks.SAND,1));

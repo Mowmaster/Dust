@@ -1,5 +1,6 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
+import com.google.common.collect.Maps;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
@@ -10,9 +11,12 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -22,18 +26,18 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import scala.Array;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ipuExpAnvil extends ipuBasicExpUpgrade
 {
-    public int operationalSpeed = 0;
-
-
     public ipuExpAnvil(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
@@ -72,63 +76,92 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         return  value;
     }
 
-    public int getOperationSpeed(ItemStack stack)
+    public int getRepairRate(ItemStack stack)
     {
-        switch (getTransferRateModifier(stack))
+        int value = 0;
+        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
-                operationalSpeed = 20;//normal speed
+                    value = 5;//10 durability/ operation
                 break;
             case 1:
-                operationalSpeed=10;//2x faster
+                value=10;//20
                 break;
             case 2:
-                operationalSpeed = 5;//4x faster
+                value = 15;//30
                 break;
             case 3:
-                operationalSpeed = 3;//6x faster
+                value = 20;//40
                 break;
             case 4:
-                operationalSpeed = 2;//10x faster
+                value = 25;//50
                 break;
             case 5:
-                operationalSpeed=1;//20x faster
+                value= 50;//100
                 break;
-            default: operationalSpeed=20;
+            default: value=1;
         }
 
-        return  operationalSpeed;
+        return  value;
     }
 
-    public float getEnchantmentPowerFromSorroundings(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
+    private ArrayList<ItemStack> doSorroundingPedestalsHaveItemsToCombine(World world, BlockPos pedestalPos)
     {
+        ArrayList<ItemStack> stackOnSorroundingPedestal = new ArrayList<ItemStack>();
 
-        float enchantPower = 0;
-        int getMaxEnchantLevel = getExpBuffer(coinInPedestal);
+        ArrayList<BlockPos> posSorroundingPedestals = new ArrayList<BlockPos>();
+        posSorroundingPedestals.add(pedestalPos.add(2,0,0));
+        posSorroundingPedestals.add(pedestalPos.add(0,0,2));
+        posSorroundingPedestals.add(pedestalPos.add(-2,0,0));
+        posSorroundingPedestals.add(pedestalPos.add(0,0,-2));
 
-        for (int i = -2; i <= 2; ++i) {
-            for (int j = -2; j <= 2; ++j) {
-                if (i > -2 && i < 2 && j == -1) {
-                    j = 2;
-                }
-                for (int k = 0; k <= 2; ++k) {
-                    BlockPos blockpos = posOfPedestal.add(i, k, j);
-                    Block blockNearBy = world.getBlockState(blockpos).getBlock();
-                    if (blockNearBy.getEnchantPowerBonus(world, blockpos)>0)
+        for(int i=0; i< posSorroundingPedestals.size();i++)
+        {
+            if(!world.getBlockState(posSorroundingPedestals.get(i)).getBlock().equals(Blocks.AIR))
+            {
+                TileEntity tile = world.getTileEntity(posSorroundingPedestals.get(i));
+                if(tile instanceof TilePedestal)
+                {
+                    TilePedestal tilePedestal = (TilePedestal)tile;
+                    ItemStack stack = tilePedestal.getItemInPedestal();
+                    if(stack.isItemEnchanted() || stack.getItem().equals(Items.ENCHANTED_BOOK) || stack.getItem().equals(Items.NAME_TAG))
                     {
-                        enchantPower +=blockNearBy.getEnchantPowerBonus(world, blockpos);
+                        stackOnSorroundingPedestal.add(stack);
                     }
                 }
             }
         }
 
-        if((int)(enchantPower*2) > getMaxEnchantLevel)
-        {
-            enchantPower = (float)(getMaxEnchantLevel/2);
-        }
-
-        return enchantPower;
+        return stackOnSorroundingPedestal;
     }
+
+    private void deleteItemsOnPedestals(World world, BlockPos pedestalPos)
+    {
+
+        ArrayList<BlockPos> posSorroundingPedestals = new ArrayList<BlockPos>();
+        posSorroundingPedestals.add(pedestalPos.add(2,0,0));
+        posSorroundingPedestals.add(pedestalPos.add(0,0,2));
+        posSorroundingPedestals.add(pedestalPos.add(-2,0,0));
+        posSorroundingPedestals.add(pedestalPos.add(0,0,-2));
+
+        for(int i=0; i< posSorroundingPedestals.size();i++)
+        {
+            if(!world.getBlockState(posSorroundingPedestals.get(i)).getBlock().equals(Blocks.AIR))
+            {
+                TileEntity tile = world.getTileEntity(posSorroundingPedestals.get(i));
+                if(tile instanceof TilePedestal)
+                {
+                    TilePedestal tilePedestal = (TilePedestal)tile;
+                    ItemStack stack = tilePedestal.getItemInPedestal();
+                    if(stack.isItemEnchanted() || stack.getItem().equals(Items.ENCHANTED_BOOK) || stack.getItem().equals(Items.NAME_TAG))
+                    {
+                        tilePedestal.removeItem();
+                    }
+                }
+            }
+        }
+    }
+
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
@@ -147,6 +180,13 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         setMaxXP(coinInPedestal, getMaxXpValue);
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         ItemStack itemFromInv = ItemStack.EMPTY;
+        ArrayList<ItemStack> stackToCombine = doSorroundingPedestalsHaveItemsToCombine(world,posOfPedestal);
+        String strNameToChangeTo = "";
+        Map<Enchantment, Integer> enchantsMap = Maps.<Enchantment, Integer>newLinkedHashMap();
+
+        int intExpInCoin = getXPStored(coinInPedestal);
+        int intRepairRate = getRepairRate(coinInPedestal);
+        int intLevelCostToCombine = 0;
 
         if(world.getTileEntity(posInventory) !=null)
         {
@@ -167,36 +207,118 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                             int slotCount = itemFromInv.getCount();
                             TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
                             if(pedestalInv instanceof TilePedestal) {
-                                if(!((TilePedestal) pedestalInv).hasItem())
+                                TilePedestal tilePedestal = (TilePedestal) pedestalInv;
+                                //Need to add this one to enchantments list for combining
+                                stackToCombine.add(itemFromInv);
+
+                                if(!tilePedestal.hasItem())
                                 {
-                                    if(itemFromInv.isItemEnchantable() || itemFromInv.getItem().equals(Items.BOOK))
+                                    //Repair first if possible
+                                    if(itemFromInv.isItemDamaged())
                                     {
-                                        //This is Book Shelf Enchanting level, not enchantment level (15 bookshelfves = 30 levels of enchantability)
-                                        float level = getEnchantmentPowerFromSorroundings(world,posOfPedestal,coinInPedestal);
-                                        int currentlyStoredExp = ((TilePedestal) pedestalInv).getStoredValueForUpgrades();
-                                        int expNeeded = getExpCountByLevel((int)(level * 2));
-                                        if(currentlyStoredExp >= expNeeded)
+                                        if(itemFromInv.getItem().isRepairable() && itemFromInv.getItem().getMaxDamage(itemFromInv) > 0)
                                         {
-                                            //Enchanting Code Here
-                                            Random rand = new Random();
-                                            ItemStack itemToEnchant = itemFromInv.copy();
-                                            itemToEnchant.setCount(1);
-                                            ItemStack stackToReturn = EnchantmentHelper.addRandomEnchantment(rand,itemToEnchant ,(int)(level * 2) ,true );
-                                            if(!stackToReturn.isEmpty())
+                                            if(intExpInCoin >= intRepairRate)
                                             {
-                                                int getExpLeftInPedestal = currentlyStoredExp - expNeeded;
-                                                ((TilePedestal) pedestalInv).setStoredValueForUpgrades(getExpLeftInPedestal);
-                                                handler.extractItem(i,stackToReturn.getCount() ,false );
-                                                world.playSound((EntityPlayer)null, posOfPedestal.getX(), posOfPedestal.getY(), posOfPedestal.getZ(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 0.25F, 1.0F);
-                                                ((TilePedestal) pedestalInv).addItem(stackToReturn);
+                                                setXPStored(coinInPedestal,(intExpInCoin-intRepairRate));
+                                                itemFromInv.setItemDamage(itemFromInv.getItemDamage() - (intRepairRate*2));
                                             }
+                                        }
+                                    }
+                                    else if(stackToCombine.size() > 0)
+                                    {
+                                        for(int e=0;e<stackToCombine.size();e++)
+                                        {
+                                            if(stackToCombine.get(e).isItemEnchanted() || stackToCombine.get(e).getItem().equals(Items.ENCHANTED_BOOK))
+                                            {
+
+                                                NBTTagList nbttaglist = stackToCombine.get(e).getItem() == Items.ENCHANTED_BOOK ? ItemEnchantedBook.getEnchantments(stackToCombine.get(e)) : stackToCombine.get(e).getEnchantmentTagList();
+                                                for (int j = 0; j < nbttaglist.tagCount(); ++j)
+                                                {
+                                                    NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(j);
+                                                    Enchantment enchantment = Enchantment.getEnchantmentByID(nbttagcompound.getShort("id"));
+                                                    int k = nbttagcompound.getShort("lvl");
+                                                    switch(enchantment.getRarity())
+                                                    {
+                                                        case COMMON:
+                                                            intLevelCostToCombine +=1;
+                                                            break;
+                                                        case UNCOMMON:
+                                                            intLevelCostToCombine +=2;
+                                                            break;
+                                                        case RARE:
+                                                            intLevelCostToCombine +=4;
+                                                            break;
+                                                        case VERY_RARE:
+                                                            intLevelCostToCombine +=8;
+                                                            break;
+                                                    }
+
+                                                    //Check if enchant already exists in list
+                                                    if(enchantsMap.containsKey(enchantment))
+                                                    {
+                                                        //if it does then get the value of it
+                                                        int intNewValue = 0;
+                                                        int e1 = enchantsMap.get(enchantment).intValue();
+                                                        int e2 = Integer.valueOf(k);
+                                                        if(e1 == e2)
+                                                        {
+                                                            intNewValue = e2 + 1;
+                                                            if(e2 > enchantment.getMaxLevel())
+                                                            {
+                                                                intNewValue = enchantment.getMaxLevel();
+                                                            }
+
+                                                            enchantsMap.put(enchantment, intNewValue);
+                                                        }
+                                                        else if(e1 > e2)
+                                                        {
+                                                            //if existing enchant is better then the one being applied, then skip just this one
+                                                            continue;
+                                                        }
+                                                        else
+                                                        {
+                                                            enchantsMap.put(enchantment, Integer.valueOf(k));
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        enchantsMap.put(enchantment, Integer.valueOf(k));
+                                                    }
+                                                }
+                                            }
+                                            else if(stackToCombine.get(e).getItem().equals(Items.NAME_TAG))
+                                            {
+                                                strNameToChangeTo = stackToCombine.get(e).getDisplayName();
+                                            }
+
+                                        }
+
+                                        //System.out.println("Level To Combine: "+ intLevelCostToCombine);
+                                        int intExpCostToCombine = getExpCountByLevel(intLevelCostToCombine);
+                                        //System.out.println("XP To Combine: "+ intExpCostToCombine);
+                                        if(intExpInCoin >= intExpCostToCombine)
+                                        {
+                                            ItemStack itemFromInvCopy = itemFromInv.copy();
+                                            itemFromInvCopy.setCount(1);
+                                            //Charge Exp Cost
+                                            setXPStored(coinInPedestal,(intExpInCoin-intExpCostToCombine));
+                                            //Delete All Items On Pedestals
+                                            deleteItemsOnPedestals(world,posOfPedestal);
+                                            EnchantmentHelper.setEnchantments(enchantsMap,itemFromInvCopy);
+                                            if(strNameToChangeTo != "")
+                                            {
+                                                itemFromInvCopy.setStackDisplayName(strNameToChangeTo);
+                                            }
+                                            handler.extractItem(i,itemFromInvCopy.getCount(),false);
+                                            tilePedestal.addItem(itemFromInvCopy);
                                         }
                                     }
                                     else
                                     {
-                                        ItemStack toReturn = itemFromInv.copy();
-                                        handler.extractItem(i,toReturn.getCount() ,false );
-                                        ((TilePedestal) pedestalInv).addItem(toReturn);
+                                        ItemStack itemFromInvCopy = itemFromInv.copy();
+                                        handler.extractItem(i,itemFromInvCopy.getCount(),false);
+                                        tilePedestal.addItem(itemFromInvCopy);
                                     }
                                 }
                             }
@@ -209,39 +331,13 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = "";
+        String s5 = getOperationSpeedString(stack);
         int buffer = getExpBuffer(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-        tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
 
         tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
-
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels");
-
 
         if(stack.hasTagCompound())
         {

@@ -76,7 +76,7 @@ public class ipuCrystalCrusher extends ipuBasic
 
     public int getSmeltingSpeed(ItemStack stack)
     {
-        switch (getTransferRateModifier(stack))
+        switch (intOperationalSpeedModifier(stack))
         {
             case 0:
                 smeltingSpeed = 200;//normal speed
@@ -370,26 +370,26 @@ public class ipuCrystalCrusher extends ipuBasic
         {
             if(stack.getTagCompound().hasKey("coineffect"))
             {
-                tooltip.add("Items Per Smelt: " + tr);
+                tooltip.add(TextFormatting.GRAY + "Items Crushed Per Operation: " + tr);
             }
             else
             {
-                tooltip.add("Items Per Smelt: 1");
+                tooltip.add(TextFormatting.GRAY + "Items Crushed Per Operation: 1");
             }
 
             if(stack.isItemEnchanted() && getSmeltingSpeed(stack) >0)
             {
-                tooltip.add("Smelting Speed: " + trr);
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + trr);
             }
             else
             {
-                tooltip.add("Smelting Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Items Per Smelt: 1");
-            tooltip.add("Smelting Speed: Normal Speed");
+            tooltip.add(TextFormatting.GRAY + "Items Crushed Per Operation: 1");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

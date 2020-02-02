@@ -4,6 +4,7 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.entities.EntityDustRegistry;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.misc.AchievementHandler;

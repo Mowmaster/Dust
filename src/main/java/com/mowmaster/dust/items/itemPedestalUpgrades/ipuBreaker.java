@@ -39,7 +39,6 @@ public class ipuBreaker extends ipuBasic
     Breaks Block, at Range and Puts FIRST Block Result in pedestal slot(Spawn rest of drops list in world???)
      */
     public int range = 0;
-    public int operationalSpeed = 0;
 
     public ipuBreaker(String unlocName, String registryName)
     {
@@ -48,16 +47,6 @@ public class ipuBreaker extends ipuBasic
         this.maxStackSize = 64;
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
     }
 
     public int getRange(ItemStack stack)
@@ -86,34 +75,6 @@ public class ipuBreaker extends ipuBasic
         }
 
         return  range;
-    }
-
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
@@ -268,68 +229,28 @@ public class ipuBreaker extends ipuBasic
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s3 = getRange(stack);
-
         String trr = "" + s3 + "";
 
-        String s5 = "";
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(TextFormatting.GOLD + "Block Breaker Upgrade");
-        if(stack.hasTagCompound())
+
+        if(stack.isItemEnchanted() && s3 > 0)
         {
-
-            if(stack.isItemEnchanted())
-            {
-                if(getRange(stack) >0)
-                {
-                    tooltip.add("Breaker Range: " + trr);
-                }
-                else
-                {
-                    tooltip.add("Breaker Range: " + trr);
-                }
-
-                if(getOperationSpeed(stack) >0)
-                {
-                    tooltip.add("Operation Speed: " + s5);
-                }
-                else
-                {
-                    tooltip.add("Operation Speed: Normal Speed");
-                }
-            }
-            else
-            {
-                tooltip.add("Breaker Range: " + trr);
-                tooltip.add("Operation Speed: Normal Speed");
-            }
+            tooltip.add(TextFormatting.WHITE + "Breaker Range: " + trr);
         }
         else
         {
-            tooltip.add("Breaker Range: " + trr);
-            tooltip.add("Operation Speed: Normal Speed");
+            tooltip.add(TextFormatting.WHITE + "Breaker Range: " + trr);
+        }
+
+        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
+        {
+            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
+        }
+        else
+        {
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

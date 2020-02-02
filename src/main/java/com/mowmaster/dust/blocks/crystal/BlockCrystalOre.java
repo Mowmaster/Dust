@@ -132,6 +132,11 @@ public class BlockCrystalOre extends BlockBasic implements IMetaBlockName
     }
 
     @Override
+    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+        return false;
+    }
+
+    @Override
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         if(!worldIn.isRemote)
         {

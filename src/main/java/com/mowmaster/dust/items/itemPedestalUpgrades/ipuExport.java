@@ -29,7 +29,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuExport extends ipuBasic
 {
     public int transferRate = 0;
-    public int transferSpeed = 0;
 
     public ipuExport(String unlocName, String registryName)
     {
@@ -39,17 +38,6 @@ public class ipuExport extends ipuBasic
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
     }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
-    }
-
 
     public int getTransferRate(ItemStack stack)
     {
@@ -77,34 +65,6 @@ public class ipuExport extends ipuBasic
         }
 
         return  transferRate;
-    }
-
-    public int getTransferSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                transferSpeed = 20;//normal speed
-                break;
-            case 1:
-                transferSpeed=10;//2x faster
-                break;
-            case 2:
-                transferSpeed = 5;//4x faster
-                break;
-            case 3:
-                transferSpeed = 3;//6x faster
-                break;
-            case 4:
-                transferSpeed = 2;//10x faster
-                break;
-            case 5:
-                transferSpeed=1;//20x faster
-                break;
-            default: transferSpeed=20;
-        }
-
-        return  transferSpeed;
     }
 
     private int getNextSlotEmptyOrMatching(TileEntity invBeingChecked, EnumFacing sideSlot, ItemStack itemInPedestal)
@@ -153,7 +113,7 @@ public class ipuExport extends ipuBasic
 //                          impTicker,this.world,   getItemInPedestal(),      getCoinOnPedestal(),     this.getPos()
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        int speed = getTransferSpeed(coinInPedestal);
+        int speed = getOperationSpeed(coinInPedestal);
 
         if(!world.isBlockPowered(pedestalPos))
         {
@@ -234,60 +194,34 @@ public class ipuExport extends ipuBasic
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s2 = getTransferRate(stack);
-        String s3 = "";
+        String s5 = getOperationSpeedString(stack);
+        String tr = "" + getTransferRate(stack) + "";
 
-        switch (getTransferSpeed(stack))
-            {
-            case 1:
-                s3 = "20x Faster";
-                break;
-            case 2:
-                s3="10x Faster";
-                break;
-            case 3:
-                s3 = "6x Faster";
-                break;
-            case 5:
-                s3 = "4x Faster";
-                break;
-            case 10:
-                s3 = "2x Faster";
-                break;
-            case 20:
-                s3="Normal Speed";
-                break;
-            default: s3="Normal Speed";
-        }
-
-
-        String tr = "" + s2 + "";
-        String trr = s3;
         tooltip.add(TextFormatting.GOLD + "Item Stack Export Upgrade");
         if(stack.hasTagCompound())
         {
             if(stack.getTagCompound().hasKey("coineffect"))
             {
-                tooltip.add("Transfer Rate: " + tr);
+                tooltip.add(TextFormatting.GRAY + "Transfer Rate: " + tr);
             }
             else
             {
-                tooltip.add("Transfer Rate: 1");
+                tooltip.add(TextFormatting.GRAY + "Transfer Rate: 1");
             }
 
-            if(stack.isItemEnchanted() && getTransferRate(stack) >0)
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
             {
-                tooltip.add("Transfer Speed: " + trr);
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
             }
             else
             {
-                tooltip.add("Transfer Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Transfer Rate: 1");
-            tooltip.add("Transfer Speed: Normal Speed");
+            tooltip.add(TextFormatting.GRAY + "Transfer Rate: 1");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

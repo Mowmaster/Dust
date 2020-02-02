@@ -34,9 +34,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class ipuExpEnchanter extends ipuBasicExpUpgrade
 {
-    public int operationalSpeed = 0;
-
-
     public ipuExpEnchanter(String unlocName, String registryName)
     {
         this.setUnlocalizedName(unlocName);
@@ -73,34 +70,6 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
         }
 
         return  value;
-    }
-
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
     }
 
     public float getEnchantmentPowerFromSorroundings(World world, BlockPos posOfPedestal)
@@ -235,64 +204,23 @@ public class ipuExpEnchanter extends ipuBasicExpUpgrade
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = "";
+        String s5 = getOperationSpeedString(stack);
         int buffer = getExpBuffer(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
 
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
-
         tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
-
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels");
 
-
-        if(stack.hasTagCompound())
+        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
         {
-            if(stack.isItemEnchanted())
-            {
-                if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-                }
-                else
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-                }
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
+            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
         }
         else
         {
             tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
-
-
 
     @Override
     public void onRandomDisplayTick(TilePedestal pedestal, IBlockState stateIn, World world, BlockPos pos, Random rand)

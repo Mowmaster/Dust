@@ -34,7 +34,6 @@ public class ipuMilker extends ipuBasic
 {
     public int rangeWidth = 0;
     public int rangeHeight = 1;
-    public int operationalSpeed = 0;
 
     public ipuMilker(String unlocName, String registryName)
     {
@@ -45,54 +44,12 @@ public class ipuMilker extends ipuBasic
         this.isFilter=false;
     }
 
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
-    }
-
     public int getRangeWidth(ItemStack stack)
     {
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
     }
-
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
-    }
-
-
-
-    public int ticked = 0;
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
@@ -162,52 +119,27 @@ public class ipuMilker extends ipuBasic
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s3 = getRangeWidth(stack);
-        String s5 = "";
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
-
+        String s5 = getOperationSpeedString(stack);
         String tr = "" + (s3+s3+1) + "";
 
         tooltip.add(TextFormatting.GOLD + "Milking Upgrade");
 
-
-        if(s3>0)
+        if(stack.isItemEnchanted() && s3 > 0)
         {
-            tooltip.add("Effected Area: " + tr+"x"+"2x"+tr);
+            tooltip.add(TextFormatting.WHITE + "Effected Area: " + tr+"x"+"2x"+tr);
         }
         else
         {
-            tooltip.add("Effected Are: " + tr+"x"+"2x"+tr);
+            tooltip.add(TextFormatting.WHITE + "Effected Area: " + tr+"x"+"2x"+tr);
         }
 
         if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
         {
-            tooltip.add("Operational Speed: " + s5);
+            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
         }
         else
         {
-            tooltip.add("Operational Speed: Normal Speed");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

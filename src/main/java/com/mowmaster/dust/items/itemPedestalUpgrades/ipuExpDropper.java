@@ -29,8 +29,6 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 {
     public int range = 0;
     public int summonRate = 7;
-    public int operationalSpeed = 0;
-
 
     public ipuExpDropper(String unlocName, String registryName)
     {
@@ -97,35 +95,6 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
         return  range;
     }
 
-    public int getOperationSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                operationalSpeed = 20;//normal speed
-                break;
-            case 1:
-                operationalSpeed=10;//2x faster
-                break;
-            case 2:
-                operationalSpeed = 5;//4x faster
-                break;
-            case 3:
-                operationalSpeed = 3;//6x faster
-                break;
-            case 4:
-                operationalSpeed = 2;//10x faster
-                break;
-            case 5:
-                operationalSpeed=1;//20x faster
-                break;
-            default: operationalSpeed=20;
-        }
-
-        return  operationalSpeed;
-    }
-
-
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getOperationSpeed(coinInPedestal);
@@ -177,38 +146,11 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s2 = getTransferRate(stack);
         int s3 = getRange(stack);
-
         String trr = "" + s3 + "";
-
         String tr = "";
-        String s5 = "";
+        String s5 = getOperationSpeedString(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-
-
-        switch (getOperationSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
 
         switch (getTransferRate(stack))
         {
@@ -235,51 +177,41 @@ public class ipuExpDropper extends ipuBasicExpUpgrade
 
         tooltip.add(TextFormatting.GOLD + "Exp Dropper Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
-
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels");
-
 
         if(stack.hasTagCompound())
         {
+            if(stack.isItemEnchanted() && getRange(stack) >0)
+            {
+                tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
+            }
+            else
+            {
+                tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
+            }
+
             if(getTransferRate(stack)>0)
             {
-                tooltip.add("Exp Dropped Ammount: " + tr);
+                tooltip.add(TextFormatting.GRAY + "Exp Dropped Ammount: " + tr);
             }
             else
             {
-                tooltip.add("Exp Dropped Ammount: 1 Level");
+                tooltip.add(TextFormatting.GRAY + "Exp Dropped Ammount: 1 Level");
             }
 
-            if(stack.isItemEnchanted())
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
             {
-                if(getRange(stack) >0)
-                {
-                    tooltip.add("Dropper Range: " + trr);
-                }
-                else
-                {
-                    tooltip.add("Dropper Range: " + trr);
-                }
-
-                if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-                }
-                else
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-                }
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
             }
             else
             {
-                tooltip.add("Dropper Range: " + trr);
                 tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Exp Dropped Ammount: 1 Level");
-            tooltip.add("Dropper Range: " + trr);
+            tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
+            tooltip.add(TextFormatting.GRAY + "Exp Dropped Ammount: 1 Level");
             tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }

@@ -47,16 +47,6 @@ public class ipuFurnace extends ipuBasic
         this.isFilter=false;
     }
 
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
-    }
-
     public int getItemTransferRate(ItemStack stack)
     {
         switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
@@ -87,7 +77,7 @@ public class ipuFurnace extends ipuBasic
 
     public int getSmeltingSpeed(ItemStack stack)
     {
-        switch (getTransferRateModifier(stack))
+        switch (intOperationalSpeedModifier(stack))
         {
             case 0:
                 smeltingSpeed = 200;//normal speed
@@ -379,26 +369,26 @@ public class ipuFurnace extends ipuBasic
         {
             if(stack.getTagCompound().hasKey("coineffect"))
             {
-                tooltip.add("Items Per Smelt: " + tr);
+                tooltip.add(TextFormatting.GRAY + "Items Smelted Per Operation: " + tr);
             }
             else
             {
-                tooltip.add("Items Per Smelt: 1");
+                tooltip.add(TextFormatting.GRAY + "Items Smelted Per Operation: 1");
             }
 
             if(stack.isItemEnchanted() && getSmeltingSpeed(stack) >0)
             {
-                tooltip.add("Smelting Speed: " + trr);
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + trr);
             }
             else
             {
-                tooltip.add("Smelting Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Items Per Smelt: 1");
-            tooltip.add("Smelting Speed: Normal Speed");
+            tooltip.add(TextFormatting.GRAY + "Items Smelted Per Operation: 1");
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

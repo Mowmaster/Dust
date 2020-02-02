@@ -55,6 +55,7 @@ item.fuzzyfilterblacklistupgrade.name=Pedestal Upgrade
 item.filtermodblacklistupgrade.name=Pedestal Upgrade
 item.upgradefurnace.name=Pedestal Upgrade
 item.upgradecrusher.name=Pedestal Upgrade
+item.upgradecobblegen.name=Pedestal Upgrade
 item.upgradeenchanted.name=Pedestal Upgrade
 item.upgradeenchantedblacklist.name=Pedestal Upgrade
 
@@ -67,6 +68,7 @@ item.expdropper.name=Pedestal Upgrade
 item.exprelay.name=Pedestal Upgrade
 item.exptank.name=Pedestal Upgrade
 item.expbottler.name=Pedestal Upgrade
+item.expanvil.name=Pedestal Upgrade
 
 item.craftingplaceholder.name=Crafting Placeholder
 

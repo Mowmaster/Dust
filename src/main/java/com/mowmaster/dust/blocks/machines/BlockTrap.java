@@ -11,7 +11,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -34,6 +39,8 @@ import java.util.Random;
 public class BlockTrap extends BlockBasic implements ITileEntityProvider
 {
     public static Block blockTrap;
+    public static Block blockTrapMob;
+
     public BlockTrap(String unloc, String registryName)
     {
         super(Material.GROUND);
@@ -91,11 +98,23 @@ public class BlockTrap extends BlockBasic implements ITileEntityProvider
 
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if(entityIn instanceof EntityLivingBase)
+        if(state.getBlock().equals(BlockTrap.blockTrap))
         {
-            ((EntityLivingBase) entityIn).addPotionEffect(getEffect(worldIn,pos));
-            worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ENTITY_SPLASH_POTION_BREAK, SoundCategory.BLOCKS, 0.4F, 0.6F);
-            worldIn.setBlockToAir(pos);
+            if(entityIn instanceof EntityPlayer)
+            {
+                ((EntityLivingBase) entityIn).addPotionEffect(getEffect(worldIn,pos));
+                worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ENTITY_SPLASH_POTION_BREAK, SoundCategory.BLOCKS, 0.4F, 0.6F);
+                worldIn.setBlockToAir(pos);
+            }
+        }
+        else if(state.getBlock().equals(BlockTrap.blockTrapMob))
+        {
+            if(entityIn instanceof EntityCreature)
+            {
+                ((EntityLivingBase) entityIn).addPotionEffect(getEffect(worldIn,pos));
+                worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ENTITY_SPLASH_POTION_BREAK, SoundCategory.BLOCKS, 0.4F, 0.6F);
+                worldIn.setBlockToAir(pos);
+            }
         }
     }
 
@@ -136,16 +155,20 @@ public class BlockTrap extends BlockBasic implements ITileEntityProvider
 
     public static void Init()
     {
+
         blockTrap = new BlockTrap("blocktrap","blocktrap");
+        blockTrapMob = new BlockTrap("blocktrapmob","blocktrapmob");
     }
 
     public static void Register()
     {
         registerBlock(blockTrap);
+        registerBlock(blockTrapMob);
     }
 
     public static void RegisterRender()
     {
         registerRender(blockTrap);
+        registerRender(blockTrapMob);
     }
 }

@@ -12,9 +12,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemEnchantedBook;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTippedArrow;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -64,6 +62,7 @@ public class DebugAndLogging
                     }
                     else if(playerIn.getHeldItemMainhand() != ItemStack.EMPTY)
                     {
+
                         ItemStack stackMain = playerIn.getHeldItemMainhand();
                         if(stackMain.hasTagCompound())
                         {

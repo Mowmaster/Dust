@@ -67,7 +67,7 @@ public class ipuBasic extends Item
         return range;
     }
 
-    public int getTransferRateModifier(ItemStack stack)
+    public int intOperationalSpeedModifier(ItemStack stack)
     {
         int rate = 0;
         if(stack.isItemEnchanted())
@@ -136,6 +136,64 @@ public class ipuBasic extends Item
         return intRate;
     }
 
+    public int getOperationSpeed(ItemStack stack)
+    {
+        int intOperationalSpeed = 1;
+        switch (intOperationalSpeedModifier(stack))
+        {
+            case 0:
+                intOperationalSpeed = 20;//normal speed
+                break;
+            case 1:
+                intOperationalSpeed=10;//2x faster
+                break;
+            case 2:
+                intOperationalSpeed = 5;//4x faster
+                break;
+            case 3:
+                intOperationalSpeed = 3;//6x faster
+                break;
+            case 4:
+                intOperationalSpeed = 2;//10x faster
+                break;
+            case 5:
+                intOperationalSpeed=1;//20x faster
+                break;
+            default: intOperationalSpeed=20;
+        }
+
+        return  intOperationalSpeed;
+    }
+
+    public String getOperationSpeedString(ItemStack stack)
+    {
+        String str = "Normal Speed";
+        switch (intOperationalSpeedModifier(stack))
+        {
+            case 0:
+                str = "Normal Speed";//normal speed
+                break;
+            case 1:
+                str = "2x Faster";//2x faster
+                break;
+            case 2:
+                str = "4x Faster";//4x faster
+                break;
+            case 3:
+                str = "6x Faster";//6x faster
+                break;
+            case 4:
+                str = "10x Faster";//10x faster
+                break;
+            case 5:
+                str = "20x Faster";//20x faster
+                break;
+            default: str = "Normal Speed";;
+        }
+
+        return  str;
+    }
+
     public ItemStack getStackInPedestal(World world, BlockPos posOfPedestal)
     {
         ItemStack stackInPedestal = ItemStack.EMPTY;
@@ -196,6 +254,24 @@ public class ipuBasic extends Item
         if(pedestal instanceof TilePedestal) {
             value = ((TilePedestal) pedestal).getStoredValueForUpgrades();
         }
+
+        return value;
+    }
+
+    public int intSpaceLeftInStack (ItemStack stack)
+    {
+        int value = 0;
+        if(stack.equals(ItemStack.EMPTY))
+        {
+            value = 64;
+        }
+        else
+        {
+            int maxSize = stack.getMaxStackSize();
+            int currentSize = stack.getCount();
+            value = maxSize-currentSize;
+        }
+
 
         return value;
     }

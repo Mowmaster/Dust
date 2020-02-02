@@ -35,7 +35,6 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 public class ipuCrafter extends ipuBasic
 {
     public int transferRate = 0;
-    public int transferSpeed = 0;
     private int gridSize = 0;
 
     public ipuCrafter(String unlocName, String registryName, int sizeOfGrid)
@@ -46,16 +45,6 @@ public class ipuCrafter extends ipuBasic
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
         this.gridSize = sizeOfGrid;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
     }
 
     public int getItemTransferRate(ItemStack stack)
@@ -86,37 +75,9 @@ public class ipuCrafter extends ipuBasic
         return  transferRate;
     }
 
-    public int getTransferRate(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                transferSpeed = 20;//normal speed
-                break;
-            case 1:
-                transferSpeed=10;//2x faster
-                break;
-            case 2:
-                transferSpeed = 5;//4x faster
-                break;
-            case 3:
-                transferSpeed = 3;//6x faster
-                break;
-            case 4:
-                transferSpeed = 2;//10x faster
-                break;
-            case 5:
-                transferSpeed=1;//20x faster
-                break;
-            default: transferSpeed=20;
-        }
-
-        return  transferSpeed;
-    }
-
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        int speed = getTransferRate(coinInPedestal);
+        int speed = getOperationSpeed(coinInPedestal);
 
         if(!world.isBlockPowered(pedestalPos))
         {
@@ -227,35 +188,10 @@ public class ipuCrafter extends ipuBasic
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s2 = getItemTransferRate(stack);
         String s3 = "";
+        String s5 = getOperationSpeedString(stack);
+        String tr = "" + getItemTransferRate(stack) + "";
 
-        switch (getTransferRate(stack))
-        {
-            case 1:
-                s3 = "20x Faster";
-                break;
-            case 2:
-                s3="10x Faster";
-                break;
-            case 3:
-                s3 = "6x Faster";
-                break;
-            case 5:
-                s3 = "4x Faster";
-                break;
-            case 10:
-                s3 = "2x Faster";
-                break;
-            case 20:
-                s3="Normal Speed";
-                break;
-            default: s3="Normal Speed";
-        }
-
-
-        String tr = "" + s2 + "";
-        String trr = s3;
         tooltip.add(TextFormatting.GOLD + "Item Stack Crafter Upgrade - "+gridSize+"x"+gridSize);
 
         if(stack.hasTagCompound())
@@ -269,20 +205,22 @@ public class ipuCrafter extends ipuBasic
                 tooltip.add("Bulk Crafting Rate: 1");
             }
 
-            if(stack.isItemEnchanted() && getTransferRate(stack) >0)
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
             {
-                tooltip.add("Crafting Speed: " + trr);
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
             }
             else
             {
-                tooltip.add("Crafting Speed: Normal Speed");
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
             tooltip.add("Bulk Crafting Rate: 1");
-            tooltip.add("Crafting Speed: Normal Speed");
+            tooltip.add("Operational Speed: Normal Speed");
         }
+
+
     }
 
 }

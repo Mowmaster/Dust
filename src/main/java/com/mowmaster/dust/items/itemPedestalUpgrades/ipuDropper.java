@@ -28,7 +28,6 @@ public class ipuDropper extends ipuBasic
 {
     public int summonRate = 0;
     public int range = 0;
-    public int transferSpeed = 0;
 
     public ipuDropper(String unlocName, String registryName)
     {
@@ -38,17 +37,6 @@ public class ipuDropper extends ipuBasic
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
     }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return super.isBookEnchantable(stack, book);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return true;
-    }
-
 
     public int getTransferRate(ItemStack stack)
     {
@@ -106,37 +94,10 @@ public class ipuDropper extends ipuBasic
         return  range;
     }
 
-    public int getTransferSpeed(ItemStack stack)
-    {
-        switch (getTransferRateModifier(stack))
-        {
-            case 0:
-                transferSpeed = 20;//normal speed
-                break;
-            case 1:
-                transferSpeed=10;//2x faster
-                break;
-            case 2:
-                transferSpeed = 5;//4x faster
-                break;
-            case 3:
-                transferSpeed = 3;//6x faster
-                break;
-            case 4:
-                transferSpeed = 2;//10x faster
-                break;
-            case 5:
-                transferSpeed=1;//20x faster
-                break;
-            default: transferSpeed=20;
-        }
-
-        return  transferSpeed;
-    }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
-        int speed = getTransferSpeed(coinInPedestal);
+        int speed = getOperationSpeed(coinInPedestal);
         if(!world.isBlockPowered(pedestalPos))
         {
             if (tick%speed == 0) {
@@ -165,80 +126,47 @@ public class ipuDropper extends ipuBasic
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s2 = getTransferRate(stack);
-        int s3 = getRange(stack);
+        int range = getRange(stack);
+        String tr = "" + getTransferRate(stack) + "";
+        String trr = "" + range + "";
+        String s5 = getOperationSpeedString(stack);
 
-        String tr = "" + s2 + "";
-        String trr = "" + s3 + "";
-
-        String s5 = "";
-
-        switch (getTransferSpeed(stack))
-        {
-            case 1:
-                s5 = "20x Faster";
-                break;
-            case 2:
-                s5="10x Faster";
-                break;
-            case 3:
-                s5 = "6x Faster";
-                break;
-            case 5:
-                s5 = "4x Faster";
-                break;
-            case 10:
-                s5 = "2x Faster";
-                break;
-            case 20:
-                s5="Normal Speed";
-                break;
-            default: s5="Normal Speed";
-        }
 
         tooltip.add(TextFormatting.GOLD + "Item Dropper Upgrade");
         if(stack.hasTagCompound())
         {
             if(getTransferRate(stack)>0)
             {
-                tooltip.add("Dropped Stack Size: " + tr);
+                tooltip.add(TextFormatting.GRAY + "Dropped Stack Size: " + tr);
             }
             else
             {
-                tooltip.add("Dropped Stack Size: 1");
+                tooltip.add(TextFormatting.GRAY + "Dropped Stack Size: 1");
             }
 
-            if(stack.isItemEnchanted())
+            if(stack.isItemEnchanted() && range >0)
             {
-                if(getRange(stack) >0)
-                {
-                    tooltip.add("Dropper Range: " + trr);
-                }
-                else
-                {
-                    tooltip.add("Dropper Range: " + trr);
-                }
-
-                if(getTransferSpeed(stack) >0)
-                {
-                    tooltip.add("Transfer Speed: " + s5);
-                }
-                else
-                {
-                    tooltip.add("Transfer Speed: Normal Speed");
-                }
+                tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
             }
             else
             {
-                tooltip.add("Dropper Range: " + trr);
-                tooltip.add("Transfer Speed: Normal Speed");
+                tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
+            }
+
+            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
+            {
+                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
+            }
+            else
+            {
+                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
             }
         }
         else
         {
-            tooltip.add("Dropped Stack Size: 1");
-            tooltip.add("Dropper Range: " + trr);
-            tooltip.add("Transfer Speed: Normal Speed");
+            tooltip.add(TextFormatting.GRAY + "Dropped Stack Size: 1");
+            tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
+            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
         }
     }
 

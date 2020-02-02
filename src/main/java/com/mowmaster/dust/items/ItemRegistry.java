@@ -2,10 +2,13 @@ package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.itemPedestalUpgrades.*;
+import com.mowmaster.dust.items.tools.ItemDustTippedArrow;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -89,6 +92,7 @@ public class ItemRegistry
     public static Item filterModBlacklistUpgrade;
     public static Item furnaceUpgrade;
     public static Item crusherUpgrade;
+    public static Item cobbleGenUpgrade;
     public static Item upgradeEnchanted;
     public static Item upgradeEnchantedBlacklist;
     public static Item effectUpgrade;
@@ -102,6 +106,7 @@ public class ItemRegistry
     public static Item expRelay;
     public static Item expTank;
     public static Item expBottler;
+    public static Item expAnvil;
 
     public static Item scrollA;
     public static Item scrollB;
@@ -135,11 +140,15 @@ public class ItemRegistry
     public static Item tomeGuideBook;
     public static Item crystalWrench;
 
+    public static Item dustTippedArrow;
+
 
 
 
     public static void init()
     {
+        dustTippedArrow = new ItemDustTippedArrow("dusttippedarrow");
+
         ancientCoinA = new ItemCoin("ancientcoina","ancientcoina");
         ancientCoinB = new ItemCoin("ancientcoinb","ancientcoinb");
         ancientCoinC = new ItemCoin("ancientcoinc","ancientcoinc");
@@ -179,6 +188,7 @@ public class ItemRegistry
         crafter9Upgrade = new ipuCrafter("crafter9upgrade","crafter9upgrade",3);
         furnaceUpgrade = new ipuFurnace("upgradefurnace","upgradefurnace");
         crusherUpgrade = new ipuCrystalCrusher("upgradecrusher","upgradecrusher");
+        cobbleGenUpgrade = new ipuCobbleGen("upgradecobblegen","upgradecobblegen");//
         upgradeEnchanted = new ipuFilterEnchanted("upgradeenchanted","upgradeenchanted");
         upgradeEnchantedBlacklist = new ipuFilterEnchantedBlacklist("upgradeenchantedblacklist","upgradeenchantedblacklist");
         filterModUpgrade = new ipuFilterMod("filtermodupgrade","filtermodupgrade");
@@ -196,21 +206,14 @@ public class ItemRegistry
         growerUpgrade = new ipuEffectGrower("effectgrower","effectgrower");//
         planterUpgrade = new ipuEffectSower("effectplanter","effectplanter");//
         harvesterUpgrade = new ipuEffectHarvester("effectharvester","effectharvester");//
-        enchantUpgrade = new ipuExpEnchanter("enchantupgrade","enchantupgrade");//Enchanter
-        expCollector = new ipuExpCollector("expcollector","expcollector");//Collector
-        expDropper = new ipuExpDropper("expdropper","expdropper");//Relay
-        expRelay = new ipuExpRelay("exprelay","exprelay");//Tank
-        expTank = new ipuExpTank("exptank","exptank");//Dropper
-        expBottler = new ipuExpBottler("expbottler","expbottler");//Bottler
+        enchantUpgrade = new ipuExpEnchanter("enchantupgrade","enchantupgrade");//
+        expCollector = new ipuExpCollector("expcollector","expcollector");//
+        expDropper = new ipuExpDropper("expdropper","expdropper");//
+        expRelay = new ipuExpRelay("exprelay","exprelay");//
+        expTank = new ipuExpTank("exptank","exptank");//
+        expBottler = new ipuExpBottler("expbottler","expbottler");//
 
-
-        //enchantUpgrade = new ipuExpAnvil("enchantupgrade","enchantupgrade");//Anvil
-
-
-
-
-
-
+        expAnvil = new ipuExpAnvil("expanvil","expanvil");//Anvil
 
         scrollA = new ItemScroll("scrolla","scrolla");
         scrollB = new ItemScroll("scrollb","scrollb");
@@ -270,6 +273,8 @@ public class ItemRegistry
 
     public static void register()
     {
+        registerItem(dustTippedArrow);
+
         registerItem(ancientCoinA);
         registerItem(ancientCoinB);
         registerItem(ancientCoinC);
@@ -326,10 +331,12 @@ public class ItemRegistry
         registerItem(expRelay);
         registerItem(expTank);
         registerItem(expBottler);
+        registerItem(expAnvil);
 
         registerItem(breakerUpgrade);
         registerItem(furnaceUpgrade);
         registerItem(crusherUpgrade);
+        registerItem(cobbleGenUpgrade);
         registerItem(upgradeEnchanted);
         registerItem(upgradeEnchantedBlacklist);
 
@@ -386,6 +393,8 @@ public class ItemRegistry
 
     public static void registerRenders()
     {
+        registerRender(dustTippedArrow);
+
         registerRender(akashic);
         registerRender(ancientCoinA);
         registerRender(ancientCoinB);
@@ -444,10 +453,12 @@ public class ItemRegistry
         registerRender(expRelay);
         registerRender(expTank);
         registerRender(expBottler);
+        registerRender(expAnvil);
 
         registerRender(breakerUpgrade);
         registerRender(furnaceUpgrade);
         registerRender(crusherUpgrade);
+        registerRender(cobbleGenUpgrade);
         registerRender(upgradeEnchanted);
         registerRender(upgradeEnchantedBlacklist);
 
@@ -530,6 +541,12 @@ public class ItemRegistry
     public static void registerRender(Item item, int meta, String fileName)
     {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(Reference.MODID, fileName), "inventory"));
+    }
+
+    public static void registerItemColor(Item item, int meta, String fileName)
+    {
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(Reference.MODID, fileName), "inventory"));
+
     }
 
 

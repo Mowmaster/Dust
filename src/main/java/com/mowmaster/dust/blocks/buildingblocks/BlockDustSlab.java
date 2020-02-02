@@ -1,6 +1,7 @@
 package com.mowmaster.dust.blocks.buildingblocks;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
+import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 
+import static com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta.COLORS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
 
@@ -90,10 +92,15 @@ public class BlockDustSlab extends BlockBasicDirectional
     private static AxisAlignedBB CEAST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.5D, 1.0D, 1.0D);
     private static AxisAlignedBB CWEST = new AxisAlignedBB(0.5D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    @Override
+    /*@Override
     public Item getItemDropped(IBlockState state, Random random, int fortune)
     {
         return null;
+    }*/
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return super.getItemDropped(state, rand, fortune);
     }
 
     @Override

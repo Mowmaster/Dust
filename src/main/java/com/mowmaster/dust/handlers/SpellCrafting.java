@@ -18,6 +18,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.entity.RenderTippedArrow;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -25,14 +27,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemFlintAndSteel;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.RecipeTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.*;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -90,6 +91,7 @@ public class SpellCrafting
             List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3, posY - 3, posZ - 3, posX + 3, posY + 3, posZ + 3));
             ItemStack coined = ItemStack.EMPTY;
             ItemStack peded = ItemStack.EMPTY;
+            ItemStack trapped = ItemStack.EMPTY;
             if ((player.getHeldItem(hand) != null)) {
                 if (player.getHeldItem(hand).getItem() instanceof ItemFlintAndSteel) {
 
@@ -133,6 +135,7 @@ public class SpellCrafting
                         }
                         if(containsPressurePlate(stack))//&& !(arrow>0) || !(paper>0)
                         {
+                            trapped = stack.copy();
                             pressurePlate++;
                             item.setDead();
                         }
@@ -175,16 +178,16 @@ public class SpellCrafting
                     }
                     else if(count >= minimumDustRequired && pressurePlate>=1 && paper==0 && arrow==0 && coin==0 && pedestal==0)
                     {
-
-                        /*
-                        if(worldIn.getBlockState(new BlockPos(posX,posY+1,posZ)).getBlock() instanceof BlockTrap)
-                        {
-                            System.out.println("TRAP BLOCK ALREADY HERE!!!");
-                        }
-                        //Could use this to impliment more plates that could hold multiple effects???
-                         */
                         worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
-                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.blockTrap.getDefaultState());
+                        if(trapped.getItem().equals(Item.getItemFromBlock(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)) || trapped.getItem().equals(Item.getItemFromBlock(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE)))
+                        {
+                            worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.blockTrap.getDefaultState());
+                        }
+                        else
+                        {
+                            worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.blockTrapMob.getDefaultState());
+                        }
+
                         TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
                         if (tileentity instanceof TileTrapBlock) {
                             ((TileTrapBlock) tileentity).setTrapEffect(EffectPicker.getEffectFromInputs(red, blue, yellow, white, black, 20 * count,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST));
@@ -282,7 +285,7 @@ public class SpellCrafting
                                 //cmpd.setTag("CustomPotionEffects",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 //cmpd.setTag("Potion",new NBTTagString(effect.getPotion().getRegistryName().toString()));
                                 //stack.setTagCompound(cmpd);
-                                ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW);
+                                ItemStack itemstack1 = new ItemStack(ItemRegistry.dustTippedArrow);
                                 //PotionUtils.addPotionToItemStack(itemstack1, new PotionType(new PotionEffect[]{effect}));
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 cmpd.setInteger("CustomPotionColor",effect.getPotion().getLiquidColor());
@@ -290,6 +293,8 @@ public class SpellCrafting
                                 PotionUtils.appendEffects(itemstack1, effects);
                                 String s1 = I18n.translateToLocal(effect.getEffectName()).trim();
                                 itemstack1.setStackDisplayName("Arrow of " + s1);
+
+
 
                                 //From Custom Arrow Crafting Manager
                                 /*ItemStack itemstack2 = new ItemStack(Items.TIPPED_ARROW, count);
