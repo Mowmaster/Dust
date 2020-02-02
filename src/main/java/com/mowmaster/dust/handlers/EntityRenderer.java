@@ -14,30 +14,27 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-@Mod.EventBusSubscriber(modid = Reference.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT,modid = Reference.MODID)
+@SideOnly(Side.CLIENT)
 public class EntityRenderer {
+
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void registerEntities(final RegistryEvent.Register<EntityEntry> event) {
         event.getRegistry().registerAll(EntityDustRegistry.ENTITIES);
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public static void registerItemColourHandlers(final ColorHandlerEvent.Item event) {
-        final BlockColors blockColors = event.getBlockColors();
         final ItemColors itemColors = event.getItemColors();
 
-        // Use the Block's colour handler for an ItemBlock
-        final IItemColor itemBlockColourHandler = (stack, tintIndex) -> {
-            @SuppressWarnings("deprecation")
-            final IBlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
-            return blockColors.colorMultiplier(state, null, null, tintIndex);
-        };
-
         final IItemColor INSTANCE = new IItemColorArrow();
-
         itemColors.registerItemColorHandler(INSTANCE, ItemRegistry.dustTippedArrow);
-        //IItemColorArrow.registerArrowColors();
     }
+
 }
