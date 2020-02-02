@@ -1,0 +1,14 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "ancientCoin"
+    },
+    {"item": "minecraft:furnace"}
+  ],
+  "result": {
+    "item": "dust:upgradefurnace",
+    "count": 1
+  }
+}

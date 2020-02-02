@@ -43,13 +43,58 @@ public class OreDictDust
         OreDictionary.registerOre("logWood", BlockDustLog.logwhite);
         OreDictionary.registerOre("logWood", BlockDustLog.logblack);
 
-        OreDictionary.registerOre("treeLeaves", BlockDustLeaf.leaf);
-        OreDictionary.registerOre("oreCrystal", BlockCrystalOre.ore);
-        OreDictionary.registerOre("stone", BlockDustBasicMeta.duststone);
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,0));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,1));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,2));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,3));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,4));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,5));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,6));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,7));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,0));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,1));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,2));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,3));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,4));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,5));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,6));
+        OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,7));
 
-        OreDictionary.registerOre("gemCrystal", ItemRegistry.crystal);
-        OreDictionary.registerOre("dustCrystal", ItemRegistry.dust);
-        OreDictionary.registerOre("bitDust", ItemRegistry.bit);
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,0));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,1));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,2));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,3));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,4));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,5));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,6));
+        OreDictionary.registerOre("stone", new ItemStack(BlockDustBasicMeta.duststone,1,7));
+
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,0));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,1));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,2));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,3));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,4));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,5));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,6));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,7));
+        OreDictionary.registerOre("gemCrystal", new ItemStack(ItemRegistry.crystal,1,8));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,0));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,1));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,2));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,3));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,4));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,5));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,6));
+        OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,7));
+        //excluding stone dust
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,0));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,1));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,2));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,3));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,4));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,5));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,6));
+        OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,7));
 
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalRed));
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalBlue));
@@ -60,8 +105,14 @@ public class OreDictDust
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalWhite));
         OreDictionary.registerOre("charcoal",new ItemStack(ItemRegistry.charcoalBlack));
 
-        OreDictionary.registerOre("blockCharcoal",new ItemStack(BlockCharcoal.charcoalBlockColors));
-
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,0));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,1));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,2));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,3));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,4));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,5));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,6));
+        OreDictionary.registerOre("blockCharcoal", new ItemStack(BlockCharcoal.charcoalBlockColors,1,7));
 
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinA));
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.ancientCoinB));

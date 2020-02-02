@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "dust:breakerupgrade"},
+    {"item": "minecraft:water_bucket"},
+    {"item": "minecraft:lava_bucket"}
+  ],
+  "result": {
+    "item": "dust:upgradecobblegen",
+    "count": 1
+  }
+}

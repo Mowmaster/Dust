@@ -119,7 +119,7 @@ item.wikiscroll.sixteen.name=Research Note
 
 
 item.akashic.name=Akashic Records
-item.guidebook.name=Pile of Research Notes
+item.guidebook.name=Travelers Guide To Dust
 item.spellpaper.name=Spell Scroll
 item.wrench.name=Crystal Wrench
 
@@ -466,7 +466,8 @@ tile.crystalfurnace.name=Crystal Furnace
 container.crystalfurnace=Crystal Furnace
 tile.crystalcrusherbasic.name=Crystal Crusher [WIP]
 tile.crystalfurnacebasic.name=Crystal Furnace [WIP]
-tile.blocktrap.name=Spell Trap Block
+tile.blocktrap.name=Spell Trap Block (Players)
+tile.blocktrapmob.name=Spell Trap Block (Mobs)
 
 tile.crate1.name=Ancient Crate
 tile.pot1.name=Ancient Pot

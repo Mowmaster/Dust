@@ -15,7 +15,7 @@
     "F": {"item": "dust:green/saplinggreen"},
     "G": {"item": "dust:white/saplingwhite"},
     "H": {"item": "dust:black/saplingblack"},
-    "P": {"item": "minecraft:glass_bottle"}
+    "P": {"item": "minecraft:nether_star"}
   },
   "result": {
     "item": "dust:finnisher"

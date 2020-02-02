@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "RRR",
+    "ICI",
+    "RRR"  ],
+  "key": {
+    "C": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "ancientCoin"
+      }
+    ],
+    "I": [
+      {
+        "item": "minecraft:iron_ingot"
+      }
+    ],
+    "R": [
+      {
+        "item": "minecraft:redstone"
+      }
+    ]
+  },
+  "result": {
+    "item": "dust:effectupgrade",
+    "count": 1
+  }
+}

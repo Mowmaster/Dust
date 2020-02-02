@@ -1,0 +1,30 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CB",
+    "BM"
+  ],
+  "key": {
+    "C": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "ancientCoin"
+      }
+    ],
+    "M": [
+      {
+        "item": "minecraft:dye",
+        "data": 15
+      }
+    ],
+    "B": [
+      {
+        "item": "minecraft:bone"
+      }
+    ]
+  },
+  "result": {
+    "item": "dust:effectgrower",
+    "count": 1
+  }
+}
