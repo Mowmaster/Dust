@@ -11,9 +11,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class IItemColorArrow implements IItemColor {
     public static final IItemColor INSTANCE = new IItemColorArrow();
 
-
     @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+    public int colorMultiplier(ItemStack stack, int tintIndex) {
         return getColorFromNBT(stack);
     }
 
