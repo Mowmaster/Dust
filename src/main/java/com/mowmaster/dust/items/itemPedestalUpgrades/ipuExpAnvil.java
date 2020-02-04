@@ -203,8 +203,6 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                             TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
                             if(pedestalInv instanceof TilePedestal) {
                                 TilePedestal tilePedestal = (TilePedestal) pedestalInv;
-                                //Need to add this one to enchantments list for combining
-                                stackToCombine.add(itemFromInv);
 
                                 if(!tilePedestal.hasItem())
                                 {
@@ -222,6 +220,9 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                                     }
                                     else if(stackToCombine.size() > 0)
                                     {
+                                        //First check if other enchants exist, then we Need to add the item to enchantments list for combining
+                                        stackToCombine.add(itemFromInv);
+
                                         for(int e=0;e<stackToCombine.size();e++)
                                         {
                                             if(stackToCombine.get(e).isItemEnchanted() || stackToCombine.get(e).getItem().equals(Items.ENCHANTED_BOOK))
@@ -236,16 +237,16 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                                                     switch(enchantment.getRarity())
                                                     {
                                                         case COMMON:
-                                                            intLevelCostToCombine +=1;
+                                                            intLevelCostToCombine +=(1*(k+1));
                                                             break;
                                                         case UNCOMMON:
-                                                            intLevelCostToCombine +=2;
+                                                            intLevelCostToCombine +=(2*(k+1));
                                                             break;
                                                         case RARE:
-                                                            intLevelCostToCombine +=4;
+                                                            intLevelCostToCombine +=(4*(k+1));
                                                             break;
                                                         case VERY_RARE:
-                                                            intLevelCostToCombine +=8;
+                                                            intLevelCostToCombine +=(6*(k+1));
                                                             break;
                                                     }
 
@@ -289,7 +290,7 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
 
                                         }
 
-                                        //System.out.println("Level To Combine: "+ intLevelCostToCombine);
+                                        System.out.println("Level To Combine: "+ intLevelCostToCombine);
                                         int intExpCostToCombine = getExpCountByLevel(intLevelCostToCombine);
                                         //System.out.println("XP To Combine: "+ intExpCostToCombine);
                                         if(intExpInCoin >= intExpCostToCombine)
