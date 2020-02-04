@@ -6,14 +6,11 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,13 +22,11 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
-import static net.minecraft.block.BlockDirectional.FACING;
 
 public class ipuExpCollector extends ipuBasicExpUpgrade
 {
     public int rangeWidth = 0;
     public int suckiRate = 0;
-
 
     public ipuExpCollector(String unlocName, String registryName)
     {

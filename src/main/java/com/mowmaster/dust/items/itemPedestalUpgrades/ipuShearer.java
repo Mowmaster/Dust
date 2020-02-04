@@ -1,13 +1,10 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +17,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
-import static net.minecraft.block.BlockDirectional.FACING;
 
 public class ipuShearer extends ipuBasic
 {

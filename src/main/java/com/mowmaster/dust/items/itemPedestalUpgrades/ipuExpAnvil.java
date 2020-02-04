@@ -4,29 +4,24 @@ import com.google.common.collect.Maps;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import scala.Array;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -192,7 +187,7 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         {
             if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
             {
-                IItemHandlerModifiable handler = (IItemHandlerModifiable) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+                IItemHandler handler = (IItemHandler) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
                 TileEntity invToPullFrom = world.getTileEntity(posInventory);
                 if(invToPullFrom instanceof TilePedestal) {
                     itemFromInv = ItemStack.EMPTY;
@@ -335,7 +330,7 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         int buffer = getExpBuffer(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
 
-        tooltip.add(TextFormatting.GOLD + "Enchanter Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Anvil Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels");
 

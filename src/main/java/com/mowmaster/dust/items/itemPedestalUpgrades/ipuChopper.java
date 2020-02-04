@@ -1,18 +1,12 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
-import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import com.mowmaster.dust.enchantments.EnchantmentUpgradeRange;
-import com.mowmaster.dust.enchantments.EnchantmentUpgradeTransferRate;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.*;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +21,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
-import static net.minecraft.block.BlockDirectional.FACING;
 
 public class ipuChopper extends ipuBasic
 {
