@@ -1,8 +1,10 @@
 package com.mowmaster.dust.handlers;
 
+import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.capabilities.CapabilityFlightHandler;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
+import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
@@ -16,8 +18,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
+import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.item.*;
 import net.minecraft.potion.*;
+import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -27,6 +32,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -187,6 +193,39 @@ public class EnchantAndEffectHandlers
         }
     }
      */
+
+    private boolean voidStorage = false;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onVoidStorage(PlayerInteractEvent.RightClickBlock event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        World worldIn = event.getWorld();
+        BlockPos blockClickedOn = event.getPos();
+
+        if(entity.isPotionActive(PotionRegistry.POTION_VOIDSTORAGE))
+        {
+            voidStorage=true;
+        }
+        else {voidStorage=false;}
+
+        if(voidStorage)
+        {
+            if(event.getEntityLiving() instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+                if(player.isSneaking())
+                {
+                    if(!worldIn.getBlockState(blockClickedOn).getBlock().equals(Blocks.AIR))
+                    {
+                        InventoryEnderChest inventoryenderchest = player.getInventoryEnderChest();
+                        player.displayGUIChest(inventoryenderchest);
+                        player.addStat(StatList.ENDERCHEST_OPENED);
+                    }
+                }
+            }
+        }
+
+    }
 
     private boolean stepup = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
