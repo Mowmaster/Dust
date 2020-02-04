@@ -5,6 +5,7 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
+import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,6 +88,8 @@ public class ipuCrafter extends ipuBasic
     //protected int counter = 0;
     public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
     {
+        //SO adding items to the crafting bit physically adds them, meaning we can return values and update things a bit easier???
+
         ItemStack stackInPedestal = getStackInPedestal(world,posOfPedestal);
         int sizeAttemptToCraft = getItemTransferRate(coinInPedestal);
         int spaceInPedestal = 64 - stackInPedestal.getCount();
