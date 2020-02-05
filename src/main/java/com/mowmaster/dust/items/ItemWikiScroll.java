@@ -64,7 +64,7 @@ public class ItemWikiScroll extends Item
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    //@SideOnly(Side.CLIENT)
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 
         if(world.isRemote)
@@ -73,20 +73,27 @@ public class ItemWikiScroll extends Item
             {
                 if(player.isSneaking())
                 {
-                    player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + getTitleText(player.getHeldItem(hand).getMetadata()+1) ),true);
+                    if(player.getHeldItem(hand).getMetadata() >=15)
+                    {
+                        player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + getTitleText(0) ),true);
+                    }
+                    else
+                    {
+                        player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + getTitleText(player.getHeldItem(hand).getMetadata()+1) ),true);
+                    }
                 }
                 else
                 {
                     switch (player.getHeldItem(hand).getMetadata())
                     {
                         case 0:
-                            title = "World Generation";
-                            contents = "As you explore you will find dust adds many structures, some are simple and some are complex. " +
-                                    " All structures will have some sort of loot so its worth going out to find these early on." +
-                                    " If you find Unbreakable Brown Blocks in a Structure waypoint it, you will want to come back to this later." +
-                                    " You may also find 8 new trees and an Extreme Hills biome that never rains and has ores up to max build height.";
-                            author = "";
-                            itemDisplay = new ItemStack(SaplingRegister.saplingwhite);
+                            title = "Dear Player,";
+                            contents = "Firstly, This mod has documentation online at:      https://github.com/Mowmaster/Dust/wiki               " +
+                                    "Secondly, Shift-Right Clicking this item will change 'pages'                         " +
+                                    " Lastly, If you want to learn about the mod in game, craft this page into the 'Travelers Guide'. To add an entry, Shift-R-Click the guide on blocks, or" +
+                                    " with items in the off-hand (From Dust) to learn more.";
+                            author = "Enjoy! ~Mow";
+                            itemDisplay = new ItemStack(ItemRegistry.scrollD);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,205,2.0f,2.0f));
                             break;
                         case 1:
@@ -174,11 +181,6 @@ public class ItemWikiScroll extends Item
                             itemDisplay = new ItemStack(ItemRegistry.crafter9Upgrade);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,150,210,2.0f,2.0f));
                             break;
-
-
-
-
-
                         case 9:
                             title = "Pedestal Upgrades";
                             contents = "**Auto Milk/Shear: Uses Buckets and Shears." +
@@ -251,7 +253,21 @@ public class ItemWikiScroll extends Item
                     }
                 }
             }
+        }
 
+        if(!world.isRemote)
+        {
+            if(player.isSneaking())
+            {
+                if(player.getHeldItem(hand).getMetadata()>=15)
+                {
+                    player.getHeldItem(hand).setItemDamage(0);
+                }
+                else
+                {
+                    player.getHeldItem(hand).setItemDamage(player.getHeldItem(hand).getMetadata()+1);
+                }
+            }
         }
 
         return super.onItemRightClick(world,player,hand);
@@ -263,7 +279,7 @@ public class ItemWikiScroll extends Item
         switch (meta)
         {
             case 0:
-                displayText = "World Generation";
+                displayText = "A Message From The Dev";
                 break;
             case 1:
                 displayText = "Spell and Effect System";
