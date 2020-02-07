@@ -7,6 +7,7 @@ import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasicExpUpgrade;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCake;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -64,13 +65,16 @@ public class DebugAndLogging
                     {
 
                         ItemStack stackMain = playerIn.getHeldItemMainhand();
+                        Block block = Block.getBlockFromItem(stackMain.getItem());
                         if(stackMain.hasTagCompound())
                         {
                             System.out.println(stackMain.getTagCompound().toString());
                         }
+                        System.out.println(block.getLocalizedName());
                     }
                 }
             }
+
             else if (playerIn.getHeldItemMainhand().getItem().equals(akashic))
             {
                 if(playerIn.isSneaking())

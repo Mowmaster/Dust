@@ -2,6 +2,7 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCake;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -113,11 +114,11 @@ public class ipuPlacer extends ipuBasic
             Block blockBelow = world.getBlockState(blockPosBelow).getBlock();
 
             Block block = Block.getBlockFromItem(itemInPedestal.getItem());
-            /*String itemName = itemInPedestal.getUnlocalizedName();
+            String itemName = itemInPedestal.getUnlocalizedName();
             String displayName = itemInPedestal.getDisplayName();
             String domainName = itemInPedestal.getItem().getRegistryName().getResourceDomain();
             Block block2 = Block.getBlockFromName(itemName.replace("item.",domainName + ":"));
-            Block block3 = Block.getBlockFromName(domainName + ":" + displayName.replace(" ","_").toLowerCase());*/
+            Block block3 = Block.getBlockFromName(domainName + ":" + displayName.replace(" ","_").toLowerCase());
             IBlockState stated = Blocks.AIR.getDefaultState();
             Block getBlockToUse = Blocks.AIR;
 
@@ -125,12 +126,12 @@ public class ipuPlacer extends ipuBasic
                 getBlockToUse = block;
                 stated = getState(block,itemInPedestal);
             }
-            /*else if(block2 != Blocks.AIR)
+            else if(block2 != Blocks.AIR)
             {
                 getBlockToUse = block2;
                 stated = getState(block2,itemInPedestal);
             }
-            else if(block3 != Blocks.AIR)
+            /*else if(block3 != Blocks.AIR)
             {
                 getBlockToUse = block3;
                 stated = getState(block3,itemInPedestal);
