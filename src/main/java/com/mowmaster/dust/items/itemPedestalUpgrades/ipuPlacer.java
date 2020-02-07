@@ -110,6 +110,8 @@ public class ipuPlacer extends ipuBasic
             Also should place saplings!
             And Buckets! (Water, Lava, Etc!) [For now] Maybe?
              */
+             // https://github.com/Ellpeck/ActuallyAdditions/blob/master/src/main/java/de/ellpeck/actuallyadditions/mod/util/WorldUtil.java#L190
+             //AA uses a fake player to "place" the item and they get the block returned from that action...
             BlockPos blockPosBelow = getPosOfBlockBelow(world,posOfPedestal,range);//Check if its replaceable instead of checking for air
             Block blockBelow = world.getBlockState(blockPosBelow).getBlock();
 
