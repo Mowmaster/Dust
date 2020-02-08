@@ -10,12 +10,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -107,61 +112,19 @@ public class ipuPlacer extends ipuBasic
         {
             /*
             Block Placing stuff here!
-            Also should place saplings!
-            And Buckets! (Water, Lava, Etc!) [For now] Maybe?
              */
-             // https://github.com/Ellpeck/ActuallyAdditions/blob/master/src/main/java/de/ellpeck/actuallyadditions/mod/util/WorldUtil.java#L190
-             //AA uses a fake player to "place" the item and they get the block returned from that action...
             BlockPos blockPosBelow = getPosOfBlockBelow(world,posOfPedestal,range);//Check if its replaceable instead of checking for air
             Block blockBelow = world.getBlockState(blockPosBelow).getBlock();
 
-            Block block = Block.getBlockFromItem(itemInPedestal.getItem());
-            String itemName = itemInPedestal.getUnlocalizedName();
-            String displayName = itemInPedestal.getDisplayName();
-            String domainName = itemInPedestal.getItem().getRegistryName().getResourceDomain();
-            Block block2 = Block.getBlockFromName(itemName.replace("item.",domainName + ":"));
-            Block block3 = Block.getBlockFromName(domainName + ":" + displayName.replace(" ","_").toLowerCase());
-            IBlockState stated = Blocks.AIR.getDefaultState();
-            Block getBlockToUse = Blocks.AIR;
+            if(blockBelow.isReplaceable(world,blockPosBelow) || blockBelow.isAir(blockBelow.getDefaultState(),world,blockPosBelow))
+            {
+                FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) world);
+                fake.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal.copy());
 
-            if(block != Blocks.AIR){
-                getBlockToUse = block;
-                stated = getState(block,itemInPedestal);
-            }
-            else if(block2 != Blocks.AIR)
-            {
-                getBlockToUse = block2;
-                stated = getState(block2,itemInPedestal);
-            }
-            /*else if(block3 != Blocks.AIR)
-            {
-                getBlockToUse = block3;
-                stated = getState(block3,itemInPedestal);
-            }*/
-
-            //If We have a block
-            if(getBlockToUse != Blocks.AIR)
-            {
-                if(blockBelow.isReplaceable(world,blockPosBelow))
+                if(fake.interactionManager.processRightClickBlock(fake, world, fake.getHeldItemMainhand(), EnumHand.MAIN_HAND, blockPosBelow, getPedestalFacing(world,posOfPedestal).getOpposite(), 0.5F, 0.5F, 0.5F).equals(EnumActionResult.SUCCESS))
                 {
-                    if(getBlockToUse instanceof IPlantable)
-                    {
-                        IPlantable plantMe = (IPlantable)getBlockToUse;
-                        IBlockState soil = world.getBlockState(blockPosBelow.down());
-                        if(soil.getBlock().canSustainPlant(soil, world, blockPosBelow.down(), net.minecraft.util.EnumFacing.UP, plantMe))
-                        {
-                            //Place Sapling???
-                            this.removeFromPedestal(world,posOfPedestal,1);
-                            world.setBlockState(blockPosBelow,stated);
-                            world.playSound((EntityPlayer)null, blockPosBelow.getX(), blockPosBelow.getY(), blockPosBelow.getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                        }
-                    }
-                    else
-                    {
-                        this.removeFromPedestal(world,posOfPedestal,1);
-                        world.setBlockState(blockPosBelow,stated);
-                        world.playSound((EntityPlayer)null, blockPosBelow.getX(), blockPosBelow.getY(), blockPosBelow.getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
-                    }
+                    this.removeFromPedestal(world,posOfPedestal,1);
+                    world.playSound((EntityPlayer)null, blockPosBelow.getX(), blockPosBelow.getY(), blockPosBelow.getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
                 }
             }
         }
