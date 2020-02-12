@@ -89,38 +89,35 @@ public class ItemWikiScroll extends Item
                         case 0:
                             title = "Dear Player,";
                             contents = "Firstly, This mod has documentation online at:      https://github.com/Mowmaster/Dust/wiki               " +
-                                    "Secondly, Shift-Right Clicking this item will change 'pages'                         " +
-                                    " Lastly, If you want to learn about the mod in game, craft this page into the 'Travelers Guide'. To add an entry, Shift-R-Click the guide on blocks, or" +
-                                    " with items in the off-hand (From Dust) to learn more.";
+                                    "Lastly, Shift-Right Clicking this item will change 'pages'                         ";
+                            /*+
+                            " Lastly, If you want to learn about the mod in game, craft this page into the 'Travelers Guide'. To add an entry, Shift-R-Click the guide on blocks, or" +
+                                    " with items in the off-hand (From Dust) to learn more."*/
                             author = "Enjoy! ~Mow";
                             itemDisplay = new ItemStack(ItemRegistry.scrollD);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,205,2.0f,2.0f));
                             break;
                         case 1:
-                            title = "Spell Crafting";
-                            contents = "Throw some dust on the ground and light it with flint and steel, if you get a message, then repeat with more dust until you get an effect." +
-                                    " Dust Spell Effect crafting is all about mixing colors, Red gives Strength, a 1:1 ratio of Red to Blue makes Purple which gives Resistance." +
-                                    " Adding lots of White or Black dust can make for some intresting changes..." +
-                                    " Go out and experiment with differnt color combinations and ratios and see what you come up with!";
+                            title = "World Generation";
+                            contents = "The Ore Spawns rarely in small veins close to bedrock, It does spawn more frequently in more magical biomes though." +
+                                    "There exist a few structures to go out and explore, these contain some nice loot and spawners you cant get normally." +
+                                    "There are also Special trees, It is recommended to find all 8 as early as possible.";
                             author = "";
                             itemDisplay = new ItemStack(ItemRegistry.dust);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,210,2.0f,2.0f));
                             break;
                         case 2:
-                            title = "Spell Crafting Con.";
-                            contents = "By adding a pressure plate to your spell you can make a Trap at the location you light the effect." +
-                                    " Or by adding an Arrow you can make a custom Tipped Arrow." +
-                                    " Throwing Dust on the ground can be tedious, adding paper to a spell can make a single use spell scroll to use later!" +
-                                    " Lastly dropping ancient coins into a recipe will apply that base effect to the coin, only Magnetism, Planter, Grower, and Harvester Effects work on coins at this time.";
+                            title = "Spell Crafting";
+                            contents = "Toss Dust on the ground, light a fire with flint and steel nearby, if you have enough dust on the ground itll produce an effect." +
+                                    "Adding paper, pressure plates, arrows, and coins can transfer the effects to these other mediums for other uses.";
                             author = "";
                             itemDisplay = new ItemStack(ItemRegistry.spellPaper);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,210,2.0f,2.0f));
                             break;
                         case 3:
                             title = "Batch Spell Crafting";
-                            contents = "Crafting Tipped Arrows, Spell Scrolls, and Effect Upgrades one at a time can get boring, Introducing...BATCH CRAFTING!!!" +
-                                    " As its name implies, simply throwing more then one of either Arrows, Paper, or Coins into a spell recipe can make multiples at once." +
-                                    " This does split the Potency and Duration between the multiples, so be careful doing large batches without thinking.";
+                            contents = "Same as before, but use more paper, arrows, or coins. The effect duration and potency will be split between each material added." +
+                                    "A Warning though, if the effect duration falls under 5 seconds per extra material, the whole batch could be ruined.";
                             author = "";
                             itemDisplay = new ItemStack(ItemRegistry.effectUpgrade);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
@@ -183,25 +180,14 @@ public class ItemWikiScroll extends Item
                             break;
                         case 9:
                             title = "Pedestal Upgrades";
-                            contents = "**Auto Milk/Shear: Uses Buckets and Shears." +
-                                    "Tree Chopper: Chops wood nearby." +
-                                    " ***XP: Enchants, Repairs, Fills Bottles." +
-                                    " **Export Restocking: Tops off stacks in INVENTORY." +
-                                    " **Stack Exporter: Fills all slots of INVENTORY." +
-                                    " **Stack Importer: Removes Stacks from INVENTORY." +
-                                    " Item Dropper: Drops Items." +
-                                    " *Block Placer: Places Blocks." +
-                                    " *Effect Upgrades: Preforms effect in an area." +
-                                    " *Block Breaker: Breaks Blocks." +
-                                    " *Requires enchantment for extra functionality." +
-                                    " **Needs a connected INVENTORY.";
+                            contents = "There is about 34 in total, craft them up and check advancements for more detailed info on what they do, or check the wiki before crafting.";
                             author = "";
                             itemDisplay = new ItemStack(ItemRegistry.placerUpgrade);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,140,210,2.0f,2.0f));
                             break;
                         case 10:
-                            title = "Crystal Armor";
-                            contents = "Made using depleated Crystals and Leather Armor, the player, through crafting, can infuse the energy of dust and crystals to make it more powerful.";
+                            title = "Crystal Armor / Tools";
+                            contents = "Made using Crystals, Is a bit more durable then diamond, and due to its magical nature, they are a bit more willing to accept enchantments.";
                             author = "";
                             itemDisplay = new ItemStack(ItemArmorAndToolsRegistry.crystalChestplate);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
@@ -224,7 +210,7 @@ public class ItemWikiScroll extends Item
                             break;
                         case 13:
                             title = "Enchantments";
-                            contents = "AOE Miner, Flight, Smelter, Step Up, Range (For Pedestal Upgrades)";
+                            contents = "AOE Miner, Flight[WIP], Smelter[WIP], Step Up, Range / Operation Speed (For Pedestal Upgrades)";
                             author = "";
                             itemDisplay = new ItemStack(Items.ENCHANTED_BOOK);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));

@@ -85,7 +85,12 @@ public class ItemGuideBook extends Item
         {
             if(player.getHeldItemMainhand().getItem().equals(ItemRegistry.tomeGuideBook))
             {
-                if(!player.isSneaking())
+                title = "[WIP]";
+                contents = "If you need In Game Help, Use the Advancements to plot your way through the mod (plus earn rewards). Otherwise visit the wiki on the github: https://github.com/Mowmaster/Dust/wiki";
+                author = "~Player235";
+                itemDisplay = new ItemStack(ItemRegistry.finnisher);
+                Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,210,2.0f,2.0f));
+                /*if(!player.isSneaking())
                 {
                     if(hasBookList(player.getHeldItemMainhand()))
                     {
@@ -103,14 +108,14 @@ public class ItemGuideBook extends Item
 
                         }
                     }
-                }
+                }*/
             }
         }
 
         return super.onItemRightClick(world,player,hand);
     }
 
-    @Override
+    /*@Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote)
         {
@@ -157,5 +162,5 @@ public class ItemGuideBook extends Item
             }
         }
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-    }
+    }*/
 }
