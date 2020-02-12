@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DDD",
+    "DCD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "item": "dust:dust",
+      "data": 5
+    },
+    "C": {
+      "item": "dust:crystal",
+      "data": 8
+    }
+  },
+  "result": {
+    "item": "dust:crystal",
+    "data": 5,
+    "count":1
+  }
+}
