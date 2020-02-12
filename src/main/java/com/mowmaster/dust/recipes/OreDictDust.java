@@ -173,6 +173,34 @@ public class OreDictDust
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.expRelay));
         OreDictionary.registerOre("ancientCoin",new ItemStack(ItemRegistry.expTank));
 
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollA));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollB));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollC));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollD));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollE));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollF));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollG));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollH));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollI));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollJ));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollK));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollL));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollM));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollN));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollO));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollP));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollQ));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollR));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollS));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollT));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollU));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollV));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollW));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollX));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollY));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scrollZ));
+        OreDictionary.registerOre("ancientScroll",new ItemStack(ItemRegistry.scroll));
+
 
 
 
