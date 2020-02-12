@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "C",
+    "C",
+    "S"  ],
+  "key": {
+    "C": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "gemCrystal"
+      }
+    ],
+    "S": [
+      {
+        "item": "minecraft:stick"
+      }
+    ]
+  },
+  "result": {
+    "item": "dust:crystalsword",
+    "count": 1
+  }
+}
