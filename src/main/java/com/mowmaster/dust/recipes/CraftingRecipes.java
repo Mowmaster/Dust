@@ -21,7 +21,7 @@ public class CraftingRecipes
 {
     public static void CraftingRecipes() {
 
-        ItemStack oldHelm = new ItemStack(ItemArmorAndToolsRegistry.crystalHelmet);
+        /*ItemStack oldHelm = new ItemStack(ItemArmorAndToolsRegistry.crystalHelmet);
         ItemStack enchantedHelmRed = oldHelm.copy();
         ItemStack enchantedHelmBlue = oldHelm.copy();
         ItemStack enchantedHelmYellow = oldHelm.copy();
@@ -427,7 +427,7 @@ public class CraftingRecipes
         GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsOrange4"),null,enchantedBootsOrange4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,5),'A', oldBoots});
         GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsWhite4"),null,enchantedBootsWhite4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,6),'A', oldBoots});
         GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID,"crystalBootsBlack4"),null,enchantedBootsBlack4,new Object[]{"CCC", "CAC", "CCC", 'C',new ItemStack(ItemRegistry.crystal,1,7),'A', oldBoots});
-
+*/
 
         ItemStack diamond = new ItemStack(Items.DIAMOND);
         if(craftCrystals)
