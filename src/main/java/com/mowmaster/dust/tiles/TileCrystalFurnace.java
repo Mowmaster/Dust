@@ -59,7 +59,8 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
     private int customCookTime;
     private int crystalEffectActive=-1;
     private int randomPotencyChance = 10;
-    private int modifier = 1;//Biggest mod is 4
+    //Final 1.12.2 build MAX MODIFIER (only effects cook speed)
+    private int modifier = 4;//Biggest mod is 4
 
     public TileCrystalFurnace()
     {
@@ -201,7 +202,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
 
             if(crystalEffectActive==4 && result.getItem() instanceof ItemFood)
             {
-                randomPotencyChance = 30*modifier;
+                //randomPotencyChance = 30*modifier;
+                //1.12.2 final build 50% chance to yield double
+                randomPotencyChance = 50;
                 if(chanceTo())
                 {
                     if(output.isEmpty())
@@ -232,7 +235,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
             }
             else if(crystalEffectActive==1)
             {
-                randomPotencyChance = 15*modifier;
+                //1.12.2 final build 50% chance to yield double
+                //randomPotencyChance = 15*modifier;
+                randomPotencyChance = 50;
                 if(chanceTo())
                 {
                     if(output.isEmpty())
@@ -588,7 +593,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
                         if(!stack.isEmpty())//if fuel stack isnt empty
                         {
                             Item item = stack.getItem();//set item == to the fuel in the stack
-                            randomPotencyChance = 10*modifier;
+                            //Final 1.12.2 build 50%
+                            //randomPotencyChance = 10*modifier;
+                            randomPotencyChance = 50;
                             if(crystalEffectActive==5 && chanceTo())
                             {
                                 consumeCrystalEnergy();
@@ -598,7 +605,9 @@ public class TileCrystalFurnace extends TileEntityLockable implements ITickable,
                                 stack.shrink(1);
                                 consumeCrystalEnergy();
                                 int oldburntime= burnTime;
-                                burnTime = oldburntime + (20*modifier);
+                                //Final 1.12.2 build 50 extra fuelvalue
+                                //burnTime = oldburntime + (20*modifier);
+                                burnTime = oldburntime + (50);
                             }
                             else if(crystalEffectActive==5 )
                             {
