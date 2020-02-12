@@ -27,10 +27,14 @@ import net.minecraft.item.ItemTool;
 
 public class ItemArmorAndToolsRegistry
 {
-    public static ItemArmor.ArmorMaterial crystalArmorMaterial = EnumHelper.addArmorMaterial("crystal",Reference.MODID + ":crystal",50, new int[]{4,8,5,3},0, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND,2.0F);
     //public static ItemArmor.ArmorMaterial material = EnumHelper.addArmorMaterial("name",Reference.MODID + ":name", durability 33 is diamond, armor values 20max {H,C,L,B}, enchantability, toughnessF)
-    public static Item.ToolMaterial crystalToolMaterial = EnumHelper.addToolMaterial("crystal",3,200,5F,2.0F,0);
+    public static ItemArmor.ArmorMaterial crystalArmorMaterial = EnumHelper.addArmorMaterial("crystal",Reference.MODID + ":crystal",50, new int[]{4,8,5,3},20, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND,3.0F);
+
+
+    //public static ToolMaterial addToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability)
     //public static final Item.ToolMaterial crystalMaterial = EnumHelper.addToolMaterial("crystal",harvest level,uses,effiency,damage,enchantability);
+    public static Item.ToolMaterial crystalToolMaterial = EnumHelper.addToolMaterial("crystal",3,2000,8F,3.0F,20);
+
 
 
 
