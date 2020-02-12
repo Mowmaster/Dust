@@ -8,6 +8,8 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.advancements.GuiAdvancement;
+import net.minecraft.client.gui.advancements.GuiAdvancementTab;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -220,6 +222,7 @@ public class EnchantAndEffectHandlers
                         InventoryEnderChest inventoryenderchest = player.getInventoryEnderChest();
                         player.displayGUIChest(inventoryenderchest);
                         player.addStat(StatList.ENDERCHEST_OPENED);
+
                     }
                 }
             }

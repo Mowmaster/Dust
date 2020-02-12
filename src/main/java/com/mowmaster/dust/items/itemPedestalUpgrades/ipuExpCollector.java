@@ -207,7 +207,7 @@ public class ipuExpCollector extends ipuBasicExpUpgrade
 
         String trr = "" + (s3+s3+1) + "";
 
-        tooltip.add(TextFormatting.GOLD + "Exp Collector Upgrade");
+        tooltip.add(TextFormatting.GOLD + "Exp Magnet Upgrade");
         tooltip.add(TextFormatting.GREEN + "Exp Levels Stored: "+xp);
         tooltip.add(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels");
 

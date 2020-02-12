@@ -1,8 +1,10 @@
 package com.mowmaster.dust.items.trinkets;
 
 
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.SoundType;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.potion.PotionEffect;
@@ -11,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
@@ -48,12 +51,9 @@ public class ItemFinnisher extends ItemFood
         return EnumAction.DRINK;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add("Become Imbued with the power of the Finnish");
         tooltip.add("~FinnishFool");
-
-
     }
 }

@@ -261,7 +261,7 @@ public class ItemRegistry
         charcoalWhite = new ItemCharcoal("charcoalwhite","charcoalwhite",2600);
         charcoalBlack = new ItemCharcoal("charcoalblack","charcoalblack",1200);
         scroll = new ItemScroll("scroll","scroll");
-        crushingComponents = new ItemBasic("crusheritems","crusheritems");
+        crushingComponents = new ItemUpgrade("crusheritems","crusheritems");
         furnaceComponents = new ItemUpgrade("crystalfurnaceupgrade","crystalfurnaceupgrade");
         finnisher = new ItemFinnisher("finnisher","finnisher",10,10.0F,false,
                 new PotionEffect(Potion.getPotionById(3),1200,10),

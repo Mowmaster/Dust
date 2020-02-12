@@ -1,14 +1,18 @@
 package com.mowmaster.dust.items;
 
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 //import static com.mowmaster.dust.misc.AchievementHandler.achievementScrollA;
@@ -32,8 +36,19 @@ public class ItemScroll extends Item
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
-        tooltip.add("[WIP] Will randomly give you a letter of the Ancient Alphabet.");
-        tooltip.add("Not needed till next beta release(will also be reworked)");
+
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if(stack.getItem().equals(ItemRegistry.scroll))
+        {
+            tooltip.add("Right click to randomly get a letter of the Ancient Alphabet.");
+        }
+        else {
+            tooltip.add("A language primer, teaches you a letter of the Ancient Alphabet");
+            tooltip.add("Collect all 26 to be able to read Ancient Research Notes");
+        }
     }
 
     //Use NBT to define which one and set item resources based on that, maybe also apply to coins...

@@ -514,9 +514,9 @@ tile.structure2.name=Structure Block
 
 tile.blockdust.name=Dust Cloud
 
-item.crystalPickaxe.name=Crystal Pickaxe [WIP]
-item.crystalSword.name=Crystal Sword [WIP]
-item.crystalAxe.name=Crystal Axe [WIP]
+item.crystalPickaxe.name=Crystal Pickaxe
+item.crystalSword.name=Crystal Sword
+item.crystalAxe.name=Crystal Axe
 
 item.crystalhelmet.name=Crystal Helmet
 item.crystalchestplate.name=Crystal Chestplate
@@ -524,16 +524,32 @@ item.crystalleggings.name=Crystal Leggings
 item.crystalboots.name=Crystal Boots
 
 enchantment.level.-1=
+enchantment.level.11=XI
+enchantment.level.12=XII
+enchantment.level.13=XIII
+enchantment.level.14=XIV
+enchantment.level.15=XV
+enchantment.level.16=XVI
+enchantment.level.17=XVII
+enchantment.level.18=XVIII
+enchantment.level.19=XIX
+enchantment.level.20=XX
 enchantment.enchantDigger=AOE Miner
+enchantment.dust.enchantdigger.desc=Breaks an 'X' by 'X' area around the initial spot mined.
 enchantment.enchantVamperic=Vamperic
+enchantment.dust.enchantvamperic.desc=Sucks life out of the user to repair their tools [WIP]
 enchantment.enchantSteadfast=Steadfast
+enchantment.dust.enchantsteadfast.desc=Extra Damage Protection on top of vanilla protection [WIP]
 enchantment.enchantLastResort=Last Resort
+enchantment.dust.enchantlastresort.desc=Keep Player from dying at the cost of xp [WIP]
 enchantment.enchantStepAssist=Step Up
+enchantment.dust.enchantstepassist.desc=Allows player to STEP UP 'X' number of blocks
 enchantment.enchantSmelter=Smelter
+enchantment.dust.enchantsmelter.desc=Smelts mined Blocks [WIP]
 enchantment.upgraderange=Range
+enchantment.dust.upgraderange.desc=Used for Pedestal Upgrades, Increases working range.
 enchantment.upgradetransferrate=Operation Speed
-
-
+enchantment.dust.upgradetransferrate.desc=Used for Pedestals and Pedestal Upgrades, Increases operating speed.
 
 potion.potency.2=III
 potion.potency.3=IV
@@ -545,6 +561,7 @@ potion.potency.8=IX
 potion.potency.9=X
 
 enchantment.enchantFlight=Flight
+enchantment.dust.enchantflight.desc=Gives the Player FLight at the cost of XP. [WIP]
 effect.fly=Flight
 potion.effect.flight=Potion of Flight
 splash_potion.effect.flight=Splash Potion of Flight
@@ -552,6 +569,7 @@ lingering_potion.effect.flight=Lingering Potion of Flight
 tipped_arrow.effect.flight=Arrow of Flight
 
 enchantment.enchantQuickPace=Quickness
+enchantment.dust.enchantquickpace.desc=Allows player to move faster, stacks with speed and quickness effects [WIP]
 effect.quickness=Quickness
 potion.effect.quickness=Potion of Quickness
 splash_potion.effect.quickness=Splash Potion of Quickness
