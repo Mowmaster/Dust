@@ -2,6 +2,7 @@ package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.google.common.collect.Maps;
 import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.state.IBlockState;
@@ -119,7 +120,7 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                 {
                     TilePedestal tilePedestal = (TilePedestal)tile;
                     ItemStack stack = tilePedestal.getItemInPedestal();
-                    if(stack.isItemEnchanted() || stack.getItem().equals(Items.ENCHANTED_BOOK) || stack.getItem().equals(Items.NAME_TAG))
+                    if(stack.isItemEnchanted() || stack.getItem().equals(Items.ENCHANTED_BOOK) || stack.getItem().equals(Items.NAME_TAG) || stack.getItem().equals(ItemRegistry.crystal))
                     {
                         stackOnSorroundingPedestal.add(stack);
                     }
@@ -130,9 +131,9 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         return stackOnSorroundingPedestal;
     }
 
-    private void deleteItemsOnPedestals(World world, BlockPos pedestalPos)
+    private void deleteItemsOnPedestals(World world, BlockPos pedestalPos, int crystals)
     {
-
+        int crystalsToRemove = crystals;
         ArrayList<BlockPos> posSorroundingPedestals = new ArrayList<BlockPos>();
         posSorroundingPedestals.add(pedestalPos.add(2,0,0));
         posSorroundingPedestals.add(pedestalPos.add(0,0,2));
@@ -150,11 +151,37 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                     ItemStack stack = tilePedestal.getItemInPedestal();
                     if(stack.isItemEnchanted() || stack.getItem().equals(Items.ENCHANTED_BOOK) || stack.getItem().equals(Items.NAME_TAG))
                     {
-                        tilePedestal.removeItem();
+                        tilePedestal.removeItem(1);
+                    }
+                    else if(stack.getItem().equals(ItemRegistry.crystal))
+                    {
+                        if(stack.getCount() >= crystalsToRemove)
+                        {
+                            tilePedestal.removeItem(crystalsToRemove);
+                        }
+                        else
+                        {
+                            crystalsToRemove = crystalsToRemove - stack.getCount();
+                            tilePedestal.removeItem();
+                        }
                     }
                 }
             }
         }
+    }
+
+    private int getCrystals(ArrayList<ItemStack> stackToCombine)
+    {
+        int crystals = 0;
+        for(int i=0;i<stackToCombine.size();i++)
+        {
+            if(stackToCombine.get(i).getItem().equals(ItemRegistry.crystal))
+            {
+                crystals = crystals + stackToCombine.get(i).getCount();
+            }
+        }
+
+        return crystals;
     }
 
 
@@ -178,6 +205,8 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
         ArrayList<ItemStack> stackToCombine = doSorroundingPedestalsHaveItemsToCombine(world,posOfPedestal);
         String strNameToChangeTo = "";
         Map<Enchantment, Integer> enchantsMap = Maps.<Enchantment, Integer>newLinkedHashMap();
+        int overCombine = getCrystals(stackToCombine);
+        int overCombineCopy = overCombine;
 
         int intExpInCoin = getXPStored(coinInPedestal);
         int intRepairRate = getRepairRate(coinInPedestal);
@@ -260,9 +289,16 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                                                         if(e1 == e2)
                                                         {
                                                             intNewValue = e2 + 1;
-                                                            if(e2 > enchantment.getMaxLevel())
+                                                            if(intNewValue > enchantment.getMaxLevel())
                                                             {
-                                                                intNewValue = enchantment.getMaxLevel();
+                                                                if(overCombine >= intNewValue)
+                                                                {
+                                                                    overCombine = overCombine - intNewValue;
+                                                                }
+                                                                else
+                                                                {
+                                                                    intNewValue = enchantment.getMaxLevel();
+                                                                }
                                                             }
 
                                                             enchantsMap.put(enchantment, intNewValue);
@@ -290,7 +326,7 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
 
                                         }
 
-                                        System.out.println("Level To Combine: "+ intLevelCostToCombine);
+                                        //System.out.println("Level To Combine: "+ intLevelCostToCombine);
                                         int intExpCostToCombine = getExpCountByLevel(intLevelCostToCombine);
                                         //System.out.println("XP To Combine: "+ intExpCostToCombine);
                                         if(intExpInCoin >= intExpCostToCombine)
@@ -299,8 +335,9 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                                             itemFromInvCopy.setCount(1);
                                             //Charge Exp Cost
                                             setXPStored(coinInPedestal,(intExpInCoin-intExpCostToCombine));
-                                            //Delete All Items On Pedestals
-                                            deleteItemsOnPedestals(world,posOfPedestal);
+                                            //Delete Items On Pedestals
+                                            int crystalsToRemove = overCombineCopy - overCombine;
+                                            deleteItemsOnPedestals(world,posOfPedestal,crystalsToRemove);
                                             EnchantmentHelper.setEnchantments(enchantsMap,itemFromInvCopy);
                                             if(strNameToChangeTo != "")
                                             {
