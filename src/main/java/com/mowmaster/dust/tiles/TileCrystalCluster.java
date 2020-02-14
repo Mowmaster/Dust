@@ -5,9 +5,16 @@ import com.mowmaster.dust.effects.EffectPicker;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
@@ -18,13 +25,17 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static net.minecraft.block.BlockDirectional.FACING;
 
 
 public class TileCrystalCluster extends TileEntity implements ITickable
@@ -172,6 +183,78 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         return false;
     }
 
+    public BlockPos getNegRangePosEntity(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
+    {
+        IBlockState state = world.getBlockState(posOfPedestal);
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockPos blockBelow = posOfPedestal;
+        switch (enumfacing)
+        {
+            case UP:
+                return blockBelow.add(-intWidth,0,-intWidth);
+            case DOWN:
+                return blockBelow.add(-intWidth,-intHeight,-intWidth);
+            case NORTH:
+                return blockBelow.add(-intWidth,-intWidth,-intHeight);
+            case SOUTH:
+                return blockBelow.add(-intWidth,-intWidth,0);
+            case EAST:
+                return blockBelow.add(0,-intWidth,-intWidth);
+            case WEST:
+                return blockBelow.add(-intHeight,-intWidth,-intWidth);
+            default:
+                return blockBelow;
+        }
+    }
+
+    public BlockPos getPosRangePosEntity(World world,BlockPos posOfPedestal, int intWidth, int intHeight)
+    {
+        IBlockState state = world.getBlockState(posOfPedestal);
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockPos blockBelow = posOfPedestal;
+        switch (enumfacing)
+        {
+            case UP:
+                return blockBelow.add(intWidth+1,intHeight,intWidth+1);
+            case DOWN:
+                return blockBelow.add(intWidth+1,0,intWidth+1);
+            case NORTH:
+                return blockBelow.add(intWidth+1,intWidth,0+1);
+            case SOUTH:
+                return blockBelow.add(intWidth+1,intWidth,intHeight+1);
+            case EAST:
+                return blockBelow.add(intHeight+1,intWidth,intWidth+1);
+            case WEST:
+                return blockBelow.add(0+1,intWidth,intWidth+1);
+            default:
+                return blockBelow;
+        }
+    }
+
+    public BlockPos getPosOfBlockBelow(World world,BlockPos posOfCluster, int numBelow)
+    {
+        IBlockState state = world.getBlockState(posOfCluster);
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockPos blockBelow = posOfCluster;
+        switch (enumfacing)
+        {
+            case UP:
+                return blockBelow.add(0,-numBelow,0);
+            case DOWN:
+                return blockBelow.add(0,numBelow,0);
+            case NORTH:
+                return blockBelow.add(0,0,numBelow);
+            case SOUTH:
+                return blockBelow.add(0,0,-numBelow);
+            case EAST:
+                return blockBelow.add(-numBelow,0,0);
+            case WEST:
+                return blockBelow.add(numBelow,0,0);
+            default:
+                return blockBelow;
+        }
+    }
+
     private int amp;
     public static final Potion[][] LISTOFEFFECTS = new Potion[][] {{MobEffects.SPEED, MobEffects.HASTE}, {MobEffects.RESISTANCE, MobEffects.JUMP_BOOST}, {MobEffects.STRENGTH}, {MobEffects.REGENERATION}};
     private static final Set<Potion> POSSIBLEEFFECTS = Sets.<Potion>newHashSet();
@@ -187,6 +270,18 @@ public class TileCrystalCluster extends TileEntity implements ITickable
         if(crystalCount>=7 && crystalCount<=8) {a=2;}
         if(crystalCount>=9) {a=Math.round(crystalCount/3);}//??? may need to change to work???
 
+        int range = (a+1);
+        int rangeH = (range+range+1);
+
+        BlockPos negBlockPos = getNegRangePosEntity(world,this.pos,range,rangeH);
+        BlockPos posBlockPos = getPosRangePosEntity(world,this.pos,range,rangeH);
+
+        AxisAlignedBB getBox = new AxisAlignedBB(negBlockPos,posBlockPos);
+
+        BlockPos getFoundationBlockPos = getPosOfBlockBelow(world,this.pos,1);
+        IBlockState getFoundationBlockState = world.getBlockState(getFoundationBlockPos);
+        Block getFoundationBlock = getFoundationBlockState.getBlock();
+
 
 
         if (!this.world.isRemote)
@@ -195,17 +290,56 @@ public class TileCrystalCluster extends TileEntity implements ITickable
             {
                 if(crystalCount>=3)
                 {
-                    List<EntityCreature> lista = this.world.<EntityCreature>getEntitiesWithinAABB(EntityCreature.class, (new AxisAlignedBB((double)x-1, (double)y, (double)z-1, (double)x +2, (double)y+1, (double)z+2).grow(a)));
-                    List<EntityPlayer> listed = this.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, (new AxisAlignedBB((double)x-1, (double)y, (double)z-1, (double)x +2, (double)y+1, (double)z+2).grow(a)));
-                    for (EntityCreature entityCreature : lista)
+                    if(getFoundationBlock.equals(Blocks.EMERALD_BLOCK))
                     {
-                        entityCreature.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true, CrystalTypes.EffectTypes.CRYSTAL));
-                        //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        List<EntityPlayer> listplayer = this.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, getBox);
+                        for (EntityPlayer entityPlayer : listplayer)
+                        {
+                            entityPlayer.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,false, CrystalTypes.EffectTypes.CRYSTAL));
+                            //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        }
                     }
-                    for (EntityPlayer entityPlayer : listed)
+                    else if(getFoundationBlock.equals(Blocks.DIAMOND_BLOCK))
                     {
-                        entityPlayer.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,false, CrystalTypes.EffectTypes.CRYSTAL));
-                        //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        List<EntityMob> listmob = this.world.<EntityMob>getEntitiesWithinAABB(EntityMob.class, getBox);
+                        for (EntityMob entityMob : listmob)
+                        {
+                            entityMob.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true, CrystalTypes.EffectTypes.CRYSTAL));
+                            //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        }
+                    }
+                    else if(getFoundationBlock.equals(Blocks.GOLD_BLOCK))
+                    {
+                        List<EntityAnimal> listanimal = this.world.<EntityAnimal>getEntitiesWithinAABB(EntityAnimal.class, getBox);
+                        for (EntityAnimal entityAnimal : listanimal)
+                        {
+                            entityAnimal.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true, CrystalTypes.EffectTypes.CRYSTAL));
+                            //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        }
+                    }
+                    else if(getFoundationBlock.equals(Blocks.IRON_BLOCK))
+                    {
+                        List<EntityCreature> lista = this.world.<EntityCreature>getEntitiesWithinAABB(EntityCreature.class, getBox);
+                        for (EntityCreature entityCreature : lista)
+                        {
+                            entityCreature.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true, CrystalTypes.EffectTypes.CRYSTAL));
+                            //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        }
+                    }
+                    else
+                    {
+                        List<EntityCreature> lista = this.world.<EntityCreature>getEntitiesWithinAABB(EntityCreature.class, getBox);
+                        List<EntityPlayer> listed = this.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, getBox);
+                        for (EntityCreature entityCreature : lista)
+                        {
+                            entityCreature.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,true, CrystalTypes.EffectTypes.CRYSTAL));
+                            //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        }
+                        for (EntityPlayer entityPlayer : listed)
+                        {
+                            entityPlayer.addPotionEffect(EffectPicker.getEffectFromInputs(redCrystals,blueCrystals,yellowCrystals,whiteCrystals,blackCrystals,100,9,false,false, CrystalTypes.EffectTypes.CRYSTAL));
+                            //this(potionIn, durationIn, amplifierIn, is splash? false, is ambient? true);
+                        }
                     }
                 }
             }
