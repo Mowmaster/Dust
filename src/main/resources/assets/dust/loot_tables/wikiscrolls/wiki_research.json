@@ -1,13 +1,14 @@
 {
   "pools": [
     {
-      "name": "dust:paper",
+      "name": "dust:loot",
       "rolls": 1,
       "entries": [
         {
           "type": "item",
-          "entryName": "wiki_paper",
-          "name": "minecraft:paper",
+          "entryName": "wiki_research",
+          "name": "dust:wikiscroll",
+          "data":0,
           "weight": 1
         }
       ]

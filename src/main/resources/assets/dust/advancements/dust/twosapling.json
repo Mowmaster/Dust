@@ -1,26 +1,26 @@
 {
     "display": {
         "icon": {
-            "item": "dust:red/redcrystalfive"
+            "item": "dust:red/saplingred"
         },
         "title": {
-            "translate": "advancements.dust.root.title"
+            "translate": "advancements.dust.twosapling.title"
         },
         "description": {
-            "translate": "advancements.dust.root.description"
-        },
-        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
-        "show_toast": true,
-        "announce_to_chat": true
+            "translate": "advancements.dust.twosapling.description"
+        }
     },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/root",
     "criteria": {
         "red": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":0
+                        "item": "dust:red/saplingred"
                     }
                 ]
             }
@@ -30,8 +30,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":1
+                        "item": "dust:blue/saplingblue"
                     }
                 ]
             }
@@ -41,8 +40,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":2
+                        "item": "dust:yellow/saplingyellow"
                     }
                 ]
             }
@@ -52,8 +50,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":3
+                        "item": "dust:purple/saplingpurple"
                     }
                 ]
             }
@@ -63,8 +60,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":4
+                        "item": "dust:green/saplinggreen"
                     }
                 ]
             }
@@ -74,8 +70,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":5
+                        "item": "dust:orange/saplingorange"
                     }
                 ]
             }
@@ -85,8 +80,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":6
+                        "item": "dust:white/saplingwhite"
                     }
                 ]
             }
@@ -96,8 +90,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
-                        "data":7
+                        "item": "dust:black/saplingblack"
                     }
                 ]
             }
@@ -105,9 +98,6 @@
     },
     "requirements": [
         ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
-    ],
-    "rewards": {
-        "loot": ["dust:wikiscrolls/wiki_research"]
-    }
+    ]
 
 }

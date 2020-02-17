@@ -1,0 +1,277 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:white/log_white"
+        },
+        "title": {
+            "translate": "advancements.dust.allthewood.title"
+        },
+        "description": {
+            "translate": "advancements.dust.allthewood.description"
+        },
+        "frame": "goal"
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/twosapling",
+    "criteria": {
+        "charcoalred": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":0
+                    }
+                ]
+            }
+        },
+        "charcoalblue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":1
+                    }
+                ]
+            }
+        },
+        "charcoalyellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":2
+                    }
+                ]
+            }
+        },
+        "charcoalpurple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":3
+                    }
+                ]
+            }
+        },
+        "charcoalgreen": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":4
+                    }
+                ]
+            }
+        },
+        "charcoalorange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":5
+                    }
+                ]
+            }
+        },
+        "charcoalwhite": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":6
+                    }
+                ]
+            }
+        },
+        "charcoalblack": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blockcharcoal",
+                        "data":7
+                    }
+                ]
+            }
+        },
+        "stairsred": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/redplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairsblue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blueplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairsyellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/yellowplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairspurple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/purpleplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairsgreen": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/greenplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairsorange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/orangeplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairswhite": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/whiteplankstairs"
+                    }
+                ]
+            }
+        },
+        "stairsblack": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blackplankstairs"
+                    }
+                ]
+            }
+        },
+        "fencesred": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/redplankfences"
+                    }
+                ]
+            }
+        },
+        "fencesblue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blueplankfences"
+                    }
+                ]
+            }
+        },
+        "fencesyellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/yellowplankfences"
+                    }
+                ]
+            }
+        },
+        "fencespurple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/purpleplankfences"
+                    }
+                ]
+            }
+        },
+        "fencesgreen": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/greenplankfences"
+                    }
+                ]
+            }
+        },
+        "fencesorange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/orangeplankfences"
+                    }
+                ]
+            }
+        },
+        "fenceswhite": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/whiteplankfences"
+                    }
+                ]
+            }
+        },
+        "fencesblack": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blackplankfences"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["charcoalred"],["charcoalyellow"],["charcoalblue"],["charcoalpurple"],["charcoalgreen"],["charcoalorange"],["charcoalwhite"],["charcoalblack"],
+        ["stairsred"],["stairsyellow"],["stairsblue"],["stairspurple"],["stairsgreen"],["stairsorange"],["stairswhite"],["stairsblack"],
+        ["fencesred"],["fencesyellow"],["fencesblue"],["fencespurple"],["fencesgreen"],["fencesorange"],["fenceswhite"],["fencesblack"]
+    ],
+    "rewards": {
+        "experience": 1395
+    }
+
+}

@@ -1,25 +1,27 @@
 {
     "display": {
         "icon": {
-            "item": "dust:red/redcrystalfive"
+            "item": "dust:crystal",
+            "data":0
         },
         "title": {
-            "translate": "advancements.dust.root.title"
+            "translate": "advancements.dust.twocrystal.title"
         },
         "description": {
-            "translate": "advancements.dust.root.description"
-        },
-        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
-        "show_toast": true,
-        "announce_to_chat": true
+            "translate": "advancements.dust.twocrystal.description"
+        }
     },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/root",
     "criteria": {
         "red": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":0
                     }
                 ]
@@ -30,7 +32,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":1
                     }
                 ]
@@ -41,7 +43,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":2
                     }
                 ]
@@ -52,7 +54,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":3
                     }
                 ]
@@ -63,7 +65,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":4
                     }
                 ]
@@ -74,7 +76,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":5
                     }
                 ]
@@ -85,7 +87,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":6
                     }
                 ]
@@ -96,7 +98,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:bit",
+                        "item": "dust:crystal",
                         "data":7
                     }
                 ]
@@ -105,9 +107,6 @@
     },
     "requirements": [
         ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
-    ],
-    "rewards": {
-        "loot": ["dust:wikiscrolls/wiki_research"]
-    }
+    ]
 
 }

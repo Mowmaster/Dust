@@ -648,15 +648,36 @@ splash_potion.effect.voidstorage=Splash Potion of Void Storage
 lingering_potion.effect.voidstorage=Lingering Potion of Void Storage
 tipped_arrow.effect.voidstorage=Arrow of Void Storage
 
+advancements.dust..title=
+advancements.dust..description=
+
+advancements.dust.allthebits.title=A Bit Of Everything
+advancements.dust.allthebits.description=Not super useful in small amounts, but it really adds up after a while!
+advancements.dust.allthewood.title=Splinter Proof!
+advancements.dust.allthewood.description=Craft or Smelt all the Dust Wood Types into their "End Products"
+advancements.dust.allthecrystals.title=A Fistful or Crystals
+advancements.dust.allthecrystals.description=Collect All Crystal Types.
+advancements.dust.allthecrystalthings.title=All The Pretties!
+advancements.dust.allthecrystalthings.description=Collect or Craft All Items From Crystals.
 
 
-advancements.dust.root.title=Ooooh, Pretty!
-advancements.dust.root.description=Dust adds so much world gen, go find it all!
-advancements.dust.wikinotes.title="Aura? Whats..." BOOOOOM!
-advancements.dust.wikinotes.description=This is your intro guide to Dust, Shift+R.Click to cycle the entries.
-advancements.dust.getdust.title=BREAK OUT THE BROOM, ITS GETTING DUSTY IN HERE!!!
-advancements.dust.getdust.description=Sweep up some dust into your inventory.
-advancements.dust.spellcrafting.title=Spell Effect Crafting
-advancements.dust.spellcrafting.description=Use what you know about spells and apply it to other things.
-advancements.dust.batchcrafting.title=When One Just Isn't Enough...
-advancements.dust.batchcrafting.description=When making spells one at a time is just too slow.
+advancements.dust.root.title=Dust
+advancements.dust.root.description=Just a tiny BIT of DUST, Craft 9 of one type into something more useful.
+advancements.dust.twobiome.title=Paradise At Last!
+advancements.dust.twobiome.description=The Dust Biome has Unique Ore Generation and Some Magical Properties Specific to a few Dust Blocks. Living Here Could be Fun?
+advancements.dust.twodust.title=Is it Getting Dusty In Here???
+advancements.dust.twodust.description=Dust is the Base to Most things in the Mod, Finding a reliable source of this should be a priority.
+advancements.dust.twocrystal.title=Crystals, Oh So Pretty!
+advancements.dust.twocrystal.description=Crystals are raw crystalized energy, They can be crushed into dust, but they also have their own unique uses as well.
+advancements.dust.twosapling.title=A Rustling in the Wind
+advancements.dust.twosapling.description=Dust Trees are full of energy, farm these and you'll have more power then you know what to do with!
+advancements.dust.threewood.title=Getting Wood (Again)
+advancements.dust.threewood.description=Dust Logs and Planks are in OreDictionary so you can use them in most vanilla recipes.
+advancements.dust..title=
+advancements.dust..description=
+advancements.dust..title=
+advancements.dust..description=
+advancements.dust..title=
+advancements.dust..description=
+advancements.dust..title=
+advancements.dust..description=

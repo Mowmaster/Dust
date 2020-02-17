@@ -1,117 +1,125 @@
 {
     "display": {
         "icon": {
-            "item": "dust:wikiscroll",
-            "data": 0
+            "item": "dust:purple/purplecrystalfive"
         },
         "title": {
-            "translate": "advancements.dust.wikinotes.title"
+            "translate": "advancements.dust.allthecrystalthings.title"
         },
         "description": {
-            "translate": "advancements.dust.wikinotes.description"
-        }
+            "translate": "advancements.dust.allthecrystalthings.description"
+        },
+        "frame": "challenge"
     },
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": true,
-    "parent": "dust:dust/root",
+    "parent": "dust:dust/allthecrystals",
     "criteria": {
-        "note": {
+        "red": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:wikiscroll",
-                        "data": 0
+                        "item": "dust:purple/purplecrystalfive"
                     }
                 ]
             }
         },
-        "tred": {
+        "blue": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:red/saplingred"
+                        "item": "dust:crystal",
+                        "data":1
                     }
                 ]
             }
         },
-        "tblue": {
+        "yellow": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:blue/saplingblue"
+                        "item": "dust:crystal",
+                        "data":2
                     }
                 ]
             }
         },
-        "tyellow": {
+        "purple": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:yellow/saplingyellow"
+                        "item": "dust:crystal",
+                        "data":3
                     }
                 ]
             }
         },
-        "tpurple": {
+        "green": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:purple/saplingpurple"
+                        "item": "dust:crystal",
+                        "data":4
                     }
                 ]
             }
         },
-        "tgreen": {
+        "orange": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:green/saplinggreen"
+                        "item": "dust:crystal",
+                        "data":5
                     }
                 ]
             }
         },
-        "torange": {
+        "white": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:orange/saplingorange"
+                        "item": "dust:crystal",
+                        "data":6
                     }
                 ]
             }
         },
-        "twhite": {
+        "black": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:white/saplingwhite"
+                        "item": "dust:crystal",
+                        "data":7
                     }
                 ]
             }
         },
-        "tblack": {
+        "depleated": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:black/saplingblack"
+                        "item": "dust:crystal",
+                        "data":8
                     }
                 ]
             }
         }
     },
     "requirements": [
-        ["tred", "tyellow", "tblue", "tpurple", "tgreen", "torange", "twhite", "tblack"],["note"]
+        ["red"],["yellow"],["blue"],["purple"],["green"],["orange"],["white"],["black"],["depleated"]
     ],
     "rewards": {
-        "loot": ["dust:wikiscrolls/wiki_loot"]
+        "experience": 1395
     }
+
 }

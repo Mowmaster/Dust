@@ -1,0 +1,29 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:grass"
+        },
+        "title": {
+            "translate": "advancements.dust.twobiome.title"
+        },
+        "description": {
+            "translate": "advancements.dust.twobiome.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/root",
+    "criteria": {
+        "crystal_biome": {
+            "trigger": "minecraft:location",
+            "conditions": {
+                "biome": "dust:crystal"
+            }
+        }
+    },
+    "requirements": [
+        ["crystal_biome"]
+    ]
+
+}
