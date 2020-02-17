@@ -330,12 +330,12 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                     }
                     else
                     {
-                        int stackSize = tilePedestal.getMaxStackSize()-tilePedestal.getItemInPedestal().getCount();
-                        if(tilePedestal.doItemsMatch(playerIn.getHeldItem(hand)))
+                        int availableSpace = tilePedestal.canAcceptItems(playerIn.getHeldItem(hand));
+                        if(availableSpace>0)
                         {
                             if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
                             {
-                                playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
+                                playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(availableSpace);
                                 return true;
                             }
                         }
@@ -355,12 +355,12 @@ public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, 
                 }
                 else
                 {
-                    int stackSize = tilePedestal.getMaxStackSize()-tilePedestal.getItemInPedestal().getCount();
-                    if(tilePedestal.doItemsMatch(playerIn.getHeldItem(hand)))
+                    int availableSpace = tilePedestal.canAcceptItems(playerIn.getHeldItem(hand));
+                    if(availableSpace>0)
                     {
                         if (tilePedestal.addItem(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
                         {
-                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(stackSize);
+                            playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(availableSpace);
                             return true;
                         }
                     }
