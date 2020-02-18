@@ -3,7 +3,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
         "0": "dust:blocks/wood/planks/white_planks",
-        "1": "dust:blocks/stone/stone/bluestone"
+        "1": "dust:blocks/stone/stone/bluestone",
+        "particle": "dust:blocks/stone/stone/bluestone"
     },
     "elements": [
         {
