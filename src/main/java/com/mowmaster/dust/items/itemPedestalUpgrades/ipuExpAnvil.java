@@ -158,6 +158,7 @@ public class ipuExpAnvil extends ipuBasicExpUpgrade
                         if(stack.getCount() >= crystalsToRemove)
                         {
                             tilePedestal.removeItem(crystalsToRemove);
+                            crystalsToRemove = 0;
                         }
                         else
                         {
