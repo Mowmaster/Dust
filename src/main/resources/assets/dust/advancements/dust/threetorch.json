@@ -1,0 +1,103 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:blue/bluetorch"
+        },
+        "title": {
+            "translate": "advancements.dust.threetorch.title"
+        },
+        "description": {
+            "translate": "advancements.dust.threetorch.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/twocrystal",
+    "criteria": {
+        "red": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:red/redtorch"
+                    }
+                ]
+            }
+        },
+        "blue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:blue/bluetorch"
+                    }
+                ]
+            }
+        },
+        "yellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:yellow/yellowtorch"
+                    }
+                ]
+            }
+        },
+        "purple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:purple/purpletorch"
+                    }
+                ]
+            }
+        },
+        "green": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:green/greentorch"
+                    }
+                ]
+            }
+        },
+        "orange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:orange/orangetorch"
+                    }
+                ]
+            }
+        },
+        "white": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:white/whitetorch"
+                    }
+                ]
+            }
+        },
+        "black": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:black/blacktorch"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["red", "yellow", "blue", "purple", "green", "orange", "white", "black"]
+    ]
+
+}

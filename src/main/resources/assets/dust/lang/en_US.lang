@@ -663,6 +663,7 @@ advancements.dust.allthecrystalthings.description=Collect or Craft All Items Fro
 
 advancements.dust.root.title=Dust
 advancements.dust.root.description=Just a tiny BIT of DUST, Craft 9 of one type into something more useful.
+
 advancements.dust.twobiome.title=Paradise At Last!
 advancements.dust.twobiome.description=The Dust Biome has Unique Ore Generation and Some Magical Properties Specific to a few Dust Blocks. Living Here Could be Fun?
 advancements.dust.twodust.title=Is it Getting Dusty In Here???
@@ -671,13 +672,28 @@ advancements.dust.twocrystal.title=Crystals, Oh So Pretty!
 advancements.dust.twocrystal.description=Crystals are raw crystalized energy, They can be crushed into dust, but they also have their own unique uses as well.
 advancements.dust.twosapling.title=A Rustling in the Wind
 advancements.dust.twosapling.description=Dust Trees are full of energy, farm these and you'll have more power then you know what to do with!
+
 advancements.dust.threewood.title=Getting Wood (Again)
 advancements.dust.threewood.description=Dust Logs and Planks are in OreDictionary so you can use them in most vanilla recipes.
-advancements.dust..title=
-advancements.dust..description=
-advancements.dust..title=
-advancements.dust..description=
-advancements.dust..title=
-advancements.dust..description=
-advancements.dust..title=
-advancements.dust..description=
+advancements.dust.threetorch.title=A Light In the Dark
+advancements.dust.threetorch.description=Crystal Torches are just like regular torches, but made with crystals.
+advancements.dust.threetools.title=Crystiline Tools
+advancements.dust.threetools.description=Crystal Tools, Slightly Better then Diamond due to their more Magical Nature.
+advancements.dust.threearmor.title=Studded Protection
+advancements.dust.threearmor.description=Crystal Armor, Similar to the tools, are slightly better then diamond.
+advancements.dust.threemachines.title=Enhanced Machines
+advancements.dust.threemachines.description=The Crystal Furnace can use the energy from crystals to augment the smelting process and results. Red and Orange effect the fuel in some way, Blue and Green effect the Product, and Yellow increases smelt speed.
+advancements.dust.threefurnacecomponents.title=Furnace Components
+advancements.dust.threefurnacecomponents.description=A cheaper way to get the Crystal Furnace (Tier 1) Needs to be slotted into a Crystal Machine Block (found rarely in structures) to work.
+
+advancements.dust.fourfurnace.title=Enhanced Smelting
+advancements.dust.fourfurnace.description=The Crystal Furnace is a Tier 1 Machine, it can use the energy from crystals to augment the smelting process and results. Red and Orange effect the fuel in some way, Blue and Green effect the Product, and Yellow increases smelt speed.
+advancements.dust.fourcrushercomponents.title=Crusher Components
+advancements.dust.fourcrushercomponents.description=Used in Crafting, Can also be slotted into a Crystal Machine Block to make a Crystal Crusher Tier 0
+advancements.dust.fourwrench.title=Pedestal Manipulation
+advancements.dust.fourwrench.description=The Crystal Wrench is a tool that Allows you to Connect Pedestals together.
+
+advancements.dust.fivecrusher.title=Basic Crushing
+advancements.dust.fivecrusher.description=The Crystal Crusher is a Tier 0 Machine, Only Obtained from using crusher components on a Dust machine block (found rarely in structures) This machine is a manual input machine, needs fuel and a item or block to crush.
+advancements.dust.fivefurnacebasic.title=Basic Smelting
+advancements.dust.fivefurnacebasic.description=The Crystal Furnace is a Tier 0 Machine, Currently UnObtainable outside of cheat mode or being given in packs. This machine is a manual input machine, needs fuel and a item or block to smelt.

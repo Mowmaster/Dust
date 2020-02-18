@@ -1,0 +1,63 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:crystalsword"
+        },
+        "title": {
+            "translate": "advancements.dust.threetools.title"
+        },
+        "description": {
+            "translate": "advancements.dust.threetools.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/twocrystal",
+    "criteria": {
+        "sword": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:crystalsword"
+                    }
+                ]
+            }
+        },
+        "pick": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:crystalpickaxe"
+                    }
+                ]
+            }
+        },
+        "axe": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:crystalaxe"
+                    }
+                ]
+            }
+        },
+        "wrench": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:wrench"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["sword", "pick", "axe", "wrench"]
+    ]
+
+}

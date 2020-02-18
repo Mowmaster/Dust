@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:crystalcrusherbasic"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecrusher.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecrusher.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourcrushercomponents",
+    "criteria": {
+        "crusher": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:crystalcrusherbasic"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["crusher"]
+    ]
+
+}
