@@ -147,8 +147,18 @@ public class ItemRegistry
 
     public static void init()
     {
-        dustTippedArrow = new ItemDustTippedArrow("dusttippedarrow");
-
+        dust = new ItemDust("dust",CrystalItems.DustTypes.values());
+        crystal = new ItemCrystal("crystal");
+        bit = new ItemBit("bit");
+        charcoalRed = new ItemCharcoal("charcoalred","charcoalred",1800);
+        charcoalBlue = new ItemCharcoal("charcoalblue","charcoalblue",2400);
+        charcoalYellow = new ItemCharcoal("charcoalyellow","charcoalyellow",2200);
+        charcoalPurple = new ItemCharcoal("charcoalpurple","charcoalpurple",1400);
+        charcoalGreen = new ItemCharcoal("charcoalgreen","charcoalgreen",1600);
+        charcoalOrange = new ItemCharcoal("charcoalorange","charcoalorange",2000);
+        charcoalWhite = new ItemCharcoal("charcoalwhite","charcoalwhite",2600);
+        charcoalBlack = new ItemCharcoal("charcoalblack","charcoalblack",1200);
+        ancientCoin = new ItemCoin("coin","coin");
         ancientCoinA = new ItemCoin("ancientcoina","ancientcoina");
         ancientCoinB = new ItemCoin("ancientcoinb","ancientcoinb");
         ancientCoinC = new ItemCoin("ancientcoinc","ancientcoinc");
@@ -175,8 +185,6 @@ public class ItemRegistry
         ancientCoinX = new ItemCoin("ancientcoinx","ancientcoinx");
         ancientCoinY = new ItemCoin("ancientcoiny","ancientcoiny");
         ancientCoinZ = new ItemCoin("ancientcoinz","ancientcoinz");
-        ancientCoin = new ItemCoin("coin","coin");
-
         importUpgrade = new ipuImport("importupgrade","importupgrade");
         exportUpgrade = new ipuExport("exportupgrade","exportupgrade");
         singleExportUpgrade = new ipuExportRestock("singleexportupgrade","singleexportupgrade");
@@ -199,7 +207,6 @@ public class ItemRegistry
         fuzzyFilterBlacklistUpgrade = new ipuFilterItemBlacklist("fuzzyfilterblacklistupgrade","fuzzyfilterblacklistupgrade");
         placerUpgrade = new ipuPlacer("placerupgrade","placerupgrade");//
         breakerUpgrade = new ipuBreaker("breakerupgrade","breakerupgrade");//
-
         shearingUpgrade = new ipuShearer("shearingupgrade","shearingupgrade");//Shearing
         userUpgrade = new ipuMilker("userupgrade","userupgrade");//Milking
         effectUpgrade = new ipuEffectMagnet("effectupgrade","effectupgrade");//Magnetism
@@ -212,9 +219,8 @@ public class ItemRegistry
         expRelay = new ipuExpRelay("exprelay","exprelay");//
         expTank = new ipuExpTank("exptank","exptank");//
         expBottler = new ipuExpBottler("expbottler","expbottler");//
-
         expAnvil = new ipuExpAnvil("expanvil","expanvil");//Anvil
-
+        scroll = new ItemScroll("scroll","scroll");
         scrollA = new ItemScroll("scrolla","scrolla");
         scrollB = new ItemScroll("scrollb","scrollb");
         scrollC = new ItemScroll("scrollc","scrollc");
@@ -241,40 +247,36 @@ public class ItemRegistry
         scrollX = new ItemScroll("scrollx","scrollx");
         scrollY = new ItemScroll("scrolly","scrolly");
         scrollZ = new ItemScroll("scrollz","scrollz");
-
         spellPaper = new ItemSpellScroll("spellpaper","spellpaper");
-
-        tomeGuideBook = new ItemGuideBook("guidebook","guidebook");
-        crystalWrench = new ItemCrystalWrench("wrench","wrench");
-
-        akashic = new ItemBasic("akashic","akashic");
-        dust = new ItemDust("dust",CrystalItems.DustTypes.values());
-        crystal = new ItemCrystal("crystal");
-        bit = new ItemBit("bit");
         wikiscroll = new ItemWikiScroll("wikiscroll");
-        charcoalRed = new ItemCharcoal("charcoalred","charcoalred",1800);
-        charcoalBlue = new ItemCharcoal("charcoalblue","charcoalblue",2400);
-        charcoalYellow = new ItemCharcoal("charcoalyellow","charcoalyellow",2200);
-        charcoalPurple = new ItemCharcoal("charcoalpurple","charcoalpurple",1400);
-        charcoalGreen = new ItemCharcoal("charcoalgreen","charcoalgreen",1600);
-        charcoalOrange = new ItemCharcoal("charcoalorange","charcoalorange",2000);
-        charcoalWhite = new ItemCharcoal("charcoalwhite","charcoalwhite",2600);
-        charcoalBlack = new ItemCharcoal("charcoalblack","charcoalblack",1200);
-        scroll = new ItemScroll("scroll","scroll");
+        dustTippedArrow = new ItemDustTippedArrow("dusttippedarrow");
+        tomeGuideBook = new ItemGuideBook("guidebook","guidebook");
+        akashic = new ItemBasic("akashic","akashic");
         crushingComponents = new ItemUpgrade("crusheritems","crusheritems");
         furnaceComponents = new ItemUpgrade("crystalfurnaceupgrade","crystalfurnaceupgrade");
         finnisher = new ItemFinnisher("finnisher","finnisher",10,10.0F,false,
                 new PotionEffect(Potion.getPotionById(3),1200,10),
                 new PotionEffect(Potion.getPotionById(5),1200,10),
         new PotionEffect(Potion.getPotionById(10),1200,5));
+        crystalWrench = new ItemCrystalWrench("wrench","wrench");
 
         //dustbread = new ItemDustBread("dustbread","dustbread",1,1f);
     }
 
     public static void register()
     {
-        registerItem(dustTippedArrow);
-
+        registerItem(dust);
+        registerItem(crystal);
+        registerItem(bit);
+        registerItem(charcoalRed);
+        registerItem(charcoalBlue);
+        registerItem(charcoalYellow);
+        registerItem(charcoalPurple);
+        registerItem(charcoalGreen);
+        registerItem(charcoalOrange);
+        registerItem(charcoalWhite);
+        registerItem(charcoalBlack);
+        registerItem(ancientCoin);
         registerItem(ancientCoinA);
         registerItem(ancientCoinB);
         registerItem(ancientCoinC);
@@ -301,47 +303,42 @@ public class ItemRegistry
         registerItem(ancientCoinX);
         registerItem(ancientCoinY);
         registerItem(ancientCoinZ);
-        registerItem(ancientCoin);
-
-        registerItem(userUpgrade);
-        registerItem(shearingUpgrade);
-        registerItem(chopperUpgrade);
-        registerItem(crafter1Upgrade);
-        registerItem(crafter4Upgrade);
-        registerItem(crafter9Upgrade);
+        registerItem(importUpgrade);
+        registerItem(effectUpgrade);//Magnet
         registerItem(singleExportUpgrade);
         registerItem(exportUpgrade);
-        registerItem(importUpgrade);
-        registerItem(dropperUpgrade);
-        registerItem(placerUpgrade);
         registerItem(filterUpgrade);
         registerItem(fuzzyFilterUpgrade);
         registerItem(filterModUpgrade);
+        registerItem(upgradeEnchanted);
         registerItem(filterBlacklistUpgrade);
         registerItem(fuzzyFilterBlacklistUpgrade);
         registerItem(filterModBlacklistUpgrade);
-        registerItem(effectUpgrade);
+        registerItem(upgradeEnchantedBlacklist);
+        registerItem(chopperUpgrade);
+        registerItem(breakerUpgrade);
+        registerItem(placerUpgrade);
+        registerItem(dropperUpgrade);
         registerItem(growerUpgrade);
         registerItem(planterUpgrade);
         registerItem(harvesterUpgrade);
-
-        registerItem(enchantUpgrade);
-        registerItem(expCollector);
-        registerItem(expDropper);
-        registerItem(expRelay);
-        registerItem(expTank);
-        registerItem(expBottler);
-        registerItem(expAnvil);
-
-        registerItem(breakerUpgrade);
+        registerItem(cobbleGenUpgrade);
         registerItem(furnaceUpgrade);
         registerItem(crusherUpgrade);
-        registerItem(cobbleGenUpgrade);
-        registerItem(upgradeEnchanted);
-        registerItem(upgradeEnchantedBlacklist);
-
+        registerItem(crafter1Upgrade);
+        registerItem(crafter4Upgrade);
+        registerItem(crafter9Upgrade);
         registerItem(craftingPlaceholder);
-
+        registerItem(userUpgrade);//Milker
+        registerItem(shearingUpgrade);
+        registerItem(expCollector);
+        registerItem(expRelay);
+        registerItem(expTank);
+        registerItem(enchantUpgrade);//Enchanter
+        registerItem(expAnvil);
+        registerItem(expDropper);
+        registerItem(expBottler);
+        registerItem(scroll);
         registerItem(scrollA);
         registerItem(scrollB);
         registerItem(scrollC);
@@ -369,25 +366,14 @@ public class ItemRegistry
         registerItem(scrollY);
         registerItem(scrollZ);
         registerItem(spellPaper);
-        registerItem(tomeGuideBook);
-        registerItem(crystalWrench);
-        registerItem(akashic);
-        registerItem(dust);
-        registerItem(crystal);
-        registerItem(bit);
         registerItem(wikiscroll);
-        registerItem(charcoalRed);
-        registerItem(charcoalBlue);
-        registerItem(charcoalYellow);
-        registerItem(charcoalPurple);
-        registerItem(charcoalGreen);
-        registerItem(charcoalOrange);
-        registerItem(charcoalWhite);
-        registerItem(charcoalBlack);
-        registerItem(scroll);
+        registerItem(dustTippedArrow);
+        registerItem(tomeGuideBook);
+        registerItem(akashic);
         registerItem(crushingComponents);
         registerItem(furnaceComponents);
         registerItem(finnisher);
+        registerItem(crystalWrench);
         //registerItem(dustbread);
     }
 

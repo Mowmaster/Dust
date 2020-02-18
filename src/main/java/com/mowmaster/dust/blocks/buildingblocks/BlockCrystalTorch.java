@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class BlockCrystalTorch extends BlockBasicDirectional
@@ -55,7 +56,7 @@ public class BlockCrystalTorch extends BlockBasicDirectional
         this.setSoundType(SoundType.GLASS);
         this.setLightLevel(3f);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
     }
 
 

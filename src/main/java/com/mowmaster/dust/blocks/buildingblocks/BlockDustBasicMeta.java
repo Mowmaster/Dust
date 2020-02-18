@@ -38,10 +38,11 @@ import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 public class BlockDustBasicMeta extends BlockBasic implements IMetaBlockName
 {
     public static final PropertyEnum COLORS = PropertyEnum.create("basicblocks",CrystalBlocks.CrystalColors.class);
+    public static Block dustplanks;
     public static Block duststone;
     public static Block dustbrick;
     public static Block dustbricks;
-    public static Block dustplanks;
+
 
     public BlockDustBasicMeta(String unloc, Material material, SoundType soundType, int hardness, int resistance, int lightopacity)
     {

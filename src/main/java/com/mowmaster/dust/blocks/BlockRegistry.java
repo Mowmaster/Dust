@@ -15,70 +15,72 @@ public class BlockRegistry
     public static void init() {
 
         BlockCrystalOre.Init();
-        BlockCrystalTorch.Init();
-        BlockCharcoal.Init();
         BlockCrystal.Init();
-        BlockDustSlab.Init();
+        BlockCrystalCluster.Init();
+        BlockDustCloud.Init();
+        SaplingRegister.Init();
         BlockDustLeaf.Init();
         BlockDustLog.BlockLogInit();
-        BlockDustBasic.Init();
+        BlockCharcoal.Init();
         BlockDustBasicMeta.Init();
+        BlockDustSlab.Init();
         BlockDustStair.Init();
         BlockDustFence.Init();
         BlockDustWall.Init();
-        BlockDustCloud.Init();
-        SaplingRegister.Init();
+        BlockCrystalTorch.Init();
         BlockPedestal.Init();
-        BlockLootBlock.Init();
-        BlockCrate.Init();
-        BlockPot.Init();
         BlockPath.Init();
+        BlockEnchantedFarmland.Init();
+        BlockDustBasic.Init();
+        BlockMobSoil.Init();
         BlockSpike.Init();
+        BlockTrap.Init();
+        BlockMachineBase.Init();
         CrystalCrusherBasic.Init();
         CrystalFurnaceBasic.Init();
         BlockCrystalFurnace.Init();
-        BlockTrap.Init();
-        BlockEnchantedFarmland.Init();
-        BlockMobSoil.Init();
-        BlockVoidPot.Init();
-        BlockCrystalCluster.Init();
-        BlockMachineBase.Init();
         BlockEnchantMod.Init();
+        BlockCrate.Init();
+        BlockPot.Init();
+        BlockVoidPot.Init();
+
+        //Dust Creative
+        BlockLootBlock.Init();
         BlockStructureSpawner.Init();
     }
 
     public static void register()
     {
         BlockCrystalOre.Register();
-        BlockCrystalTorch.Register();
-        BlockCharcoal.Register();
-        BlockDustLog.BlockLogRegister();
         BlockCrystal.Register();
-        BlockDustLeaf.Register();
-        BlockDustBasic.Register();
-        BlockDustBasicMeta.Register();
-        BlockDustStair.Register();
-        BlockDustSlab.Register();
-        BlockDustFence.Register();
-        BlockDustWall.Register();
-        BlockLootBlock.Register();
+        BlockCrystalCluster.Register();
         BlockDustCloud.Register();
         SaplingRegister.Register();
+        BlockDustLeaf.Register();
+        BlockDustLog.BlockLogRegister();
+        BlockCharcoal.Register();
+        BlockDustBasicMeta.Register();
+        BlockDustSlab.Register();
+        BlockDustStair.Register();
+        BlockDustFence.Register();
+        BlockDustWall.Register();
+        BlockCrystalTorch.Register();
         BlockPedestal.Register();
-        BlockCrate.Register();
-        BlockPot.Register();
         BlockPath.Register();
+        BlockEnchantedFarmland.Register();
+        BlockDustBasic.Register();
+        BlockMobSoil.Register();
         BlockSpike.Register();
+        BlockTrap.Register();
+        BlockMachineBase.Register();
         CrystalCrusherBasic.Register();
         CrystalFurnaceBasic.Register();
         BlockCrystalFurnace.Register();
-        BlockTrap.Register();
-        BlockEnchantedFarmland.Register();
-        BlockMobSoil.Register();
-        BlockVoidPot.Register();
-        BlockCrystalCluster.Register();
-        BlockMachineBase.Register();
         BlockEnchantMod.Register();
+        BlockCrate.Register();
+        BlockPot.Register();
+        BlockVoidPot.Register();
+        BlockLootBlock.Register();
         BlockStructureSpawner.Register();
     }
 

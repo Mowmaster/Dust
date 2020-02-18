@@ -22,8 +22,8 @@ public class BlockDustFence extends BlockBasicFence
     public static Block blueplankfences;
     public static Block yellowplankfences;
     public static Block purpleplankfences;
-    public static Block orangeplankfences;
     public static Block greenplankfences;
+    public static Block orangeplankfences;
     public static Block whiteplankfences;
     public static Block blackplankfences;
 
@@ -53,8 +53,8 @@ public class BlockDustFence extends BlockBasicFence
         blueplankfences = new BlockDustFence("blueplankfences", "ancient/blueplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
         yellowplankfences = new BlockDustFence("yellowplankfences", "ancient/yellowplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
         purpleplankfences = new BlockDustFence("purpleplankfences", "ancient/purpleplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
-        orangeplankfences = new BlockDustFence("orangeplankfences", "ancient/orangeplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
         greenplankfences = new BlockDustFence("greenplankfences", "ancient/greenplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
+        orangeplankfences = new BlockDustFence("orangeplankfences", "ancient/orangeplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
         whiteplankfences = new BlockDustFence("whiteplankfences", "ancient/whiteplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
         blackplankfences = new BlockDustFence("blackplankfences", "ancient/blackplankfences",Material.WOOD,MapColor.WOOD, SoundType.WOOD, 2, 10, 10);
     }
@@ -65,8 +65,8 @@ public class BlockDustFence extends BlockBasicFence
         registerBlock(blueplankfences);
         registerBlock(yellowplankfences);
         registerBlock(purpleplankfences);
-        registerBlock(orangeplankfences);
         registerBlock(greenplankfences);
+        registerBlock(orangeplankfences);
         registerBlock(whiteplankfences);
         registerBlock(blackplankfences);
     }

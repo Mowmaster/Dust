@@ -31,6 +31,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.devBlocks;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
+import static com.mowmaster.dust.misc.DustyTab.DUSTCREATIVE;
 
 
 public class BlockStructureSpawner extends BlockBasic implements ITileEntityProvider
@@ -50,7 +51,7 @@ public class BlockStructureSpawner extends BlockBasic implements ITileEntityProv
         this.setResistance(9999);
         this.setLightOpacity(0);
         this.setSoundType(SoundType.STONE);
-        this.setCreativeTab(DUSTBLOCKSTABS);
+        this.setCreativeTab(DUSTCREATIVE);
     }
 
 

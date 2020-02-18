@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 
@@ -53,7 +54,7 @@ public class BlockCrystalCluster extends BlockBasicDirectional implements ITileE
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setHardness(3);
         this.setResistance(20);
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
         this.setBlockUnbreakable();
     }

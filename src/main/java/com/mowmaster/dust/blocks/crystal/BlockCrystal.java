@@ -30,6 +30,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 import static com.mowmaster.dust.misc.DustConfigurationFile.oreRegrowthRate;
+import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
 
@@ -109,7 +110,7 @@ public class BlockCrystal extends BlockBasicDirectional
         this.setSoundType(SoundType.GLASS);
         this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
-        this.setCreativeTab(DUSTTABS);
+        this.setCreativeTab(DUSTBLOCKSTABS);
 
 
     }

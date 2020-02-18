@@ -58,12 +58,6 @@ public class ItemArmorAndToolsRegistry
 
     public static void init()
     {
-        crystalHelmet = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.HEAD,"crystalhelmet","crystalhelmet");
-        crystalChestplate = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.CHEST,"crystalchestplate","crystalchestplate");
-        crystalLeggings = new ItemCrystalArmor(crystalArmorMaterial, 2, EntityEquipmentSlot.LEGS,"crystalleggings","crystalleggings");
-        crystalBoots = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.FEET,"crystalboots","crystalboots");
-        //crystalBoots = new ItemCrystalArmor(Material, Layer, What Equipment Slot,unlocName,RegName);
-
         //weapons
         crystalSword = new ItemCrystalSword(crystalToolMaterial);
 
@@ -71,19 +65,28 @@ public class ItemArmorAndToolsRegistry
         crystalPickaxe = new ItemCrystalPickaxe(crystalToolMaterial);
         crystalAxe = new ItemCrystalAxe(crystalToolMaterial);
 
+        crystalHelmet = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.HEAD,"crystalhelmet","crystalhelmet");
+        crystalChestplate = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.CHEST,"crystalchestplate","crystalchestplate");
+        crystalLeggings = new ItemCrystalArmor(crystalArmorMaterial, 2, EntityEquipmentSlot.LEGS,"crystalleggings","crystalleggings");
+        crystalBoots = new ItemCrystalArmor(crystalArmorMaterial, 1, EntityEquipmentSlot.FEET,"crystalboots","crystalboots");
+        //crystalBoots = new ItemCrystalArmor(Material, Layer, What Equipment Slot,unlocName,RegName);
+
+
+
 
     }
 
     public static void register()
     {
-        registerItem(crystalHelmet);
-        registerItem(crystalChestplate);
-        registerItem(crystalLeggings);
-        registerItem(crystalBoots);
         // tool and weapon section
         registerItem(crystalSword);
         registerItem(crystalPickaxe);
         registerItem(crystalAxe);
+        registerItem(crystalHelmet);
+        registerItem(crystalChestplate);
+        registerItem(crystalLeggings);
+        registerItem(crystalBoots);
+
 
     }
 
