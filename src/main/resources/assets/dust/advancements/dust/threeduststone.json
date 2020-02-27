@@ -1,0 +1,112 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:stone",
+            "data":1
+        },
+        "title": {
+            "translate": "advancements.dust.threeduststone.title"
+        },
+        "description": {
+            "translate": "advancements.dust.threeduststone.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/twodust",
+    "criteria": {
+        "red": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":0
+                    }
+                ]
+            }
+        },
+        "blue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":1
+                    }
+                ]
+            }
+        },
+        "yellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":2
+                    }
+                ]
+            }
+        },
+        "purple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":3
+                    }
+                ]
+            }
+        },
+        "green": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":4
+                    }
+                ]
+            }
+        },
+        "orange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":5
+                    }
+                ]
+            }
+        },
+        "white": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":6
+                    }
+                ]
+            }
+        },
+        "black": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:stone",
+                        "data":7
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["red","blue","yellow","purple","green","orange","white","black"]
+    ]
+
+}
