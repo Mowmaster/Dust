@@ -78,9 +78,9 @@ public class ItemRegistry
     public static Item crafter1Upgrade;
     public static Item crafter4Upgrade;
     public static Item crafter9Upgrade;
+    public static Item importUpgrade;
     public static Item exportUpgrade;
     public static Item singleExportUpgrade;
-    public static Item importUpgrade;
     public static Item dropperUpgrade;
     public static Item placerUpgrade;
     public static Item breakerUpgrade;
@@ -305,8 +305,8 @@ public class ItemRegistry
         registerItem(ancientCoinZ);
         registerItem(importUpgrade);
         registerItem(effectUpgrade);//Magnet
-        registerItem(singleExportUpgrade);
         registerItem(exportUpgrade);
+        registerItem(singleExportUpgrade);
         registerItem(filterUpgrade);
         registerItem(fuzzyFilterUpgrade);
         registerItem(filterModUpgrade);

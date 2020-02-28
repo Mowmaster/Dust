@@ -1,0 +1,294 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:scrolld"
+        },
+        "title": {
+            "translate": "advancements.dust.threedustscrolls.title"
+        },
+        "description": {
+            "translate": "advancements.dust.threedustscrolls.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/twodust",
+    "criteria": {
+        "coin": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:coin"
+                    }
+                ]
+            }
+        },
+        "a": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoina"
+                    }
+                ]
+            }
+        },
+        "b": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinb"
+                    }
+                ]
+            }
+        },
+        "c": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinc"
+                    }
+                ]
+            }
+        },
+        "d": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoind"
+                    }
+                ]
+            }
+        },
+        "e": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoine"
+                    }
+                ]
+            }
+        },
+        "f": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinf"
+                    }
+                ]
+            }
+        },
+        "g": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoing"
+                    }
+                ]
+            }
+        },
+        "h": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinh"
+                    }
+                ]
+            }
+        },
+        "i": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoini"
+                    }
+                ]
+            }
+        },
+        "j": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinj"
+                    }
+                ]
+            }
+        },
+        "k": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoink"
+                    }
+                ]
+            }
+        },
+        "l": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinl"
+                    }
+                ]
+            }
+        },
+        "m": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinm"
+                    }
+                ]
+            }
+        },
+        "n": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinn"
+                    }
+                ]
+            }
+        },
+        "o": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoino"
+                    }
+                ]
+            }
+        },
+        "p": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinp"
+                    }
+                ]
+            }
+        },
+        "q": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinq"
+                    }
+                ]
+            }
+        },
+        "r": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinr"
+                    }
+                ]
+            }
+        },
+        "s": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoins"
+                    }
+                ]
+            }
+        },
+        "t": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoint"
+                    }
+                ]
+            }
+        },
+        "u": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinu"
+                    }
+                ]
+            }
+        },
+        "v": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinv"
+                    }
+                ]
+            }
+        },
+        "w": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinw"
+                    }
+                ]
+            }
+        },
+        "x": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinx"
+                    }
+                ]
+            }
+        },
+        "y": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoiny"
+                    }
+                ]
+            }
+        },
+        "z": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancientcoinz"
+                    }
+                ]
+            }
+        }
+
+    },
+    "requirements": [
+        ["coin","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    ]
+
+}

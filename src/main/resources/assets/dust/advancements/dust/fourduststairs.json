@@ -1,0 +1,265 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:ancient/orangestonestairs"
+        },
+        "title": {
+            "translate": "advancements.dust.fourduststairs.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourduststairs.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/threeduststone",
+    "criteria": {
+        "redstair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/redstonestairs"
+                    }
+                ]
+            }
+        },
+        "bluestair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/bluestonestairs"
+                    }
+                ]
+            }
+        },
+        "yellowstair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/yellowstonestairs"
+                    }
+                ]
+            }
+        },
+        "purplestair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/purplestonestairs"
+                    }
+                ]
+            }
+        },
+        "greenstair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/greenstonestairs"
+                    }
+                ]
+            }
+        },
+        "orangestair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/orangestonestairs"
+                    }
+                ]
+            }
+        },
+        "whitestair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/whitestonestairs"
+                    }
+                ]
+            }
+        },
+        "blackstair": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blackstonestairs"
+                    }
+                ]
+            }
+        },
+        "redstairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/redbrickstairs2"
+                    }
+                ]
+            }
+        },
+        "bluestairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/bluebrickstairs2"
+                    }
+                ]
+            }
+        },
+        "yellowstairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/yellowbrickstairs2"
+                    }
+                ]
+            }
+        },
+        "purplestairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/purplebrickstairs2"
+                    }
+                ]
+            }
+        },
+        "greenstairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/greenbrickstairs2"
+                    }
+                ]
+            }
+        },
+        "orangestairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/orangebrickstairs2"
+                    }
+                ]
+            }
+        },
+        "whitestairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/whitebrickstairs2"
+                    }
+                ]
+            }
+        },
+        "blackstairs": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blackbrickstairs2"
+                    }
+                ]
+            }
+        },
+        "redstairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/redbrickstairs"
+                    }
+                ]
+            }
+        },
+        "bluestairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/bluebrickstairs"
+                    }
+                ]
+            }
+        },
+        "yellowstairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/yellowbrickstairs"
+                    }
+                ]
+            }
+        },
+        "purplestairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/purplebrickstairs"
+                    }
+                ]
+            }
+        },
+        "greenstairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/greenbrickstairs"
+                    }
+                ]
+            }
+        },
+        "orangestairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/orangebrickstairs"
+                    }
+                ]
+            }
+        },
+        "whitestairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/whitebrickstairs"
+                    }
+                ]
+            }
+        },
+        "blackstairss": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:ancient/blackbrickstairs"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["redstair","bluestair","yellowstair","purplestair","greenstair","orangestair","whitestair","blackstair",
+            "redstairs","bluestairs","yellowstairs","purplestairs","greenstairs","orangestairs","whitestairs","blackstairs",
+            "redstairss","bluestairss","yellowstairss","purplestairss","greenstairss","orangestairss","whitestairss","blackstairss"]
+    ]
+
+}

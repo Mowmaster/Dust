@@ -1,0 +1,201 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:dustbricks",
+            "data": 4
+        },
+        "title": {
+            "translate": "advancements.dust.fourdustbricks.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourdustbricks.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/threeduststone",
+    "criteria": {
+        "red": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":0
+                    }
+                ]
+            }
+        },
+        "blue": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":1
+                    }
+                ]
+            }
+        },
+        "yellow": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":2
+                    }
+                ]
+            }
+        },
+        "purple": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":3
+                    }
+                ]
+            }
+        },
+        "green": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":4
+                    }
+                ]
+            }
+        },
+        "orange": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":5
+                    }
+                ]
+            }
+        },
+        "white": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":6
+                    }
+                ]
+            }
+        },
+        "black": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbrick",
+                        "data":7
+                    }
+                ]
+            }
+        },
+        "reds": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":0
+                    }
+                ]
+            }
+        },
+        "blues": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":1
+                    }
+                ]
+            }
+        },
+        "yellows": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":2
+                    }
+                ]
+            }
+        },
+        "purples": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":3
+                    }
+                ]
+            }
+        },
+        "greens": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":4
+                    }
+                ]
+            }
+        },
+        "oranges": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":5
+                    }
+                ]
+            }
+        },
+        "whites": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":6
+                    }
+                ]
+            }
+        },
+        "blacks": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:dustbricks",
+                        "data":7
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["red","blue","yellow","purple","green","orange","white","black",
+            "reds","blues","yellows","purples","greens","oranges","whites","blacks"]
+    ]
+
+}

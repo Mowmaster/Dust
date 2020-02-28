@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "dust:stone",
+            "item": "dust:duststone",
             "data":1
         },
         "title": {
@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":0
                     }
                 ]
@@ -32,7 +32,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":1
                     }
                 ]
@@ -43,7 +43,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":2
                     }
                 ]
@@ -54,7 +54,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":3
                     }
                 ]
@@ -65,7 +65,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":4
                     }
                 ]
@@ -76,7 +76,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":5
                     }
                 ]
@@ -87,7 +87,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":6
                     }
                 ]
@@ -98,7 +98,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "dust:stone",
+                        "item": "dust:duststone",
                         "data":7
                     }
                 ]
