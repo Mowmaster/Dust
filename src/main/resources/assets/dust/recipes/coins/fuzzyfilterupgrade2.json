@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {"item": "dust:filterupgrade"}
+    {"item": "dust:fuzzyfilterblacklistupgrade"}
   ],
   "result": {
-    "item": "dust:filterblacklistupgrade"
+    "item": "dust:fuzzyfilterupgrade"
   }
 }

@@ -1,8 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {"item": "minecraft:dye",
-      "data": 0},
     {"item": "dust:filtermodupgrade"}
   ],
   "result": {
