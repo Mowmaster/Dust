@@ -105,29 +105,30 @@ public class BlockDustWall extends BlockBasicWall
     public static void Register()
     {
         registerBlock(redstonewalls);
-        registerBlock(redbrickwalls);
-        registerBlock(redbrickwalls2);
         registerBlock(bluestonewalls);
-        registerBlock(bluebrickwalls);
-        registerBlock(bluebrickwalls2);
         registerBlock(yellowstonewalls);
-        registerBlock(yellowbrickwalls);
-        registerBlock(yellowbrickwalls2);
         registerBlock(purplestonewalls);
-        registerBlock(purplebrickwalls);
-        registerBlock(purplebrickwalls2);
         registerBlock(greenstonewalls);
-        registerBlock(greenbrickwalls);
-        registerBlock(greenbrickwalls2);
         registerBlock(orangestonewalls);
-        registerBlock(orangebrickwalls);
-        registerBlock(orangebrickwalls2);
         registerBlock(whitestonewalls);
-        registerBlock(whitebrickwalls);
-        registerBlock(whitebrickwalls2);
         registerBlock(blackstonewalls);
+        registerBlock(redbrickwalls);
+        registerBlock(bluebrickwalls);
+        registerBlock(yellowbrickwalls);
+        registerBlock(purplebrickwalls);
+        registerBlock(greenbrickwalls);
+        registerBlock(orangebrickwalls);
+        registerBlock(whitebrickwalls);
         registerBlock(blackbrickwalls);
+        registerBlock(redbrickwalls2);
+        registerBlock(bluebrickwalls2);
+        registerBlock(yellowbrickwalls2);
+        registerBlock(purplebrickwalls2);
+        registerBlock(greenbrickwalls2);
+        registerBlock(orangebrickwalls2);
+        registerBlock(whitebrickwalls2);
         registerBlock(blackbrickwalls2);
+
     }
 
     public static void RegisterRender()
