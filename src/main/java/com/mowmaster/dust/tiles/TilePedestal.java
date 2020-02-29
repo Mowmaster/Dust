@@ -403,30 +403,34 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                 //Make sure its a pedestal before getting the tile
                 if(world.getBlockState(pedestalToSendTo).getBlock() instanceof BlockPedestal)
                 {
-                    //Get the tile before checking other things
-                    if(world.getTileEntity(pedestalToSendTo) instanceof TilePedestal)
+                    //Make sure it is still part of the right network
+                    if(canLinkToPedestalNetwork(pedestalToSendTo))
                     {
-                        TilePedestal tilePedestalToSendTo = (TilePedestal)world.getTileEntity(pedestalToSendTo);
-
-                        //Checks if pedestal is empty or if not then checks if items match and how many can be insert
-                        if(tilePedestalToSendTo.canAcceptItems(getItemInPedestal()) > 0)
+                        //Get the tile before checking other things
+                        if(world.getTileEntity(pedestalToSendTo) instanceof TilePedestal)
                         {
-                            //Check if it has filter, if not return true
-                            if(hasFilter(tilePedestalToSendTo))
+                            TilePedestal tilePedestalToSendTo = (TilePedestal)world.getTileEntity(pedestalToSendTo);
+
+                            //Checks if pedestal is empty or if not then checks if items match and how many can be insert
+                            if(tilePedestalToSendTo.canAcceptItems(getItemInPedestal()) > 0)
                             {
-                                Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
-                                if(coinInPed instanceof ipuBasic)
+                                //Check if it has filter, if not return true
+                                if(hasFilter(tilePedestalToSendTo))
                                 {
-                                    //Already checked if its a filter, so now check if it can accept items.
-                                    if(((ipuBasic) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
+                                    Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
+                                    if(coinInPed instanceof ipuBasic)
                                     {
-                                        returner = true;
+                                        //Already checked if its a filter, so now check if it can accept items.
+                                        if(((ipuBasic) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
+                                        {
+                                            returner = true;
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                returner = true;
+                                else
+                                {
+                                    returner = true;
+                                }
                             }
                         }
                     }
