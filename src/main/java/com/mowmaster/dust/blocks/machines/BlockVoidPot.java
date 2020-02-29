@@ -1,6 +1,7 @@
 package com.mowmaster.dust.blocks.machines;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
+import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -8,10 +9,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -86,6 +91,25 @@ public class BlockVoidPot extends BlockBasic
         if(entityIn instanceof EntityItem || entityIn instanceof EntityXPOrb)
         {
             entityIn.setDead();
+
+            double d0 = (double)pos.getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+            double d1 = (double)pos.getY() + 1.0D - (double)(rand.nextFloat() * 0.1F);
+            double d2 = (double)pos.getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+            double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
+
+
+            worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
+            worldIn.spawnParticle(EnumParticleTypes.SPELL_WITCH, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+        }
+        else if(entityIn instanceof EntityLivingBase) {
+            float damage = 0f;
+            int level = 0;
+            damage = 1f;
+            if(entityIn.fallDistance > 0) {
+                damage += entityIn.fallDistance * 1.5f + 2f;
+            }
+            entityIn.attackEntityFrom(DamageSource.OUT_OF_WORLD, damage);
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE, 10, level));
 
             double d0 = (double)pos.getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
             double d1 = (double)pos.getY() + 1.0D - (double)(rand.nextFloat() * 0.1F);
