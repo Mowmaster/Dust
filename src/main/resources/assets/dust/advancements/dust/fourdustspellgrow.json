@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:dye",
+            "data":15
+        },
+        "title": {
+            "translate": "advancements.dust.fourdustspellgrow.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourdustspellgrow.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourdustspellplant",
+    "criteria": {
+        "effect": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "dust:potiongrower": {}
+                }
+            }
+        }
+
+    },
+    "requirements": [
+        ["effect"]
+    ]
+
+}

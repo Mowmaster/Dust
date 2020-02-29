@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:crafter9upgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoincrafter.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoincrafter.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinfurnace",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:crafter9upgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:path1"
+        },
+        "title": {
+            "translate": "advancements.dust.fourduststonepath.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourduststonepath.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/threeduststone",
+    "criteria": {
+        "path": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:path1"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["path"]
+    ]
+
+}

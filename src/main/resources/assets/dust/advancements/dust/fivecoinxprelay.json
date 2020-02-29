@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:exprelay"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinxprelay.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinxprelay.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinxpcollector",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:exprelay"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

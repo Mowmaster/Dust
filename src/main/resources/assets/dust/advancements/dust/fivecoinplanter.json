@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:effectplanter"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinplanter.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinplanter.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinmagnet",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:effectplanter"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

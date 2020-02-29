@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:breakerupgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinbreaker.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinbreaker.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinchopper",
+    "criteria": {
+        "upgrade": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:breakerupgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["upgrade"]
+    ]
+
+}

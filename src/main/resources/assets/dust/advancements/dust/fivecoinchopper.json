@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:chopperupgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinchopper.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinchopper.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourcoinupgrades",
+    "criteria": {
+        "upgrade": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:chopperupgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["upgrade"]
+    ]
+
+}

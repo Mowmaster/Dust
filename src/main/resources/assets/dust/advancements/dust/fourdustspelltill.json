@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:wooden_hoe"
+        },
+        "title": {
+            "translate": "advancements.dust.fourdustspelltill.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourdustspelltill.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/threedustspellscrolls",
+    "criteria": {
+        "effect": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "dust:potiontiller": {}
+                }
+            }
+        }
+
+    },
+    "requirements": [
+        ["effect"]
+    ]
+
+}

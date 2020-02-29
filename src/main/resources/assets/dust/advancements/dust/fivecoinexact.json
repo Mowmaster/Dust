@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:filterupgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinexact.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinexact.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourcoinupgrades",
+    "criteria": {
+        "upgrade": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:filterupgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["upgrade"]
+    ]
+
+}

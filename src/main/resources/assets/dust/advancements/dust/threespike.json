@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:spike5"
+        },
+        "title": {
+            "translate": "advancements.dust.threespike.title"
+        },
+        "description": {
+            "translate": "advancements.dust.threespike.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/twocrystal",
+    "criteria": {
+        "spike": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:spike1"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["spike"]
+    ]
+
+}

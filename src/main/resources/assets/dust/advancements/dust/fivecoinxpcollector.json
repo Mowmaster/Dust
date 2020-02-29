@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:expcollector"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinxpcollector.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinxpcollector.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourcoinupgrades",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:expcollector"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

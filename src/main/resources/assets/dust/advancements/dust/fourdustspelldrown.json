@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:prismarine_crystals"
+        },
+        "title": {
+            "translate": "advancements.dust.fourdustspelldrown.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourdustspelldrown.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourdustspellstoned",
+    "criteria": {
+        "effect": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "dust:potiondrowning": {}
+                }
+            }
+        }
+
+    },
+    "requirements": [
+        ["effect"]
+    ]
+
+}

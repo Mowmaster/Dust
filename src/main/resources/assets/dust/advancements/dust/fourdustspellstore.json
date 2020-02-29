@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:ender_chest"
+        },
+        "title": {
+            "translate": "advancements.dust.fourdustspellstore.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourdustspellstore.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourdustspellmagnet",
+    "criteria": {
+        "effect": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "dust:potionvoidstorage": {}
+                }
+            }
+        }
+
+    },
+    "requirements": [
+        ["effect"]
+    ]
+
+}

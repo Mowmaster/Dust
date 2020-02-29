@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:effectharvester"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinharvester.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinharvester.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinmagnet",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:effectharvester"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

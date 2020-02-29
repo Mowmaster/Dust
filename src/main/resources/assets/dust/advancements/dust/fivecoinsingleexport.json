@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:singleexportupgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinsingleexport.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinsingleexport.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinimport",
+    "criteria": {
+        "upgrade": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:singleexportupgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["upgrade"]
+    ]
+
+}

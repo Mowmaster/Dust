@@ -9,7 +9,7 @@
         "description": {
             "translate": "advancements.dust.root.description"
         },
-        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+        "background": "dust:textures/blocks/stone/stone/whitestone.png",
         "show_toast": true,
         "announce_to_chat": true
     },

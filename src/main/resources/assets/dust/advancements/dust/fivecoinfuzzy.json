@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:fuzzyfilterupgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinfuzzy.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinfuzzy.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinexact",
+    "criteria": {
+        "upgrade": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:fuzzyfilterupgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["upgrade"]
+    ]
+
+}

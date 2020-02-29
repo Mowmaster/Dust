@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:upgradefurnace"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinfurnace.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinfurnace.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourcoinupgrades",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:upgradefurnace"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

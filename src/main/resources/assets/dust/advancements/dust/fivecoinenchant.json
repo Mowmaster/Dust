@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "dust:enchantupgrade"
+        },
+        "title": {
+            "translate": "advancements.dust.fivecoinenchant.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fivecoinenchant.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fivecoinxprelay",
+    "criteria": {
+        "import": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "dust:enchantupgrade"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        ["import"]
+    ]
+
+}

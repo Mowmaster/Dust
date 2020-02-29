@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:wheat_seeds"
+        },
+        "title": {
+            "translate": "advancements.dust.fourdustspellplant.title"
+        },
+        "description": {
+            "translate": "advancements.dust.fourdustspellplant.description"
+        }
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "parent": "dust:dust/fourdustspelltill",
+    "criteria": {
+        "effect": {
+            "trigger": "minecraft:effects_changed",
+            "conditions": {
+                "effects": {
+                    "dust:potionplanter": {}
+                }
+            }
+        }
+
+    },
+    "requirements": [
+        ["effect"]
+    ]
+
+}
