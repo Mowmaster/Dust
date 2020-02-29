@@ -630,7 +630,7 @@ public class EnchantAndEffectHandlers
 
     }
 
-    private boolean buffed = false;
+    /*private boolean buffed = false;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onBuffed(LivingEvent.LivingUpdateEvent event)
     {
@@ -682,7 +682,11 @@ public class EnchantAndEffectHandlers
         HashMap<IAttribute, AttributeModifier> fury = new HashMap<IAttribute, AttributeModifier>();
         fury.put(SharedMonsterAttributes.MOVEMENT_SPEED,modifier);
         fury.put(SharedMonsterAttributes.ATTACK_DAMAGE, modifier);
-    }
+
+
+        //fun but silly
+        entity.setNoGravity(true);
+    }*/
 
 
     Boolean magnet;

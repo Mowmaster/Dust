@@ -52,6 +52,7 @@ public class EffectGetter
         this.addSpellEffect(1100000000, new PotionEffect(MobEffects.STRENGTH));//100%red
         this.addSpellEffect(1099001000, new PotionEffect(MobEffects.INSTANT_HEALTH));//99% red 1% blue
         this.addSpellEffect(1090000010, new PotionEffect(MobEffects.HEALTH_BOOST));
+        //this.addSpellEffect(1080020000, new PotionEffect(PotionRegistry.POTION_ENVIGORATION));
         this.addSpellEffect(1075000025, new PotionEffect(MobEffects.JUMP_BOOST));//red-orange
         this.addSpellEffect(1075025000, new PotionEffect(PotionRegistry.POTION_MAGNETISM));//Red - Purple
         this.addSpellEffect(1060000040, new PotionEffect(PotionRegistry.POTION_TILLER));
@@ -77,8 +78,6 @@ public class EffectGetter
         this.addSpellEffect(1025025050, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
         this.addSpellEffect(1025050025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
         this.addSpellEffect(1050025025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
-
-
 
         this.addSpellEffect(2100000000, new PotionEffect(MobEffects.WEAKNESS));//100%red
         this.addSpellEffect(2099001000, new PotionEffect(MobEffects.INSTANT_DAMAGE));
