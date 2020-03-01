@@ -44,19 +44,21 @@ public class ipuFilterMod extends ipuBasicFilter
             if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestalToSendTo)))
             {
                 IItemHandler handler = (IItemHandler) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestalToSendTo));
-                int range = handler.getSlots();
-
-                ItemStack itemFromInv = ItemStack.EMPTY;
-
-                itemFromInv = IntStream.range(0,range)//Int Range
-                        .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
-                        .filter(itemStack -> itemStack.getItem().getRegistryName().getResourceDomain()==itemStackIn.getItem().getRegistryName().getResourceDomain())
-                        .findFirst().orElse(ItemStack.EMPTY);
-
-                if(!itemFromInv.isEmpty())
+                if(handler != null)
                 {
-                    returner = true;
-                }
+                    int range = handler.getSlots();
+
+                    ItemStack itemFromInv = ItemStack.EMPTY;
+
+                    itemFromInv = IntStream.range(0,range)//Int Range
+                            .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
+                            .filter(itemStack -> itemStack.getItem().getRegistryName().getResourceDomain()==itemStackIn.getItem().getRegistryName().getResourceDomain())
+                            .findFirst().orElse(ItemStack.EMPTY);
+
+                    if(!itemFromInv.isEmpty())
+                    {
+                        returner = true;
+                    }
 
                 /*for(int i=0;i<range;i++)
                 {
@@ -72,6 +74,7 @@ public class ipuFilterMod extends ipuBasicFilter
                         }
                     }
                 }*/
+                }
             }
         }
 

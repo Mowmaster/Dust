@@ -66,29 +66,32 @@ public class ipuExport extends ipuBasic
         if(invBeingChecked.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,sideSlot))
         {
             IItemHandler handler = (IItemHandler) invBeingChecked.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sideSlot);
-            int range = handler.getSlots();
-            for(int i=0;i<range;i++)
+            if(handler != null)
             {
-                ItemStack stackInSlot = handler.getStackInSlot(i);
-                int maxSizeSlot = handler.getSlotLimit(i);
-                if(maxSizeSlot>0)
+                int range = handler.getSlots();
+                for(int i=0;i<range;i++)
                 {
-                    if(stackInSlot.getMaxStackSize()>1)
+                    ItemStack stackInSlot = handler.getStackInSlot(i);
+                    int maxSizeSlot = handler.getSlotLimit(i);
+                    if(maxSizeSlot>0)
                     {
-                        if(doItemsMatch(stackInSlot,itemInPedestal) && stackInSlot.getCount() < handler.getSlotLimit(i))
+                        if(stackInSlot.getMaxStackSize()>1)
                         {
-                            slot = i;
-                            break;
-                        }
-                        else if(stackInSlot.isEmpty())
-                        {
-                            slot = i;
-                            break;
-                        }
-                        //if chest is full
-                        else if(i==range)
-                        {
-                            slot=-1;
+                            if(doItemsMatch(stackInSlot,itemInPedestal) && stackInSlot.getCount() < handler.getSlotLimit(i))
+                            {
+                                slot = i;
+                                break;
+                            }
+                            else if(stackInSlot.isEmpty())
+                            {
+                                slot = i;
+                                break;
+                            }
+                            //if chest is full
+                            else if(i==range)
+                            {
+                                slot=-1;
+                            }
                         }
                     }
                 }

@@ -46,19 +46,20 @@ public class ipuFilterItemBlacklist extends ipuBasicFilter
             if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestal)))
             {
                 IItemHandler handler = (IItemHandler) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestal));
-
-
-                int range = handler.getSlots();
-
-                ItemStack itemFromInv = ItemStack.EMPTY;
-                itemFromInv = IntStream.range(0,range)//Int Range
-                        .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
-                        .filter(itemStack -> itemStack.getItem().equals(itemStackIn.getItem()))
-                        .findFirst().orElse(ItemStack.EMPTY);
-
-                if(!itemFromInv.isEmpty())
+                if(handler != null)
                 {
-                    returner = false;
+                    int range = handler.getSlots();
+
+                    ItemStack itemFromInv = ItemStack.EMPTY;
+                    itemFromInv = IntStream.range(0,range)//Int Range
+                            .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
+                            .filter(itemStack -> itemStack.getItem().equals(itemStackIn.getItem()))
+                            .findFirst().orElse(ItemStack.EMPTY);
+
+                    if(!itemFromInv.isEmpty())
+                    {
+                        returner = false;
+                    }
                 }
             }
         }

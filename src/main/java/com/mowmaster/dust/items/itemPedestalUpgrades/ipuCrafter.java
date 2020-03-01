@@ -113,79 +113,82 @@ public class ipuCrafter extends ipuBasic
                 if (invToPullFrom instanceof TilePedestal) {
                     itemFromInv = ItemStack.EMPTY;
                 }
-
-                //Makes sure we have more slots then the recipe requires
-                if(intInventorySlotCount>=intGridCount)
+                else
                 {
-                    // Get Next iteration to craft
-                    int intGetNextIteration = getIntValueFromPedestal(world,posOfPedestal);//Default value is 0
-                    if(intGetNextIteration == 0)
+                    if(handler != null)
                     {
-                        intGetNextIteration = 1;
-                    }
-                    int intSlotToStartFrom = (intGetNextIteration*intGridCount)-intGridCount;//use int i= intSlotToStartFrom in for-loop
-                    //If starting slot will be bigger then our inventory size
-                    int intSlotToEndBefore = (intGetNextIteration*intGridCount);//use i < intSlotToEndBefore in for-loop
-                    //if ending slot is > then total slots then it would error, so reset things
-                    if(intSlotToEndBefore > intInventorySlotCount)
-                    {
-                        //reset back to 1
-                        intGetNextIteration = 1;
-                        intSlotToStartFrom = (intGetNextIteration*intGridCount)-intGridCount;//use int i= intSlotToStartFrom in for-loop
-                        intSlotToEndBefore = (intGetNextIteration*intGridCount);//use i < intSlotToEndBefore in for-loop
-                    }
-
-                    int intCraftingSlot = 0;
-                    for(int i = intSlotToStartFrom; i < intSlotToEndBefore; i++) {
-                        ItemStack stackItemInSlot = handler.getStackInSlot(i);
-
-                        //If the item Stack has enough items to craft with
-                        //stack.getCount()>=2 ||  stack.getMaxStackSize()==1 ||
-                        if(stackItemInSlot.isEmpty() ||stackItemInSlot.getItem().equals(ItemRegistry.craftingPlaceholder))
+                        //Makes sure we have more slots then the recipe requires
+                        if(intInventorySlotCount>=intGridCount)
                         {
-                            craft.setInventorySlotContents(intCraftingSlot,ItemStack.EMPTY);
-                            intCraftingSlot++;
-                        }
-                        else if(stackItemInSlot.getMaxStackSize()==1 || stackItemInSlot.isItemStackDamageable())
-                        {
-                            //Since recipe has a container item we have to limit it to 1 craft
-                            intBatchCraftingSize = 1;
-                            craft.setInventorySlotContents(intCraftingSlot,stackItemInSlot);
-                            intCraftingSlot++;
-                        }
-                        //the +1 makes sure to leave 1 item in the inv as a placeholder
-                        else if(stackItemInSlot.getCount() > (intBatchCraftingSize))
-                        {
-                            craft.setInventorySlotContents(intCraftingSlot,stackItemInSlot);
-                            intCraftingSlot++;
-                        }
-                    }
+                            // Get Next iteration to craft
+                            int intGetNextIteration = getIntValueFromPedestal(world,posOfPedestal);//Default value is 0
+                            if(intGetNextIteration == 0)
+                            {
+                                intGetNextIteration = 1;
+                            }
+                            int intSlotToStartFrom = (intGetNextIteration*intGridCount)-intGridCount;//use int i= intSlotToStartFrom in for-loop
+                            //If starting slot will be bigger then our inventory size
+                            int intSlotToEndBefore = (intGetNextIteration*intGridCount);//use i < intSlotToEndBefore in for-loop
+                            //if ending slot is > then total slots then it would error, so reset things
+                            if(intSlotToEndBefore > intInventorySlotCount)
+                            {
+                                //reset back to 1
+                                intGetNextIteration = 1;
+                                intSlotToStartFrom = (intGetNextIteration*intGridCount)-intGridCount;//use int i= intSlotToStartFrom in for-loop
+                                intSlotToEndBefore = (intGetNextIteration*intGridCount);//use i < intSlotToEndBefore in for-loop
+                            }
 
-                    //Checks to make sure we have enough slots set for out recipe
-                    if(craft.getSizeInventory() >= intGridCount)
-                    {
-                        for(IRecipe recipe : ForgeRegistries.RECIPES)
-                        {
-                            //If recipe is valid and we can craft recipe and stick it in pedestal
-                            if(recipe.matches(craft, world)) {
-                                //Set ItemStack with recipe result
-                                ItemStack stackRecipeResult = recipe.getCraftingResult(craft);
-                                int intRecipeResultCount = stackRecipeResult.getCount();
-                                int intBatchCraftedAmount = stackRecipeResult.getCount() * intBatchCraftingSize;
+                            int intCraftingSlot = 0;
+                            for(int i = intSlotToStartFrom; i < intSlotToEndBefore; i++) {
+                                ItemStack stackItemInSlot = handler.getStackInSlot(i);
 
-                                //Check if pedestal can hold the crafting result, if not then set the batch to be small enough that it can fit
-                                if(intBatchCraftedAmount > 64)
+                                //If the item Stack has enough items to craft with
+                                //stack.getCount()>=2 ||  stack.getMaxStackSize()==1 ||
+                                if(stackItemInSlot.isEmpty() ||stackItemInSlot.getItem().equals(ItemRegistry.craftingPlaceholder))
                                 {
-                                    intBatchCraftingSize = 64/intRecipeResultCount;
+                                    craft.setInventorySlotContents(intCraftingSlot,ItemStack.EMPTY);
+                                    intCraftingSlot++;
                                 }
+                                else if(stackItemInSlot.getMaxStackSize()==1 || stackItemInSlot.isItemStackDamageable())
+                                {
+                                    //Since recipe has a container item we have to limit it to 1 craft
+                                    intBatchCraftingSize = 1;
+                                    craft.setInventorySlotContents(intCraftingSlot,stackItemInSlot);
+                                    intCraftingSlot++;
+                                }
+                                //the +1 makes sure to leave 1 item in the inv as a placeholder
+                                else if(stackItemInSlot.getCount() > (intBatchCraftingSize))
+                                {
+                                    craft.setInventorySlotContents(intCraftingSlot,stackItemInSlot);
+                                    intCraftingSlot++;
+                                }
+                            }
 
-                                //Loop through inventory again to remove crafted materials used
-                                for(int i = 0; i < craft.getSizeInventory(); i++) {
+                            //Checks to make sure we have enough slots set for out recipe
+                            if(craft.getSizeInventory() >= intGridCount)
+                            {
+                                for(IRecipe recipe : ForgeRegistries.RECIPES)
+                                {
+                                    //If recipe is valid and we can craft recipe and stick it in pedestal
+                                    if(recipe.matches(craft, world)) {
+                                        //Set ItemStack with recipe result
+                                        ItemStack stackRecipeResult = recipe.getCraftingResult(craft);
+                                        int intRecipeResultCount = stackRecipeResult.getCount();
+                                        int intBatchCraftedAmount = stackRecipeResult.getCount() * intBatchCraftingSize;
+
+                                        //Check if pedestal can hold the crafting result, if not then set the batch to be small enough that it can fit
+                                        if(intBatchCraftedAmount > 64)
+                                        {
+                                            intBatchCraftingSize = 64/intRecipeResultCount;
+                                        }
+
+                                        //Loop through inventory again to remove crafted materials used
+                                        for(int i = 0; i < craft.getSizeInventory(); i++) {
 
 
-                                    ItemStack stackInRecipe = craft.getStackInSlot(i);
-                                    int intGetActualSlot = ((intGetNextIteration*intGridCount)-intGridCount)+i;
-                                    ItemStack stackItemInSlot = handler.getStackInSlot(intGetActualSlot);
+                                            ItemStack stackInRecipe = craft.getStackInSlot(i);
+                                            int intGetActualSlot = ((intGetNextIteration*intGridCount)-intGridCount)+i;
+                                            ItemStack stackItemInSlot = handler.getStackInSlot(intGetActualSlot);
 
                                     /*if(stackInRecipe.getItem().hasContainerItem(stackInRecipe))
                                     {
@@ -206,31 +209,33 @@ public class ipuCrafter extends ipuBasic
                                     {
                                         continue;
                                     }*/
-                                    if(stackInRecipe.isEmpty()  || stackInRecipe.getItem().equals(ItemRegistry.craftingPlaceholder))
-                                        continue;
+                                            if(stackInRecipe.isEmpty()  || stackInRecipe.getItem().equals(ItemRegistry.craftingPlaceholder))
+                                                continue;
 
-                                    if(stackInRecipe.getItem().hasContainerItem(stackInRecipe))
-                                    {
-                                        //System.out.println(stackInRecipe.getDisplayName());
-                                        ItemStack container = stackInRecipe.getItem().getContainerItem(stackInRecipe);
-                                        if(!world.isRemote)
-                                        {
-                                            world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-1).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getY()+ 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getZ()+ 0.5,container));
+                                            if(stackInRecipe.getItem().hasContainerItem(stackInRecipe))
+                                            {
+                                                //System.out.println(stackInRecipe.getDisplayName());
+                                                ItemStack container = stackInRecipe.getItem().getContainerItem(stackInRecipe);
+                                                if(!world.isRemote)
+                                                {
+                                                    world.spawnEntity(new EntityItem(world,getPosOfBlockBelow(world,posOfPedestal,-1).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getY()+ 0.5,getPosOfBlockBelow(world,posOfPedestal,-1).getZ()+ 0.5,container));
+                                                }
+                                                handler.extractItem(intGetActualSlot,intBatchCraftingSize,false);
+                                            }
+                                            else
+                                            {
+                                                handler.extractItem(intGetActualSlot,intBatchCraftingSize,false);
+                                            }
                                         }
-                                        handler.extractItem(intGetActualSlot,intBatchCraftingSize,false);
-                                    }
-                                    else
-                                    {
-                                        handler.extractItem(intGetActualSlot,intBatchCraftingSize,false);
+
+                                        stackRecipeResult.setCount(intBatchCraftedAmount);
+                                        addToPedestal(world,posOfPedestal,stackRecipeResult);
                                     }
                                 }
-
-                                stackRecipeResult.setCount(intBatchCraftedAmount);
-                                addToPedestal(world,posOfPedestal,stackRecipeResult);
                             }
+                            setIntValueToPedestal(world,posOfPedestal,(intGetNextIteration+1));
                         }
                     }
-                    setIntValueToPedestal(world,posOfPedestal,(intGetNextIteration+1));
                 }
             }
         }

@@ -1,8 +1,10 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -44,26 +46,28 @@ public class ipuFilterModBlacklist extends ipuBasicFilter
             if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestal)))
             {
                 IItemHandler handler = (IItemHandler) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posPedestal));
-
-
-                int range = handler.getSlots();
-                for(int i=0;i<range;i++)
+                if(handler != null)
                 {
-                    ItemStack stackInSlot = handler.getStackInSlot(i);
-                    //find a slot with items
-                    ItemStack itemFromInv = ItemStack.EMPTY;
-
-                    itemFromInv = IntStream.range(0,range)//Int Range
-                            .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
-                            .filter(itemStack -> itemStack.getItem().getRegistryName().getResourceDomain()==itemStackIn.getItem().getRegistryName().getResourceDomain())
-                            .findFirst().orElse(ItemStack.EMPTY);
-                    System.out.println(itemFromInv.getDisplayName());
-
-                    if(!itemFromInv.isEmpty())
+                    int range = handler.getSlots();
+                    for(int i=0;i<range;i++)
                     {
-                        returner = false;
+                        ItemStack stackInSlot = handler.getStackInSlot(i);
+                        //find a slot with items
+                        ItemStack itemFromInv = ItemStack.EMPTY;
+
+                        itemFromInv = IntStream.range(0,range)//Int Range
+                                .mapToObj((handler)::getStackInSlot)//Function being applied to each interval
+                                .filter(itemStack -> itemStack.getItem().getRegistryName().getResourceDomain()==itemStackIn.getItem().getRegistryName().getResourceDomain())
+                                .findFirst().orElse(ItemStack.EMPTY);
+                        System.out.println(itemFromInv.getDisplayName());
+
+                        if(!itemFromInv.isEmpty())
+                        {
+                            returner = false;
+                        }
                     }
                 }
+
             }
         }
 
