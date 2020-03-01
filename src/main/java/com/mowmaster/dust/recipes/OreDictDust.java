@@ -1,10 +1,8 @@
 package com.mowmaster.dust.recipes;
 
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
 import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.blocks.treebits.SaplingRegister;

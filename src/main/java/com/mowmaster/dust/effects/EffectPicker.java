@@ -1,15 +1,9 @@
 package com.mowmaster.dust.effects;
 
-import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.enums.CrystalTypes;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHealth;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.registries.GameData;
-
-import java.util.Random;
 
 public class EffectPicker
 {

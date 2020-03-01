@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.machines;
 
-
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileTrapBlock;
@@ -13,10 +12,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;

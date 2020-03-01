@@ -1,7 +1,6 @@
 package com.mowmaster.dust.tiles.guis;
 
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TileCrystalFurnace;
 import com.mowmaster.dust.tiles.containers.ContainerCrystalFurnace;
 import net.minecraft.client.gui.inventory.GuiContainer;

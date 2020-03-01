@@ -1,10 +1,8 @@
 package com.mowmaster.dust.blocks.buildingblocks;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
-import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,21 +16,16 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-
-import static com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta.COLORS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-
 
 public class BlockDustSlab extends BlockBasicDirectional
 {

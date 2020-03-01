@@ -1,29 +1,18 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.items.armors.ItemCrystalArmor;
 import com.mowmaster.dust.items.trinkets.ItemCrystalAxe;
 import com.mowmaster.dust.items.trinkets.ItemCrystalPickaxe;
 import com.mowmaster.dust.items.trinkets.ItemCrystalSword;
-import com.mowmaster.dust.items.trinkets.ItemFinnisher;
-import com.mowmaster.dust.misc.DustyTab;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraft.item.ItemTool;
-
 
 public class ItemArmorAndToolsRegistry
 {

@@ -31,9 +31,7 @@ import java.util.Random;
 import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 import static com.mowmaster.dust.misc.DustConfigurationFile.oreRegrowthRate;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 import static com.mowmaster.dust.world.biome.BiomeRegistry.*;
-
 
 public class BlockCrystal extends BlockBasicDirectional
 {

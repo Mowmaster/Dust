@@ -21,7 +21,6 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-
 public class BlockCrate extends BlockBasic
 {
     public static Block crate1;

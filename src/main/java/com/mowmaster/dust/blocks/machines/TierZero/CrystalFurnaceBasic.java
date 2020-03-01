@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.machines.TierZero;
 
-
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileCrystalFurnaceBasic;

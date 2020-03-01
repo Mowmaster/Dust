@@ -1,12 +1,9 @@
 package com.mowmaster.dust.blocks.machines;
 
-
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
 import com.mowmaster.dust.items.ItemCoin;
-import com.mowmaster.dust.items.ItemGuideBook;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import com.mowmaster.dust.references.Reference;
@@ -17,12 +14,9 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.InventoryHelper;
@@ -31,14 +25,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,8 +39,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-
-
 
 public class BlockPedestal extends BlockBasic implements ITileEntityProvider//, IItemHandler
 {

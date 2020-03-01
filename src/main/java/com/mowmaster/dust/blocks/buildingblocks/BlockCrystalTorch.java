@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.buildingblocks;
 
-
 import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.*;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 
 public class BlockCrystalTorch extends BlockBasicDirectional
 {

@@ -1,7 +1,6 @@
 package com.mowmaster.dust.recipes.crusher_recipes;
 
 import com.google.common.collect.Maps;
-import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

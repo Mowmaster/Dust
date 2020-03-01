@@ -3,7 +3,6 @@ package com.mowmaster.dust.particles;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleCrit;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;

@@ -1,13 +1,7 @@
 package com.mowmaster.dust.items.trinkets;
 
-import com.google.common.collect.Sets;
 import com.mowmaster.dust.misc.DustyTab;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemStack;
-
-import java.util.Set;
 
 public class ItemCrystalAxe extends ItemAxe
 {

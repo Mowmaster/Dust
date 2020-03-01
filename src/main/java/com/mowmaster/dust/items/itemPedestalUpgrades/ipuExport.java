@@ -128,55 +128,47 @@ public class ipuExport extends ipuBasic
             if(world.getTileEntity(posInventory) !=null)
             {
                 //Gets inventory TE then makes sure its not a pedestal
-                TileEntity invToPushInto = world.getTileEntity(posInventory);
-                if(invToPushInto instanceof TilePedestal) {
+                TileEntity invToPushTo = world.getTileEntity(posInventory);
+                if(invToPushTo instanceof TilePedestal) {
                     itemFromPedestal = ItemStack.EMPTY;
                 }
                 else {
-                    TileEntity invToPushTo = world.getTileEntity(posInventory);
-                    if(invToPushTo instanceof TilePedestal) {
-                        itemFromPedestal = ItemStack.EMPTY;
-                    }
-                    else {
-                        itemFromPedestal = getStackInPedestal(world,posOfPedestal);
-                        //IF pedestal is empty and has nothing to transfer then dont do anything
-                        if(!itemFromPedestal.isEmpty() && !itemFromPedestal.equals(ItemStack.EMPTY))
+                    itemFromPedestal = getStackInPedestal(world,posOfPedestal);
+                    //IF pedestal is empty and has nothing to transfer then dont do anything
+                    if(!itemFromPedestal.isEmpty() && !itemFromPedestal.equals(ItemStack.EMPTY))
+                    {
+                        if(invToPushTo.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
                         {
-                            if(invToPushTo.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
+                            IItemHandler handler = (IItemHandler) invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+
+                            //gets next empty or partially filled matching slot
+                            int i = getNextSlotEmptyOrMatching(invToPushTo, getPedestalFacing(world, posOfPedestal), itemFromPedestal);
+                            if(handler != null)
                             {
-                                IItemHandler handler = (IItemHandler) invToPushTo.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
-
-                                //gets next empty or partially filled matching slot
-                                int i = getNextSlotEmptyOrMatching(invToPushInto, getPedestalFacing(world, posOfPedestal), itemFromPedestal);
-                                if(handler != null)
+                                if(i>=0)
                                 {
-                                    if(i>=0)
+                                    if(handler.isItemValid(i, itemFromPedestal))
                                     {
-                                        if(handler.isItemValid(i, itemFromPedestal))
-                                        {
-                                            itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
-                                            ItemStack itemFromInventory = handler.getStackInSlot(i);
-                                            int spaceInInventoryStack = handler.getSlotLimit(i) - itemFromInventory.getCount();
+                                        itemFromPedestal = getStackInPedestal(world,posOfPedestal).copy();
+                                        ItemStack itemFromInventory = handler.getStackInSlot(i);
+                                        int spaceInInventoryStack = handler.getSlotLimit(i) - itemFromInventory.getCount();
 
-                                            //if inv slot is empty it should be able to handle as much as we can give it
-                                            int allowedTransferRate = upgradeTransferRate;
-                                            //checks allowed slot size amount and sets it if its lower then transfer rate
-                                            if(handler.getSlotLimit(i) <= allowedTransferRate) allowedTransferRate = handler.getSlotLimit(i);
-                                            //never have to check to see if pedestal and stack match because the slot checker does it for us
-                                            //if our transfer rate is bigger then what can go in the slot if its partially full we set the transfer size to what can fit
-                                            //Otherwise if space is bigger then rate we know it can accept as much as we're putting in
-                                            if(allowedTransferRate> spaceInInventoryStack) allowedTransferRate = spaceInInventoryStack;
-                                            //IF items in pedestal are less then the allowed transfer amount then set it as the amount
-                                            if(allowedTransferRate > itemFromPedestal.getCount()) allowedTransferRate = itemFromPedestal.getCount();
+                                        //if inv slot is empty it should be able to handle as much as we can give it
+                                        int allowedTransferRate = upgradeTransferRate;
+                                        //checks allowed slot size amount and sets it if its lower then transfer rate
+                                        if(handler.getSlotLimit(i) <= allowedTransferRate) allowedTransferRate = handler.getSlotLimit(i);
+                                        //never have to check to see if pedestal and stack match because the slot checker does it for us
+                                        //if our transfer rate is bigger then what can go in the slot if its partially full we set the transfer size to what can fit
+                                        //Otherwise if space is bigger then rate we know it can accept as much as we're putting in
+                                        if(allowedTransferRate> spaceInInventoryStack) allowedTransferRate = spaceInInventoryStack;
+                                        //IF items in pedestal are less then the allowed transfer amount then set it as the amount
+                                        if(allowedTransferRate > itemFromPedestal.getCount()) allowedTransferRate = itemFromPedestal.getCount();
 
-
-
-                                            //After all calculations for transfer rate, set stack size to transfer and transfer the items
-                                            itemFromPedestal.setCount(allowedTransferRate);
-                                            if(handler.insertItem(i,itemFromPedestal,true ).equals(ItemStack.EMPTY)){
-                                                removeFromPedestal(world,posOfPedestal ,allowedTransferRate);
-                                                handler.insertItem(i,itemFromPedestal,false );
-                                            }
+                                        //After all calculations for transfer rate, set stack size to transfer and transfer the items
+                                        itemFromPedestal.setCount(allowedTransferRate);
+                                        if(handler.insertItem(i,itemFromPedestal,true ).equals(ItemStack.EMPTY)){
+                                            removeFromPedestal(world,posOfPedestal ,allowedTransferRate);
+                                            handler.insertItem(i,itemFromPedestal,false );
                                         }
                                     }
                                 }

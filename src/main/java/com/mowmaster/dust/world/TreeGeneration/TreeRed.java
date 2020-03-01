@@ -1,11 +1,9 @@
 package com.mowmaster.dust.world.treegeneration;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
 import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.enums.CrystalBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

@@ -1,13 +1,10 @@
 package com.mowmaster.dust.enchantments;
 
-import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.itemPedestalUpgrades.*;
 import net.minecraft.enchantment.*;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.EnumHelper;
 
 
 public class EnchantmentUpgradeRange extends Enchantment

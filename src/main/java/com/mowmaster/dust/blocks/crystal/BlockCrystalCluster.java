@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
-
 
 public class BlockCrystalCluster extends BlockBasicDirectional implements ITileEntityProvider
 {

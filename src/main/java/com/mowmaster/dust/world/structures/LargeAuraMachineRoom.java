@@ -1,6 +1,5 @@
 package com.mowmaster.dust.world.structures;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
 import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
@@ -16,7 +15,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 import java.util.ArrayList;
 import java.util.Random;

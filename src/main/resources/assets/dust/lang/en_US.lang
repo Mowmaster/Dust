@@ -748,6 +748,8 @@ advancements.dust.fourduststonepot.description=Any item that comes into contact 
 
 advancements.dust.fourcoinupgrades.title=Pedestal Upgrades
 advancements.dust.fourcoinupgrades.description=Slot these into a Pedestal to see what they do! (R-Click on a pedestal to slot one in, Shift-R-Click with an empty hand to take it back out) [Most of these can be Enchanted with Operation Speed]
+advancements.dust.fourfurnacebasic.title=Smelting with an Attitude
+advancements.dust.fourfurnacebasic.description=This Crystal Furnace is a Tier 0 Machine, requires fuel and items to be inserted manually, as for the outputs...
 advancements.dust.fourfurnace.title=Enhanced Smelting
 advancements.dust.fourfurnace.description=The Crystal Furnace is a Tier 1 Machine, it can use the energy from crystals to augment the smelting process and results. Red and Orange effect the fuel in some way, Blue and Green effect the Product, and Yellow increases smelt speed.
 advancements.dust.fourcrushercomponents.title=Crusher Components

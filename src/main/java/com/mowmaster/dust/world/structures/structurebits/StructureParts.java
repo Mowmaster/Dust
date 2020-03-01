@@ -3,7 +3,6 @@ package com.mowmaster.dust.world.structures.structurebits;
 import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
 import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.machines.BlockDustCloud;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;

@@ -1,16 +1,12 @@
 package com.mowmaster.dust.items.tools;
 
 import com.mowmaster.dust.entities.EntityDustTippedArrow;
-import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.BlockGrass;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;

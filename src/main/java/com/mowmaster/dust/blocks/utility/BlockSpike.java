@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.utility;
 
-
 import com.mowmaster.dust.blocks.blockbasics.BlockBasicDirectional;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;

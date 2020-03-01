@@ -1,9 +1,6 @@
 package com.mowmaster.dust.stats;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.stats.StatBase;
-import net.minecraft.stats.StatBasic;
 
 /**
  * Created by KingMowmaster on 2/19/2018.

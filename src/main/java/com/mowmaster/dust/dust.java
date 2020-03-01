@@ -1,25 +1,14 @@
 package com.mowmaster.dust;
 
-
 import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import com.mowmaster.dust.entities.EntityDustRegistry;
 import com.mowmaster.dust.items.ItemArmorAndToolsRegistry;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.misc.AchievementHandler;
 import com.mowmaster.dust.misc.DustConfigurationFile;
-import com.mowmaster.dust.proxies.ClientProxy;
 import com.mowmaster.dust.recipes.*;
 import com.mowmaster.dust.recipes.fuels.FuelRegistry;
-import com.mowmaster.dust.tiles.TileRegistry;
 import com.mowmaster.dust.world.biome.BiomeRegistry;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.RecipeMatcher;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -28,9 +17,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.mowmaster.dust.proxies.CommonProxy;
 import com.mowmaster.dust.references.Reference;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.registries.ForgeRegistry;
 
 import java.io.File;
 

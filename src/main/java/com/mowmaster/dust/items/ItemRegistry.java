@@ -5,18 +5,13 @@ import com.mowmaster.dust.items.itemPedestalUpgrades.*;
 import com.mowmaster.dust.items.tools.ItemDustTippedArrow;
 import com.mowmaster.dust.items.trinkets.ItemFinnisher;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
 public class ItemRegistry

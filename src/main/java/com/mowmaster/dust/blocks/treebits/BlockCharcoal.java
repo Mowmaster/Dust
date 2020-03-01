@@ -30,7 +30,6 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-
 public class BlockCharcoal extends BlockBasic implements IMetaBlockName
 {
 

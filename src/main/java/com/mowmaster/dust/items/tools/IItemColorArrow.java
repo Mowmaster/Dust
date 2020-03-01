@@ -1,7 +1,5 @@
 package com.mowmaster.dust.items.tools;
 
-import com.mowmaster.dust.items.ItemRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;

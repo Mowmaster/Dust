@@ -7,7 +7,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-
 public class EnchantmentFlight extends Enchantment
 {
 

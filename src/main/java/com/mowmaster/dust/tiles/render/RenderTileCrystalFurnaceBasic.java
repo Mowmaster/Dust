@@ -1,10 +1,7 @@
 package com.mowmaster.dust.tiles.render;
 
-import com.mowmaster.dust.blocks.machines.TierZero.CrystalCrusherBasic;
 import com.mowmaster.dust.blocks.machines.TierZero.CrystalFurnaceBasic;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
-import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.tiles.TileCrystalCrusherBasic;
 import com.mowmaster.dust.tiles.TileCrystalFurnaceBasic;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

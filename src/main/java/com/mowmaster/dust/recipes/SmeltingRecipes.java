@@ -1,7 +1,5 @@
 package com.mowmaster.dust.recipes;
 
-
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.items.ItemRegistry;
 import net.minecraft.init.Items;

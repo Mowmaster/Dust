@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.machines;
 
-
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileDustBlock;
 import net.minecraft.block.Block;

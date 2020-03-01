@@ -1,10 +1,8 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;

@@ -12,7 +12,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-
 public class CapabilityFlightHandler implements ICapabilitySerializable<NBTTagString>
 {
     public final static ResourceLocation FLIGHT = new ResourceLocation(Reference.MODID, "hasFlight");

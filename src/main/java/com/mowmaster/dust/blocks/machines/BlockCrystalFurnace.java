@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.machines;
 
-
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.references.Reference;

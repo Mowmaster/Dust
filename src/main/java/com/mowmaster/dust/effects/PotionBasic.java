@@ -1,6 +1,5 @@
 package com.mowmaster.dust.effects;
 
-
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -9,7 +8,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 public class PotionBasic extends Potion
 {

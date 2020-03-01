@@ -1,9 +1,7 @@
 package com.mowmaster.dust.world.structures;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
-import net.minecraft.block.BlockPurpurSlab;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.state.IBlockState;

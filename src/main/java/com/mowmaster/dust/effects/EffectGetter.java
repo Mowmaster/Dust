@@ -1,9 +1,7 @@
 package com.mowmaster.dust.effects;
 
-
 import com.google.common.collect.Maps;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.Loader;

@@ -2,7 +2,6 @@ package com.mowmaster.dust.tiles;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;

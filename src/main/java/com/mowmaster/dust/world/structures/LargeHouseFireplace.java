@@ -1,7 +1,5 @@
 package com.mowmaster.dust.world.structures;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustStair;
 import com.mowmaster.dust.blocks.machines.BlockMachineBase;

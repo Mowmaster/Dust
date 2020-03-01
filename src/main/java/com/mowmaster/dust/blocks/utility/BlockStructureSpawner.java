@@ -4,18 +4,14 @@ import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileDustStructureSpawner;
-import com.mowmaster.dust.tiles.TileLootBlock;
-import com.mowmaster.dust.world.structures.DustStructureGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -30,9 +26,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.devBlocks;
-import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 import static com.mowmaster.dust.misc.DustyTab.DUSTCREATIVE;
-
 
 public class BlockStructureSpawner extends BlockBasic implements ITileEntityProvider
 {

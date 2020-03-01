@@ -1,6 +1,5 @@
 package com.mowmaster.dust.items.itemPedestalUpgrades;
 
-
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;

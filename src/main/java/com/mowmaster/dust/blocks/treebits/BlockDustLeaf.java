@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.treebits;
 
-
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.blocks.item.IMetaBlockName;
 import com.mowmaster.dust.blocks.item.ItemBlockOre;
@@ -35,9 +34,6 @@ import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-
-
-
 
 public class BlockDustLeaf extends BlockBasic implements IMetaBlockName
 {

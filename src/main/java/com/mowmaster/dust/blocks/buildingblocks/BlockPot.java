@@ -1,6 +1,5 @@
 package com.mowmaster.dust.blocks.buildingblocks;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
 import com.mowmaster.dust.blocks.machines.BlockVoidPot;
 import com.mowmaster.dust.references.Reference;
@@ -24,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-
 
 public class BlockPot extends BlockBasic
 {

@@ -1,6 +1,5 @@
 package com.mowmaster.dust.world.treegeneration;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
 import com.mowmaster.dust.blocks.treebits.BlockDustLog;
 import com.mowmaster.dust.enums.CrystalBlocks;

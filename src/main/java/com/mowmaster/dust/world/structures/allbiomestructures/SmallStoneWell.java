@@ -1,6 +1,5 @@
 package com.mowmaster.dust.world.structures.allbiomestructures;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
 import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;

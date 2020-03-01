@@ -1,11 +1,9 @@
 package com.mowmaster.dust.blocks.buildingblocks;
 
 import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
-import com.mowmaster.dust.enums.CrystalBlocks;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
-
 
 public class BlockDustBasic extends BlockBasic
 {

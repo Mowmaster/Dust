@@ -1,6 +1,5 @@
 package com.mowmaster.dust.tiles;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockCrate;
 import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
 import com.mowmaster.dust.blocks.buildingblocks.BlockPot;
@@ -21,7 +20,6 @@ import java.util.Random;
 
 import static com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock.TYPE;
 import static com.mowmaster.dust.misc.DustConfigurationFile.devBlocks;
-import static com.mowmaster.dust.misc.DustConfigurationFile.funhaters;
 
 
 public class TileLootBlock extends TileEntity implements ITickable

@@ -1,37 +1,16 @@
 package com.mowmaster.dust.items;
 
-import com.mowmaster.dust.blocks.blockbasics.BlockBasic;
-import com.mowmaster.dust.blocks.machines.BlockCrystalFurnace;
-import com.mowmaster.dust.blocks.machines.BlockPedestal;
-import com.mowmaster.dust.blocks.machines.BlockVoidPot;
-import com.mowmaster.dust.blocks.treebits.SaplingRegister;
-import com.mowmaster.dust.blocks.utility.BlockPath;
-import com.mowmaster.dust.blocks.utility.BlockSpike;
-import com.mowmaster.dust.research.GuiIndex;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.research.GuiWikiNotes;
-import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTTABS;
 

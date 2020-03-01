@@ -1,8 +1,6 @@
 package com.mowmaster.dust.misc;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasic;
-import com.mowmaster.dust.blocks.buildingblocks.BlockDustBasicMeta;
 import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
 import com.mowmaster.dust.blocks.crystal.BlockCrystal;
 import net.minecraft.creativetab.CreativeTabs;

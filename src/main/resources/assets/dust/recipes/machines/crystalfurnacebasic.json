@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "CCC",
+    "CFC",
+    "CCC"  ],
+  "key": {
+    "F": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "blockCharcoal"
+      }
+    ],
+    "C": [
+      {
+        "item": "minecraft:cobblestone"
+      }
+    ]
+  },
+  "result": {
+    "item": "dust:crystalfurnacebasic",
+    "count": 1
+  }
+}

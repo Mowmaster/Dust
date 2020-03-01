@@ -3,31 +3,18 @@ package com.mowmaster.dust.world.structures.structurebits;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.mowmaster.dust.references.Reference;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.state.BlockStateBase;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalInt;
 import java.util.Random;
-import java.util.stream.IntStream;
-
-import static net.minecraft.block.Block.getBlockFromName;
-import static net.minecraft.block.BlockSand.VARIANT;
-
 
 public class JsonParseTester extends WorldGenerator
 {

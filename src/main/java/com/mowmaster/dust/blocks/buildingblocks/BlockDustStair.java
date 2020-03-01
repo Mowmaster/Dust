@@ -9,9 +9,6 @@ import net.minecraft.util.ResourceLocation;
 
 import static com.mowmaster.dust.misc.DustyTab.DUSTBLOCKSTABS;
 
-
-
-
 public class BlockDustStair extends BlockBasicStair
 {
     public static Block redstonestairs;

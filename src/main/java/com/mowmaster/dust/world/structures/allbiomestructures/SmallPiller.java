@@ -1,15 +1,11 @@
 package com.mowmaster.dust.world.structures.allbiomestructures;
 
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.buildingblocks.BlockLootBlock;
 import com.mowmaster.dust.enums.CrystalBlocks;
-import com.mowmaster.dust.world.structures.structurebits.SpawnerTypesHostile;
 import com.mowmaster.dust.world.structures.structurebits.StructureParts;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;

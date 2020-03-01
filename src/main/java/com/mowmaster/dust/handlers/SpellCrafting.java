@@ -1,7 +1,6 @@
 package com.mowmaster.dust.handlers;
 
 import com.google.common.collect.Lists;
-import com.mowmaster.dust.blocks.BlockRegistry;
 import com.mowmaster.dust.blocks.machines.BlockMachineBase;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.blocks.machines.BlockTrap;
@@ -10,32 +9,20 @@ import com.mowmaster.dust.enums.CrystalTypes;
 import com.mowmaster.dust.items.ItemCoin;
 import com.mowmaster.dust.items.ItemDust;
 import com.mowmaster.dust.items.ItemRegistry;
-import com.mowmaster.dust.items.ItemSpellScroll;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
-import com.mowmaster.dust.recipes.CraftingRecipes;
 import com.mowmaster.dust.tiles.TileTrapBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
-import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.entity.RenderTippedArrow;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.RecipeTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.*;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -47,7 +34,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
-import java.util.Random;
 
 import static com.mowmaster.dust.misc.DustConfigurationFile.dustToActivate;
 import static com.mowmaster.dust.misc.DustConfigurationFile.effectMaximum;

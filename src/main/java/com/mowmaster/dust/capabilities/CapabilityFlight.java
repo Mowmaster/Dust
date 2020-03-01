@@ -1,6 +1,5 @@
 package com.mowmaster.dust.capabilities;
 
-
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.INBTSerializable;
 

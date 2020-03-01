@@ -1,23 +1,16 @@
 package com.mowmaster.dust.enchantments;
 
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
-import com.mowmaster.dust.dust;
 import com.mowmaster.dust.items.itemPedestalUpgrades.ipuBasic;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatBasic;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 
 public class EnchantmentRegistry
 {
-
     public static EnchantmentDigger enchantDigger = new EnchantmentDigger();
     //public static EnchantmentVamperic enchantVamperic = new EnchantmentVamperic(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantVamperic"));
     public static EnchantmentLastResort enchantLastResort = new EnchantmentLastResort(Enchantment.Rarity.RARE,new ResourceLocation("dust", "enchantLastResort"));

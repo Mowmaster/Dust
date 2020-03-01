@@ -3,7 +3,6 @@ package com.mowmaster.dust.blocks.blockbasics;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
