@@ -40,9 +40,8 @@ public class CrystalFurnaceBasic extends BlockBasic implements ITileEntityProvid
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.setSoundType(SoundType.STONE);
-        this.setHardness(9999f);
-        this.setBlockUnbreakable();
-        this.setResistance(9999f);
+        this.setHardness(3);
+        this.setResistance(20);
     }
 
     @Override
