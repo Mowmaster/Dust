@@ -3,16 +3,15 @@ package com.mowmaster.dust.items;
 import com.mowmaster.dust.blocks.machines.BlockCrystalFurnace;
 import com.mowmaster.dust.blocks.machines.BlockPedestal;
 import com.mowmaster.dust.blocks.machines.BlockVoidPot;
-import com.mowmaster.dust.blocks.treebits.SaplingRegister;
 import com.mowmaster.dust.blocks.utility.BlockPath;
 import com.mowmaster.dust.blocks.utility.BlockSpike;
 import com.mowmaster.dust.enums.CrystalItems;
 import com.mowmaster.dust.references.Reference;
-import com.mowmaster.dust.research.GuiIndex;
 import com.mowmaster.dust.research.GuiWikiNotes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -64,27 +63,29 @@ public class ItemWikiScroll extends Item
     }
 
     @Override
-    //@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 
         if(world.isRemote)
         {
-            if(player.getHeldItem(hand).getItem().equals(ItemRegistry.wikiscroll))
+            if(player.getHeldItemMainhand().getItem().equals(ItemRegistry.wikiscroll))
             {
+
+
                 if(player.isSneaking())
                 {
-                    if(player.getHeldItem(hand).getMetadata() >=15)
+                    if(player.getHeldItem(hand).getMetadata()>=15)
                     {
-                        player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + getTitleText(0) ),true);
+                        player.getHeldItem(hand).setItemDamage(0);
                     }
                     else
                     {
-                        player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE + getTitleText(player.getHeldItem(hand).getMetadata()+1) ),true);
+                        player.getHeldItem(hand).setItemDamage(player.getHeldItem(hand).getMetadata()+1);
                     }
                 }
                 else
                 {
-                    switch (player.getHeldItem(hand).getMetadata())
+                    switch (player.getHeldItemMainhand().getMetadata())
                     {
                         case 0:
                             title = "Dear Player,";
@@ -237,21 +238,6 @@ public class ItemWikiScroll extends Item
                             itemDisplay = new ItemStack(ItemRegistry.finnisher);
                             Minecraft.getMinecraft().displayGuiScreen(new GuiWikiNotes(title,0x000000,guiUtils,35,1,1,126,20,contents,0x000000,60, author,0x0000ff,itemDisplay,75,200,2.0f,2.0f));
                     }
-                }
-            }
-        }
-
-        if(!world.isRemote)
-        {
-            if(player.isSneaking())
-            {
-                if(player.getHeldItem(hand).getMetadata()>=15)
-                {
-                    player.getHeldItem(hand).setItemDamage(0);
-                }
-                else
-                {
-                    player.getHeldItem(hand).setItemDamage(player.getHeldItem(hand).getMetadata()+1);
                 }
             }
         }
