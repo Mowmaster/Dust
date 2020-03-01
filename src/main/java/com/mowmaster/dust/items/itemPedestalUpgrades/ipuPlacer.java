@@ -119,6 +119,7 @@ public class ipuPlacer extends ipuBasic
             if(blockBelow.isReplaceable(world,blockPosBelow) || blockBelow.isAir(blockBelow.getDefaultState(),world,blockPosBelow))
             {
                 FakePlayer fake = FakePlayerFactory.getMinecraft((WorldServer) world);
+                fake.setPosition(posOfPedestal.getX(),posOfPedestal.getY(),posOfPedestal.getZ());
                 fake.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal.copy());
 
                 if(fake.interactionManager.processRightClickBlock(fake, world, fake.getHeldItemMainhand(), EnumHand.MAIN_HAND, blockPosBelow, getPedestalFacing(world,posOfPedestal).getOpposite(), 0.5F, 0.5F, 0.5F).equals(EnumActionResult.SUCCESS))

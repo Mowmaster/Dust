@@ -5,6 +5,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -82,36 +83,36 @@ public class ipuEffectHarvester extends ipuBasicEffect
 
     public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal, BlockPos posTarget, IBlockState target)
     {
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-        ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
-        if(!itemInPedestal.isEmpty())
-        {
-            fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
-        }
-        else
-        {
-            if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
-            {
-                choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-            else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
-            {
-                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
-                choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-            else
-            {
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-        }
-
-        if(target.getBlock() instanceof IGrowable)
+        if(target.getBlock() instanceof IGrowable && !target.getBlock().isAir(target,world,posTarget))
         {
             if(!((IGrowable) target.getBlock()).canGrow(world,posTarget,target,false))
             {
+                FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) world);
+                fakePlayer.setPosition(posOfPedestal.getX(),posOfPedestal.getY(),posOfPedestal.getZ());
+                ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
+                if(!itemInPedestal.isEmpty())
+                {
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
+                }
+                else
+                {
+                    if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
+                    {
+                        choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
+                        fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                    }
+                    else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
+                    {
+                        int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
+                        choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
+                        fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                    }
+                    else
+                    {
+                        fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                    }
+                }
+
                 if(fakePlayer.canHarvestBlock(target))
                 {
                     target.getBlock().harvestBlock(world, fakePlayer, posTarget, target, null, fakePlayer.getHeldItemMainhand());

@@ -4,6 +4,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -74,7 +75,7 @@ public class ipuChopper extends ipuBasic
 
                         if(ticked > 84)
                         {
-                            upgradeAction(world, itemInPedestal, coinInPedestal, blockToChopPos, blockToChop);
+                            upgradeAction(world, itemInPedestal, coinInPedestal, blockToChopPos, blockToChop, pedestalPos);
                             ticked=0;
                         }
                         else
@@ -87,36 +88,36 @@ public class ipuChopper extends ipuBasic
         }
     }
 
-    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos blockToChopPos, IBlockState blockToChop)
+    public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos blockToChopPos, IBlockState blockToChop, BlockPos posOfPedestal)
     {
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-        ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
-        if(!itemInPedestal.isEmpty())
+        if(!blockToChop.getBlock().isAir(blockToChop,world,blockToChopPos) && blockToChop.getBlock().isWood(world,blockToChopPos) || blockToChop.getBlock().isLeaves(blockToChop,world,blockToChopPos))
         {
-            fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
-        }
-        else
-        {
-            if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
+            FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) world);
+            fakePlayer.setPosition(posOfPedestal.getX(),posOfPedestal.getY(),posOfPedestal.getZ());
+            ItemStack choppingAxe = new ItemStack(Items.DIAMOND_AXE,1);
+            if(!itemInPedestal.isEmpty())
             {
-                choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
-            }
-            else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
-            {
-                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
-                choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
             }
             else
             {
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                if(EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.SILK_TOUCH))
+                {
+                    choppingAxe.addEnchantment(Enchantments.SILK_TOUCH,1);
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                }
+                else if (EnchantmentHelper.getEnchantments(coinInPedestal).containsKey(Enchantments.FORTUNE))
+                {
+                    int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinInPedestal);
+                    choppingAxe.addEnchantment(Enchantments.FORTUNE,lvl);
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                }
+                else
+                {
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,choppingAxe);
+                }
             }
-        }
 
-        if(blockToChop.getBlock().isWood(world,blockToChopPos) || blockToChop.getBlock().isLeaves(blockToChop,world,blockToChopPos))
-        {
             if(fakePlayer.canHarvestBlock(blockToChop))
             {
                 blockToChop.getBlock().harvestBlock(world, fakePlayer, blockToChopPos, blockToChop, null, fakePlayer.getHeldItemMainhand());

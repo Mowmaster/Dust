@@ -4,6 +4,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPickaxe;
@@ -82,8 +83,8 @@ public class ipuBreaker extends ipuBasic
     {
         int range = getRange(coinOnPedestal);
 
-        WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
-        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+        FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) world);
+        fakePlayer.setPosition(posOfPedestal.getX(),posOfPedestal.getY(),posOfPedestal.getZ());
         ItemStack pickaxe = new ItemStack(Items.DIAMOND_PICKAXE,1);
         BlockPos posOfBlock = getPosOfBlockBelow(world,posOfPedestal,range);
         IBlockState blockToBreak = world.getBlockState(posOfBlock);
@@ -91,32 +92,31 @@ public class ipuBreaker extends ipuBasic
         /*
         BREAKS BLOCKS AND DROPS THEM IN WORLD FOR PICKUP LATER
          */
-
-        if(itemInPedestal.getItem() instanceof ItemPickaxe)
+        if(!blockToBreak.getBlock().isAir(blockToBreak,world,posOfBlock) && blockToBreak.getBlockHardness(world,posOfBlock) != -1.0F)
         {
-            fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
-        }
-        else
-        {
-            if(EnchantmentHelper.getEnchantments(coinOnPedestal).containsKey(Enchantments.SILK_TOUCH))
+            if(itemInPedestal.getItem() instanceof ItemPickaxe)
             {
-                pickaxe.addEnchantment(Enchantments.SILK_TOUCH,1);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,pickaxe);
-            }
-            else if (EnchantmentHelper.getEnchantments(coinOnPedestal).containsKey(Enchantments.FORTUNE))
-            {
-                int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinOnPedestal);
-                pickaxe.addEnchantment(Enchantments.FORTUNE,lvl);
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,pickaxe);
+                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,itemInPedestal);
             }
             else
             {
-                fakePlayer.setHeldItem(EnumHand.MAIN_HAND,pickaxe);
+                if(EnchantmentHelper.getEnchantments(coinOnPedestal).containsKey(Enchantments.SILK_TOUCH))
+                {
+                    pickaxe.addEnchantment(Enchantments.SILK_TOUCH,1);
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,pickaxe);
+                }
+                else if (EnchantmentHelper.getEnchantments(coinOnPedestal).containsKey(Enchantments.FORTUNE))
+                {
+                    int lvl = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE,coinOnPedestal);
+                    pickaxe.addEnchantment(Enchantments.FORTUNE,lvl);
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,pickaxe);
+                }
+                else
+                {
+                    fakePlayer.setHeldItem(EnumHand.MAIN_HAND,pickaxe);
+                }
             }
-        }
 
-        if(blockToBreak.getBlockHardness(world,posOfBlock) != -1.0F)
-        {
             if(fakePlayer.canHarvestBlock(blockToBreak))
             {
                 blockToBreak.getBlock().harvestBlock(world, fakePlayer, posOfBlock, blockToBreak, null, fakePlayer.getHeldItemMainhand());
