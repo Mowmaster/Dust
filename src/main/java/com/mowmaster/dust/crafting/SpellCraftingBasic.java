@@ -48,6 +48,14 @@ public class SpellCraftingBasic
         double green=0;
         int white=0;
         int black=0;
+
+        double cr = 0;
+        double cg = 0;
+        double cb = 0;
+        double cred=0;
+        double cblue=0;
+        double cgreen=0;
+
         int stone=0;
         int bowl=0;
         int count=0;
@@ -85,24 +93,62 @@ public class SpellCraftingBasic
                                 white+=stack.getCount();
                                 item.remove();
                             }
-                            else if(stack.getTag().getInt("color") == 16711680 || stack.getTag().getInt("color") == 65280 || stack.getTag().getInt("color") == 255)
+                            else if(stack.getTag().contains("combine"))
                             {
-                                //System.out.println(stack.getTag().getInt("color"));
-                                double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
-                                r+=rgbColors[0];
-                                g+=rgbColors[1];
-                                b+=rgbColors[2];
-                                count+=stack.getCount();
-                                item.remove();
+                                if(!stack.getTag().getBoolean("combine"))
+                                {
+                                    if(cr + cg + cb + black + white == 0)
+                                    {
+                                        if(stack.getTag().getInt("color") == 16711680 || stack.getTag().getInt("color") == 65280 || stack.getTag().getInt("color") == 255)
+                                        {
+                                            //System.out.println(stack.getTag().getInt("color"));
+                                            double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
+                                            cr+=rgbColors[0];
+                                            cg+=rgbColors[1];
+                                            cb+=rgbColors[2];
+                                            count+=stack.getCount();
+                                            item.remove();
+                                        }
+                                        else
+                                        {
+                                            {
+                                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
+                                                cr+=rgbColors[0];
+                                                cg+=rgbColors[1];
+                                                cb+=rgbColors[2];
+                                                count+=stack.getCount();
+                                                item.remove();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        count+=stack.getCount();
+                                        item.remove();
+                                    }
+                                }
                             }
                             else
                             {
-                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
-                                r+=rgbColors[0];
-                                g+=rgbColors[1];
-                                b+=rgbColors[2];
-                                count+=stack.getCount();
-                                item.remove();
+                                if(stack.getTag().getInt("color") == 16711680 || stack.getTag().getInt("color") == 65280 || stack.getTag().getInt("color") == 255)
+                                {
+                                    //System.out.println(stack.getTag().getInt("color"));
+                                    double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
+                                    r+=rgbColors[0];
+                                    g+=rgbColors[1];
+                                    b+=rgbColors[2];
+                                    count+=stack.getCount();
+                                    item.remove();
+                                }
+                                else
+                                {
+                                    int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
+                                    r+=rgbColors[0];
+                                    g+=rgbColors[1];
+                                    b+=rgbColors[2];
+                                    count+=stack.getCount();
+                                    item.remove();
+                                }
                             }
                         }
                     }
@@ -110,6 +156,15 @@ public class SpellCraftingBasic
                     red = r%256;
                     green = g%256;
                     blue = b%256;
+
+                    cred = cr%256;
+                    cgreen = cg%256;
+                    cblue = cb%256;
+
+                    //Combination color, need to not use combi colors for mixing but use for stone
+                    //combi colors cant be mixed
+                    //combi colors override normal color mix for stone
+
 
                     double rgbRed = red;
                     double rgbGreen = green;
@@ -134,12 +189,8 @@ public class SpellCraftingBasic
                     }
 
                     int color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+                    int colorCombined = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
 
-                    //Make Black color at night
-                    if(color == 16777215 && worldIn.isNightTime())
-                    {
-                        color = 0;
-                    }
                     /*System.out.println("Red: " + red + " rgb: " +rgbRed);
                     System.out.println("Green: "  + green + " rgb: " + rgbGreen);
                     System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
@@ -151,9 +202,7 @@ public class SpellCraftingBasic
                     worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                     worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
                     if (stone > 0) {
-                        //if(red>0)
-                        //{
-                        //NEED TO ADD ANOTHER TAG TO ITEM TO MAKE IT NOT USEABLE IN COMBINING AGAIN!!!
+
                             for(int i=stone;i>0;i--)
                             {
                                 if(count>=2)
@@ -176,9 +225,17 @@ public class SpellCraftingBasic
 
                     if(bowl>0)
                     {
+                        //Make Black color at night
+                        if(color == 16777215 && worldIn.isNightTime())
+                        {
+                            color = 0;
+                        }
+
+                        //NEED TO ADD ANOTHER TAG TO ITEM TO MAKE IT NOT USEABLE IN COMBINING AGAIN!!!
                         ItemStack stacked = new ItemStack(ItemColorDust.DUST,1);
                         CompoundNBT nbt = new CompoundNBT();
                         nbt.putInt("color",color);
+                        nbt.putBoolean("combine",false);
                         stacked.setTag(nbt);
                         stacked.setCount(count);
                         ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,stacked);

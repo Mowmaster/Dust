@@ -1,5 +1,6 @@
 package com.mowmaster.dust.item;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -10,6 +11,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.RandomObjectDescriptor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.Tags;
@@ -17,6 +21,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.dust.references.Reference.MODID;
@@ -92,6 +97,34 @@ public class ItemColorDust extends Item {
         }
         return stack.getTag().getInt("color");
     }
+
+    public static boolean getCombineFromNBT(ItemStack stack)
+    {
+        if(!stack.hasTag())
+        {
+            return true;
+        }
+        if(!stack.getTag().contains("combine"))
+        {
+            return true;
+        }
+
+        return stack.getTag().getBoolean("combine");
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        String sr = "No";
+        if(getCombineFromNBT(stack))
+        {
+            sr="Yes";
+        }
+
+        tooltip.add(new TranslationTextComponent("Can Mix With Other Colors: " + sr).applyTextStyle(TextFormatting.LIGHT_PURPLE));
+        //tooltip.add(new TranslationTextComponent("mininggadgets.tooltip.item.break_cost", getEnergyCost(stack)).applyTextStyle(TextFormatting.RED));
+    }
+
 
     private static final ResourceLocation RESLOC_DUST = new ResourceLocation(MODID, "itemdust");
 
