@@ -34,7 +34,7 @@ public class SpellCraftingBasic
         World worldIn = event.getWorld();
         Hand hand = event.getHand();
         BlockState state = worldIn.getBlockState(event.getPos());
-        PlayerEntity player = event.getEntityPlayer();
+        PlayerEntity player = event.getPlayer();
 
         int posX = event.getPos().getX();
         int posY = event.getPos().getY();
@@ -134,6 +134,12 @@ public class SpellCraftingBasic
                     }
 
                     int color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+
+                    //Make Black color at night
+                    if(color == 16777215 && worldIn.isNightTime())
+                    {
+                        color = 0;
+                    }
                     /*System.out.println("Red: " + red + " rgb: " +rgbRed);
                     System.out.println("Green: "  + green + " rgb: " + rgbGreen);
                     System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
@@ -141,11 +147,13 @@ public class SpellCraftingBasic
                     //System.out.println(color);
 
 
+                    //removes fire block???
                     worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                     worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
                     if (stone > 0) {
                         //if(red>0)
                         //{
+                        //NEED TO ADD ANOTHER TAG TO ITEM TO MAKE IT NOT USEABLE IN COMBINING AGAIN!!!
                             for(int i=stone;i>0;i--)
                             {
                                 if(count>=2)

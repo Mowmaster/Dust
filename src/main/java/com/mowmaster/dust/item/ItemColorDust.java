@@ -34,7 +34,7 @@ public class ItemColorDust extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 
-            if(playerIn.isSneaking())
+            if(playerIn.isCrouching())
             {
                 if(playerIn.getHeldItemMainhand().hasTag())
                 {
