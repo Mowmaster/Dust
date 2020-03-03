@@ -2,7 +2,6 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -11,7 +10,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import javax.annotation.Nullable;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
@@ -25,24 +23,31 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         super(pedestal_stone);
     }
 
-    int i = 0;
+
+    public int getPedestalTransferRange()
+    {
+        return 8;
+    }
+
+    int ticker = 0;
 
     @Override
     public void tick() {
         if(!world.isRemote())
         {
-            i++;
-            if(i >= 20)
+            ticker++;
+            if(ticker >= 20)
             {
                 System.out.println("Hello!");
-                i = 0;
+                ticker = 0;
             }
         }
     }
 
-
-
-
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        return super.write(compound);
+    }
 
     private static final ResourceLocation RESLOC_TILE_PEDESTAL = new ResourceLocation(MODID, "tile/pedestal");
 

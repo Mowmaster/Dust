@@ -1,5 +1,6 @@
 package com.mowmaster.dust.item;
 
+import com.mowmaster.dust.dust;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -28,7 +29,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemColorDust extends Item {
     public ItemColorDust(Properties builder) {
-        super(builder);
+        super(builder.group(dust.itemGroup));
     }
 
     public static void handleItemColors(ColorHandlerEvent.Item event) {
@@ -125,10 +126,7 @@ public class ItemColorDust extends Item {
         //tooltip.add(new TranslationTextComponent("mininggadgets.tooltip.item.break_cost", getEnergyCost(stack)).applyTextStyle(TextFormatting.RED));
     }
 
-
-    private static final ResourceLocation RESLOC_DUST = new ResourceLocation(MODID, "itemdust");
-
-    public static final Item DUST = new ItemColorDust(new Properties().group(ItemGroup.MATERIALS)).setRegistryName(RESLOC_DUST);
+    public static final Item DUST = new ItemColorDust(new Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdust"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

@@ -1,5 +1,6 @@
 package com.mowmaster.dust.item;
 
+import com.mowmaster.dust.dust;
 import com.mowmaster.dust.references.Reference;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
@@ -15,29 +16,16 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemDust extends Item {
     public ItemDust(Properties builder) {
-        super(builder);
+        super(builder.group(dust.itemGroup));
     }
-
-    private static final ResourceLocation RESLOC_DUST_STONE = new ResourceLocation(MODID, "itemduststone");
-    private static final ResourceLocation RESLOC_DUST_GOLD = new ResourceLocation(MODID, "itemdustgold");
-    private static final ResourceLocation RESLOC_DUST_IRON = new ResourceLocation(MODID, "itemdustiron");
-    private static final ResourceLocation RESLOC_DUST_FLOUR= new ResourceLocation(MODID, "itemdustflour");
-
-    public static final Item DUST_STONE = new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(RESLOC_DUST_STONE);
-    public static final Item DUST_GOLD = new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(RESLOC_DUST_GOLD);
-    public static final Item DUST_IRON = new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(RESLOC_DUST_IRON);
-    public static final Item DUST_FLOUR = new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(RESLOC_DUST_FLOUR);
-
-
-
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(DUST_STONE);
-        event.getRegistry().register(DUST_GOLD);
-        event.getRegistry().register(DUST_IRON);
-        event.getRegistry().register(DUST_FLOUR);
+        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemduststone")));
+        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdustgold")));
+        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdustiron")));
+        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdustflour")));
     }
 
 

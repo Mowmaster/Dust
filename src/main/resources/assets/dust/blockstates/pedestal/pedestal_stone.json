@@ -1,0 +1,6 @@
+{
+  "variants":{
+    "": { "model": "dust:block/pedestal/pedestal_stone" }
+
+  }
+}
