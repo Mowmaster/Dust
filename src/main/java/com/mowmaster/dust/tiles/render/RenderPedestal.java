@@ -18,10 +18,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import javax.annotation.Nonnull;
 
 import static net.minecraft.block.DirectionalBlock.FACING;
 import static net.minecraft.client.renderer.tileentity.BeaconTileEntityRenderer.TEXTURE_BEACON_BEAM;
@@ -34,10 +37,10 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         super(rendererDispatcher);
     }
 
-    public static final ResourceLocation TEXTURE_BEACON_BEAM = new ResourceLocation("textures/entity/beacon_beam.png");
-
+    /*public static final ResourceLocation TEXTURE_BEACON_BEAM = new ResourceLocation("textures/entity/beacon_beam.png");
+*/
     @Override
-    public void render(TilePedestal tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(@Nonnull TilePedestal tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
         /*World worldIn = tileEntityIn.getWorld();
         int num = 1;
@@ -64,7 +67,7 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         itemRenderer.renderItem(item, ItemCameraTransforms.TransformType.FIXED, false, matrixStackIn, bufferIn, lightmapValue, OverlayTexture.NO_OVERLAY, ibakedmodel);
         matrixStackIn.pop();*/
 
-        matrixStackIn.push();
+        /*matrixStackIn.push();
 
         matrixStackIn.translate(0.5, 1.0, 0.5);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -76,8 +79,22 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
         BlockState state = Blocks.ENDER_CHEST.getDefaultState();
         blockRenderer.renderBlock(state, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, EmptyModelData.INSTANCE);
-        matrixStackIn.pop();
+        matrixStackIn.pop();*/
 
+        if (!tileEntityIn.isRemoved()) {
+            ItemStack stack = tileEntityIn.getItemInPedestal();
+            if (!stack.isEmpty()) {
+                System.out.println("Render BLARG!!!");
+                matrixStackIn.push();
+                matrixStackIn.translate(0.5, 1.0, 0.5);
+                matrixStackIn.translate(0, MathHelper.sin((tileEntityIn.getWorld().getGameTime() + partialTicks) / 10.0F) * 0.1 + 0.1, 0);
+                matrixStackIn.scale(0.75F, 0.75F, 0.75F);
+                float angle = (tileEntityIn.getWorld().getGameTime() + partialTicks) / 20.0F * (180F / (float) Math.PI);
+                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
+                Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                matrixStackIn.pop();
+            }
+        }
 
         /*matrixStackIn.push(); // push
         matrixStackIn.translate(0.5D, 1.0D, 0.5D); // translate
@@ -186,7 +203,7 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         matrixStackIn.pop();
     }*/
 
-    private static void renderPart(MatrixStack matrixStack, IVertexBuilder vertexBuilder,
+    /*private static void renderPart(MatrixStack matrixStack, IVertexBuilder vertexBuilder,
                                    float red, float green, float blue, float alpha, int ymin, int ymax,
                                    float x1, float z1, float x2, float z2, float x3, float z3, float x4, float z4,
                                    float u1, float u2, float v1, float v2) {
@@ -218,7 +235,7 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
                 .lightmap(0xf000f0)                       // lightmap with full brightness
                 .normal(matrixNormal, 0.0F, 1.0F, 0.0F)  // normal
                 .endVertex();
-    }
+    }*/
 
     public static void init(final FMLClientSetupEvent event)
     {

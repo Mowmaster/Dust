@@ -1,15 +1,10 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockTest;
 import com.mowmaster.dust.item.pedestalUpgrades.UpgradeBase;
-import net.minecraft.block.EnchantingTableBlock;
-import net.minecraft.client.renderer.entity.ItemFrameRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -18,9 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -29,22 +22,18 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
 
-public class TilePedestal extends TileEntity implements ITickableTileEntity {
+public class TileTest extends TileEntity implements ITickableTileEntity {
 
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
 
@@ -56,9 +45,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     private int intTransferRange = 8;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
 
-    public TilePedestal()
+    public TileTest()
     {
-        super(pedestal_stone);
+        super(TEST);
     }
 
     private IItemHandler createHandler() {
@@ -99,42 +88,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         return returner;
     }
 
-    public BlockPos getStoredPositionAt(int index)
-    {
-        BlockPos sendToPos = getPos();
-        if(index<getNumberOfStoredLocations())
-        {
-            sendToPos = storedLocations.get(index);
-        }
 
-        return sendToPos;
-    }
 
-    public boolean removeLocation(BlockPos pos)
-    {
-        boolean returner = false;
-        if(getNumberOfStoredLocations() >= 1)
-        {
-            storedLocations.remove(pos);
-            returner=true;
-        }
 
-        return returner;
-    }
 
-    public boolean isAlreadyLinked(BlockPos pos) {
-        return storedLocations.contains(pos);
-    }
-
-    public String debugLocationList()
-    {
-        String lists = "";
-        for(int i=0;i<getNumberOfStoredLocations();i++)
-        {
-            lists = lists + storedLocations.get(i).toString() + ", ";
-        }
-        return lists;
-    }
 
     public int getStoredValueForUpgrades()
     {
@@ -243,63 +200,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         return stack;
     }
 
-    public int getItemTransferRate()
-    {
-        int itemRate = 4;
-        switch (intTransferAmount)
-        {
-            case 0:
-                itemRate = 4;
-                break;
-            case 1:
-                itemRate=8;
-                break;
-            case 2:
-                itemRate = 16;
-                break;
-            case 3:
-                itemRate = 32;
-                break;
-            case 4:
-                itemRate = 48;
-                break;
-            case 5:
-                itemRate=64;
-                break;
-            default: itemRate=4;
-        }
-
-        return  itemRate;
-    }
-
-    public int getOperationSpeed()
-    {
-        int speed = 20;
-        switch (intTransferSpeed)
-        {
-            case 0:
-                speed = 20;//normal speed
-                break;
-            case 1:
-                speed=10;//2x faster
-                break;
-            case 2:
-                speed = 5;//4x faster
-                break;
-            case 3:
-                speed = 3;//6x faster
-                break;
-            case 4:
-                speed = 2;//10x faster
-                break;
-            case 5:
-                speed=1;//20x faster
-                break;
-            default: speed=20;
-        }
-
-        return  speed;
-    }
+    
 
     public int getMaxStackSize(){return 64;}
 
@@ -439,187 +340,18 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         return canAccept;
     }
 
-    public boolean hasFilter(TilePedestal pedestalSendingTo)
-    {
-        boolean returner = false;
-        if(pedestalSendingTo.hasCoin())
-        {
-            Item coinInPed = pedestalSendingTo.getCoinOnPedestal().getItem();
-            if(coinInPed instanceof UpgradeBase)
-            {
-                if(((UpgradeBase) coinInPed).isFilter)
-                {
-                    returner = true;
-                }
-            }
-        }
-
-        return returner;
-    }
-
-    private boolean canSendToPedestal(BlockPos pedestalToSendTo)
-    {
-        boolean returner = false;
-
-        //Check if Block is Loaded in World
-        if(world.isAreaLoaded(pedestalToSendTo,1))
-        {
-            //If block ISNT powered
-            if(!world.isBlockPowered(pedestalToSendTo))
-            {
-                //Make sure its a pedestal before getting the tile
-                if(world.getBlockState(pedestalToSendTo).getBlock() instanceof BlockPedestal)
-                {
-                    //Make sure it is still part of the right network
-                    if(canLinkToPedestalNetwork(pedestalToSendTo))
-                    {
-                        //Get the tile before checking other things
-                        if(world.getTileEntity(pedestalToSendTo) instanceof TilePedestal)
-                        {
-                            TilePedestal tilePedestalToSendTo = (TilePedestal)world.getTileEntity(pedestalToSendTo);
-
-                            //Checks if pedestal is empty or if not then checks if items match and how many can be insert
-                            if(tilePedestalToSendTo.canAcceptItems(getItemInPedestal()) > 0)
-                            {
-                                //Check if it has filter, if not return true
-                                if(hasFilter(tilePedestalToSendTo))
-                                {
-                                    Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
-                                    if(coinInPed instanceof UpgradeBase)
-                                    {
-                                        //Already checked if its a filter, so now check if it can accept items.
-                                        if(((UpgradeBase) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
-                                        {
-                                            returner = true;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    returner = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return returner;
-    }
-
-    public void sendItemsToPedestal(BlockPos pedestalToSendTo)
-    {
-        if(world.getTileEntity(pedestalToSendTo) instanceof TilePedestal)
-        {
-            TilePedestal tileToSendTo = ((TilePedestal)world.getTileEntity(pedestalToSendTo));
-
-            //Max that can be recieved
-            int countToSend = tileToSendTo.spaceInPedestal();
-            ItemStack copyStackToSend = getItemInPedestal().copy();
-            //Max that is available to send
-            if(copyStackToSend.getCount()<countToSend)
-            {
-                countToSend = copyStackToSend.getCount();
-            }
-            //Get max that can be sent
-            if(countToSend > getItemTransferRate())
-            {
-                countToSend = getItemTransferRate();
-            }
 
 
-            if(countToSend >=1)
-            {
-                //Send items
-                copyStackToSend.setCount(countToSend);
-                removeItem(copyStackToSend.getCount());
-                tileToSendTo.addItem(copyStackToSend);
-                //remove item will mark dirty this pedestan
-                //addItem mark dirties the reciever pedestal
-            }
-        }
-    }
 
-    //Needed for Rendering Tile Stuff
-    public boolean isBlockUnder(int x,int y,int z)
-    {
-        TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
-        if(tileEntity instanceof ICapabilityProvider)
-        {
-            return true;
-        }
-        return false;
-    }
 
-    int impTicker = 0;
-    int pedTicker = 0;
+
+
+
+
     @Override
     public void tick() {
 
-        /*if(!world.isRemote)
-        {
-            if(world.isAreaLoaded(pos,1))
-            {
-                int speed = getOperationSpeed();
-                if(speed<1){speed = 20;}
 
-                //dont bother unless pedestal has items in it.
-                if(!getItemInPedestal().isEmpty())
-                {
-                    if(!world.isBlockPowered(pos))
-                    {
-                        if(getNumberOfStoredLocations()>0)
-                        {
-                            pedTicker++;
-                            if (pedTicker%speed == 0) {
-
-                                for(int i=0; i<getNumberOfStoredLocations();i++)
-                                {
-                                    if(getStoredPositionAt(i) != getPos())
-                                    {
-                                        //check for any slots that can accept items if not then keep trying
-                                        if(canSendToPedestal(getStoredPositionAt(i)))
-                                        {
-                                            //Once a slot is found and items transfered, stop loop(so it restarts next check)
-                                            sendItemsToPedestal(getStoredPositionAt(i));
-                                            break;
-                                        }
-                                    }
-                                }
-                                if(pedTicker >=20){pedTicker=0;}
-                            }
-                        }
-                    }
-                }
-
-                if(hasCoin())
-                {
-                    Item coinInPed = getCoinOnPedestal().getItem();
-                    if(coinInPed instanceof UpgradeBase)
-                    {
-                        impTicker++;
-                        ((UpgradeBase) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
-                        if(impTicker >=200){impTicker=0;}
-                    }
-                }
-
-
-            }
-        }
-
-        if(world.isRemote)
-        {
-            if(hasCoin())
-            {
-                Item coinInPed = getCoinOnPedestal().getItem();
-                if(coinInPed instanceof UpgradeBase)
-                {
-                    Random rand = new Random();
-                    ((UpgradeBase) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
-                }
-            }
-        }*/
     }
 
     @Override
@@ -686,13 +418,13 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         read(packet.getNbtCompound());
     }
 
-    private static final ResourceLocation RESLOC_TILE_PEDESTAL = new ResourceLocation(MODID, "tile/pedestal");
+    private static final ResourceLocation RESLOC_TILE_TEST = new ResourceLocation(MODID, "tile/test");
 
-    public static TileEntityType<TilePedestal> pedestal_stone = TileEntityType.Builder.create(TilePedestal::new, BlockPedestal.BLOCK_PEDESTAL_STONE).build(null);
+    public static TileEntityType<TileTest> TEST = TileEntityType.Builder.create(TileTest::new, BlockTest.BLOCK_TEST).build(null);
 
     @SubscribeEvent
     public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
         IForgeRegistry<TileEntityType<?>> r = event.getRegistry();
-        r.register(pedestal_stone.setRegistryName(RESLOC_TILE_PEDESTAL));
+        r.register(TEST.setRegistryName(RESLOC_TILE_TEST));
     }
 }
