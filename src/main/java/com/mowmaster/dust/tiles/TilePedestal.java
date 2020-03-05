@@ -2,15 +2,21 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.item.pedestalUpgrades.UpgradeBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -21,6 +27,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 
 import javax.annotation.Nonnull;
@@ -44,6 +51,8 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     private int intTransferSpeed = 20;
     private int intTransferRange = 8;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
+
+    int id = Math.abs(pos.getX())+Math.abs(pos.getY())+Math.abs(pos.getZ());
 
 
     public TilePedestal()
@@ -180,8 +189,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         if(hasItem())
         {
             return h.getStackInSlot(0);
+
         }
         else return ItemStack.EMPTY;
+
     }
     public ItemStack getCoinOnPedestal()
     {
@@ -587,11 +598,13 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                     }
                 }
 
-
-                display = getItemInPedestal();
+                markDirty();
+                updateContainingBlockInfo();
                 world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
             }
         }
+
+
 
         if(world.isRemote)
         {
