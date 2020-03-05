@@ -598,13 +598,13 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                     }
                 }
 
-                markDirty();
-                updateContainingBlockInfo();
-                world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
+
             }
         }
 
-
+        markDirty();
+        updateContainingBlockInfo();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
 
         if(world.isRemote)
         {
