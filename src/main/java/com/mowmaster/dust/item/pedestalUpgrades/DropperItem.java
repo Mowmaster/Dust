@@ -1,7 +1,6 @@
 package com.mowmaster.dust.item.pedestalUpgrades;
 
 import com.mowmaster.dust.dust;
-import com.mowmaster.dust.item.ItemCrystalWrench;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
@@ -20,7 +19,7 @@ import java.util.List;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class DropperItem extends ipuBasic
+public class DropperItem extends UpgradeBase
 {
     public int summonRate = 1;
     public int range = 1;

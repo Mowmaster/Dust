@@ -1,11 +1,10 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
-import com.mowmaster.dust.item.pedestalUpgrades.ipuBasic;
+import com.mowmaster.dust.item.pedestalUpgrades.UpgradeBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -26,7 +25,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -63,7 +61,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) return true;
-                if (slot == 1 && stack.getItem() instanceof ipuBasic) return true;
+                if (slot == 1 && stack.getItem() instanceof UpgradeBase) return true;
                 return false;
             }
         };
@@ -431,9 +429,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         if(pedestalSendingTo.hasCoin())
         {
             Item coinInPed = pedestalSendingTo.getCoinOnPedestal().getItem();
-            if(coinInPed instanceof ipuBasic)
+            if(coinInPed instanceof UpgradeBase)
             {
-                if(((ipuBasic) coinInPed).isFilter)
+                if(((UpgradeBase) coinInPed).isFilter)
                 {
                     returner = true;
                 }
@@ -471,10 +469,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                                 if(hasFilter(tilePedestalToSendTo))
                                 {
                                     Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
-                                    if(coinInPed instanceof ipuBasic)
+                                    if(coinInPed instanceof UpgradeBase)
                                     {
                                         //Already checked if its a filter, so now check if it can accept items.
-                                        if(((ipuBasic) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
+                                        if(((UpgradeBase) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
                                         {
                                             returner = true;
                                         }
@@ -581,10 +579,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                 if(hasCoin())
                 {
                     Item coinInPed = getCoinOnPedestal().getItem();
-                    if(coinInPed instanceof ipuBasic)
+                    if(coinInPed instanceof UpgradeBase)
                     {
                         impTicker++;
-                        ((ipuBasic) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
+                        ((UpgradeBase) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
                         if(impTicker >=200){impTicker=0;}
                     }
                 }
@@ -600,10 +598,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             if(hasCoin())
             {
                 Item coinInPed = getCoinOnPedestal().getItem();
-                if(coinInPed instanceof ipuBasic)
+                if(coinInPed instanceof UpgradeBase)
                 {
                     Random rand = new Random();
-                    ((ipuBasic) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
+                    ((UpgradeBase) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
                 }
             }
         }

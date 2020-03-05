@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.client.ClientDust;
 import com.mowmaster.dust.crafting.Recipes;
 import com.mowmaster.dust.item.ItemRegistry;
 import com.mowmaster.dust.references.Reference;

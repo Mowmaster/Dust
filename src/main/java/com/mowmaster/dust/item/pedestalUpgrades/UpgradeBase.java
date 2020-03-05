@@ -30,9 +30,9 @@ import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.FACING;
 
-public class ipuBasic extends Item {
+public class UpgradeBase extends Item {
 
-    public ipuBasic(Properties builder) {super(builder.group(dust.itemGroup));}
+    public UpgradeBase(Properties builder) {super(builder.group(dust.itemGroup));}
 
     public boolean isFilter;
 

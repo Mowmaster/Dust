@@ -2,8 +2,7 @@ package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.item.ItemCrystalWrench;
-import com.mowmaster.dust.item.ItemRegistry;
-import com.mowmaster.dust.item.pedestalUpgrades.ipuBasic;
+import com.mowmaster.dust.item.pedestalUpgrades.UpgradeBase;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -13,11 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
-import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.BrewingStandTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -126,7 +121,7 @@ public class BlockPedestal extends DirectionalBlock {
                 else if(!tilePedestal.hasCoin())
                 {
                     //player.getHeldItemMainhand().getItem() instanceof ItemCoin ||
-                    if(player.getHeldItemMainhand().getItem() instanceof ipuBasic)
+                    if(player.getHeldItemMainhand().getItem() instanceof UpgradeBase)
                     {
                         if(tilePedestal.addCoin(player.getHeldItemMainhand()))
                         {
