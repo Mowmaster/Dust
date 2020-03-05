@@ -191,7 +191,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             return h.getStackInSlot(0);
 
         }
-        else return ItemStack.EMPTY;
+        else return new ItemStack(Items.DIAMOND);
 
     }
     public ItemStack getCoinOnPedestal()

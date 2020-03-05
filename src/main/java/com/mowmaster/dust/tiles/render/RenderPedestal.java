@@ -66,7 +66,7 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
 
         matrixStackIn.push();
 
-        matrixStackIn.translate(0.5, 0.5, 0.5);
+        matrixStackIn.translate(0.5, 1.0, 0.5);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack stack = tileEntityIn.getItemInPedestal();
         IBakedModel ibakedmodel = itemRenderer.getItemModelWithOverrides(stack, tileEntityIn.getWorld(), null);
