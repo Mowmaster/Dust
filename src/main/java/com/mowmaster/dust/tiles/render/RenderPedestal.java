@@ -80,7 +80,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         if (!tileEntityIn.isRemoved()) {
             ItemStack stack = tileEntityIn.getItemInPedestal();
             if (!stack.isEmpty()) {
-                System.out.println("Render BLARG!!!");
                 matrixStackIn.push();
                 matrixStackIn.translate(0.5, 1.0, 0.5);
                 matrixStackIn.translate(0, MathHelper.sin((tileEntityIn.getWorld().getGameTime() + partialTicks) / 10.0F) * 0.1 + 0.1, 0);

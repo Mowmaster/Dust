@@ -66,6 +66,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 markDirty();
+                world.notifyBlockUpdate(pos,getBlockState(),getBlockState(),2);
             }
 
             @Override
@@ -87,7 +88,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     }
 
     public int getNumberOfStoredLocations() {return storedLocations.size();}
-    
+
     public boolean storeNewLocation(BlockPos pos)
     {
         boolean returner = false;
@@ -96,8 +97,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             storedLocations.add(pos);
             returner=true;
         }
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
 
         return returner;
     }
@@ -121,8 +123,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             storedLocations.remove(pos);
             returner=true;
         }
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
         return returner;
     }
 
@@ -211,7 +214,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
 
 
     /**
-     * world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
+     * world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
      * Sets a block state into this world.Flags are as follows:
      * 1 will cause a block update.
      * 2 will send the change to clients.
@@ -225,16 +228,18 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     public ItemStack removeItem(int numToRemove) {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(0,numToRemove,false);
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
         return stack;
     }
 
     public ItemStack removeItem() {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(0,h.getStackInSlot(0).getCount(),false);
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
         return stack;
     }
 
@@ -242,8 +247,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(1,h.getStackInSlot(1).getCount(),false);
         setStoredValueForUpgrades(0);
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
         return stack;
     }
 
@@ -318,8 +324,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             }
         }
         else {h.insertItem(0, itemFromBlock.copy(), false);}
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
         return true;
     }
 
@@ -330,8 +337,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         itemFromBlock.setCount(1);
         if(hasCoin()){} else h.insertItem(1,itemFromBlock,false);
         setStoredValueForUpgrades(0);
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
         this.markDirty();
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+
         return true;
     }
 
@@ -561,7 +569,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     @Override
     public void tick() {
 
-        /*if(!world.isRemote)
+        if(!world.isRemote)
         {
             if(world.isAreaLoaded(pos,1))
             {
@@ -617,7 +625,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                     ((UpgradeBase) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
                 }
             }
-        }*/
+        }
     }
 
     @Override
@@ -674,14 +682,45 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         return super.write(tag);
     }
 
+    //https://github.com/TheGreyGhost/MinecraftByExample/blob/1-15-2-working-latestMCP/src/main/java/minecraftbyexample/mbe21_tileentityrenderer/TileEntityMBE21.java
+    // When the world loads from disk, the server needs to send the TileEntity information to the client
+    //  it uses getUpdatePacket(), getUpdateTag(), onDataPacket(), and handleUpdateTag() to do this:
+    //  getUpdatePacket() and onDataPacket() are used for one-at-a-time TileEntity updates
+    //  getUpdateTag() and handleUpdateTag() are used by vanilla to collate together into a single chunk update packet
+    // In this case, we need it for the gem colour.  There's no need to save the gem angular position because
+    //  the player will never notice the difference and the client<-->server synchronisation lag will make it
+    //  inaccurate anyway
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(pos, -1, getUpdateTag());
+    @Nullable
+    public SUpdateTileEntityPacket getUpdatePacket()
+    {
+        CompoundNBT nbtTagCompound = new CompoundNBT();
+        write(nbtTagCompound);
+        int tileEntityType = 42;  // arbitrary number; only used for vanilla TileEntities.  You can use it, or not, as you want.
+        return new SUpdateTileEntityPacket(this.pos, tileEntityType, nbtTagCompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager manager, SUpdateTileEntityPacket packet) {
-        read(packet.getNbtCompound());
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        read(pkt.getNbtCompound());
+    }
+
+    /* Creates a tag containing the TileEntity information, used by vanilla to transmit from server to client
+ */
+    @Override
+    public CompoundNBT getUpdateTag()
+    {
+        CompoundNBT nbtTagCompound = new CompoundNBT();
+        write(nbtTagCompound);
+        return nbtTagCompound;
+    }
+
+    /* Populates this TileEntity with information from the tag, used by vanilla to transmit from server to client
+ */
+    @Override
+    public void handleUpdateTag(CompoundNBT tag)
+    {
+        this.read(tag);
     }
 
     private static final ResourceLocation RESLOC_TILE_PEDESTAL = new ResourceLocation(MODID, "tile/pedestal");
