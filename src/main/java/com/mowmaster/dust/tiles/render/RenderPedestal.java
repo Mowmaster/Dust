@@ -49,9 +49,65 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
             ItemStack stack = tileEntityIn.getItemInPedestal();
             ItemStack coin = tileEntityIn.getCoinOnPedestal();
             World world = tileEntityIn.getWorld();
-            matrixStackIn.push();
             renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);
-            matrixStackIn.pop();
+            /*if (!stack.isEmpty()) {
+                //sets initial stack index 1
+                matrixStackIn.push();
+                //gets index 1 and translates
+                matrixStackIn.translate(0.5, 1.0, 0.5);
+                //gets index 1 and scales
+                matrixStackIn.scale(0.75F, 0.75F, 0.75F);
+                float angle = (world.getGameTime()) / 20.0F * (180F / (float) Math.PI);
+                //gets index 1 and rotates
+                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
+                Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                //resets back to default, which is nothing in stack
+                matrixStackIn.pop();
+            }
+            if (!coin.isEmpty()) {
+                //save defaults to index 1
+                matrixStackIn.push();
+                //scale index 1
+                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
+                //matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
+                //matrixStackIn.translate(x, y, z);
+                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                //pop back to no objects in stack
+                matrixStackIn.pop();
+
+                //save defaults to index 1
+                matrixStackIn.push();
+                //scale index 1
+                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
+                //rotate index 1 90 degrees with Y axis as center
+                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90));
+                //matrixStackIn.translate(x, y, z);
+                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                //pop back to no objects in stack
+                matrixStackIn.pop();
+
+                //save defaults to index 1
+                matrixStackIn.push();
+                //scale index 1
+                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
+                //rotate index 1 90 degrees with Y axis as center
+                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180));
+                //matrixStackIn.translate(x, y, z);
+                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                //pop back to no objects in stack
+                matrixStackIn.pop();
+
+                //save defaults to index 1
+                matrixStackIn.push();
+                //scale index 1
+                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
+                //rotate index 1 90 degrees with Y axis as center
+                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(270));
+                //matrixStackIn.translate(x, y, z);
+                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                //pop back to no objects in stack
+                matrixStackIn.pop();
+            }*/
         }
 
 
@@ -94,18 +150,19 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
 
     public static void  renderTile(World worldIn, MatrixStack matrixStackIn,IRenderTypeBuffer bufferIn, ItemStack coin, ItemStack item,int combinedLightIn, int combinedOverlayIn)
     {
-        renderCoin(coin,matrixStackIn,bufferIn,0.5f,0.475f,0.3125f,0,0,0,0,combinedLightIn,combinedOverlayIn);
-        //renderCoin(coin,matrixStackIn,bufferIn,0.3125f,0.475f,0.5f,90,0,1f,0,combinedLightIn,combinedOverlayIn);
-        //renderCoin(coin,matrixStackIn,bufferIn,0.5f,0.475f,0.6875f,180,0,1f,0,combinedLightIn,combinedOverlayIn);
-        //renderCoin(coin,matrixStackIn,bufferIn,0.6875f,0.475f,0.5f,270,0,1f,0,combinedLightIn,combinedOverlayIn);
         renderItemRotating(worldIn,matrixStackIn,bufferIn,item,combinedLightIn,combinedOverlayIn);
+        renderCoin(coin,matrixStackIn,bufferIn,0.5f,0.475f,0.3125f,0,0,0,0,combinedLightIn,combinedOverlayIn);
+        renderCoin(coin,matrixStackIn,bufferIn,0.3125f,0.475f,0.5f,90,0,1f,0,combinedLightIn,combinedOverlayIn);
+        renderCoin(coin,matrixStackIn,bufferIn,0.5f,0.475f,0.6875f,180,0,1f,0,combinedLightIn,combinedOverlayIn);
+        renderCoin(coin,matrixStackIn,bufferIn,0.6875f,0.475f,0.5f,270,0,1f,0,combinedLightIn,combinedOverlayIn);
+
     }
     public static void renderItemRotating(World worldIn, MatrixStack matrixStackIn,IRenderTypeBuffer bufferIn, ItemStack itemStack, int combinedLightIn, int combinedOverlayIn)
     {
         if (!itemStack.isEmpty()) {
             matrixStackIn.push();
             matrixStackIn.translate(0.5, 1.0, 0.5);
-            //matrixStackIn.translate(0, MathHelper.sin((worldIn.getGameTime()) / 10.0F) * 0.1 + 0.1, 0);
+            //matrixStackIn.translate(0, MathHelper.sin((worldIn.getGameTime()) / 10.0F) * 0.1 + 0.1, 0); BOBBING ITEM
             matrixStackIn.scale(0.75F, 0.75F, 0.75F);
             float angle = (worldIn.getGameTime()) / 20.0F * (180F / (float) Math.PI);
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
@@ -118,7 +175,7 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
             matrixStackIn.push();
             matrixStackIn.translate(x, y, z);
             matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
-            matrixStackIn.rotate(new Quaternion(xr, yr, zr, angle));
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
             Minecraft.getInstance().getItemRenderer().renderItem(itemCoin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
