@@ -51,10 +51,8 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         if (!(block instanceof BlockPedestal)) {
             return;
         }
-
         //else// if(tileEntityIn.getBlockState().getBlock() instanceof BlockPedestal)
         //{
-
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         BlockPedestal blockPedestal = (BlockPedestal) block;
         matrixStackIn.push();
@@ -68,13 +66,11 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         matrixStackIn.pop();*/
 
         /*matrixStackIn.push();
-
         matrixStackIn.translate(0.5, 1.0, 0.5);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack stack = tileEntityIn.getItemInPedestal();
         IBakedModel ibakedmodel = itemRenderer.getItemModelWithOverrides(stack, tileEntityIn.getWorld(), null);
         itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED, true, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, ibakedmodel);
-
         matrixStackIn.translate(-.5, 1, -.5);
         BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
         BlockState state = Blocks.ENDER_CHEST.getDefaultState();
@@ -98,7 +94,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
 
         /*matrixStackIn.push(); // push
         matrixStackIn.translate(0.5D, 1.0D, 0.5D); // translate
-
         ResourceLocation beamTextureRL = TEXTURE_BEACON_BEAM;
 //    matrixStack.func_227860_a_(); //push
 //    matrixStack.func_227863_a_(   //rotate
@@ -115,14 +110,10 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         float v1 = 0;
         float v2 = 0;
         float beamRadius = 1;
-
         float x1 = 0; float z1 = 0;
         float x2 = 1; float z2 = 0;
         float x3 = 0; float z3 = 1;
         float x4 = 1; float z4 = 1;
-
-
-
         renderPart(matrixStackIn, vertexBuilder, red, green, blue, alpha, startHeight, endHeight,
                 x1, z1, x2, z2, x3, z3, x4, z4, u1, u2, v1, v2);
         matrixStackIn.pop();*/ // pop
@@ -145,7 +136,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
                 renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
             }
             if(enumfacing==Direction.EAST) {
-
                 matrixStackIn.rotate(270, 0, 0, 1);
                 matrixStackIn.translate(-1, 0, 0);
                 renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
@@ -170,14 +160,10 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         renderItem(itemRenderer,coin,matrixStackIn,bufferIn,0.3125f,0.475f,0.5f,90,0,1f,0,combinedLightIn,combinedOverlayIn);
         renderItem(itemRenderer,coin,matrixStackIn,bufferIn,0.5f,0.475f,0.6875f,180,0,1f,0,combinedLightIn,combinedOverlayIn);
         renderItem(itemRenderer,coin,matrixStackIn,bufferIn,0.6875f,0.475f,0.5f,270,0,1f,0,combinedLightIn,combinedOverlayIn);
-
         renderItemRotating(worldIn,itemRenderer,matrixStackIn,bufferIn,item,1f,combinedLightIn,combinedOverlayIn);
-
     }
-
     public static void renderItemRotating(World worldIn, ItemRenderer itemRenderer, MatrixStack matrixStackIn,IRenderTypeBuffer bufferIn, ItemStack itemStack, float y,int combinedLightIn, int combinedOverlayIn)
     {
-
         matrixStackIn.translate(0.5f, y, 0.5f);
         matrixStackIn.scale(2f,2f,2f);
         float boop = (float)worldIn.getGameTime()%10;
@@ -187,7 +173,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
             renderItem(itemRenderer, itemStack , matrixStackIn ,bufferIn,0f, 0f, 0f, 0f, 0f, 0f, 0f,combinedLightIn,combinedOverlayIn);
         }
     }
-
     public static void renderItem(ItemRenderer itemRenderer, ItemStack itemStack, MatrixStack matrixStackIn,IRenderTypeBuffer bufferIn, float x, float y, float z, float angle, float xr, float yr, float zr,int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.push();
         matrixStackIn.translate(x, y, z);
@@ -215,7 +200,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         addQuad(positionMatrix, normalMatrix, vertexBuilder, red, green, blue, alpha, ymin, ymax, x2, z2, x4, z4, u1, u2, v1, v2);
         addQuad(positionMatrix, normalMatrix, vertexBuilder, red, green, blue, alpha, ymin, ymax, x3, z3, x1, z1, u1, u2, v1, v2);
     }
-
     private static void addQuad(Matrix4f matrixPos, Matrix3f matrixNormal, IVertexBuilder vertexBuilder,
                                 float red, float green, float blue, float alpha, int yMin, int yMax,
                                 float x1, float z1, float x2, float z2, float u1, float u2, float v1, float v2) {
@@ -224,7 +208,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
         addVertex(matrixPos, matrixNormal, vertexBuilder, red, green, blue, alpha, yMin, x2, z2, u1, v2);
         addVertex(matrixPos, matrixNormal, vertexBuilder, red, green, blue, alpha, yMax, x2, z2, u1, v1);
     }
-
     private static void addVertex(Matrix4f matrixPos, Matrix3f matrixNormal, IVertexBuilder vertexBuilder,
                                   float red, float green, float blue, float alpha,
                                   int y, float x, float z, float texU, float texV) {

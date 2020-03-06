@@ -87,6 +87,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     }
 
     public int getNumberOfStoredLocations() {return storedLocations.size();}
+    
     public boolean storeNewLocation(BlockPos pos)
     {
         boolean returner = false;
@@ -95,6 +96,8 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             storedLocations.add(pos);
             returner=true;
         }
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
+        this.markDirty();
 
         return returner;
     }
@@ -118,7 +121,8 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             storedLocations.remove(pos);
             returner=true;
         }
-
+        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),1);
+        this.markDirty();
         return returner;
     }
 
@@ -563,7 +567,6 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             {
                 int speed = getOperationSpeed();
                 if(speed<1){speed = 20;}
-
                 //dont bother unless pedestal has items in it.
                 if(!getItemInPedestal().isEmpty())
                 {
@@ -573,7 +576,6 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                         {
                             pedTicker++;
                             if (pedTicker%speed == 0) {
-
                                 for(int i=0; i<getNumberOfStoredLocations();i++)
                                 {
                                     if(getStoredPositionAt(i) != getPos())
@@ -592,7 +594,6 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                         }
                     }
                 }
-
                 if(hasCoin())
                 {
                     Item coinInPed = getCoinOnPedestal().getItem();
@@ -603,11 +604,8 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                         if(impTicker >=200){impTicker=0;}
                     }
                 }
-
-
             }
         }
-
         if(world.isRemote)
         {
             if(hasCoin())
