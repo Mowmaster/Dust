@@ -170,7 +170,7 @@ public class DropperItem extends UpgradeBase
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new DropperItem(new Item.Properties().maxStackSize(1).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper")));
+        event.getRegistry().register(new DropperItem(new Item.Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper")));
     }
 
 

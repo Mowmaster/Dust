@@ -4,6 +4,7 @@ package com.mowmaster.dust.item;
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.item.pedestalUpgrades.DropperItem;
+import com.mowmaster.dust.item.pedestalUpgrades.ImportItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -18,6 +19,7 @@ public class ItemRegistry
         ItemColorDust.onItemRegistryReady(event);
         ItemCrystalWrench.onItemRegistryReady(event);
         DropperItem.onItemRegistryReady(event);
+        ImportItem.onItemRegistryReady(event);
     }
 
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
