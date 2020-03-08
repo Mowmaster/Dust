@@ -1,151 +1,69 @@
 package com.mowmaster.dust.tiles.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import javax.annotation.Nonnull;
 
-import java.util.Random;
-
 import static net.minecraft.block.DirectionalBlock.FACING;
-import static net.minecraft.client.renderer.tileentity.BeaconTileEntityRenderer.TEXTURE_BEACON_BEAM;
 
 public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
 
-    /*https://youtu.be/gZ-8F94UT7k?t=488*/
     public RenderPedestal(TileEntityRendererDispatcher rendererDispatcher)
     {
         super(rendererDispatcher);
     }
 
-    /*public static final ResourceLocation TEXTURE_BEACON_BEAM = new ResourceLocation("textures/entity/beacon_beam.png");
-*/
     @Override
     public void render(@Nonnull TilePedestal tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
         if (!tileEntityIn.isRemoved()) {
+            Direction facing = tileEntityIn.getBlockState().get(FACING);
             ItemStack stack = tileEntityIn.getItemInPedestal();
             ItemStack coin = tileEntityIn.getCoinOnPedestal();
             World world = tileEntityIn.getWorld();
-            renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);
-            /*if (!stack.isEmpty()) {
-                //sets initial stack index 1
-                matrixStackIn.push();
-                //gets index 1 and translates
-                matrixStackIn.translate(0.5, 1.0, 0.5);
-                //gets index 1 and scales
-                matrixStackIn.scale(0.75F, 0.75F, 0.75F);
-                float angle = (world.getGameTime()) / 20.0F * (180F / (float) Math.PI);
-                //gets index 1 and rotates
-                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
-                Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-                //resets back to default, which is nothing in stack
-                matrixStackIn.pop();
-            }
-            if (!coin.isEmpty()) {
-                //save defaults to index 1
-                matrixStackIn.push();
-                //scale index 1
-                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
-                //matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
-                //matrixStackIn.translate(x, y, z);
-                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-                //pop back to no objects in stack
-                matrixStackIn.pop();
 
-                //save defaults to index 1
-                matrixStackIn.push();
-                //scale index 1
-                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
-                //rotate index 1 90 degrees with Y axis as center
-                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90));
-                //matrixStackIn.translate(x, y, z);
-                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-                //pop back to no objects in stack
-                matrixStackIn.pop();
-
-                //save defaults to index 1
-                matrixStackIn.push();
-                //scale index 1
-                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
-                //rotate index 1 90 degrees with Y axis as center
-                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180));
-                //matrixStackIn.translate(x, y, z);
-                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-                //pop back to no objects in stack
-                matrixStackIn.pop();
-
-                //save defaults to index 1
-                matrixStackIn.push();
-                //scale index 1
-                matrixStackIn.scale(0.1875f, 0.1875f, 0.1875f);
-                //rotate index 1 90 degrees with Y axis as center
-                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(270));
-                //matrixStackIn.translate(x, y, z);
-                Minecraft.getInstance().getItemRenderer().renderItem(coin, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-                //pop back to no objects in stack
-                matrixStackIn.pop();
-            }*/
-        }
-
-
-        //itemRenderer.renderItem(item,ItemCameraTransforms.TransformType.FIXED,combinedLightIn,combinedOverlayIn,matrixStackIn,bufferIn);
-
-            /*if(enumfacing==Direction.UP)//when placed on ground
+            if(facing==Direction.UP)//when placed on ground
             {
-                renderTile(worldIn,itemRenderer,tileEntityIn,matrixStackIn,bufferIn,enumfacing,coin,item,combinedLightIn,combinedOverlayIn);
-            }*/
-            /*if(enumfacing==Direction.DOWN) {
-              //matrixStackIn.rotate(new Quaternion(0, 0, 1,180));
-                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(180));
+                renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);
+            }
+            if(facing==Direction.DOWN) {
+                //matrixStackIn.rotate(new Quaternion(0, 0, 1,180));
+                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(180));
                 matrixStackIn.translate(0, -1, 0);
                 matrixStackIn.translate(-1, 0, 0);
-                renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
-            }
-            if(enumfacing==Direction.NORTH) {
-                matrixStackIn.rotate(new Quaternion(1, 0, 0,270));
+                renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);            }
+            if(facing==Direction.NORTH) {
+                //matrixStackIn.rotate(new Quaternion(1, 0, 0,270));
+                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(270));
                 matrixStackIn.translate(0, -1, 0);
-                renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
-            }
-            if(enumfacing==Direction.EAST) {
-                matrixStackIn.rotate(270, 0, 0, 1);
+                renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);            }
+            if(facing==Direction.EAST) {
+                //matrixStackIn.rotate(270, 0, 0, 1);
+                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(270));
                 matrixStackIn.translate(-1, 0, 0);
-                renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
-            }
-            if(enumfacing==Direction.SOUTH) {
-                matrixStackIn.rotate(90, 1, 0, 0);
+                renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);            }
+            if(facing==Direction.SOUTH) {
+                //matrixStackIn.rotate(90, 1, 0, 0);
+                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90));
                 matrixStackIn.translate(0, 0, -1);
-                renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
-            }
-            if(enumfacing==Direction.WEST) {
-                matrixStackIn.rotate(90, 0, 0, 1);
+                renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);            }
+            if(facing==Direction.WEST) {
+                //matrixStackIn.rotate(90, 0, 0, 1);
+                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(90));
                 matrixStackIn.translate(0, -1, 0);
-                renderTile(itemRenderer,tileEntityIn,matrixStackIn,enumfacing,coin,item,itemInBlockBelow);
-            }*/
-
-        //}
+                renderTile(world,matrixStackIn,bufferIn,coin,stack,combinedLightIn,combinedOverlayIn);            }
+        }
     }
 
     public static void  renderTile(World worldIn, MatrixStack matrixStackIn,IRenderTypeBuffer bufferIn, ItemStack coin, ItemStack item,int combinedLightIn, int combinedOverlayIn)

@@ -35,16 +35,45 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class BlockPedestal extends DirectionalBlock {
 
-    private static double lengthWidth = 0.625;
-    private static double height = 0.75;
-    //private static VoxelShape CUP = Block.makeCuboidShape((1-lengthWidth)/2, 0.0D, (1-lengthWidth)/2, 1-((1-lengthWidth)/2), height, 1-((1-lengthWidth)/2));
+
+    /*private static VoxelShape CUP = Block.makeCuboidShape((1-lengthWidth)/2, 0.0D, (1-lengthWidth)/2, 1-((1-lengthWidth)/2), height, 1-((1-lengthWidth)/2));
     private static VoxelShape CDOWN = Block.makeCuboidShape((1-lengthWidth)/2, 1-height, (1-lengthWidth)/2, 1-((1-lengthWidth)/2), 1.0D, 1-((1-lengthWidth)/2));
     private static VoxelShape CNORTH = Block.makeCuboidShape((1-lengthWidth)/2, 1-((1-lengthWidth)/2), 1.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, 1-height);
     private static VoxelShape CSOUTH = Block.makeCuboidShape((1-lengthWidth)/2, 1-((1-lengthWidth)/2), 0.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, height);
     private static VoxelShape CWEST = Block.makeCuboidShape(1.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, 1-height, (1-lengthWidth)/2, 1-((1-lengthWidth)/2));
-    private static VoxelShape CEAST = Block.makeCuboidShape(0.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, height, (1-lengthWidth)/2, 1-((1-lengthWidth)/2));
+    private static VoxelShape CEAST = Block.makeCuboidShape(0.0D, 1-((1-lengthWidth)/2), (1-lengthWidth)/2, height, (1-lengthWidth)/2, 1-((1-lengthWidth)/2));*/
     //Can be multiple pieces???
     protected static final VoxelShape CUP = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
+            Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D),
+            Block.makeCuboidShape(5.0D, 3.0D, 5.0D, 11.0D, 4.0D, 11.0D),
+            Block.makeCuboidShape(4.5D, 4.0D, 4.5D, 11.5D, 5.0D, 11.5D),
+            Block.makeCuboidShape(5.0D, 5.0D, 5.0D, 11.0D, 10.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
+    protected static final VoxelShape CDOWN = VoxelShapes.or(Block.makeCuboidShape(4.0D, 16.0D, 4.0D, 12.0D, 14.0D, 12.0D),
+            Block.makeCuboidShape(5.0D, 14.0D, 5.0D, 11.0D, 9.0D, 11.0D),
+            Block.makeCuboidShape(4.5D, 9.0D, 4.5D, 11.5D, 8.0D, 11.5D),
+            Block.makeCuboidShape(5.0D, 8.0D, 5.0D, 11.0D, 7.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 6.0D, 4.0D, 12.0D, 5.0D, 12.0D),
+            Block.makeCuboidShape(3.0D, 5.0D, 3.0D, 13.0D, 3.0D, 13.0D));
+    protected static final VoxelShape CNORTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
+            Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D),
+            Block.makeCuboidShape(5.0D, 3.0D, 5.0D, 11.0D, 4.0D, 11.0D),
+            Block.makeCuboidShape(4.5D, 4.0D, 4.5D, 11.5D, 5.0D, 11.5D),
+            Block.makeCuboidShape(5.0D, 5.0D, 5.0D, 11.0D, 10.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
+    protected static final VoxelShape CEAST = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
+            Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D),
+            Block.makeCuboidShape(5.0D, 3.0D, 5.0D, 11.0D, 4.0D, 11.0D),
+            Block.makeCuboidShape(4.5D, 4.0D, 4.5D, 11.5D, 5.0D, 11.5D),
+            Block.makeCuboidShape(5.0D, 5.0D, 5.0D, 11.0D, 10.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
+    protected static final VoxelShape CSOUTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
+            Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D),
+            Block.makeCuboidShape(5.0D, 3.0D, 5.0D, 11.0D, 4.0D, 11.0D),
+            Block.makeCuboidShape(4.5D, 4.0D, 4.5D, 11.5D, 5.0D, 11.5D),
+            Block.makeCuboidShape(5.0D, 5.0D, 5.0D, 11.0D, 10.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
+    protected static final VoxelShape CWEST = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
             Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D),
             Block.makeCuboidShape(5.0D, 3.0D, 5.0D, 11.0D, 4.0D, 11.0D),
             Block.makeCuboidShape(4.5D, 4.0D, 4.5D, 11.5D, 5.0D, 11.5D),
@@ -61,16 +90,21 @@ public class BlockPedestal extends DirectionalBlock {
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        /*switch(state.get(FACING).getAxis()) {
-            case X:
+        switch(state.get(FACING)) {
+            case UP:
             default:
-                return END_ROD_EW_AABB;
-            case Z:
-                return END_ROD_NS_AABB;
-            case Y:
-                return END_ROD_VERTICAL_AABB;
-        }*/
-        return CUP;
+                return CUP;
+            case DOWN:
+                return CDOWN;
+            case NORTH:
+                return CNORTH;
+            case EAST:
+                return CEAST;
+            case SOUTH:
+                return CSOUTH;
+            case WEST:
+                return CWEST;
+        }
     }
 
     /**
