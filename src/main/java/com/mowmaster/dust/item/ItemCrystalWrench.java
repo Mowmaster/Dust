@@ -16,7 +16,9 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -49,7 +51,6 @@ public class ItemCrystalWrench extends Item {
 
         if(!worldIn.isRemote)
         {
-
             BlockState getBlockState = worldIn.getBlockState(pos);
             if(player.isCrouching())
             {
@@ -81,7 +82,7 @@ public class ItemCrystalWrench extends Item {
                                 //checks if connecting pedestal is out of range of the senderPedestal
                                 if(isPedestalInRange(tilePedestal,getStoredPosition(player.getHeldItemMainhand())))
                                 {
-                                    /*//Checks if pedestals to be linked are on same networks or if one is neutral
+                                    //Checks if pedestals to be linked are on same networks or if one is neutral
                                     if(tilePedestal.canLinkToPedestalNetwork(getStoredPosition(player.getHeldItemMainhand())))
                                     {
                                         //If stored location isnt the same as the connecting pedestal
@@ -117,10 +118,9 @@ public class ItemCrystalWrench extends Item {
                                         }
                                         else player.sendMessage(new TranslationTextComponent(TextFormatting.WHITE + "Cannot be Linked to Itsself"));
                                     }
-                                    else player.sendMessage(new TranslationTextComponent(TextFormatting.WHITE + "Cannot Connect to this Network"));*/
+                                    else player.sendMessage(new TranslationTextComponent(TextFormatting.WHITE + "Cannot Connect to this Network"));
                                 }
                                 else player.sendMessage(new TranslationTextComponent(TextFormatting.WHITE + "Too Far to Connect"));
-
                             }
                         }
                     }
@@ -143,7 +143,6 @@ public class ItemCrystalWrench extends Item {
                 }
             }
         }
-
 
         return super.onItemUse(context);
     }
@@ -268,10 +267,14 @@ public class ItemCrystalWrench extends Item {
         }
     }
 
+    public static final Item DEFAULT = new ItemCrystalWrench().setRegistryName(new ResourceLocation(MODID, "crystalwrench"));
+    public static final Item CONNECTIONS = new ItemCrystalWrench().setRegistryName(new ResourceLocation(MODID, "crystalwrenchconnect"));
+
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new ItemCrystalWrench().setRegistryName(new ResourceLocation(MODID, "crystalwrench")));
+        event.getRegistry().register(DEFAULT);
+        event.getRegistry().register(CONNECTIONS);
     }
 
 

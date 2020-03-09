@@ -19,12 +19,12 @@ import java.util.List;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class DropperItem extends UpgradeBase
+public class ItemUpgradeDropper extends ItemUpgradeBase
 {
     public int summonRate = 1;
     public int range = 1;
 
-    public DropperItem(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeDropper(Properties builder) {super(builder.group(dust.itemGroup));}
 
 
     public int getTransferRate(ItemStack stack)
@@ -170,7 +170,7 @@ public class DropperItem extends UpgradeBase
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new DropperItem(new Item.Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper")));
+        event.getRegistry().register(new ItemUpgradeDropper(new Item.Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper")));
     }
 
 

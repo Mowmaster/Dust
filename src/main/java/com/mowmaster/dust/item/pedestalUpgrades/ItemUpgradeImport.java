@@ -26,11 +26,11 @@ import java.util.List;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class ImportItem extends UpgradeBase
+public class ItemUpgradeImport extends ItemUpgradeBase
 {
     public int transferRate = 1;
 
-    public ImportItem(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeImport(Properties builder) {super(builder.group(dust.itemGroup));}
 
 
     public int getItemTransferRate(ItemStack stack)
@@ -200,7 +200,7 @@ public class ImportItem extends UpgradeBase
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new ImportItem(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/import")));
+        event.getRegistry().register(new ItemUpgradeImport(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/import")));
     }
 
 

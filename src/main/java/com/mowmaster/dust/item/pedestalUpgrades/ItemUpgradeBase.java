@@ -31,9 +31,9 @@ import java.util.Random;
 
 import static net.minecraft.state.properties.BlockStateProperties.FACING;
 
-public class UpgradeBase extends Item {
+public class ItemUpgradeBase extends Item {
 
-    public UpgradeBase(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeBase(Properties builder) {super(builder.group(dust.itemGroup));}
 
     public boolean isFilter;
 
@@ -50,15 +50,15 @@ public class UpgradeBase extends Item {
         return hasEnchant;
     }
 
-    /*public int getRangeModifier(ItemStack stack)
+    public int getRangeModifier(ItemStack stack)
     {
         int range = 0;
-        if(stack.isEnchanted())
+        /*if(stack.isEnchanted())
         {
             range = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,stack);
-        }
+        }*/
         return range;
-    }*/
+    }
 
     /*public int intOperationalSpeedModifier(ItemStack stack)
     {

@@ -1,15 +1,9 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
-import com.mowmaster.dust.item.pedestalUpgrades.UpgradeBase;
-import net.minecraft.block.EnchantingTableBlock;
-import net.minecraft.client.renderer.entity.ItemFrameRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemEntity;
+import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -18,9 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -29,10 +21,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 
 import javax.annotation.Nonnull;
@@ -72,7 +62,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0) return true;
-                if (slot == 1 && stack.getItem() instanceof UpgradeBase) return true;
+                if (slot == 1 && stack.getItem() instanceof ItemUpgradeBase) return true;
                 return false;
             }
         };
@@ -391,34 +381,6 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         if(world.getBlockState(pedestalToBeLinked).getBlock() instanceof BlockPedestal)
         {
             return true;
-            /*//checks to see if pedestal to be linked and this one are the same
-            if(world.getBlockState(pedestalToBeLinked).getBlock().equals(world.getBlockState(this.getPos()).getBlock()))
-            {
-                return true;
-            }
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalred) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalredunlit)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalredunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalred)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblue) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblueunlit)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblueunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblue)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalyellow) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalyellowunlit)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalyellowunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalyellow)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalpurple) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalpurpleunlit)){return true;}
-            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalpurpleunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalpurple)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalgreen) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalgreenunlit)){return true;}
-            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalgreenunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalgreen)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalorange) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalorangeunlit)){return true;}
-            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalorangeunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalorange)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalwhite) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalwhiteunlit)){return true;}
-            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalwhiteunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalwhite)){return true;}
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblack) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblackunlit)){return true;}
-            else if (world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalblackunlit) && world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalblack)){return true;}
-            //if they arnt then check if one is neutral
-            else if(world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalstone) || world.getBlockState(this.getPos()).getBlock().equals(BlockPedestal.pedestalstoneunlit)
-                    || world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalstone) || world.getBlockState(pedestalToBeLinked).getBlock().equals(BlockPedestal.pedestalstoneunlit))
-            {
-                return true;
-            }
-            else return false;*/
         }
 
         return false;
@@ -457,9 +419,9 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         if(pedestalSendingTo.hasCoin())
         {
             Item coinInPed = pedestalSendingTo.getCoinOnPedestal().getItem();
-            if(coinInPed instanceof UpgradeBase)
+            if(coinInPed instanceof ItemUpgradeBase)
             {
-                if(((UpgradeBase) coinInPed).isFilter)
+                if(((ItemUpgradeBase) coinInPed).isFilter)
                 {
                     returner = true;
                 }
@@ -497,10 +459,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                                 if(hasFilter(tilePedestalToSendTo))
                                 {
                                     Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
-                                    if(coinInPed instanceof UpgradeBase)
+                                    if(coinInPed instanceof ItemUpgradeBase)
                                     {
                                         //Already checked if its a filter, so now check if it can accept items.
-                                        if(((UpgradeBase) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
+                                        if(((ItemUpgradeBase) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
                                         {
                                             returner = true;
                                         }
@@ -605,10 +567,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                 if(hasCoin())
                 {
                     Item coinInPed = getCoinOnPedestal().getItem();
-                    if(coinInPed instanceof UpgradeBase)
+                    if(coinInPed instanceof ItemUpgradeBase)
                     {
                         impTicker++;
-                        ((UpgradeBase) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
+                        ((ItemUpgradeBase) coinInPed).updateAction(impTicker,this.world,getItemInPedestal(),getCoinOnPedestal(),this.getPos());
                         if(impTicker >=200){impTicker=0;}
                     }
                 }
@@ -619,10 +581,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             if(hasCoin())
             {
                 Item coinInPed = getCoinOnPedestal().getItem();
-                if(coinInPed instanceof UpgradeBase)
+                if(coinInPed instanceof ItemUpgradeBase)
                 {
                     Random rand = new Random();
-                    ((UpgradeBase) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
+                    ((ItemUpgradeBase) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
                 }
             }
         }
