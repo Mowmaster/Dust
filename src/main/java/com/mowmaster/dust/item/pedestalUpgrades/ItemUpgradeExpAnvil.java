@@ -6,20 +6,24 @@ import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.EnchantmentContainer;
 import net.minecraft.inventory.container.GrindstoneContainer;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnchantmentNameParts;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -120,6 +124,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                     TilePedestal tilePedestal = (TilePedestal)tile;
                     ItemStack stack = tilePedestal.getItemInPedestal();
                     // ToDo:CRYSTALS HERE
+                    //  || stack.getItem().equals(Items.DIAMOND) we only need to combine if we have an enchanted item, book or nametag, crystals are not needed necessarily
                     if(stack.isEnchanted() || stack.getItem().equals(Items.ENCHANTED_BOOK) || stack.getItem().equals(Items.NAME_TAG) || stack.getItem().equals(Items.DIAMOND))
                     {
                         stackOnSorroundingPedestal.add(stack);
@@ -259,26 +264,25 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                                         {
                                             if(stackToCombine.get(e).isEnchanted() || stackToCombine.get(e).getItem().equals(Items.ENCHANTED_BOOK))
                                             {
-// ToDo: Fix this
-                                                /*NBTTagList nbttaglist = stackToCombine.get(e).getItem() == Items.ENCHANTED_BOOK ? ItemEnchantedBook.getEnchantments(stackToCombine.get(e)) : stackToCombine.get(e).getEnchantmentTagList();
-                                                for (int j = 0; j < nbttaglist.tagCount(); ++j)
-                                                {
-                                                    CompoundNBT nbttagcompound = nbttaglist.getCompoundTagAt(j);
-                                                    Enchantment enchantment = Enchantment.getEnchantmentByID(nbttagcompound.getShort("id"));
-                                                    int k = nbttagcompound.getShort("lvl");
+                                                Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stackToCombine.get(e));
+
+                                                for(Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                                                    Enchantment enchantment = entry.getKey();
+                                                    Integer integer = entry.getValue();
+
                                                     switch(enchantment.getRarity())
                                                     {
                                                         case COMMON:
-                                                            intLevelCostToCombine +=(1*(k+1));
+                                                            intLevelCostToCombine +=(1*(integer+1));
                                                             break;
                                                         case UNCOMMON:
-                                                            intLevelCostToCombine +=(2*(k+1));
+                                                            intLevelCostToCombine +=(2*(integer+1));
                                                             break;
                                                         case RARE:
-                                                            intLevelCostToCombine +=(4*(k+1));
+                                                            intLevelCostToCombine +=(4*(integer+1));
                                                             break;
                                                         case VERY_RARE:
-                                                            intLevelCostToCombine +=(6*(k+1));
+                                                            intLevelCostToCombine +=(6*(integer+1));
                                                             break;
                                                     }
 
@@ -288,7 +292,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                                                         //if it does then get the value of it
                                                         int intNewValue = 0;
                                                         int e1 = enchantsMap.get(enchantment).intValue();
-                                                        int e2 = Integer.valueOf(k);
+                                                        int e2 = integer;
                                                         if(e1 == e2)
                                                         {
                                                             intNewValue = e2 + 1;
@@ -313,14 +317,16 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                                                         }
                                                         else
                                                         {
-                                                            enchantsMap.put(enchantment, Integer.valueOf(k));
+                                                            enchantsMap.put(enchantment, integer);
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        enchantsMap.put(enchantment, Integer.valueOf(k));
+                                                        enchantsMap.put(enchantment, integer);
                                                     }
-                                                }*/
+
+                                                }
+
                                             }
                                             else if(stackToCombine.get(e).getItem().equals(Items.NAME_TAG))
                                             {
@@ -365,7 +371,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
         }
     }
 
-    @Override
+    /*@Override
     public void onRandomDisplayTick(TilePedestal pedestal, BlockState stateIn, World world, BlockPos pos, Random rand)
     {
         if(!world.isBlockPowered(pos))
@@ -397,7 +403,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                 }
             }
         }
-    }
+    }*/
 
     /*@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
