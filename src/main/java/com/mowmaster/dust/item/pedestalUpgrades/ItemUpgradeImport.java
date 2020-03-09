@@ -135,7 +135,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
     }
 
     @Override
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
+    public void actionOnCollideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
     {
         if(entityIn instanceof ItemEntity)
         {

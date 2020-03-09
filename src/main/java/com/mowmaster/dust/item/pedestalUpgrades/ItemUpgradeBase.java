@@ -528,7 +528,7 @@ public class ItemUpgradeBase extends Item {
 
     }
 
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
+    public void actionOnCollideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
     {
 
     }

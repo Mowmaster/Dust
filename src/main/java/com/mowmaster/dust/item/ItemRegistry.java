@@ -32,6 +32,10 @@ public class ItemRegistry
         ItemUpgradeExpCollector.onItemRegistryReady(e);
         ItemUpgradeExpRelay.onItemRegistryReady(e);
         ItemUpgradeExpTank.onItemRegistryReady(e);
+        ItemUpgradeExpBottler.onItemRegistryReady(e);
+        ItemUpgradeExpDropper.onItemRegistryReady(e);
+        ItemUpgradeExpEnchanter.onItemRegistryReady(e);
+        ItemUpgradeExpAnvil.onItemRegistryReady(e);
     }
 
     public static void onItemColorsReady(ColorHandlerEvent.Item event)

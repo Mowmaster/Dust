@@ -41,7 +41,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     private static final int[] SLOTS_ALLSIDES = new int[] {0};
 
     private int storedValueForUpgrades = 0;
-    private int intTransferAmount = 4;
+    private int intTransferAmount = 0;
     private int intTransferSpeed = 20;
     private int intTransferRange = 8;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();

@@ -190,7 +190,7 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
         }
     }
 
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
+    public void actionOnCollideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
     {
         if(entityIn instanceof ExperienceOrbEntity)
         {

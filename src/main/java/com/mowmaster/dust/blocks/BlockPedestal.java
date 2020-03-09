@@ -179,7 +179,7 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
                 Item coinInPed = tilePedestal.getCoinOnPedestal().getItem();
                 if(coinInPed instanceof ItemUpgradeBase)
                 {
-                    ((ItemUpgradeBase) coinInPed).actionOnColideWithBlock(worldIn, tilePedestal, pos, state, entityIn);
+                    ((ItemUpgradeBase) coinInPed).actionOnCollideWithBlock(worldIn, tilePedestal, pos, state, entityIn);
                 }
             }
         }
