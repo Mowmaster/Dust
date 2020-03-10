@@ -36,6 +36,16 @@ public class ItemRegistry
         ItemUpgradeExpDropper.onItemRegistryReady(e);
         ItemUpgradeExpEnchanter.onItemRegistryReady(e);
         ItemUpgradeExpAnvil.onItemRegistryReady(e);
+        ItemUpgradeExport.onItemRegistryReady(e);
+        ItemUpgradeRestock.onItemRegistryReady(e);
+        ItemUpgradeFilterEnchanted.onItemRegistryReady(e);
+        ItemUpgradeFilterEnchantedBlacklist.onItemRegistryReady(e);
+        ItemUpgradeFilterItem.onItemRegistryReady(e);
+        ItemUpgradeFilterItemBlacklist.onItemRegistryReady(e);
+        ItemUpgradeFilterItemStack.onItemRegistryReady(e);
+        ItemUpgradeFilterItemStackBlacklist.onItemRegistryReady(e);
+        ItemUpgradeFilterMod.onItemRegistryReady(e);
+        ItemUpgradeFilterModBlacklist.onItemRegistryReady(e);
     }
 
     public static void onItemColorsReady(ColorHandlerEvent.Item event)

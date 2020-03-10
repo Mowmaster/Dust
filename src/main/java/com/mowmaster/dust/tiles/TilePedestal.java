@@ -2,6 +2,7 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
+import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBaseFilter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -459,10 +460,10 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                                 if(hasFilter(tilePedestalToSendTo))
                                 {
                                     Item coinInPed = tilePedestalToSendTo.getCoinOnPedestal().getItem();
-                                    if(coinInPed instanceof ItemUpgradeBase)
+                                    if(coinInPed instanceof ItemUpgradeBaseFilter)
                                     {
                                         //Already checked if its a filter, so now check if it can accept items.
-                                        if(((ItemUpgradeBase) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
+                                        if(((ItemUpgradeBaseFilter) coinInPed).canAcceptItem(world,pedestalToSendTo,getItemInPedestal()))
                                         {
                                             returner = true;
                                         }

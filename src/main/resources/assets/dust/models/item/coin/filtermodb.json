@@ -1,0 +1,8 @@
+{
+"parent": "dust:item/coin",
+"textures": {
+"coin": "dust:items/models/coins/coin",
+"letter": "dust:items/models/coins/coinfiltermodb",
+"part": "dust:items/models/coins/coin"
+}
+}

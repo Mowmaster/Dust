@@ -197,10 +197,12 @@ public class ItemUpgradeImport extends ItemUpgradeBase
 
 
 
+    public static final Item IMPORT = new ItemUpgradeImport(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/import"));
+
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new ItemUpgradeImport(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/import")));
+        event.getRegistry().register(IMPORT);
     }
 
 
