@@ -6,13 +6,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.*;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -29,8 +29,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
@@ -117,6 +116,27 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
         return amountToSet;
     }
 
+
+
+    @Nullable
+    protected AbstractCookingRecipe getRecipe(World world, ItemStack stackIn) {
+        Inventory inv = new Inventory(stackIn);
+
+        if (world == null) return null;
+
+        RecipeManager recipeManager = world.getRecipeManager();
+        Optional<BlastingRecipe> optional = recipeManager.getRecipe(IRecipeType.BLASTING, inv, world);
+        if (optional.isPresent()) return optional.get();
+
+        Optional<FurnaceRecipe> optional1 = recipeManager.getRecipe(IRecipeType.SMELTING, inv, world);
+        return optional1.orElse(null);
+    }
+
+    protected Collection<ItemStack> getProcessResults(AbstractCookingRecipe recipe, ItemStack stackIn) {
+        Inventory inv = new Inventory(stackIn);
+        return Collections.singleton(recipe.getCraftingResult(inv));
+    }
+
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getSmeltingSpeed(coinInPedestal);
@@ -154,11 +174,11 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
                             int maxInSlot = handler.getSlotLimit(i);
                             itemFromInv = handler.getStackInSlot(i);
                             //Should work without catch since we null check this in our GetNextSlotFunction\
-                            IRecipe<?> irecipe = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, null, world).orElse(null);
 
-                            ItemStack smeltedItemResult = irecipe.getRecipeOutput();
+                            Collection<ItemStack> smeltedResults = getProcessResults(getRecipe(world,itemFromInv),itemFromInv);
+                            ItemStack resultSmelted = smeltedResults.iterator().next();
                             ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
-                            if(!smeltedItemResult.equals(ItemStack.EMPTY))
+                            if(!resultSmelted.equals(ItemStack.EMPTY))
                             {
                                 //Null check our slot again, which is probably redundant
                                 if(handler.getStackInSlot(i) != null && !handler.getStackInSlot(i).isEmpty() && handler.getStackInSlot(i).getItem() != Items.AIR)
@@ -168,17 +188,17 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
 
                                     //Upgrade Determins amout of items to smelt, but space count is determined by how much the item smelts into
                                     int itemInputsPerSmelt = itemsPerSmelt;
-                                    int itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
+                                    int itemsOutputWhenStackSmelted = (itemsPerSmelt*resultSmelted.getCount());
                                     //Checks to see if pedestal can accept as many items as will be returned on smelt, if not reduce items being smelted
                                     if(roomLeftInPedestal < itemsOutputWhenStackSmelted)
                                     {
-                                        itemInputsPerSmelt = Math.floorDiv(roomLeftInPedestal, smeltedItemResult.getCount());
+                                        itemInputsPerSmelt = Math.floorDiv(roomLeftInPedestal, resultSmelted.getCount());
                                     }
                                     //Checks to see how many items are left in the slot IF ITS UNDER the allowedTransferRate then sent the max rate to that.
                                     if(itemFromInv.getCount() < itemInputsPerSmelt) itemInputsPerSmelt = itemFromInv.getCount();
 
-                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
-                                    ItemStack copyIncoming = smeltedItemResult.copy();
+                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*resultSmelted.getCount());
+                                    ItemStack copyIncoming = resultSmelted.copy();
                                     copyIncoming.setCount(itemsOutputWhenStackSmelted);
                                     int fuelToConsume = burnTimeCostPerItemSmelted * getItemTransferRate(coinInPedestal);
                                     TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
@@ -204,7 +224,7 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
                                                 {
                                                     System.out.println(itemInputsPerSmelt);
                                                     fuelToConsume = burnTimeCostPerItemSmelted * itemInputsPerSmelt;
-                                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
+                                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*resultSmelted.getCount());
                                                     copyIncoming.setCount(itemsOutputWhenStackSmelted);
 
                                                     handler.extractItem(i,itemInputsPerSmelt ,false );
@@ -270,37 +290,13 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
             double d2 = (double)getPosOfBlockBelow(world,pos,-1 ).getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
             double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
 
-            //If fuel is less then 8 normal charcoal
-            if(fuelValue<=12800 && fuelValue>0)
+            if(fuelValue > 0)
             {
-                world.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-                world.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
+                world.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.0D, (double)pos.getZ() + 0.5D,0, 0, 0);
             }
-            //If fuel has less then a stack of normal charcoal
-            if(fuelValue>12800 && fuelValue<=102400)
-            {
-                world.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-                world.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
 
-            }
-            //If fuel has less then 256 worth of normal charcoal
-            if(fuelValue>102400 && fuelValue<=409600)
-            {
-                world.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-                world.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-            }
-            //If fuel has less then 1024 worth of normal charcoal
-            if(fuelValue>409600 && fuelValue<=1638400)
-            {
-                world.addParticle(ParticleTypes.LAVA, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-                world.addParticle(ParticleTypes.LAVA, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-            }
-            //If fuel has more then 1024 worth of normal charcoal
-            if(fuelValue>1638400)
-            {
-                world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-                world.addParticle(ParticleTypes.LAVA, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D,d0 + d3, d1 + d3, d2 + d3);
-            }
+
+            //world.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.0D, (double)pos.getZ() + 0.5D,0, 0, 0);
         }
     }
 
@@ -367,15 +363,15 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Crusher Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Smelting Upgrade"));
     }
 
-    public static final Item CRUSHER = new ItemUpgradeFurnace(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/crusher"));
+    public static final Item SMELTER = new ItemUpgradeFurnace(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/smelter"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        //event.getRegistry().register(CRUSHER);
+        event.getRegistry().register(SMELTER);
     }
 
 
