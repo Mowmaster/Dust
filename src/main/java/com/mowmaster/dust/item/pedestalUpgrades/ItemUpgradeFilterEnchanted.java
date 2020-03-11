@@ -20,7 +20,7 @@ import java.util.List;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class ItemUpgradeFilterEnchanted extends ItemUpgradeBase
+public class ItemUpgradeFilterEnchanted extends ItemUpgradeBaseFilter
 {
     public ItemUpgradeFilterEnchanted(Properties builder) {super(builder.group(dust.itemGroup));}
 

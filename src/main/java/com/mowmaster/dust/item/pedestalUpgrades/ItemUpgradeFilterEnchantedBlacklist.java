@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class ItemUpgradeFilterEnchantedBlacklist extends ItemUpgradeBase
+public class ItemUpgradeFilterEnchantedBlacklist extends ItemUpgradeBaseFilter
 {
     public ItemUpgradeFilterEnchantedBlacklist(Properties builder) {super(builder.group(dust.itemGroup));}
 

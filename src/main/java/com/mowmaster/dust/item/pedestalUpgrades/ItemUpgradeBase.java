@@ -533,4 +533,9 @@ public class ItemUpgradeBase extends Item {
 
     }
 
+    public boolean canSendItem()
+    {
+        return true;
+    }
+
 }

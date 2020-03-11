@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class ItemUpgradeFilterModBlacklist extends ItemUpgradeBase
+public class ItemUpgradeFilterModBlacklist extends ItemUpgradeBaseFilter
 {
     public ItemUpgradeFilterModBlacklist(Properties builder) {super(builder.group(dust.itemGroup));}
 
