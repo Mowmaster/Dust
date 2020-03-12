@@ -165,12 +165,12 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
     }*/
 
 
-
+    public static final Item DROPPER = new ItemUpgradeDropper(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new ItemUpgradeDropper(new Item.Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper")));
+        event.getRegistry().register(DROPPER);
     }
 
 

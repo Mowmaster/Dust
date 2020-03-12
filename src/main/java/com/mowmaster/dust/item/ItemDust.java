@@ -19,13 +19,18 @@ public class ItemDust extends Item {
         super(builder.group(dust.itemGroup));
     }
 
+    public static final Item STONE = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemduststone"));
+    public static final Item GOLD = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemdustgold"));
+    public static final Item IRON = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemdustiron"));
+    public static final Item FLOUR = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemdustflour"));
+
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemduststone")));
-        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdustgold")));
-        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdustiron")));
-        event.getRegistry().register(new ItemDust(new Item.Properties().group(ItemGroup.MATERIALS)).setRegistryName(new ResourceLocation(MODID, "itemdustflour")));
+        event.getRegistry().register(STONE);
+        event.getRegistry().register(GOLD);
+        event.getRegistry().register(IRON);
+        event.getRegistry().register(FLOUR);
     }
 
 

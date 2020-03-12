@@ -1,43 +1,45 @@
 package com.mowmaster.dust.item.pedestalUpgrades;
 
 import com.mowmaster.dust.dust;
+import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.util.Hand;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeCrusher extends ItemUpgradeBase
 {
-
-    public int itemsPerSmelt = 0;
-    public int smeltingSpeed = 0;
     public final int burnTimeCostPerItemSmelted = 200;
 
     public ItemUpgradeCrusher(Properties builder) {super(builder.group(dust.itemGroup));}
 
-    /*public int getItemTransferRate(ItemStack stack)
+    public int getItemTransferRate(ItemStack stack)
     {
-        switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int itemsPerSmelt = 1;
+        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
         {
             case 0:
                 itemsPerSmelt = 1;
@@ -58,14 +60,15 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                 itemsPerSmelt=16;
                 break;
             default: itemsPerSmelt=1;
-        }
+        }*/
 
         return  itemsPerSmelt;
     }
 
     public int getSmeltingSpeed(ItemStack stack)
     {
-        switch (intOperationalSpeedModifier(stack))
+        int smeltingSpeed = 200;
+        /*switch (intOperationalSpeedModifier(stack))
         {
             case 0:
                 smeltingSpeed = 200;//normal speed
@@ -86,7 +89,7 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                 smeltingSpeed=10;//20x faster
                 break;
             default: smeltingSpeed=200;
-        }
+        }*/
 
         return  smeltingSpeed;
     }
@@ -103,6 +106,42 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
         }
 
         return amountToSet;
+    }
+
+    private ItemStack getHardCodedRecipe(ItemStack itemStackIn)
+    {
+        ItemStack returner = ItemStack.EMPTY;
+
+        if(itemStackIn.equals(Blocks.COBBLESTONE))
+        {
+            return new ItemStack(Blocks.GRAVEL,1);
+        }
+        else if(itemStackIn.equals(Blocks.GRAVEL))
+        {
+            return new ItemStack(Blocks.SAND,1);
+        }
+        else if(itemStackIn.equals(Blocks.SANDSTONE))
+        {
+            return new ItemStack(Blocks.SAND,4);
+        }
+        else if(itemStackIn.equals(Blocks.RED_SANDSTONE))
+        {
+            return new ItemStack(Blocks.RED_SAND,4);
+        }
+        else if(itemStackIn.equals(Items.BONE))
+        {
+            return new ItemStack(Items.BONE_MEAL,4);
+        }
+        else if(itemStackIn.equals(Items.BLAZE_ROD))
+        {
+            return new ItemStack(Items.BLAZE_POWDER,3);
+        }
+        else if(itemStackIn.equals(Items.SUGAR_CANE))
+        {
+            return new ItemStack(Items.SUGAR,2);
+        }
+
+        return returner;
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
@@ -125,9 +164,9 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
         ItemStack itemFromInv = ItemStack.EMPTY;
         if(world.getTileEntity(posInventory) !=null)
         {
-            if(world.getTileEntity(posInventory).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)))
+            if(world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)).isPresent())
             {
-                IItemHandler handler = (IItemHandler) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal));
+                IItemHandler handler = (IItemHandler) world.getTileEntity(posInventory).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, getPedestalFacing(world, posOfPedestal)).orElse(null);
                 TileEntity invToPullFrom = world.getTileEntity(posInventory);
                 if(invToPullFrom instanceof TilePedestal) {
                     itemFromInv = ItemStack.EMPTY;
@@ -141,12 +180,11 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                         {
                             int maxInSlot = handler.getSlotLimit(i);
                             itemFromInv = handler.getStackInSlot(i);
-                            //Should work without catch since we null check this in our GetNextSlotFunction
-                            //ItemStack smeltedItemResult = FurnaceRecipes.instance().getSmeltingResult(itemFromInv);
-                            ItemStack smeltedItemResult = CrusherUpgradeRecipes.instance().getCrushingResult(itemFromInv);
+                            //Should work without catch since we null check this in our GetNextSlotFunction\
+                            System.out.println(getHardCodedRecipe(itemFromInv).getDisplayName());
+                            ItemStack resultSmelted = getHardCodedRecipe(itemFromInv);
                             ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
-
-                            if(!smeltedItemResult.equals(ItemStack.EMPTY))
+                            if(!resultSmelted.equals(ItemStack.EMPTY))
                             {
                                 //Null check our slot again, which is probably redundant
                                 if(handler.getStackInSlot(i) != null && !handler.getStackInSlot(i).isEmpty() && handler.getStackInSlot(i).getItem() != Items.AIR)
@@ -156,17 +194,17 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
 
                                     //Upgrade Determins amout of items to smelt, but space count is determined by how much the item smelts into
                                     int itemInputsPerSmelt = itemsPerSmelt;
-                                    int itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
+                                    int itemsOutputWhenStackSmelted = (itemsPerSmelt*resultSmelted.getCount());
                                     //Checks to see if pedestal can accept as many items as will be returned on smelt, if not reduce items being smelted
                                     if(roomLeftInPedestal < itemsOutputWhenStackSmelted)
                                     {
-                                        itemInputsPerSmelt = Math.floorDiv(roomLeftInPedestal, smeltedItemResult.getCount());
+                                        itemInputsPerSmelt = Math.floorDiv(roomLeftInPedestal, resultSmelted.getCount());
                                     }
                                     //Checks to see how many items are left in the slot IF ITS UNDER the allowedTransferRate then sent the max rate to that.
                                     if(itemFromInv.getCount() < itemInputsPerSmelt) itemInputsPerSmelt = itemFromInv.getCount();
 
-                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
-                                    ItemStack copyIncoming = smeltedItemResult.copy();
+                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*resultSmelted.getCount());
+                                    ItemStack copyIncoming = resultSmelted.copy();
                                     copyIncoming.setCount(itemsOutputWhenStackSmelted);
                                     int fuelToConsume = burnTimeCostPerItemSmelted * getItemTransferRate(coinInPedestal);
                                     TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
@@ -192,7 +230,7 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                                                 {
                                                     System.out.println(itemInputsPerSmelt);
                                                     fuelToConsume = burnTimeCostPerItemSmelted * itemInputsPerSmelt;
-                                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
+                                                    itemsOutputWhenStackSmelted = (itemsPerSmelt*resultSmelted.getCount());
                                                     copyIncoming.setCount(itemsOutputWhenStackSmelted);
 
                                                     handler.extractItem(i,itemInputsPerSmelt ,false );
@@ -209,7 +247,6 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                 }
             }
         }
-
     }
 
     public static int getItemFuelBurnTime(ItemStack fuel)
@@ -217,44 +254,17 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
         if (fuel.isEmpty()) return 0;
         else
         {
-            int burnTime = net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(fuel);
-            if (burnTime >= 0) return burnTime;
-            Item item = fuel.getItem();
-
-            if (item == Item.getItemFromBlock(Blocks.WOODEN_SLAB)) return 150;
-            else if (item == Item.getItemFromBlock(Blocks.WOOL)) return 100;
-            else if (item == Item.getItemFromBlock(Blocks.CARPET)) return 67;
-            else if (item == Item.getItemFromBlock(Blocks.LADDER)) return 300;
-            else if (item == Item.getItemFromBlock(Blocks.WOODEN_BUTTON)) return 100;
-            else if (Block.getBlockFromItem(item).getDefaultState().getMaterial() == Material.WOOD) return 300;
-            else if (item == Item.getItemFromBlock(Blocks.COAL_BLOCK)) return 16000;
-            else if (item instanceof ItemTool && "WOOD".equals(((ItemTool)item).getToolMaterialName())) return 200;
-            else if (item instanceof ItemSword && "WOOD".equals(((ItemSword)item).getToolMaterialName())) return 200;
-            else if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe)item).getMaterialName())) return 200;
-            else if (item == Items.STICK) return 100;
-            else if (item != Items.BOW && item != Items.FISHING_ROD)
-            {
-                if (item == Items.SIGN) return 200;
-                else if (item == Items.COAL) return 1600;
-                else if (item == Items.LAVA_BUCKET) return 20000;
-                else if (item != Item.getItemFromBlock(Blocks.SAPLING) && item != Items.BOWL)
-                {
-                    if (item == Items.BLAZE_ROD) return 2400;
-                    else if (item instanceof ItemDoor && item != Items.IRON_DOOR) return 200;
-                    else return item instanceof ItemBoat ? 400 : 0;
-                }
-                else return 100;
-            }
-            else return 300;
+            int burnTime = ForgeHooks.getBurnTime(fuel);
+            return burnTime;
         }
     }
 
     @Override
-    public void actionOnColideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, IBlockState state, Entity entityIn)
+    public void actionOnCollideWithBlock(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
     {
-        if(entityIn instanceof EntityItem)
+        if(entityIn instanceof ItemEntity)
         {
-            ItemStack getItemStack = ((EntityItem) entityIn).getItem();
+            ItemStack getItemStack = ((ItemEntity) entityIn).getItem();
             if(getItemFuelBurnTime(getItemStack)>0)
             {
                 int CurrentBurnTime = tilePedestal.getStoredValueForUpgrades();
@@ -263,18 +273,18 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                 if(getItemStack.getItem().equals(Items.LAVA_BUCKET))
                 {
                     ItemStack getReturned = new ItemStack(Items.BUCKET,getItemStack.getCount());
-                    EntityItem items1 = new EntityItem(world, posPedestal.getX() + 0.5, posPedestal.getY() + 1.0, posPedestal.getZ() + 0.5, getReturned);
-                    entityIn.setDead();
-                    world.spawnEntity(items1);
+                    ItemEntity items1 = new ItemEntity(world, posPedestal.getX() + 0.5, posPedestal.getY() + 1.0, posPedestal.getZ() + 0.5, getReturned);
+                    entityIn.remove();
+                    world.addEntity(items1);
                 }
 
-                entityIn.setDead();
+                entityIn.remove();
             }
         }
     }
 
     @Override
-    public void onRandomDisplayTick(TilePedestal pedestal, IBlockState stateIn, World world, BlockPos pos, Random rand)
+    public void onRandomDisplayTick(TilePedestal pedestal, BlockState stateIn, World world, BlockPos pos, Random rand)
     {
         if(!world.isBlockPowered(pos))
         {
@@ -285,43 +295,15 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
             double d2 = (double)getPosOfBlockBelow(world,pos,-1 ).getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
             double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
 
-            //If fuel is less then 8 normal charcoal
-            if(fuelValue<=12800 && fuelValue>0)
+            if(fuelValue > 0)
             {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
+                world.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.0D, (double)pos.getZ() + 0.5D,0, 0, 0);
             }
-            //If fuel has less then a stack of normal charcoal
-            if(fuelValue>12800 && fuelValue<=102400)
-            {
-                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
 
-            }
-            //If fuel has less then 256 worth of normal charcoal
-            if(fuelValue>102400 && fuelValue<=409600)
-            {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-            }
-            //If fuel has less then 1024 worth of normal charcoal
-            if(fuelValue>409600 && fuelValue<=1638400)
-            {
-                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-            }
-            //If fuel has more then 1024 worth of normal charcoal
-            if(fuelValue>1638400)
-            {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, rand.nextGaussian() * 0.005D, new int[0]);
-                world.spawnParticle(EnumParticleTypes.LAVA, d0 + d3, d1 + d3, d2 + d3, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, rand.nextGaussian() * 0.004D, new int[0]);
-            }
+
+            //world.addParticle(ParticleTypes.FLAME, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.0D, (double)pos.getZ() + 0.5D,0, 0, 0);
         }
-    }*/
+    }
 
     /*@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -394,7 +376,7 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
     {
-        //event.getRegistry().register(CRUSHER);
+        event.getRegistry().register(CRUSHER);
     }
 
 
