@@ -166,6 +166,18 @@ public class ItemUpgradeBase extends Item {
         }
     }
 
+    public int canAddToPedestal(World world, BlockPos posOfPedestal,ItemStack itemStackToAdd)
+    {
+        ItemStack stackInPedestal = ItemStack.EMPTY;
+        int returner = 0;
+        TileEntity pedestalInventory = world.getTileEntity(posOfPedestal);
+        if(pedestalInventory instanceof TilePedestal) {
+            returner =  ((TilePedestal) pedestalInventory).canAcceptItems(itemStackToAdd);
+        }
+
+        return returner;
+    }
+
     public void addToPedestal(World world, BlockPos posOfPedestal,ItemStack itemStackToAdd)
     {
         ItemStack stackInPedestal = ItemStack.EMPTY;

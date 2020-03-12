@@ -241,7 +241,6 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
                 }
             }
         }
-
     }
 
     public static int getItemFuelBurnTime(ItemStack fuel)

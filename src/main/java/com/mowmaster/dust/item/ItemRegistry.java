@@ -47,6 +47,9 @@ public class ItemRegistry
         ItemUpgradeFilterMod.onItemRegistryReady(e);
         ItemUpgradeFilterModBlacklist.onItemRegistryReady(e);
         ItemUpgradeFurnace.onItemRegistryReady(e);
+        ItemUpgradeMilker.onItemRegistryReady(e);
+        ItemUpgradeShearer.onItemRegistryReady(e);
+        ItemUpgradePlacer.onItemRegistryReady(e);
     }
 
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
