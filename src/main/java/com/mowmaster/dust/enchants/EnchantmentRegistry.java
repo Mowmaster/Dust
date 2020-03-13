@@ -23,8 +23,8 @@ public final class EnchantmentRegistry
 
 
     public static final Enchantment OPERATIONSPEED = new EnchantmentOperationSpeed();
-    public static final Enchantment RANGE = new EnchantmentOperationSpeed();
-    public static final Enchantment CAPACITY = new EnchantmentOperationSpeed();
+    public static final Enchantment RANGE = new EnchantmentRange();
+    public static final Enchantment CAPACITY = new EnchantmentCapacity();
 
 
 

@@ -46,10 +46,15 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
 
     public ItemUpgradeExpAnvil(Properties builder) {super(builder.group(dust.itemGroup));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
+
     public int getExpBuffer(ItemStack stack)
     {
         int value = 30;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 value = 30;//30
@@ -70,7 +75,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                 value=100;//100
                 break;
             default: value=30;
-        }*/
+        }
 
         return  value;
     }
@@ -78,7 +83,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
     public int getRepairRate(ItemStack stack)
     {
         int value = 5;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 value = 5;//10 durability/ operation
@@ -99,7 +104,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
                 value= 50;//100
                 break;
             default: value=1;
-        }*/
+        }
 
         return  value;
     }
@@ -371,6 +376,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
         }
     }
 
+    //Particles come in from correctly placed pedestals???
     /*@Override
     public void onRandomDisplayTick(TilePedestal pedestal, BlockState stateIn, World world, BlockPos pos, Random rand)
     {
@@ -405,43 +411,17 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
         }
     }*/
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = getOperationSpeedString(stack);
-
-        if(stack.hasTag())
-        {
-            if(stack.isEnchanted())
-            {
-                if(stack.isEnchanted() && getOperationSpeed(stack) >0)
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-                }
-                else
-                {
-                    tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-                }
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int buffer = getExpBuffer(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Anvil Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPANVIL = new ItemUpgradeExpAnvil(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpanvil"));

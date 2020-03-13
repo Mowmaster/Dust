@@ -33,9 +33,14 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
 
     public ItemUpgradeBreaker(Properties builder) {super(builder.group(dust.itemGroup));}
 
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
+
     public int getRange(ItemStack stack)
     {
-        /*switch (getRangeModifier(stack))
+        switch (getRangeModifier(stack))
         {
             case 0:
                 range = 1;
@@ -56,7 +61,7 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
                 range = 16;
                 break;
             default: range = 1;
-        }*/
+        }
 
         return  range;
     }
@@ -107,19 +112,6 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
         }
 
     }
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-
-
-
-        tooltip.add(TextFormatting.GOLD + "Block Breaker Upgrade");
-
-
-
-
-    }*/
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

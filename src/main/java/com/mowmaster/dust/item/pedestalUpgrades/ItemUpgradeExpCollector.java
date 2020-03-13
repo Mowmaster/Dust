@@ -29,13 +29,21 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
 {
-    public int rangeWidth = 0;
-    public int suckiRate = 7;
-
     public ItemUpgradeExpCollector(Properties builder) {super(builder.group(dust.itemGroup));}
+
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
+
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
 
     public int getRangeWidth(ItemStack stack)
     {
+        int rangeWidth = 0;
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
@@ -43,7 +51,8 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
 
     public int getSuckiRate(ItemStack stack)
     {
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int suckiRate = 7;
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 suckiRate = 7;//1
@@ -64,7 +73,7 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
                 suckiRate=160;//10
                 break;
             default: suckiRate=7;
-        }*/
+        }
 
         return  suckiRate;
     }
@@ -147,54 +156,6 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-        String s5 = getOperationSpeedString(stack);
-
-        String sr = "";
-
-        *//*switch (getSuckiRate(stack))
-        {
-            case 7:
-                sr = "1 Level";
-                break;
-            case 16:
-                sr="2 Levels";
-                break;
-            case 27:
-                sr = "3 Levels";
-                break;
-            case 40:
-                sr = "4 Levels";
-                break;
-            case 55:
-                sr = "5 Levels";
-                break;
-            case 160:
-                sr="10 Levels";
-                break;
-            default: sr="1 Level";
-        }*//*
-
-        *//*if(stack.hasTagCompound()) {
-            if (getSuckiRate(stack) > 0) {
-                tooltip.add("???: " + sr);
-            } else {
-                tooltip.add("???: 1 Level");
-            }
-        }*//*
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -202,28 +163,14 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
         String trr = "" + (s3+s3+1) + "";
         String tr = getExpTransferRateString(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Magnet Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels"));
-
-        if(stack.isEnchanted() && s3 > 0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + trr+"x"+trr+"x"+trr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + trr+"x"+trr+"x"+trr));
-        }
-
-        if(getExpTransferRate(stack)>0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels"));
-        }
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + trr+"x"+trr+"x"+trr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPMAGNET = new ItemUpgradeExpCollector(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpmagnet"));
@@ -233,6 +180,4 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
     {
         event.getRegistry().register(XPMAGNET);
     }
-
-
 }

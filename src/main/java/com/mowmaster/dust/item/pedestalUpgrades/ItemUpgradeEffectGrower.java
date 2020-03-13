@@ -34,18 +34,20 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeEffectGrower extends ItemUpgradeBase
 {
-
-    public int rangeWidth = 0;
-
     public ItemUpgradeEffectGrower(Properties builder) {super(builder.group(dust.itemGroup));}
+
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
 
     public int getRangeWidth(ItemStack stack)
     {
+        int rangeWidth = 0;
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
     }
-
 
     public int ticked = 0;
 
@@ -116,52 +118,15 @@ public class ItemUpgradeEffectGrower extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s3 = getRangeWidth(stack);
-        String s5 = getOperationSpeedString(stack);
-
-        String tr = "" + (s3+s3+1) + "";
-
-        tooltip.add(TextFormatting.GOLD + "Grower Upgrade");
-
-
-        if(stack.isItemEnchanted() && s3>0)
-        {
-            tooltip.add(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr);
-        }
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) > 0)
-        {
-            tooltip.add("Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add("Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int s3 = getRangeWidth(stack);
         String tr = "" + (s3+s3+1) + "";
-
+        String s5 = getOperationSpeedString(stack);
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Grower Effect Upgrade"));
-
-        if(stack.isEnchanted() && s3 > 0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
-        }
-
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item GROWER = new ItemUpgradeEffectGrower(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/grower"));

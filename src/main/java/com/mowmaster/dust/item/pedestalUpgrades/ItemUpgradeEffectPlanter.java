@@ -31,13 +31,16 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeEffectPlanter extends ItemUpgradeBase
 {
-
-    public int rangeWidth = 0;
-
     public ItemUpgradeEffectPlanter(Properties builder) {super(builder.group(dust.itemGroup));}
+
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
 
     public int getRangeWidth(ItemStack stack)
     {
+        int rangeWidth = 0;
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
@@ -106,40 +109,15 @@ public class ItemUpgradeEffectPlanter extends ItemUpgradeBase
         }
     }
 
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = getOperationSpeedString(stack);
-
-        tooltip.add(TextFormatting.GOLD + "Planter Upgrade");
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int s3 = getRangeWidth(stack);
         String tr = "" + (s3+s3+1) + "";
-
+        String s5 = getOperationSpeedString(stack);
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Planter Effect Upgrade"));
-
-        if(stack.isEnchanted() && s3 > 0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
-        }
-
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item PLANTER = new ItemUpgradeEffectPlanter(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/planter"));

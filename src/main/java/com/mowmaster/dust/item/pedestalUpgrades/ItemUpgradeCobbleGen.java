@@ -33,15 +33,19 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeCobbleGen extends ItemUpgradeBase
 {
-
-    public int intCobbleSpawned = 1;
     private int maxStored = Integer.MAX_VALUE;
 
     public ItemUpgradeCobbleGen(Properties builder) {super(builder.group(dust.itemGroup));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
+
     public int getCobbleGenSpawnRate(ItemStack stack)
     {
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int intCobbleSpawned = 1;
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 intCobbleSpawned = 1;
@@ -62,7 +66,7 @@ public class ItemUpgradeCobbleGen extends ItemUpgradeBase
                 intCobbleSpawned=64;
                 break;
             default: intCobbleSpawned=1;
-        }*/
+        }
 
         return  intCobbleSpawned;
     }
@@ -173,31 +177,15 @@ public class ItemUpgradeCobbleGen extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-        String tr = "" + getCobbleGenSpawnRate(stack) + "";
-        String s5 = getOperationSpeedString(stack);
-
-        tooltip.add(TextFormatting.GOLD + "Cobble Generator Upgrade");
-
-        tooltip.add(TextFormatting.GRAY + "Cobble Spawned Per Opperation: "+tr);
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) > 0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        String tr = "" + getCobbleGenSpawnRate(stack) + "";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Cobble Generator Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Cobble Spawned Per Opperation: "+tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item COBBLE = new ItemUpgradeCobbleGen(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/cobble"));

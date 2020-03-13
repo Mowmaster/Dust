@@ -21,15 +21,22 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeDropper extends ItemUpgradeBase
 {
-    public int summonRate = 1;
-    public int range = 1;
-
     public ItemUpgradeDropper(Properties builder) {super(builder.group(dust.itemGroup));}
 
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
+
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
 
     public int getTransferRate(ItemStack stack)
     {
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int summonRate = 1;
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 summonRate = 1;
@@ -51,13 +58,13 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
                 break;
             default: summonRate=1;
         }
-*/
         return  summonRate;
     }
 
     public int getRange(ItemStack stack)
     {
-        /*switch (getRangeModifier(stack))
+        int range = 1;
+        switch (getRangeModifier(stack))
         {
             case 0:
                 range = 1;
@@ -78,7 +85,7 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
                 range=16;
                 break;
             default: range=1;
-        }*/
+        }
 
         return  range;
     }
@@ -113,57 +120,16 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Item Dropper Upgrade"));
-    }
-
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int range = getRange(stack);
         String tr = "" + getTransferRate(stack) + "";
         String trr = "" + range + "";
         String s5 = getOperationSpeedString(stack);
 
-
-        tooltip.add(TextFormatting.GOLD + "Item Dropper Upgrade");
-        if(stack.hasTagCompound())
-        {
-            if(getTransferRate(stack)>0)
-            {
-                tooltip.add(TextFormatting.GRAY + "Dropped Stack Size: " + tr);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.GRAY + "Dropped Stack Size: 1");
-            }
-
-            if(stack.isItemEnchanted() && range >0)
-            {
-                tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
-            }
-
-            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-        else
-        {
-            tooltip.add(TextFormatting.GRAY + "Dropped Stack Size: 1");
-            tooltip.add(TextFormatting.WHITE + "Dropper Range: " + trr);
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
+        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Item Dropper Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Dropped Stack Size: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Dropper Range: " + trr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+    }
 
     public static final Item DROPPER = new ItemUpgradeDropper(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/dropper"));
 

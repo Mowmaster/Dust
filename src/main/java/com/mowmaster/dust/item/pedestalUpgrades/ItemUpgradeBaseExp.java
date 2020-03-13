@@ -64,7 +64,7 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
 
     public String getExpTransferRateString(ItemStack stack)
     {
-        String tr = "";
+        String tr = "5 Levels";
         switch (getExpTransferRate(stack))
         {
             case 55:

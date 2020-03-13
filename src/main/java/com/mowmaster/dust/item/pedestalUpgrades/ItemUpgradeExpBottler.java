@@ -35,10 +35,15 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
 
     public ItemUpgradeExpBottler(Properties builder) {super(builder.group(dust.itemGroup));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
+
     public int getTransferRate(ItemStack stack)
     {
         int bottlingRate = 1;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 bottlingRate = 1;
@@ -59,7 +64,7 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
                 bottlingRate=16;
                 break;
             default: bottlingRate=1;
-        }*/
+        }
         return  bottlingRate;
     }
 
@@ -137,8 +142,7 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
 
     /*@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String tr = "" + getTransferRate(stack) + "";
-        String s5 = getOperationSpeedString(stack);
+
 
         if(stack.hasTagCompound())
         {
@@ -153,7 +157,7 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
 
             if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
             {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
+
             }
             else
             {
@@ -172,19 +176,13 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
         super.addInformation(stack, worldIn, tooltip, flagIn);
         String tr = getExpTransferRateString(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Bottler Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 15 Levels"));
-
-        if(getExpTransferRate(stack)>0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels"));
-        }
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPBOTTLER = new ItemUpgradeExpBottler(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpbottler"));

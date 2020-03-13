@@ -47,9 +47,6 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeCrafter extends ItemUpgradeBase
 {
-
-    public int transferRate = 1;
-
     public ItemUpgradeCrafter(Properties builder) {super(builder.group(dust.itemGroup));}
 
     public int getGridSize(ItemStack itemStack)
@@ -65,7 +62,8 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
 
     public int getItemTransferRate(ItemStack stack)
     {
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int transferRate = 1;
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 transferRate = 1;
@@ -86,7 +84,7 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
                 transferRate=16;
                 break;
             default: transferRate=1;
-        }*/
+        }
 
         return  transferRate;
     }
@@ -252,45 +250,15 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = getOperationSpeedString(stack);
-        String tr = "" + getItemTransferRate(stack) + "";
-
-        tooltip.add(TextFormatting.GOLD + "Item Stack Crafter Upgrade - "+gridSize+"x"+gridSize);
-
-        if(stack.hasTagCompound())
-        {
-            if(stack.getTagCompound().hasKey("coineffect"))
-            {
-                tooltip.add(TextFormatting.GRAY + "Bulk Crafting Rate: " + tr);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.GRAY + "Bulk Crafting Rate: 1");
-            }
-
-            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-        else
-        {
-            tooltip.add(TextFormatting.GRAY + "Bulk Crafting Rate: 1");
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        String s5 = getOperationSpeedString(stack);
+        String tr = "" + getItemTransferRate(stack) + "";
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Crafter Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Recipes Crafted Per Action: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item CRAFTER_ONE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/crafter1"));

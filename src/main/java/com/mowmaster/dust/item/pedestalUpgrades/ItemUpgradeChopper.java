@@ -30,14 +30,16 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeChopper extends ItemUpgradeBase
 {
-
-    public int rangeWidth = 0;
-    public int rangeHeight = 0;
-
     public ItemUpgradeChopper(Properties builder) {super(builder.group(dust.itemGroup));}
+
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
 
     public int getRangeWidth(ItemStack stack)
     {
+        int rangeWidth = 0;
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
@@ -45,6 +47,7 @@ public class ItemUpgradeChopper extends ItemUpgradeBase
 
     public int getRangeHeight(ItemStack stack)
     {
+        int rangeHeight = 0;
         int rH = getRangeModifier(stack);
         rangeHeight = ((rH*6)+4);
         return rangeHeight;
@@ -125,41 +128,18 @@ public class ItemUpgradeChopper extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s3 = getRangeWidth(stack);
-        int s4 = getRangeHeight(stack);
-        String s5 = getOperationSpeedString(stack);
-
-        String tr = "" + (s3+s3+1) + "";
-        String trr = "" + (s4+1) + "";
-
-        tooltip.add(TextFormatting.GOLD + "Chopper Upgrade");
-
-        if(stack.isItemEnchanted() && s3>0)
-        {
-            tooltip.add(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+trr);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+trr);
-        }
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        int s3 = getRangeWidth(stack);
+        int s4 = getRangeHeight(stack);
+        String tr = "" + (s3+s3+1) + "";
+        String trr = "" + (s4+1) + "";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Tree Chopper Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+trr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item CHOPPER = new ItemUpgradeChopper(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/chopper"));

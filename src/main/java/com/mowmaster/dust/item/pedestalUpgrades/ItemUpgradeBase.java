@@ -36,52 +36,40 @@ public class ItemUpgradeBase extends Item {
 
     public ItemUpgradeBase(Properties builder) {super(builder.group(dust.itemGroup));}
 
-    public boolean isFilter;
-
-    public boolean hasEnchant;
-
-    public boolean hasEffect;
-
-    public int intRate = 0;
-
-
-    public boolean hasEnchant(ItemStack stack)
-    {
-        hasEnchant =  stack.isEnchanted();
-        return hasEnchant;
-    }
-
-    public int getRangeModifier(ItemStack stack)
-    {
-        int range = 0;
-        /*if(stack.isEnchanted())
-        {
-            range = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentRange,stack);
-        }*/
-        return range;
-    }
-
     public void onRandomDisplayTick(TilePedestal pedestal, BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
 
     }
 
-    /*
-    PotionEffect potionEffect = new PotionEffect(MobEffects.LUCK);
-    public PotionEffect getPotionEffectFromStack(ItemStack stack)
+    public boolean hasEnchant(ItemStack stack)
     {
-        if(stack.hasTagCompound())
-        {
-            potionEffect = PotionEffect.readCustomPotionEffectFromNBT(stack.getTagCompound().getCompoundTag("coineffect"));
-        }
-        return potionEffect;
+        return stack.isEnchanted();
     }
-     */
+
+    public int getRangeModifier(ItemStack stack)
+    {
+        int range = 0;
+        if(hasEnchant(stack))
+        {
+            range = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.RANGE,stack);
+        }
+        return range;
+    }
+
+    public int getCapacityModifier(ItemStack stack)
+    {
+        int capacity = 0;
+        if(hasEnchant(stack))
+        {
+            capacity = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.CAPACITY,stack);
+        }
+        return capacity;
+    }
 
     public int intOperationalSpeedModifier(ItemStack stack)
     {
         int rate = 0;
-        if(stack.isEnchanted())
+        if(hasEnchant(stack))
         {
             rate = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.OPERATIONSPEED,stack);
         }
@@ -235,7 +223,6 @@ public class ItemUpgradeBase extends Item {
             int currentSize = stack.getCount();
             value = maxSize-currentSize;
         }
-
 
         return value;
     }
