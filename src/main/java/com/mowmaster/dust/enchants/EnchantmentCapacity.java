@@ -10,13 +10,13 @@ public class EnchantmentCapacity extends Enchantment
 {
 
     public EnchantmentCapacity() {
-        super(Rarity.COMMON, EnchantmentRegistry.COINUPGRADE, new EquipmentSlotType[]{
-                EquipmentSlotType.MAINHAND
+        super(Rarity.RARE, EnchantmentRegistry.COINUPGRADE, new EquipmentSlotType[]{
+                EquipmentSlotType.OFFHAND
         });
     }
 
     public int getMinEnchantability(int level) {
-        return level * 5;
+        return 10;
     }
 
     public int getMaxLevel() {
@@ -30,7 +30,7 @@ public class EnchantmentCapacity extends Enchantment
         {
             canApply = ((ItemUpgradeBase) coin).canAcceptCapacity();
         }
-        return stack.getItem() instanceof ItemUpgradeBase && canApply || super.canApply(stack);
+        return stack.getItem() instanceof ItemUpgradeBase && canApply;
     }
 
     public boolean canApplyAtEnchantingTable(ItemStack stack) {

@@ -8,15 +8,14 @@ import net.minecraft.item.ItemStack;
 
 public class EnchantmentRange extends Enchantment
 {
-
     public EnchantmentRange() {
         super(Rarity.COMMON, EnchantmentRegistry.COINUPGRADE, new EquipmentSlotType[]{
-                EquipmentSlotType.MAINHAND
+                EquipmentSlotType.OFFHAND
         });
     }
 
     public int getMinEnchantability(int level) {
-        return level * 5;
+        return 10;
     }
 
     public int getMaxLevel() {
@@ -30,7 +29,7 @@ public class EnchantmentRange extends Enchantment
         {
             canApply = ((ItemUpgradeBase) coin).canAcceptRange();
         }
-        return stack.getItem() instanceof ItemUpgradeBase && canApply || super.canApply(stack);
+        return stack.getItem() instanceof ItemUpgradeBase && canApply;
     }
 
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
@@ -41,7 +40,7 @@ public class EnchantmentRange extends Enchantment
             canApply = ((ItemUpgradeBase) coin).canAcceptRange();
         }
 
-        return canApply && super.canApplyAtEnchantingTable(stack);
+        return canApply;
     }
 
     public boolean isAllowedOnBooks() {

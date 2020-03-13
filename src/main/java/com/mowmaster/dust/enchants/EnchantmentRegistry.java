@@ -21,12 +21,9 @@ public final class EnchantmentRegistry
 {
     public static final EnchantmentType COINUPGRADE = EnchantmentType.create("pedestalupgrade", ItemUpgradeBase.class::isInstance);
 
-
     public static final Enchantment OPERATIONSPEED = new EnchantmentOperationSpeed();
     public static final Enchantment RANGE = new EnchantmentRange();
     public static final Enchantment CAPACITY = new EnchantmentCapacity();
-
-
 
     @SubscribeEvent
     public static void registerEnchantments(RegistryEvent.Register<Enchantment> event) {

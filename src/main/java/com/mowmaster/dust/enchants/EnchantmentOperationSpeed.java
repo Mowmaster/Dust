@@ -12,12 +12,12 @@ public class EnchantmentOperationSpeed extends Enchantment
 
     public EnchantmentOperationSpeed() {
         super(Rarity.COMMON, EnchantmentRegistry.COINUPGRADE, new EquipmentSlotType[]{
-                EquipmentSlotType.MAINHAND
+                EquipmentSlotType.OFFHAND
         });
     }
 
     public int getMinEnchantability(int level) {
-        return level * 5;
+        return 10;
     }
 
     public int getMaxLevel() {
@@ -31,7 +31,7 @@ public class EnchantmentOperationSpeed extends Enchantment
         {
             canApply = ((ItemUpgradeBase) coin).canAcceptOpSpeed();
         }
-        return stack.getItem() instanceof ItemUpgradeBase && canApply || super.canApply(stack);
+        return stack.getItem() instanceof ItemUpgradeBase && canApply;
     }
 
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
@@ -42,7 +42,7 @@ public class EnchantmentOperationSpeed extends Enchantment
             canApply = ((ItemUpgradeBase) coin).canAcceptOpSpeed();
         }
 
-        return canApply && super.canApplyAtEnchantingTable(stack);
+        return canApply;
     }
 
     public boolean isAllowedOnBooks() {
