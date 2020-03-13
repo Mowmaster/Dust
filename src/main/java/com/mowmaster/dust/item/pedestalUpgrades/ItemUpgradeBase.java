@@ -1,6 +1,7 @@
 package com.mowmaster.dust.item.pedestalUpgrades;
 
 import com.mowmaster.dust.dust;
+import com.mowmaster.dust.enchants.EnchantmentRegistry;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -60,16 +61,6 @@ public class ItemUpgradeBase extends Item {
         return range;
     }
 
-    /*public int intOperationalSpeedModifier(ItemStack stack)
-    {
-        int rate = 0;
-        if(stack.isItemEnchanted())
-        {
-            rate = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantmentTransferRate,stack);
-        }
-        return rate;
-    }*/
-
     public void onRandomDisplayTick(TilePedestal pedestal, BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
 
@@ -87,10 +78,20 @@ public class ItemUpgradeBase extends Item {
     }
      */
 
+    public int intOperationalSpeedModifier(ItemStack stack)
+    {
+        int rate = 0;
+        if(stack.isEnchanted())
+        {
+            rate = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.OPERATIONSPEED,stack);
+        }
+        return rate;
+    }
+
     public int getOperationSpeed(ItemStack stack)
     {
         int intOperationalSpeed = 20;
-        /*switch (intOperationalSpeedModifier(stack))
+        switch (intOperationalSpeedModifier(stack))
         {
             case 0:
                 intOperationalSpeed = 20;//normal speed
@@ -111,7 +112,7 @@ public class ItemUpgradeBase extends Item {
                 intOperationalSpeed=1;//20x faster
                 break;
             default: intOperationalSpeed=20;
-        }*/
+        }
 
         return  intOperationalSpeed;
     }
@@ -119,7 +120,7 @@ public class ItemUpgradeBase extends Item {
     public String getOperationSpeedString(ItemStack stack)
     {
         String str = "Normal Speed";
-        /*switch (intOperationalSpeedModifier(stack))
+        switch (intOperationalSpeedModifier(stack))
         {
             case 0:
                 str = "Normal Speed";//normal speed
@@ -140,7 +141,7 @@ public class ItemUpgradeBase extends Item {
                 str = "20x Faster";//20x faster
                 break;
             default: str = "Normal Speed";;
-        }*/
+        }
 
         return  str;
     }
@@ -510,7 +511,7 @@ public class ItemUpgradeBase extends Item {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         /*return !EnchantmentRegistry.UPGRADES.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);*/
-        return false;
+        return true;
     }
 
     @Override
@@ -527,6 +528,22 @@ public class ItemUpgradeBase extends Item {
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;
+    }
+
+
+    public Boolean canAcceptOpSpeed()
+    {
+        return true;
+    }
+
+    public Boolean canAcceptCapacity()
+    {
+        return false;
+    }
+
+    public Boolean canAcceptRange()
+    {
+        return false;
     }
 
     public Direction getPedestalFacing(World world,BlockPos posOfPedestal)

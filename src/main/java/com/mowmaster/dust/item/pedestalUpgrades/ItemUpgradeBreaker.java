@@ -1,19 +1,14 @@
 package com.mowmaster.dust.item.pedestalUpgrades;
 
 import com.mowmaster.dust.dust;
-import com.mowmaster.dust.tiles.TilePedestal;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -25,8 +20,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -117,37 +110,37 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
 
     /*@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        int s3 = getRange(stack);
-        String trr = "" + s3 + "";
 
-        String s5 = getOperationSpeedString(stack);
+
+
 
         tooltip.add(TextFormatting.GOLD + "Block Breaker Upgrade");
 
-        if(stack.isItemEnchanted() && s3 > 0)
-        {
-            tooltip.add(TextFormatting.WHITE + "Breaker Range: " + trr);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.WHITE + "Breaker Range: " + trr);
-        }
 
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
+
+
     }*/
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        String s5 = getOperationSpeedString(stack);
+        int s3 = getRange(stack);
+        String trr = "" + s3 + "";
+
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Block Breaker Upgrade"));
+
+        if(stack.isEnchanted() && s3 > 0)
+        {
+            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Breaker Range: " + trr));
+        }
+        else
+        {
+            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Breaker Range: " + trr));
+        }
+
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item BREAKER = new ItemUpgradeBreaker(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/breaker"));

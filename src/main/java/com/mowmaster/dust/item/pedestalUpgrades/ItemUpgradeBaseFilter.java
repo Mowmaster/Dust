@@ -14,9 +14,23 @@ public class ItemUpgradeBaseFilter extends ItemUpgradeBase {
     }
 
     @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public int getItemEnchantability()
     {
         return 0;
     }
 
+    @Override
+    public Boolean canAcceptOpSpeed() {
+        return false;
+    }
 }
