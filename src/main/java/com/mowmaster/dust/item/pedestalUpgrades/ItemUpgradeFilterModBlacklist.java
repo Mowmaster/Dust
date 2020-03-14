@@ -23,7 +23,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeFilterModBlacklist extends ItemUpgradeBaseFilter
 {
-    public ItemUpgradeFilterModBlacklist(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeFilterModBlacklist(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {
@@ -80,7 +80,7 @@ public class ItemUpgradeFilterModBlacklist extends ItemUpgradeBaseFilter
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Filter: Mod Blacklist"));
     }
 
-    public static final Item MOD = new ItemUpgradeFilterModBlacklist(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/filtermodb"));
+    public static final Item MOD = new ItemUpgradeFilterModBlacklist(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/filtermodb"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

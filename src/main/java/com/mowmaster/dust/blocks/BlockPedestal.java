@@ -350,7 +350,7 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
 
     public static final Block BLOCK_PEDESTAL_STONE = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(RESLOC_PEDESTAL_STONE);
 
-    public static final Item ITEM_PEDESTAL_STONE = new BlockItem(BLOCK_PEDESTAL_STONE, new Item.Properties().group(dust.itemGroup)) {}.setRegistryName(RESLOC_PEDESTAL_STONE);
+    public static final Item ITEM_PEDESTAL_STONE = new BlockItem(BLOCK_PEDESTAL_STONE, new Item.Properties().group(dust.ITEM_GROUP)) {}.setRegistryName(RESLOC_PEDESTAL_STONE);
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

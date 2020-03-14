@@ -16,13 +16,13 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemDust extends Item {
     public ItemDust(Properties builder) {
-        super(builder.group(dust.itemGroup));
+        super(builder.group(dust.ITEM_GROUP));
     }
 
-    public static final Item STONE = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemduststone"));
-    public static final Item GOLD = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemdustgold"));
-    public static final Item IRON = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemdustiron"));
-    public static final Item FLOUR = new ItemDust(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "itemdustflour"));
+    public static final Item STONE = new ItemDust(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "itemduststone"));
+    public static final Item GOLD = new ItemDust(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "itemdustgold"));
+    public static final Item IRON = new ItemDust(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "itemdustiron"));
+    public static final Item FLOUR = new ItemDust(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "itemdustflour"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

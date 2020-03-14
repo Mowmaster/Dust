@@ -44,7 +44,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
 {
 
-    public ItemUpgradeExpAnvil(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpAnvil(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptCapacity() {
@@ -424,7 +424,7 @@ public class ItemUpgradeExpAnvil extends ItemUpgradeBaseExp
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item XPANVIL = new ItemUpgradeExpAnvil(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpanvil"));
+    public static final Item XPANVIL = new ItemUpgradeExpAnvil(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpanvil"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

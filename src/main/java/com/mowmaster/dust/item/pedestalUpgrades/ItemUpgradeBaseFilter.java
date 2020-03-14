@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemUpgradeBaseFilter extends ItemUpgradeBase {
 
-    public ItemUpgradeBaseFilter(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeBaseFilter(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {

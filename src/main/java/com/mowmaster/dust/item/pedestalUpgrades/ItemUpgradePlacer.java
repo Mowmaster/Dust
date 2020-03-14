@@ -33,7 +33,7 @@ public class ItemUpgradePlacer extends ItemUpgradeBase
      */
     public int range = 1;
 
-    public ItemUpgradePlacer(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradePlacer(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getRange(ItemStack stack)
     {
@@ -167,7 +167,7 @@ public class ItemUpgradePlacer extends ItemUpgradeBase
         }
     }
 
-    public static final Item PLACER = new ItemUpgradePlacer(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/placer"));
+    public static final Item PLACER = new ItemUpgradePlacer(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/placer"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

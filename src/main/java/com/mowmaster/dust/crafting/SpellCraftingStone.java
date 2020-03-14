@@ -247,8 +247,6 @@ public class SpellCraftingStone
 
     }
 
-
-
     /**
      * Adds a smelting recipe using an Item as the input item.
      */

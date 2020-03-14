@@ -21,7 +21,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
 {
 
-    public ItemUpgradeExpTank(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpTank(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getExpBuffer(ItemStack stack)
     {
@@ -109,7 +109,7 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
         }
     }
 
-    public static final Item XPTANK = new ItemUpgradeExpTank(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xptank"));
+    public static final Item XPTANK = new ItemUpgradeExpTank(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xptank"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

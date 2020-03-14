@@ -22,7 +22,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeFilterEnchanted extends ItemUpgradeBaseFilter
 {
-    public ItemUpgradeFilterEnchanted(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeFilterEnchanted(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {
@@ -54,7 +54,7 @@ public class ItemUpgradeFilterEnchanted extends ItemUpgradeBaseFilter
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Filter: Enchanted"));
     }
 
-    public static final Item ENCHANTED = new ItemUpgradeFilterEnchanted(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/filterenchanted"));
+    public static final Item ENCHANTED = new ItemUpgradeFilterEnchanted(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/filterenchanted"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

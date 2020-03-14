@@ -40,7 +40,7 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
 
     public final int burnTimeCostPerItemSmelted = 200;
 
-    public ItemUpgradeFurnace(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeFurnace(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getItemTransferRate(ItemStack stack)
     {
@@ -365,7 +365,7 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Smelting Upgrade"));
     }
 
-    public static final Item SMELTER = new ItemUpgradeFurnace(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/smelter"));
+    public static final Item SMELTER = new ItemUpgradeFurnace(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/smelter"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

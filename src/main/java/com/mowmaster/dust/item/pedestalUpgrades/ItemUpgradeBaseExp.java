@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ItemUpgradeBaseExp extends ItemUpgradeBase {
 
-    public ItemUpgradeBaseExp(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeBaseExp(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     private int summonRate = 55;
     @Override

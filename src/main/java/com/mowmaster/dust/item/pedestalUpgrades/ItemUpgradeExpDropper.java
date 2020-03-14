@@ -31,12 +31,22 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
 {
     public int range = 0;
 
-    public ItemUpgradeExpDropper(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpDropper(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
+
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
+
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
 
     public int getTransferRate(ItemStack stack)
     {
         int summonRate = 7;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 summonRate = 7;//1
@@ -57,7 +67,7 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
                 summonRate=160;//10
                 break;
             default: summonRate=7;
-        }*/
+        }
 
         return  summonRate;
     }
@@ -215,7 +225,7 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
         }
     }
 
-    public static final Item XPDROPPER = new ItemUpgradeExpDropper(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpdropper"));
+    public static final Item XPDROPPER = new ItemUpgradeExpDropper(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpdropper"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

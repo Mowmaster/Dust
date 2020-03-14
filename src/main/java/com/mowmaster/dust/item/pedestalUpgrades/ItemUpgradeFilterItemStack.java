@@ -23,7 +23,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeFilterItemStack extends ItemUpgradeBaseFilter
 {
-    public ItemUpgradeFilterItemStack(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeFilterItemStack(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {
@@ -74,7 +74,7 @@ public class ItemUpgradeFilterItemStack extends ItemUpgradeBaseFilter
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Filter: ItemStack"));
     }
 
-    public static final Item ITEMSTACK = new ItemUpgradeFilterItemStack(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/filteritemstack"));
+    public static final Item ITEMSTACK = new ItemUpgradeFilterItemStack(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/filteritemstack"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

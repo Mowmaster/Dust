@@ -3,6 +3,7 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.client.ClientDust;
+import com.mowmaster.dust.configtabs.CreativeTab;
 import com.mowmaster.dust.crafting.Recipes;
 import com.mowmaster.dust.item.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
@@ -27,12 +28,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 public class dust
 {
 
-    public static ItemGroup itemGroup = new ItemGroup(Reference.MODID + "tab") {
-        @Override
-        public ItemStack createIcon() {
-            return new ItemStack(BlockPedestal.BLOCK_PEDESTAL_STONE);
-        }
-    };
+    public static final ItemGroup ITEM_GROUP = new CreativeTab();
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

@@ -25,7 +25,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeExport extends ItemUpgradeBase
 {
-    public ItemUpgradeExport(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExport(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
 
     public int getTransferRate(ItemStack stack)
@@ -212,7 +212,7 @@ public class ItemUpgradeExport extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Transfer Rate: " + tr));
     }
 
-    public static final Item EXPORT = new ItemUpgradeExport(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/export"));
+    public static final Item EXPORT = new ItemUpgradeExport(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/export"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

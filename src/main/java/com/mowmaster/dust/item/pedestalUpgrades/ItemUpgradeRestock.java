@@ -25,7 +25,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeRestock extends ItemUpgradeBase
 {
-    public ItemUpgradeRestock(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeRestock(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
 
     public int getTransferRate(ItemStack stack)
@@ -220,7 +220,7 @@ public class ItemUpgradeRestock extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Transfer Rate: " + tr));
     }
 
-    public static final Item RESTOCK = new ItemUpgradeRestock(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/restock"));
+    public static final Item RESTOCK = new ItemUpgradeRestock(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/restock"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

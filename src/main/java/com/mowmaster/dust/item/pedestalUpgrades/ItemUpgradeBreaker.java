@@ -31,7 +31,7 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
 
     public int range = 1;
 
-    public ItemUpgradeBreaker(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeBreaker(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptRange() {
@@ -135,7 +135,7 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item BREAKER = new ItemUpgradeBreaker(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/breaker"));
+    public static final Item BREAKER = new ItemUpgradeBreaker(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/breaker"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

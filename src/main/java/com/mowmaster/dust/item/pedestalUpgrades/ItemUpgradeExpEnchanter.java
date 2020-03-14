@@ -38,7 +38,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
 {
 
-    public ItemUpgradeExpEnchanter(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpEnchanter(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getExpBuffer(ItemStack stack)
     {
@@ -258,7 +258,7 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels"));
     }
 
-    public static final Item XPENCHANTER = new ItemUpgradeExpEnchanter(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpenchanter"));
+    public static final Item XPENCHANTER = new ItemUpgradeExpEnchanter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpenchanter"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

@@ -47,7 +47,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeCrafter extends ItemUpgradeBase
 {
-    public ItemUpgradeCrafter(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeCrafter(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getGridSize(ItemStack itemStack)
     {
@@ -261,9 +261,9 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item CRAFTER_ONE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/crafter1"));
-    public static final Item CRAFTER_TWO = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/crafter2"));
-    public static final Item CRAFTER_THREE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/crafter3"));
+    public static final Item CRAFTER_ONE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crafter1"));
+    public static final Item CRAFTER_TWO = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crafter2"));
+    public static final Item CRAFTER_THREE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crafter3"));
 
 
     @SubscribeEvent

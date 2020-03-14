@@ -30,7 +30,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
 {
     public int transferRate = 1;
 
-    public ItemUpgradeImport(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeImport(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
 
     public int getItemTransferRate(ItemStack stack)
@@ -197,7 +197,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
 
 
 
-    public static final Item IMPORT = new ItemUpgradeImport(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/import"));
+    public static final Item IMPORT = new ItemUpgradeImport(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/import"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

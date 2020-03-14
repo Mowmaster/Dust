@@ -37,7 +37,7 @@ public class ItemUpgradeMilker extends ItemUpgradeBase
     public int rangeWidth = 0;
     public int rangeHeight = 1;
 
-    public ItemUpgradeMilker(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeMilker(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getRangeWidth(ItemStack stack)
     {
@@ -144,7 +144,7 @@ public class ItemUpgradeMilker extends ItemUpgradeBase
 
     }
 
-    public static final Item MILKER = new ItemUpgradeMilker(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/milker"));
+    public static final Item MILKER = new ItemUpgradeMilker(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/milker"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

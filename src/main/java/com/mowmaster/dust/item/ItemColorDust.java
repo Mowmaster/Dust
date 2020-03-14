@@ -29,7 +29,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemColorDust extends Item {
     public ItemColorDust(Properties builder) {
-        super(builder.group(dust.itemGroup));
+        super(builder.group(dust.ITEM_GROUP));
     }
 
     public static void handleItemColors(ColorHandlerEvent.Item event) {

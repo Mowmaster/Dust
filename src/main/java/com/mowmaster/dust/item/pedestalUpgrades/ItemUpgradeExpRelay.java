@@ -21,7 +21,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 public class ItemUpgradeExpRelay extends ItemUpgradeBaseExp
 {
 
-    public ItemUpgradeExpRelay(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpRelay(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
@@ -84,7 +84,7 @@ public class ItemUpgradeExpRelay extends ItemUpgradeBaseExp
         }
     }
 
-    public static final Item XPRELAY = new ItemUpgradeExpRelay(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xprelay"));
+    public static final Item XPRELAY = new ItemUpgradeExpRelay(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xprelay"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

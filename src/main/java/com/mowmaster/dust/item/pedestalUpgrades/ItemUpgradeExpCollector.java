@@ -4,6 +4,7 @@ import com.mowmaster.dust.dust;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.LureEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +30,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
 {
-    public ItemUpgradeExpCollector(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpCollector(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptRange() {
@@ -173,7 +174,7 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item XPMAGNET = new ItemUpgradeExpCollector(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpmagnet"));
+    public static final Item XPMAGNET = new ItemUpgradeExpCollector(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpmagnet"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

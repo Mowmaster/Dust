@@ -37,7 +37,7 @@ public class ItemUpgradeShearer extends ItemUpgradeBase
     public int rangeWidth = 0;
     public int rangeHeight = 1;
 
-    public ItemUpgradeShearer(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeShearer(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public int getRangeWidth(ItemStack stack)
     {
@@ -129,7 +129,7 @@ public class ItemUpgradeShearer extends ItemUpgradeBase
         }
     }
 
-    public static final Item SHEARER = new ItemUpgradeShearer(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/shearer"));
+    public static final Item SHEARER = new ItemUpgradeShearer(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/shearer"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

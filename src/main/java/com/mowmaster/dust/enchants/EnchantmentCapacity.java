@@ -15,8 +15,13 @@ public class EnchantmentCapacity extends Enchantment
         });
     }
 
-    public int getMinEnchantability(int level) {
-        return 10;
+    @Override
+    public int getMinEnchantability(int enchantmentLevel) {
+        return 1 + (enchantmentLevel - 1) * 11;
+    }
+
+    public int getMaxEnchantability(int enchantmentLevel) {
+        return this.getMinEnchantability(enchantmentLevel) + 20;
     }
 
     public int getMaxLevel() {
@@ -24,24 +29,24 @@ public class EnchantmentCapacity extends Enchantment
     }
 
     public boolean canApply(ItemStack stack) {
-        boolean canApply = false;
+        boolean canApplyToUpgrade = false;
         Item coin = stack.getItem();
         if(coin instanceof ItemUpgradeBase)
         {
-            canApply = ((ItemUpgradeBase) coin).canAcceptCapacity();
+            canApplyToUpgrade = ((ItemUpgradeBase) coin).canAcceptCapacity();
         }
-        return stack.getItem() instanceof ItemUpgradeBase && canApply;
+        return stack.getItem() instanceof ItemUpgradeBase && canApplyToUpgrade;
     }
 
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        boolean canApply = false;
+        boolean canApplyToUpgrade = false;
         Item coin = stack.getItem();
         if(coin instanceof ItemUpgradeBase)
         {
-            canApply = ((ItemUpgradeBase) coin).canAcceptCapacity();
+            canApplyToUpgrade = ((ItemUpgradeBase) coin).canAcceptCapacity();
         }
 
-        return canApply && super.canApplyAtEnchantingTable(stack);
+        return canApplyToUpgrade && super.canApplyAtEnchantingTable(stack);
     }
 
     public boolean isAllowedOnBooks() {

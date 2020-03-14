@@ -30,7 +30,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeChopper extends ItemUpgradeBase
 {
-    public ItemUpgradeChopper(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeChopper(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptRange() {
@@ -142,7 +142,7 @@ public class ItemUpgradeChopper extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item CHOPPER = new ItemUpgradeChopper(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/chopper"));
+    public static final Item CHOPPER = new ItemUpgradeChopper(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/chopper"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

@@ -33,7 +33,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
 {
 
-    public ItemUpgradeExpBottler(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeExpBottler(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptCapacity() {
@@ -185,7 +185,7 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item XPBOTTLER = new ItemUpgradeExpBottler(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/xpbottler"));
+    public static final Item XPBOTTLER = new ItemUpgradeExpBottler(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpbottler"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

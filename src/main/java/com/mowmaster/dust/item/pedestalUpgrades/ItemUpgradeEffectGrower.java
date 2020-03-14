@@ -34,7 +34,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeEffectGrower extends ItemUpgradeBase
 {
-    public ItemUpgradeEffectGrower(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeEffectGrower(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptRange() {
@@ -129,7 +129,7 @@ public class ItemUpgradeEffectGrower extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item GROWER = new ItemUpgradeEffectGrower(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/grower"));
+    public static final Item GROWER = new ItemUpgradeEffectGrower(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/grower"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

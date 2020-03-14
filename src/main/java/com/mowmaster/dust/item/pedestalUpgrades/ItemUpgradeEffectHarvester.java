@@ -33,7 +33,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeEffectHarvester extends ItemUpgradeBase
 {
-    public ItemUpgradeEffectHarvester(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeEffectHarvester(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptRange() {
@@ -138,7 +138,7 @@ public class ItemUpgradeEffectHarvester extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item HARVESTER = new ItemUpgradeEffectHarvester(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/harvester"));
+    public static final Item HARVESTER = new ItemUpgradeEffectHarvester(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/harvester"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

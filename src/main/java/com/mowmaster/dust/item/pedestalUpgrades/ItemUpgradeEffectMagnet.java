@@ -34,7 +34,7 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeEffectMagnet extends ItemUpgradeBase
 {
-    public ItemUpgradeEffectMagnet(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeEffectMagnet(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptRange() {
@@ -126,7 +126,7 @@ public class ItemUpgradeEffectMagnet extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
-    public static final Item MAGNET = new ItemUpgradeEffectMagnet(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/magnet"));
+    public static final Item MAGNET = new ItemUpgradeEffectMagnet(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/magnet"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

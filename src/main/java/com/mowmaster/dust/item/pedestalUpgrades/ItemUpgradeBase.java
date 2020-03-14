@@ -34,7 +34,7 @@ import static net.minecraft.state.properties.BlockStateProperties.FACING;
 
 public class ItemUpgradeBase extends Item {
 
-    public ItemUpgradeBase(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeBase(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     public void onRandomDisplayTick(TilePedestal pedestal, BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
@@ -497,8 +497,7 @@ public class ItemUpgradeBase extends Item {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        /*return !EnchantmentRegistry.UPGRADES.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);*/
-        return true;
+        return !EnchantmentRegistry.COINUPGRADE.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     @Override

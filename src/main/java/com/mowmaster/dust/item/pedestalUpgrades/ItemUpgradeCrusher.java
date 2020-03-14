@@ -34,7 +34,7 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
 {
     public final int burnTimeCostPerItemSmelted = 200;
 
-    public ItemUpgradeCrusher(Properties builder) {super(builder.group(dust.itemGroup));}
+    public ItemUpgradeCrusher(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
     @Override
     public Boolean canAcceptCapacity() {
@@ -347,7 +347,7 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
         tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + trr));
     }
 
-    public static final Item CRUSHER = new ItemUpgradeCrusher(new Properties().maxStackSize(64).group(dust.itemGroup)).setRegistryName(new ResourceLocation(MODID, "coin/crusher"));
+    public static final Item CRUSHER = new ItemUpgradeCrusher(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crusher"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

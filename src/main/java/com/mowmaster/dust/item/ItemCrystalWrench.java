@@ -40,7 +40,7 @@ public class ItemCrystalWrench extends Item {
     public BlockPos storedPosition = defaultPos;
 
     public ItemCrystalWrench() {
-        super(new Item.Properties().maxStackSize(1).group(dust.itemGroup));
+        super(new Item.Properties().maxStackSize(1).group(dust.ITEM_GROUP));
     }
 
     @Override
