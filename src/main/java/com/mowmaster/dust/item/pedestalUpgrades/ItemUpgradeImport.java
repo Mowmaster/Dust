@@ -28,14 +28,17 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeImport extends ItemUpgradeBase
 {
-    public int transferRate = 1;
-
     public ItemUpgradeImport(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
 
     public int getItemTransferRate(ItemStack stack)
     {
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int transferRate = 1;
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 transferRate = 1;
@@ -56,7 +59,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                 transferRate=64;
                 break;
             default: transferRate=1;
-        }*/
+        }
 
         return  transferRate;
     }
@@ -155,47 +158,14 @@ public class ItemUpgradeImport extends ItemUpgradeBase
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Import Upgrade"));
-    }
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int s2 = getItemTransferRate(stack);
         String s5 = getOperationSpeedString(stack);
         String tr = "" + s2 + "";
 
-        tooltip.add(TextFormatting.GOLD + "Item Stack Import Upgrade");
-
-        if(stack.hasTagCompound())
-        {
-            if(stack.getTagCompound().hasKey("coineffect"))
-            {
-                tooltip.add(TextFormatting.GRAY + "Transfer Rate: " + tr);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.GRAY + "Transfer Rate: 1");
-            }
-
-            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-        else
-        {
-            tooltip.add(TextFormatting.GRAY + "Transfer Rate: 1");
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
-
-
+        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Import Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Transfer Rate: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+    }
 
     public static final Item IMPORT = new ItemUpgradeImport(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/import"));
 

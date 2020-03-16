@@ -33,14 +33,18 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeMilker extends ItemUpgradeBase
 {
-
-    public int rangeWidth = 0;
     public int rangeHeight = 1;
 
     public ItemUpgradeMilker(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
+
     public int getRangeWidth(ItemStack stack)
     {
+        int rangeWidth = 0;
         int rW = getRangeModifier(stack);
         rangeWidth = ((rW)+1);
         return  rangeWidth;
@@ -110,38 +114,16 @@ public class ItemUpgradeMilker extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-        String s5 = getOperationSpeedString(stack);
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int s3 = getRangeWidth(stack);
         String tr = "" + (s3+s3+1) + "";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Milker Upgrade"));
-
-        if(stack.isEnchanted() && s3 > 0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+"2x"+tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+"2x"+tr));
-        }
-
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+"2x"+tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item MILKER = new ItemUpgradeMilker(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/milker"));

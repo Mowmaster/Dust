@@ -93,7 +93,7 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
 
     public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
-        setMaxXP(coinInPedestal,getExpCountByLevel(30) );
+        if(!hasMaxXpSet(coinInPedestal)) {setMaxXP(coinInPedestal,getExpCountByLevel(30));}
         int width = getRangeWidth(coinInPedestal);
         int height = (2*width)+1;
         BlockPos negBlockPos = getNegRangePosEntity(world,posOfPedestal,width,height);

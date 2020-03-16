@@ -27,11 +27,15 @@ public class ItemUpgradeRestock extends ItemUpgradeBase
 {
     public ItemUpgradeRestock(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
 
     public int getTransferRate(ItemStack stack)
     {
         int transferRate = 1;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 transferRate = 1;
@@ -52,7 +56,7 @@ public class ItemUpgradeRestock extends ItemUpgradeBase
                 transferRate=64;
                 break;
             default: transferRate=1;
-        }*/
+        }
 
         return  transferRate;
     }
@@ -190,34 +194,17 @@ public class ItemUpgradeRestock extends ItemUpgradeBase
                 }
             }
         }
-
-
     }
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = getOperationSpeedString(stack);
-
-        if(stack.hasTagCompound())
-        {
-            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-    }*/
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         String tr = "" + getTransferRate(stack) + "";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Restock Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Transfer Rate: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item RESTOCK = new ItemUpgradeRestock(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/restock"));

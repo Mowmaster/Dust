@@ -278,6 +278,22 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
         return storedxp;
     }
 
+    public boolean hasMaxXpSet(ItemStack stack)
+    {
+        boolean returner = false;
+        CompoundNBT compound = new CompoundNBT();
+        if(stack.hasTag())
+        {
+            compound = stack.getTag();
+            if(compound.contains("maxxp"))
+            {
+                returner = true;
+            }
+        }
+        return returner;
+    }
+
+
     public void writeMaxXpToNBT(ItemStack stack, int value)
     {
         CompoundNBT compound = new CompoundNBT();

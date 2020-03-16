@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockVoidPot;
 import com.mowmaster.dust.client.ClientDust;
 import com.mowmaster.dust.configtabs.CreativeTab;
 import com.mowmaster.dust.crafting.Recipes;
@@ -41,6 +42,7 @@ public class dust
     {
         BlockDustStone.onBlockRegistryReady(event);
         BlockPedestal.onBlockRegistryReady(event);
+        BlockVoidPot.onBlockRegistryReady(event);
     }
 
     @SubscribeEvent

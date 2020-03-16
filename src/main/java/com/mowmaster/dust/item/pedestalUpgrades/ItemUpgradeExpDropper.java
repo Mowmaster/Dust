@@ -113,7 +113,7 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
 
     public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
-        setMaxXP(coinInPedestal,getExpCountByLevel(10) );
+        if(!hasMaxXpSet(coinInPedestal)) {setMaxXP(coinInPedestal,getExpCountByLevel(10));}
         int rate = getTransferRate(coinInPedestal);
         int range = getRange(coinInPedestal);
 
@@ -148,7 +148,7 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
     /*@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
-        String s5 = getOperationSpeedString(stack);
+
 
         if(stack.hasTagCompound())
         {
@@ -156,7 +156,7 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
 
             if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
             {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
+
             }
             else
             {
@@ -178,6 +178,7 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
         int s3 = getRange(stack);
         String trr = "" + s3 + "";
+        String s5 = getOperationSpeedString(stack);
 
         switch (getTransferRate(stack))
         {
@@ -205,24 +206,9 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Dropper Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels"));
-
-        if(stack.isEnchanted() && getRange(stack) >0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Dropper Range: " + trr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Dropper Range: " + trr));
-        }
-
-        if(getExpTransferRate(stack)>0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Dropped Ammount: " + tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Dropped Ammount: 1 Level"));
-        }
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Dropper Range: " + trr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Dropped Ammount: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPDROPPER = new ItemUpgradeExpDropper(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpdropper"));

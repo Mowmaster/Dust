@@ -40,10 +40,15 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
 
     public ItemUpgradeExpEnchanter(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
+
     public int getExpBuffer(ItemStack stack)
     {
         int value = 30;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 value = 30;//30
@@ -64,7 +69,7 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
                 value=100;//100
                 break;
             default: value=30;
-        }*/
+        }
 
         return  value;
     }
@@ -136,7 +141,7 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
     public void upgradeAction(World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
         int getMaxXpValue = getExpCountByLevel(getExpBuffer(coinInPedestal));
-        setMaxXP(coinInPedestal, getMaxXpValue);
+        if(!hasMaxXpSet(coinInPedestal) || readMaxXpFromNBT(coinInPedestal) != getMaxXpValue) {setMaxXP(coinInPedestal, getMaxXpValue);}
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         ItemStack itemFromInv = ItemStack.EMPTY;
 
@@ -233,29 +238,17 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String s5 = getOperationSpeedString(stack);
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int buffer = getExpBuffer(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Enchanter Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPENCHANTER = new ItemUpgradeExpEnchanter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpenchanter"));

@@ -81,7 +81,7 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
 
     public void upgradeAction(World world, ItemStack coinInPedestal, BlockPos posOfPedestal)
     {
-        setMaxXP(coinInPedestal,getExpCountByLevel(15) );
+        if(!hasMaxXpSet(coinInPedestal)) {setMaxXP(coinInPedestal,getExpCountByLevel(15));}
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
         ItemStack itemFromInv = ItemStack.EMPTY;
 

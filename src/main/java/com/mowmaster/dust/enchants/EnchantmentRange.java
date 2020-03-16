@@ -46,7 +46,7 @@ public class EnchantmentRange extends Enchantment
             canApplyToUpgrade = ((ItemUpgradeBase) coin).canAcceptRange();
         }
 
-        return stack.getItem() instanceof ItemUpgradeBase && canApplyToUpgrade;
+        return canApplyToUpgrade;
     }
 
     public boolean isAllowedOnBooks() {

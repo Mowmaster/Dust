@@ -10,7 +10,7 @@ public class EnchantmentCapacity extends Enchantment
 {
 
     public EnchantmentCapacity() {
-        super(Rarity.RARE, EnchantmentRegistry.COINUPGRADE, new EquipmentSlotType[]{
+        super(Rarity.COMMON, EnchantmentRegistry.COINUPGRADE, new EquipmentSlotType[]{
                 EquipmentSlotType.OFFHAND
         });
     }
@@ -46,7 +46,7 @@ public class EnchantmentCapacity extends Enchantment
             canApplyToUpgrade = ((ItemUpgradeBase) coin).canAcceptCapacity();
         }
 
-        return canApplyToUpgrade && super.canApplyAtEnchantingTable(stack);
+        return canApplyToUpgrade;
     }
 
     public boolean isAllowedOnBooks() {

@@ -27,16 +27,16 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradePlacer extends ItemUpgradeBase
 {
-    /*
-    Places blocks at a distance using items inside inventory.
-    Places blocks below the base of the pedestal. (Big part of the pedestal)
-     */
-    public int range = 1;
-
     public ItemUpgradePlacer(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
+
+    @Override
+    public Boolean canAcceptRange() {
+        return true;
+    }
 
     public int getRange(ItemStack stack)
     {
+        int range = 1;
         switch (getRangeModifier(stack))
         {
             case 0:
@@ -133,38 +133,16 @@ public class ItemUpgradePlacer extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-        String s5 = getOperationSpeedString(stack);
-
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int s3 = getRange(stack);
         String trr = "" + s3 + "";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Block Placer Upgrade"));
-
-        if(stack.isEnchanted() && getRange(stack) > 0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Placer Range: " + trr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Placer Range: " + trr));
-        }
+        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Placer Range: " + trr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item PLACER = new ItemUpgradePlacer(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/placer"));

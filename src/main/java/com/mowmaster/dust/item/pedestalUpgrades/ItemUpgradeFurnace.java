@@ -35,18 +35,20 @@ import static com.mowmaster.dust.references.Reference.MODID;
 
 public class ItemUpgradeFurnace extends ItemUpgradeBase
 {
-
-
-
     public final int burnTimeCostPerItemSmelted = 200;
 
     public ItemUpgradeFurnace(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
+
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
 
     public int getItemTransferRate(ItemStack stack)
     {
         int itemsPerSmelt = 1;
 
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 itemsPerSmelt = 1;
@@ -67,7 +69,7 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
                 itemsPerSmelt=16;
                 break;
             default: itemsPerSmelt=1;
-        }*/
+        }
 
         return  itemsPerSmelt;
     }
@@ -76,7 +78,7 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
     {
         int smeltingSpeed = 200;
 
-        /*switch (intOperationalSpeedModifier(stack))
+        switch (intOperationalSpeedModifier(stack))
         {
             case 0:
                 smeltingSpeed = 200;//normal speed
@@ -97,7 +99,7 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
                 smeltingSpeed=10;//20x faster
                 break;
             default: smeltingSpeed=200;
-        }*/
+        }
 
         return  smeltingSpeed;
     }
@@ -299,10 +301,13 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
         }
     }
 
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         int s2 = getItemTransferRate(stack);
         String s3 = "";
+        String tr = "" + s2 + "";
+        String trr = s3;
 
         switch (getSmeltingSpeed(stack))
         {
@@ -327,42 +332,9 @@ public class ItemUpgradeFurnace extends ItemUpgradeBase
             default: s3= "Normal Speed";
         }
 
-
-        String tr = "" + s2 + "";
-        String trr = s3;
-        tooltip.add(TextFormatting.GOLD + "Furnace Upgrade");
-        if(stack.hasTagCompound())
-        {
-            if(stack.getTagCompound().hasKey("coineffect"))
-            {
-                tooltip.add(TextFormatting.GRAY + "Items Smelted Per Operation: " + tr);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.GRAY + "Items Smelted Per Operation: 1");
-            }
-
-            if(stack.isItemEnchanted() && getSmeltingSpeed(stack) >0)
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + trr);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-        else
-        {
-            tooltip.add(TextFormatting.GRAY + "Items Smelted Per Operation: 1");
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Smelting Upgrade"));
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Items Smelted Per Operation: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + trr));
     }
 
     public static final Item SMELTER = new ItemUpgradeFurnace(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/smelter"));

@@ -23,7 +23,12 @@ public class ItemUpgradeExpRelay extends ItemUpgradeBaseExp
 
     public ItemUpgradeExpRelay(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
-    public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
+    @Override
+    public Boolean canAcceptCapacity() {
+        return super.canAcceptCapacity();
+    }
+
+    public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {
         int speed = getOperationSpeed(coinInPedestal);
         if(!world.isBlockPowered(pedestalPos))
@@ -37,51 +42,21 @@ public class ItemUpgradeExpRelay extends ItemUpgradeBaseExp
 
     public void upgradeAction(ItemStack coinInPedestal)
     {
-        setMaxXP(coinInPedestal,getExpCountByLevel(30));
+        if(!hasMaxXpSet(coinInPedestal)) {setMaxXP(coinInPedestal,getExpCountByLevel(30));}
     }
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-        String s5 = getOperationSpeedString(stack);
-
-        if(stack.hasTagCompound())
-        {
-            if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-            }
-            else
-            {
-                tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-            }
-        }
-        else
-        {
-            tooltip.add(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels");
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-
-    }*/
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         String tr = getExpTransferRateString(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Relay Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels"));
-
-        if(getExpTransferRate(stack)>0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels"));
-        }
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPRELAY = new ItemUpgradeExpRelay(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xprelay"));

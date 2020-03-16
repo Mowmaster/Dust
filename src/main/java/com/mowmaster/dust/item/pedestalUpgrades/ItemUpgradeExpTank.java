@@ -23,10 +23,15 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
 
     public ItemUpgradeExpTank(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
+    @Override
+    public Boolean canAcceptCapacity() {
+        return true;
+    }
+
     public int getExpBuffer(ItemStack stack)
     {
         int value = 100;
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        switch (getCapacityModifier(stack))
         {
             case 0:
                 value = 100;//
@@ -47,7 +52,7 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
                 value=100000;//
                 break;
             default: value=100;
-        }*/
+        }
 
         return  value;
     }
@@ -67,24 +72,8 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
     public void upgradeAction(ItemStack coinInPedestal)
     {
         int maxXPLevel = getExpBuffer(coinInPedestal);
-        setMaxXP(coinInPedestal,getExpCountByLevel(maxXPLevel));
+        if(!hasMaxXpSet(coinInPedestal) || readMaxXpFromNBT(coinInPedestal) != maxXPLevel) {setMaxXP(coinInPedestal, maxXPLevel);}
     }
-
-
-    /*@Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-        String s5 = getOperationSpeedString(stack);
-
-        if(stack.isItemEnchanted() && getOperationSpeed(stack) >0)
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: " + s5);
-        }
-        else
-        {
-            tooltip.add(TextFormatting.RED + "Operational Speed: Normal Speed");
-        }
-    }*/
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
@@ -92,21 +81,13 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
         String tr = getExpTransferRateString(stack);
         String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
         int buffer = getExpBuffer(stack);
-
-
+        String s5 = getOperationSpeedString(stack);
 
         tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Tank Upgrade"));
         tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
         tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Storage Capacity: "+buffer+" Levels"));
-
-        if(getExpTransferRate(stack)>0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: 5 Levels"));
-        }
+        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
+        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
     }
 
     public static final Item XPTANK = new ItemUpgradeExpTank(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xptank"));
