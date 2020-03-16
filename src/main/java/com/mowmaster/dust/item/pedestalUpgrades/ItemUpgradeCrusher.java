@@ -1,5 +1,6 @@
 package com.mowmaster.dust.item.pedestalUpgrades;
 
+import com.mowmaster.dust.crafting.Crusher;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockState;
@@ -113,42 +114,6 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
         return amountToSet;
     }
 
-    private ItemStack getHardCodedRecipe(ItemStack itemStackIn)
-    {
-        ItemStack returner = ItemStack.EMPTY;
-
-        if(itemStackIn.equals(Blocks.COBBLESTONE))
-        {
-            return new ItemStack(Blocks.GRAVEL,1);
-        }
-        else if(itemStackIn.equals(Blocks.GRAVEL))
-        {
-            return new ItemStack(Blocks.SAND,1);
-        }
-        else if(itemStackIn.equals(Blocks.SANDSTONE))
-        {
-            return new ItemStack(Blocks.SAND,4);
-        }
-        else if(itemStackIn.equals(Blocks.RED_SANDSTONE))
-        {
-            return new ItemStack(Blocks.RED_SAND,4);
-        }
-        else if(itemStackIn.equals(Items.BONE))
-        {
-            return new ItemStack(Items.BONE_MEAL,4);
-        }
-        else if(itemStackIn.equals(Items.BLAZE_ROD))
-        {
-            return new ItemStack(Items.BLAZE_POWDER,3);
-        }
-        else if(itemStackIn.equals(Items.SUGAR_CANE))
-        {
-            return new ItemStack(Items.SUGAR,2);
-        }
-
-        return returner;
-    }
-
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getSmeltingSpeed(coinInPedestal);
@@ -186,8 +151,8 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                             int maxInSlot = handler.getSlotLimit(i);
                             itemFromInv = handler.getStackInSlot(i);
                             //Should work without catch since we null check this in our GetNextSlotFunction\
-                            System.out.println(getHardCodedRecipe(itemFromInv).getDisplayName());
-                            ItemStack resultSmelted = getHardCodedRecipe(itemFromInv);
+                            System.out.println(Crusher.instance().getResult(itemFromInv.getItem()));
+                            ItemStack resultSmelted = Crusher.instance().getResult(itemFromInv.getItem());
                             ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
                             if(!resultSmelted.equals(ItemStack.EMPTY))
                             {
