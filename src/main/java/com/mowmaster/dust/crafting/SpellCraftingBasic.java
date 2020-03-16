@@ -1,7 +1,6 @@
 package com.mowmaster.dust.crafting;
 
 import com.mowmaster.dust.item.ItemColorDust;
-import com.mowmaster.dust.item.ItemDust;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,10 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.EffectUtils;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
@@ -23,8 +20,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
-
-import static com.mowmaster.dust.references.Reference.MODID;
 
 
 @Mod.EventBusSubscriber
@@ -196,7 +191,15 @@ public class SpellCraftingBasic
                     worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
                     if(stone == 0 && bowl == 0)
                     {
-                        player.addPotionEffect(new EffectInstance(SpellCraftingEffect.instance().getResult(color),count*20));
+                        int amp = getPotency(white,black,5 );
+                        if(white > black)
+                        {
+                            player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*20,amp));
+                        }
+                        else
+                        {
+                            player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*20,amp));
+                        }
                     }
 
                     if (stone > 0) {
@@ -250,5 +253,30 @@ public class SpellCraftingBasic
                 }
             }
         }
+    }
+
+    //ToDo: addconfig for potency cap
+    private static int getPotency(int white, int black, int potencyCap)
+    {
+        int amp=0;
+        int potencycount=Math.abs(white-black);
+        if(potencycount>=0 && potencycount<10){amp=0;}
+        if(potencycount>=10 && potencycount<30){amp=1;}
+        if(potencycount>=30 && potencycount<60){amp=2;}
+        if(potencycount>=60 && potencycount<100){amp=3;}
+        if(potencycount>=100 && potencycount<150){amp=4;}
+        if(potencycount>=150 && potencycount<210){amp=5;}
+        if(potencycount>=210 && potencycount<280){amp=6;}
+        if(potencycount>=280 && potencycount<360){amp=7;}
+        if(potencycount>=360 && potencycount<450){amp=8;}
+        if(potencycount>=450 && potencycount<550){amp=9;}
+        if(potencycount>=550){amp=10;}
+
+        if(amp > 5)
+        {
+            amp = 5;
+        }
+
+        return amp;
     }
 }
