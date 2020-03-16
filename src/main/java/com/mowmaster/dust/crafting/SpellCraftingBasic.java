@@ -9,6 +9,8 @@ import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.EffectUtils;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -97,28 +99,16 @@ public class SpellCraftingBasic
                             {
                                 if(!stack.getTag().getBoolean("combine"))
                                 {
-                                    if(cr + cg + cb + black + white == 0)
+                                    //had '+ black + white' but wasnt sure why
+                                    if(cr + cg + cb == 0)
                                     {
-                                        if(stack.getTag().getInt("color") == 16711680 || stack.getTag().getInt("color") == 65280 || stack.getTag().getInt("color") == 255)
                                         {
-                                            //System.out.println(stack.getTag().getInt("color"));
-                                            double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
+                                            int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
                                             cr+=rgbColors[0];
                                             cg+=rgbColors[1];
                                             cb+=rgbColors[2];
                                             count+=stack.getCount();
                                             item.remove();
-                                        }
-                                        else
-                                        {
-                                            {
-                                                int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
-                                                cr+=rgbColors[0];
-                                                cg+=rgbColors[1];
-                                                cb+=rgbColors[2];
-                                                count+=stack.getCount();
-                                                item.remove();
-                                            }
                                         }
                                     }
                                     else
@@ -130,25 +120,13 @@ public class SpellCraftingBasic
                             }
                             else
                             {
-                                if(stack.getTag().getInt("color") == 16711680 || stack.getTag().getInt("color") == 65280 || stack.getTag().getInt("color") == 255)
-                                {
-                                    //System.out.println(stack.getTag().getInt("color"));
-                                    double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
-                                    r+=rgbColors[0];
-                                    g+=rgbColors[1];
-                                    b+=rgbColors[2];
-                                    count+=stack.getCount();
-                                    item.remove();
-                                }
-                                else
-                                {
-                                    int[] rgbColors = CalculateColor.getRGBColorFromInt(stack.getTag().getInt("color"));
-                                    r+=rgbColors[0];
-                                    g+=rgbColors[1];
-                                    b+=rgbColors[2];
-                                    count+=stack.getCount();
-                                    item.remove();
-                                }
+                                //System.out.println(stack.getTag().getInt("color"));
+                                double[] rgbColors = CalculateColor.getRGBColorFromStack(stack);
+                                r+=rgbColors[0];
+                                g+=rgbColors[1];
+                                b+=rgbColors[2];
+                                count+=stack.getCount();
+                                item.remove();
                             }
                         }
                     }
@@ -169,34 +147,49 @@ public class SpellCraftingBasic
                     double rgbRed = red;
                     double rgbGreen = green;
                     double rgbBlue = blue;
+                    double crgbRed = cred;
+                    double crgbGreen = cgreen;
+                    double crgbBlue = cblue;
 
-                    if(black>0 || white>0)
+                    int color = 0;
+
+
+                    if(stone>0 && black>0 || white>0)
                     {
                         if (black>white)
                         {
                             rgbRed = 0;
                             rgbGreen = 0;
                             rgbBlue = 0;
-                            count = black;
+                            count = black + white;
                         }
                         else
                         {
                             rgbRed = 255;
                             rgbGreen = 255;
                             rgbBlue = 255;
-                            count = white;
+                            count = white + black;
                         }
                     }
 
-                    int color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
-                    int colorCombined = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+                    if(bowl > 0)
+                    {
+                        color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+                    }
+                    else if (r+g+b > 0)
+                    {
+                        color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+                    }
+                    else
+                    {
+                        color = CalculateColor.getColorFromRGB(crgbRed,crgbGreen,crgbBlue);
+                    }
 
                     /*System.out.println("Red: " + red + " rgb: " +rgbRed);
                     System.out.println("Green: "  + green + " rgb: " + rgbGreen);
                     System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
-                    player.sendMessage(new StringTextComponent(TextFormatting.GOLD +"" +color));
+                    player.sendMessage(new StringTextComponent(TextFormatting.GOLD +""+color));
                     //System.out.println(color);
-
 
                     //removes fire block???
                     worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
@@ -241,6 +234,11 @@ public class SpellCraftingBasic
                         ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,stacked);
                         itemEn.setInvulnerable(true);
                         worldIn.addEntity(itemEn);
+                    }
+
+                    if(stone == 0 && bowl == 0)
+                    {
+                        player.addPotionEffect(new EffectInstance(SpellCraftingEffect.instance().getResult(color),count*20));
                     }
                 }
             }
