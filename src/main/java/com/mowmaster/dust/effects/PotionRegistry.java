@@ -22,8 +22,6 @@ import java.util.List;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class PotionRegistry {
 
-    public static final Potion VOIDSTORAGE = new Potion(Reference.MODID + "_voidstorage", new EffectInstance(PotionEffects.voidstorage, 200)).setRegistryName(Reference.MODID + ":voidstorage");
-
     @SubscribeEvent
     public static void onPotEffectRegistry(RegistryEvent.Register<Effect> event) {
         IForgeRegistry<Effect> r = event.getRegistry();
@@ -39,7 +37,7 @@ public class PotionRegistry {
     @SubscribeEvent
     public static void onPotRegistry(RegistryEvent.Register<Potion> event) {
         IForgeRegistry<Potion> r = event.getRegistry();
-        r.register(VOIDSTORAGE);
+        r.register(new Potion(Reference.MODID + "_voidstorage", new EffectInstance(PotionEffects.voidstorage, 200)).setRegistryName(Reference.MODID + ":voidstorage"));
     }
 
     public static class PotionEffects {
