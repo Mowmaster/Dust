@@ -68,7 +68,7 @@ public class BlockVoidPot extends Block {
 
     public static final Block BLOCK_VOIDPOT  = new BlockVoidPot(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(RESLOC_VOIDPOT);
 
-    public static final Item ITEM_VOIDPOT  = new BlockItem(BLOCK_VOIDPOT , new Item.Properties().group(dust.ITEM_GROUP)) {}.setRegistryName(RESLOC_VOIDPOT);
+    public static final Item ITEM_VOIDPOT  = new BlockItem(BLOCK_VOIDPOT , new Item.Properties().group(dust.BLOCK_GROUP)) {}.setRegistryName(RESLOC_VOIDPOT);
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

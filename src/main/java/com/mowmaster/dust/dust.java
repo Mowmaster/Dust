@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.blocks.BlockVoidPot;
 import com.mowmaster.dust.client.ClientDust;
 import com.mowmaster.dust.configtabs.CreativeTab;
+import com.mowmaster.dust.configtabs.CreativeTabBlock;
 import com.mowmaster.dust.crafting.Recipes;
 import com.mowmaster.dust.item.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
@@ -30,6 +31,7 @@ public class dust
 {
 
     public static final ItemGroup ITEM_GROUP = new CreativeTab();
+    public static final ItemGroup BLOCK_GROUP = new CreativeTabBlock();
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

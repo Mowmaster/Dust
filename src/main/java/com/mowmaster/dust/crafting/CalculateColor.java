@@ -48,8 +48,28 @@ public class CalculateColor
         return numOut;
     }
 
-
     public static double getColorValueFromDust(int count)
+    {
+        double colorcount = 0;
+
+        if(count>0)
+        {
+            //System.out.println("Color: "+count);
+            double value1 = (count%3);
+            if(value1 == 0.0d)
+            {
+                value1 = 3;
+            }
+            //System.out.println("Value: "+value1);
+            colorcount=(value1*(85.33d))-1;
+            //System.out.println("ColorCount: "+colorcount);
+        }
+
+        return colorcount;
+    }
+
+
+    /*public static double getColorValueFromDust(int count)
     {
         double colorcount = 0;
 
@@ -67,7 +87,7 @@ public class CalculateColor
         }
 
         return colorcount;
-    }
+    }*/
 
     public static int[] getRGBColorFromInt(int getINTColor)
     {
@@ -80,9 +100,42 @@ public class CalculateColor
         return intRGB;
     }
 
-    public static double[] getRGBColorFromStack(ItemStack stack)
+    /*public static double[] getRGBColorFromStack(ItemStack stack)
     {
 
+        int INTColor = stack.getTag().getInt("color");
+        int counted = stack.getCount();
+        double[] intRGB = new double[]{0.0,0.0,0.0};
+        double r=getRGBColorFromInt(INTColor)[0];
+        double g=getRGBColorFromInt(INTColor)[1];
+        double b=getRGBColorFromInt(INTColor)[2];
+        *//*if(r>0.0)r+=1;
+        if(g>0.0)g+=1;
+        if(b>0.0)b+=1;*//*
+
+        double red = r/5;
+        double green = g/5;
+        double blue = b/5;
+
+        double value1 = (counted%5);
+        if(value1 == 0.0d)
+        {
+            value1 = 5;
+        }
+
+        intRGB[0]= (value1*red);
+        intRGB[1]= (value1*green);
+        intRGB[2]= (value1*blue);
+
+        *//*if(intRGB[0]>0.0d)intRGB[0]-=1;
+        if(intRGB[1]>0.0d)intRGB[1]-=1;
+        if(intRGB[2]>0.0d)intRGB[2]-=1;*//*
+
+        return intRGB;
+    }*/
+
+    public static double[] getRGBColorFromStack(ItemStack stack)
+    {
         int INTColor = stack.getTag().getInt("color");
         int counted = stack.getCount();
         double[] intRGB = new double[]{0.0,0.0,0.0};
@@ -93,14 +146,14 @@ public class CalculateColor
         if(g>0.0)g+=1;
         if(b>0.0)b+=1;*/
 
-        double red = r/5;
-        double green = g/5;
-        double blue = b/5;
+        double red = r/3;
+        double green = g/3;
+        double blue = b/3;
 
-        double value1 = (counted%5);
+        double value1 = (counted%3);
         if(value1 == 0.0d)
         {
-            value1 = 5;
+            value1 = 3;
         }
 
         intRGB[0]= (value1*red);

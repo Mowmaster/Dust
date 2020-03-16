@@ -2,27 +2,24 @@ package com.mowmaster.dust.crafting;
 
 import com.google.common.collect.Maps;
 import com.mowmaster.dust.blocks.BlockDustStone;
-import com.mowmaster.dust.item.ItemDust;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.Map;
 
-public class SpellCraftingStone
+public class SpellCraftingStone216p2
 {
-    private static final SpellCraftingStone SPELL_CRAFTING_STONE = new SpellCraftingStone();
+    private static final SpellCraftingStone216p2 SPELL_CRAFTING_STONE = new SpellCraftingStone216p2();
 
     private final Map<Integer, ItemStack> spellCraftingStoneList = Maps.<Integer, ItemStack>newHashMap();
 
-    public static SpellCraftingStone instance()
+    public static SpellCraftingStone216p2 instance()
     {
         return SPELL_CRAFTING_STONE;
     }
 
-    private SpellCraftingStone()
+    private SpellCraftingStone216p2()
     {
-        this.addSpellCraftingStoneRecipe(0,new ItemStack(BlockDustStone.ITEM_STONE_000));
+        /*this.addSpellCraftingStoneRecipe(0,new ItemStack(BlockDustStone.ITEM_STONE_000));
         this.addSpellCraftingStoneRecipe(51,new ItemStack(BlockDustStone.ITEM_STONE_001));
         this.addSpellCraftingStoneRecipe(102,new ItemStack(BlockDustStone.ITEM_STONE_002));
         this.addSpellCraftingStoneRecipe(153,new ItemStack(BlockDustStone.ITEM_STONE_003));
@@ -244,7 +241,7 @@ public class SpellCraftingStone
         this.addSpellCraftingStoneRecipe(16777164,new ItemStack(BlockDustStone.ITEM_STONE_554));
         this.addSpellCraftingStoneRecipe(16777215,new ItemStack(BlockDustStone.ITEM_STONE_555));
 
-
+*/
     }
 
     /**

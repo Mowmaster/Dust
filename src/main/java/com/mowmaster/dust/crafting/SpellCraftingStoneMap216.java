@@ -2,13 +2,13 @@ package com.mowmaster.dust.crafting;
 
 import net.minecraft.item.ItemStack;
 
-public class SpellCraftingStoneMap
+public class SpellCraftingStoneMap216
 {
 
     public int colorIn;
     public ItemStack outputBlock;
 
-    public SpellCraftingStoneMap(int getColor, ItemStack outputDustBlock)
+    public SpellCraftingStoneMap216(int getColor, ItemStack outputDustBlock)
     {
         this.colorIn=getColor;
         this.outputBlock=outputDustBlock;

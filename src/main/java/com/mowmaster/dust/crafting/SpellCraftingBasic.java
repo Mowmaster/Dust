@@ -192,9 +192,19 @@ public class SpellCraftingBasic
                     //System.out.println(color);
 
                     //removes fire block???
-                    worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
+                    //worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                     worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
+                    if(stone == 0 && bowl == 0)
+                    {
+                        player.addPotionEffect(new EffectInstance(SpellCraftingEffect.instance().getResult(color),count*20));
+                    }
+
                     if (stone > 0) {
+
+                        if(color == 16777215 && worldIn.isNightTime())
+                        {
+                            color = 0;
+                        }
 
                             for(int i=stone;i>0;i--)
                             {
@@ -236,10 +246,7 @@ public class SpellCraftingBasic
                         worldIn.addEntity(itemEn);
                     }
 
-                    if(stone == 0 && bowl == 0)
-                    {
-                        player.addPotionEffect(new EffectInstance(SpellCraftingEffect.instance().getResult(color),count*20));
-                    }
+
                 }
             }
         }
