@@ -1,6 +1,7 @@
 package com.mowmaster.dust.crafting;
 
 import com.mowmaster.dust.item.ItemColorDust;
+import com.mowmaster.dust.item.ItemSpellScroll;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,7 +9,9 @@ import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.StringTextComponent;
@@ -55,6 +58,7 @@ public class SpellCraftingBasic
 
         int stone=0;
         int bowl=0;
+        int paper=0;
         int count=0;
 
         if(!worldIn.isRemote) {
@@ -75,6 +79,12 @@ public class SpellCraftingBasic
                         if(stack.getItem().equals(Items.STONE))
                         {
                             stone+=stack.getCount();
+                            item.remove();
+                        }
+
+                        if(stack.getItem().equals(Items.PAPER))
+                        {
+                            paper+=stack.getCount();
                             item.remove();
                         }
 
@@ -194,17 +204,66 @@ public class SpellCraftingBasic
                         //worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                         worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
 
-                        if(stone == 0 && bowl == 0)
+                        if(stone == 0 && bowl == 0 && paper == 0)
                         {
                             int amp = getPotency(white,black,5 );
                             if(white >= black)
                             {
-                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*20,amp));
+                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(color),amp));
+                                count=0;
                             }
                             else
                             {
-                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*20,amp));
+                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp));
+                                count=0;
                             }
+                        }
+
+                        if (paper > 0) {
+
+                            int amp = getPotency(white,black,5 );
+                            EffectInstance effect = null;
+
+                            if(white >= black)
+                            {
+                                effect = new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(color),amp);
+                            }
+                            else
+                            {
+                                effect = new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp);
+                            }
+
+                            if(effect != null)
+                            {
+                                ItemStack scroll = new ItemStack(ItemSpellScroll.SPELLSCROLL);
+
+                                CompoundNBT nbt = new CompoundNBT();
+                                /*if(stack.getTag().contains("scrolleffect"))
+                                {
+                                    CompoundNBT invTag = stack.getChildTag("scrolleffect");
+                                    instance = EffectInstance.read(invTag);
+                                }*/
+                                for(int i=paper;i>0;i--)
+                                {
+                                    if(count>=2)
+                                    {
+                                        count-=2;
+                                        paper-=1;
+                                        ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(SpellCraftingStone.instance().getResult(color).getItem(),1));
+                                        itemEn.setInvulnerable(true);
+                                        worldIn.addEntity(itemEn);
+                                    }
+                                    else
+                                    {
+                                        ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(Items.STONE,stone));
+                                        paper-=stone;
+                                        itemEn.setInvulnerable(true);
+                                        worldIn.addEntity(itemEn);
+                                    }
+                                }
+                            }
+
+
                         }
 
                         if (stone > 0) {
@@ -257,6 +316,18 @@ public class SpellCraftingBasic
                 }
             }
         }
+    }
+
+    public static int getPotionModifier(int color)
+    {
+        int count = 20;
+        Effect getEffect = SpellCraftingEffectGood.instance().getResult(color);
+        if(getEffect.equals(Effects.INSTANT_HEALTH) || getEffect.equals(Effects.INSTANT_DAMAGE) || getEffect.equals(Effects.SATURATION))
+        {
+            count = 1;
+        }
+
+        return count;
     }
 
     //ToDo: addconfig for potency cap

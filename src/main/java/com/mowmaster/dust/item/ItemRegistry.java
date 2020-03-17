@@ -53,6 +53,8 @@ public class ItemRegistry
         ItemUpgradeMilker.onItemRegistryReady(e);
         ItemUpgradeShearer.onItemRegistryReady(e);
         ItemUpgradePlacer.onItemRegistryReady(e);
+
+        ItemSpellScroll.onItemRegistryReady(e);
     }
 
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
