@@ -52,12 +52,18 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         super(pedestal_stone);
     }
 
+    private void update()
+    {
+        markDirty();
+        world.notifyBlockUpdate(pos,getBlockState(),getBlockState(),1);
+        world.notifyBlockUpdate(pos,getBlockState(),getBlockState(),2);
+    }
+
     private IItemHandler createHandler() {
         return new ItemStackHandler(2) {
             @Override
             protected void onContentsChanged(int slot) {
-                markDirty();
-                world.notifyBlockUpdate(pos,getBlockState(),getBlockState(),2);
+                update();
             }
 
             @Override
@@ -88,8 +94,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             storedLocations.add(pos);
             returner=true;
         }
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
 
         return returner;
@@ -114,8 +119,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             storedLocations.remove(pos);
             returner=true;
         }
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
         return returner;
     }
@@ -141,13 +145,23 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     public void setStoredValueForUpgrades(int value)
     {
         storedValueForUpgrades = value;
+        update();
     }
     public int getPedestalTransferAmount(){return intTransferAmount;}
-    public void setPedestalTransferAmount(int transferAmount){intTransferAmount = transferAmount;}
+    public void setPedestalTransferAmount(int transferAmount){
+        intTransferAmount = transferAmount;
+        update();
+    }
     public int getPedestalTransferSpeed(){return intTransferSpeed;}
-    public void setPedestalTransferSpeed(int transferSpeed){intTransferSpeed = transferSpeed;}
+    public void setPedestalTransferSpeed(int transferSpeed){
+        intTransferSpeed = transferSpeed;
+        update();
+    }
     public int getPedestalTransferRange(){return intTransferRange;}
-    public void setPedestalTransferRange(int transferSpeed){intTransferRange = transferSpeed;}
+    public void setPedestalTransferRange(int transferSpeed){
+        intTransferRange = transferSpeed;
+        update();
+    }
     public int spaceInPedestal()
     {
         int space = 0;
@@ -219,8 +233,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     public ItemStack removeItem(int numToRemove) {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(0,numToRemove,false);
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
         return stack;
     }
@@ -228,8 +241,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     public ItemStack removeItem() {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(0,h.getStackInSlot(0).getCount(),false);
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
         return stack;
     }
@@ -238,8 +250,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(1,h.getStackInSlot(1).getCount(),false);
         setStoredValueForUpgrades(0);
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
         return stack;
     }
@@ -315,8 +326,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             }
         }
         else {h.insertItem(0, itemFromBlock.copy(), false);}
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
         return true;
     }
@@ -328,8 +338,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         itemFromBlock.setCount(1);
         if(hasCoin()){} else h.insertItem(1,itemFromBlock,false);
         setStoredValueForUpgrades(0);
-        this.markDirty();
-        world.notifyBlockUpdate(this.pos,this.getBlockState(),this.getBlockState(),2);
+        update();
 
         return true;
     }
@@ -529,6 +538,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                 copyStackToSend.setCount(countToSend);
                 removeItem(copyStackToSend.getCount());
                 tileToSendTo.addItem(copyStackToSend);
+                tileToSendTo.update();
                 //remove item will mark dirty this pedestan
                 //addItem mark dirties the reciever pedestal
             }

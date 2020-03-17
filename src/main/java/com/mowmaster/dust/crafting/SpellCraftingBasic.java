@@ -126,88 +126,93 @@ public class SpellCraftingBasic
                         }
                     }
 
-                    red = r%256;
-                    green = g%256;
-                    blue = b%256;
 
-                    cred = cr%256;
-                    cgreen = cg%256;
-                    cblue = cb%256;
-
-                    //Combination color, need to not use combi colors for mixing but use for stone
-                    //combi colors cant be mixed
-                    //combi colors override normal color mix for stone
-
-
-                    double rgbRed = red;
-                    double rgbGreen = green;
-                    double rgbBlue = blue;
-                    double crgbRed = cred;
-                    double crgbGreen = cgreen;
-                    double crgbBlue = cblue;
-
-                    int color = 0;
-
-
-                    if(stone>0 && black>0 || white>0)
+                    if(count > 0)
                     {
-                        if (black>white)
+                        red = r%256;
+                        green = g%256;
+                        blue = b%256;
+
+                        cred = cr%256;
+                        cgreen = cg%256;
+                        cblue = cb%256;
+
+                        //Combination color, need to not use combi colors for mixing but use for stone
+                        //combi colors cant be mixed
+                        //combi colors override normal color mix for stone
+
+
+                        double rgbRed = red;
+                        double rgbGreen = green;
+                        double rgbBlue = blue;
+                        double crgbRed = cred;
+                        double crgbGreen = cgreen;
+                        double crgbBlue = cblue;
+
+                        int color = 0;
+
+
+                        if(stone>0 && (black>0 || white>0))
                         {
-                            rgbRed = 0;
-                            rgbGreen = 0;
-                            rgbBlue = 0;
-                            count = black + white;
+                            if (black>white)
+                            {
+                                rgbRed = 0;
+                                rgbGreen = 0;
+                                rgbBlue = 0;
+                                count = black + white;
+                            }
+                            else
+                            {
+                                rgbRed = 255;
+                                rgbGreen = 255;
+                                rgbBlue = 255;
+                                count = white + black;
+                            }
+                        }
+
+                        if(bowl > 0)
+                        {
+                            color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
+                        }
+                        else if (r+g+b > 0)
+                        {
+                            color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
                         }
                         else
                         {
-                            rgbRed = 255;
-                            rgbGreen = 255;
-                            rgbBlue = 255;
-                            count = white + black;
+                            color = CalculateColor.getColorFromRGB(crgbRed,crgbGreen,crgbBlue);
                         }
-                    }
 
-                    if(bowl > 0)
-                    {
-                        color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
-                    }
-                    else if (r+g+b > 0)
-                    {
-                        color = CalculateColor.getColorFromRGB(rgbRed,rgbGreen,rgbBlue);
-                    }
-                    else
-                    {
-                        color = CalculateColor.getColorFromRGB(crgbRed,crgbGreen,crgbBlue);
-                    }
 
-                    /*System.out.println("Red: " + red + " rgb: " +rgbRed);
-                    System.out.println("Green: "  + green + " rgb: " + rgbGreen);
-                    System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
-                    player.sendMessage(new StringTextComponent(TextFormatting.GOLD +""+color));
-                    //System.out.println(color);
+                        /*System.out.println("Red: " + red + " rgb: " +rgbRed);
+                        System.out.println("Green: "  + green + " rgb: " + rgbGreen);
+                        System.out.println("Blue: " + blue + " rgb: " + rgbBlue);*/
+                        player.sendMessage(new StringTextComponent(TextFormatting.GOLD +""+color));
+                        //System.out.println(color);
 
-                    //removes fire block???
-                    //worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
-                    worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
-                    if(stone == 0 && bowl == 0)
-                    {
-                        int amp = getPotency(white,black,5 );
-                        if(white > black)
+                        //removes fire block???
+                        //worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
+                        worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
+
+                        if(stone == 0 && bowl == 0)
                         {
-                            player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*20,amp));
+                            int amp = getPotency(white,black,5 );
+                            if(white >= black)
+                            {
+                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*20,amp));
+                            }
+                            else
+                            {
+                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*20,amp));
+                            }
                         }
-                        else
-                        {
-                            player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*20,amp));
-                        }
-                    }
 
-                    if (stone > 0) {
+                        if (stone > 0) {
 
-                        if(color == 16777215 && worldIn.isNightTime())
-                        {
-                            color = 0;
-                        }
+                            if(color == 16777215 && worldIn.isNightTime())
+                            {
+                                color = 0;
+                            }
 
                             for(int i=stone;i>0;i--)
                             {
@@ -227,29 +232,28 @@ public class SpellCraftingBasic
                                     worldIn.addEntity(itemEn);
                                 }
                             }
-                    }
-
-                    if(bowl>0)
-                    {
-                        //Make Black color at night
-                        if(color == 16777215 && worldIn.isNightTime())
-                        {
-                            color = 0;
                         }
 
-                        //NEED TO ADD ANOTHER TAG TO ITEM TO MAKE IT NOT USEABLE IN COMBINING AGAIN!!!
-                        ItemStack stacked = new ItemStack(ItemColorDust.DUST,1);
-                        CompoundNBT nbt = new CompoundNBT();
-                        nbt.putInt("color",color);
-                        nbt.putBoolean("combine",false);
-                        stacked.setTag(nbt);
-                        stacked.setCount(count);
-                        ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,stacked);
-                        itemEn.setInvulnerable(true);
-                        worldIn.addEntity(itemEn);
+                        if(bowl>0)
+                        {
+                            //Make Black color at night
+                            if(color == 16777215 && worldIn.isNightTime())
+                            {
+                                color = 0;
+                            }
+
+                            //NEED TO ADD ANOTHER TAG TO ITEM TO MAKE IT NOT USEABLE IN COMBINING AGAIN!!!
+                            ItemStack stacked = new ItemStack(ItemColorDust.DUST,1);
+                            CompoundNBT nbt = new CompoundNBT();
+                            nbt.putInt("color",color);
+                            if(color == 255 || color == 16711680 || color == 65280) {} else {nbt.putBoolean("combine",false);}
+                            stacked.setTag(nbt);
+                            stacked.setCount(count);
+                            ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,stacked);
+                            itemEn.setInvulnerable(true);
+                            worldIn.addEntity(itemEn);
+                        }
                     }
-
-
                 }
             }
         }

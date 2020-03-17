@@ -151,7 +151,7 @@ public class ItemUpgradeCrusher extends ItemUpgradeBase
                             int maxInSlot = handler.getSlotLimit(i);
                             itemFromInv = handler.getStackInSlot(i);
                             //Should work without catch since we null check this in our GetNextSlotFunction\
-                            System.out.println(Crusher.instance().getResult(itemFromInv.getItem()));
+                            //System.out.println(Crusher.instance().getResult(itemFromInv.getItem()));
                             ItemStack resultSmelted = Crusher.instance().getResult(itemFromInv.getItem());
                             ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
                             if(!resultSmelted.equals(ItemStack.EMPTY))
