@@ -2,16 +2,16 @@ package com.mowmaster.dust.crafting;
 
 import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemSpellScroll;
+import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.TippedArrowItem;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.potion.*;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.StringTextComponent;
@@ -235,31 +235,21 @@ public class SpellCraftingBasic
 
                             if(effect != null)
                             {
-                                ItemStack scroll = new ItemStack(ItemSpellScroll.SPELLSCROLL);
-
+                                ItemStack scroll = new ItemStack(ItemSpellScroll.SPELLSCROLL,1);
+                                int dur = effect.getDuration()/paper;
                                 CompoundNBT nbt = new CompoundNBT();
-                                /*if(stack.getTag().contains("scrolleffect"))
-                                {
-                                    CompoundNBT invTag = stack.getChildTag("scrolleffect");
-                                    instance = EffectInstance.read(invTag);
-                                }*/
+                                nbt.putInt(Reference.MODID + "Potion",Effect.getId(effect.getPotion()));
+                                nbt.putInt(Reference.MODID + "Amplifier",effect.getAmplifier());
+                                nbt.putInt(Reference.MODID + "Duration",(dur));
+                                scroll.setTag(nbt);
+
                                 for(int i=paper;i>0;i--)
                                 {
-                                    if(count>=2)
-                                    {
-                                        count-=2;
-                                        paper-=1;
-                                        ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(SpellCraftingStone.instance().getResult(color).getItem(),1));
-                                        itemEn.setInvulnerable(true);
-                                        worldIn.addEntity(itemEn);
-                                    }
-                                    else
-                                    {
-                                        ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(Items.STONE,stone));
-                                        paper-=stone;
-                                        itemEn.setInvulnerable(true);
-                                        worldIn.addEntity(itemEn);
-                                    }
+                                    paper-=1;
+                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,scroll);
+                                    itemEn.setInvulnerable(true);
+                                    itemEn.onCollideWithPlayer(player);
+                                    //worldIn.addEntity(itemEn);
                                 }
                             }
 
