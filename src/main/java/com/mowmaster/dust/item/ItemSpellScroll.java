@@ -1,7 +1,11 @@
 package com.mowmaster.dust.item;
 
+import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileTrap;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -10,10 +14,12 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -35,9 +41,12 @@ public class ItemSpellScroll extends Item
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_) {
+        World world = p_77659_1_;
         PlayerEntity player = p_77659_2_;
         Hand hand = p_77659_3_;
         ItemStack itemInHand = player.getHeldItem(hand);
+
+        BlockPos pos = new BlockPos(player.getLookVec().getX(),player.getLookVec().getY(),player.getLookVec().getZ());
 
         if(itemInHand.hasTag())
         {
@@ -46,11 +55,34 @@ public class ItemSpellScroll extends Item
                 EffectInstance effect = getPotionEffectFromStack(itemInHand);
                 if(effect != null)
                 {
-                    player.addPotionEffect(effect);
-                    player.getHeldItem(hand).shrink(1);
+                    if(player.getBlockState().getBlock() instanceof PressurePlateBlock)
+                    {
+                        world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                        if(player.getBlockState().getBlock().equals(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) || player.getBlockState().getBlock().equals(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE))
+                        {
+                            world.setBlockState(pos, BlockTrap.BLOCKTRAPPLAYER.getDefaultState());
+                        }
+                        else
+                        {
+                            world.setBlockState(pos, BlockTrap.BLOCKTRAPMOB.getDefaultState());
+                        }
+
+                        TileEntity tileentity = world.getTileEntity(pos);
+                        if (tileentity instanceof TileTrap) {
+                            ((TileTrap) tileentity).setTrapEffect(effect);
+                            player.getHeldItem(hand).shrink(1);
+                        }
+                    }
+                    else
+                    {
+                        player.addPotionEffect(effect);
+                        player.getHeldItem(hand).shrink(1);
+                    }
                 }
             }
         }
+
+
 
         return ActionResult.resultPass(itemInHand);
     }
@@ -129,7 +161,7 @@ public class ItemSpellScroll extends Item
         }
     }
 
-    public static final Item SPELLSCROLL = new ItemSpellScroll().setRegistryName(new ResourceLocation(MODID, "scroll/spellscroll"));
+    public static final Item SPELLSCROLL = new ItemSpellScroll().setRegistryName(new ResourceLocation(MODID, "scroll/effect"));
 
     @SubscribeEvent
     public static void onItemRegistryReady(RegistryEvent.Register<Item> event)

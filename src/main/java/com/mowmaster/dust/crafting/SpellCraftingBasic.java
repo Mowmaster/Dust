@@ -1,19 +1,23 @@
 package com.mowmaster.dust.crafting;
 
+import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemSpellScroll;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileTrap;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.FlintAndSteelItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.TippedArrowItem;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.*;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
@@ -60,6 +64,8 @@ public class SpellCraftingBasic
         int bowl=0;
         int paper=0;
         int count=0;
+        int plate=0;
+        ItemStack trapped = ItemStack.EMPTY;
 
         if(!worldIn.isRemote) {
             //List<EntityItem> item = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
@@ -85,6 +91,13 @@ public class SpellCraftingBasic
                         if(stack.getItem().equals(Items.PAPER))
                         {
                             paper+=stack.getCount();
+                            item.remove();
+                        }
+
+                        if(containsPressurePlate(stack))
+                        {
+                            trapped = stack.copy();
+                            plate++;
                             item.remove();
                         }
 
@@ -204,7 +217,7 @@ public class SpellCraftingBasic
                         //worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                         worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
 
-                        if(stone == 0 && bowl == 0 && paper == 0)
+                        if(stone == 0 && bowl == 0 && paper == 0 && plate == 0)
                         {
                             int amp = getPotency(white,black,5 );
                             if(white >= black)
@@ -216,6 +229,40 @@ public class SpellCraftingBasic
                             {
                                 player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp));
                                 count=0;
+                            }
+                        }
+
+                        if (plate > 0) {
+
+                            int amp = getPotency(white,black,5 );
+                            EffectInstance effect = null;
+
+                            if(white >= black)
+                            {
+                                effect = new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(color),amp);
+                            }
+                            else
+                            {
+                                effect = new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp);
+                            }
+
+                            if(effect != null)
+                            {
+                                worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), Blocks.AIR.getDefaultState());
+                                if(trapped.getItem().equals(Item.getItemFromBlock(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)) || trapped.getItem().equals(Item.getItemFromBlock(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE)))
+                                {
+                                    worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPPLAYER.getDefaultState());
+                                }
+                                else
+                                {
+                                    worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPMOB.getDefaultState());
+                                }
+
+                                TileEntity tileentity = worldIn.getTileEntity(new BlockPos(posX,posY+1,posZ));
+                                if (tileentity instanceof TileTrap) {
+                                    ((TileTrap) tileentity).setTrapEffect(effect);
+                                    plate = 0;
+                                }
                             }
                         }
 
@@ -252,8 +299,6 @@ public class SpellCraftingBasic
                                     //worldIn.addEntity(itemEn);
                                 }
                             }
-
-
                         }
 
                         if (stone > 0) {
@@ -343,5 +388,14 @@ public class SpellCraftingBasic
         }
 
         return amp;
+    }
+
+    public static boolean containsPressurePlate(ItemStack stack)
+    {
+        if(Block.getBlockFromItem(stack.getItem()) instanceof PressurePlateBlock)
+        {
+            return true;
+        }
+        else return false;
     }
 }

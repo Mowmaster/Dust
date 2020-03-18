@@ -3,6 +3,7 @@ package com.mowmaster.dust.item;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.blocks.BlockVoidPot;
 import com.mowmaster.dust.item.pedestalUpgrades.*;
 import net.minecraft.item.Item;
@@ -16,6 +17,7 @@ public class ItemRegistry
         BlockDustStone.onItemRegistryReady(e);
         BlockPedestal.onItemRegistryReady(e);
         BlockVoidPot.onItemRegistryReady(e);
+        BlockTrap.onItemRegistryReady(e);
         
         ItemDust.onItemRegistryReady(e);
         ItemColorDust.onItemRegistryReady(e);
