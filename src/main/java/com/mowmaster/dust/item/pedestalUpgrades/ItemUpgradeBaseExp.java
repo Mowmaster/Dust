@@ -18,7 +18,6 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
 
     public ItemUpgradeBaseExp(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
-    private int summonRate = 55;
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return super.isBookEnchantable(stack, book);
@@ -36,8 +35,10 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
 
     public int getExpTransferRate(ItemStack stack)
     {
-        /*switch (getRateModifier(PotionRegistry.POTION_VOIDSTORAGE,stack))
+        int summonRate = 55;
+        switch (getCapacityModifier(stack))
         {
+
             case 0:
                 summonRate = 55;//5
                 break;
@@ -57,7 +58,7 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
                 summonRate=1395;//30
                 break;
             default: summonRate=55;
-        }*/
+        }
 
         return  summonRate;
     }

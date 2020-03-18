@@ -5,10 +5,7 @@ import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemSpellScroll;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileTrap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -27,6 +24,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+
+import static com.mowmaster.dust.blocks.BlockTrap.WATERLOGGED;
 
 
 @Mod.EventBusSubscriber
@@ -232,7 +231,7 @@ public class SpellCraftingBasic
                             }
                         }
 
-                        if (plate > 0) {
+                        else if (plate > 0) {
 
                             int amp = getPotency(white,black,5 );
                             EffectInstance effect = null;
@@ -251,10 +250,18 @@ public class SpellCraftingBasic
                                 worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), Blocks.AIR.getDefaultState());
                                 if(trapped.getItem().equals(Item.getItemFromBlock(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)) || trapped.getItem().equals(Item.getItemFromBlock(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE)))
                                 {
-                                    worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPPLAYER.getDefaultState());
+                                    if(player.isInWater())
+                                    {
+                                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPPLAYER.getDefaultState().with(WATERLOGGED,true));
+                                    }
+                                    else worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPPLAYER.getDefaultState());
                                 }
                                 else
                                 {
+                                    if(player.isInWater())
+                                    {
+                                        worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPMOB.getDefaultState().with(WATERLOGGED,true));
+                                    }
                                     worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockTrap.BLOCKTRAPMOB.getDefaultState());
                                 }
 
@@ -266,7 +273,7 @@ public class SpellCraftingBasic
                             }
                         }
 
-                        if (paper > 0) {
+                        else if (paper > 0) {
 
                             int amp = getPotency(white,black,5 );
                             EffectInstance effect = null;
@@ -301,7 +308,7 @@ public class SpellCraftingBasic
                             }
                         }
 
-                        if (stone > 0) {
+                        else if (stone > 0) {
 
                             if(color == 16777215 && worldIn.isNightTime())
                             {
@@ -328,7 +335,7 @@ public class SpellCraftingBasic
                             }
                         }
 
-                        if(bowl>0)
+                        else if(bowl>0)
                         {
                             //Make Black color at night
                             if(color == 16777215 && worldIn.isNightTime())
@@ -392,7 +399,7 @@ public class SpellCraftingBasic
 
     public static boolean containsPressurePlate(ItemStack stack)
     {
-        if(Block.getBlockFromItem(stack.getItem()) instanceof PressurePlateBlock)
+        if(Block.getBlockFromItem(stack.getItem()) instanceof AbstractPressurePlateBlock)
         {
             return true;
         }

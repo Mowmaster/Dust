@@ -15,6 +15,7 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -28,6 +29,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
@@ -309,6 +311,7 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
     public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
         return getRedstoneLevel(worldIn,pos);
     }
+
 
     @Override
     public boolean hasTileEntity(BlockState state) {

@@ -1,20 +1,14 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.dust;
-import com.mowmaster.dust.item.ItemCrystalWrench;
-import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
-import com.mowmaster.dust.tiles.TilePedestal;
 import com.mowmaster.dust.tiles.TileTrap;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
@@ -22,13 +16,13 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -50,7 +44,7 @@ public class BlockTrap extends Block implements IWaterLoggable {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    protected static final VoxelShape BLOCK = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D));
+    protected static final VoxelShape BLOCK = VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D));
 
     public BlockTrap(Properties builder)
     {
@@ -105,26 +99,38 @@ public class BlockTrap extends Block implements IWaterLoggable {
         return BLOCK;
     }
 
-    @Override
+    /*@Override
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return VoxelShapes.or(Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D));
+    }*/
+
+    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+        return type == PathType.AIR && !this.blocksMovement ? true : super.allowsMovement(state, worldIn, pos, type);
     }
 
     /*Directly From CactusBlock Code*/
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity instanceof TileTrap)
+        if(!worldIn.isRemote)
         {
-            TileTrap tileTrap = (TileTrap) tileentity;
+            TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if(!worldIn.isRemote)
+            if (tileentity instanceof TileTrap)
             {
-                if(this.equals(BLOCKTRAPMOB))
+                TileTrap tileTrap = (TileTrap) tileentity;
+
+                if(entityIn instanceof AbstractArrowEntity)
+                {
+                    worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                    worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+                }
+                else if(state.getBlock().equals(BLOCKTRAPMOB))
                 {
                     if(entityIn instanceof MobEntity)
                     {
                         ((MobEntity) entityIn).addPotionEffect(tileTrap.getTrapEffect());
+                        worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                 }
                 else
@@ -132,11 +138,15 @@ public class BlockTrap extends Block implements IWaterLoggable {
                     if(entityIn instanceof PlayerEntity)
                     {
                         ((PlayerEntity) entityIn).addPotionEffect(tileTrap.getTrapEffect());
+                        worldIn.playSound(((PlayerEntity) entityIn), pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                 }
             }
         }
     }
+
+
 
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
@@ -153,10 +163,23 @@ public class BlockTrap extends Block implements IWaterLoggable {
         return new TileTrap();
     }
 
-    @Deprecated
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
+    @OnlyIn(Dist.CLIENT)
+    public float getAmbientOcclusionLightValue(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+        return 1.0F;
     }
+
+    public boolean causesSuffocation(BlockState p_229869_1_, IBlockReader p_229869_2_, BlockPos p_229869_3_) {
+        return false;
+    }
+
+    public boolean isNormalCube(BlockState p_220081_1_, IBlockReader p_220081_2_, BlockPos p_220081_3_) {
+        return false;
+    }
+
+    public boolean canEntitySpawn(BlockState p_220067_1_, IBlockReader p_220067_2_, BlockPos p_220067_3_, EntityType<?> p_220067_4_) {
+        return false;
+    }
+
 
     @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
@@ -169,8 +192,8 @@ public class BlockTrap extends Block implements IWaterLoggable {
         }
     }
 
-    private static final ResourceLocation TRAPPLAYER = new ResourceLocation(MODID, "trapplayer");
-    private static final ResourceLocation TRAPMOB = new ResourceLocation(MODID, "trapmob");
+    private static final ResourceLocation TRAPPLAYER = new ResourceLocation(MODID, "trap/trapplayer");
+    private static final ResourceLocation TRAPMOB = new ResourceLocation(MODID, "trap/trapmob");
 
     public static final Block BLOCKTRAPPLAYER = new BlockTrap(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(TRAPPLAYER);
     public static final Block BLOCKTRAPMOB = new BlockTrap(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(TRAPMOB);

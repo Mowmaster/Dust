@@ -5,6 +5,7 @@ import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBaseFilter;
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -45,7 +46,7 @@ public class TileTrap extends TileEntity {
 
     public TileTrap()
     {
-        super(TILETRAPPLAYERTYPE);
+        super(TILETRAPTYPE);
     }
 
     private void update()
@@ -111,16 +112,15 @@ public class TileTrap extends TileEntity {
         this.read(tag);
     }
 
-    private static final ResourceLocation TILETRAPPLAYER = new ResourceLocation(MODID, "tile/trapplayer");
-    //private static final ResourceLocation TILETRAPMOB = new ResourceLocation(MODID, "tile/trapmob");
+    private static Block[] trapArray = new Block[]{BlockTrap.BLOCKTRAPPLAYER,BlockTrap.BLOCKTRAPMOB};
 
-    public static TileEntityType<TileTrap> TILETRAPPLAYERTYPE = TileEntityType.Builder.create(TileTrap::new, BlockTrap.BLOCKTRAPPLAYER).build(null);
-    //public static TileEntityType<TileTrap> TILETRAPMOBTYPE = TileEntityType.Builder.create(TileTrap::new, BlockTrap.BLOCKTRAPMOB).build(null);
+    private static final ResourceLocation TILETRAP = new ResourceLocation(MODID, "tile/trap");
+
+    public static TileEntityType<TileTrap> TILETRAPTYPE = TileEntityType.Builder.create(TileTrap::new, trapArray).build(null);
 
     @SubscribeEvent
     public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
         IForgeRegistry<TileEntityType<?>> r = event.getRegistry();
-        r.register(TILETRAPPLAYERTYPE.setRegistryName(TILETRAPPLAYER));
-        //r.register(TILETRAPMOBTYPE.setRegistryName(TILETRAPMOB));
+        r.register(TILETRAPTYPE.setRegistryName(TILETRAP));
     }
 }
