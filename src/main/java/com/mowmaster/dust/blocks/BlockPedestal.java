@@ -92,6 +92,19 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.UP).with(WATERLOGGED, Boolean.valueOf(false)));
     }
 
+    /*public void dropAllItems() {
+        for(List<ItemStack> list : this.allInventories) {
+            for(int i = 0; i < list.size(); ++i) {
+                ItemStack itemstack = list.get(i);
+                if (!itemstack.isEmpty()) {
+                    this.player.dropItem(itemstack, true, false);
+                    list.set(i, ItemStack.EMPTY);
+                }
+            }
+        }
+
+    }*/
+
     @Override
     public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidStateIn) {
         if (!state.get(BlockStateProperties.WATERLOGGED) && fluidStateIn.getFluid() == Fluids.WATER) {

@@ -4,8 +4,11 @@ import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TileTrap;
+import net.minecraft.block.AbstractPressurePlateBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -15,12 +18,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
@@ -29,6 +33,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.mowmaster.dust.blocks.BlockTrap.WATERLOGGED;
 import static com.mowmaster.dust.references.Reference.MODID;
 
 
@@ -40,49 +45,98 @@ public class ItemSpellScroll extends Item
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_) {
-        World world = p_77659_1_;
-        PlayerEntity player = p_77659_2_;
-        Hand hand = p_77659_3_;
-        ItemStack itemInHand = player.getHeldItem(hand);
+    public ActionResultType onItemUse(ItemUseContext context) {
+        World world = context.getWorld();
+        BlockPos pos = context.getPos();
+        PlayerEntity player = context.getPlayer();
+        Hand hand = context.getHand();
+        BlockState state = world.getBlockState(pos);
+        ActionResultType returner = ActionResultType.FAIL;
 
-        BlockPos pos = new BlockPos(player.getLookVec().getX(),player.getLookVec().getY(),player.getLookVec().getZ());
-
-        if(itemInHand.hasTag())
+        if(!world.isRemote)
         {
-            if(itemInHand.getTag().contains(Reference.MODID + "Potion"))
+            if(player.getHeldItem(hand).hasTag())
             {
-                EffectInstance effect = getPotionEffectFromStack(itemInHand);
-                if(effect != null)
+                if(player.getHeldItem(hand).getTag().contains(Reference.MODID + "Potion"))
                 {
-                    if(player.getBlockState().getBlock() instanceof PressurePlateBlock)
+                    EffectInstance effect = getPotionEffectFromStack(player.getHeldItem(hand));
+                    if(effect != null)
                     {
-                        world.setBlockState(pos, Blocks.AIR.getDefaultState());
-                        if(player.getBlockState().getBlock().equals(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) || player.getBlockState().getBlock().equals(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE))
+                        player.sendMessage(new StringTextComponent(TextFormatting.LIGHT_PURPLE +""+state.getBlock()));
+                        if(state.getBlock() instanceof AbstractPressurePlateBlock)
                         {
-                            world.setBlockState(pos, BlockTrap.BLOCKTRAPPLAYER.getDefaultState());
-                        }
-                        else
-                        {
-                            world.setBlockState(pos, BlockTrap.BLOCKTRAPMOB.getDefaultState());
-                        }
+                            if(state.getBlock().equals(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) || state.getBlock().equals(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE))
+                            {
 
-                        TileEntity tileentity = world.getTileEntity(pos);
-                        if (tileentity instanceof TileTrap) {
-                            ((TileTrap) tileentity).setTrapEffect(effect);
-                            player.getHeldItem(hand).shrink(1);
+                                if(player.isInWater())
+                                {
+                                    world.setBlockState(pos, BlockTrap.BLOCKTRAPPLAYER.getDefaultState().with(WATERLOGGED,true));
+                                }
+                                else world.setBlockState(pos, BlockTrap.BLOCKTRAPPLAYER.getDefaultState());
+
+                                TileEntity tileentity = world.getTileEntity(pos);
+                                if (tileentity instanceof TileTrap) {
+                                    ((TileTrap) tileentity).setTrapEffect(effect);
+                                    world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_SNOW_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                    player.getHeldItem(hand).shrink(1);
+                                    returner = ActionResultType.PASS;
+                                }
+                            }
+                            else
+                            {
+                                if(player.isInWater())
+                                {
+                                    world.setBlockState(pos, BlockTrap.BLOCKTRAPMOB.getDefaultState().with(WATERLOGGED,true));
+                                }
+                                else world.setBlockState(pos, BlockTrap.BLOCKTRAPMOB.getDefaultState());
+
+                                TileEntity tileentity = world.getTileEntity(pos);
+                                if (tileentity instanceof TileTrap) {
+                                    ((TileTrap) tileentity).setTrapEffect(effect);
+                                    world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_SNOW_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                    player.getHeldItem(hand).shrink(1);
+                                    returner = ActionResultType.PASS;
+                                }
+                            }
                         }
-                    }
-                    else
-                    {
-                        player.addPotionEffect(effect);
-                        player.getHeldItem(hand).shrink(1);
+                        /*else
+                        {
+                            player.addPotionEffect(effect);
+                            world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            player.getHeldItem(hand).shrink(1);
+                        }*/
                     }
                 }
             }
         }
 
+        return returner;
+    }
 
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_) {
+        World world = p_77659_1_;
+        PlayerEntity player = p_77659_2_;
+        BlockPos pos = player.getPosition();
+        Hand hand = p_77659_3_;
+        ItemStack itemInHand = player.getHeldItem(hand);
+
+        if(!world.isRemote)
+        {
+            if(itemInHand.hasTag())
+            {
+                if(itemInHand.getTag().contains(Reference.MODID + "Potion"))
+                {
+                    EffectInstance effect = getPotionEffectFromStack(itemInHand);
+                    if(effect != null)
+                    {
+                        player.addPotionEffect(effect);
+                        world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        player.getHeldItem(hand).shrink(1);
+                    }
+                }
+            }
+        }
 
         return ActionResult.resultPass(itemInHand);
     }

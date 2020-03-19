@@ -121,7 +121,7 @@ public class BlockTrap extends Block implements IWaterLoggable {
 
                 if(entityIn instanceof AbstractArrowEntity)
                 {
-                    worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                    worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                 }
                 else if(state.getBlock().equals(BLOCKTRAPMOB))
@@ -129,7 +129,7 @@ public class BlockTrap extends Block implements IWaterLoggable {
                     if(entityIn instanceof MobEntity)
                     {
                         ((MobEntity) entityIn).addPotionEffect(tileTrap.getTrapEffect());
-                        worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                        worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                 }
@@ -138,7 +138,7 @@ public class BlockTrap extends Block implements IWaterLoggable {
                     if(entityIn instanceof PlayerEntity)
                     {
                         ((PlayerEntity) entityIn).addPotionEffect(tileTrap.getTrapEffect());
-                        worldIn.playSound(((PlayerEntity) entityIn), pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 0.15F, 1.0F);
+                        worldIn.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
                         worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
                     }
                 }
