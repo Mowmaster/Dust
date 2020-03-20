@@ -1,5 +1,5 @@
 {
-  "parent" : "dust:block/pedestal/pedestal_stone",
+  "parent" : "dust:block/pedestal/pedestal",
   "display" : {
     "thirdperson" : {
       "rotation" : [10, -45, 170],

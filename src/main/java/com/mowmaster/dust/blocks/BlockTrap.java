@@ -54,8 +54,6 @@ public class BlockTrap extends Block implements IWaterLoggable {
         this.setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, Boolean.valueOf(false)));
     }
 
-    TippedArrowItem
-
     @Override
     public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidStateIn) {
         if (!state.get(BlockStateProperties.WATERLOGGED) && fluidStateIn.getFluid() == Fluids.WATER) {

@@ -3,6 +3,7 @@ package com.mowmaster.dust.tiles;
 import com.mowmaster.dust.blocks.BlockPedestal;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBaseFilter;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -49,7 +50,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
 
     public TilePedestal()
     {
-        super(pedestal_stone);
+        super(PEDESTALTYPE);
     }
 
     private void update()
@@ -715,13 +716,30 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         this.read(tag);
     }
 
+    private static Block[] pedArray = new Block[]{BlockPedestal.PEDESTAL_000,BlockPedestal.PEDESTAL_001,BlockPedestal.PEDESTAL_002,BlockPedestal.PEDESTAL_003
+            ,BlockPedestal.PEDESTAL_010,BlockPedestal.PEDESTAL_011,BlockPedestal.PEDESTAL_012,BlockPedestal.PEDESTAL_013
+            ,BlockPedestal.PEDESTAL_020,BlockPedestal.PEDESTAL_021,BlockPedestal.PEDESTAL_022,BlockPedestal.PEDESTAL_023
+            ,BlockPedestal.PEDESTAL_030,BlockPedestal.PEDESTAL_031,BlockPedestal.PEDESTAL_032,BlockPedestal.PEDESTAL_033
+            ,BlockPedestal.PEDESTAL_100,BlockPedestal.PEDESTAL_101,BlockPedestal.PEDESTAL_102,BlockPedestal.PEDESTAL_103
+            ,BlockPedestal.PEDESTAL_110,BlockPedestal.PEDESTAL_111,BlockPedestal.PEDESTAL_112,BlockPedestal.PEDESTAL_113
+            ,BlockPedestal.PEDESTAL_120,BlockPedestal.PEDESTAL_121,BlockPedestal.PEDESTAL_122,BlockPedestal.PEDESTAL_123
+            ,BlockPedestal.PEDESTAL_130,BlockPedestal.PEDESTAL_131,BlockPedestal.PEDESTAL_132,BlockPedestal.PEDESTAL_133
+            ,BlockPedestal.PEDESTAL_200,BlockPedestal.PEDESTAL_201,BlockPedestal.PEDESTAL_202,BlockPedestal.PEDESTAL_203
+            ,BlockPedestal.PEDESTAL_210,BlockPedestal.PEDESTAL_211,BlockPedestal.PEDESTAL_212,BlockPedestal.PEDESTAL_213
+            ,BlockPedestal.PEDESTAL_220,BlockPedestal.PEDESTAL_221,BlockPedestal.PEDESTAL_222,BlockPedestal.PEDESTAL_223
+            ,BlockPedestal.PEDESTAL_230,BlockPedestal.PEDESTAL_231,BlockPedestal.PEDESTAL_232,BlockPedestal.PEDESTAL_233
+            ,BlockPedestal.PEDESTAL_300,BlockPedestal.PEDESTAL_301,BlockPedestal.PEDESTAL_302,BlockPedestal.PEDESTAL_303
+            ,BlockPedestal.PEDESTAL_310,BlockPedestal.PEDESTAL_311,BlockPedestal.PEDESTAL_312,BlockPedestal.PEDESTAL_313
+            ,BlockPedestal.PEDESTAL_320,BlockPedestal.PEDESTAL_321,BlockPedestal.PEDESTAL_322,BlockPedestal.PEDESTAL_323
+            ,BlockPedestal.PEDESTAL_330,BlockPedestal.PEDESTAL_331,BlockPedestal.PEDESTAL_332,BlockPedestal.PEDESTAL_333};
+
     private static final ResourceLocation RESLOC_TILE_PEDESTAL = new ResourceLocation(MODID, "tile/pedestal");
 
-    public static TileEntityType<TilePedestal> pedestal_stone = TileEntityType.Builder.create(TilePedestal::new, BlockPedestal.BLOCK_PEDESTAL_STONE).build(null);
+    public static TileEntityType<TilePedestal> PEDESTALTYPE = TileEntityType.Builder.create(TilePedestal::new, pedArray).build(null);
 
     @SubscribeEvent
     public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
         IForgeRegistry<TileEntityType<?>> r = event.getRegistry();
-        r.register(pedestal_stone.setRegistryName(RESLOC_TILE_PEDESTAL));
+        r.register(PEDESTALTYPE.setRegistryName(RESLOC_TILE_PEDESTAL));
     }
 }

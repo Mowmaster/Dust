@@ -61,6 +61,7 @@ public class dust
     public static void onBlockColorsReady(ColorHandlerEvent.Block event)
     {
         BlockDustStone.handleBlockColors(event);
+        BlockPedestal.handleBlockColors(event);
     }
 
     @SubscribeEvent

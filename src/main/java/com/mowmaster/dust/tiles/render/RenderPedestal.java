@@ -133,6 +133,6 @@ public class RenderPedestal extends TileEntityRenderer<TilePedestal> {
 
     public static void init(final FMLClientSetupEvent event)
     {
-        ClientRegistry.bindTileEntityRenderer(TilePedestal.pedestal_stone,RenderPedestal::new);
+        ClientRegistry.bindTileEntityRenderer(TilePedestal.PEDESTALTYPE,RenderPedestal::new);
     }
 }

@@ -62,6 +62,7 @@ public class ItemRegistry
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
     {
         BlockDustStone.handleItemColors(event);
+        BlockPedestal.handleItemColors(event);
         ItemColorDust.handleItemColors(event);
     }
 }

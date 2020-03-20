@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -39,10 +40,10 @@ import javax.annotation.Nullable;
 
 import java.util.Random;
 
+import static com.mowmaster.dust.dust.BLOCK_GROUP;
 import static com.mowmaster.dust.references.Reference.MODID;
 
 public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
-
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -360,9 +361,7 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
 
     }
 
-
-
-    private static final ResourceLocation RESLOC_PEDESTAL_STONE = new ResourceLocation(MODID, "pedestal/pedestal_stone");
+    /*private static final ResourceLocation RESLOC_PEDESTAL_STONE = new ResourceLocation(MODID, "pedestal/pedestal_stone");
 
     public static final Block BLOCK_PEDESTAL_STONE = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(RESLOC_PEDESTAL_STONE);
 
@@ -378,7 +377,498 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
     public static void onBlockRegistryReady(RegistryEvent.Register<Block> event)
     {
         event.getRegistry().register(BLOCK_PEDESTAL_STONE);
+    }*/
+
+    private static final ResourceLocation R_PEDESTAL_000 = new ResourceLocation(MODID, "pedestal/stone000");
+    private static final ResourceLocation R_PEDESTAL_001 = new ResourceLocation(MODID, "pedestal/stone001");
+    private static final ResourceLocation R_PEDESTAL_002 = new ResourceLocation(MODID, "pedestal/stone002");
+    private static final ResourceLocation R_PEDESTAL_003 = new ResourceLocation(MODID, "pedestal/stone003");
+    private static final ResourceLocation R_PEDESTAL_010 = new ResourceLocation(MODID, "pedestal/stone010");
+    private static final ResourceLocation R_PEDESTAL_011 = new ResourceLocation(MODID, "pedestal/stone011");
+    private static final ResourceLocation R_PEDESTAL_012 = new ResourceLocation(MODID, "pedestal/stone012");
+    private static final ResourceLocation R_PEDESTAL_013 = new ResourceLocation(MODID, "pedestal/stone013");
+    private static final ResourceLocation R_PEDESTAL_020 = new ResourceLocation(MODID, "pedestal/stone020");
+    private static final ResourceLocation R_PEDESTAL_021 = new ResourceLocation(MODID, "pedestal/stone021");
+    private static final ResourceLocation R_PEDESTAL_022 = new ResourceLocation(MODID, "pedestal/stone022");
+    private static final ResourceLocation R_PEDESTAL_023 = new ResourceLocation(MODID, "pedestal/stone023");
+    private static final ResourceLocation R_PEDESTAL_030 = new ResourceLocation(MODID, "pedestal/stone030");
+    private static final ResourceLocation R_PEDESTAL_031 = new ResourceLocation(MODID, "pedestal/stone031");
+    private static final ResourceLocation R_PEDESTAL_032 = new ResourceLocation(MODID, "pedestal/stone032");
+    private static final ResourceLocation R_PEDESTAL_033 = new ResourceLocation(MODID, "pedestal/stone033");
+
+    private static final ResourceLocation R_PEDESTAL_100 = new ResourceLocation(MODID, "pedestal/stone100");
+    private static final ResourceLocation R_PEDESTAL_101 = new ResourceLocation(MODID, "pedestal/stone101");
+    private static final ResourceLocation R_PEDESTAL_102 = new ResourceLocation(MODID, "pedestal/stone102");
+    private static final ResourceLocation R_PEDESTAL_103 = new ResourceLocation(MODID, "pedestal/stone103");
+    private static final ResourceLocation R_PEDESTAL_110 = new ResourceLocation(MODID, "pedestal/stone110");
+    private static final ResourceLocation R_PEDESTAL_111 = new ResourceLocation(MODID, "pedestal/stone111");
+    private static final ResourceLocation R_PEDESTAL_112 = new ResourceLocation(MODID, "pedestal/stone112");
+    private static final ResourceLocation R_PEDESTAL_113 = new ResourceLocation(MODID, "pedestal/stone113");
+    private static final ResourceLocation R_PEDESTAL_120 = new ResourceLocation(MODID, "pedestal/stone120");
+    private static final ResourceLocation R_PEDESTAL_121 = new ResourceLocation(MODID, "pedestal/stone121");
+    private static final ResourceLocation R_PEDESTAL_122 = new ResourceLocation(MODID, "pedestal/stone122");
+    private static final ResourceLocation R_PEDESTAL_123 = new ResourceLocation(MODID, "pedestal/stone123");
+    private static final ResourceLocation R_PEDESTAL_130 = new ResourceLocation(MODID, "pedestal/stone130");
+    private static final ResourceLocation R_PEDESTAL_131 = new ResourceLocation(MODID, "pedestal/stone131");
+    private static final ResourceLocation R_PEDESTAL_132 = new ResourceLocation(MODID, "pedestal/stone132");
+    private static final ResourceLocation R_PEDESTAL_133 = new ResourceLocation(MODID, "pedestal/stone133");
+
+    private static final ResourceLocation R_PEDESTAL_200 = new ResourceLocation(MODID, "pedestal/stone200");
+    private static final ResourceLocation R_PEDESTAL_201 = new ResourceLocation(MODID, "pedestal/stone201");
+    private static final ResourceLocation R_PEDESTAL_202 = new ResourceLocation(MODID, "pedestal/stone202");
+    private static final ResourceLocation R_PEDESTAL_203 = new ResourceLocation(MODID, "pedestal/stone203");
+    private static final ResourceLocation R_PEDESTAL_210 = new ResourceLocation(MODID, "pedestal/stone210");
+    private static final ResourceLocation R_PEDESTAL_211 = new ResourceLocation(MODID, "pedestal/stone211");
+    private static final ResourceLocation R_PEDESTAL_212 = new ResourceLocation(MODID, "pedestal/stone212");
+    private static final ResourceLocation R_PEDESTAL_213 = new ResourceLocation(MODID, "pedestal/stone213");
+    private static final ResourceLocation R_PEDESTAL_220 = new ResourceLocation(MODID, "pedestal/stone220");
+    private static final ResourceLocation R_PEDESTAL_221 = new ResourceLocation(MODID, "pedestal/stone221");
+    private static final ResourceLocation R_PEDESTAL_222 = new ResourceLocation(MODID, "pedestal/stone222");
+    private static final ResourceLocation R_PEDESTAL_223 = new ResourceLocation(MODID, "pedestal/stone223");
+    private static final ResourceLocation R_PEDESTAL_230 = new ResourceLocation(MODID, "pedestal/stone230");
+    private static final ResourceLocation R_PEDESTAL_231 = new ResourceLocation(MODID, "pedestal/stone231");
+    private static final ResourceLocation R_PEDESTAL_232 = new ResourceLocation(MODID, "pedestal/stone232");
+    private static final ResourceLocation R_PEDESTAL_233 = new ResourceLocation(MODID, "pedestal/stone233");
+
+    private static final ResourceLocation R_PEDESTAL_300 = new ResourceLocation(MODID, "pedestal/stone300");
+    private static final ResourceLocation R_PEDESTAL_301 = new ResourceLocation(MODID, "pedestal/stone301");
+    private static final ResourceLocation R_PEDESTAL_302 = new ResourceLocation(MODID, "pedestal/stone302");
+    private static final ResourceLocation R_PEDESTAL_303 = new ResourceLocation(MODID, "pedestal/stone303");
+    private static final ResourceLocation R_PEDESTAL_310 = new ResourceLocation(MODID, "pedestal/stone310");
+    private static final ResourceLocation R_PEDESTAL_311 = new ResourceLocation(MODID, "pedestal/stone311");
+    private static final ResourceLocation R_PEDESTAL_312 = new ResourceLocation(MODID, "pedestal/stone312");
+    private static final ResourceLocation R_PEDESTAL_313 = new ResourceLocation(MODID, "pedestal/stone313");
+    private static final ResourceLocation R_PEDESTAL_320 = new ResourceLocation(MODID, "pedestal/stone320");
+    private static final ResourceLocation R_PEDESTAL_321 = new ResourceLocation(MODID, "pedestal/stone321");
+    private static final ResourceLocation R_PEDESTAL_322 = new ResourceLocation(MODID, "pedestal/stone322");
+    private static final ResourceLocation R_PEDESTAL_323 = new ResourceLocation(MODID, "pedestal/stone323");
+    private static final ResourceLocation R_PEDESTAL_330 = new ResourceLocation(MODID, "pedestal/stone330");
+    private static final ResourceLocation R_PEDESTAL_331 = new ResourceLocation(MODID, "pedestal/stone331");
+    private static final ResourceLocation R_PEDESTAL_332 = new ResourceLocation(MODID, "pedestal/stone332");
+    private static final ResourceLocation R_PEDESTAL_333 = new ResourceLocation(MODID, "pedestal/stone333");
+
+    @SubscribeEvent
+    public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
+    {
+        event.getRegistry().register(I_PEDESTAL_000);
+        event.getRegistry().register(I_PEDESTAL_001);
+        event.getRegistry().register(I_PEDESTAL_002);
+        event.getRegistry().register(I_PEDESTAL_003);
+        event.getRegistry().register(I_PEDESTAL_010);
+        event.getRegistry().register(I_PEDESTAL_011);
+        event.getRegistry().register(I_PEDESTAL_012);
+        event.getRegistry().register(I_PEDESTAL_013);
+        event.getRegistry().register(I_PEDESTAL_020);
+        event.getRegistry().register(I_PEDESTAL_021);
+        event.getRegistry().register(I_PEDESTAL_022);
+        event.getRegistry().register(I_PEDESTAL_023);
+        event.getRegistry().register(I_PEDESTAL_030);
+        event.getRegistry().register(I_PEDESTAL_031);
+        event.getRegistry().register(I_PEDESTAL_032);
+        event.getRegistry().register(I_PEDESTAL_033);
+
+        event.getRegistry().register(I_PEDESTAL_100);
+        event.getRegistry().register(I_PEDESTAL_101);
+        event.getRegistry().register(I_PEDESTAL_102);
+        event.getRegistry().register(I_PEDESTAL_103);
+        event.getRegistry().register(I_PEDESTAL_110);
+        event.getRegistry().register(I_PEDESTAL_111);
+        event.getRegistry().register(I_PEDESTAL_112);
+        event.getRegistry().register(I_PEDESTAL_113);
+        event.getRegistry().register(I_PEDESTAL_120);
+        event.getRegistry().register(I_PEDESTAL_121);
+        event.getRegistry().register(I_PEDESTAL_122);
+        event.getRegistry().register(I_PEDESTAL_123);
+        event.getRegistry().register(I_PEDESTAL_130);
+        event.getRegistry().register(I_PEDESTAL_131);
+        event.getRegistry().register(I_PEDESTAL_132);
+        event.getRegistry().register(I_PEDESTAL_133);
+
+        event.getRegistry().register(I_PEDESTAL_200);
+        event.getRegistry().register(I_PEDESTAL_201);
+        event.getRegistry().register(I_PEDESTAL_202);
+        event.getRegistry().register(I_PEDESTAL_203);
+        event.getRegistry().register(I_PEDESTAL_210);
+        event.getRegistry().register(I_PEDESTAL_211);
+        event.getRegistry().register(I_PEDESTAL_212);
+        event.getRegistry().register(I_PEDESTAL_213);
+        event.getRegistry().register(I_PEDESTAL_220);
+        event.getRegistry().register(I_PEDESTAL_221);
+        event.getRegistry().register(I_PEDESTAL_222);
+        event.getRegistry().register(I_PEDESTAL_223);
+        event.getRegistry().register(I_PEDESTAL_230);
+        event.getRegistry().register(I_PEDESTAL_231);
+        event.getRegistry().register(I_PEDESTAL_232);
+        event.getRegistry().register(I_PEDESTAL_233);
+
+        event.getRegistry().register(I_PEDESTAL_300);
+        event.getRegistry().register(I_PEDESTAL_301);
+        event.getRegistry().register(I_PEDESTAL_302);
+        event.getRegistry().register(I_PEDESTAL_303);
+        event.getRegistry().register(I_PEDESTAL_310);
+        event.getRegistry().register(I_PEDESTAL_311);
+        event.getRegistry().register(I_PEDESTAL_312);
+        event.getRegistry().register(I_PEDESTAL_313);
+        event.getRegistry().register(I_PEDESTAL_320);
+        event.getRegistry().register(I_PEDESTAL_321);
+        event.getRegistry().register(I_PEDESTAL_322);
+        event.getRegistry().register(I_PEDESTAL_323);
+        event.getRegistry().register(I_PEDESTAL_330);
+        event.getRegistry().register(I_PEDESTAL_331);
+        event.getRegistry().register(I_PEDESTAL_332);
+        event.getRegistry().register(I_PEDESTAL_333);
+    }
+
+    @SubscribeEvent
+    public static void onBlockRegistryReady(RegistryEvent.Register<Block> event)
+    {
+        event.getRegistry().register(PEDESTAL_000);
+        event.getRegistry().register(PEDESTAL_001);
+        event.getRegistry().register(PEDESTAL_002);
+        event.getRegistry().register(PEDESTAL_003);
+        event.getRegistry().register(PEDESTAL_010);
+        event.getRegistry().register(PEDESTAL_011);
+        event.getRegistry().register(PEDESTAL_012);
+        event.getRegistry().register(PEDESTAL_013);
+        event.getRegistry().register(PEDESTAL_020);
+        event.getRegistry().register(PEDESTAL_021);
+        event.getRegistry().register(PEDESTAL_022);
+        event.getRegistry().register(PEDESTAL_023);
+        event.getRegistry().register(PEDESTAL_030);
+        event.getRegistry().register(PEDESTAL_031);
+        event.getRegistry().register(PEDESTAL_032);
+        event.getRegistry().register(PEDESTAL_033);
+
+        event.getRegistry().register(PEDESTAL_100);
+        event.getRegistry().register(PEDESTAL_101);
+        event.getRegistry().register(PEDESTAL_102);
+        event.getRegistry().register(PEDESTAL_103);
+        event.getRegistry().register(PEDESTAL_110);
+        event.getRegistry().register(PEDESTAL_111);
+        event.getRegistry().register(PEDESTAL_112);
+        event.getRegistry().register(PEDESTAL_113);
+        event.getRegistry().register(PEDESTAL_120);
+        event.getRegistry().register(PEDESTAL_121);
+        event.getRegistry().register(PEDESTAL_122);
+        event.getRegistry().register(PEDESTAL_123);
+        event.getRegistry().register(PEDESTAL_130);
+        event.getRegistry().register(PEDESTAL_131);
+        event.getRegistry().register(PEDESTAL_132);
+        event.getRegistry().register(PEDESTAL_133);
+
+        event.getRegistry().register(PEDESTAL_200);
+        event.getRegistry().register(PEDESTAL_201);
+        event.getRegistry().register(PEDESTAL_202);
+        event.getRegistry().register(PEDESTAL_203);
+        event.getRegistry().register(PEDESTAL_210);
+        event.getRegistry().register(PEDESTAL_211);
+        event.getRegistry().register(PEDESTAL_212);
+        event.getRegistry().register(PEDESTAL_213);
+        event.getRegistry().register(PEDESTAL_220);
+        event.getRegistry().register(PEDESTAL_221);
+        event.getRegistry().register(PEDESTAL_222);
+        event.getRegistry().register(PEDESTAL_223);
+        event.getRegistry().register(PEDESTAL_230);
+        event.getRegistry().register(PEDESTAL_231);
+        event.getRegistry().register(PEDESTAL_232);
+        event.getRegistry().register(PEDESTAL_233);
+
+        event.getRegistry().register(PEDESTAL_300);
+        event.getRegistry().register(PEDESTAL_301);
+        event.getRegistry().register(PEDESTAL_302);
+        event.getRegistry().register(PEDESTAL_303);
+        event.getRegistry().register(PEDESTAL_310);
+        event.getRegistry().register(PEDESTAL_311);
+        event.getRegistry().register(PEDESTAL_312);
+        event.getRegistry().register(PEDESTAL_313);
+        event.getRegistry().register(PEDESTAL_320);
+        event.getRegistry().register(PEDESTAL_321);
+        event.getRegistry().register(PEDESTAL_322);
+        event.getRegistry().register(PEDESTAL_323);
+        event.getRegistry().register(PEDESTAL_330);
+        event.getRegistry().register(PEDESTAL_331);
+        event.getRegistry().register(PEDESTAL_332);
+        event.getRegistry().register(PEDESTAL_333);
     }
 
 
+
+    public static void handleBlockColors(ColorHandlerEvent.Block event) {
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 0;} else {return -1;}},PEDESTAL_000);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 85;} else {return -1;}},PEDESTAL_001);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 170;} else {return -1;}},PEDESTAL_002);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 255;} else {return -1;}},PEDESTAL_003);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 21760;} else {return -1;}},PEDESTAL_010);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 21845;} else {return -1;}},PEDESTAL_011);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 21930;} else {return -1;}},PEDESTAL_012);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 22015;} else {return -1;}},PEDESTAL_013);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 43520;} else {return -1;}},PEDESTAL_020);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 43605;} else {return -1;}},PEDESTAL_021);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 43690;} else {return -1;}},PEDESTAL_022);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 43775;} else {return -1;}},PEDESTAL_023);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 65280;} else {return -1;}},PEDESTAL_030);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 65365;} else {return -1;}},PEDESTAL_031);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 65450;} else {return -1;}},PEDESTAL_032);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 65535;} else {return -1;}},PEDESTAL_033);
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5570560;} else {return -1;}},PEDESTAL_100);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5570645;} else {return -1;}},PEDESTAL_101);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5570730;} else {return -1;}},PEDESTAL_102);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5570815;} else {return -1;}},PEDESTAL_103);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5592320;} else {return -1;}},PEDESTAL_110);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5592405;} else {return -1;}},PEDESTAL_111);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5592490;} else {return -1;}},PEDESTAL_112);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5592575;} else {return -1;}},PEDESTAL_113);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5614080;} else {return -1;}},PEDESTAL_120);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5614165;} else {return -1;}},PEDESTAL_121);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5614250;} else {return -1;}},PEDESTAL_122);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5614335;} else {return -1;}},PEDESTAL_123);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5635840;} else {return -1;}},PEDESTAL_130);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5635925;} else {return -1;}},PEDESTAL_131);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5636010;} else {return -1;}},PEDESTAL_132);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 5636095;} else {return -1;}},PEDESTAL_133);
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11141120;} else {return -1;}},PEDESTAL_200);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11141205;} else {return -1;}},PEDESTAL_201);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11141290;} else {return -1;}},PEDESTAL_202);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11141375;} else {return -1;}},PEDESTAL_203);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11162880;} else {return -1;}},PEDESTAL_210);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11162965;} else {return -1;}},PEDESTAL_211);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11163050;} else {return -1;}},PEDESTAL_212);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11163135;} else {return -1;}},PEDESTAL_213);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11184640;} else {return -1;}},PEDESTAL_220);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11184725;} else {return -1;}},PEDESTAL_221);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11184810;} else {return -1;}},PEDESTAL_222);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11184895;} else {return -1;}},PEDESTAL_223);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11206400;} else {return -1;}},PEDESTAL_230);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11206485;} else {return -1;}},PEDESTAL_231);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11206570;} else {return -1;}},PEDESTAL_232);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 11206655;} else {return -1;}},PEDESTAL_233);
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16711680;} else {return -1;}},PEDESTAL_300);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16711765;} else {return -1;}},PEDESTAL_301);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16711850;} else {return -1;}},PEDESTAL_302);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16711935;} else {return -1;}},PEDESTAL_303);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16733440;} else {return -1;}},PEDESTAL_310);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16733525;} else {return -1;}},PEDESTAL_311);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16733610;} else {return -1;}},PEDESTAL_312);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16733695;} else {return -1;}},PEDESTAL_313);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16755200;} else {return -1;}},PEDESTAL_320);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16755285;} else {return -1;}},PEDESTAL_321);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16755370;} else {return -1;}},PEDESTAL_322);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16755455;} else {return -1;}},PEDESTAL_323);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16776960;} else {return -1;}},PEDESTAL_330);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16777045;} else {return -1;}},PEDESTAL_331);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16777130;} else {return -1;}},PEDESTAL_332);
+        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return 16777215;} else {return -1;}},PEDESTAL_333);
+    }
+
+    public static void handleItemColors(ColorHandlerEvent.Item event) {
+
+        //event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 0;} else {return -1;}},I_PEDESTAL_000);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 0;} else {return -1;}},I_PEDESTAL_000);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 85;} else {return -1;}},I_PEDESTAL_001);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 170;} else {return -1;}},I_PEDESTAL_002);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 255;} else {return -1;}},I_PEDESTAL_003);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 21760;} else {return -1;}},I_PEDESTAL_010);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 21845;} else {return -1;}},I_PEDESTAL_011);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 21930;} else {return -1;}},I_PEDESTAL_012);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 22015;} else {return -1;}},I_PEDESTAL_013);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 43520;} else {return -1;}},I_PEDESTAL_020);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 43605;} else {return -1;}},I_PEDESTAL_021);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 43690;} else {return -1;}},I_PEDESTAL_022);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 43775;} else {return -1;}},I_PEDESTAL_023);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 65280;} else {return -1;}},I_PEDESTAL_030);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 65365;} else {return -1;}},I_PEDESTAL_031);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 65450;} else {return -1;}},I_PEDESTAL_032);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 65535;} else {return -1;}},I_PEDESTAL_033);
+
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5570560;} else {return -1;}},I_PEDESTAL_100);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5570645;} else {return -1;}},I_PEDESTAL_101);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5570730;} else {return -1;}},I_PEDESTAL_102);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5570815;} else {return -1;}},I_PEDESTAL_103);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5592320;} else {return -1;}},I_PEDESTAL_110);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5592405;} else {return -1;}},I_PEDESTAL_111);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5592490;} else {return -1;}},I_PEDESTAL_112);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5592575;} else {return -1;}},I_PEDESTAL_113);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5614080;} else {return -1;}},I_PEDESTAL_120);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5614165;} else {return -1;}},I_PEDESTAL_121);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5614250;} else {return -1;}},I_PEDESTAL_122);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5614335;} else {return -1;}},I_PEDESTAL_123);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5635840;} else {return -1;}},I_PEDESTAL_130);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5635925;} else {return -1;}},I_PEDESTAL_131);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5636010;} else {return -1;}},I_PEDESTAL_132);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 5636095;} else {return -1;}},I_PEDESTAL_133);
+
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11141120;} else {return -1;}},I_PEDESTAL_200);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11141205;} else {return -1;}},I_PEDESTAL_201);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11141290;} else {return -1;}},I_PEDESTAL_202);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11141375;} else {return -1;}},I_PEDESTAL_203);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11162880;} else {return -1;}},I_PEDESTAL_210);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11162965;} else {return -1;}},I_PEDESTAL_211);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11163050;} else {return -1;}},I_PEDESTAL_212);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11163135;} else {return -1;}},I_PEDESTAL_213);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11184640;} else {return -1;}},I_PEDESTAL_220);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11184725;} else {return -1;}},I_PEDESTAL_221);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11184810;} else {return -1;}},I_PEDESTAL_222);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11184895;} else {return -1;}},I_PEDESTAL_223);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11206400;} else {return -1;}},I_PEDESTAL_230);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11206485;} else {return -1;}},I_PEDESTAL_231);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11206570;} else {return -1;}},I_PEDESTAL_232);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 11206655;} else {return -1;}},I_PEDESTAL_233);
+
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16711680;} else {return -1;}},I_PEDESTAL_300);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16711765;} else {return -1;}},I_PEDESTAL_301);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16711850;} else {return -1;}},I_PEDESTAL_302);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16711935;} else {return -1;}},I_PEDESTAL_303);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16733440;} else {return -1;}},I_PEDESTAL_310);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16733525;} else {return -1;}},I_PEDESTAL_311);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16733610;} else {return -1;}},I_PEDESTAL_312);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16733695;} else {return -1;}},I_PEDESTAL_313);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16755200;} else {return -1;}},I_PEDESTAL_320);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16755285;} else {return -1;}},I_PEDESTAL_321);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16755370;} else {return -1;}},I_PEDESTAL_322);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16755455;} else {return -1;}},I_PEDESTAL_323);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16776960;} else {return -1;}},I_PEDESTAL_330);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16777045;} else {return -1;}},I_PEDESTAL_331);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16777130;} else {return -1;}},I_PEDESTAL_332);
+        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1){return 16777215;} else {return -1;}},I_PEDESTAL_333);
+    }
+
+    public static final Block PEDESTAL_000 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_000);
+    public static final Block PEDESTAL_001 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_001);
+    public static final Block PEDESTAL_002 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_002);
+    public static final Block PEDESTAL_003 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_003);
+    public static final Block PEDESTAL_010 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_010);
+    public static final Block PEDESTAL_011 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_011);
+    public static final Block PEDESTAL_012 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_012);
+    public static final Block PEDESTAL_013 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_013);
+    public static final Block PEDESTAL_020 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_020);
+    public static final Block PEDESTAL_021 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_021);
+    public static final Block PEDESTAL_022 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_022);
+    public static final Block PEDESTAL_023 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_023);
+    public static final Block PEDESTAL_030 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_030);
+    public static final Block PEDESTAL_031 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_031);
+    public static final Block PEDESTAL_032 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_032);
+    public static final Block PEDESTAL_033 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_033);
+
+    public static final Block PEDESTAL_100 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_100);
+    public static final Block PEDESTAL_101 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_101);
+    public static final Block PEDESTAL_102 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_102);
+    public static final Block PEDESTAL_103 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_103);
+    public static final Block PEDESTAL_110 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_110);
+    public static final Block PEDESTAL_111 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_111);
+    public static final Block PEDESTAL_112 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_112);
+    public static final Block PEDESTAL_113 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_113);
+    public static final Block PEDESTAL_120 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_120);
+    public static final Block PEDESTAL_121 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_121);
+    public static final Block PEDESTAL_122 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_122);
+    public static final Block PEDESTAL_123 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_123);
+    public static final Block PEDESTAL_130 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_130);
+    public static final Block PEDESTAL_131 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_131);
+    public static final Block PEDESTAL_132 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_132);
+    public static final Block PEDESTAL_133 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_133);
+
+    public static final Block PEDESTAL_200 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_200);
+    public static final Block PEDESTAL_201 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_201);
+    public static final Block PEDESTAL_202 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_202);
+    public static final Block PEDESTAL_203 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_203);
+    public static final Block PEDESTAL_210 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_210);
+    public static final Block PEDESTAL_211 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_211);
+    public static final Block PEDESTAL_212 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_212);
+    public static final Block PEDESTAL_213 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_213);
+    public static final Block PEDESTAL_220 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_220);
+    public static final Block PEDESTAL_221 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_221);
+    public static final Block PEDESTAL_222 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_222);
+    public static final Block PEDESTAL_223 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_223);
+    public static final Block PEDESTAL_230 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_230);
+    public static final Block PEDESTAL_231 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_231);
+    public static final Block PEDESTAL_232 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_232);
+    public static final Block PEDESTAL_233 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_233);
+
+    public static final Block PEDESTAL_300 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_300);
+    public static final Block PEDESTAL_301 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_301);
+    public static final Block PEDESTAL_302 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_302);
+    public static final Block PEDESTAL_303 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_303);
+    public static final Block PEDESTAL_310 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_310);
+    public static final Block PEDESTAL_311 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_311);
+    public static final Block PEDESTAL_312 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_312);
+    public static final Block PEDESTAL_313 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_313);
+    public static final Block PEDESTAL_320 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_320);
+    public static final Block PEDESTAL_321 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_321);
+    public static final Block PEDESTAL_322 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_322);
+    public static final Block PEDESTAL_323 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_323);
+    public static final Block PEDESTAL_330 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_330);
+    public static final Block PEDESTAL_331 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_331);
+    public static final Block PEDESTAL_332 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_332);
+    public static final Block PEDESTAL_333 = new BlockPedestal(Block.Properties.create(Material.ROCK, MaterialColor.RED_TERRACOTTA).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_PEDESTAL_333);
+
+    public static final Item I_PEDESTAL_000 = new BlockItem(PEDESTAL_000, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_000);
+    public static final Item I_PEDESTAL_001 = new BlockItem(PEDESTAL_001, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_001);
+    public static final Item I_PEDESTAL_002 = new BlockItem(PEDESTAL_002, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_002);
+    public static final Item I_PEDESTAL_003 = new BlockItem(PEDESTAL_003, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_003);
+    public static final Item I_PEDESTAL_010 = new BlockItem(PEDESTAL_010, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_010);
+    public static final Item I_PEDESTAL_011 = new BlockItem(PEDESTAL_011, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_011);
+    public static final Item I_PEDESTAL_012 = new BlockItem(PEDESTAL_012, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_012);
+    public static final Item I_PEDESTAL_013 = new BlockItem(PEDESTAL_013, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_013);
+    public static final Item I_PEDESTAL_020 = new BlockItem(PEDESTAL_020, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_020);
+    public static final Item I_PEDESTAL_021 = new BlockItem(PEDESTAL_021, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_021);
+    public static final Item I_PEDESTAL_022 = new BlockItem(PEDESTAL_022, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_022);
+    public static final Item I_PEDESTAL_023 = new BlockItem(PEDESTAL_023, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_023);
+    public static final Item I_PEDESTAL_030 = new BlockItem(PEDESTAL_030, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_030);
+    public static final Item I_PEDESTAL_031 = new BlockItem(PEDESTAL_031, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_031);
+    public static final Item I_PEDESTAL_032 = new BlockItem(PEDESTAL_032, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_032);
+    public static final Item I_PEDESTAL_033 = new BlockItem(PEDESTAL_033, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_033);
+
+    public static final Item I_PEDESTAL_100 = new BlockItem(PEDESTAL_100, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_100);
+    public static final Item I_PEDESTAL_101 = new BlockItem(PEDESTAL_101, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_101);
+    public static final Item I_PEDESTAL_102 = new BlockItem(PEDESTAL_102, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_102);
+    public static final Item I_PEDESTAL_103 = new BlockItem(PEDESTAL_103, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_103);
+    public static final Item I_PEDESTAL_110 = new BlockItem(PEDESTAL_110, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_110);
+    public static final Item I_PEDESTAL_111 = new BlockItem(PEDESTAL_111, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_111);
+    public static final Item I_PEDESTAL_112 = new BlockItem(PEDESTAL_112, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_112);
+    public static final Item I_PEDESTAL_113 = new BlockItem(PEDESTAL_113, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_113);
+    public static final Item I_PEDESTAL_120 = new BlockItem(PEDESTAL_120, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_120);
+    public static final Item I_PEDESTAL_121 = new BlockItem(PEDESTAL_121, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_121);
+    public static final Item I_PEDESTAL_122 = new BlockItem(PEDESTAL_122, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_122);
+    public static final Item I_PEDESTAL_123 = new BlockItem(PEDESTAL_123, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_123);
+    public static final Item I_PEDESTAL_130 = new BlockItem(PEDESTAL_130, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_130);
+    public static final Item I_PEDESTAL_131 = new BlockItem(PEDESTAL_131, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_131);
+    public static final Item I_PEDESTAL_132 = new BlockItem(PEDESTAL_132, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_132);
+    public static final Item I_PEDESTAL_133 = new BlockItem(PEDESTAL_133, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_133);
+
+    public static final Item I_PEDESTAL_200 = new BlockItem(PEDESTAL_200, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_200);
+    public static final Item I_PEDESTAL_201 = new BlockItem(PEDESTAL_201, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_201);
+    public static final Item I_PEDESTAL_202 = new BlockItem(PEDESTAL_202, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_202);
+    public static final Item I_PEDESTAL_203 = new BlockItem(PEDESTAL_203, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_203);
+    public static final Item I_PEDESTAL_210 = new BlockItem(PEDESTAL_210, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_210);
+    public static final Item I_PEDESTAL_211 = new BlockItem(PEDESTAL_211, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_211);
+    public static final Item I_PEDESTAL_212 = new BlockItem(PEDESTAL_212, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_212);
+    public static final Item I_PEDESTAL_213 = new BlockItem(PEDESTAL_213, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_213);
+    public static final Item I_PEDESTAL_220 = new BlockItem(PEDESTAL_220, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_220);
+    public static final Item I_PEDESTAL_221 = new BlockItem(PEDESTAL_221, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_221);
+    public static final Item I_PEDESTAL_222 = new BlockItem(PEDESTAL_222, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_222);
+    public static final Item I_PEDESTAL_223 = new BlockItem(PEDESTAL_223, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_223);
+    public static final Item I_PEDESTAL_230 = new BlockItem(PEDESTAL_230, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_230);
+    public static final Item I_PEDESTAL_231 = new BlockItem(PEDESTAL_231, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_231);
+    public static final Item I_PEDESTAL_232 = new BlockItem(PEDESTAL_232, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_232);
+    public static final Item I_PEDESTAL_233 = new BlockItem(PEDESTAL_233, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_233);
+
+    public static final Item I_PEDESTAL_300 = new BlockItem(PEDESTAL_300, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_300);
+    public static final Item I_PEDESTAL_301 = new BlockItem(PEDESTAL_301, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_301);
+    public static final Item I_PEDESTAL_302 = new BlockItem(PEDESTAL_302, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_302);
+    public static final Item I_PEDESTAL_303 = new BlockItem(PEDESTAL_303, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_303);
+    public static final Item I_PEDESTAL_310 = new BlockItem(PEDESTAL_310, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_310);
+    public static final Item I_PEDESTAL_311 = new BlockItem(PEDESTAL_311, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_311);
+    public static final Item I_PEDESTAL_312 = new BlockItem(PEDESTAL_312, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_312);
+    public static final Item I_PEDESTAL_313 = new BlockItem(PEDESTAL_313, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_313);
+    public static final Item I_PEDESTAL_320 = new BlockItem(PEDESTAL_320, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_320);
+    public static final Item I_PEDESTAL_321 = new BlockItem(PEDESTAL_321, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_321);
+    public static final Item I_PEDESTAL_322 = new BlockItem(PEDESTAL_322, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_322);
+    public static final Item I_PEDESTAL_323 = new BlockItem(PEDESTAL_323, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_323);
+    public static final Item I_PEDESTAL_330 = new BlockItem(PEDESTAL_330, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_330);
+    public static final Item I_PEDESTAL_331 = new BlockItem(PEDESTAL_331, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_331);
+    public static final Item I_PEDESTAL_332 = new BlockItem(PEDESTAL_332, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_332);
+    public static final Item I_PEDESTAL_333 = new BlockItem(PEDESTAL_333, new Item.Properties().group(BLOCK_GROUP)) {}.setRegistryName(R_PEDESTAL_333);
 }
