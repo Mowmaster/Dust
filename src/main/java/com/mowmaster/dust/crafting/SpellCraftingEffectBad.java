@@ -27,6 +27,7 @@ public class SpellCraftingEffectBad
         //this.addSpellCraftingEffectRecipe(21845,new ItemStack(BlockDustStone.ITEM_STONE_011));
         //this.addSpellCraftingEffectRecipe(21930,new ItemStack(BlockDustStone.ITEM_STONE_012));
         //this.addSpellCraftingEffectRecipe(22015,new ItemStack(BlockDustStone.ITEM_STONE_013));
+
         //this.addSpellCraftingEffectRecipe(43520,new ItemStack(BlockDustStone.ITEM_STONE_020));
         //this.addSpellCraftingEffectRecipe(43605,new ItemStack(BlockDustStone.ITEM_STONE_021));
         //this.addSpellCraftingEffectRecipe(43690,new ItemStack(BlockDustStone.ITEM_STONE_022));
@@ -44,6 +45,7 @@ public class SpellCraftingEffectBad
         //this.addSpellCraftingEffectRecipe(16777045,Effects.CONDUIT_POWER);//111
         //this.addSpellCraftingEffectRecipe(5592490,new ItemStack(BlockDustStone.ITEM_STONE_112));
         //this.addSpellCraftingEffectRecipe(5592575,new ItemStack(BlockDustStone.ITEM_STONE_113));
+
         //this.addSpellCraftingEffectRecipe(5614080,new ItemStack(BlockDustStone.ITEM_STONE_120));
         this.addSpellCraftingEffectRecipe(16777045,Effects.POISON);//121
         //this.addSpellCraftingEffectRecipe(5614250,new ItemStack(BlockDustStone.ITEM_STONE_122));
@@ -61,6 +63,7 @@ public class SpellCraftingEffectBad
         //this.addSpellCraftingEffectRecipe(11162965,new ItemStack(BlockDustStone.ITEM_STONE_211));
         //this.addSpellCraftingEffectRecipe(11163050,new ItemStack(BlockDustStone.ITEM_STONE_212));
         this.addSpellCraftingEffectRecipe(16777045,Effects.GLOWING);//213
+
         //this.addSpellCraftingEffectRecipe(11184640,new ItemStack(BlockDustStone.ITEM_STONE_220));
         //this.addSpellCraftingEffectRecipe(11184725,new ItemStack(BlockDustStone.ITEM_STONE_221));
         //this.addSpellCraftingEffectRecipe(11184810,new ItemStack(BlockDustStone.ITEM_STONE_222));
@@ -78,6 +81,7 @@ public class SpellCraftingEffectBad
         //this.addSpellCraftingEffectRecipe(16733525,new ItemStack(BlockDustStone.ITEM_STONE_311));
         //this.addSpellCraftingEffectRecipe(16733610,new ItemStack(BlockDustStone.ITEM_STONE_312));
         //this.addSpellCraftingEffectRecipe(16733695,new ItemStack(BlockDustStone.ITEM_STONE_313));
+
         //this.addSpellCraftingEffectRecipe(16755200,new ItemStack(BlockDustStone.ITEM_STONE_320));
         this.addSpellCraftingEffectRecipe(16777045,Effects.MINING_FATIGUE);//321
         //this.addSpellCraftingEffectRecipe(16755370,new ItemStack(BlockDustStone.ITEM_STONE_322));
