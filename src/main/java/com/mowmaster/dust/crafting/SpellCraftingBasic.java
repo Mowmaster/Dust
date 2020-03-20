@@ -205,6 +205,11 @@ public class SpellCraftingBasic
                             color = CalculateColor.getColorFromRGB(crgbRed,crgbGreen,crgbBlue);
                         }
 
+                        if(color == 16777215 && worldIn.isNightTime())
+                        {
+                            color = 0;
+                        }
+
 
                         /*System.out.println("Red: " + red + " rgb: " +rgbRed);
                         System.out.println("Green: "  + green + " rgb: " + rgbGreen);
@@ -310,11 +315,6 @@ public class SpellCraftingBasic
 
                         else if (stone > 0) {
 
-                            if(color == 16777215 && worldIn.isNightTime())
-                            {
-                                color = 0;
-                            }
-
                             for(int i=stone;i>0;i--)
                             {
                                 if(count>=2)
@@ -337,12 +337,6 @@ public class SpellCraftingBasic
 
                         else if(bowl>0)
                         {
-                            //Make Black color at night
-                            if(color == 16777215 && worldIn.isNightTime())
-                            {
-                                color = 0;
-                            }
-
                             //NEED TO ADD ANOTHER TAG TO ITEM TO MAKE IT NOT USEABLE IN COMBINING AGAIN!!!
                             ItemStack stacked = new ItemStack(ItemColorDust.DUST,1);
                             CompoundNBT nbt = new CompoundNBT();

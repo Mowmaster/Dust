@@ -12,9 +12,11 @@ import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.TippedArrowItem;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
@@ -51,6 +53,8 @@ public class BlockTrap extends Block implements IWaterLoggable {
         super(builder);
         this.setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, Boolean.valueOf(false)));
     }
+
+    TippedArrowItem
 
     @Override
     public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidStateIn) {
@@ -180,23 +184,24 @@ public class BlockTrap extends Block implements IWaterLoggable {
         return false;
     }
 
-
     @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+
+        int num = rand.nextInt(5);
         double d0 = (double)pos.getX() + 0.55D - (double)(rand.nextFloat() * 0.1F);
-        double d1 = (double)pos.getY() + 0.55D - (double)(rand.nextFloat() * 0.1F);
+        double d1 = (double)pos.getY() + 0.15D - (double)(rand.nextFloat() * 0.1F);
         double d2 = (double)pos.getZ() + 0.55D - (double)(rand.nextFloat() * 0.1F);
         double d3 = (double)(0.4F - (rand.nextFloat() + rand.nextFloat()) * 0.4F);
-        if (rand.nextInt(5) == 0) {
-            worldIn.addParticle(ParticleTypes.ENCHANT, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.25D, (double)pos.getZ() + 0.5D, d0, d1, d2);
-        }
+
+        if(num==0)
+        {worldIn.addParticle(ParticleTypes.ENCHANT, d0, d1, d2, 0.0D, 0.0D, 0.0D);}
     }
 
     private static final ResourceLocation TRAPPLAYER = new ResourceLocation(MODID, "trap/trapplayer");
     private static final ResourceLocation TRAPMOB = new ResourceLocation(MODID, "trap/trapmob");
 
-    public static final Block BLOCKTRAPPLAYER = new BlockTrap(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(TRAPPLAYER);
-    public static final Block BLOCKTRAPMOB = new BlockTrap(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(TRAPMOB);
+    public static final Block BLOCKTRAPPLAYER = new BlockTrap(Properties.create(Material.GLASS, MaterialColor.AIR).notSolid().doesNotBlockMovement().hardnessAndResistance(2.0F, 10.0F).sound(SoundType.GLASS)).setRegistryName(TRAPPLAYER);
+    public static final Block BLOCKTRAPMOB = new BlockTrap(Properties.create(Material.GLASS, MaterialColor.AIR).notSolid().doesNotBlockMovement().hardnessAndResistance(2.0F, 10.0F).sound(SoundType.GLASS)).setRegistryName(TRAPMOB);
 
     public static final Item ITEMTRAPPLAYER = new BlockItem(BLOCKTRAPPLAYER, new Item.Properties().group(dust.BLOCK_GROUP)) {}.setRegistryName(TRAPPLAYER);
     public static final Item ITEMTRAPMOB = new BlockItem(BLOCKTRAPMOB, new Item.Properties().group(dust.BLOCK_GROUP)) {}.setRegistryName(TRAPMOB);
