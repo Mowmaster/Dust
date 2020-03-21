@@ -1,12 +1,12 @@
 package com.mowmaster.dust.blocks;
 
-import com.mowmaster.dust.dust;
 import com.mowmaster.dust.item.ItemCrystalWrench;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -15,10 +15,11 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -46,40 +47,62 @@ import static com.mowmaster.dust.references.Reference.MODID;
 public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     protected static final VoxelShape CUP = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
+            Block.makeCuboidShape(5.0D, 2.0D, 5.0D, 11.0D, 10.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
+    protected static final VoxelShape CDOWN = VoxelShapes.or(Block.makeCuboidShape(3.0D, 14.0D, 3.0D, 13.0D, 16.0D, 13.0D),
+            Block.makeCuboidShape(5.0D, 14.0D, 5.0D, 11.0D, 6.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 6.0D, 4.0D, 12.0D, 4.0D, 12.0D));
+    //height goes in the -z direction
+    protected static final VoxelShape CNORTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 3.0D, 14.0D, 13.0D, 13.0D, 16.0D),
+            Block.makeCuboidShape(5.0D, 5.0D, 6.0D, 11.0D, 11.0D, 14.0D),
+            Block.makeCuboidShape(4.0D, 4.0D, 4.0D, 12.0D, 12.0D, 6.0D));
+    //height goes in the +x direction
+    protected static final VoxelShape CEAST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 3.0D, 3.0D, 0.0D, 13.0D, 13.0D),
+            Block.makeCuboidShape(2.0D, 5.0D, 5.0D, 10.0D, 11.0D, 11.0D),
+            Block.makeCuboidShape(10.0D, 4.0D, 4.0D, 12.0D, 12.0D, 12.0D));
+    protected static final VoxelShape CSOUTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 3.0D, 2.0D, 13.0D, 13.0D, 0.0D),
+            Block.makeCuboidShape(5.0D, 5.0D, 10.0D, 11.0D, 11.0D, 2.0D),
+            Block.makeCuboidShape(4.0D, 4.0D, 12.0D, 12.0D, 12.0D, 10.0D));
+    protected static final VoxelShape CWEST = VoxelShapes.or(Block.makeCuboidShape(14.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D),
+            Block.makeCuboidShape(13.0D, 5.0D, 5.0D, 11.0D, 11.0D, 11.0D),
+            Block.makeCuboidShape(4.0D, 4.0D, 4.0D, 6.0D, 12.0D, 12.0D));
+
+    protected static final VoxelShape LCUP = VoxelShapes.or(Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
             Block.makeCuboidShape(4.0D, 2.0D, 4.0D, 12.0D, 3.0D, 12.0D),
             Block.makeCuboidShape(5.0D, 3.0D, 5.0D, 11.0D, 4.0D, 11.0D),
             Block.makeCuboidShape(4.5D, 4.0D, 4.5D, 11.5D, 5.0D, 11.5D),
             Block.makeCuboidShape(5.0D, 5.0D, 5.0D, 11.0D, 10.0D, 11.0D),
             Block.makeCuboidShape(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
-    protected static final VoxelShape CDOWN = VoxelShapes.or(Block.makeCuboidShape(3.0D, 14.0D, 3.0D, 13.0D, 16.0D, 13.0D),
+    protected static final VoxelShape LCDOWN = VoxelShapes.or(Block.makeCuboidShape(3.0D, 14.0D, 3.0D, 13.0D, 16.0D, 13.0D),
             Block.makeCuboidShape(4.0D, 13.0D, 4.0D, 12.0D, 14.0D, 12.0D),
             Block.makeCuboidShape(5.0D, 13.0D, 5.0D, 11.0D, 12.0D, 11.0D),
             Block.makeCuboidShape(4.5D, 12.0D, 4.5D, 11.5D, 11.0D, 11.5D),
             Block.makeCuboidShape(5.0D, 11.0D, 5.0D, 11.0D, 6.0D, 11.0D),
             Block.makeCuboidShape(4.0D, 6.0D, 4.0D, 12.0D, 4.0D, 12.0D));
     //height goes in the -z direction
-    protected static final VoxelShape CNORTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 3.0D, 14.0D, 13.0D, 13.0D, 16.0D),
+    protected static final VoxelShape LCNORTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 3.0D, 14.0D, 13.0D, 13.0D, 16.0D),
             Block.makeCuboidShape(4.0D, 4.0D, 13.0D, 12.0D, 12.0D, 14.0D),
             Block.makeCuboidShape(5.0D, 5.0D, 12.0D, 11.0D, 11.0D, 13.0D),
             Block.makeCuboidShape(4.5D, 4.5D, 11.0D, 11.5D, 11.5D, 12.0D),
             Block.makeCuboidShape(5.0D, 5.0D, 6.0D, 11.0D, 11.0D, 11.0D),
             Block.makeCuboidShape(4.0D, 4.0D, 4.0D, 12.0D, 12.0D, 6.0D));
     //height goes in the +x direction
-    protected static final VoxelShape CEAST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 3.0D, 3.0D, 0.0D, 13.0D, 13.0D),
+    protected static final VoxelShape LCEAST = VoxelShapes.or(Block.makeCuboidShape(2.0D, 3.0D, 3.0D, 0.0D, 13.0D, 13.0D),
             Block.makeCuboidShape(2.0D, 4.0D, 4.0D, 3.0D, 12.0D, 12.0D),
             Block.makeCuboidShape(3.0D, 5.0D, 5.0D, 4.0D, 11.0D, 11.0D),
             Block.makeCuboidShape(4.0D, 4.5D, 4.5D, 5.0D, 11.5D, 11.5D),
             Block.makeCuboidShape(5.0D, 5.0D, 5.0D, 10.0D, 11.0D, 11.0D),
             Block.makeCuboidShape(10.0D, 4.0D, 4.0D, 12.0D, 12.0D, 12.0D));
-    protected static final VoxelShape CSOUTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 3.0D, 2.0D, 13.0D, 13.0D, 0.0D),
+    protected static final VoxelShape LCSOUTH = VoxelShapes.or(Block.makeCuboidShape(3.0D, 3.0D, 2.0D, 13.0D, 13.0D, 0.0D),
             Block.makeCuboidShape(4.0D, 4.0D, 3.0D, 12.0D, 12.0D, 2.0D),
             Block.makeCuboidShape(5.0D, 5.0D, 4.0D, 11.0D, 11.0D, 3.0D),
             Block.makeCuboidShape(4.5D, 4.5D, 5.0D, 11.5D, 11.5D, 4.0D),
             Block.makeCuboidShape(5.0D, 5.0D, 10.0D, 11.0D, 11.0D, 5.0D),
             Block.makeCuboidShape(4.0D, 4.0D, 12.0D, 12.0D, 12.0D, 10.0D));
-    protected static final VoxelShape CWEST = VoxelShapes.or(Block.makeCuboidShape(14.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D),
+    protected static final VoxelShape LCWEST = VoxelShapes.or(Block.makeCuboidShape(14.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D),
             Block.makeCuboidShape(13.0D, 4.0D, 4.0D, 14.0D, 12.0D, 12.0D),
             Block.makeCuboidShape(12.0D, 5.0D, 5.0D, 13.0D, 11.0D, 11.0D),
             Block.makeCuboidShape(11.0D, 4.5D, 4.5D, 12.0D, 11.5D, 11.5D),
@@ -90,7 +113,7 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
     public BlockPedestal(Properties builder)
     {
         super(builder);
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.UP).with(WATERLOGGED, Boolean.valueOf(false)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.UP).with(WATERLOGGED, Boolean.valueOf(false)).with(LIT, Boolean.valueOf(false)));
     }
 
     /*public void dropAllItems() {
@@ -138,22 +161,26 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
+    public int getLightValue(BlockState state) {
+        return state.get(LIT) ? super.getLightValue(state) : 0;
+    }
+
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         switch(state.get(FACING)) {
             case UP:
             default:
-                return CUP;
+                return (state.get(LIT)) ? (LCUP) : (CUP);
             case DOWN:
-                return CDOWN;
+                return (state.get(LIT)) ? (LCDOWN) : (CDOWN);
             case NORTH:
-                return CNORTH;
+                return (state.get(LIT)) ? (LCNORTH) : (CNORTH);
             case EAST:
-                return CEAST;
+                return (state.get(LIT)) ? (LCEAST) : (CEAST);
             case SOUTH:
-                return CSOUTH;
+                return (state.get(LIT)) ? (LCSOUTH) : (CSOUTH);
             case WEST:
-                return CWEST;
+                return (state.get(LIT)) ? (LCWEST) : (CWEST);
         }
     }
 
@@ -177,9 +204,10 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
+        PlayerEntity player = context.getPlayer();
         Direction direction = context.getFace();
         BlockState blockstate = context.getWorld().getBlockState(context.getPos().offset(direction.getOpposite()));
-        return blockstate.getBlock() == this && blockstate.get(FACING) == direction ? this.getDefaultState().with(FACING, direction.getOpposite()).with(WATERLOGGED, Boolean.valueOf(false)) : this.getDefaultState().with(FACING, direction).with(WATERLOGGED, Boolean.valueOf(false));
+        return blockstate.getBlock() == this && blockstate.get(FACING) == direction ? this.getDefaultState().with(FACING, direction.getOpposite()).with(WATERLOGGED, Boolean.valueOf(false)).with(LIT, Boolean.valueOf(false)) : this.getDefaultState().with(FACING, direction).with(WATERLOGGED, Boolean.valueOf(false)).with(LIT, Boolean.valueOf(false));
     }
 
     /*Directly From CactusBlock Code*/
@@ -192,11 +220,7 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
 
             if(!worldIn.isRemote)
             {
-                Item coinInPed = tilePedestal.getCoinOnPedestal().getItem();
-                if(coinInPed instanceof ItemUpgradeBase)
-                {
-                    ((ItemUpgradeBase) coinInPed).actionOnCollideWithBlock(worldIn, tilePedestal, pos, state, entityIn);
-                }
+                tilePedestal.collideWithPedestal(worldIn, tilePedestal, pos, state, entityIn);
             }
         }
     }
@@ -218,18 +242,69 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
                 }
                 else if(!tilePedestal.hasCoin())
                 {
-                    //player.getHeldItemMainhand().getItem() instanceof ItemCoin ||
-                    if(player.getHeldItemMainhand().getItem() instanceof ItemUpgradeBase)
-                    {
-                        if(tilePedestal.addCoin(player.getHeldItemMainhand()))
-                        {
-                            player.getHeldItemMainhand().shrink(1);
-                        }
-                    }
-                    else if (player.getHeldItemMainhand().isEmpty()) {
+                    if (player.getHeldItemMainhand().isEmpty()) {
                         if (tilePedestal.hasItem()) {
                             player.inventory.addItemStackToInventory(tilePedestal.removeItem());
                         }
+                    }
+                    else{
+                        if(player.getHeldItemMainhand().getItem() instanceof ItemUpgradeBase)
+                        {
+                            if(tilePedestal.addCoin(player.getHeldItemMainhand()))
+                            {
+                                player.getHeldItemMainhand().shrink(1);
+                            }
+                        }
+                        else if(player.getHeldItemMainhand().getItem().equals(Items.GLOWSTONE))
+                        {
+                            if(!tilePedestal.hasLight())
+                            {
+                                tilePedestal.addLight();
+                                player.getHeldItemMainhand().shrink(1);
+                                return ActionResultType.SUCCESS;
+                            }
+                            else
+                            {
+                                int availableSpace = tilePedestal.canAcceptItems(player.getHeldItemMainhand());
+                                if(availableSpace>0)
+                                {
+                                    if (tilePedestal.addItem(player.getHeldItemMainhand()))
+                                    {
+                                        player.getHeldItemMainhand().shrink(availableSpace);
+                                        return ActionResultType.SUCCESS;
+                                    }
+                                }
+                                else return ActionResultType.SUCCESS;
+                            }
+                        }
+                        else
+                        {
+                            int availableSpace = tilePedestal.canAcceptItems(player.getHeldItemMainhand());
+                            if(availableSpace>0)
+                            {
+                                if (tilePedestal.addItem(player.getHeldItemMainhand()))
+                                {
+                                    player.getHeldItemMainhand().shrink(availableSpace);
+                                    return ActionResultType.SUCCESS;
+                                }
+                            }
+                            else return ActionResultType.SUCCESS;
+                        }
+                    }
+                    //player.getHeldItemMainhand().getItem() instanceof ItemCoin ||
+
+                }
+                else if(player.getHeldItemMainhand().getItem() instanceof ItemCrystalWrench)
+                {
+                    return ActionResultType.FAIL;
+                }
+                else if(player.getHeldItemMainhand().getItem().equals(Items.GLOWSTONE))
+                {
+                    if(!tilePedestal.hasLight())
+                    {
+                        tilePedestal.addLight();
+                        player.getHeldItemMainhand().shrink(1);
+                        return ActionResultType.SUCCESS;
                     }
                     else
                     {
@@ -245,12 +320,6 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
                         else return ActionResultType.SUCCESS;
                     }
                 }
-
-                else if(player.getHeldItemMainhand().getItem() instanceof ItemCrystalWrench)
-                {
-                    return ActionResultType.FAIL;
-                }
-
                 else if (player.getHeldItemMainhand().isEmpty()) {
                     if (tilePedestal.hasItem()) {
                         player.inventory.addItemStackToInventory(tilePedestal.removeItem());
@@ -274,9 +343,13 @@ public class BlockPedestal extends DirectionalBlock implements IWaterLoggable {
         return ActionResultType.SUCCESS;
     }
 
+    @Override
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+        return (state.get(LIT))?(15):(0);
+    }
+
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-        builder.add(WATERLOGGED);
+        builder.add(FACING,WATERLOGGED,LIT);
     }
 
     private int getRedstoneLevel(World worldIn, BlockPos pos)

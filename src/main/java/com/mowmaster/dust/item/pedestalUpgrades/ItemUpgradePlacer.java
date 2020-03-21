@@ -4,6 +4,7 @@ import com.mowmaster.dust.dust;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SnowBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -105,14 +106,17 @@ public class ItemUpgradePlacer extends ItemUpgradeBase
             Item singleItemInPedestal = itemInPedestal.getItem();
 
             if(blockBelow.equals(Blocks.AIR) && !singleItemInPedestal.equals(Items.AIR)) {
-                if (((BlockItem) singleItemInPedestal).getBlock() instanceof Block)
+                if(singleItemInPedestal instanceof BlockItem)
                 {
-                    if (!itemInPedestal.isEmpty() && itemInPedestal.getItem() instanceof BlockItem && ((BlockItem) itemInPedestal.getItem()).getBlock() instanceof Block) {
-                        Block block = ((BlockItem) itemInPedestal.getItem()).getBlock();
+                    if (((BlockItem) singleItemInPedestal).getBlock() instanceof Block)
+                    {
+                        if (!itemInPedestal.isEmpty() && itemInPedestal.getItem() instanceof BlockItem && ((BlockItem) itemInPedestal.getItem()).getBlock() instanceof Block) {
+                            Block block = ((BlockItem) itemInPedestal.getItem()).getBlock();
 
-                        world.setBlockState(blockPosBelow,block.getDefaultState());
-                        this.removeFromPedestal(world,posOfPedestal,1);
-                        world.playSound((PlayerEntity) null, blockPosBelow.getX(), blockPosBelow.getY(), blockPosBelow.getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                            world.setBlockState(blockPosBelow,block.getDefaultState());
+                            this.removeFromPedestal(world,posOfPedestal,1);
+                            world.playSound((PlayerEntity) null, blockPosBelow.getX(), blockPosBelow.getY(), blockPosBelow.getZ(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                        }
                     }
                 }
             }

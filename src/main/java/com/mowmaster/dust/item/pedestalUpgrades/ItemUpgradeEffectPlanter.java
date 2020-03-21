@@ -91,17 +91,20 @@ public class ItemUpgradeEffectPlanter extends ItemUpgradeBase
 
         if(world.getBlockState(posTarget).getBlock().equals(Blocks.AIR) && !singleItemInPedestal.equals(Items.AIR))
         {
-            if(((BlockItem) singleItemInPedestal).getBlock() instanceof IPlantable)
+            if(singleItemInPedestal instanceof BlockItem)
             {
-                if (!itemInPedestal.isEmpty() && itemInPedestal.getItem() instanceof BlockItem && ((BlockItem) itemInPedestal.getItem()).getBlock() instanceof IPlantable) {
-                    Block block = ((BlockItem) itemInPedestal.getItem()).getBlock();
+                if(((BlockItem) singleItemInPedestal).getBlock() instanceof IPlantable)
+                {
+                    if (!itemInPedestal.isEmpty() && itemInPedestal.getItem() instanceof BlockItem && ((BlockItem) itemInPedestal.getItem()).getBlock() instanceof IPlantable) {
+                        Block block = ((BlockItem) itemInPedestal.getItem()).getBlock();
 
 
-                    if (world.getBlockState(posTarget.down()).canSustainPlant(world,posTarget.down(),Direction.UP,(IPlantable) block)) {
-                        if (world.setBlockState(posTarget, ((IPlantable) block).getPlant(world, posTarget))) {
-                            this.removeFromPedestal(world,posOfPedestal,1);
-                            world.setBlockState(posTarget,((IPlantable) block).getPlant(world, posTarget));
-                            world.playSound((PlayerEntity) null, posTarget.getX(), posTarget.getY(), posTarget.getZ(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                        if (world.getBlockState(posTarget.down()).canSustainPlant(world,posTarget.down(),Direction.UP,(IPlantable) block)) {
+                            if (world.setBlockState(posTarget, ((IPlantable) block).getPlant(world, posTarget))) {
+                                this.removeFromPedestal(world,posOfPedestal,1);
+                                world.setBlockState(posTarget,((IPlantable) block).getPlant(world, posTarget));
+                                world.playSound((PlayerEntity) null, posTarget.getX(), posTarget.getY(), posTarget.getZ(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                            }
                         }
                     }
                 }

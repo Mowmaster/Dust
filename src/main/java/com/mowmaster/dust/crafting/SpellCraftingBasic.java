@@ -300,6 +300,7 @@ public class SpellCraftingBasic
                                 nbt.putInt(Reference.MODID + "Potion",Effect.getId(effect.getPotion()));
                                 nbt.putInt(Reference.MODID + "Amplifier",effect.getAmplifier());
                                 nbt.putInt(Reference.MODID + "Duration",(dur));
+                                nbt.putInt(Reference.MODID + "Color",(color));
                                 scroll.setTag(nbt);
 
                                 for(int i=paper;i>0;i--)

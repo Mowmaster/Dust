@@ -1,6 +1,7 @@
 {
-  "parent": "dust:block/pedestal",
+  "parent": "dust:block/pedestallit",
   "textures": {
+    "glow":"dust:blocks/ancient/ancientglowstone",
     "type": "dust:blocks/stone/stone/tintstone",
     "typepart":"dust:blocks/stone/stone/tintstone"
   }

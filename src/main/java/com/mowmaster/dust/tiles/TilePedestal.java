@@ -1,20 +1,30 @@
 package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.item.ItemColorDust;
+import com.mowmaster.dust.item.ItemDust;
+import com.mowmaster.dust.item.ItemSpellScroll;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBaseFilter;
+import com.mowmaster.dust.references.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -46,6 +56,11 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     private int intTransferAmount = 0;
     private int intTransferSpeed = 20;
     private int intTransferRange = 8;
+    private int intSpeed = 0;
+    private int intStorage = 0;
+    private int intSpeedAmp = 0;
+    private int intStorageAmp = 0;
+    private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
 
     public TilePedestal()
@@ -96,8 +111,6 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             returner=true;
         }
         update();
-
-
         return returner;
     }
 
@@ -197,6 +210,30 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         }
         else  return true;
     }
+    public boolean hasLight()
+    {
+        return boolLight;
+    }
+
+    public boolean hasSpeed()
+    {
+        return (intSpeed>0)?(true):(false);
+    }
+
+    public boolean hasStorage()
+    {
+        return (intStorage>0)?(true):(false);
+    }
+
+    public boolean hasSpeedAmp()
+    {
+        return (intSpeedAmp>0)?(true):(false);
+    }
+
+    public boolean hasStorageAmp()
+    {
+        return (intStorageAmp>0)?(true):(false);
+    }
 
     public ItemStack getItemInPedestal()
     {
@@ -216,6 +253,26 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             return h.getStackInSlot(1);
         }
         else return ItemStack.EMPTY;
+    }
+
+    public int getSpeed()
+    {
+        return intSpeed;
+    }
+
+    public int getStorage()
+    {
+        return intStorage;
+    }
+
+    public int getSpeedAmp()
+    {
+        return intSpeedAmp;
+    }
+
+    public int getStorageAmp()
+    {
+        return intStorageAmp;
     }
 
 
@@ -256,28 +313,79 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         return stack;
     }
 
+    public boolean removeSpeed(int count)
+    {
+        boolean returner = (getSpeed()-count >= 0)?(true):(false);
+        if(returner)
+        {
+            if(getSpeed()-count <=0)setSpeedAmp(0);
+            intSpeed-=count;
+
+            update();
+        }
+
+        return returner;
+    }
+
+    public boolean removeStorage(int count)
+    {
+        boolean returner = (getStorage()-count >= 0)?(true):(false);
+        if(returner)
+        {
+            if(getStorage()-count <=0)setStorageAmp(0);
+            intStorage-=count;
+            update();
+        }
+
+        return returner;
+    }
+
+    public boolean removeSpeedAmp(int count)
+    {
+        boolean returner = (getSpeedAmp()-count >= 0)?(true):(false);
+        if(returner)
+        {
+            intSpeedAmp-=count;
+            update();
+        }
+
+        return returner;
+    }
+
+    public boolean removeStorageAmp(int count)
+    {
+        boolean returner = (getStorageAmp()-count >= 0)?(true):(false);
+        if(returner)
+        {
+            intStorageAmp-=count;
+            update();
+        }
+
+        return returner;
+    }
+
     public int getItemTransferRate()
     {
         int itemRate = 4;
-        switch (intTransferAmount)
+        switch (getStorageAmp())
         {
             case 0:
-                itemRate = 4;
+                itemRate = (getStorage()>0)?(4):(4);
                 break;
             case 1:
-                itemRate=8;
+                itemRate= (getStorage()>0)?(8):(4);
                 break;
             case 2:
-                itemRate = 16;
+                itemRate = (getStorage()>0)?(16):(4);
                 break;
             case 3:
-                itemRate = 32;
+                itemRate = (getStorage()>0)?(32):(4);
                 break;
             case 4:
-                itemRate = 48;
+                itemRate = (getStorage()>0)?(48):(4);
                 break;
             case 5:
-                itemRate=64;
+                itemRate=(getStorage()>0)?(64):(4);
                 break;
             default: itemRate=4;
         }
@@ -288,25 +396,25 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     public int getOperationSpeed()
     {
         int speed = 20;
-        switch (intTransferSpeed)
+        switch (getSpeedAmp())
         {
             case 0:
-                speed = 20;//normal speed
+                speed = (getSpeed()>0)?(20):(20);//normal speed
                 break;
             case 1:
-                speed=10;//2x faster
+                speed=(getSpeed()>0)?(10):(20);//2x faster
                 break;
             case 2:
-                speed = 5;//4x faster
+                speed = (getSpeed()>0)?(5):(20);;//4x faster
                 break;
             case 3:
-                speed = 3;//6x faster
+                speed = (getSpeed()>0)?(3):(20);;//6x faster
                 break;
             case 4:
-                speed = 2;//10x faster
+                speed = (getSpeed()>0)?(2):(20);;//10x faster
                 break;
             case 5:
-                speed=1;//20x faster
+                speed=(getSpeed()>0)?(1):(20);;//20x faster
                 break;
             default: speed=20;
         }
@@ -342,6 +450,47 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         update();
 
         return true;
+    }
+
+    public boolean addLight()
+    {
+        if(hasLight())
+        {
+            return false;
+        }
+        else
+        {
+            boolLight = true;
+            BlockState state = world.getBlockState(pos);
+            boolean watered = state.get(BlockPedestal.WATERLOGGED);
+            Direction dir = state.get(BlockPedestal.FACING);
+            BlockState newstate = state.with(BlockPedestal.FACING,dir).with(BlockPedestal.WATERLOGGED,watered).with(BlockPedestal.LIT,true);
+            world.notifyBlockUpdate(pos,state,newstate,3);
+            world.setBlockState(pos,newstate,3);
+            //world.markBlockRangeForRenderUpdate(pos,state,newstate);
+            update();
+            return true;
+        }
+    }
+
+    public void addSpeed(int count)
+    {
+        intSpeed+=count;
+    }
+
+    public void addStorage(int count)
+    {
+        intStorage+=count;
+    }
+
+    public void setSpeedAmp(int count)
+    {
+        intSpeedAmp=count;
+    }
+
+    public void setStorageAmp(int count)
+    {
+        intStorageAmp=count;
     }
 
     public boolean doItemsMatch(ItemStack itemStackIn)
@@ -507,8 +656,6 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
             }
         }
 
-
-
         return returner;
     }
 
@@ -538,10 +685,72 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
                 //Send items
                 copyStackToSend.setCount(countToSend);
                 removeItem(copyStackToSend.getCount());
+                removeSpeed(1);
+                removeStorage(1);
                 tileToSendTo.addItem(copyStackToSend);
                 tileToSendTo.update();
                 //remove item will mark dirty this pedestan
                 //addItem mark dirties the reciever pedestal
+            }
+        }
+    }
+
+    public void collideWithPedestal(World world, TilePedestal tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
+    {
+        if(!world.isRemote) {
+            if(entityIn instanceof ItemEntity)
+            {
+                ItemStack getItemStack = ((ItemEntity) entityIn).getItem();
+                if(getItemStack.getItem() instanceof ItemColorDust)
+                {
+                    //VoidStorage
+                    if(getItemStack.getTag().getInt("color") == 11141375)
+                    {
+                        addStorage(getItemStack.getCount()*20);
+                        if(getStorageAmp()==0)setStorageAmp(1);
+                        entityIn.remove();
+
+                    }
+                    //Speed
+                    else if(getItemStack.getTag().getInt("color") == 65535)
+                    {
+                        addSpeed(getItemStack.getCount()*20);
+                        if(getSpeedAmp()==0)setSpeedAmp(1);
+                        entityIn.remove();
+
+                    }
+                }
+                else if(getItemStack.getItem() instanceof ItemSpellScroll)
+                {
+                    if(getItemStack.getTag().contains(Reference.MODID + "Color"))
+                    {
+                        CompoundNBT nbt = getItemStack.getTag();
+                        //VoidStorage
+                        if(nbt.getInt(Reference.MODID + "Color") == 11141375)
+                        {
+                            addStorage(nbt.getInt(Reference.MODID + "Duration"));
+                            setStorageAmp(nbt.getInt(Reference.MODID + "Amplifier")+1);
+                            entityIn.remove();
+
+                        }
+                        //Speed
+                        else if(nbt.getInt(Reference.MODID + "Color") == 65535)
+                        {
+                            addSpeed(nbt.getInt(Reference.MODID + "Duration"));
+                            setSpeedAmp(nbt.getInt(Reference.MODID + "Amplifier")+1);
+                            entityIn.remove();
+
+                        }
+                    }
+                }
+                else if(tilePedestal.hasCoin())
+                {
+                    Item coinInPed = tilePedestal.getCoinOnPedestal().getItem();
+                    if(coinInPed instanceof ItemUpgradeBase)
+                    {
+                        ((ItemUpgradeBase) coinInPed).actionOnCollideWithBlock(world, tilePedestal, pos, state, entityIn);
+                    }
+                }
             }
         }
     }
@@ -630,6 +839,11 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         this.intTransferAmount = tag.getInt("intTransferAmount");
         this.intTransferSpeed = tag.getInt("intTransferSpeed");
         this.intTransferRange = tag.getInt("intTransferRange");
+        this.boolLight = tag.getBoolean("boollight");
+        this.intSpeed = tag.getInt("intSpeed");
+        this.intSpeedAmp = tag.getInt("intSpeedAmp");
+        this.intStorage = tag.getInt("intStorage");
+        this.intStorageAmp = tag.getInt("intStorageAmp");
 
         int counter = tag.getInt("storedBlockPosCounter");
         for(int i=0;i<counter;i++)
@@ -659,6 +873,11 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
         tag.putInt("intTransferAmount",intTransferAmount);
         tag.putInt("intTransferSpeed",intTransferSpeed);
         tag.putInt("intTransferRange",intTransferRange);
+        tag.putBoolean("boollight", boolLight);
+        tag.putInt("intSpeed",intSpeed);
+        tag.putInt("intSpeedAmp",intSpeedAmp);
+        tag.putInt("intStorage",intStorage);
+        tag.putInt("intStorageAmp",intStorageAmp);
         int counter = 0;
         for(int i=0;i<getNumberOfStoredLocations();i++)
         {

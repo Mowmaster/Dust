@@ -1,6 +1,8 @@
 package com.mowmaster.dust.crafting;
 
 import com.google.common.collect.Maps;
+import com.mowmaster.dust.effects.PotionRegistry;
+import com.mowmaster.dust.effects.PotionVoidStorage;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.Effects;
 
@@ -58,7 +60,7 @@ public class SpellCraftingEffectGood
         //this.addSpellCraftingEffectRecipe(11141120,new ItemStack(BlockDustStone.ITEM_STONE_200));
         //this.addSpellCraftingEffectRecipe(11141205,new ItemStack(BlockDustStone.ITEM_STONE_201));
         //this.addSpellCraftingEffectRecipe(11141290,new ItemStack(BlockDustStone.ITEM_STONE_202));
-        //this.addSpellCraftingEffectRecipe(11141375,new ItemStack(BlockDustStone.ITEM_STONE_203));
+        this.addSpellCraftingEffectRecipe(11141375, PotionRegistry.PotionEffects.voidstorage);//203
         this.addSpellCraftingEffectRecipe(11162880,Effects.LUCK);//210
         //this.addSpellCraftingEffectRecipe(11162965,new ItemStack(BlockDustStone.ITEM_STONE_211));
         //this.addSpellCraftingEffectRecipe(11163050,new ItemStack(BlockDustStone.ITEM_STONE_212));
