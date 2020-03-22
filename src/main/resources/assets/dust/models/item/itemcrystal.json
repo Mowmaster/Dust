@@ -1,0 +1,7 @@
+{
+"parent": "dust:item/itemtintcrystal",
+"textures": {
+  "crystal_cores": "dust:items/models/crystals/crystalcore_depleated",
+  "crystal_sides": "dust:items/models/crystals/crystal_depleated"
+}
+}

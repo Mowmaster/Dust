@@ -1,6 +1,7 @@
 package com.mowmaster.dust.crafting;
 
 import com.mowmaster.dust.blocks.BlockTrap;
+import com.mowmaster.dust.item.ItemColorCrystal;
 import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemSpellScroll;
 import com.mowmaster.dust.references.Reference;
@@ -64,6 +65,7 @@ public class SpellCraftingBasic
         int paper=0;
         int count=0;
         int plate=0;
+        int crystal=0;
         ItemStack trapped = ItemStack.EMPTY;
 
         if(!worldIn.isRemote) {
@@ -90,6 +92,12 @@ public class SpellCraftingBasic
                         if(stack.getItem().equals(Items.PAPER))
                         {
                             paper+=stack.getCount();
+                            item.remove();
+                        }
+
+                        if(stack.getItem().equals(Items.DIAMOND))
+                        {
+                            crystal+=stack.getCount();
                             item.remove();
                         }
 
@@ -221,7 +229,7 @@ public class SpellCraftingBasic
                         //worldIn.removeBlock(new BlockPos(posX, posY + 1, posZ), false);
                         worldIn.createExplosion(new ItemEntity(worldIn, posX, posY, posZ), posX + 0.5, posY + 2.0, posZ + 0.5, 1.0F, Explosion.Mode.NONE);
 
-                        if(stone == 0 && bowl == 0 && paper == 0 && plate == 0)
+                        if(stone == 0 && bowl == 0 && paper == 0 && plate == 0 && crystal == 0)
                         {
                             int amp = getPotency(white,black,5 );
                             if(white >= black)
@@ -310,6 +318,32 @@ public class SpellCraftingBasic
                                     itemEn.setInvulnerable(true);
                                     itemEn.onCollideWithPlayer(player);
                                     //worldIn.addEntity(itemEn);
+                                }
+                            }
+                        }
+
+                        else if (crystal > 0) {
+
+                            for(int i=crystal;i>0;i--)
+                            {
+                                if(count>=8)
+                                {
+                                    count-=8;
+                                    crystal-=1;
+                                    ItemStack stacked = new ItemStack(ItemColorCrystal.CRYSTAL,1);
+                                    CompoundNBT nbt = new CompoundNBT();
+                                    nbt.putInt("color",color);
+                                    stacked.setTag(nbt);
+                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,stacked);
+                                    itemEn.setInvulnerable(true);
+                                    worldIn.addEntity(itemEn);
+                                }
+                                else
+                                {
+                                    ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(Items.DIAMOND,crystal));
+                                    crystal-=crystal;
+                                    itemEn.setInvulnerable(true);
+                                    worldIn.addEntity(itemEn);
                                 }
                             }
                         }

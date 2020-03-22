@@ -1,24 +1,20 @@
 package com.mowmaster.dust.item;
 
-import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockPedestalTE;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -54,7 +50,7 @@ public class ItemCrystalWrench extends Item {
             BlockState getBlockState = worldIn.getBlockState(pos);
             if(player.isCrouching())
             {
-                if(getBlockState.getBlock() instanceof BlockPedestal)
+                if(getBlockState.getBlock() instanceof BlockPedestalTE)
                 {
                     if(player.getHeldItemMainhand().isEnchanted()==false)
                     {
@@ -72,7 +68,7 @@ public class ItemCrystalWrench extends Item {
                     else if(player.getHeldItemMainhand().hasTag() && player.getHeldItemMainhand().isEnchanted())
                     {
                         //Checks if clicked blocks is a Pedestal
-                        if(worldIn.getBlockState(pos).getBlock() instanceof BlockPedestal)
+                        if(worldIn.getBlockState(pos).getBlock() instanceof BlockPedestalTE)
                         {
                             //Checks Tile at location to make sure its a TilePedestal
                             TileEntity tileEntity = worldIn.getTileEntity(pos);

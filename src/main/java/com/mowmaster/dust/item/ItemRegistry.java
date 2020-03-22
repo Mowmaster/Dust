@@ -2,7 +2,7 @@ package com.mowmaster.dust.item;
 
 
 import com.mowmaster.dust.blocks.BlockDustStone;
-import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockPedestalTE;
 import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.blocks.BlockVoidPot;
 import com.mowmaster.dust.item.pedestalUpgrades.*;
@@ -15,12 +15,13 @@ public class ItemRegistry
     public static void onItemRegistryReady(RegistryEvent.Register<Item> e)
     {
         BlockDustStone.onItemRegistryReady(e);
-        BlockPedestal.onItemRegistryReady(e);
+        BlockPedestalTE.onItemRegistryReady(e);
         BlockVoidPot.onItemRegistryReady(e);
         BlockTrap.onItemRegistryReady(e);
         
         ItemDust.onItemRegistryReady(e);
         ItemColorDust.onItemRegistryReady(e);
+        ItemColorCrystal.onItemRegistryReady(e);
         ItemCrystalWrench.onItemRegistryReady(e);
         ItemUpgradeDropper.onItemRegistryReady(e);
         ItemUpgradeImport.onItemRegistryReady(e);
@@ -62,7 +63,8 @@ public class ItemRegistry
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
     {
         BlockDustStone.handleItemColors(event);
-        BlockPedestal.handleItemColors(event);
+        BlockPedestalTE.handleItemColors(event);
         ItemColorDust.handleItemColors(event);
+        ItemColorCrystal.handleItemColors(event);
     }
 }

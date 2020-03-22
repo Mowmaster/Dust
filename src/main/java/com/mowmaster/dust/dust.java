@@ -1,7 +1,7 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.BlockDustStone;
-import com.mowmaster.dust.blocks.BlockPedestal;
+import com.mowmaster.dust.blocks.BlockPedestalTE;
 import com.mowmaster.dust.blocks.BlockTrap;
 import com.mowmaster.dust.blocks.BlockVoidPot;
 import com.mowmaster.dust.configtabs.CreativeTab;
@@ -43,7 +43,7 @@ public class dust
     public static void onBlockRegistryReady(RegistryEvent.Register<Block> event)
     {
         BlockDustStone.onBlockRegistryReady(event);
-        BlockPedestal.onBlockRegistryReady(event);
+        BlockPedestalTE.onBlockRegistryReady(event);
         BlockVoidPot.onBlockRegistryReady(event);
         BlockTrap.onBlockRegistryReady(event);
     }
@@ -59,7 +59,7 @@ public class dust
     public static void onBlockColorsReady(ColorHandlerEvent.Block event)
     {
         BlockDustStone.handleBlockColors(event);
-        BlockPedestal.handleBlockColors(event);
+        BlockPedestalTE.handleBlockColors(event);
     }
 
     @SubscribeEvent
