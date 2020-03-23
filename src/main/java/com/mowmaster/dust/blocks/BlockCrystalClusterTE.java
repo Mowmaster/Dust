@@ -1,14 +1,10 @@
 package com.mowmaster.dust.blocks;
 
 import com.mowmaster.dust.dust;
-import com.mowmaster.dust.item.ItemCrystalWrench;
-import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import com.mowmaster.dust.tiles.TileCrystalCluster;
-import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -16,7 +12,6 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -32,14 +27,12 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-import static com.mowmaster.dust.dust.BLOCK_GROUP;
 import static com.mowmaster.dust.references.Reference.MODID;
 
 public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLoggable {
@@ -55,6 +48,8 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
     protected static final VoxelShape CEAST = VoxelShapes.or(Block.makeCuboidShape(0.0D, 5.0D, 5.0D, 10.0D, 11.0D, 11.0D));
     protected static final VoxelShape CSOUTH = VoxelShapes.or(Block.makeCuboidShape(5.0D, 5.0D, 10.0D, 11.0D, 11.0D, 0.0D));
     protected static final VoxelShape CWEST = VoxelShapes.or(Block.makeCuboidShape(16.0D, 5.0D, 5.0D, 6.0D, 11.0D, 11.0D));
+
+
 
     public BlockCrystalClusterTE(Properties builder)
     {
@@ -160,8 +155,8 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
         if(!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof TilePedestal) {
-                TilePedestal tilePedestal = (TilePedestal) tileEntity;
+            if (tileEntity instanceof TileCrystalCluster) {
+                TileCrystalCluster tilePedestal = (TileCrystalCluster) tileEntity;
 
                 if(player.isCrouching())
                 {
@@ -188,8 +183,8 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
     {
         int hasItem=0;
         TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if(tileEntity instanceof TilePedestal) {
-            TilePedestal pedestal = (TilePedestal) tileEntity;
+        if(tileEntity instanceof TileCrystalCluster) {
+            TileCrystalCluster pedestal = (TileCrystalCluster) tileEntity;
             int counter = pedestal.getItemInPedestal().getCount();
             if(counter<=0) {hasItem=0;}
             else if(counter>0 && counter<=1) {hasItem=1;}
@@ -267,7 +262,7 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
 
     private static final ResourceLocation R_CLUSTER = new ResourceLocation(MODID, "crystal/crystalcluster");
 
-    public static final Block B_CLUSTER = new BlockPedestalTE(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_CLUSTER);
+    public static final Block B_CLUSTER = new BlockCrystalClusterTE(Block.Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.STONE)).setRegistryName(R_CLUSTER);
 
     public static final Item I_CLUSTER = new BlockItem(B_CLUSTER, new Item.Properties().group(dust.BLOCK_GROUP)) {}.setRegistryName(R_CLUSTER);
 

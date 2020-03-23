@@ -2,11 +2,13 @@ package com.mowmaster.dust.tiles;
 
 import com.mowmaster.dust.blocks.BlockCrystalClusterTE;
 import com.mowmaster.dust.blocks.BlockPedestalTE;
+import com.mowmaster.dust.item.ItemColorCrystal;
 import com.mowmaster.dust.item.ItemColorDust;
 import com.mowmaster.dust.item.ItemSpellScroll;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBase;
 import com.mowmaster.dust.item.pedestalUpgrades.ItemUpgradeBaseFilter;
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -47,9 +49,6 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
 
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
 
-    private static final int[] SLOTS_ALLSIDES = new int[] {0};
-
-    private int storedValueForUpgrades = 0;
     private boolean boolLight = false;
 
     public TileCrystalCluster()
@@ -65,7 +64,7 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
     }
 
     private IItemHandler createHandler() {
-        return new ItemStackHandler(2) {
+        return new ItemStackHandler(9) {
             @Override
             protected void onContentsChanged(int slot) {
                 update();
@@ -73,8 +72,37 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if (slot == 0) return true;
-                if (slot == 1 && stack.getItem() instanceof ItemUpgradeBase) return true;
+                if(stack.getItem() instanceof ItemColorCrystal)
+                {
+                    if (slot == 0 && getStackInSlot(0).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 1 && getStackInSlot(1).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 2 && getStackInSlot(2).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 3 && getStackInSlot(3).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 4 && getStackInSlot(4).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 5 && getStackInSlot(5).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 6 && getStackInSlot(6).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 7 && getStackInSlot(7).isEmpty()){
+                        return true;
+                    }
+                    else if (slot == 8 && getStackInSlot(8).isEmpty()){
+                        return true;
+                    }
+                }
+
                 return false;
             }
         };
@@ -89,10 +117,10 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
         return super.getCapability(cap, side);
     }
 
-    public boolean hasItem()
+    public boolean hasItem(int slot)
     {
         IItemHandler h = handler.orElse(null);
-        if(h.getStackInSlot(0).isEmpty())
+        if(h.getStackInSlot(slot).isEmpty())
         {
             return false;
         }
@@ -105,28 +133,20 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
     }
 
 
-    public ItemStack getItemInPedestal()
+    public ItemStack getItemInPedestal(int slot)
     {
         IItemHandler h = handler.orElse(null);
-        if(hasItem())
+        if(hasItem(slot))
         {
-            return h.getStackInSlot(0);
+            return h.getStackInSlot(slot);
         }
         else return ItemStack.EMPTY;
 
     }
 
-    public ItemStack removeItem(int numToRemove) {
+    public ItemStack removeItem(int slot) {
         IItemHandler h = handler.orElse(null);
-        ItemStack stack = h.extractItem(0,numToRemove,false);
-        update();
-
-        return stack;
-    }
-
-    public ItemStack removeItem() {
-        IItemHandler h = handler.orElse(null);
-        ItemStack stack = h.extractItem(0,h.getStackInSlot(0).getCount(),false);
+        ItemStack stack = h.extractItem(slot,h.getStackInSlot(slot).getCount(),false);
         update();
 
         return stack;
@@ -134,14 +154,14 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
 
     public int getMaxStackSize(){return 1;}
 
-    public boolean addItem(ItemStack itemFromBlock)
+    public boolean addItem(int slot, ItemStack itemFromBlock)
     {
         IItemHandler h = handler.orElse(null);
-        if(hasItem())
+        if(hasItem(slot))
         {
 
         }
-        else {h.insertItem(0, itemFromBlock.copy(), false);}
+        else {h.insertItem(slot, itemFromBlock.copy(), false);}
         update();
 
         return true;
@@ -157,46 +177,56 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
         {
             boolLight = true;
             BlockState state = world.getBlockState(pos);
-            boolean watered = state.get(BlockPedestalTE.WATERLOGGED);
-            Direction dir = state.get(BlockPedestalTE.FACING);
-            BlockState newstate = state.with(BlockPedestalTE.FACING,dir).with(BlockPedestalTE.WATERLOGGED,watered).with(BlockPedestalTE.LIT,true);
+            boolean watered = state.get(BlockCrystalClusterTE.WATERLOGGED);
+            Direction dir = state.get(BlockCrystalClusterTE.FACING);
+            BlockState newstate = state.with(BlockCrystalClusterTE.FACING,dir).with(BlockCrystalClusterTE.WATERLOGGED,watered).with(BlockCrystalClusterTE.LIT,true);
             world.notifyBlockUpdate(pos,state,newstate,3);
             world.setBlockState(pos,newstate,3);
-            //world.markBlockRangeForRenderUpdate(pos,state,newstate);
             update();
             return true;
         }
     }
 
-    //Returns items available to be insert, 0 if false
-    public int canAcceptItems(ItemStack itemsIncoming)
+    public boolean hasEmptySlot()
     {
-        int canAccept = 0;
+        IItemHandler h = handler.orElse(null);
+        int slots = h.getSlots();
+        int i = 0;
+        int count = 0;
+        for(i=0;i<slots;i++)
+        {
+            if(hasItem(i)) count++;
+        }
 
-
-
-        return canAccept;
+        return (count==9)?(false):(true);
     }
 
-    public boolean hasFilter(TileCrystalCluster pedestalSendingTo)
+    public int getNextEmptySlot()
     {
-        boolean returner = false;
+        IItemHandler h = handler.orElse(null);
+        int slots = h.getSlots();
+        int i = -1;
+        if(hasEmptySlot())
+        {
+            for(i=0;i<slots;i++)
+            {
+                if(!hasItem(i)) break;
+            }
+        }
 
-        return returner;
+        return i;
     }
 
     public boolean isBlockUnder(int x,int y,int z)
     {
-        TileEntity tileEntity = world.getTileEntity(pos.add(x,y,z));
-        if(tileEntity instanceof ICapabilityProvider)
-        {
-            return true;
-        }
-        return false;
+        return (world.getBlockState(pos.add(x,y,z)).getBlock() instanceof AirBlock)?(false):(true);
     }
 
-    int impTicker = 0;
-    int pedTicker = 0;
+    public BlockState getBlockUnder(int x,int y,int z)
+    {
+        return (isBlockUnder(x,y,z))?(world.getBlockState(pos.add(x,y,z))):(null);
+    }
+
     @Override
     public void tick() {
 
@@ -214,7 +244,7 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
         CompoundNBT invTag = tag.getCompound("inv");
         handler.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
 
-        this.storedValueForUpgrades = tag.getInt("storedUpgradeValue");
+        //this.storedValueForUpgrades = tag.getInt("storedUpgradeValue");
 
         super.read(tag);
     }
@@ -226,7 +256,7 @@ public class TileCrystalCluster extends TileEntity implements ITickableTileEntit
             tag.put("inv", compound);
         });
 
-        tag.putInt("storedUpgradeValue",storedValueForUpgrades);
+        //tag.putInt("storedUpgradeValue",storedValueForUpgrades);
 
         return super.write(tag);
     }

@@ -1,10 +1,7 @@
 package com.mowmaster.dust.item;
 
 
-import com.mowmaster.dust.blocks.BlockDustStone;
-import com.mowmaster.dust.blocks.BlockPedestalTE;
-import com.mowmaster.dust.blocks.BlockTrap;
-import com.mowmaster.dust.blocks.BlockVoidPot;
+import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.item.pedestalUpgrades.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -18,6 +15,7 @@ public class ItemRegistry
         BlockPedestalTE.onItemRegistryReady(e);
         BlockVoidPot.onItemRegistryReady(e);
         BlockTrap.onItemRegistryReady(e);
+        BlockCrystalClusterTE.onItemRegistryReady(e);
         
         ItemDust.onItemRegistryReady(e);
         ItemColorDust.onItemRegistryReady(e);

@@ -1,14 +1,12 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.blocks.BlockDustStone;
-import com.mowmaster.dust.blocks.BlockPedestalTE;
-import com.mowmaster.dust.blocks.BlockTrap;
-import com.mowmaster.dust.blocks.BlockVoidPot;
+import com.mowmaster.dust.blocks.*;
 import com.mowmaster.dust.configtabs.CreativeTab;
 import com.mowmaster.dust.configtabs.CreativeTabBlock;
 import com.mowmaster.dust.crafting.Recipes;
 import com.mowmaster.dust.item.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileCrystalCluster;
 import com.mowmaster.dust.tiles.TilePedestal;
 import com.mowmaster.dust.tiles.TileTrap;
 import net.minecraft.block.Block;
@@ -46,6 +44,7 @@ public class dust
         BlockPedestalTE.onBlockRegistryReady(event);
         BlockVoidPot.onBlockRegistryReady(event);
         BlockTrap.onBlockRegistryReady(event);
+        BlockCrystalClusterTE.onBlockRegistryReady(event);
     }
 
     @SubscribeEvent
@@ -53,6 +52,7 @@ public class dust
     {
         TilePedestal.onTileEntityRegistry(event);
         TileTrap.onTileEntityRegistry(event);
+        TileCrystalCluster.onTileEntityRegistry(event);
     }
 
     @SubscribeEvent
