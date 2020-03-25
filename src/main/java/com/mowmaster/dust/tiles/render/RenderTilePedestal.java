@@ -32,7 +32,9 @@ public class RenderTilePedestal extends TileEntitySpecialRenderer<TilePedestal>
             ItemStack itemInBlockBelow = te.getDisplay();
             ItemStack coin = te.getCoinOnPedestal();
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            EnumFacing enumfacing = state.getValue(FACING);
+            //java.lang.IllegalArgumentException: Cannot get property PropertyDirection ERROR FIX???
+            EnumFacing enumfacing = (state != null)?(state.getValue(FACING)):(EnumFacing.UP);
+
             RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
             GlStateManager.pushMatrix();
