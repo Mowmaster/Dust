@@ -16,61 +16,44 @@ public class EffectGetter
     {
         return EFFECT_BASE;
     }
-    private boolean immersiveE=false;
-    private boolean astralSorc=false;
-    private boolean bloodMagic=false;
-    private boolean botania=false;
-    private boolean champions=false;
-    private boolean naturalPledge=false;
-    private boolean naturesAura=false;
-    private boolean quark=false;
-    private boolean railCraft=false;
-    private boolean rustic=false;
-    private boolean thaumcraft=false;
-    private boolean twilightForest=false;
-    private boolean wizardry=false;
+    private boolean immersiveE=(Loader.isModLoaded("immersiveengineering"))?(true):(false);
+    private boolean astralSorc=(Loader.isModLoaded("astralsorcery"))?(true):(false);
+    private boolean bloodMagic=(Loader.isModLoaded("bloodmagic"))?(true):(false);
+    private boolean botania=(Loader.isModLoaded("botania"))?(true):(false);
+    private boolean champions=(Loader.isModLoaded("champions"))?(true):(false);
+    private boolean naturalPledge=(Loader.isModLoaded("naturalpledge"))?(true):(false);
+    private boolean naturesAura=(Loader.isModLoaded("naturesaura"))?(true):(false);
+    private boolean quark=(Loader.isModLoaded("quark"))?(true):(false);
+    private boolean railCraft=(Loader.isModLoaded("railcraft"))?(true):(false);
+    private boolean rustic=(Loader.isModLoaded("rustic"))?(true):(false);
+    private boolean thaumcraft=(Loader.isModLoaded("thaumcraft"))?(true):(false);
+    private boolean twilightForest=(Loader.isModLoaded("twilightforest"))?(true):(false);
+    private boolean wizardry=(Loader.isModLoaded("wizardry"))?(true):(false);
+
+    private boolean abyssal=(Loader.isModLoaded("abyssalcraft"))?(true):(false);
+    private boolean aov=(Loader.isModLoaded("aov"))?(true):(false);
+    private boolean bewitchment=(Loader.isModLoaded("bewitchment"))?(true):(false);
+    private boolean bop=(Loader.isModLoaded("biomesoplenty"))?(true):(false);
+    private boolean conarm=(Loader.isModLoaded("conarm"))?(true):(false);
+    private boolean ebwizardry=(Loader.isModLoaded("ebwizardry"))?(true):(false);
+    private boolean extraspells=(Loader.isModLoaded("extra_spells"))?(true):(false);
+    private boolean forbiddenarcanus=(Loader.isModLoaded("forbidden_arcanus"))?(true):(false);
+    private boolean midnight=(Loader.isModLoaded("midnight"))?(true):(false);
+    private boolean roots=(Loader.isModLoaded("roots"))?(true):(false);
+    private boolean tcon=(Loader.isModLoaded("tconstruct"))?(true):(false);
+    private boolean tfspellpack=(Loader.isModLoaded("tfspellpack"))?(true):(false);
+    private boolean thaumadditions=(Loader.isModLoaded("thaumadditions"))?(true):(false);
+    private boolean betweenlands=(Loader.isModLoaded("thebetweenlands"))?(true):(false);
+    private boolean tombstone=(Loader.isModLoaded("tombstone"))?(true):(false);
+    private boolean totemic=(Loader.isModLoaded("totemic"))?(true):(false);
+    private boolean vampirism=(Loader.isModLoaded("vampirism"))?(true):(false);
+    private boolean xat=(Loader.isModLoaded("xat"))?(true):(false);
+    private boolean xenos=(Loader.isModLoaded("xreliquary"))?(true):(false);
+
+
 
 
     private EffectGetter() {
-        if (Loader.isModLoaded("immersiveengineering")) {
-            immersiveE = true;
-        }
-        if (Loader.isModLoaded("astralsorcery")) {
-            astralSorc = true;
-        }
-        if (Loader.isModLoaded("bloodmagic")) {
-            bloodMagic = true;
-        }
-        if (Loader.isModLoaded("botania")) {
-            botania = true;
-        }
-        if (Loader.isModLoaded("champions")) {
-            champions = true;
-        }
-        if (Loader.isModLoaded("naturalpledge")) {
-            naturalPledge = true;
-        }
-        if (Loader.isModLoaded("naturesaura")) {
-            naturesAura = true;
-        }
-        if (Loader.isModLoaded("quark")) {
-            quark = true;
-        }
-        if (Loader.isModLoaded("railcraft")) {
-            railCraft = true;
-        }
-        if (Loader.isModLoaded("rustic")) {
-            rustic = true;
-        }
-        if (Loader.isModLoaded("thaumcraft")) {
-            thaumcraft = true;
-        }
-        if (Loader.isModLoaded("twilightforest")) {
-            twilightForest = true;
-        }
-        if (Loader.isModLoaded("wizardry")) {
-            wizardry = true;
-        }
         //()?():()
 
         //this.addSpellEffect(xRRRBBBYYY, new PotionEffect(MobEffects.STRENGTH));x=1 for good effect x=2 for bad effect otherwise its 0-100% of the mix is which of the three colors
@@ -197,7 +180,7 @@ public class EffectGetter
         *
          */
         //this.addSpellEffect(1100000000, new PotionEffect(MobEffects.STRENGTH)); //100% RED (x2)
-        //this.addSpellEffect(1099000001, new PotionEffect(MobEffects.STRENGTH));
+        if(xenos){this.addSpellEffect(1099000001, new PotionEffect(Potion.getPotionFromResourceLocation("xreliquary:cure_potion")));}
         //this.addSpellEffect(1098000002, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1097000003, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1096000004, new PotionEffect(MobEffects.STRENGTH));
@@ -432,7 +415,7 @@ public class EffectGetter
         //this.addSpellEffect(1000004096, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000003097, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000002098, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1000001099, new PotionEffect(MobEffects.STRENGTH));
+        if(xenos){this.addSpellEffect(1000001099, new PotionEffect(Potion.getPotionFromResourceLocation("xreliquary:pacification_potion")));}
         //this.addSpellEffect(1000000100, new PotionEffect(MobEffects.STRENGTH)); // 100% YELLOW (x2)
 
         /*
@@ -441,6 +424,7 @@ public class EffectGetter
         *
          */
         if(bloodMagic){this.addSpellEffect(1033033033, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight")));}
+        else if(xenos){this.addSpellEffect(1033033033, new PotionEffect(Potion.getPotionFromResourceLocation("xreliquary:flight_potion")));}
         else{this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_SLOWFALL));}
 
         this.addSpellEffect(1050025025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
@@ -1018,9 +1002,6 @@ xat:enhanced,
 xat:fairy,
 xat:restorative,
 
-xreliquary:cure_potion,
-xreliquary:flight_potion,
-xreliquary:pacification_potion
      */
 
 
