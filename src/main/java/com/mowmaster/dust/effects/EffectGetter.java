@@ -184,7 +184,7 @@ public class EffectGetter
         //this.addSpellEffect(1098000002, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1097000003, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1096000004, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1095000005, new PotionEffect(MobEffects.STRENGTH));
+        if(xat){this.addSpellEffect(1095000005, new PotionEffect(Potion.getPotionFromResourceLocation("xat:enhanced")));}
         //this.addSpellEffect(1094000006, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1093000007, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1092000008, new PotionEffect(MobEffects.STRENGTH));
@@ -283,7 +283,7 @@ public class EffectGetter
         //this.addSpellEffect(1018000082, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1017000083, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1016000084, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1015000085, new PotionEffect(MobEffects.STRENGTH));
+        if(xat){this.addSpellEffect(1015000085, new PotionEffect(Potion.getPotionFromResourceLocation("xat:restorative")));}
         //this.addSpellEffect(1014000086, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1013000087, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1012000088, new PotionEffect(MobEffects.STRENGTH));
@@ -312,7 +312,7 @@ public class EffectGetter
         //this.addSpellEffect(1000098002, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000097003, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000096004, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1000095005, new PotionEffect(MobEffects.STRENGTH));
+        if(bloodMagic){this.addSpellEffect(1000095005, new PotionEffect(Potion.getPotionFromResourceLocation("totemic:spider")));}
         //this.addSpellEffect(1000094006, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000093007, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000092008, new PotionEffect(MobEffects.STRENGTH));
@@ -433,6 +433,10 @@ public class EffectGetter
         if(rustic){this.addSpellEffect(1025050025, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:feather")));}
         else{this.addSpellEffect(1025050025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));}
 
+        if(xat){this.addSpellEffect(1075010015, new PotionEffect(Potion.getPotionFromResourceLocation("xat:fairy")));}
+
+        if(totemic){this.addSpellEffect(1010075015, new PotionEffect(Potion.getPotionFromResourceLocation("totemic:bat")));}
+
         if(botania){this.addSpellEffect(1025025050, new PotionEffect(Potion.getPotionFromResourceLocation("botania:featherfeet")));}
         else{this.addSpellEffect(1025025050, new PotionEffect(PotionRegistry.POTION_SLOWFALL));}
 
@@ -461,7 +465,7 @@ public class EffectGetter
         //this.addSpellEffect(2093007000, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2092008000, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2091009000, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(2090010000, new PotionEffect(MobEffects.STRENGTH));
+        if(xat){this.addSpellEffect(2090010000, new PotionEffect(Potion.getPotionFromResourceLocation("xat:dwarf")));}
 
         //this.addSpellEffect(2089011000, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2088012000, new PotionEffect(MobEffects.STRENGTH));
@@ -966,9 +970,6 @@ tombstone:reach,
 tombstone:true_sight,
 tombstone:unstable_intangibleness,
 
-totemic:bat,
-totemic:spider,
-
 vampirism:disguise_as_vampire,
 vampirism:fire_protection,
 vampirism:freeze,
@@ -978,11 +979,6 @@ vampirism:sanguinare,
 vampirism:saturation,
 vampirism:sunscreen,
 vampirism:thirst,
-
-xat:dwarf,
-xat:enhanced,
-xat:fairy,
-xat:restorative,
 
      */
 
