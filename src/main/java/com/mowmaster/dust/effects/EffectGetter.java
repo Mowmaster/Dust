@@ -195,7 +195,7 @@ public class EffectGetter
         //this.addSpellEffect(1088000012, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1087000013, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1086000014, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1085000015, new PotionEffect(MobEffects.STRENGTH));
+        if(tfspellpack){this.addSpellEffect(1085000015, new PotionEffect(Potion.getPotionFromResourceLocation("tfspellpack:ironwood_heart")));}
         //this.addSpellEffect(1084000016, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1083000017, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1082000018, new PotionEffect(MobEffects.STRENGTH));
@@ -206,7 +206,7 @@ public class EffectGetter
         //this.addSpellEffect(1088000012, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1087000013, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1086000014, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1085000015, new PotionEffect(MobEffects.STRENGTH));
+        if(tfspellpack){this.addSpellEffect(1085000015, new PotionEffect(Potion.getPotionFromResourceLocation("tfspellpack:mist_cloak")));}
         //this.addSpellEffect(1084000016, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1083000017, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1082000018, new PotionEffect(MobEffects.STRENGTH));
@@ -228,7 +228,7 @@ public class EffectGetter
         //this.addSpellEffect(1068000032, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1067000033, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1066000034, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1065000035, new PotionEffect(MobEffects.STRENGTH));
+        if(thaumadditions){this.addSpellEffect(1065000035, new PotionEffect(Potion.getPotionFromResourceLocation("thaumadditions:sanity_checker")));}
         //this.addSpellEffect(1064000036, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1063000037, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1062000038, new PotionEffect(MobEffects.STRENGTH));
@@ -239,7 +239,7 @@ public class EffectGetter
         //this.addSpellEffect(1058000042, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1057000043, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1056000044, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1055000045, new PotionEffect(MobEffects.STRENGTH));
+        if(thaumadditions){this.addSpellEffect(1055000045, new PotionEffect(Potion.getPotionFromResourceLocation("thaumadditions:sonus")));}
         //this.addSpellEffect(1054000046, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1053000047, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1052000048, new PotionEffect(MobEffects.STRENGTH));
@@ -400,7 +400,7 @@ public class EffectGetter
         //this.addSpellEffect(1000018082, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000017083, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000016084, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1000015085, new PotionEffect(MobEffects.STRENGTH));
+        if(forbiddenarcanus){this.addSpellEffect(1000015085, new PotionEffect(Potion.getPotionFromResourceLocation("forbidden_arcanus:spectral_vision")));}
         //this.addSpellEffect(1000014086, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000013087, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000012088, new PotionEffect(MobEffects.STRENGTH));
@@ -411,7 +411,7 @@ public class EffectGetter
         //this.addSpellEffect(1000008092, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000007093, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000006094, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(1000005095, new PotionEffect(MobEffects.STRENGTH));
+        if(extraspells){this.addSpellEffect(1000005095, new PotionEffect(Potion.getPotionFromResourceLocation("extra_spells:leeching")));}
         //this.addSpellEffect(1000004096, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000003097, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(1000002098, new PotionEffect(MobEffects.STRENGTH));
@@ -425,6 +425,7 @@ public class EffectGetter
          */
         if(bloodMagic){this.addSpellEffect(1033033033, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:flight")));}
         else if(xenos){this.addSpellEffect(1033033033, new PotionEffect(Potion.getPotionFromResourceLocation("xreliquary:flight_potion")));}
+        else if(forbiddenarcanus){this.addSpellEffect(1033033033, new PotionEffect(Potion.getPotionFromResourceLocation("forbidden_arcanus:fly")));}
         else{this.addSpellEffect(1033033033, new PotionEffect(PotionRegistry.POTION_SLOWFALL));}
 
         this.addSpellEffect(1050025025, new PotionEffect(PotionRegistry.POTION_SLOWFALL));
@@ -529,7 +530,7 @@ public class EffectGetter
         if(immersiveE){this.addSpellEffect(2030070000, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:conductive")));}
 
         //this.addSpellEffect(2029071000, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(2028072000, new PotionEffect(MobEffects.STRENGTH));
+        if(conarm){this.addSpellEffect(2028072000, new PotionEffect(Potion.getPotionFromResourceLocation("conarm:superhotpotion")));}
         //this.addSpellEffect(2027073000, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2026074000, new PotionEffect(MobEffects.STRENGTH));
         if(immersiveE){this.addSpellEffect(2025075000, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:flammable")));}
@@ -642,7 +643,7 @@ public class EffectGetter
         //this.addSpellEffect(2043000057, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2042000058, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2041000059, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(2040000060, new PotionEffect(MobEffects.STRENGTH));
+        if(extraspells){this.addSpellEffect(2040000060, new PotionEffect(Potion.getPotionFromResourceLocation("extra_spells:vampirism")));}
 
         //this.addSpellEffect(2039000061, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2038000062, new PotionEffect(MobEffects.STRENGTH));
@@ -710,7 +711,7 @@ public class EffectGetter
         //this.addSpellEffect(2000088012, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000087013, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000086014, new PotionEffect(MobEffects.STRENGTH));
-        //this.addSpellEffect(2000085015, new PotionEffect(MobEffects.STRENGTH));
+        if(bop){this.addSpellEffect(2000085015, new PotionEffect(Potion.getPotionFromResourceLocation("biomesoplenty:curse")));}
         //this.addSpellEffect(2000084016, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000083017, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000082018, new PotionEffect(MobEffects.STRENGTH));
@@ -747,10 +748,10 @@ public class EffectGetter
         //this.addSpellEffect(2000054046, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000053047, new PotionEffect(MobEffects.STRENGTH));
         if(champions){this.addSpellEffect(2000052048, new PotionEffect(Potion.getPotionFromResourceLocation("champions:plague")));}
-        //this.addSpellEffect(2000051049, new PotionEffect(MobEffects.STRENGTH));
+        if(abyssal){this.addSpellEffect(2000051049, new PotionEffect(Potion.getPotionFromResourceLocation("abyssalcraft:dplague")));}
         this.addSpellEffect(2000050050, new PotionEffect(MobEffects.WITHER)); //GREEN
 
-        //this.addSpellEffect(2000049051, new PotionEffect(MobEffects.STRENGTH));
+        if(abyssal){this.addSpellEffect(2000049051, new PotionEffect(Potion.getPotionFromResourceLocation("abyssalcraft:cplague")));}
         //this.addSpellEffect(2000048052, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000047053, new PotionEffect(MobEffects.STRENGTH));
         //this.addSpellEffect(2000046054, new PotionEffect(MobEffects.STRENGTH));
@@ -823,9 +824,6 @@ public class EffectGetter
     /*
     SUPPORT TO ADD
 
-abyssalcraft:cplague,
-abyssalcraft:dplague,
-
 aov:aid,
 aov:balance,
 aov:coldchill,
@@ -873,10 +871,6 @@ bewitchment:volatility,
 bewitchment:wednesday,
 bewitchment:wolfsbane,
 
-biomesoplenty:curse,
-
-conarm:superhotpotion,
-
 ebwizardry:arcane_jammer,
 ebwizardry:containment,
 ebwizardry:curse_of_enfeeblement,
@@ -899,12 +893,6 @@ ebwizardry:slow_time,
 ebwizardry:static_aura,
 ebwizardry:transience,
 ebwizardry:ward,
-
-extra_spells:leeching,
-extra_spells:vampirism,
-
-forbidden_arcanus:fly,
-forbidden_arcanus:spectral_vision,
 
 midnight:confusion,
 midnight:darkness,
@@ -929,12 +917,6 @@ tconstruct:insatiable,
 tconstruct:magnetic,
 tconstruct:momentum,
 tconstruct:splinter,
-
-tfspellpack:ironwood_heart,
-tfspellpack:mist_cloak,
-
-thaumadditions:sanity_checker,
-thaumadditions:sonus,
 
 thebetweenlands:effect_basilisk,
 thebetweenlands:effect_blindman,
