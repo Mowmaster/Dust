@@ -143,7 +143,7 @@ public class SpellCrafting
                             peded = stack.copy();
                             pedestal += stack.getCount();
                             item.setDead();
-                            System.out.println(peded.getItem().getUnlocalizedName() + peded.getCount());
+                            //System.out.println(peded.getItem().getUnlocalizedName() + peded.getCount());
                         }
 
                         if(containsArrow(stack))//&& !(paper>0) || !(pressurePlate>0)

@@ -1,6 +1,12 @@
 package com.mowmaster.dust.items;
 
+import com.mowmaster.dust.blocks.machines.BlockTrap;
 import com.mowmaster.dust.references.Reference;
+import com.mowmaster.dust.tiles.TileTrapBlock;
+import net.minecraft.block.BlockBasePressurePlate;
+import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.BlockPressurePlateWeighted;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +16,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,12 +55,56 @@ public class ItemSpellScroll extends Item
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (stack.hasTagCompound()) {
-            playerIn.addPotionEffect(getPotionEffectFromStack(playerIn.getHeldItem(handIn)));
+            playerIn.addPotionEffect(getPotionEffectFromStack(stack));
             playerIn.getHeldItemMainhand().shrink(1);
             worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
             worldIn.playSound(playerIn, playerIn.getPosition(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
         }
         return ActionResult.newResult(EnumActionResult.PASS,playerIn.getHeldItem(handIn));
+    }
+
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
+        if(stack.getItem() instanceof ItemSpellScroll)
+        {
+            IBlockState state = worldIn.getBlockState(pos);
+            if(state.getBlock() instanceof BlockBasePressurePlate)
+            {
+                if(state.getBlock() instanceof BlockPressurePlateWeighted)
+                {
+                    player.getHeldItem(hand).shrink(1);
+                    worldIn.setBlockToAir(pos);
+                    worldIn.setBlockState(pos, BlockTrap.blockTrap.getDefaultState());
+                    TileEntity tileentity = worldIn.getTileEntity(pos);
+                    if (tileentity instanceof TileTrapBlock) {
+                        ((TileTrapBlock) tileentity).setTrapEffect(getPotionEffectFromStack(stack));
+                    }
+                    worldIn.playSound(player, player.getPosition(), SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+                }
+                else if(state.getBlock() instanceof BlockPressurePlate)
+                {
+                    player.getHeldItem(hand).shrink(1);
+                    worldIn.setBlockToAir(pos);
+                    worldIn.setBlockState(pos, BlockTrap.blockTrapMob.getDefaultState());
+                    TileEntity tileentity = worldIn.getTileEntity(pos);
+                    if (tileentity instanceof TileTrapBlock) {
+                        ((TileTrapBlock) tileentity).setTrapEffect(getPotionEffectFromStack(stack));
+                    }
+                    worldIn.playSound(player, player.getPosition(), SoundEvents.BLOCK_GLASS_PLACE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+                }
+                else
+                {
+                    return EnumActionResult.FAIL;
+                }
+            }
+            else
+            {
+                onItemRightClick(worldIn,player,hand);
+            }
+        }
+
+        return EnumActionResult.SUCCESS;
     }
 
     public PotionEffect getPotionEffectFromStack(ItemStack stack)
