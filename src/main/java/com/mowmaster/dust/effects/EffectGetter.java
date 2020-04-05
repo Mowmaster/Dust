@@ -104,7 +104,7 @@ public class EffectGetter
         if(naturalPledge){this.addSpellEffect(1065035000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:immorality")));}
         //if(){this.addSpellEffect(1064036000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1063037000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1062038000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1062038000, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:ward")));}
         //if(){this.addSpellEffect(1061039000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(1060040000, new PotionEffect(PotionRegistry.POTION_VOIDSTORAGE));
 
@@ -214,7 +214,7 @@ public class EffectGetter
         if(roots){this.addSpellEffect(1080000020, new PotionEffect(Potion.getPotionFromResourceLocation("roots:geas")));}
 
         //if(){this.addSpellEffect(1079000021, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1078000022, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1078000022, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:empowerment")));}
         //if(){this.addSpellEffect(1077000023, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1076000024, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(1075000025, new PotionEffect(MobEffects.JUMP_BOOST));
@@ -247,13 +247,13 @@ public class EffectGetter
         this.addSpellEffect(1050000050, new PotionEffect(MobEffects.HASTE)); //ORANGE
 
         //if(){this.addSpellEffect(1049000051, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1048000052, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1048000052, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:frost_step")));}
         //if(){this.addSpellEffect(1047000053, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1046000054, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(astralSorc){this.addSpellEffect(1045000055, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potioncheatdeath")));}
         //if(){this.addSpellEffect(1044000056, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1043000057, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1042000058, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1042000058, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:transience")));}
         //if(){this.addSpellEffect(1041000059, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(1040000060, new PotionEffect(PotionRegistry.POTION_HARVESTER));
 
@@ -285,13 +285,13 @@ public class EffectGetter
         //if(){this.addSpellEffect(1016000084, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(xat){this.addSpellEffect(1015000085, new PotionEffect(Potion.getPotionFromResourceLocation("xat:restorative")));}
         //if(){this.addSpellEffect(1014000086, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1013000087, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1013000087, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:static_aura")));}
         //if(){this.addSpellEffect(1012000088, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1011000089, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(1010000090, new PotionEffect(MobEffects.ABSORPTION));
 
         //if(){this.addSpellEffect(1009000091, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1008000092, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1008000092, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:font_of_mana")));}
         //if(){this.addSpellEffect(1007000093, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1006000094, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(rustic){this.addSpellEffect(1005000095, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:full")));}
@@ -309,7 +309,7 @@ public class EffectGetter
          */
         //if(){this.addSpellEffect(1000100000, new PotionEffect(Potion.getPotionFromResourceLocation("")));} //100% BLUE (x2)
         //if(){this.addSpellEffect(1000099001, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1000098002, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1000098002, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:fireskin")));}
         //if(){this.addSpellEffect(1000097003, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1000096004, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(1000095005, new PotionEffect(Potion.getPotionFromResourceLocation("totemic:spider")));}
@@ -320,7 +320,7 @@ public class EffectGetter
         this.addSpellEffect(1000090010, new PotionEffect(MobEffects.SPEED));
 
         //if(){this.addSpellEffect(1000089011, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1000088012, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1000088012, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:ice_shroud")));}
         //if(){this.addSpellEffect(1000087013, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1000086014, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(1000085015, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:boost")));}
@@ -331,7 +331,7 @@ public class EffectGetter
         if(tombstone){this.addSpellEffect(1000080020, new PotionEffect(Potion.getPotionFromResourceLocation("tombstone:reach")));}
 
         //if(){this.addSpellEffect(1000079021, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1000078022, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1000078022, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:slow_time")));}
         //if(){this.addSpellEffect(1000077023, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1000076024, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(1000075025, new PotionEffect(PotionRegistry.POTION_QUICKNESS));
@@ -397,7 +397,7 @@ public class EffectGetter
         if(quark){this.addSpellEffect(1000020080, new PotionEffect(Potion.getPotionFromResourceLocation("quark:danger_sight")));}
 
         //if(){this.addSpellEffect(1000019081, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1000018082, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(1000018082, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:sixth_sense")));}
         //if(){this.addSpellEffect(1000017083, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1000016084, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(forbiddenarcanus){this.addSpellEffect(1000015085, new PotionEffect(Potion.getPotionFromResourceLocation("forbidden_arcanus:spectral_vision")));}
@@ -408,7 +408,7 @@ public class EffectGetter
         if(tombstone){this.addSpellEffect(1000010090, new PotionEffect(Potion.getPotionFromResourceLocation("tombstone:preservation")));}
 
         //if(){this.addSpellEffect(1000009091, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1000008092, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(1000008092, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:enlightened")));}
         //if(){this.addSpellEffect(1000007093, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1000006094, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(extraspells){this.addSpellEffect(1000005095, new PotionEffect(Potion.getPotionFromResourceLocation("extra_spells:leeching")));}
@@ -446,7 +446,7 @@ public class EffectGetter
         if(aov){this.addSpellEffect(1005020075, new PotionEffect(Potion.getPotionFromResourceLocation("aov:slowfall")));}
         //if(){this.addSpellEffect(1020005075, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1075020005, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(1075005020, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(1075005020, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_wings")));}
         //if(){this.addSpellEffect(1020075005, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(1005075020, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
 
@@ -472,39 +472,39 @@ public class EffectGetter
         this.addSpellEffect(2100000000, new PotionEffect(MobEffects.WEAKNESS)); //100% RED
         this.addSpellEffect(2099001000, new PotionEffect(MobEffects.INSTANT_DAMAGE));
         //if(){this.addSpellEffect(2098002000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2097003000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2097003000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:revealing")));}
         //if(){this.addSpellEffect(2096004000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(2095005000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:sacrificial_lamb")));}
         //if(){this.addSpellEffect(2094006000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2093007000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2092008000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2092008000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:purification")));}
         //if(){this.addSpellEffect(2091009000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(xat){this.addSpellEffect(2090010000, new PotionEffect(Potion.getPotionFromResourceLocation("xat:dwarf")));}
 
         //if(){this.addSpellEffect(2089011000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2088012000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2088012000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:mortal_coil")));}
         //if(){this.addSpellEffect(2087013000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2086014000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(astralSorc){this.addSpellEffect(2085015000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potionspellplague")));}
         //if(){this.addSpellEffect(2084016000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2083017000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2082018000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2083017000, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:root_bound")));}
+        if(bewitchment){this.addSpellEffect(2082018000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:pesticide")));}
         //if(){this.addSpellEffect(2081019000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(aov){this.addSpellEffect(2080020000, new PotionEffect(Potion.getPotionFromResourceLocation("aov:coldchill")));}
 
         //if(){this.addSpellEffect(2079021000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2078022000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2078022000, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:frost")));}
         //if(){this.addSpellEffect(2077023000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2076024000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(2075025000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:cling")));}
         //if(){this.addSpellEffect(2074026000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2073027000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2072028000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2072028000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:rubedo")));}
         //if(){this.addSpellEffect(2071029000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(champions){this.addSpellEffect(2070030000, new PotionEffect(Potion.getPotionFromResourceLocation("champions:jailed")));}
 
         //if(){this.addSpellEffect(2069031000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2068032000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2068032000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:mending")));}
         //if(){this.addSpellEffect(2067033000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2066034000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(wizardry){this.addSpellEffect(2065035000, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:nullify_gravity")));}
@@ -515,29 +515,29 @@ public class EffectGetter
         if(astralSorc){this.addSpellEffect(2060040000, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potionbleed")));}
 
         //if(){this.addSpellEffect(2059041000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2058042000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2058042000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:magic_weakness")));}
         //if(){this.addSpellEffect(2057043000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2056044000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(tombstone){this.addSpellEffect(2055045000, new PotionEffect(Potion.getPotionFromResourceLocation("tombstone:unstable_intangibleness")));}
         //if(){this.addSpellEffect(2054046000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2053047000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2053047000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:magic_resistance")));}
         //if(){this.addSpellEffect(2052048000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2051049000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(champions){this.addSpellEffect(2050050000, new PotionEffect(Potion.getPotionFromResourceLocation("champions:injured")));}
 
         //if(){this.addSpellEffect(2049051000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2048052000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2048052000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:iceworld")));}
         //if(){this.addSpellEffect(2047053000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2046054000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(naturalPledge){this.addSpellEffect(2045055000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:rooted")));}
         //if(){this.addSpellEffect(2044056000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2043057000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2043057000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:holy_water")));}
         //if(){this.addSpellEffect(2042058000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2041059000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2040060000, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:sunscorned")));}
 
         //if(){this.addSpellEffect(2039061000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2038062000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2038062000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:hellworld")));}
         //if(){this.addSpellEffect(2037063000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2036064000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(2035065000, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:fire_fuse")));}
@@ -553,29 +553,29 @@ public class EffectGetter
         //if(){this.addSpellEffect(2026074000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(immersiveE){this.addSpellEffect(2025075000, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:flammable")));}
         //if(){this.addSpellEffect(2024076000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2023077000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2023077000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:hellfire")));}
         //if(){this.addSpellEffect(2022078000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2021079000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(naturalPledge){this.addSpellEffect(2020080000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:everburn")));}
 
         //if(){this.addSpellEffect(2019081000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2018082000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2018082000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:harvest")));}
         //if(){this.addSpellEffect(2017083000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2016084000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(naturalPledge){this.addSpellEffect(2015085000, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:faithlessness")));}
         //if(){this.addSpellEffect(2014086000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2013087000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2012088000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2012088000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:ruin")));}
         //if(){this.addSpellEffect(2011089000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(rustic){this.addSpellEffect(2010090000, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:blazing_trail")));}
 
         //if(){this.addSpellEffect(2009091000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2008092000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2008092000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:grace")));}
         //if(){this.addSpellEffect(2007093000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2006094000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(2005095000, new PotionEffect(MobEffects.UNLUCK));
         //if(){this.addSpellEffect(2004096000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2003097000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2003097000, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:shell_armor")));}
         //if(){this.addSpellEffect(2002098000, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(quark){this.addSpellEffect(2001099000, new PotionEffect(Potion.getPotionFromResourceLocation("quark:blue")));}
         this.addSpellEffect(2000100000, new PotionEffect(PotionRegistry.POTION_DROWNING)); //100% BLUE
@@ -593,14 +593,14 @@ public class EffectGetter
         if(tcon){this.addSpellEffect(2095000005, new PotionEffect(Potion.getPotionFromResourceLocation("tconstruct:splinter")));}
         //if(){this.addSpellEffect(2094000006, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2093000007, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2092000008, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2092000008, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:fertility")));}
         //if(){this.addSpellEffect(2091000009, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(quark){this.addSpellEffect(2090000010, new PotionEffect(Potion.getPotionFromResourceLocation("quark:curse")));}
 
         //if(){this.addSpellEffect(2089000011, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2088000012, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2088000012, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:sinking")));}
         //if(){this.addSpellEffect(2087000013, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2086000014, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2086000014, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:curse_of_soulbinding")));}
         //if(){this.addSpellEffect(2085000015, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2084000016, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(aov){this.addSpellEffect(2083000017, new PotionEffect(Potion.getPotionFromResourceLocation("aov:stalwart")));}
@@ -609,100 +609,100 @@ public class EffectGetter
         if(bloodMagic){this.addSpellEffect(2080000020, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:soul_fray")));}
 
         //if(){this.addSpellEffect(2089000011, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2088000012, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2088000012, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:fear")));}
         //if(){this.addSpellEffect(2087000013, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2086000014, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2085000015, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2085000015, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:curse_of_enfeeblement")));}
         //if(){this.addSpellEffect(2084000016, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2083000017, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2082000018, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2082000018, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:curse_of_undeath")));}
         //if(){this.addSpellEffect(2081000019, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2080000020, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
 
         //if(){this.addSpellEffect(2079000021, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2078000022, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2078000022, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:sleeping")));}
         //if(){this.addSpellEffect(2077000023, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2076000024, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(astralSorc){this.addSpellEffect(2075000025, new PotionEffect(Potion.getPotionFromResourceLocation("astralsorcery:potiontimefreeze")));}
         //if(){this.addSpellEffect(2074000026, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2073000027, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2073000027, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:spore_cloud")));}
         //if(){this.addSpellEffect(2072000028, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2071000029, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2070000030, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2070000030, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:disrobing")));}
 
         //if(){this.addSpellEffect(2069000031, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2068000032, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2068000032, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:volatility")));}
         //if(){this.addSpellEffect(2067000033, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2066000034, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2065000035, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2065000035, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:containment")));}
         //if(){this.addSpellEffect(2064000036, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2063000037, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2063000037, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:wednesday")));}
         //if(){this.addSpellEffect(2062000038, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         //if(){this.addSpellEffect(2061000039, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(rustic){this.addSpellEffect(2060000040, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:tipsy")));}
 
         //if(){this.addSpellEffect(2059000041, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2058000042, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2057000043, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2058000042, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:wolfsbane")));}
+        if(betweenlands){this.addSpellEffect(2057000043, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_weakness")));}
         //if(){this.addSpellEffect(2056000044, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2055000045, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2055000045, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:arcane_jammer")));}
         //if(){this.addSpellEffect(2054000046, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2053000047, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2053000047, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_basilisk")));}
         //if(){this.addSpellEffect(2052000048, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2051000049, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2051000049, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_weakbow")));}
         this.addSpellEffect(2050000050, new PotionEffect(MobEffects.MINING_FATIGUE)); //ORANGE
 
         //if(){this.addSpellEffect(2049000051, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2048000052, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2048000052, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:paralysis")));}
         //if(){this.addSpellEffect(2047000053, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2046000054, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2046000054, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_unclouded")));}
         if(midnight){this.addSpellEffect(2045000055, new PotionEffect(Potion.getPotionFromResourceLocation("midnight:tormented")));}
         //if(){this.addSpellEffect(2044000056, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2043000057, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2043000057, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_blindman")));}
         //if(){this.addSpellEffect(2042000058, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2041000059, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2041000059, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_toughskin")));}
         if(extraspells){this.addSpellEffect(2040000060, new PotionEffect(Potion.getPotionFromResourceLocation("extra_spells:vampirism")));}
 
         //if(){this.addSpellEffect(2039000061, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2038000062, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2038000062, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:desertification")));}
         //if(){this.addSpellEffect(2037000063, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2036000064, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2036000064, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_strength")));}
         if(midnight){this.addSpellEffect(2035000065, new PotionEffect(Potion.getPotionFromResourceLocation("midnight:confusion")));}
         //if(){this.addSpellEffect(2034000066, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2033000067, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2032000068, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2033000067, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_swiftarm")));}
+        if(bewitchment){this.addSpellEffect(2032000068, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:deviants_decomposure")));}
         //if(){this.addSpellEffect(2031000069, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(2030000070, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:planar_binding")));}
 
         //if(){this.addSpellEffect(2029000071, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2028000072, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2028000072, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_catseyes")));}
         //if(){this.addSpellEffect(2027000073, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(naturalPledge){this.addSpellEffect(2026000074, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:drab")));}
         this.addSpellEffect(2025000075, new PotionEffect(MobEffects.BLINDNESS));
         //if(){this.addSpellEffect(2024000076, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2023000077, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2023000077, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_stenching")));}
         if(midnight){this.addSpellEffect(2022000078, new PotionEffect(Potion.getPotionFromResourceLocation("midnight:darkness")));}
         //if(){this.addSpellEffect(2021000079, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(naturalPledge){this.addSpellEffect(2020000080, new PotionEffect(Potion.getPotionFromResourceLocation("naturalpledge:overcharged")));}
 
         //if(){this.addSpellEffect(2019000081, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2018000082, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2017000083, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2018000082, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:decay")));}
+        if(betweenlands){this.addSpellEffect(2017000083, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_starvation")));}
         //if(){this.addSpellEffect(2016000084, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2015000085, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:thaumarhia")));}
         //if(){this.addSpellEffect(2014000086, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2013000087, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2012000088, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2013000087, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_spiderbreed")));}
+        if(bewitchment){this.addSpellEffect(2012000088, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:deflection")));}
         //if(){this.addSpellEffect(2011000089, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2010000090, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:unnaturalhunger")));}
 
         //if(){this.addSpellEffect(2009000091, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2008000092, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2008000092, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:muffle")));}
         //if(){this.addSpellEffect(2007000093, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2006000094, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-    if(rustic){this.addSpellEffect(2005000095, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:shame")));}
+        if(betweenlands){this.addSpellEffect(2006000094, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_slugarm")));}
+        if(rustic){this.addSpellEffect(2005000095, new PotionEffect(Potion.getPotionFromResourceLocation("rustic:shame")));}
         //if(){this.addSpellEffect(2004000096, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2003000097, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2003000097, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_sagittarius")));}
         if(vampirism){this.addSpellEffect(2002000098, new PotionEffect(Potion.getPotionFromResourceLocation("vampirism:thirst")));}
         //if(){this.addSpellEffect(2001000099, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(2000000100, new PotionEffect(MobEffects.HUNGER)); //100% YELLOW
@@ -713,13 +713,12 @@ public class EffectGetter
         * BLUE & YELLOW (NO RED)
         *
          */
-        //if(){this.addSpellEffect(2000100000, new PotionEffect(Potion.getPotionFromResourceLocation("")));} //100% BLUE (x2)
         //if(){this.addSpellEffect(2000099001, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(wizardry){this.addSpellEffect(2000098002, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:suffocate")));}
-        //if(){this.addSpellEffect(2000097003, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000097003, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_ripening")));}
         //if(){this.addSpellEffect(2000096004, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(naturesAura){this.addSpellEffect(2000095005, new PotionEffect(Potion.getPotionFromResourceLocation("naturesaura:breathless")));}
-        //if(){this.addSpellEffect(2000094006, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000094006, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_poisonsting")));}
         //if(){this.addSpellEffect(2000093007, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(vampirism){this.addSpellEffect(2000092008, new PotionEffect(Potion.getPotionFromResourceLocation("vampirism:freeze")));}
         //if(){this.addSpellEffect(2000091009, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
@@ -727,100 +726,100 @@ public class EffectGetter
 
         //if(){this.addSpellEffect(2000089011, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(roots){this.addSpellEffect(2000088012, new PotionEffect(Potion.getPotionFromResourceLocation("roots:freeze")));}
-        //if(){this.addSpellEffect(2000087013, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000087013, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_petrify")));}
         //if(){this.addSpellEffect(2000086014, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bop){this.addSpellEffect(2000085015, new PotionEffect(Potion.getPotionFromResourceLocation("biomesoplenty:curse")));}
         //if(){this.addSpellEffect(2000084016, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000083017, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000083017, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_nimblefeet")));}
         if(roots){this.addSpellEffect(2000082018, new PotionEffect(Potion.getPotionFromResourceLocation("roots:time_stop")));}
         //if(){this.addSpellEffect(2000081019, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(wizardry){this.addSpellEffect(2000080020, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:time_slow")));}
 
         //if(){this.addSpellEffect(2000079021, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000078022, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000077023, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2000078022, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:fear")));}
+        if(betweenlands){this.addSpellEffect(2000077023, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_masking")));}
         //if(){this.addSpellEffect(2000076024, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(immersiveE){this.addSpellEffect(2000075025, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:slippery")));}
         //if(){this.addSpellEffect(2000074026, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000073027, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000072028, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2000073027, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:cursed_leaps")));}
+        if(betweenlands){this.addSpellEffect(2000072028, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_lumbering")));}
         //if(){this.addSpellEffect(2000071029, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(immersiveE){this.addSpellEffect(2000070030, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:sticky")));}
 
         //if(){this.addSpellEffect(2000069031, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000068032, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000067033, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2000068032, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:mind_trick")));}
+        if(betweenlands){this.addSpellEffect(2000067033, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_limbless")));}
         //if(){this.addSpellEffect(2000066034, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(twilightForest){this.addSpellEffect(2000065035, new PotionEffect(Potion.getPotionFromResourceLocation("twilightforest:frosted")));}
         //if(){this.addSpellEffect(2000064036, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000063037, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000063037, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_decay")));}
         //if(){this.addSpellEffect(2000062038, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000061039, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000061039, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_lightweight")));}
         if(immersiveE){this.addSpellEffect(2000060040, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:stunned")));}
 
         //if(){this.addSpellEffect(2000059041, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(midnight){this.addSpellEffect(2000058042, new PotionEffect(Potion.getPotionFromResourceLocation("midnight:stunned")));}
         //if(){this.addSpellEffect(2000057043, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000056044, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000056044, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_isolatedsenses")));}
         if(immersiveE){this.addSpellEffect(2000055045, new PotionEffect(Potion.getPotionFromResourceLocation("immersiveengineering:flashed")));}
         //if(){this.addSpellEffect(2000054046, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000053047, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000053047, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_hunterssensemaster")));}
         if(champions){this.addSpellEffect(2000052048, new PotionEffect(Potion.getPotionFromResourceLocation("champions:plague")));}
         if(abyssal){this.addSpellEffect(2000051049, new PotionEffect(Potion.getPotionFromResourceLocation("abyssalcraft:dplague")));}
         this.addSpellEffect(2000050050, new PotionEffect(MobEffects.WITHER)); //GREEN
 
         if(abyssal){this.addSpellEffect(2000049051, new PotionEffect(Potion.getPotionFromResourceLocation("abyssalcraft:cplague")));}
         //if(){this.addSpellEffect(2000048052, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000047053, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2000047053, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:corruption")));}
         //if(){this.addSpellEffect(2000046054, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(bloodMagic){this.addSpellEffect(2000045055, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:plant_leach")));}
         //if(){this.addSpellEffect(2000044056, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000043057, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000043057, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_hunterssense")));}
         if(vampirism){this.addSpellEffect(2000042058, new PotionEffect(Potion.getPotionFromResourceLocation("vampirism:poison")));}
         //if(){this.addSpellEffect(2000041059, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         this.addSpellEffect(2000040060, new PotionEffect(MobEffects.POISON));
 
         //if(){this.addSpellEffect(2000039061, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000038062, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2000038062, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:absence")));}
         //if(){this.addSpellEffect(2000037063, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000036064, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000036064, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_heavyweight")));}
         if(bloodMagic){this.addSpellEffect(2000035065, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:deafness")));}
         //if(){this.addSpellEffect(2000034066, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000033067, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2000033067, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:citrinitas")));}
         //if(){this.addSpellEffect(2000032068, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000031069, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000031069, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_healing")));}
         if(thaumcraft){this.addSpellEffect(2000030070, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:blurredvision")));}
 
         //if(){this.addSpellEffect(2000029071, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2000028072, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:fluxtaint")));}
         //if(){this.addSpellEffect(2000027073, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000026074, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000026074, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_gillsgrowth")));}
         this.addSpellEffect(2000025075, new PotionEffect(MobEffects.GLOWING));
         //if(){this.addSpellEffect(2000024076, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000023077, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000022078, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000023077, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_foggedmind")));}
+        if(bewitchment){this.addSpellEffect(2000022078, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:arachnophobia")));}
         //if(){this.addSpellEffect(2000021079, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2000020080, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:deathgaze")));}
 
         //if(){this.addSpellEffect(2000019081, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(vampirism){this.addSpellEffect(2000018082, new PotionEffect(Potion.getPotionFromResourceLocation("vampirism:sanguinare")));}
         //if(){this.addSpellEffect(2000017083, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000016084, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000016084, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_feasting")));}
         if(bloodMagic){this.addSpellEffect(2000015085, new PotionEffect(Potion.getPotionFromResourceLocation("bloodmagic:constrict")));}
         //if(){this.addSpellEffect(2000014086, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000013087, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000012088, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(ebwizardry){this.addSpellEffect(2000013087, new PotionEffect(Potion.getPotionFromResourceLocation("ebwizardry:mind_control")));}
+        if(betweenlands){this.addSpellEffect(2000012088, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_drunkard")));}
         //if(){this.addSpellEffect(2000011089, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2000010090, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:infectiousvisexhaust")));}
 
-        //if(){this.addSpellEffect(2000009091, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000009091, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_draining")));}
         //if(){this.addSpellEffect(2000008092, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000007093, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(bewitchment){this.addSpellEffect(2000007093, new PotionEffect(Potion.getPotionFromResourceLocation("bewitchment:blight")));}
         //if(){this.addSpellEffect(2000006094, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
         if(thaumcraft){this.addSpellEffect(2000005095, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:warpward")));}
         if(thaumcraft){this.addSpellEffect(2000004096, new PotionEffect(Potion.getPotionFromResourceLocation("thaumcraft:visexhaust")));}
         //if(){this.addSpellEffect(2000003097, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
-        //if(){this.addSpellEffect(2000002098, new PotionEffect(Potion.getPotionFromResourceLocation("")));}
+        if(betweenlands){this.addSpellEffect(2000002098, new PotionEffect(Potion.getPotionFromResourceLocation("thebetweenlands:effect_deformed")));}
         if(quark){this.addSpellEffect(2000001099, new PotionEffect(Potion.getPotionFromResourceLocation("quark:black")));}
         //if(){this.addSpellEffect(2000000100, new PotionEffect(Potion.getPotionFromResourceLocation("")));} // 100% YELLOW (x2)
 
@@ -846,107 +845,6 @@ public class EffectGetter
         if(wizardry){this.addSpellEffect(2025025050, new PotionEffect(Potion.getPotionFromResourceLocation("wizardry:null_movement")));}
         else{this.addSpellEffect(2025025050, new PotionEffect(PotionRegistry.POTION_PETRIFIED));}
     }
-
-    /*
-    SUPPORT TO ADD
-
-bewitchment:absence,
-bewitchment:arachnophobia,
-bewitchment:blight,
-bewitchment:citrinitas,
-bewitchment:corruption,
-bewitchment:cursed_leaps,
-bewitchment:deflection,
-bewitchment:desertification,
-bewitchment:deviants_decomposure,
-bewitchment:disrobing,
-bewitchment:fear,
-bewitchment:fertility,
-bewitchment:grace,
-bewitchment:harvest,
-bewitchment:hellfire,
-bewitchment:hellworld,
-bewitchment:holy_water,
-bewitchment:iceworld,
-bewitchment:magic_resistance,
-bewitchment:magic_weakness,
-bewitchment:mending,
-bewitchment:mortal_coil,
-bewitchment:pesticide,
-bewitchment:purification,
-bewitchment:revealing,
-bewitchment:rubedo,
-bewitchment:ruin,
-bewitchment:shell_armor,
-bewitchment:sinking,
-bewitchment:sleeping,
-bewitchment:spore_cloud,
-bewitchment:volatility,
-bewitchment:wednesday,
-bewitchment:wolfsbane,
-
-ebwizardry:arcane_jammer,
-ebwizardry:containment,
-ebwizardry:curse_of_enfeeblement,
-ebwizardry:curse_of_soulbinding,
-ebwizardry:curse_of_undeath,
-ebwizardry:decay,
-ebwizardry:empowerment,
-ebwizardry:fear,
-ebwizardry:fireskin,
-ebwizardry:font_of_mana,
-ebwizardry:frost,
-ebwizardry:frost_step,
-ebwizardry:ice_shroud,
-ebwizardry:mind_control,
-ebwizardry:mind_trick,
-ebwizardry:muffle,
-ebwizardry:paralysis,
-ebwizardry:sixth_sense,
-ebwizardry:slow_time,
-ebwizardry:static_aura,
-ebwizardry:transience,
-ebwizardry:ward,
-
-thebetweenlands:effect_basilisk,
-thebetweenlands:effect_blindman,
-thebetweenlands:effect_catseyes,
-thebetweenlands:effect_decay,
-thebetweenlands:effect_deformed,
-thebetweenlands:effect_draining,
-thebetweenlands:effect_drunkard,
-thebetweenlands:effect_feasting,
-thebetweenlands:effect_foggedmind,
-thebetweenlands:effect_gillsgrowth,
-thebetweenlands:effect_healing,
-thebetweenlands:effect_heavyweight,
-thebetweenlands:effect_hunterssense,
-thebetweenlands:effect_hunterssensemaster,
-thebetweenlands:effect_isolatedsenses,
-thebetweenlands:effect_lightweight,
-thebetweenlands:effect_limbless,
-thebetweenlands:effect_lumbering,
-thebetweenlands:effect_masking,
-thebetweenlands:effect_nimblefeet,
-thebetweenlands:effect_petrify,
-thebetweenlands:effect_poisonsting,
-thebetweenlands:effect_ripening,
-thebetweenlands:effect_sagittarius,
-thebetweenlands:effect_slugarm,
-thebetweenlands:effect_spiderbreed,
-thebetweenlands:effect_starvation,
-thebetweenlands:effect_stenching,
-thebetweenlands:effect_strength,
-thebetweenlands:effect_swiftarm,
-thebetweenlands:effect_toughskin,
-thebetweenlands:effect_unclouded,
-thebetweenlands:effect_weakbow,
-thebetweenlands:effect_weakness,
-thebetweenlands:effect_wings,
-thebetweenlands:enlightened,
-thebetweenlands:root_bound,
-
-     */
 
 
     public void addSpellEffect(int colorIn, PotionEffect effectOut)
