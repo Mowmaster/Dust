@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group":"item_charcoal",
+  "ingredients": [
+    {"item": "dust:blockcharcoal",
+      "data": 6}
+  ],
+  "result": {
+    "item": "dust:charcoalwhite",
+    "count":9
+  }
+}

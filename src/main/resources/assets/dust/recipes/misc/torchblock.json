@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "C",
+    "S"
+  ],
+  "key": {
+    "C": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "blockCharcoal"
+      }
+    ],
+    "S": [
+      {
+        "type": "forge:ore_dict",
+        "ore": "logWood"
+      }
+    ]
+  },
+  "result": {
+    "item": "minecraft:torch",
+    "count": 36
+  }
+}
