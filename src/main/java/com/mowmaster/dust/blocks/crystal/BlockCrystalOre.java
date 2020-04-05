@@ -53,6 +53,7 @@ public class BlockCrystalOre extends BlockBasic implements IMetaBlockName
         this.setLightOpacity(lightopacity);
         this.setSoundType(soundType);
         this.setCreativeTab(DUSTBLOCKSTABS);
+        this.setHarvestLevel("pickaxe",2);
     }
 
     @Override

@@ -33,12 +33,13 @@ public class BlockMachineBase extends BlockBasicFalling
         super(Material.ROCK);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(Reference.MODID, registryName));
-        this.setHardness(99);
-        this.setResistance(99);
+        this.setHardness(20);
+        this.setResistance(50);
         this.setLightOpacity(10);
         this.setCreativeTab(DUSTBLOCKSTABS);
         this.useNeighborBrightness = true;
         this.setSoundType(SoundType.ANVIL);
+        this.setHarvestLevel("pickaxe",3);
     }
 
     @Override

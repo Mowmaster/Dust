@@ -109,8 +109,7 @@ public class BlockCrystal extends BlockBasicDirectional
         this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setCreativeTab(DUSTBLOCKSTABS);
-
-
+        this.setHarvestLevel("pickaxe",2);
     }
 
     @Override

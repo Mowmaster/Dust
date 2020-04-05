@@ -38,7 +38,7 @@ public class BlockDustFence extends BlockBasicFence
         this.setLightOpacity(lightopacity);
         setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
         this.setCreativeTab(DUSTBLOCKSTABS);
-        this.setSoundType(SoundType.STONE);
+        this.setSoundType(SoundType.WOOD);
         this.useNeighborBrightness = true;
     }
 
