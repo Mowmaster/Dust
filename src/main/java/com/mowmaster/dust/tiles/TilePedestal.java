@@ -493,7 +493,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
         if(!world.isRemote)
         {
-            if(world.isBlockLoaded(pos))
+            if(world.isBlockLoaded(this.getPos()))
             {
                 int speed = getOperationSpeed();
                 if(speed<1){speed = 20;}
@@ -501,7 +501,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                 //dont bother unless pedestal has items in it.
                 if(!getItemInPedestal().isEmpty())
                 {
-                    if(!world.isBlockPowered(pos))
+                    if(!world.isBlockPowered(this.getPos()))
                     {
                         if(getNumberOfStoredLocations()>0)
                         {
@@ -510,7 +510,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
 
                                 for(int i=0; i<getNumberOfStoredLocations();i++)
                                 {
-                                    if(getStoredPositionAt(i) != getPos())
+                                    if(getStoredPositionAt(i) != this.getPos())
                                     {
                                         //check for any slots that can accept items if not then keep trying
                                         if(canSendToPedestal(getStoredPositionAt(i)))
@@ -552,7 +552,7 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
                 if(coinInPed instanceof ipuBasic)
                 {
                     Random rand = new Random();
-                    ((ipuBasic) coinInPed).onRandomDisplayTick(this, world.getBlockState(getPos()), world, getPos(), rand);
+                    ((ipuBasic) coinInPed).onRandomDisplayTick(this, world.getBlockState(this.getPos()), this.world, this.getPos(), rand);
                 }
             }
         }
@@ -564,11 +564,11 @@ public class TilePedestal extends TileEntityBase implements ITickable, ICapabili
         super.writeToNBT(compound);
         compound.setTag("ItemStackItemInventoryHandler", this.item.serializeNBT());
         compound.setTag("ItemStackCoinInventoryHandler", this.coin.serializeNBT());
-        compound.setTag("display",display.writeToNBT(new NBTTagCompound()));
-        compound.setInteger("storedUpgradeValue",storedValueForUpgrades);
-        compound.setInteger("intTransferAmount",intTransferAmount);
-        compound.setInteger("intTransferSpeed",intTransferSpeed);
-        compound.setInteger("intTransferRange",intTransferRange);
+        compound.setTag("display",this.display.writeToNBT(new NBTTagCompound()));
+        compound.setInteger("storedUpgradeValue",this.storedValueForUpgrades);
+        compound.setInteger("intTransferAmount",this.intTransferAmount);
+        compound.setInteger("intTransferSpeed",this.intTransferSpeed);
+        compound.setInteger("intTransferRange",this.intTransferRange);
         int counter = 0;
         for(int i=0;i<getNumberOfStoredLocations();i++)
         {
