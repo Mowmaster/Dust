@@ -68,61 +68,64 @@ public class EnchantmentDigger extends Enchantment
 
         if(!world.isRemote)
         {
-            if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))!=0)
+            if(player != null)
             {
-                ItemStack tool = player.getHeldItem(player.getActiveHand());
-                if (player.swingingHand == null) {return;}
-                // raytrace stuffs (client)
-                //RayTraceResult ray = player.rayTrace(200,1.0f);
-                //IBlockState blockLookingAt = player.world.getBlockState(new BlockPos(ray.getBlockPos().getX(),ray.getBlockPos().getY(),ray.getBlockPos().getZ()));
-                RayTraceResult result = ForgeHooks.rayTraceEyes(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue() + 1);
-                EnumFacing facing = result.sideHit.getOpposite();
-                String type = player.getHeldItem(player.getActiveHand()).getItem().getToolClasses(player.getHeldItem(player.getActiveHand())).toString();
-                int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
-                int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()));
-                float blockHardness = world.getBlockState(pos).getBlockHardness(world,pos);
-                int zmin=0;
-                int zmax=0;
-                int xmin=0;
-                int xmax=0;
-                int ymin=0;
-                int ymax=0;
+                if(EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()))!=0)
+                {
+                    ItemStack tool = player.getHeldItem(player.getActiveHand());
+                    if (player.swingingHand == null) {return;}
+                    // raytrace stuffs (client)
+                    //RayTraceResult ray = player.rayTrace(200,1.0f);
+                    //IBlockState blockLookingAt = player.world.getBlockState(new BlockPos(ray.getBlockPos().getX(),ray.getBlockPos().getY(),ray.getBlockPos().getZ()));
+                    RayTraceResult result = ForgeHooks.rayTraceEyes(player, player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue() + 1);
+                    EnumFacing facing = result.sideHit.getOpposite();
+                    String type = player.getHeldItem(player.getActiveHand()).getItem().getToolClasses(player.getHeldItem(player.getActiveHand())).toString();
+                    int damage = player.getHeldItem(player.getActiveHand()).getItemDamage();
+                    int lvl = EnchantmentHelper.getEnchantmentLevel(EnchantmentRegistry.enchantDigger,player.getHeldItem(player.getActiveHand()));
+                    float blockHardness = world.getBlockState(pos).getBlockHardness(world,pos);
+                    int zmin=0;
+                    int zmax=0;
+                    int xmin=0;
+                    int xmax=0;
+                    int ymin=0;
+                    int ymax=0;
 
-                if(player.capabilities.isFlying)
-                {
-                    if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP)) {zmin=-lvl;zmax=+lvl;xmin=-lvl;xmax=+lvl;ymin=0;ymax=0;}
-                    else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST)) {zmin=-lvl;zmax=+lvl;xmin=0;xmax=0;ymin=-lvl;ymax=+lvl;}
-                    else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {zmin=0;zmax=0;xmin=-lvl;xmax=+lvl;ymin=-lvl;ymax=+lvl;}
-                }
-                else
-                {
-                    if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP)) {zmin=-lvl;zmax=+lvl;xmin=-lvl;xmax=+lvl;ymin=0;ymax=0;}
-                    else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST)) {zmin=-lvl;zmax=+lvl;xmin=0;xmax=0;ymin=-1;ymax=+((2*lvl)-1);}
-                    else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {zmin=0;zmax=0;xmin=-lvl;xmax=+lvl;ymin=-1;ymax=+((2*lvl)-1);}
-                }
+                    if(player.capabilities.isFlying)
+                    {
+                        if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP)) {zmin=-lvl;zmax=+lvl;xmin=-lvl;xmax=+lvl;ymin=0;ymax=0;}
+                        else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST)) {zmin=-lvl;zmax=+lvl;xmin=0;xmax=0;ymin=-lvl;ymax=+lvl;}
+                        else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {zmin=0;zmax=0;xmin=-lvl;xmax=+lvl;ymin=-lvl;ymax=+lvl;}
+                    }
+                    else
+                    {
+                        if(facing.equals(EnumFacing.DOWN) || facing.equals(EnumFacing.UP)) {zmin=-lvl;zmax=+lvl;xmin=-lvl;xmax=+lvl;ymin=0;ymax=0;}
+                        else if(facing.equals(EnumFacing.WEST) || facing.equals(EnumFacing.EAST)) {zmin=-lvl;zmax=+lvl;xmin=0;xmax=0;ymin=-1;ymax=+((2*lvl)-1);}
+                        else if(facing.equals(EnumFacing.NORTH) || facing.equals(EnumFacing.SOUTH)) {zmin=0;zmax=0;xmin=-lvl;xmax=+lvl;ymin=-1;ymax=+((2*lvl)-1);}
+                    }
 
-                if(player.isSneaking()) {}
-                else
-                {
-                    for(int c=zmin;c<=zmax;c++) {
-                        for (int a = xmin; a <= xmax; a++)
-                            for (int b = ymin; b <= ymax; b++)
-                            {
-                                Item item = world.getBlockState(pos.add(a,b,c)).getBlock().getItemDropped(world.getBlockState(pos.add(a,b,c)),new Random(),0);
-                                ItemStack items = new ItemStack(item,1);
-                                BlockPos newpos = pos.add(a,b,c);
-                                IBlockState newblockstate = world.getBlockState(pos.add(a,b,c));
-                                Block newblock = world.getBlockState(pos.add(a,b,c)).getBlock();
-                                float newblockHardness = world.getBlockState(pos.add(a,b,c)).getBlockHardness(world,newpos);
-                                int maxdur = tool.getMaxDamage();
-                                int damdone = tool.getItemDamage();
-                                if (blockHardness>=newblockHardness && !newblock.equals(Blocks.BEDROCK) && tool.getItem() instanceof ItemTool && (Math.subtractExact(maxdur,damdone)>=0) && !newblock.isAir(newblockstate,world,newpos)) {
-                                    newblock.harvestBlock(world, player, newpos, world.getBlockState(newpos), null, player.getHeldItem(EnumHand.MAIN_HAND));
-                                    player.getHeldItem(player.getActiveHand()).damageItem(1,player);
-                                    world.setBlockToAir(newpos);
+                    if(player.isSneaking()) {}
+                    else
+                    {
+                        for(int c=zmin;c<=zmax;c++) {
+                            for (int a = xmin; a <= xmax; a++)
+                                for (int b = ymin; b <= ymax; b++)
+                                {
+                                    Item item = world.getBlockState(pos.add(a,b,c)).getBlock().getItemDropped(world.getBlockState(pos.add(a,b,c)),new Random(),0);
+                                    ItemStack items = new ItemStack(item,1);
+                                    BlockPos newpos = pos.add(a,b,c);
+                                    IBlockState newblockstate = world.getBlockState(pos.add(a,b,c));
+                                    Block newblock = world.getBlockState(pos.add(a,b,c)).getBlock();
+                                    float newblockHardness = world.getBlockState(pos.add(a,b,c)).getBlockHardness(world,newpos);
+                                    int maxdur = tool.getMaxDamage();
+                                    int damdone = tool.getItemDamage();
+                                    if (blockHardness>=newblockHardness && !newblock.equals(Blocks.BEDROCK) && newblockHardness != -1.0F && tool.getItem() instanceof ItemTool && (Math.subtractExact(maxdur,damdone)>=0) && !newblock.isAir(newblockstate,world,newpos)) {
+                                        newblock.harvestBlock(world, player, newpos, world.getBlockState(newpos), null, player.getHeldItem(EnumHand.MAIN_HAND));
+                                        player.getHeldItem(player.getActiveHand()).damageItem(1,player);
+                                        world.setBlockToAir(newpos);
+                                    }
+                                    else continue;
                                 }
-                                else continue;
-                            }
+                        }
                     }
                 }
             }
