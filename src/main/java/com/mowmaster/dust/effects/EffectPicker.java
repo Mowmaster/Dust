@@ -207,13 +207,11 @@ public class EffectPicker
     private static PotionEffect getEffect(CrystalTypes.EffectTypes type, int white, int black,int potencyCap, int duration, boolean isAmbient, boolean canShowParticles)
     {
         int time = duration;
-        if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.INSTANT_HEALTH) ||
-                EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.INSTANT_DAMAGE) )
+        if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().isInstant())
         {
             time = 1;
         }
-
-        if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.SATURATION))
+        else if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.SATURATION))
         {
             time = 20*getPotency(type,white,black,potencyCap);
         }
