@@ -152,8 +152,13 @@ public class SpellCrafting
                             item.setDead();
                         }
 
+                        if(stack.getItem().equals(Item.getItemFromBlock(Blocks.IRON_BLOCK)))
+                        {
+                            keepStack = stack;
+                        }
+
                     }
-                    if(red>0 && blue>0 && yellow>0 && purple>0 && green>0 && orange >0 && white>0 && black>0)
+                    if(keepStack.getCount()>0 && red>0 && blue>0 && yellow>0 && purple>0 && green>0 && orange >0 && white>0 && black>0)
                     {
                         worldIn.setBlockToAir(new BlockPos(posX,posY+1,posZ));
                         worldIn.setBlockState(new BlockPos(posX,posY+1,posZ), BlockMachineBase.machineBase.getDefaultState());
@@ -185,7 +190,7 @@ public class SpellCrafting
                         {
                             if(!worldIn.isRemote)
                             {
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/paper, blue/paper, yellow/paper, white/paper, black/paper, 20 * count/paper,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/paper, blue/paper, yellow/paper, white, black, 20 * count/paper,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 ItemStack stack = new ItemStack(ItemRegistry.spellPaper);
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 cmpd.setTag("scrolleffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
@@ -207,7 +212,7 @@ public class SpellCrafting
                         {
                             if(!worldIn.isRemote)
                             {
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/pedestal, blue/pedestal, yellow/pedestal, white/pedestal, black/pedestal, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/pedestal, blue/pedestal, yellow/pedestal, white, black, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 if(peded.hasTagCompound())
                                 {
@@ -217,12 +222,8 @@ public class SpellCrafting
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 peded.setTagCompound(cmpd);
 
-                                for(int i=0; i<pedestal; i++)
-                                {
-                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, peded.copy());
-                                    items1.onCollideWithPlayer(player);
-                                    //worldIn.spawnEntity(items1);
-                                }
+                                EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, peded.copy());
+                                items1.onCollideWithPlayer(player);
                             }
                         }
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Effect Upgrade"),true);
@@ -237,7 +238,7 @@ public class SpellCrafting
                                 ItemStack stack = ItemStack.EMPTY;
                                 stack = new ItemStack(ItemRegistry.effectUpgrade);
                                 */
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white/coin, black/coin, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/coin, blue/coin, yellow/coin, white, black, 1,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 NBTTagCompound cmpd = new NBTTagCompound();
                                 if(coined.hasTagCompound())
                                 {
@@ -247,12 +248,8 @@ public class SpellCrafting
                                 cmpd.setTag("coineffect",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
                                 coined.setTagCompound(cmpd);
 
-                                for(int i=0; i<coin; i++)
-                                {
-                                    EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, coined.copy());
-                                    items1.onCollideWithPlayer(player);
-                                    //worldIn.spawnEntity(items1);
-                                }
+                                EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, coined.copy());
+                                items1.onCollideWithPlayer(player);
                             }
                         }
                         else player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Effect Upgrade"),true);
@@ -265,7 +262,7 @@ public class SpellCrafting
                             if(!worldIn.isRemote)
                             {
                                 List<PotionEffect> effects = Lists.<PotionEffect>newArrayList();
-                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white/arrow, black/arrow, 20 * count/arrow,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
+                                PotionEffect effect = EffectPicker.getEffectFromInputs(red/arrow, blue/arrow, yellow/arrow, white, black, 20 * count/arrow,potencyLimiter, false, true, CrystalTypes.EffectTypes.DUST);
                                 effects.add(effect);
                                 //NBTTagCompound cmpd = new NBTTagCompound();
                                 //cmpd.setTag("CustomPotionEffects",effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
