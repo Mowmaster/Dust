@@ -211,10 +211,6 @@ public class EffectPicker
         {
             time = 1;
         }
-        else if(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion().equals(MobEffects.SATURATION))
-        {
-            time = 20*getPotency(type,white,black,potencyCap);
-        }
 
         PotionEffect effect = new PotionEffect(EffectGetter.instance().getPotionEffect(colorToRecipe).getPotion(), time, getPotency(type,white,black,potencyCap), isAmbient, canShowParticles);
         return effect;
