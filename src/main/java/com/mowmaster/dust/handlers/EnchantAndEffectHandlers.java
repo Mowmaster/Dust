@@ -2,11 +2,9 @@ package com.mowmaster.dust.handlers;
 
 import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.enchantments.EnchantmentRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -21,9 +19,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -374,13 +372,16 @@ public class EnchantAndEffectHandlers
         }
         else waterRunner=false;
 
-        if (waterRunner == true && entity.isInWater() || entity.isWet() && !entity.isSneaking())
+        if (waterRunner)
         {
-            entity.motionX *= (1.0f + 0.035 * amp);
-            entity.motionZ *= (1.0f + 0.035 * amp);
+            if(entity.isInWater() || entity.isWet() && !entity.isSneaking())
+            {
+                entity.motionX *= (1.0f + 0.035 * amp);
+                entity.motionZ *= (1.0f + 0.035 * amp);
 
-            if (entity.motionY > 0){
-                entity.motionY *= 1.134;
+                if (entity.motionY > 0){
+                    entity.motionY *= 1.134;
+                }
             }
         }
     }
@@ -399,7 +400,7 @@ public class EnchantAndEffectHandlers
         }
         else petrified=false;
 
-        if (petrified == true)
+        if (petrified)
         {
             if(entity instanceof EntityPlayer)
             {
@@ -470,38 +471,41 @@ public class EnchantAndEffectHandlers
         {
             BlockPos pos = new BlockPos(entity.posX,entity.posY,entity.posZ);//the block above the block player is standing on
             World world = entity.getEntityWorld();
-
-            if(entity instanceof EntityPlayer)
+            if(!world.isRemote)
             {
-                for(int c=zmin;c<=zmax;c++) {
-                    for (int a = xmin; a <= xmax; a++)
-                    {
-                        IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
-                        if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false) && !state.getBlock().equals(Blocks.PUMPKIN_STEM) && !state.getBlock().equals(Blocks.MELON_STEM) )
+                if(entity instanceof EntityPlayer)
+                {
+                    for(int c=zmin;c<=zmax;c++) {
+                        for (int a = xmin; a <= xmax; a++)
                         {
-                            state.getBlock().harvestBlock(world,(EntityPlayer)entity,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
-                            world.setBlockToAir(pos.add(a,0,c));
+                            IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                            if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false) && !state.getBlock().equals(Blocks.PUMPKIN_STEM) && !state.getBlock().equals(Blocks.MELON_STEM) )
+                            {
+                                state.getBlock().harvestBlock(world,(EntityPlayer)entity,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
+                                world.setBlockToAir(pos.add(a,0,c));
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    for(int c=zmin;c<=zmax;c++) {
+                        for (int a = xmin; a <= xmax; a++)
+                        {
+                            IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                            if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
+                            {
+                                WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(event.getEntityLiving().dimension);
+                                FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
+                                state.getBlock().harvestBlock(world,fakePlayer,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
+                                world.setBlockToAir(pos.add(a,0,c));
+                            }
                         }
                     }
                 }
+            }
 
-            }
-            else
-            {
-                for(int c=zmin;c<=zmax;c++) {
-                    for (int a = xmin; a <= xmax; a++)
-                    {
-                        IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
-                        if(state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
-                        {
-                            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(event.getEntityLiving().dimension);
-                            FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(worldServer);
-                            state.getBlock().harvestBlock(world,fakePlayer,pos.add(a,0,c),state,null,entity.getHeldItemMainhand());
-                            world.setBlockToAir(pos.add(a,0,c));
-                        }
-                    }
-                }
-            }
 
         }
     }
@@ -529,27 +533,33 @@ public class EnchantAndEffectHandlers
         {
             BlockPos pos = new BlockPos(entity.posX,entity.posY,entity.posZ);//the block above the block player is standing on
             World world = entity.getEntityWorld();
-            Random rn = new Random();
-            int randompowerful = 1000;
-            if(amp<10)
+
+            if(!world.isRemote)
             {
-                randompowerful = 1000 - (100*amp);
-            }
-            else randompowerful=100;
-
-            for(int c=zmin;c<=zmax;c++) {
-                for (int a = xmin; a <= xmax; a++)
+                Random rn = new Random();
+                int randompowerful = 1000;
+                if(amp<10)
                 {
-                    int growchance = rn.nextInt(randompowerful);
-                    IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
-                    if(growchance<=1)
-                    {
-                        if(state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
-                        {
-                            ((IGrowable) state.getBlock()).grow(world,rn,pos.add(a,0,c),state);
-                        }
-                    }
+                    randompowerful = 1000 - (100*amp);
+                }
+                else randompowerful=100;
 
+
+
+                for(int c=zmin;c<=zmax;c++) {
+                    for (int a = xmin; a <= xmax; a++)
+                    {
+                        int growchance = rn.nextInt(randompowerful);
+                        IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                        if(growchance<=1)
+                        {
+                            if(state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world,pos.add(a,0,c),state,false))
+                            {
+                                ((IGrowable) state.getBlock()).grow(world,rn,pos.add(a,0,c),state);
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -574,17 +584,20 @@ public class EnchantAndEffectHandlers
         }
         else tiller=false;
 
-        if (tiller == true)
+        if (tiller)
         {
             BlockPos pos = new BlockPos(entity.posX,entity.posY-1,entity.posZ);//the block player is standing on
             World world = entity.getEntityWorld();
-            for(int c=zmin;c<=zmax;c++) {
-                for (int a = xmin; a <= xmax; a++)
-                {
-                    IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
-                    if(state.getBlock().equals(Blocks.GRASS) || state.getBlock().equals(Blocks.DIRT))
+            if(!world.isRemote)
+            {
+                for(int c=zmin;c<=zmax;c++) {
+                    for (int a = xmin; a <= xmax; a++)
                     {
-                        world.setBlockState(pos.add(a,0,c),Blocks.FARMLAND.getDefaultState().withProperty(MOISTURE, 7));//Unless there is some wat to use a fake player or the player effected to use a hoe on the soil for the drops
+                        IBlockState state = entity.world.getBlockState(pos.add(a,0,c));
+                        if(state.getBlock().equals(Blocks.GRASS) || state.getBlock().equals(Blocks.DIRT))
+                        {
+                            world.setBlockState(pos.add(a,0,c),Blocks.FARMLAND.getDefaultState().withProperty(MOISTURE, 7));//Unless there is some wat to use a fake player or the player effected to use a hoe on the soil for the drops
+                        }
                     }
                 }
             }
@@ -689,34 +702,38 @@ public class EnchantAndEffectHandlers
         EntityPlayer player = event.player;
 
         World world = player.getEntityWorld();
-        int amp=0;
-        if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM) && !player.isSneaking())
+
+        if(!world.isRemote)
         {
-            magnet=true;
-            amp = 1+player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
-        }
-        else{magnet=false;}
-
-        if(magnet==true)
-        {
-            float range = Math.multiplyExact(5,amp);
-            float verticalRange = Math.multiplyExact(3,amp);
-            float posX = Math.round(player.posX);
-            float posY = (float) (player.posY - player.getEyeHeight());
-            float posZ = Math.round(player.posZ);
-
-            List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
-            List<EntityXPOrb> xpOrbs = player.getEntityWorld().getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
-
-            for (EntityItem entity : entities) {
-                if (entity != null && !world.isRemote && !entity.isDead) {
-                    entity.onCollideWithPlayer(player);
-                }
+            int amp=0;
+            if(player.isPotionActive(PotionRegistry.POTION_MAGNETISM) && !player.isSneaking())
+            {
+                magnet=true;
+                amp = 1+player.getActivePotionEffect(PotionRegistry.POTION_MAGNETISM).getAmplifier();
             }
+            else{magnet=false;}
 
-            for (EntityXPOrb xpOrb : xpOrbs) {
-                if (xpOrb != null && !world.isRemote) {
-                    xpOrb.onCollideWithPlayer(player);
+            if(magnet==true)
+            {
+                float range = Math.multiplyExact(5,amp);
+                float verticalRange = Math.multiplyExact(3,amp);
+                float posX = Math.round(player.posX);
+                float posY = (float) (player.posY - player.getEyeHeight());
+                float posZ = Math.round(player.posZ);
+
+                List<EntityItem> entities = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+                List<EntityXPOrb> xpOrbs = player.getEntityWorld().getEntitiesWithinAABB(EntityXPOrb.class, new AxisAlignedBB(posX - range, posY - verticalRange, posZ - range, posX + range, posY + verticalRange, posZ + range));
+
+                for (EntityItem entity : entities) {
+                    if (entity != null && !world.isRemote && !entity.isDead) {
+                        entity.onCollideWithPlayer(player);
+                    }
+                }
+
+                for (EntityXPOrb xpOrb : xpOrbs) {
+                    if (xpOrb != null && !world.isRemote) {
+                        xpOrb.onCollideWithPlayer(player);
+                    }
                 }
             }
         }
@@ -726,108 +743,57 @@ public class EnchantAndEffectHandlers
     public void onPlanter(LivingEvent.LivingUpdateEvent event) {
         World worldIn = event.getEntityLiving().getEntityWorld();
         EntityLivingBase entityLiving = event.getEntityLiving();
-
-        int amp=0;
-        int zmin=0;
-        int zmax=0;
-        int xmin=0;
-        int xmax=0;
-
-
-        int posX = entityLiving.getPosition().getX();
-        int posY = entityLiving.getPosition().getY();
-        int posZ = entityLiving.getPosition().getZ();
-        BlockPos pos = new BlockPos(posX,posY,posZ);//the block above the block the entity is standing on
-        if(entityLiving.isPotionActive(PotionRegistry.POTION_PLANTER))
+        if(!worldIn.isRemote)
         {
-            amp = entityLiving.getActivePotionEffect(PotionRegistry.POTION_PLANTER).getAmplifier();
-            zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
-            if(!worldIn.isRemote) {
-                //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
-                List<EntityItem> items = entityLiving.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3*amp, posY - 2, posZ - 3*amp, posX + 3*amp, posY + 2, posZ + 3*amp));
+            int amp=0;
+            int zmin=0;
+            int zmax=0;
+            int xmin=0;
+            int xmax=0;
 
-                for (EntityItem item : items) {
-                    ItemStack stack = item.getItem();
-                    for(int c=zmin;c<=zmax;c++) {
-                        for (int a = xmin; a <= xmax; a++)
-                        {
-                            if(worldIn.getBlockState(pos.add(a,-1,c)).getBlock().isFertile(worldIn,pos.add(a,-1,c)) || worldIn.getBlockState(pos.add(a,-1,c)).getBlock().equals(Blocks.FARMLAND))
+
+            int posX = entityLiving.getPosition().getX();
+            int posY = entityLiving.getPosition().getY();
+            int posZ = entityLiving.getPosition().getZ();
+            BlockPos pos = new BlockPos(posX,posY,posZ);//the block above the block the entity is standing on
+            if(entityLiving.isPotionActive(PotionRegistry.POTION_PLANTER))
+            {
+                amp = entityLiving.getActivePotionEffect(PotionRegistry.POTION_PLANTER).getAmplifier();
+                zmin=-amp;zmax=+amp;xmin=-amp;xmax=+amp;
+                if(!worldIn.isRemote) {
+                    //List<EntityItem> items = player.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX-1, posY-1, posZ-1, posX+1, posY+1, posZ+1));
+                    List<EntityItem> items = entityLiving.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posX - 3*amp, posY - 2, posZ - 3*amp, posX + 3*amp, posY + 2, posZ + 3*amp));
+
+                    for (EntityItem item : items) {
+                        ItemStack stack = item.getItem();
+                        for(int c=zmin;c<=zmax;c++) {
+                            for (int a = xmin; a <= xmax; a++)
                             {
-                                if(worldIn.getBlockState(pos.add(a,0,c)).getBlock().equals(Blocks.AIR))
-                                {
-                                    if(stack.getCount()>0)
-                                    {
-                                        int oldCount = stack.getCount();
-                                        if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sunflowerseedsitem")
-                                                || stack.getItem().getUnlocalizedName().contains("roastedpumpkinseedsitem")
-                                                || stack.getItem().getUnlocalizedName().contains("toastedsesameseedsitem")
-                                                || stack.getItem().getUnlocalizedName().contains("saltedsunflowerseedsitem")) {}
-                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("teaseeditem"))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pamtealeafcrop").getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("sesameseedsitem") || stack.getItem().getUnlocalizedName().contains("sesameseedsseeditem"))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pamsesameseedscrop").getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("coffeeseeditem"))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pamcoffeebeancrop").getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("mustardseeditem") || stack.getItem().getUnlocalizedName().contains("mustardseedsitem"))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("harvestcraft:pammustardseedscrop").getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("harvestcraft") && stack.getItem().getUnlocalizedName().contains("seeditem"))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName(stack.getItem().getUnlocalizedName().replace("item.","harvestcraft:pam").replace("seeditem","crop")).getDefaultState());
-                                            stack.setCount(oldCount-1);
+                                Item singleItemInPedestal = stack.getItem();
+                                BlockPos posTarget = pos.add(a,0,c);
 
-                                        }
-                                        else if(stack.getItem().getRegistryName().getResourceDomain().contains("immersiveengineering") && stack.getItem().getUnlocalizedName().contains("seed"))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Block.getBlockFromName("immersiveengineering:hemp").getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().equals(Items.WHEAT_SEEDS))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.WHEAT.getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().equals(Items.MELON_SEEDS))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.MELON_STEM.getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().equals(Items.PUMPKIN_SEEDS))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.PUMPKIN_STEM.getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().equals(Items.BEETROOT_SEEDS))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.BEETROOTS.getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().equals(Items.POTATO))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.POTATOES.getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                        else if(stack.getItem().equals(Items.CARROT))
-                                        {
-                                            worldIn.setBlockState(pos.add(a,0,c),Blocks.CARROTS.getDefaultState());
-                                            stack.setCount(oldCount-1);
-                                        }
-                                    }
-                                    else
+                                if(worldIn.getBlockState(posTarget).getBlock().equals(Blocks.AIR))
+                                {
+                                    if(singleItemInPedestal instanceof IPlantable)
                                     {
-                                        item.setItem(ItemStack.EMPTY);
-                                        item.setDead();
+                                        IPlantable plantMe = (IPlantable)singleItemInPedestal;
+                                        IBlockState soil = worldIn.getBlockState(posTarget.down());
+                                        IBlockState plantToPlant = plantMe.getPlant(worldIn,posTarget);
+                                        if(soil.getBlock().canSustainPlant(soil, worldIn, posTarget.down(), net.minecraft.util.EnumFacing.UP, plantMe))
+                                        {
+                                            //Place Seed???
+                                            if(stack.getCount()>0)
+                                            {
+                                                stack.shrink(1);
+                                                worldIn.setBlockState(posTarget,plantToPlant);
+                                                worldIn.playSound((EntityPlayer)null, posTarget.getX(), posTarget.getY(), posTarget.getZ(), SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+                                            }
+                                            else
+                                            {
+                                                item.setItem(ItemStack.EMPTY);
+                                                item.setDead();
+                                            }
+                                        }
                                     }
                                 }
                             }
