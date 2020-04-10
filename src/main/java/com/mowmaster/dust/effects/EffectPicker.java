@@ -119,17 +119,17 @@ public class EffectPicker
         if(type.equals(CrystalTypes.EffectTypes.DUST))
         {
             int potencycount=Math.abs(white-black);
-            if(potencycount>=0 && potencycount<10){amp=0;}
-            if(potencycount>=10 && potencycount<30){amp=1;}
-            if(potencycount>=30 && potencycount<60){amp=2;}
-            if(potencycount>=60 && potencycount<100){amp=3;}
-            if(potencycount>=100 && potencycount<150){amp=4;}
-            if(potencycount>=150 && potencycount<210){amp=5;}
-            if(potencycount>=210 && potencycount<280){amp=6;}
-            if(potencycount>=280 && potencycount<360){amp=7;}
-            if(potencycount>=360 && potencycount<450){amp=8;}
-            if(potencycount>=450 && potencycount<550){amp=9;}
-            if(potencycount>=550){amp=10;}
+            if(potencycount>=0 && potencycount<64){amp=0;}
+            if(potencycount>=64 && potencycount<128){amp=1;}
+            if(potencycount>=128 && potencycount<192){amp=2;}
+            if(potencycount>=192 && potencycount<256){amp=3;}
+            if(potencycount>=256 && potencycount<320){amp=4;}
+            if(potencycount>=320 && potencycount<384){amp=5;}
+            if(potencycount>=384 && potencycount<448){amp=6;}
+            if(potencycount>=448 && potencycount<512){amp=7;}
+            if(potencycount>=512 && potencycount<576){amp=8;}
+            if(potencycount>=576 && potencycount<640){amp=9;}
+            if(potencycount>=640){amp=10;}
         }
         else{
             amp=Math.abs(white-black);

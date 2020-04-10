@@ -112,10 +112,10 @@ public class SpellCrafting
                                 orange++;
                             } else if (stack.getItemDamage() == 6) {
                                 white += stack.getCount();
-                                count += stack.getCount();
+                                //count += stack.getCount();
                             } else if (stack.getItemDamage() == 7) {
                                 black += stack.getCount();
-                                count += stack.getCount();
+                                //count += stack.getCount();
                             }
                             item.setDead();
                         }
