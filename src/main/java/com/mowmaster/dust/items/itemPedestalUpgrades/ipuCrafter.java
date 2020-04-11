@@ -157,16 +157,20 @@ public class ipuCrafter extends ipuBasic
                                         craft.setInventorySlotContents(intCraftingSlot,stackItemInSlot);
                                         intCraftingSlot++;
                                     }
-                                    //the +1 makes sure to leave 1 item in the inv as a placeholder
-                                    else if(stackItemInSlot.getCount() > (intBatchCraftingSize))
+                                    //Checks if an item exists
+                                    else if(stackItemInSlot.getCount() > 0)
                                     {
                                         craft.setInventorySlotContents(intCraftingSlot,stackItemInSlot);
-                                        intCraftingSlot++;
+                                        //if there is enough items available for a placeholder after the craft
+                                        if(stackItemInSlot.getCount() > (intBatchCraftingSize))
+                                        {
+                                            intCraftingSlot++;
+                                        }
                                     }
                                 }
 
                                 //Checks to make sure we have enough slots set for out recipe
-                                if(craft.getSizeInventory() >= intGridCount)
+                                if(intCraftingSlot >= intGridCount)
                                 {
                                     for(IRecipe recipe : ForgeRegistries.RECIPES)
                                     {
