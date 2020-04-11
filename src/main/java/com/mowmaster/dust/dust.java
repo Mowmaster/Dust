@@ -51,7 +51,6 @@ public class dust {
         proxy.PreInit();
         proxy.registerTile();
         FuelRegistry.init();
-        SmeltingRecipes.init();
         BrewingRecipes.registerPotionRecipes();
         BiomeRegistry.BiomeReg();
     }
@@ -68,6 +67,7 @@ public class dust {
     public void postInit(FMLPostInitializationEvent event)
     {
         CraftingRecipes.CraftingRecipes();
+        SmeltingRecipes.init();
     }
 
 }

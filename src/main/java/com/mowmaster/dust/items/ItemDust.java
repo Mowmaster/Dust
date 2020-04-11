@@ -70,6 +70,16 @@ public class ItemDust extends Item
                 new ResourceLocation(Reference.MODID,"dust_iron"),
                 new ResourceLocation(Reference.MODID,"dust_gold")
         );
+
+        ModelBakery.registerItemVariants(ItemRegistry.dust_compat,
+                new ResourceLocation(Reference.MODID,"dust_compat_copper"),
+                new ResourceLocation(Reference.MODID,"dust_compat_aluminium"),
+                new ResourceLocation(Reference.MODID,"dust_compat_lead"),
+                new ResourceLocation(Reference.MODID,"dust_compat_silver"),
+                new ResourceLocation(Reference.MODID,"dust_compat_nickle"),
+                new ResourceLocation(Reference.MODID,"dust_compat_uranium"),
+                new ResourceLocation(Reference.MODID,"dust_compat_tin")
+        );
     }
 
 

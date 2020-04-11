@@ -7,7 +7,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,6 +29,8 @@ public class CrusherUpgradeRecipes
         return CRUSHER_RECIPES;
     }
 
+    private boolean thaumcraft=(Loader.isModLoaded("thaumcraft"))?(true):(false);
+
     private CrusherUpgradeRecipes()
     {
         this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,0),new ItemStack(ItemRegistry.dust,32,0));
@@ -37,9 +42,7 @@ public class CrusherUpgradeRecipes
         this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,6),new ItemStack(ItemRegistry.dust,32,6));
         this.addCrusherRecipe(new ItemStack(ItemRegistry.crystal,1,7),new ItemStack(ItemRegistry.dust,32,7));
 
-        this.addCrushingRecipeForBlock(Blocks.REDSTONE_ORE,new ItemStack(Items.REDSTONE,4));
-        this.addCrushingRecipeForBlock(Blocks.IRON_ORE,new ItemStack(ItemRegistry.dust,2,9));
-        this.addCrushingRecipeForBlock(Blocks.GOLD_ORE,new ItemStack(ItemRegistry.dust,2,10));
+
         this.addCrushing(Items.REEDS,new ItemStack(Items.SUGAR,2));
         this.addCrushing(Items.WHEAT_SEEDS,new ItemStack(Blocks.GRASS,1));
         this.addCrushing(Items.BEETROOT_SEEDS,new ItemStack(Blocks.GRASS,1));
@@ -47,8 +50,6 @@ public class CrusherUpgradeRecipes
         this.addCrushing(Items.PUMPKIN_SEEDS,new ItemStack(Blocks.VINE,1));
         this.addCrushing(Items.POTATO,new ItemStack(Items.POTATO,1));
         this.addCrushing(Items.POISONOUS_POTATO,new ItemStack(Items.POTATO,1));
-        this.addCrushing(Items.BLAZE_ROD,new ItemStack(Items.BLAZE_POWDER,3));
-        this.addCrushing(Items.BONE,new ItemStack(Items.DYE,4,15));
 
         this.addCrushingRecipeForBlock(Blocks.COBBLESTONE,new ItemStack(Blocks.GRAVEL,1));
         this.addCrushingRecipeForBlock(Blocks.GRAVEL,new ItemStack(Blocks.SAND,1));
@@ -60,7 +61,45 @@ public class CrusherUpgradeRecipes
             this.addCrusherRecipe(new ItemStack(Blocks.CONCRETE,1,i),new ItemStack(Blocks.CONCRETE_POWDER,1,i));
         }
 
+        this.addCrushingRecipeForOreBlock("rodBlaze",new ItemStack(Items.BLAZE_POWDER,3));
+        this.addCrushingRecipeForOreBlock("bone",new ItemStack(Items.DYE,4,15));
+        this.addCrushingRecipeForOreBlock("oreCoal",new ItemStack(Items.COAL,4));
+        this.addCrushingRecipeForOreBlock("oreLapis",new ItemStack(Items.DYE,4,4));
+        this.addCrushingRecipeForOreBlock("oreDiamond",new ItemStack(Items.DIAMOND,4));
+        this.addCrushingRecipeForOreBlock("oreRedstone",new ItemStack(Items.REDSTONE,4));
+        this.addCrushingRecipeForOreBlock("oreEmerald",new ItemStack(Items.EMERALD,4));
+        this.addCrushingRecipeForOreBlock("oreQuartz",new ItemStack(Items.QUARTZ,4));
+        this.addCrushingRecipeForOreBlock("oreIron",new ItemStack(ItemRegistry.dust,2,9));
+        this.addCrushingRecipeForOreBlock("oreGold",new ItemStack(ItemRegistry.dust,2,10));
 
+        this.addCrushingRecipeForOreBlock("oreCopper",new ItemStack(ItemRegistry.dust_compat,2,0));
+        this.addCrushingRecipeForOreBlock("oreAluminum",new ItemStack(ItemRegistry.dust_compat,2,1));
+        this.addCrushingRecipeForOreBlock("oreAluminium",new ItemStack(ItemRegistry.dust_compat,2,1));
+        this.addCrushingRecipeForOreBlock("oreLead",new ItemStack(ItemRegistry.dust_compat,2,2));
+        this.addCrushingRecipeForOreBlock("oreSilver",new ItemStack(ItemRegistry.dust_compat,2,3));
+        this.addCrushingRecipeForOreBlock("oreNickel",new ItemStack(ItemRegistry.dust_compat,2,4));
+        this.addCrushingRecipeForOreBlock("oreUranium",new ItemStack(ItemRegistry.dust_compat,2,5));
+        this.addCrushingRecipeForOreBlock("oreTin",new ItemStack(ItemRegistry.dust_compat,2,6));
+
+        if(thaumcraft){
+            this.addCrushingRecipeForOreBlock("oreCinnabar",new ItemStack(Item.getByNameOrId("thaumcraft:quicksilver"),2));
+            this.addCrushingRecipeForOreBlock("oreAmber",new ItemStack(Item.getByNameOrId("thaumcraft:amber"),2));
+        }
+    }
+
+    /**
+     * Adds a smelting recipe, where the input item is an instance of Block.
+     */
+    public void addCrushingRecipeForOreBlock(String oreString, ItemStack stack)
+    {
+        for(ItemStack input : OreDictionary.getOres(oreString))
+        {
+            if(input != null)
+            {
+                if (getCrushingResult(input) != ItemStack.EMPTY) { net.minecraftforge.fml.common.FMLLog.log.info("Ignored crushing recipe with conflicting input: {} = {}", input, stack); return; }
+                this.crusherList.put(input, stack);
+            }
+        }
     }
 
     /**

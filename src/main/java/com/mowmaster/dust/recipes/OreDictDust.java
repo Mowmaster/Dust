@@ -49,6 +49,7 @@ public class OreDictDust
         OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,5));
         OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,6));
         OreDictionary.registerOre("treeLeaves", new ItemStack(BlockDustLeaf.leaf,1,7));
+
         OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,0));
         OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,1));
         OreDictionary.registerOre("oreCrystal", new ItemStack(BlockCrystalOre.ore,1,2));
@@ -84,7 +85,19 @@ public class OreDictDust
         OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,5));
         OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,6));
         OreDictionary.registerOre("dustCrystal", new ItemStack(ItemRegistry.dust,1,7));
-        //excluding stone dust
+        OreDictionary.registerOre("dustStone", new ItemStack(ItemRegistry.dust,1,8));
+        OreDictionary.registerOre("dustIron", new ItemStack(ItemRegistry.dust,1,9));
+        OreDictionary.registerOre("dustGold", new ItemStack(ItemRegistry.dust,1,10));
+
+        OreDictionary.registerOre("dustCopper", new ItemStack(ItemRegistry.dust_compat,1,0));
+        OreDictionary.registerOre("dustAluminum", new ItemStack(ItemRegistry.dust_compat,1,1));
+        OreDictionary.registerOre("dustAluminium", new ItemStack(ItemRegistry.dust_compat,1,1));
+        OreDictionary.registerOre("dustLead", new ItemStack(ItemRegistry.dust_compat,1,2));
+        OreDictionary.registerOre("dustSilver", new ItemStack(ItemRegistry.dust_compat,1,3));
+        OreDictionary.registerOre("dustNickel", new ItemStack(ItemRegistry.dust_compat,1,4));
+        OreDictionary.registerOre("dustUranium", new ItemStack(ItemRegistry.dust_compat,1,5));
+        OreDictionary.registerOre("dustTin", new ItemStack(ItemRegistry.dust_compat,1,6));
+
         OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,0));
         OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,1));
         OreDictionary.registerOre("bitDust", new ItemStack(ItemRegistry.bit,1,2));

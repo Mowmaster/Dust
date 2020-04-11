@@ -64,7 +64,44 @@ public class CrystalItems
 
         private int ID;
         private String name;
-        private DustTypes(String name, int AID)
+        private DustTypes(String name, int ID)
+        {
+            this.ID = ID;
+            this.name = name;
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public int getID()
+        {
+            return ID;
+        }
+
+        @Override
+        public String toString()
+        {
+            return getName();
+        }
+
+    }
+
+    public static enum DustCompatTypes implements IStringSerializable
+    {
+        COPPER("copper",0),
+        ALUMINIUM("aluminium",1),
+        LEAD("lead",2),
+        SILVER("silver",3),
+        NICKEL("nickel",4),
+        URANIUM("uranium",5),
+        TIN("tin",6);
+
+        private int ID;
+        private String name;
+        private DustCompatTypes(String name, int ID)
         {
             this.ID = ID;
             this.name = name;

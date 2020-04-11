@@ -4,18 +4,25 @@ import com.mowmaster.dust.effects.PotionRegistry;
 import com.mowmaster.dust.references.Reference;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -42,6 +49,8 @@ public class ipuFurnace extends ipuBasic
         this.setCreativeTab(DUSTTABS);
         this.isFilter=false;
     }
+
+
 
     public int getItemTransferRate(ItemStack stack)
     {
@@ -113,6 +122,17 @@ public class ipuFurnace extends ipuBasic
         return amountToSet;
     }
 
+    public void spawnXP(World world, BlockPos posOfPedestal, int rate)
+    {
+        int range = 1;
+        EntityXPOrb expEntity = new EntityXPOrb(world,getPosOfBlockBelow(world,posOfPedestal,-range).getX() + 0.5,getPosOfBlockBelow(world,posOfPedestal,-range).getY(),getPosOfBlockBelow(world,posOfPedestal,-range).getZ() + 0.5,rate);
+        expEntity.motionX = 0;
+        expEntity.motionY = 0;
+        expEntity.motionZ = 0;
+
+        world.spawnEntity(expEntity);
+    }
+
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
     {
         int speed = getSmeltingSpeed(coinInPedestal);
@@ -124,6 +144,7 @@ public class ipuFurnace extends ipuBasic
             }
         }
     }
+
 
     public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
     {
@@ -151,6 +172,10 @@ public class ipuFurnace extends ipuBasic
                                 itemFromInv = handler.getStackInSlot(i);
                                 //Should work without catch since we null check this in our GetNextSlotFunction
                                 ItemStack smeltedItemResult = FurnaceRecipes.instance().getSmeltingResult(itemFromInv);
+                                float xpFromSmelt = FurnaceRecipes.instance().getSmeltingExperience(smeltedItemResult);
+                                //System.out.println("FLOAT SMELT: "+xpFromSmelt);
+                                int xpRate = (xpFromSmelt > 0.0f)?((xpFromSmelt > 1)?((int)xpFromSmelt):(1)):(0);
+                                //System.out.println("INT SMELT: "+xpRate);
                                 ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
                                 if(!smeltedItemResult.equals(ItemStack.EMPTY))
                                 {
@@ -184,6 +209,10 @@ public class ipuFurnace extends ipuBasic
                                                 handler.extractItem(i,itemInputsPerSmelt ,false );
                                                 removeFuel(ped,fuelToConsume,false);
                                                 ped.addItem(copyIncoming);
+                                                if(xpRate!=0)
+                                                {
+                                                    spawnXP(world,posOfPedestal,xpRate);
+                                                }
                                             }
                                             //If we done have enough fuel to smelt everything then reduce size of smelt
                                             else
@@ -204,6 +233,10 @@ public class ipuFurnace extends ipuBasic
                                                         handler.extractItem(i,itemInputsPerSmelt ,false );
                                                         removeFuel(ped,fuelToConsume,false);
                                                         ped.addItem(copyIncoming);
+                                                        if(xpRate!=0)
+                                                        {
+                                                            spawnXP(world,posOfPedestal,xpRate);
+                                                        }
                                                     }
                                                 }
                                             }

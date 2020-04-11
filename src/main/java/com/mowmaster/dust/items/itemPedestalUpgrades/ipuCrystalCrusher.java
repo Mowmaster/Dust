@@ -188,7 +188,7 @@ public class ipuCrystalCrusher extends ipuBasic
                                                 removeFuel(ped,fuelToConsume,false);
                                                 ped.addItem(copyIncoming);
                                             }
-                                            //If we done have enough fuel to smelt everything then reduce size of smelt
+                                            //If we dont have enough fuel to smelt everything then reduce size of smelt
                                             else
                                             {
                                                 //gets fuel left

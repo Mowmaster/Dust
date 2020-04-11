@@ -18,6 +18,7 @@ public class ItemRegistry
 {
     public static Item akashic;
     public static Item dust;
+    public static Item dust_compat;
     public static Item crystal;
     public static Item bit;
     public static Item wikiscroll;
@@ -143,6 +144,7 @@ public class ItemRegistry
     public static void init()
     {
         dust = new ItemDust("dust",CrystalItems.DustTypes.values());
+        dust_compat = new ItemDust("dust_compat",CrystalItems.DustCompatTypes.values());
         crystal = new ItemCrystal("crystal");
         bit = new ItemBit("bit");
         charcoalRed = new ItemCharcoal("charcoalred","charcoalred",1800);
@@ -261,6 +263,7 @@ public class ItemRegistry
     public static void register()
     {
         registerItem(dust);
+        registerItem(dust_compat);
         registerItem(crystal);
         registerItem(bit);
         registerItem(charcoalRed);
@@ -484,6 +487,10 @@ public class ItemRegistry
         for(int i = 0; i < CrystalItems.DustTypes.values().length; i++)
         {
             registerRender(dust,i,"dust_" + CrystalItems.DustTypes.values()[i].getName());
+        }
+        for(int i = 0; i < CrystalItems.DustCompatTypes.values().length; i++)
+        {
+            registerRender(dust_compat,i,"dust_compat_" + CrystalItems.DustCompatTypes.values()[i].getName());
         }
         for(int i = 0; i < CrystalItems.BitTypes.values().length; i++)
         {
