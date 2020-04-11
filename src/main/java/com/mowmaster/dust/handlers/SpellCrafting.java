@@ -260,8 +260,7 @@ public class SpellCrafting
                             player.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Not Enough Dust To Make Effect Upgrade"),true);
                             EntityItem items1 = new EntityItem(worldIn, posX + 0.5, posY + 1.0, posZ + 0.5, coined.copy());
                             items1.onCollideWithPlayer(player);}
-                            }
-
+                    }
                     else if(pressurePlate==0 && paper>=0 && coin==0&& pedestal==0&& arrow>=1)
                     {
                         if(count/arrow >= minimumDustRequired)
