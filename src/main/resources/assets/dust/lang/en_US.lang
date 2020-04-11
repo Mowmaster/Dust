@@ -146,6 +146,14 @@ item.dust.stone.name=Stone Dust
 item.dust.iron.name=Iron Dust
 item.dust.gold.name=Gold Dust
 
+item.dust_compat.copper.name=Copper Dust
+item.dust_compat.aluminium.name=Aluminium Dust
+item.dust_compat.lead.name=Lead Dust
+item.dust_compat.silver.name=Silver Dust
+item.dust_compat.nickel.name=Nickel Dust
+item.dust_compat.uranium.name=Uranium Dust
+item.dust_compat.tin.name=Tin Dust
+
 item.bit.red.name=Red Bit
 item.bit.blue.name=Blue Bit
 item.bit.yellow.name=Yellow Bit
