@@ -173,9 +173,6 @@ public class ipuFurnace extends ipuBasic
                                 //Should work without catch since we null check this in our GetNextSlotFunction
                                 ItemStack smeltedItemResult = FurnaceRecipes.instance().getSmeltingResult(itemFromInv);
                                 float xpFromSmelt = FurnaceRecipes.instance().getSmeltingExperience(smeltedItemResult);
-                                //System.out.println("FLOAT SMELT: "+xpFromSmelt);
-                                int xpRate = (xpFromSmelt > 0.0f)?((xpFromSmelt > 1)?((int)xpFromSmelt):(1)):(0);
-                                //System.out.println("INT SMELT: "+xpRate);
                                 ItemStack itemFromPedestal = getStackInPedestal(world,posOfPedestal);
                                 if(!smeltedItemResult.equals(ItemStack.EMPTY))
                                 {
@@ -196,16 +193,19 @@ public class ipuFurnace extends ipuBasic
                                         //Checks to see how many items are left in the slot IF ITS UNDER the allowedTransferRate then sent the max rate to that.
                                         if(itemFromInv.getCount() < itemInputsPerSmelt) itemInputsPerSmelt = itemFromInv.getCount();
 
-                                        itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
+                                        itemsOutputWhenStackSmelted = (itemInputsPerSmelt*smeltedItemResult.getCount());
                                         ItemStack copyIncoming = smeltedItemResult.copy();
                                         copyIncoming.setCount(itemsOutputWhenStackSmelted);
-                                        int fuelToConsume = burnTimeCostPerItemSmelted * getItemTransferRate(coinInPedestal);
+                                        //will allways consume the max amount of fuel possible
+                                        int fuelToConsume = burnTimeCostPerItemSmelted * itemsPerSmelt;
                                         TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
                                         if(pedestalInv instanceof TilePedestal) {
                                             TilePedestal ped = ((TilePedestal) pedestalInv);
                                             //Checks to make sure we have fuel to smelt everything
                                             if(removeFuel(ped,fuelToConsume,true)>=0)
                                             {
+                                                float xpamount = xpFromSmelt*itemInputsPerSmelt;
+                                                int xpRate = ( xpamount > 0.0f)?((xpamount > 1)?((int)xpamount):(1)):(0);
                                                 handler.extractItem(i,itemInputsPerSmelt ,false );
                                                 removeFuel(ped,fuelToConsume,false);
                                                 ped.addItem(copyIncoming);
@@ -225,11 +225,13 @@ public class ipuFurnace extends ipuBasic
                                                     itemInputsPerSmelt = Math.floorDiv(fuelLeft,burnTimeCostPerItemSmelted );
                                                     if(itemInputsPerSmelt >=1)
                                                     {
-                                                        System.out.println(itemInputsPerSmelt);
+
+                                                        //System.out.println(itemInputsPerSmelt);
                                                         fuelToConsume = burnTimeCostPerItemSmelted * itemInputsPerSmelt;
                                                         itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
                                                         copyIncoming.setCount(itemsOutputWhenStackSmelted);
-
+                                                        float xpamount = xpFromSmelt*itemInputsPerSmelt;
+                                                        int xpRate = ( xpamount > 0.0f)?((xpamount > 1)?((int)xpamount):(1)):(0);
                                                         handler.extractItem(i,itemInputsPerSmelt ,false );
                                                         removeFuel(ped,fuelToConsume,false);
                                                         ped.addItem(copyIncoming);

@@ -173,11 +173,10 @@ public class ipuCrystalCrusher extends ipuBasic
                                         }
                                         //Checks to see how many items are left in the slot IF ITS UNDER the allowedTransferRate then sent the max rate to that.
                                         if(itemFromInv.getCount() < itemInputsPerSmelt) itemInputsPerSmelt = itemFromInv.getCount();
-
-                                        itemsOutputWhenStackSmelted = (itemsPerSmelt*smeltedItemResult.getCount());
+                                        itemsOutputWhenStackSmelted = (itemInputsPerSmelt*smeltedItemResult.getCount());
                                         ItemStack copyIncoming = smeltedItemResult.copy();
                                         copyIncoming.setCount(itemsOutputWhenStackSmelted);
-                                        int fuelToConsume = burnTimeCostPerItemSmelted * getItemTransferRate(coinInPedestal);
+                                        int fuelToConsume = burnTimeCostPerItemSmelted * itemsPerSmelt;
                                         TileEntity pedestalInv = world.getTileEntity(posOfPedestal);
                                         if(pedestalInv instanceof TilePedestal) {
                                             TilePedestal ped = ((TilePedestal) pedestalInv);
