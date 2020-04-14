@@ -18,6 +18,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -271,6 +272,9 @@ public class EntityDustTippedArrow extends EntityArrow {
 
                 nbttagcompound.setInteger("CustomPotionColor", this.getColor());
             }
+
+            String s1 = (PotionUtils.getEffectsFromStack(itemstack).size()>0)?(I18n.translateToLocal(PotionUtils.getEffectsFromStack(itemstack).get(0).getEffectName()).trim()):("");
+            itemstack.setStackDisplayName("Arrow of " + s1);
 
             return itemstack;
         }
