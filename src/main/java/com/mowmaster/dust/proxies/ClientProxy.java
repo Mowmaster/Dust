@@ -7,6 +7,7 @@ import com.mowmaster.dust.blocks.crystal.BlockCrystalOre;
 import com.mowmaster.dust.blocks.treebits.BlockCharcoal;
 import com.mowmaster.dust.blocks.treebits.BlockDustLeaf;
 import com.mowmaster.dust.entities.EntityDustTippedArrow;
+import com.mowmaster.dust.handlers.EntityRenderer;
 import com.mowmaster.dust.items.*;
 import com.mowmaster.dust.particles.ParticleCreator;
 import com.mowmaster.dust.particles.ParticleEvents;
@@ -55,9 +56,9 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(parts);
         FMLCommonHandler.instance().bus().register(parts);
 
-        /*EntityRenderer entityRenderer = new EntityRenderer();
+        EntityRenderer entityRenderer = new EntityRenderer();
         MinecraftForge.EVENT_BUS.register(entityRenderer);
-        FMLCommonHandler.instance().bus().register(entityRenderer);*/
+        FMLCommonHandler.instance().bus().register(entityRenderer);
     }
 
     @Override

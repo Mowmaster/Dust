@@ -5,6 +5,7 @@ import com.mowmaster.dust.references.Reference;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.potion.PotionUtils;
@@ -28,6 +29,7 @@ public class ItemDustTippedArrow extends ItemTippedArrow{
         this.setCreativeTab(DUSTTABS);
     }
 
+    @Override
     public EntityDustTippedArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter)
     {
         EntityDustTippedArrow entitytippedarrow = new EntityDustTippedArrow(worldIn, shooter);

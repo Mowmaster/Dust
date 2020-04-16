@@ -2,6 +2,8 @@ package com.mowmaster.dust.entities;
 
 import com.mowmaster.dust.items.ItemRegistry;
 import com.mowmaster.dust.references.Reference;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderTippedArrow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -37,14 +39,14 @@ public class EntityDustRegistry
 
     }
 
-    public static void registerRender()
+    public static void registerRender(RenderManager renderer)
     {
-        registerRenderArrow();
+        registerRenderArrow(renderer);
     }
 
-    private static void registerRenderArrow(/*Item item*/)
+    private static void registerRenderArrow(RenderManager renderer)
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntityDustTippedArrow.class, new RenderTippedArrow(null));
+        RenderingRegistry.registerEntityRenderingHandler(EntityDustTippedArrow.class, new RenderTippedArrow(renderer));
         //Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
         //System.out.println(item.getRegistryName());
     }
