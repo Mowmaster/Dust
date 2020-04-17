@@ -179,7 +179,7 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
         builder.add(FACING,WATERLOGGED,LIT);
     }
 
-    private int getRedstoneLevel(World worldIn, BlockPos pos)
+    /*private int getRedstoneLevel(World worldIn, BlockPos pos)
     {
         int hasItem=0;
         TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -204,9 +204,9 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
             else if(counter>63) {hasItem=15;}
         }
         return hasItem;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side) {
         return true;
     }
@@ -224,7 +224,7 @@ public class BlockCrystalClusterTE extends DirectionalBlock implements IWaterLog
     @Override
     public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
         return getRedstoneLevel(worldIn,pos);
-    }
+    }*/
 
 
     @Override

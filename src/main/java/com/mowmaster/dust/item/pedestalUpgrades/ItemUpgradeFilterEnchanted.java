@@ -47,13 +47,6 @@ public class ItemUpgradeFilterEnchanted extends ItemUpgradeBaseFilter
 
     }
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Filter: Enchanted"));
-    }
-
     public static final Item ENCHANTED = new ItemUpgradeFilterEnchanted(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/filterenchanted"));
 
     @SubscribeEvent

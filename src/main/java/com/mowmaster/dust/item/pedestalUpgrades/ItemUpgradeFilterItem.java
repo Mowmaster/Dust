@@ -67,13 +67,6 @@ public class ItemUpgradeFilterItem extends ItemUpgradeBaseFilter
 
     }
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Filter: Item"));
-    }
-
     public static final Item ITEM = new ItemUpgradeFilterItem(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/filteritem"));
 
     @SubscribeEvent

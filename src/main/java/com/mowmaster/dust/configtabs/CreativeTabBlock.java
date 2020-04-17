@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class CreativeTabBlock extends ItemGroup
 {
     public CreativeTabBlock() {
-        super(Reference.MODID);
+        super(Reference.MODID+"_blocks");
     }
 
     @Override

@@ -21,6 +21,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.RegistryEvent;
@@ -178,14 +180,19 @@ public class ItemUpgradeCobbleGen extends ItemUpgradeBase
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        String tr = "" + getCobbleGenSpawnRate(stack) + "";
-        String s5 = getOperationSpeedString(stack);
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText("" + getCobbleGenSpawnRate(stack) + "");
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Cobble Generator Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Cobble Spawned Per Opperation: "+tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        rate.applyTextStyle(TextFormatting.GRAY);
+        tooltip.add(rate);
+
+        speed.applyTextStyle(TextFormatting.RED);
+        tooltip.add(speed);
     }
 
     public static final Item COBBLE = new ItemUpgradeCobbleGen(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/cobble"));

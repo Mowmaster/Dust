@@ -67,13 +67,6 @@ public class ItemUpgradeFilterItemStackBlacklist extends ItemUpgradeBaseFilter
 
     }
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Filter: ItemStack Blacklist"));
-    }
-
     public static final Item ITEMSTACK = new ItemUpgradeFilterItemStackBlacklist(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/filteritemstackb"));
 
     @SubscribeEvent

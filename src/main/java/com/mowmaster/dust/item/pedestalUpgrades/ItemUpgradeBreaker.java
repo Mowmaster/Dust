@@ -16,6 +16,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.RegistryEvent;
@@ -114,25 +116,19 @@ public class ItemUpgradeBreaker extends ItemUpgradeBase
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        String s5 = getOperationSpeedString(stack);
-        int s3 = getRange(stack);
-        String trr = "" + s3 + "";
+        TranslationTextComponent range = new TranslationTextComponent(getTranslationKey() + ".tooltip_range");
+        range.appendText("" + getRange(stack) + "");
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
 
+        range.applyTextStyle(TextFormatting.WHITE);
+        tooltip.add(range);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Block Breaker Upgrade"));
-
-        if(stack.isEnchanted() && s3 > 0)
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Breaker Range: " + trr));
-        }
-        else
-        {
-            tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Breaker Range: " + trr));
-        }
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        speed.applyTextStyle(TextFormatting.RED);
+        tooltip.add(speed);
     }
 
     public static final Item BREAKER = new ItemUpgradeBreaker(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/breaker"));

@@ -31,7 +31,7 @@ public class RenderCluster extends TileEntityRenderer<TileCrystalCluster> {
 
         if (!tileEntityIn.isRemoved()) {
             Direction facing = tileEntityIn.getBlockState().get(FACING);
-            ItemStack stack = tileEntityIn.getItemInPedestal();
+            ItemStack stack = ItemStack.EMPTY;//tileEntityIn.getItemInPedestal();
             ItemStack coin = stack;
             World world = tileEntityIn.getWorld();
 
