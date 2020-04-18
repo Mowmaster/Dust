@@ -166,7 +166,7 @@ public class ItemSpellScroll extends Item
             if(stack.getTag().contains(Reference.MODID + "Potion"))
             {
                 EffectInstance effect = getPotionEffectFromStack(stack);
-                String s1 = effect.getEffectName();
+                String s1 = effect.getPotion().getName();
                 int s2 = effect.getAmplifier();
                 int s3 = effect.getDuration();
                 String count = "";

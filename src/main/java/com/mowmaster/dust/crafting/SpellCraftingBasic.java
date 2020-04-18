@@ -18,6 +18,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -234,12 +235,12 @@ public class SpellCraftingBasic
                             int amp = getPotency(white,black,5 );
                             if(white >= black)
                             {
-                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(color),amp));
+                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(false,color),amp));
                                 count=0;
                             }
                             else
                             {
-                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp));
+                                player.addPotionEffect(new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(true,color),amp));
                                 count=0;
                             }
                         }
@@ -251,11 +252,11 @@ public class SpellCraftingBasic
 
                             if(white >= black)
                             {
-                                effect = new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(color),amp);
+                                effect = new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(false,color),amp);
                             }
                             else
                             {
-                                effect = new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp);
+                                effect = new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(true,color),amp);
                             }
 
                             if(effect != null)
@@ -293,11 +294,11 @@ public class SpellCraftingBasic
 
                             if(white >= black)
                             {
-                                effect = new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(color),amp);
+                                effect = new EffectInstance(SpellCraftingEffectGood.instance().getResult(color),count*getPotionModifier(false,color),amp);
                             }
                             else
                             {
-                                effect = new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(color),amp);
+                                effect = new EffectInstance(SpellCraftingEffectBad.instance().getResult(color),count*getPotionModifier(true,color),amp);
                             }
 
                             if(effect != null)
@@ -310,6 +311,8 @@ public class SpellCraftingBasic
                                 nbt.putInt(Reference.MODID + "Duration",(dur));
                                 nbt.putInt(Reference.MODID + "Color",(color));
                                 scroll.setTag(nbt);
+                                String s1 = effect.getPotion().getName();
+                                scroll.setDisplayName(new TranslationTextComponent("Scroll of "+ s1));
 
                                 for(int i=paper;i>0;i--)
                                 {
@@ -389,11 +392,11 @@ public class SpellCraftingBasic
         }
     }
 
-    public static int getPotionModifier(int color)
+    public static int getPotionModifier(boolean isBad, int color)
     {
         int count = 20;
-        Effect getEffect = SpellCraftingEffectGood.instance().getResult(color);
-        if(getEffect.equals(Effects.INSTANT_HEALTH) || getEffect.equals(Effects.INSTANT_DAMAGE) || getEffect.equals(Effects.SATURATION))
+        Effect getEffect = (isBad)?(SpellCraftingEffectBad.instance().getResult(color)):(SpellCraftingEffectGood.instance().getResult(color));
+        if(getEffect.isInstant())
         {
             count = 1;
         }
@@ -406,21 +409,21 @@ public class SpellCraftingBasic
     {
         int amp=0;
         int potencycount=Math.abs(white-black);
-        if(potencycount>=0 && potencycount<10){amp=0;}
-        if(potencycount>=10 && potencycount<30){amp=1;}
-        if(potencycount>=30 && potencycount<60){amp=2;}
-        if(potencycount>=60 && potencycount<100){amp=3;}
-        if(potencycount>=100 && potencycount<150){amp=4;}
-        if(potencycount>=150 && potencycount<210){amp=5;}
-        if(potencycount>=210 && potencycount<280){amp=6;}
-        if(potencycount>=280 && potencycount<360){amp=7;}
-        if(potencycount>=360 && potencycount<450){amp=8;}
-        if(potencycount>=450 && potencycount<550){amp=9;}
-        if(potencycount>=550){amp=10;}
+        if(potencycount>=0 && potencycount<64){amp=0;}
+        if(potencycount>=64 && potencycount<128){amp=1;}
+        if(potencycount>=128 && potencycount<192){amp=2;}
+        if(potencycount>=192 && potencycount<256){amp=3;}
+        if(potencycount>=256 && potencycount<320){amp=4;}
+        if(potencycount>=320 && potencycount<384){amp=5;}
+        if(potencycount>=384 && potencycount<448){amp=6;}
+        if(potencycount>=448 && potencycount<512){amp=7;}
+        if(potencycount>=512 && potencycount<576){amp=8;}
+        if(potencycount>=576 && potencycount<640){amp=9;}
+        if(potencycount>=640){amp=10;}
 
-        if(amp > 5)
+        if(amp > 4)
         {
-            amp = 5;
+            amp = 4;
         }
 
         return amp;
