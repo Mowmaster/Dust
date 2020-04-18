@@ -22,6 +22,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -115,15 +117,27 @@ public class ItemUpgradeEffectMagnet extends ItemUpgradeBase
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int s3 = getRangeWidth(stack);
         String tr = "" + (s3+s3+1) + "";
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Grower Effect Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + tr+"x"+tr+"x"+tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent area = new TranslationTextComponent(getTranslationKey() + ".tooltip_area");
+        TranslationTextComponent areax = new TranslationTextComponent(getTranslationKey() + ".tooltip_areax");
+        area.appendText(tr);
+        area.appendText(areax.getString());
+        area.appendText(tr);
+        area.appendText(areax.getString());
+        area.appendText(tr);
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        area.applyTextStyle(TextFormatting.WHITE);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(area);
+        tooltip.add(speed);
     }
 
     public static final Item MAGNET = new ItemUpgradeEffectMagnet(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/magnet"));

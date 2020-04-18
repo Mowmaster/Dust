@@ -13,6 +13,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -30,35 +32,6 @@ public class ItemUpgradeExport extends ItemUpgradeBase
     @Override
     public Boolean canAcceptCapacity() {
         return true;
-    }
-
-    public int getTransferRate(ItemStack stack)
-    {
-        int transferRate = 1;
-        switch (getCapacityModifier(stack))
-        {
-            case 0:
-                transferRate = 1;
-                break;
-            case 1:
-                transferRate=4;
-                break;
-            case 2:
-                transferRate = 8;
-                break;
-            case 3:
-                transferRate = 16;
-                break;
-            case 4:
-                transferRate = 32;
-                break;
-            case 5:
-                transferRate=64;
-                break;
-            default: transferRate=1;
-        }
-
-        return  transferRate;
     }
 
     private int getNextSlotEmptyOrMatching(TileEntity invBeingChecked, Direction sideSlot, ItemStack itemInPedestal)
@@ -123,7 +96,7 @@ public class ItemUpgradeExport extends ItemUpgradeBase
     public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinInPedestal)
     {
         BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
-        int upgradeTransferRate = getTransferRate(coinInPedestal);
+        int upgradeTransferRate = getItemTransferRate(coinInPedestal);
         ItemStack itemFromPedestal = ItemStack.EMPTY;
         //Checks to make sure a TE exists
         if(world.getTileEntity(posInventory) !=null)
@@ -182,14 +155,19 @@ public class ItemUpgradeExport extends ItemUpgradeBase
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        String tr = "" + getTransferRate(stack) + "";
-        String s5 = getOperationSpeedString(stack);
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText("" + getItemTransferRate(stack) + "");
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Export Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Transfer Rate: " + tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        rate.applyTextStyle(TextFormatting.GRAY);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(rate);
+        tooltip.add(speed);
     }
 
     public static final Item EXPORT = new ItemUpgradeExport(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/export"));

@@ -20,6 +20,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -171,18 +173,26 @@ public class ItemUpgradeExpBottler extends ItemUpgradeBaseExp
         }
     }*/
 
+    public int getExpBuffer(ItemStack stack)
+    {
+        return  15;
+    }
+
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        String tr = getExpTransferRateString(stack);
-        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Bottler Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
-        tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 15 Levels"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText(getExpTransferRateString(stack));
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        rate.applyTextStyle(TextFormatting.GRAY);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(rate);
+        tooltip.add(speed);
     }
 
     public static final Item XPBOTTLER = new ItemUpgradeExpBottler(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpbottler"));

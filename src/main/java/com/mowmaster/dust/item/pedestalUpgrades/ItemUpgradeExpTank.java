@@ -10,6 +10,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -28,6 +30,7 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
         return true;
     }
 
+    @Override
     public int getExpBuffer(ItemStack stack)
     {
         int value = 100;
@@ -76,18 +79,20 @@ public class ItemUpgradeExpTank extends ItemUpgradeBaseExp
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        String tr = getExpTransferRateString(stack);
-        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-        int buffer = getExpBuffer(stack);
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Tank Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
-        tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Storage Capacity: "+buffer+" Levels"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText(getExpTransferRateString(stack));
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        rate.applyTextStyle(TextFormatting.GRAY);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(rate);
+        tooltip.add(speed);
     }
 
     public static final Item XPTANK = new ItemUpgradeExpTank(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xptank"));

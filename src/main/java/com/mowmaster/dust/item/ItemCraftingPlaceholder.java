@@ -32,13 +32,6 @@ public class ItemCraftingPlaceholder extends ItemUpgradeBase
 
     public ItemCraftingPlaceholder(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Crafting Placeholder"));
-    }
-
     public static final Item PLACEHOLDER = new ItemCraftingPlaceholder(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/placeholder"));
 
     @SubscribeEvent

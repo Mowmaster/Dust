@@ -33,6 +33,7 @@ public class ItemUpgradeBaseMachine extends ItemUpgradeBase {
         return true;
     }
 
+    @Override
     public int getItemTransferRate(ItemStack stack)
     {
         int itemsPerSmelt = 1;

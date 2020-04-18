@@ -47,7 +47,7 @@ import java.util.Optional;
 
 import static com.mowmaster.dust.references.Reference.MODID;
 
-public class ItemUpgradeCrafter extends ItemUpgradeBase
+public class ItemUpgradeCrafter extends ItemUpgradeBaseMachine
 {
     public ItemUpgradeCrafter(Properties builder) {super(builder.group(dust.ITEM_GROUP));}
 
@@ -60,35 +60,6 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
         else{gridSize = 1;}
 
         return gridSize;
-    }
-
-    public int getItemTransferRate(ItemStack stack)
-    {
-        int transferRate = 1;
-        switch (getCapacityModifier(stack))
-        {
-            case 0:
-                transferRate = 1;
-                break;
-            case 1:
-                transferRate=2;
-                break;
-            case 2:
-                transferRate = 4;
-                break;
-            case 3:
-                transferRate = 8;
-                break;
-            case 4:
-                transferRate = 12;
-                break;
-            case 5:
-                transferRate=16;
-                break;
-            default: transferRate=1;
-        }
-
-        return  transferRate;
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
@@ -252,22 +223,6 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
         }
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
-        rate.appendText("" + getItemTransferRate(stack) + "");
-        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
-        speed.appendText(getOperationSpeedString(stack));
-
-        rate.applyTextStyle(TextFormatting.GRAY);
-        speed.applyTextStyle(TextFormatting.RED);
-
-        tooltip.add(rate);
-        tooltip.add(speed);
-    }
-
     public static final Item CRAFTER_ONE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crafter1"));
     public static final Item CRAFTER_TWO = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crafter2"));
     public static final Item CRAFTER_THREE = new ItemUpgradeCrafter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/crafter3"));
@@ -280,6 +235,5 @@ public class ItemUpgradeCrafter extends ItemUpgradeBase
         event.getRegistry().register(CRAFTER_TWO);
         event.getRegistry().register(CRAFTER_THREE);
     }
-
 
 }

@@ -16,6 +16,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.RegistryEvent;
@@ -33,35 +35,6 @@ public class ItemUpgradePlacer extends ItemUpgradeBase
     @Override
     public Boolean canAcceptRange() {
         return true;
-    }
-
-    public int getRange(ItemStack stack)
-    {
-        int range = 1;
-        switch (getRangeModifier(stack))
-        {
-            case 0:
-                range = 1;
-                break;
-            case 1:
-                range = 2;
-                break;
-            case 2:
-                range = 4;
-                break;
-            case 3:
-                range = 8;
-                break;
-            case 4:
-                range = 12;
-                break;
-            case 5:
-                range = 16;
-                break;
-            default: range = 1;
-        }
-
-        return  range;
     }
 
     public BlockState getState(Block getBlock, ItemStack itemForBlock)
@@ -138,15 +111,20 @@ public class ItemUpgradePlacer extends ItemUpgradeBase
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        int s3 = getRange(stack);
-        String trr = "" + s3 + "";
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Block Placer Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Placer Range: " + trr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent range = new TranslationTextComponent(getTranslationKey() + ".tooltip_range");
+        range.appendText("" + getRange(stack) + "");
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        range.applyTextStyle(TextFormatting.WHITE);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(range);
+        tooltip.add(speed);
     }
 
     public static final Item PLACER = new ItemUpgradePlacer(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/placer"));

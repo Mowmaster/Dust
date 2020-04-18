@@ -11,6 +11,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -33,64 +35,6 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
         return true;
     }
 
-    public int getTransferRate(ItemStack stack)
-    {
-        int summonRate = 1;
-        switch (getCapacityModifier(stack))
-        {
-            case 0:
-                summonRate = 1;
-                break;
-            case 1:
-                summonRate=4;
-                break;
-            case 2:
-                summonRate = 8;
-                break;
-            case 3:
-                summonRate = 16;
-                break;
-            case 4:
-                summonRate = 32;
-                break;
-            case 5:
-                summonRate=64;
-                break;
-            default: summonRate=1;
-        }
-        return  summonRate;
-    }
-
-    public int getRange(ItemStack stack)
-    {
-        int range = 1;
-        switch (getRangeModifier(stack))
-        {
-            case 0:
-                range = 1;
-                break;
-            case 1:
-                range=2;
-                break;
-            case 2:
-                range = 4;
-                break;
-            case 3:
-                range = 8;
-                break;
-            case 4:
-                range = 12;
-                break;
-            case 5:
-                range=16;
-                break;
-            default: range=1;
-        }
-
-        return  range;
-    }
-
-
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal, BlockPos pedestalPos)
     {
         int speed = getOperationSpeed(coinInPedestal);
@@ -104,7 +48,7 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
 
     public void upgradeAction(World world, BlockPos posOfPedestal, ItemStack coinOnPedestal)
     {
-        int rate = getTransferRate(coinOnPedestal);
+        int rate = getItemTransferRate(coinOnPedestal);
         int range = getRange(coinOnPedestal);
         if(!getStackInPedestal(world,posOfPedestal).isEmpty())//hasItem
         {
@@ -118,17 +62,24 @@ public class ItemUpgradeDropper extends ItemUpgradeBase
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        int range = getRange(stack);
-        String tr = "" + getTransferRate(stack) + "";
-        String trr = "" + range + "";
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Item Dropper Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Dropped Stack Size: " + tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Dropper Range: " + trr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText("" + getItemTransferRate(stack) + "");
+        TranslationTextComponent range = new TranslationTextComponent(getTranslationKey() + ".tooltip_range");
+        range.appendText("" + getRange(stack) + "");
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        rate.applyTextStyle(TextFormatting.GRAY);
+        range.applyTextStyle(TextFormatting.WHITE);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(rate);
+        tooltip.add(range);
+        tooltip.add(speed);
     }
 
     public static final Item DROPPER = new ItemUpgradeDropper(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/dropper"));

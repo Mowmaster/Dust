@@ -140,6 +140,64 @@ public class ItemUpgradeBase extends Item {
         return  str;
     }
 
+    public int getItemTransferRate(ItemStack stack)
+    {
+        int transferRate = 1;
+        switch (getCapacityModifier(stack))
+        {
+            case 0:
+                transferRate = 1;
+                break;
+            case 1:
+                transferRate=4;
+                break;
+            case 2:
+                transferRate = 8;
+                break;
+            case 3:
+                transferRate = 16;
+                break;
+            case 4:
+                transferRate = 32;
+                break;
+            case 5:
+                transferRate=64;
+                break;
+            default: transferRate=1;
+        }
+
+        return  transferRate;
+    }
+
+    public int getRange(ItemStack stack)
+    {
+        int range = 1;
+        switch (getRangeModifier(stack))
+        {
+            case 0:
+                range = 1;
+                break;
+            case 1:
+                range = 2;
+                break;
+            case 2:
+                range = 4;
+                break;
+            case 3:
+                range = 8;
+                break;
+            case 4:
+                range = 12;
+                break;
+            case 5:
+                range = 16;
+                break;
+            default: range = 1;
+        }
+
+        return  range;
+    }
+
 
     public ItemStack getStackInPedestal(World world, BlockPos posOfPedestal)
     {

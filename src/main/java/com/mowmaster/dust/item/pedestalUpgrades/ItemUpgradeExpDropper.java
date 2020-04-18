@@ -19,6 +19,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -70,34 +72,6 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
         }
 
         return  summonRate;
-    }
-
-    public int getRange(ItemStack stack)
-    {
-        switch (getRangeModifier(stack))
-        {
-            case 0:
-                range = 1;
-                break;
-            case 1:
-                range=2;
-                break;
-            case 2:
-                range = 4;
-                break;
-            case 3:
-                range = 8;
-                break;
-            case 4:
-                range = 12;
-                break;
-            case 5:
-                range=16;
-                break;
-            default: range=1;
-        }
-
-        return  range;
     }
 
     public void updateAction(int tick, World world, ItemStack itemInPedestal, ItemStack coinInPedestal,BlockPos pedestalPos)
@@ -171,44 +145,55 @@ public class ItemUpgradeExpDropper extends ItemUpgradeBaseExp
         }
     }*/
 
+    public int getExpBuffer(ItemStack stack)
+    {
+        return  10;
+    }
+
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        String tr = "";
-        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-        int s3 = getRange(stack);
-        String trr = "" + s3 + "";
-        String s5 = getOperationSpeedString(stack);
+        int tr = 1;
 
         switch (getTransferRate(stack))
         {
             case 7:
-                tr = "1 Level";
+                tr = 1;
                 break;
             case 16:
-                tr="2 Levels";
+                tr=2;
                 break;
             case 40:
-                tr = "4 Levels";
+                tr = 4;
                 break;
             case 72:
-                tr = "6 Levels";
+                tr = 6;
                 break;
             case 112:
-                tr = "8 Levels";
+                tr = 8;
                 break;
             case 160:
-                tr="10 Levels";
+                tr=10;
                 break;
-            default: tr="1 Level";
+            default: tr=1;
         }
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Dropper Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
-        tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 10 Levels"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Dropper Range: " + trr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Dropped Ammount: " + tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent range = new TranslationTextComponent(getTranslationKey() + ".tooltip_range");
+        range.appendText("" +  getRange(stack) + "");
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText("" +  tr + "");
+
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        range.applyTextStyle(TextFormatting.WHITE);
+        rate.applyTextStyle(TextFormatting.GRAY);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(range);
+        tooltip.add(rate);
+        tooltip.add(speed);
     }
 
     public static final Item XPDROPPER = new ItemUpgradeExpDropper(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpdropper"));

@@ -20,6 +20,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -157,21 +159,37 @@ public class ItemUpgradeExpCollector extends ItemUpgradeBaseExp
         }
     }
 
+    public int getExpBuffer(ItemStack stack)
+    {
+        return  30;
+    }
+
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         int s3 = getRangeWidth(stack);
         String trr = "" + (s3+s3+1) + "";
-        String tr = getExpTransferRateString(stack);
-        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Magnet Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
-        tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: 30 Levels"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.WHITE + "Effected Area: " + trr+"x"+trr+"x"+trr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GRAY + "Exp Transfer Ammount: " + tr));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent area = new TranslationTextComponent(getTranslationKey() + ".tooltip_area");
+        TranslationTextComponent areax = new TranslationTextComponent(getTranslationKey() + ".tooltip_areax");
+        area.appendText(trr);
+        area.appendText(areax.getString());
+        area.appendText(trr);
+        area.appendText(areax.getString());
+        area.appendText(trr);
+        TranslationTextComponent rate = new TranslationTextComponent(getTranslationKey() + ".tooltip_rate");
+        rate.appendText(getExpTransferRateString(stack));
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        area.applyTextStyle(TextFormatting.WHITE);
+        rate.applyTextStyle(TextFormatting.GRAY);
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(area);
+        tooltip.add(rate);
+        tooltip.add(speed);
     }
 
     public static final Item XPMAGNET = new ItemUpgradeExpCollector(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpmagnet"));

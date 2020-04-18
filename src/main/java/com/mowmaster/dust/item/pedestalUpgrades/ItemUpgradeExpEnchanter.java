@@ -24,6 +24,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -45,6 +47,7 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
         return true;
     }
 
+    @Override
     public int getExpBuffer(ItemStack stack)
     {
         int value = 30;
@@ -239,16 +242,16 @@ public class ItemUpgradeExpEnchanter extends ItemUpgradeBaseExp
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        int buffer = getExpBuffer(stack);
-        String xp = ""+ getExpLevelFromCount(getXPStored(stack)) +"";
-        String s5 = getOperationSpeedString(stack);
 
-        tooltip.add(new TranslationTextComponent(TextFormatting.GOLD + "Exp Enchanter Upgrade"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.GREEN + "Exp Levels Stored: "+xp));
-        tooltip.add(new TranslationTextComponent(TextFormatting.AQUA + "Exp Buffer Capacity: " + buffer + " Levels"));
-        tooltip.add(new TranslationTextComponent(TextFormatting.RED + "Operational Speed: " + s5));
+        TranslationTextComponent speed = new TranslationTextComponent(getTranslationKey() + ".tooltip_speed");
+        speed.appendText(getOperationSpeedString(stack));
+
+        speed.applyTextStyle(TextFormatting.RED);
+
+        tooltip.add(speed);
     }
 
     public static final Item XPENCHANTER = new ItemUpgradeExpEnchanter(new Properties().maxStackSize(64).group(dust.ITEM_GROUP)).setRegistryName(new ResourceLocation(MODID, "coin/xpenchanter"));

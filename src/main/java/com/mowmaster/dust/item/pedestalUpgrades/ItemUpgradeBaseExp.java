@@ -3,6 +3,7 @@ package com.mowmaster.dust.item.pedestalUpgrades;
 import com.mowmaster.dust.dust;
 import com.mowmaster.dust.tiles.TilePedestal;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +13,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemUpgradeBaseExp extends ItemUpgradeBase {
 
@@ -316,6 +325,30 @@ public class ItemUpgradeBaseExp extends ItemUpgradeBase {
             maxxp = getCompound.getInt("maxxp");
         }
         return maxxp;
+    }
+
+    public int getExpBuffer(ItemStack stack)
+    {
+        return  0;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+
+        TranslationTextComponent xpstored = new TranslationTextComponent(getTranslationKey() + ".tooltip_xpstored");
+        xpstored.appendText(""+ getExpLevelFromCount(getXPStored(stack)) +"");
+        xpstored.applyTextStyle(TextFormatting.GREEN);
+        TranslationTextComponent xpcapacity = new TranslationTextComponent(getTranslationKey() + ".tooltip_xpcapacity");
+        TranslationTextComponent xpcapacitylvl = new TranslationTextComponent(getTranslationKey() + ".tooltip_xpcapacitylvl");
+        xpcapacity.appendText(""+ getExpBuffer(stack) +"");
+        xpcapacity.appendText(xpcapacitylvl.getString());
+        xpcapacity.applyTextStyle(TextFormatting.AQUA);
+
+
+        tooltip.add(xpstored);
+        tooltip.add(xpcapacity);
     }
 
 }
