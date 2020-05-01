@@ -311,8 +311,9 @@ public class SpellCraftingBasic
                                 nbt.putInt(Reference.MODID + "Duration",(dur));
                                 nbt.putInt(Reference.MODID + "Color",(color));
                                 scroll.setTag(nbt);
-                                String s1 = effect.getPotion().getName();
-                                scroll.setDisplayName(new TranslationTextComponent("Scroll of "+ s1));
+                                TranslationTextComponent potionname = new TranslationTextComponent(scroll.getTranslationKey() + ".crafted");
+                                potionname.appendSibling(effect.getPotion().getEffect().getDisplayName());
+                                scroll.setDisplayName(potionname);
 
                                 for(int i=paper;i>0;i--)
                                 {
