@@ -2,6 +2,9 @@ package com.mowmaster.dust.item;
 
 
 import com.mowmaster.dust.blocks.*;
+import com.mowmaster.dust.blocks.TreeBits.BlockDustLeaves;
+import com.mowmaster.dust.blocks.TreeBits.BlockDustLogs;
+import com.mowmaster.dust.blocks.TreeBits.BlockDustPlanks;
 import com.mowmaster.dust.item.pedestalUpgrades.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -61,6 +64,9 @@ public class ItemRegistry
     public static void onItemColorsReady(ColorHandlerEvent.Item event)
     {
         BlockDustStone.handleItemColors(event);
+        BlockDustPlanks.handleItemColors(event);
+        BlockDustLogs.handleItemColors(event);
+        BlockDustLeaves.handleItemColors(event);
         BlockPedestalTE.handleItemColors(event);
         ItemColorDust.handleItemColors(event);
         ItemColorCrystal.handleItemColors(event);

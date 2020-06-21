@@ -1,6 +1,9 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.blocks.*;
+import com.mowmaster.dust.blocks.TreeBits.BlockDustLeaves;
+import com.mowmaster.dust.blocks.TreeBits.BlockDustLogs;
+import com.mowmaster.dust.blocks.TreeBits.BlockDustPlanks;
 import com.mowmaster.dust.configtabs.CreativeTab;
 import com.mowmaster.dust.configtabs.CreativeTabBlock;
 import com.mowmaster.dust.crafting.Recipes;
@@ -41,6 +44,9 @@ public class dust
     public static void onBlockRegistryReady(RegistryEvent.Register<Block> event)
     {
         BlockDustStone.onBlockRegistryReady(event);
+        BlockDustPlanks.onBlockRegistryReady(event);
+        BlockDustLeaves.onBlockRegistryReady(event);
+        BlockDustLogs.onBlockRegistryReady(event);
         BlockPedestalTE.onBlockRegistryReady(event);
         BlockVoidPot.onBlockRegistryReady(event);
         BlockTrap.onBlockRegistryReady(event);
@@ -59,6 +65,9 @@ public class dust
     public static void onBlockColorsReady(ColorHandlerEvent.Block event)
     {
         BlockDustStone.handleBlockColors(event);
+        BlockDustPlanks.handleBlockColors(event);
+        BlockDustLogs.handleBlockColors(event);
+        BlockDustLeaves.handleBlockColors(event);
         BlockPedestalTE.handleBlockColors(event);
     }
 

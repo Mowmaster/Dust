@@ -5,7 +5,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -13,7 +12,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static com.mowmaster.dust.dust.BLOCK_GROUP;
 import static com.mowmaster.dust.references.Reference.MODID;
-
 
 
 
