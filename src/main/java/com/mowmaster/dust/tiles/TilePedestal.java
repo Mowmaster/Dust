@@ -900,7 +900,7 @@ public class TilePedestal extends TileEntity implements ITickableTileEntity {
     //  the player will never notice the difference and the client<-->server synchronisation lag will make it
     //  inaccurate anyway
     @Override
-    @Nullable
+    //--+@Nullable
     public SUpdateTileEntityPacket getUpdatePacket()
     {
         CompoundNBT nbtTagCompound = new CompoundNBT();
