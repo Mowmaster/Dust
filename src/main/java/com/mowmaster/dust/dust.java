@@ -1,5 +1,8 @@
 package com.example.examplemod;
 
+import com.mowmaster.dust.Blocks.BlockRegistry;
+import com.mowmaster.dust.Items.ItemRegistry;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -68,9 +71,14 @@ public class Dust
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-            // register a new block here
-            LOGGER.info("HELLO from Register Block");
+        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
+        {
+            BlockRegistry.onBlockRegistryReady(blockRegistryEvent);
+        }
+        @SubscribeEvent
+        public static void onItemRegistry(RegistryEvent.Register<Item> event)
+        {
+            ItemRegistry.onItemRegistryReady(event);
         }
     }
 }
