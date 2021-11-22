@@ -1,7 +1,0 @@
-{
-    "parent": "dust:item/ancientscroll",
-    "textures": {
-        "letter": "dust:items/models/scrolls/wikifurnace",
-        "blank": "dust:items/models/scrolls/scroll"
-    }
-}

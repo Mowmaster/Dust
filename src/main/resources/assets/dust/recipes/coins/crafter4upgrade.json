@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {"item": "dust:crafter1upgrade"}
-  ],
-  "result": {
-    "item": "dust:crafter4upgrade"
-  }
-}

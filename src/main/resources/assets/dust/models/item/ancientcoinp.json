@@ -1,8 +1,0 @@
-{
-    "parent": "dust:item/ancientcoin",
-    "textures": {
-        "coin": "dust:items/models/coins/coin",
-        "letter": "dust:items/models/coins/coinp",
-        "part": "dust:items/models/coins/coin"
-    }
-}

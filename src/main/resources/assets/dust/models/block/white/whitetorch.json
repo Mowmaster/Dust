@@ -1,8 +1,0 @@
-{
-    "parent": "dust:block/crystaltorchdefault",
-    "textures": {
-        "core": "dust:items/models/crystals/crystalcore_white",
-        "side": "dust:items/models/crystals/crystal_white",
-        "part": "dust:items/models/crystals/crystal_white"
-    }
-}

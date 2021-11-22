@@ -1,8 +1,0 @@
-{
-    "parent": "dust:block/ore_five",
-    "textures": {
-        "break": "dust:items/models/crystals/crystalcore_green",
-        "core": "dust:items/models/crystals/crystalcore_green",
-        "side": "dust:items/models/crystals/crystal_green"
-    }
-}

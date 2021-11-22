@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "dust:items/charcoal/charcoal_green"
-    }
-}

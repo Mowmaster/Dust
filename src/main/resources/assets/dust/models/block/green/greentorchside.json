@@ -1,8 +1,0 @@
-{
-    "parent": "dust:block/crystaltorchwall",
-    "textures": {
-        "core": "dust:items/models/crystals/crystalcore_green",
-        "side": "dust:items/models/crystals/crystal_green",
-        "part": "dust:items/models/crystals/crystal_green"
-    }
-}

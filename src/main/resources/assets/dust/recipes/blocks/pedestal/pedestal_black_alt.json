@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [{"item": "dust:pedestal_black_unlit"}],
-  "result": {
-    "item": "dust:pedestal_black",
-    "count": 1
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "dust:block/structure",
-  "textures": {
-    "particle": "dust:blocks/devblocks/structure",
-    "top": "dust:blocks/devblocks/structure",
-    "side": "dust:blocks/devblocks/structure1"
-  }
-}

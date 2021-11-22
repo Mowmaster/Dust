@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {"item": "dust:importupgrade"}
-  ],
-  "result": {
-    "item": "dust:exportupgrade"
-  }
-}

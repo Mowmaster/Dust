@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "dust:items/weapons/crystalaxe_white"
-  }
-}
