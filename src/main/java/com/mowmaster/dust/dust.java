@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.mowmaster.dust;
 
 import com.mowmaster.dust.Blocks.BlockRegistry;
 import com.mowmaster.dust.Items.ItemRegistry;
@@ -78,6 +78,7 @@ public class Dust
         @SubscribeEvent
         public static void onItemRegistry(RegistryEvent.Register<Item> event)
         {
+            BlockRegistry.onItemRegistryReady(event);
             ItemRegistry.onItemRegistryReady(event);
         }
     }

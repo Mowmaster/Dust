@@ -10,6 +10,8 @@ public class DustItemTabs extends CreativeModeTab
         super("tab_dustitems");
     }
 
+    public static final DustItemTabs TAB_ITEMS = new DustItemTabs() {};
+
     @Override
     public ItemStack makeIcon() {
         return new ItemStack(Items.AMETHYST_SHARD);

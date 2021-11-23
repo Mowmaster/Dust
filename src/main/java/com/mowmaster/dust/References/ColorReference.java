@@ -17,7 +17,7 @@ public class ColorReference
     public static int getColor(List<Integer> listRGB)
     {
         Map<List<Integer>,Integer> COLORS_REFERENCE = Map.ofEntries(
-                Map.entry(Arrays.asList(0,0,0),0),
+                Map.entry(Arrays.asList(0,0,0),2763306),
                 Map.entry(Arrays.asList(0,0,1),85),
                 Map.entry(Arrays.asList(0,0,2),170),
                 Map.entry(Arrays.asList(0,0,3),255),
@@ -89,7 +89,7 @@ public class ColorReference
     public static List<Integer> getIntColor(int color)
     {
         Map<Integer,List<Integer>> COLORS_INT_REFERENCE = Map.ofEntries(
-                Map.entry(0,Arrays.asList(0,0,0)),
+                Map.entry(2763306,Arrays.asList(0,0,0)),
                 Map.entry(85,Arrays.asList(0,0,1)),
                 Map.entry(170,Arrays.asList(0,0,2)),
                 Map.entry(255,Arrays.asList(0,0,3)),
@@ -175,7 +175,7 @@ public class ColorReference
         return stackIn;
     }
 
-    public static int getColorFromItemStack(ItemStack stackIn)
+    public static int getColorFromItemStackInt(ItemStack stackIn)
     {
         CompoundTag blockColors = stackIn.getOrCreateTag();
         if(blockColors.contains(MODID+"_color_int"))
@@ -189,7 +189,7 @@ public class ColorReference
         return 16777215;
     }
 
-    public static int[] getRGBColorFromItemStack(ItemStack stackIn)
+    public static int[] getColorFromItemStackRGB(ItemStack stackIn)
     {
         CompoundTag blockColors = stackIn.getOrCreateTag();
         if(blockColors.contains(MODID+"_color_rgb"))
