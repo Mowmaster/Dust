@@ -1,0 +1,30 @@
+{
+
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    " B ",
+    "BBB"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:block_crystal_stone_slab",
+      "nbt": {
+        "dust_color": 65280
+      }
+    },
+    "B": {
+      "item": "dust:block_crystal_stone",
+      "nbt": {
+        "dust_color": 65280
+      }
+    }
+  },
+  "result": {
+    "item": "dust:block_crystal",
+    "nbt": {
+      "dust_color": 65280
+    }
+  }
+
+}

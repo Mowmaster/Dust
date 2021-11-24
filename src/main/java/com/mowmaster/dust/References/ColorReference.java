@@ -1,6 +1,7 @@
 package com.mowmaster.dust.References;
 
 
+import com.mowmaster.dust.World.GeodeGen.GeodeFeaturesRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,6 +14,8 @@ import java.util.Random;
 
 import static com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock.*;
 import static com.mowmaster.dust.References.Constants.MODID;
+import static com.mowmaster.dust.World.GeodeGen.GeodeFeatures.*;
+import static com.mowmaster.dust.World.GeodeGen.GeodeFeatures.GEODE_333;
 
 public class ColorReference
 {
@@ -28,6 +31,8 @@ public class ColorReference
 
     public static int getColor(List<Integer> listRGB)
     {
+        Random rand = new Random();
+        List<Integer> listedRGB = (listRGB.equals(Arrays.asList(-1,-1,-1)))?(Arrays.asList(rand.nextInt(3),rand.nextInt(3),rand.nextInt(3))):(listRGB);
         Map<List<Integer>,Integer> COLORS_REFERENCE = Map.ofEntries(
                 Map.entry(Arrays.asList(0,0,0),2763306),
                 Map.entry(Arrays.asList(0,0,1),85),
@@ -95,11 +100,13 @@ public class ColorReference
                 Map.entry(Arrays.asList(3,3,3),16777215)
         );
 
-        return COLORS_REFERENCE.getOrDefault(listRGB,DEFAULTCOLOR);
+        return COLORS_REFERENCE.getOrDefault(listedRGB,DEFAULTCOLOR);
     }
 
     public static List<Integer> getIntColor(int color)
     {
+        Random rand = new Random();
+
         Map<Integer,List<Integer>> COLORS_INT_REFERENCE = Map.ofEntries(
                 Map.entry(2763306,Arrays.asList(0,0,0)),
                 Map.entry(85,Arrays.asList(0,0,1)),
@@ -167,8 +174,214 @@ public class ColorReference
                 Map.entry(16777215,Arrays.asList(3,3,3))
         );
 
-        return COLORS_INT_REFERENCE.getOrDefault(color,DEFAULTCOLORLIST);
+        return (color ==-1)?(Arrays.asList(rand.nextInt(3),rand.nextInt(3),rand.nextInt(3))):(COLORS_INT_REFERENCE.getOrDefault(color,DEFAULTCOLORLIST));
     }
+
+    public static GeodeFeaturesRegistry getRandomGeodeFeature(int val)
+    {
+        /*Map<Integer, GeodeFeaturesRegistry> GEODE_REFERENCE = Map.ofEntries(
+                Map.entry(2763306,GEODE_000),
+                Map.entry(85,GEODE_001),
+                Map.entry(170,GEODE_002),
+                Map.entry(255,GEODE_003),
+                Map.entry(21760,GEODE_010),
+                Map.entry(21845,GEODE_011),
+                Map.entry(21930,GEODE_012),
+                Map.entry(22015,GEODE_013),
+                Map.entry(43520,GEODE_020),
+                Map.entry(43605,GEODE_021),
+                Map.entry(43690,GEODE_022),
+                Map.entry(43775,GEODE_023),
+                Map.entry(65280,GEODE_030),
+                Map.entry(65365,GEODE_031),
+                Map.entry(65450,GEODE_032),
+                Map.entry(65535,GEODE_033),
+                Map.entry(5570560,GEODE_100),
+                Map.entry(5570645,GEODE_101),
+                Map.entry(5570730,GEODE_102),
+                Map.entry(5570815,GEODE_103),
+                Map.entry(5592320,GEODE_110),
+                Map.entry(5592405,GEODE_111),
+                Map.entry(5592490,GEODE_112),
+                Map.entry(5592575,GEODE_113),
+                Map.entry(5614080,GEODE_120),
+                Map.entry(5614165,GEODE_121),
+                Map.entry(5614250,GEODE_122),
+                Map.entry(5614335,GEODE_123),
+                Map.entry(5635840,GEODE_130),
+                Map.entry(5635925,GEODE_131),
+                Map.entry(5636010,GEODE_132),
+                Map.entry(5636095,GEODE_133),
+                Map.entry(11141120,GEODE_200),
+                Map.entry(11141205,GEODE_201),
+                Map.entry(11141290,GEODE_202),
+                Map.entry(11141375,GEODE_203),
+                Map.entry(11162880,GEODE_210),
+                Map.entry(11162965,GEODE_211),
+                Map.entry(11163050,GEODE_212),
+                Map.entry(11163135,GEODE_213),
+                Map.entry(11184640,GEODE_220),
+                Map.entry(11184725,GEODE_221),
+                Map.entry(11184810,GEODE_222),
+                Map.entry(11184895,GEODE_223),
+                Map.entry(11206400,GEODE_230),
+                Map.entry(11206485,GEODE_231),
+                Map.entry(11206570,GEODE_232),
+                Map.entry(11206655,GEODE_233),
+                Map.entry(16711680,GEODE_300),
+                Map.entry(16711765,GEODE_301),
+                Map.entry(16711850,GEODE_302),
+                Map.entry(16711935,GEODE_303),
+                Map.entry(16733440,GEODE_310),
+                Map.entry(16733525,GEODE_311),
+                Map.entry(16733610,GEODE_312),
+                Map.entry(16733695,GEODE_313),
+                Map.entry(16755200,GEODE_320),
+                Map.entry(16755285,GEODE_321),
+                Map.entry(16755370,GEODE_322),
+                Map.entry(16755455,GEODE_323),
+                Map.entry(16776960,GEODE_330),
+                Map.entry(16777045,GEODE_331),
+                Map.entry(16777130,GEODE_332),
+                Map.entry(16777215,GEODE_333)
+        );*/
+
+        Map<Integer, GeodeFeaturesRegistry> GEODE_REFERENCE = Map.ofEntries(
+                Map.entry(0,GEODE_000),
+                Map.entry(1,GEODE_001),
+                Map.entry(2,GEODE_002),
+                Map.entry(3,GEODE_003),
+                Map.entry(4,GEODE_010),
+                Map.entry(5,GEODE_011),
+                Map.entry(6,GEODE_012),
+                Map.entry(7,GEODE_013),
+                Map.entry(8,GEODE_020),
+                Map.entry(9,GEODE_021),
+                Map.entry(10,GEODE_022),
+                Map.entry(11,GEODE_023),
+                Map.entry(12,GEODE_030),
+                Map.entry(13,GEODE_031),
+                Map.entry(14,GEODE_032),
+                Map.entry(15,GEODE_033),
+                Map.entry(16,GEODE_100),
+                Map.entry(17,GEODE_101),
+                Map.entry(18,GEODE_102),
+                Map.entry(19,GEODE_103),
+                Map.entry(20,GEODE_110),
+                Map.entry(21,GEODE_111),
+                Map.entry(22,GEODE_112),
+                Map.entry(23,GEODE_113),
+                Map.entry(24,GEODE_120),
+                Map.entry(25,GEODE_121),
+                Map.entry(26,GEODE_122),
+                Map.entry(27,GEODE_123),
+                Map.entry(28,GEODE_130),
+                Map.entry(29,GEODE_131),
+                Map.entry(30,GEODE_132),
+                Map.entry(31,GEODE_133),
+                Map.entry(32,GEODE_200),
+                Map.entry(33,GEODE_201),
+                Map.entry(34,GEODE_202),
+                Map.entry(35,GEODE_203),
+                Map.entry(36,GEODE_210),
+                Map.entry(37,GEODE_211),
+                Map.entry(38,GEODE_212),
+                Map.entry(39,GEODE_213),
+                Map.entry(40,GEODE_220),
+                Map.entry(41,GEODE_221),
+                Map.entry(42,GEODE_222),
+                Map.entry(43,GEODE_223),
+                Map.entry(44,GEODE_230),
+                Map.entry(45,GEODE_231),
+                Map.entry(46,GEODE_232),
+                Map.entry(47,GEODE_233),
+                Map.entry(48,GEODE_300),
+                Map.entry(49,GEODE_301),
+                Map.entry(50,GEODE_302),
+                Map.entry(51,GEODE_303),
+                Map.entry(52,GEODE_310),
+                Map.entry(53,GEODE_311),
+                Map.entry(54,GEODE_312),
+                Map.entry(55,GEODE_313),
+                Map.entry(56,GEODE_320),
+                Map.entry(57,GEODE_321),
+                Map.entry(58,GEODE_322),
+                Map.entry(59,GEODE_323),
+                Map.entry(60,GEODE_330),
+                Map.entry(61,GEODE_331),
+                Map.entry(62,GEODE_332),
+                Map.entry(63,GEODE_333)
+        );
+
+        return GEODE_REFERENCE.getOrDefault(val,GEODE_333);
+    }
+
+    public static List<Integer> ALL_COLORS = Arrays.asList(
+            2763306,
+            85,
+            170,
+            255,
+            21760,
+            21845,
+            21930,
+            22015,
+            43520,
+            43605,
+            43690,
+            43775,
+            65280,
+            65365,
+            65450,
+            65535,
+            5570560,
+            5570645,
+            5570730,
+            5570815,
+            5592320,
+            5592405,
+            5592490,
+            5592575,
+            5614080,
+            5614165,
+            5614250,
+            5614335,
+            5635840,
+            5635925,
+            5636010,
+            5636095,
+            11141120,
+            11141205,
+            11141290,
+            11141375,
+            11162880,
+            11162965,
+            11163050,
+            11163135,
+            11184640,
+            11184725,
+            11184810,
+            11184895,
+            11206400,
+            11206485,
+            11206570,
+            11206655,
+            16711680,
+            16711765,
+            16711850,
+            16711935,
+            16733440,
+            16733525,
+            16733610,
+            16733695,
+            16755200,
+            16755285,
+            16755370,
+            16755455,
+            16776960,
+            16777045,
+            16777130,
+            16777215
+    );
 
     /*
     We need to probably store all itemstack color data as an int value
