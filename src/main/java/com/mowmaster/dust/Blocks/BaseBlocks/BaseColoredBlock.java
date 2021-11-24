@@ -1,10 +1,7 @@
 package com.mowmaster.dust.Blocks.BaseBlocks;
 
-import com.mowmaster.dust.Blocks.GeneratedBlocks.BaseCrystalNodeBlock;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -30,12 +26,10 @@ public class BaseColoredBlock extends Block
     public static final IntegerProperty COLOR_GREEN = IntegerProperty.create("color_green", 0, 3);
     public static final IntegerProperty COLOR_BLUE = IntegerProperty.create("color_blue", 0, 3);
 
-    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
-
     public BaseColoredBlock(BlockBehaviour.Properties p_152915_)
     {
         super(p_152915_);
-        this.registerDefaultState(this.stateDefinition.any().setValue(COLOR_RED, Integer.valueOf(3)).setValue(COLOR_GREEN, Integer.valueOf(3)).setValue(COLOR_BLUE, Integer.valueOf(3)));
+        this.registerDefaultState(ColorReference.addColorToBlockState(this.defaultBlockState(),ColorReference.DEFAULTCOLOR));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_56120_) {
@@ -47,7 +41,8 @@ public class BaseColoredBlock extends Block
         BlockState blockstate = p_56089_.getLevel().getBlockState(p_56089_.getClickedPos());
         if (blockstate.is(this))
         {
-            return blockstate.setValue(COLOR_RED, Integer.valueOf(Math.min(3, blockstate.getValue(COLOR_RED)))).setValue(COLOR_GREEN, Integer.valueOf(Math.min(3, blockstate.getValue(COLOR_GREEN)))).setValue(COLOR_BLUE, Integer.valueOf(Math.min(3, blockstate.getValue(COLOR_BLUE))));
+            int getColor = ColorReference.getColorFromStateInt(blockstate);
+            return ColorReference.addColorToBlockState(this.defaultBlockState(),getColor);
         }
         else return super.getStateForPlacement(p_56089_);
     }
@@ -55,7 +50,8 @@ public class BaseColoredBlock extends Block
     @Override
     public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         ItemStack picked = state.getBlock().getCloneItemStack(world, pos, state);
-        return ColorReference.addColorToItemStackRGB(picked,state.getValue(COLOR_RED),state.getValue(COLOR_GREEN),state.getValue(COLOR_BLUE));
+        int getColor = ColorReference.getColorFromStateInt(state);
+        return ColorReference.addColorToItemStack(picked,getColor);
     }
 
     @Override
@@ -63,8 +59,8 @@ public class BaseColoredBlock extends Block
         if(p_49850_ instanceof Player)
         {
             Player player = ((Player)p_49850_);
-            int[] colored = ColorReference.getColorFromItemStackRGB(p_49851_);
-            BlockState newState = p_49849_.setValue(COLOR_RED,colored[0]).setValue(COLOR_GREEN,colored[1]).setValue(COLOR_BLUE,colored[2]);
+            int getColor = ColorReference.getColorFromItemStackInt(p_49851_);
+            BlockState newState = ColorReference.addColorToBlockState(p_49849_,getColor);
             p_49847_.setBlock(p_49848_,newState,3);
         }
 
@@ -79,8 +75,8 @@ public class BaseColoredBlock extends Block
             if (p_56214_.getBlock() instanceof BaseColoredBlock) {
                 if (!p_56212_.isClientSide && !p_56215_.isCreative()) {
                     ItemStack itemstack = new ItemStack(this);
-                    List<Integer> getRGB = ColorReference.getRGBFromState(p_56214_);
-                    ItemStack newStack = ColorReference.addColorToItemStackRGB(itemstack,getRGB.get(0),getRGB.get(1),getRGB.get(2));
+                    int getColor = ColorReference.getColorFromStateInt(p_56214_);
+                    ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
                     newStack.setCount(1);
                     ItemEntity itementity = new ItemEntity(p_56212_, (double)p_56213_.getX() + 0.5D, (double)p_56213_.getY() + 0.5D, (double)p_56213_.getZ() + 0.5D, newStack);
                     itementity.setDefaultPickUpDelay();

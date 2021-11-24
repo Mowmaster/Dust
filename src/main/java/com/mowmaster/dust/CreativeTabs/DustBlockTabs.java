@@ -1,6 +1,7 @@
 package com.mowmaster.dust.CreativeTabs;
 
 import com.mowmaster.dust.Blocks.GeneratedBlocks.BaseCrystalClusterBlock;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,7 +17,7 @@ public class DustBlockTabs extends CreativeModeTab
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_FULL);
+        return new ItemStack(DeferredRegisterBlocks.CRYSTAL_CLUSTER_FULL.get());
     }
 
     public static final DustBlockTabs TAB_BLOCKS = new DustBlockTabs() {};

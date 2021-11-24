@@ -1,0 +1,7 @@
+{
+  "parent": "dust:block/block_crystal",
+  "textures": {
+    "1": "dust:block/block_crystal_stone",
+    "particle": "dust:block/block_crystal_stone"
+  }
+}

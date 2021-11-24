@@ -90,14 +90,14 @@ public class ChangeApplicatorColor {
                 if(black>0)
                 {
                     world.explode(player,null,null,pos.getX()+0.5,pos.getY()+2.0,pos.getZ()+0.5,0.0f,false, Explosion.BlockInteraction.NONE);
-                    ItemStack newStack = ColorReference.addColorToItemStackRGB(player.getItemInHand(hand).copy(),0,0,0);
+                    ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),0,0,0);
                     ColorApplicator.saveColorList(newStack,ColorApplicator.addSavedColor(player.getItemInHand(hand),ColorReference.getColor(Arrays.asList(0,0,0))));
                     player.setItemInHand(hand,newStack);
                 }
                 else if(red>0 || green>0 || blue>0)
                 {
                     world.explode(player,null,null,pos.getX()+0.5,pos.getY()+2.0,pos.getZ()+0.5,0.0f,false, Explosion.BlockInteraction.NONE);
-                    ItemStack newStack = ColorReference.addColorToItemStackRGB(player.getItemInHand(hand).copy(),red,green,blue);
+                    ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),red,green,blue);
                     ColorApplicator.saveColorList(newStack,ColorApplicator.addSavedColor(player.getItemInHand(hand),ColorReference.getColor(Arrays.asList(red,green,blue))));
                     player.setItemInHand(hand,newStack);
                 }

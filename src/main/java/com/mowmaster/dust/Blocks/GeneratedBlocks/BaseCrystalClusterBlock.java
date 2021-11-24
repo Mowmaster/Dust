@@ -2,47 +2,30 @@ package com.mowmaster.dust.Blocks.GeneratedBlocks;
 
 import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredCrystalBlock;
-import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.References.ColorReference;
-import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -63,7 +46,7 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
     public BaseCrystalClusterBlock(int p_152015_, int p_152016_,Properties p_152726_) {
 
         super(p_152726_);
-        this.registerDefaultState(this.defaultBlockState().setValue(COLOR_RED, Integer.valueOf(3)).setValue(COLOR_GREEN, Integer.valueOf(3)).setValue(COLOR_BLUE, Integer.valueOf(3)).setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(FACING, Direction.UP));
+        this.registerDefaultState(ColorReference.addColorToBlockState(this.defaultBlockState(),ColorReference.DEFAULTCOLOR).setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(FACING, Direction.UP));
         this.upAabb = Block.box((double)p_152016_, 0.0D, (double)p_152016_, (double)(16 - p_152016_), (double)p_152015_, (double)(16 - p_152016_));
         this.downAabb = Block.box((double)p_152016_, (double)(16 - p_152015_), (double)p_152016_, (double)(16 - p_152016_), 16.0D, (double)(16 - p_152016_));
         this.northAabb = Block.box((double)p_152016_, (double)p_152016_, (double)(16 - p_152015_), (double)(16 - p_152016_), (double)(16 - p_152016_), 16.0D);
@@ -112,7 +95,8 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
         BlockState blockstate = p_152019_.getLevel().getBlockState(p_152019_.getClickedPos());
         if (blockstate.is(this))
         {
-            return this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(levelaccessor.getFluidState(blockpos).getType() == Fluids.WATER)).setValue(FACING, p_152019_.getClickedFace()).setValue(COLOR_RED, Integer.valueOf(Math.min(3, blockstate.getValue(COLOR_RED)))).setValue(COLOR_GREEN, Integer.valueOf(Math.min(3, blockstate.getValue(COLOR_GREEN)))).setValue(COLOR_BLUE, Integer.valueOf(Math.min(3, blockstate.getValue(COLOR_BLUE))));
+            int getColor = ColorReference.getColorFromStateInt(blockstate);
+            return ColorReference.addColorToBlockState(this.defaultBlockState(),getColor).setValue(WATERLOGGED, Boolean.valueOf(levelaccessor.getFluidState(blockpos).getType() == Fluids.WATER)).setValue(FACING, p_152019_.getClickedFace());
         }
         else return super.getStateForPlacement(p_152019_);
     }
@@ -137,13 +121,12 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
         return PushReaction.DESTROY;
     }
 
+    //SOme way to chage the color of the crystals given blocks around it???
     public void randomTick(BlockState p_152728_, ServerLevel p_152729_, BlockPos p_152730_, Random p_152731_) {
         if (p_152731_.nextInt(25) == 0) {
             Direction direction = p_152728_.getValue(FACING);
             BlockState blockstate = p_152729_.getBlockState(p_152730_);
-            int red = blockstate.getValue(COLOR_RED);
-            int green = blockstate.getValue(COLOR_GREEN);
-            int blue = blockstate.getValue(COLOR_BLUE);
+            int getColor = ColorReference.getColorFromStateInt(blockstate);
             Block block = null;
         }
     }
@@ -186,10 +169,10 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
 
     private float getExplosionSize(BlockState state)
     {
-        if(state.getBlock().equals(BLK_BLOCK_INERTCLUSTER_SMALL)) return 0.5f;
-        else if(state.getBlock().equals(BLK_BLOCK_INERTCLUSTER_MEDIUM)) return 1.0f;
-        else if(state.getBlock().equals(BLK_BLOCK_INERTCLUSTER_LARGE)) return 2.0f;
-        else if(state.getBlock().equals(BLK_BLOCK_INERTCLUSTER_FULL)) return 5.0f;
+        if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get())) return 1.0f;
+        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get())) return 2.0f;
+        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get())) return 4.0f;
+        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_FULL.get())) return 8.0f;
         return 0.0f;
     }
 
@@ -198,7 +181,7 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
         if(state.getBlock() instanceof BaseColoredBlock)
         {
 
-            switch(ColorReference.getColor(ColorReference.getRGBFromState(state)))
+            switch(ColorReference.getColorFromStateInt(state))
             {
                 case 2763306: return "death000";
                         case 85: return "death001";
@@ -269,61 +252,5 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
         }
 
         return "deathReturner";
-    }
-
-
-
-    private static final ResourceLocation RES_BLOCK_INERTCLUSTER_SMALL = new ResourceLocation(MODID, "block_inertcluster_small");
-    public static final Block BLK_BLOCK_INERTCLUSTER_SMALL = new BaseCrystalClusterBlock(3, 4, BlockBehaviour.Properties.of(Material.AMETHYST).sound(SoundType.SMALL_AMETHYST_BUD).lightLevel((p_152629_) -> { return 1; })).setRegistryName(RES_BLOCK_INERTCLUSTER_SMALL);
-    //public static final Block BLK_BLOCK_INERTCLUSTER_SMALL = new BaseCrystalClusterBlock(3, 4, BlockBehaviour.Properties.of(Material.AMETHYST).randomTicks().strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops()).setRegistryName(RES_BLOCK_INERTCLUSTER_SMALL);
-    public static final Item ITM_BLOCK_INERTCLUSTER_SMALL = new BlockItem(BLK_BLOCK_INERTCLUSTER_SMALL, new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)){}.setRegistryName(RES_BLOCK_INERTCLUSTER_SMALL);
-
-    private static final ResourceLocation RES_BLOCK_INERTCLUSTER_MEDIUM = new ResourceLocation(MODID, "block_inertcluster_medium");
-    public static final Block BLK_BLOCK_INERTCLUSTER_MEDIUM = new BaseCrystalClusterBlock(4, 3, BlockBehaviour.Properties.of(Material.AMETHYST).sound(SoundType.MEDIUM_AMETHYST_BUD).lightLevel((p_152629_) -> { return 2; })).setRegistryName(RES_BLOCK_INERTCLUSTER_MEDIUM);
-    //public static final Block BLK_BLOCK_INERTCLUSTER_MEDIUM = new BaseCrystalClusterBlock(4, 3, BlockBehaviour.Properties.of(Material.AMETHYST).randomTicks().strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops()).setRegistryName(RES_BLOCK_INERTCLUSTER_MEDIUM);
-    public static final Item ITM_BLOCK_INERTCLUSTER_MEDIUM = new BlockItem(BLK_BLOCK_INERTCLUSTER_MEDIUM, new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)){}.setRegistryName(RES_BLOCK_INERTCLUSTER_MEDIUM);
-
-    private static final ResourceLocation RES_BLOCK_INERTCLUSTER_LARGE = new ResourceLocation(MODID, "block_inertcluster_large");
-    public static final Block BLK_BLOCK_INERTCLUSTER_LARGE = new BaseCrystalClusterBlock(5, 3, BlockBehaviour.Properties.of(Material.AMETHYST).sound(SoundType.LARGE_AMETHYST_BUD).lightLevel((p_152629_) -> { return 4; })).setRegistryName(RES_BLOCK_INERTCLUSTER_LARGE);
-    //public static final Block BLK_BLOCK_INERTCLUSTER_LARGE = new BaseCrystalClusterBlock(5, 3, BlockBehaviour.Properties.of(Material.AMETHYST).randomTicks().strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops()).setRegistryName(RES_BLOCK_INERTCLUSTER_LARGE);
-    public static final Item ITM_BLOCK_INERTCLUSTER_LARGE = new BlockItem(BLK_BLOCK_INERTCLUSTER_LARGE, new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)){}.setRegistryName(RES_BLOCK_INERTCLUSTER_LARGE);
-
-    private static final ResourceLocation RES_BLOCK_INERTCLUSTER_FULL = new ResourceLocation(MODID, "block_inertcluster_full");
-    public static final Block BLK_BLOCK_INERTCLUSTER_FULL = new BaseCrystalClusterBlock(7, 3, BlockBehaviour.Properties.of(Material.AMETHYST).sound(SoundType.AMETHYST_CLUSTER).lightLevel((p_152629_) -> { return 5; })).setRegistryName(RES_BLOCK_INERTCLUSTER_FULL);
-    //public static final Block BLK_BLOCK_INERTCLUSTER_FULL = new BaseCrystalClusterBlock(7, 3, BlockBehaviour.Properties.of(Material.AMETHYST).randomTicks().strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops()).setRegistryName(RES_BLOCK_INERTCLUSTER_FULL);
-    public static final Item ITM_BLOCK_INERTCLUSTER_FULL = new BlockItem(BLK_BLOCK_INERTCLUSTER_FULL, new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)){}.setRegistryName(RES_BLOCK_INERTCLUSTER_FULL);
-
-    @SubscribeEvent
-    public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
-    {
-        event.getRegistry().register(ITM_BLOCK_INERTCLUSTER_SMALL);
-        event.getRegistry().register(ITM_BLOCK_INERTCLUSTER_MEDIUM);
-        event.getRegistry().register(ITM_BLOCK_INERTCLUSTER_LARGE);
-        event.getRegistry().register(ITM_BLOCK_INERTCLUSTER_FULL);
-    }
-
-    @SubscribeEvent
-    public static void onBlockRegistryReady(RegistryEvent.Register<Block> event)
-    {
-        event.getRegistry().register(BLK_BLOCK_INERTCLUSTER_SMALL);
-        event.getRegistry().register(BLK_BLOCK_INERTCLUSTER_MEDIUM);
-        event.getRegistry().register(BLK_BLOCK_INERTCLUSTER_LARGE);
-        event.getRegistry().register(BLK_BLOCK_INERTCLUSTER_FULL);
-    }
-
-    public static void handleItemColors(ColorHandlerEvent.Item event)
-    {
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColorFromItemStackInt(itemstack);} else {return -1;}},ITM_BLOCK_INERTCLUSTER_SMALL);
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColorFromItemStackInt(itemstack);} else {return -1;}},ITM_BLOCK_INERTCLUSTER_MEDIUM);
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColorFromItemStackInt(itemstack);} else {return -1;}},ITM_BLOCK_INERTCLUSTER_LARGE);
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColorFromItemStackInt(itemstack);} else {return -1;}},ITM_BLOCK_INERTCLUSTER_FULL);
-    }
-
-    public static void handleBlockColors(ColorHandlerEvent.Block event)
-    {
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColor(Arrays.asList(blockstate.getValue(COLOR_RED),blockstate.getValue(COLOR_GREEN),blockstate.getValue(COLOR_BLUE)));} else {return -1;}},BLK_BLOCK_INERTCLUSTER_SMALL);
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColor(Arrays.asList(blockstate.getValue(COLOR_RED),blockstate.getValue(COLOR_GREEN),blockstate.getValue(COLOR_BLUE)));} else {return -1;}},BLK_BLOCK_INERTCLUSTER_MEDIUM);
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColor(Arrays.asList(blockstate.getValue(COLOR_RED),blockstate.getValue(COLOR_GREEN),blockstate.getValue(COLOR_BLUE)));} else {return -1;}},BLK_BLOCK_INERTCLUSTER_LARGE);
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColor(Arrays.asList(blockstate.getValue(COLOR_RED),blockstate.getValue(COLOR_GREEN),blockstate.getValue(COLOR_BLUE)));} else {return -1;}},BLK_BLOCK_INERTCLUSTER_FULL);
     }
 }

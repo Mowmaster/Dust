@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Blocks.BaseBlocks;
 
+import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +16,7 @@ public class BaseColoredCrystalBlock extends BaseColoredBlock
     public BaseColoredCrystalBlock(BlockBehaviour.Properties p_152915_)
     {
         super(p_152915_);
-        this.registerDefaultState(this.stateDefinition.any().setValue(COLOR_RED, Integer.valueOf(3)).setValue(COLOR_GREEN, Integer.valueOf(3)).setValue(COLOR_BLUE, Integer.valueOf(3)));
+        this.registerDefaultState(ColorReference.addColorToBlockState(this.defaultBlockState(),ColorReference.DEFAULTCOLOR));
     }
 
     public void onProjectileHit(Level p_152001_, BlockState p_152002_, BlockHitResult p_152003_, Projectile p_152004_) {
@@ -24,6 +25,5 @@ public class BaseColoredCrystalBlock extends BaseColoredBlock
             p_152001_.playSound((Player)null, blockpos, SoundEvents.AMETHYST_BLOCK_HIT, SoundSource.BLOCKS, 1.0F, 0.5F + p_152001_.random.nextFloat() * 1.2F);
             p_152001_.playSound((Player)null, blockpos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.5F + p_152001_.random.nextFloat() * 1.2F);
         }
-
     }
 }

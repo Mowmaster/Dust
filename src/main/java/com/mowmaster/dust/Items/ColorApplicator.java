@@ -8,9 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,9 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -72,7 +67,7 @@ public class ColorApplicator extends Item {
 
                     if(list.size()>0)
                     {
-                        ItemStack newStack = ColorReference.addColorToItemStackInt(player.getItemInHand(hand).copy(),list.get(setColorPos));
+                        ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),list.get(setColorPos));
                         player.setItemInHand(hand,newStack);
                     }
                 }
@@ -92,12 +87,9 @@ public class ColorApplicator extends Item {
 
                     if(state.getBlock() instanceof BaseColoredBlock)
                     {
-                        int red = state.getValue(COLOR_RED);
-                        int green = state.getValue(COLOR_GREEN);
-                        int blue = state.getValue(COLOR_BLUE);
-
-                        ItemStack newStack = ColorReference.addColorToItemStackRGB(player.getItemInHand(hand).copy(),red,green,blue);
-                        saveColorList(newStack,addSavedColor(stackInHand,ColorReference.getColor(Arrays.asList(red,green,blue))));
+                        int getColor = ColorReference.getColorFromStateInt(state);
+                        ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),getColor);
+                        saveColorList(newStack,addSavedColor(stackInHand,getColor));
                         player.setItemInHand(hand,newStack);
                     }
                     else
@@ -117,7 +109,7 @@ public class ColorApplicator extends Item {
 
                         if(list.size()>0)
                         {
-                            ItemStack newStack = ColorReference.addColorToItemStackInt(player.getItemInHand(hand).copy(),list.get(setColorPos));
+                            ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),list.get(setColorPos));
                             player.setItemInHand(hand,newStack);
                         }
                     }
@@ -140,14 +132,10 @@ public class ColorApplicator extends Item {
 
                 if(state.getBlock() instanceof BaseColoredBlock)
                 {
-                    int red = state.getValue(COLOR_RED);
-                    int green = state.getValue(COLOR_GREEN);
-                    int blue = state.getValue(COLOR_BLUE);
-
                     if(player.getItemInHand(p_41434_).getItem() instanceof ColorApplicator)
                     {
-                        int[] COLORS = ColorReference.getColorFromItemStackRGB(player.getItemInHand(p_41434_));
-                        BlockState newState = state.setValue(COLOR_RED,COLORS[0]).setValue(COLOR_GREEN,COLORS[1]).setValue(COLOR_BLUE,COLORS[2]);
+                        int getColor = ColorReference.getColorFromItemStackInt(player.getItemInHand(p_41434_));
+                        BlockState newState = ColorReference.addColorToBlockState(state, getColor);
                         world.setBlock(posHitBlock,newState,3);
                     }
                 }
@@ -210,20 +198,6 @@ public class ColorApplicator extends Item {
             minNeeded.withStyle(ChatFormatting.WHITE);
             p_41423_.add(minNeeded);
         }
-        //
-    }
-
-    public static final Item ITM_APPLICATOR = new ColorApplicator(new Properties()){}.setRegistryName(new ResourceLocation(MODID, "applicator"));
-
-    @SubscribeEvent
-    public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
-    {
-        event.getRegistry().register(ITM_APPLICATOR);
-    }
-
-    public static void handleItemColors(ColorHandlerEvent.Item event)
-    {
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColorFromItemStackInt(itemstack);} else {return -1;}},ITM_APPLICATOR);
     }
 
 }

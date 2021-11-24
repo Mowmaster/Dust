@@ -1,12 +1,14 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.Blocks.BlockRegistry;
-import com.mowmaster.dust.Items.ItemRegistry;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import com.mowmaster.dust.World.GenerationStuff;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -37,6 +39,10 @@ public class Dust
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        DeferredRegisterItems.register(eventBus);
+        DeferredRegisterBlocks.register(eventBus);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -73,13 +79,13 @@ public class Dust
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
         {
-            BlockRegistry.onBlockRegistryReady(blockRegistryEvent);
+            //BlockRegistry.onBlockRegistryReady(blockRegistryEvent);
         }
         @SubscribeEvent
         public static void onItemRegistry(RegistryEvent.Register<Item> event)
         {
-            BlockRegistry.onItemRegistryReady(event);
-            ItemRegistry.onItemRegistryReady(event);
+            //BlockRegistry.onItemRegistryReady(event);
+            //ItemRegistry.onItemRegistryReady(event);
         }
     }
 }

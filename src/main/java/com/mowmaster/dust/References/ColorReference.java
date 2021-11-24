@@ -9,11 +9,23 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import static com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock.*;
 import static com.mowmaster.dust.References.Constants.MODID;
 
 public class ColorReference
 {
+    public static final IntegerProperty COLOR_RED = IntegerProperty.create("color_red", 0, 3);
+    public static final IntegerProperty COLOR_GREEN = IntegerProperty.create("color_green", 0, 3);
+    public static final IntegerProperty COLOR_BLUE = IntegerProperty.create("color_blue", 0, 3);
+    public static final int DEFAULTCOLOR = 16777215;
+    public static final List<Integer> DEFAULTCOLORLIST = Arrays.asList(3,3,3);
+
+
+    //Map all out entries out, this saves us from wierd maths and allows us to set specific values for combinations.
+    //Could maybe eventually rely on a custom recipe handler for this? but this might be faster???
+
     public static int getColor(List<Integer> listRGB)
     {
         Map<List<Integer>,Integer> COLORS_REFERENCE = Map.ofEntries(
@@ -83,7 +95,7 @@ public class ColorReference
                 Map.entry(Arrays.asList(3,3,3),16777215)
         );
 
-        return COLORS_REFERENCE.getOrDefault(listRGB,16777215);
+        return COLORS_REFERENCE.getOrDefault(listRGB,DEFAULTCOLOR);
     }
 
     public static List<Integer> getIntColor(int color)
@@ -155,58 +167,49 @@ public class ColorReference
                 Map.entry(16777215,Arrays.asList(3,3,3))
         );
 
-        return COLORS_INT_REFERENCE.getOrDefault(color,Arrays.asList(3,3,3));
+        return COLORS_INT_REFERENCE.getOrDefault(color,DEFAULTCOLORLIST);
     }
 
-    public static ItemStack addColorToItemStackRGB(ItemStack stackIn, int r, int g, int b)
+    /*
+    We need to probably store all itemstack color data as an int value
+    the blockstates will always be RGB, but thats fine, this reference should be able to help unify things
+     */
+
+    public static ItemStack addColorToItemStack(ItemStack stackIn, int r, int g, int b)
     {
         CompoundTag blockColors = stackIn.getOrCreateTag();
-        blockColors.putIntArray(MODID+"_color_rgb",Arrays.asList(r,g,b));
+        blockColors.putInt(MODID+"_color",getColor(Arrays.asList(r,g,b)));
         stackIn.setTag(blockColors);
         return stackIn;
     }
 
-    public static ItemStack addColorToItemStackInt(ItemStack stackIn, int color)
+    public static ItemStack addColorToItemStack(ItemStack stackIn, int color)
     {
-        List<Integer> rbgColor= getIntColor(color);
         CompoundTag blockColors = stackIn.getOrCreateTag();
-        blockColors.putIntArray(MODID+"_color_int",Arrays.asList(rbgColor.get(0),rbgColor.get(1),rbgColor.get(2)));
+        blockColors.putInt(MODID+"_color",color);
         stackIn.setTag(blockColors);
         return stackIn;
     }
 
-    public static int getColorFromItemStackInt(ItemStack stackIn)
+    public static BlockState addColorToBlockState(BlockState stateIn, int color)
     {
-        CompoundTag blockColors = stackIn.getOrCreateTag();
-        if(blockColors.contains(MODID+"_color_int"))
-        {
-            int[] colors = blockColors.getIntArray(MODID+"_color_int");
-            if(colors.length==3)return ColorReference.getColor(Arrays.asList(colors[0],colors[1],colors[2]));
-            else if(colors.length==4)return ColorReference.getColor(Arrays.asList(colors[1],colors[2],colors[3]));
-            else return ColorReference.getColor(Arrays.asList(3,3,3));
-        }
-
-        return 16777215;
+        List<Integer> getColor = getIntColor(color);
+        BlockState newState = stateIn.setValue(COLOR_RED,getColor.get(0)).setValue(COLOR_GREEN,getColor.get(1)).setValue(COLOR_BLUE,getColor.get(2));
+        return newState;
     }
 
-    public static int[] getColorFromItemStackRGB(ItemStack stackIn)
+    public static BlockState addColorToBlockState(BlockState stateIn, int red, int green, int blue)
     {
-        CompoundTag blockColors = stackIn.getOrCreateTag();
-        if(blockColors.contains(MODID+"_color_rgb"))
-        {
-            int[] colors = blockColors.getIntArray(MODID+"_color_rgb");
-            return colors;
-        }
-
-        return new int[]{3,3,3};
+        BlockState newState = stateIn.setValue(COLOR_RED,red).setValue(COLOR_GREEN,green).setValue(COLOR_BLUE,blue);
+        return newState;
     }
 
-    public static final IntegerProperty COLOR_RED = IntegerProperty.create("color_red", 0, 3);
-    public static final IntegerProperty COLOR_GREEN = IntegerProperty.create("color_green", 0, 3);
-    public static final IntegerProperty COLOR_BLUE = IntegerProperty.create("color_blue", 0, 3);
+    public static int getColorFromStateInt(BlockState state)
+    {
+        return getColor(getColorFromStateList(state));
+    }
 
-
-    public static List<Integer> getRGBFromState(BlockState state)
+    public static List<Integer> getColorFromStateList(BlockState state)
     {
         int r = 0;
         int g = 0;
@@ -219,6 +222,86 @@ public class ColorReference
         }
         return Arrays.asList(r,g,b);
     }
+
+    public static int getColorFromItemStackInt(ItemStack stackIn)
+    {
+        CompoundTag blockColors = stackIn.getOrCreateTag();
+        if(blockColors.contains(MODID+"_color"))
+        {
+            int color = blockColors.getInt(MODID+"_color");
+            return color;
+        }
+
+        return DEFAULTCOLOR;
+    }
+
+    public static List<Integer> getColorFromItemStackRGBList(ItemStack stackIn)
+    {
+        return getIntColor(getColorFromItemStackInt(stackIn));
+    }
+
+    public static List<Integer> mixColorsList(int r1, int g1, int b1, int r2, int g2, int b2)
+    {
+        Random rand = new Random();
+
+        //333 color increases intensity by 1
+        //000 color decreases intensity by 1
+        int luck = rand.nextInt(10);
+        int luckR = rand.nextInt(10);
+        int luckG = rand.nextInt(10);
+        int luckB = rand.nextInt(10);
+        int luckRR = rand.nextInt(10);
+        int luckGG = rand.nextInt(10);
+        int luckBB = rand.nextInt(10);
+
+        boolean is333 = (r1+g1+b1 == 9 || r2+g2+b2 == 9)?((luck>=5)?(true):(false)):(false);
+        boolean is000 = (r1+g1+b1 == 0 || r2+g2+b2 == 0)?((luck>=5)?(true):(false)):(false);
+
+        double redIntensity = (is333 || is000)?((r1+g1+b1 == 9 || r1+g1+b1 == 0)?(r2/3):(r1/3)):((r1==0 || r2==0)?((r1>=r2 && !is333)?(r1/3):(r2/3)):((r1+r2)/6));
+        double greenIntensity = (is333 || is000)?((r1+g1+b1 == 9 || r1+g1+b1 == 0)?(g2/3):(g1/3)):((g1==0 || g2==0)?((g1>=g2 && !is333)?(g1/3):(g2/3)):((g1+g2)/6));
+        double blueIntensity = (is333 || is000)?((r1+g1+b1 == 9 || r1+g1+b1 == 0)?(b2/3):(b1/3)):((b1==0 || b2==0)?((b1>=b2 && !is333)?(b1/3):(b2/3)):((b1+b2)/6));
+        double totalIntensity = (((double)(r1+g1+b1+r2+g2+b2))/18.0);
+
+        int R = ((((g1==3 && g2==3)||(b1==3 && b2==3)) ) )?((int)Math.round(((redIntensity*3)*totalIntensity) + ((luckRR>=5)?(-0.1):(0.1)))):((int)Math.round(redIntensity*3));
+        int G = ((((r1==3 && r2==3)||(b1==3 && b2==3)) ) )?((int)Math.round(((greenIntensity*3)*totalIntensity) + ((luckGG>=5)?(-0.1):(0.1)))):((int)Math.round(greenIntensity*3));
+        int B = ((((g1==3 && g2==3)||(r1==3 && r2==3)) ) )?((int)Math.round(((blueIntensity*3)*totalIntensity) + ((luckBB>=5)?(-0.1):(0.1)))):((int)Math.round(blueIntensity*3));
+
+        R+= ((is333)?((luckR>=5)?(1):(0)):(0)) + ((is000)?((luckR>=5)?(-1):(0)):(0));
+        G+= ((is333)?((luckG>=5)?(1):(0)):(0)) + ((is000)?((luckG>=5)?(-1):(0)):(0));
+        B+= ((is333)?((luckB>=5)?(1):(0)):(0)) + ((is000)?((luckB>=5)?(-1):(0)):(0));
+
+        int red = (R>3)?(3):((R<0)?(0):(R));
+        int green = (G>3)?(3):((G<0)?(0):(G));
+        int blue = (B>3)?(3):((B<0)?(0):(B));
+
+        return Arrays.asList(red,green,blue);
+    }
+
+    public static List<Integer> mixColorsList(int color1, int color2)
+    {
+        List<Integer> color1List = getIntColor(color1);
+        List<Integer> color2List = getIntColor(color2);
+
+        return mixColorsList(color1List.get(0), color1List.get(1), color1List.get(2), color2List.get(0), color2List.get(1), color2List.get(2));
+    }
+
+    public static int mixColorsInt(int r1, int g1, int b1, int r2, int g2, int b2)
+    {
+        return getColor(mixColorsList(r1, g1, b1, r2, g2, b2));
+    }
+
+    public static int mixColorsInt(int color1, int color2)
+    {
+        List<Integer> color1List = getIntColor(color1);
+        List<Integer> color2List = getIntColor(color2);
+        List<Integer> colorOutput = mixColorsList(color1List.get(0), color1List.get(1), color1List.get(2), color2List.get(0), color2List.get(1), color2List.get(2));
+
+        return getColor(colorOutput);
+    }
+
+
+
+
 
 
 }

@@ -1,28 +1,19 @@
 package com.mowmaster.dust.Blocks.GeneratedBlocks;
 
+import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredCrystalBlock;
-import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.Arrays;
 import java.util.Random;
-
-import static com.mowmaster.dust.References.Constants.MODID;
 
 public class BaseCrystalNodeBlock extends BaseColoredCrystalBlock
 {
@@ -40,39 +31,67 @@ public class BaseCrystalNodeBlock extends BaseColoredCrystalBlock
     public void randomTick(BlockState p_152728_, ServerLevel p_152729_, BlockPos p_152730_, Random p_152731_) {
         if (p_152731_.nextInt(5) == 0) {
             Direction direction = DIRECTIONS[p_152731_.nextInt(DIRECTIONS.length)];
+            BlockState blockstateOrigin = p_152729_.getBlockState(p_152730_);
             BlockPos blockpos = p_152730_.relative(direction);
             BlockState blockstate = p_152729_.getBlockState(blockpos);
-            int red = 3;
-            int green = 3;
-            int blue = 3;
+            int getColor = ColorReference.DEFAULTCOLOR;
             Block block = null;
 
             if (canClusterGrowAtState(blockstate)) {
                 blockstate = p_152729_.getBlockState(p_152730_);
-                red = blockstate.getValue(COLOR_RED);
-                green = blockstate.getValue(COLOR_GREEN);
-                blue = blockstate.getValue(COLOR_BLUE);
-                block = BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_SMALL;
-            } else if (blockstate.is(BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_SMALL) && blockstate.getValue(BaseCrystalClusterBlock.FACING) == direction) {
-                red = blockstate.getValue(COLOR_RED);
-                green = blockstate.getValue(COLOR_GREEN);
-                blue = blockstate.getValue(COLOR_BLUE);
-                block = BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_MEDIUM;
-            } else if (blockstate.is(BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_MEDIUM) && blockstate.getValue(BaseCrystalClusterBlock.FACING) == direction) {
-                red = blockstate.getValue(COLOR_RED);
-                green = blockstate.getValue(COLOR_GREEN);
-                blue = blockstate.getValue(COLOR_BLUE);
-                block = BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_LARGE;
-            } else if (blockstate.is(BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_LARGE) && blockstate.getValue(BaseCrystalClusterBlock.FACING) == direction) {
-                red = blockstate.getValue(COLOR_RED);
-                green = blockstate.getValue(COLOR_GREEN);
-                blue = blockstate.getValue(COLOR_BLUE);
-                block = BaseCrystalClusterBlock.BLK_BLOCK_INERTCLUSTER_FULL;
+                getColor = ColorReference.getColorFromStateInt(blockstate);
+                block = DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get();
+            } else if (blockstate.is(DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get()) && blockstate.getValue(BaseCrystalClusterBlock.FACING) == direction) {
+                getColor = ColorReference.getColorFromStateInt(blockstate);
+                block = DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get();
+            } else if (blockstate.is(DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get()) && blockstate.getValue(BaseCrystalClusterBlock.FACING) == direction) {
+                getColor = ColorReference.getColorFromStateInt(blockstate);
+                block = DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get();
+            } else if (blockstate.is(DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get()) && blockstate.getValue(BaseCrystalClusterBlock.FACING) == direction) {
+                getColor = ColorReference.getColorFromStateInt(blockstate);
+                block = DeferredRegisterBlocks.CRYSTAL_CLUSTER_FULL.get();
+            }
+            //Make Colored Stone
+            else if (blockstate.is(Blocks.STONE)) {
+                blockstate = p_152729_.getBlockState(p_152730_);
+                getColor = ColorReference.getColorFromStateInt(blockstate);
+                block = DeferredRegisterBlocks.CRYSTAL_STONE.get();
+            }
+            else if (blockstate.is(DeferredRegisterBlocks.CRYSTAL_STONE.get())) {
+                blockstate = p_152729_.getBlockState(p_152730_);
+                getColor = ColorReference.getColorFromStateInt(blockstate);
+                block = DeferredRegisterBlocks.CRYSTAL_STONE.get();
+                int numberX = p_152731_.nextInt(1 - -1) + -1;
+                int numberY = p_152731_.nextInt(1 - -1) + -1;
+                int numberZ = p_152731_.nextInt(1 - -1) + -1;
+                blockpos = p_152730_.relative(direction).offset(numberX,numberY,numberZ);
             }
 
             if (block != null) {
-                BlockState blockstate1 = block.defaultBlockState().setValue(BaseCrystalClusterBlock.FACING, direction).setValue(COLOR_RED,red).setValue(COLOR_GREEN,green).setValue(COLOR_BLUE,blue).setValue(BaseCrystalClusterBlock.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
-                p_152729_.setBlockAndUpdate(blockpos, blockstate1);
+                if(block instanceof BaseCrystalClusterBlock)
+                {
+                    BlockState blockstate1 = ColorReference.addColorToBlockState(block.defaultBlockState(),getColor).setValue(BaseCrystalClusterBlock.FACING, direction).setValue(BaseCrystalClusterBlock.WATERLOGGED, Boolean.valueOf(blockstate.getFluidState().getType() == Fluids.WATER));
+                    p_152729_.setBlockAndUpdate(blockpos, blockstate1);
+                }
+                else if(block instanceof BaseColoredBlock)
+                {
+                    if(p_152729_.getBlockState(blockpos).getBlock().equals(Blocks.STONE))
+                    {
+                        BlockState blockstate1 = ColorReference.addColorToBlockState(block.defaultBlockState(),getColor);
+                        p_152729_.setBlockAndUpdate(blockpos, blockstate1);
+                    }
+                    else if(p_152729_.getBlockState(blockpos).getBlock().equals(DeferredRegisterBlocks.CRYSTAL_STONE.get()))
+                    {
+                        int colorOrigin = ColorReference.getColorFromStateInt(blockstateOrigin);
+                        int colorToMix = ColorReference.getColorFromStateInt(p_152729_.getBlockState(blockpos));
+                        if(colorOrigin != colorToMix)
+                        {
+                            int colorMix = ColorReference.mixColorsInt(colorOrigin,colorToMix);
+                            BlockState blockstate1 = ColorReference.addColorToBlockState(block.defaultBlockState(),colorMix);
+                            p_152729_.setBlockAndUpdate(blockpos, blockstate1);
+                        }
+                    }
+                }
             }
 
         }
@@ -80,33 +99,5 @@ public class BaseCrystalNodeBlock extends BaseColoredCrystalBlock
 
     public static boolean canClusterGrowAtState(BlockState p_152735_) {
         return p_152735_.isAir() || p_152735_.is(Blocks.WATER) && p_152735_.getFluidState().getAmount() == 8;
-    }
-
-
-
-    private static final ResourceLocation RES_BLOCK_INERTNODE = new ResourceLocation(MODID, "block_inertnode");
-    public static final Block BLK_BLOCK_INERTNODE = new BaseCrystalNodeBlock(BlockBehaviour.Properties.of(Material.AMETHYST).randomTicks().strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops()).setRegistryName(RES_BLOCK_INERTNODE);
-    public static final Item ITM_BLOCK_INERTNODE = new BlockItem(BLK_BLOCK_INERTNODE, new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)){}.setRegistryName(RES_BLOCK_INERTNODE);
-
-    @SubscribeEvent
-    public static void onItemRegistryReady(RegistryEvent.Register<Item> event)
-    {
-        event.getRegistry().register(ITM_BLOCK_INERTNODE);
-    }
-
-    @SubscribeEvent
-    public static void onBlockRegistryReady(RegistryEvent.Register<Block> event)
-    {
-        event.getRegistry().register(BLK_BLOCK_INERTNODE);
-    }
-
-    public static void handleItemColors(ColorHandlerEvent.Item event)
-    {
-        event.getItemColors().register((itemstack, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColorFromItemStackInt(itemstack);} else {return -1;}},ITM_BLOCK_INERTNODE);
-    }
-
-    public static void handleBlockColors(ColorHandlerEvent.Block event)
-    {
-        event.getBlockColors().register((blockstate, blockReader, blockPos, tintIndex) -> {if (tintIndex == 1) {return ColorReference.getColor(Arrays.asList(blockstate.getValue(COLOR_RED),blockstate.getValue(COLOR_GREEN),blockstate.getValue(COLOR_BLUE)));} else {return -1;}},BLK_BLOCK_INERTNODE);
     }
 }
