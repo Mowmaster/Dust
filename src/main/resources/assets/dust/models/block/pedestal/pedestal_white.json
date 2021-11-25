@@ -1,0 +1,8 @@
+{
+  "parent": "dust:block/pedestal/base_pedestal_models/pedestal_block_filter",
+  "textures": {
+    "filter": "dust:blocks/pedestal/filter_white",
+    "type": "dust:block/block_crystal_stone",
+    "typepart":"dust:block/block_crystal_stone"
+  }
+}

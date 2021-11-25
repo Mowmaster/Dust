@@ -50,7 +50,7 @@ public class CraftingRecipeProvider  extends RecipeProvider
         ItemStack ing2 = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterBlocks.CRYSTAL_STONE.get().asItem()),255);
 
 
-        ShapedRecipeBuilder.shaped(DeferredRegisterBlocks.CRYSTAL_BLOCK.get()).getResult().
+        ShapedRecipeBuilder.shaped(DeferredRegisterBlocks.CRYSTAL_BLOCK.get())
                 .group(MODID + "_pedestal")
                 .pattern("S S")
                 .pattern(" B ")

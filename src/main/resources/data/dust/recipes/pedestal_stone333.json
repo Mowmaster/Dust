@@ -1,5 +1,4 @@
 {
-
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
@@ -11,14 +10,14 @@
       "item": "dust:block_crystal_stone_slab",
       "type": "forge:nbt",
       "nbt": {
-        "dust_color": 16711680
+
       }
     },
     "B": {
       "item": "dust:block_crystal_stone",
       "type": "forge:nbt",
       "nbt": {
-        "dust_color": 16711680
+
       }
     }
   },
@@ -26,7 +25,7 @@
     "item": "dust:block_crystal",
     "type": "forge:nbt",
     "nbt": {
-      "dust_color": 16711680
+      "dust_color": 16777215
     }
   }
 

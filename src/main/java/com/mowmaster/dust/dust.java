@@ -1,5 +1,6 @@
 package com.mowmaster.dust;
 
+import com.mowmaster.dust.Blocks.TileEntityBlocks.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
@@ -50,6 +51,7 @@ public class Dust
         DeferredRegisterBlocks.DECORATORS.register(eventBus);
         DeferredRegisterItems.ITEMS.register(eventBus);
         DeferredRegisterBlocks.BLOCKS.register(eventBus);
+        DeferredRegisterTileBlocks.BLOCKS.register(eventBus);
     }
 
     private void setup(final FMLCommonSetupEvent event)
