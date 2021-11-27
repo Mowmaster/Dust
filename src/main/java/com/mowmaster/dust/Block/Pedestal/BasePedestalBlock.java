@@ -239,6 +239,8 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
         return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
     }
 
+
+
     public void entityInside(BlockState p_57270_, Level p_57271_, BlockPos p_57272_, Entity p_57273_) {
         boolean isCreative = false;
         if (p_57273_ instanceof LivingEntity) {

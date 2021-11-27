@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -456,23 +457,9 @@ public class BasePedestalEntity extends BlockEntity
         else return ItemStack.EMPTY;
     }
 
-    public ItemStack getItemInPedestalOverride()
-    {
-        IItemHandler h = handler.orElse(null);
-        return h.getStackInSlot(-1);
-    }
-
     public ItemStack removeItem(int numToRemove) {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(0,numToRemove,false);
-        //update();
-
-        return stack;
-    }
-
-    public ItemStack removeItemOverride(int numToRemove) {
-        IItemHandler h = handler.orElse(null);
-        ItemStack stack = h.extractItem(-1,numToRemove,false);
         //update();
 
         return stack;
@@ -484,53 +471,6 @@ public class BasePedestalEntity extends BlockEntity
         //update();
 
         return stack;
-    }
-
-    public ItemStack removeItemOverride() {
-        IItemHandler h = handler.orElse(null);
-        ItemStack stack = h.extractItem(-1,h.getStackInSlot(0).getCount(),false);
-        //update();
-
-        return stack;
-    }
-
-    public boolean addItem(ItemStack itemFromBlock)
-    {
-        IItemHandler h = handler.orElse(null);
-        if(hasItem())
-        {
-            if(ItemHandlerHelper.canItemStacksStack(getItemInPedestal(),itemFromBlock))
-            {
-                h.insertItem(0, itemFromBlock.copy(), false);
-            }
-        }
-        else {h.insertItem(0, itemFromBlock.copy(), false);}
-        //update();
-
-        return true;
-    }
-
-    public boolean addItemOverride(ItemStack itemFromBlock)
-    {
-        IItemHandler h = handler.orElse(null);
-        ItemStack overrideInPedestal = getItemInPedestalOverride();
-        if(!overrideInPedestal.isEmpty())
-        {
-            if(ItemStack.areItemsEqual(overrideInPedestal,itemFromBlock))
-            {
-                return h.insertItem(-1, itemFromBlock.copy(), false).isEmpty();
-            }
-        }
-        else {return h.insertItem(-1, itemFromBlock.copy(), false).isEmpty();}
-        update();
-
-        return false;
-    }
-
-    public ItemStack addItemStackOverride(ItemStack itemFromBlock)
-    {
-        IItemHandler h = handler.orElse(null);
-        return h.insertItem(-1, itemFromBlock.copy(), false);
     }
 
     public boolean addItem(ItemStack itemFromBlock,boolean simulate)
@@ -561,16 +501,10 @@ public class BasePedestalEntity extends BlockEntity
         return false;
     }
 
-    public ItemStack addItemCustom(ItemStack itemstackIn,boolean simulate)
-    {
-        IItemHandler h = handler.orElse(null);
-        return h.insertItem(0, itemstackIn.copy(), simulate);
-    }
-
     public int getItemTransferRate()
     {
         int itemRate = 4;
-        switch (getCapacity())
+        /*switch (getCapacity())
         {
             case 0:
                 itemRate = (getCapacity()>0)?(4):(4);
@@ -591,7 +525,7 @@ public class BasePedestalEntity extends BlockEntity
                 itemRate=(getCapacity()>0)?(64):(4);
                 break;
             default: itemRate=4;
-        }
+        }*/
 
         return  itemRate;
     }
@@ -628,7 +562,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean hasCoin()
+    /*public boolean hasCoin()
     {
         IItemHandler ph = privateHandler.orElse(null);
         if(ph.getStackInSlot(0).isEmpty())
@@ -642,11 +576,11 @@ public class BasePedestalEntity extends BlockEntity
     {
         IItemHandler ph = privateHandler.orElse(null);
         return ph.getStackInSlot(0);
-        /*if(hasCoin())
+        *//*if(hasCoin())
         {
             return ph.getStackInSlot(0);
         }
-        else return ItemStack.EMPTY;*/
+        else return ItemStack.EMPTY;*//*
     }
 
     public ItemStack removeCoin() {
@@ -697,7 +631,7 @@ public class BasePedestalEntity extends BlockEntity
             }
             else return false;
         }
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -711,7 +645,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean addSpeed(ItemStack speedUpgrade)
+    /*public boolean addSpeed(ItemStack speedUpgrade)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = speedUpgrade.copy();
@@ -790,7 +724,7 @@ public class BasePedestalEntity extends BlockEntity
         }
 
         return  speed;
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -806,7 +740,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean addCapacity(ItemStack capacityUpgrade)
+    /*public boolean addCapacity(ItemStack capacityUpgrade)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = capacityUpgrade.copy();
@@ -855,7 +789,7 @@ public class BasePedestalEntity extends BlockEntity
     {
         IItemHandler ph = privateHandler.orElse(null);
         return ph.getStackInSlot(3).getCount();
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -871,7 +805,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean addLight()
+    /*public boolean addLight()
     {
         if(hasLight())
         {
@@ -903,7 +837,7 @@ public class BasePedestalEntity extends BlockEntity
             return false;
         }
         else  return true;
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -919,7 +853,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean hasFilter()
+    /*public boolean hasFilter()
     {
         IItemHandler ph = privateHandler.orElse(null);
         if(ph.getStackInSlot(6).isEmpty())
@@ -1068,7 +1002,7 @@ public class BasePedestalEntity extends BlockEntity
         }
 
         return false;
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -1082,7 +1016,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean hasTorch()
+    /*public boolean hasTorch()
     {
         IItemHandler ph = privateHandler.orElse(null);
         if(ph.getStackInSlot(7).isEmpty())
@@ -1128,7 +1062,7 @@ public class BasePedestalEntity extends BlockEntity
 
     public int getRedstonePower() {
         return this.getLevel().getBestNeighborSignal(this.getBlockPos());
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -1144,7 +1078,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public boolean addRRobin(ItemStack roundRobin)
+    /*public boolean addRRobin(ItemStack roundRobin)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = roundRobin.copy();
@@ -1177,7 +1111,7 @@ public class BasePedestalEntity extends BlockEntity
             return false;
         }
         else  return true;
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -1193,7 +1127,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public ItemStack addParticleDiffuser(ItemStack particle)
+    /*public ItemStack addParticleDiffuser(ItemStack particle)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = particle.copy();
@@ -1225,7 +1159,7 @@ public class BasePedestalEntity extends BlockEntity
             return false;
         }
         else  return true;
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -1241,7 +1175,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    public ItemStack addRenderAugment(ItemStack particle)
+    /*public ItemStack addRenderAugment(ItemStack particle)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = particle.copy();
@@ -1292,7 +1226,7 @@ public class BasePedestalEntity extends BlockEntity
             else  return 0;
         }
         else  return 3;
-    }
+    }*/
 
     /*============================================================================
     ==============================================================================
@@ -1302,7 +1236,7 @@ public class BasePedestalEntity extends BlockEntity
 
 
 
-    public boolean canSendItemInPedestal(PedestalTileEntity pedestal)
+    /*public boolean canSendItemInPedestal(PedestalTileEntity pedestal)
     {
         if(pedestal.hasItem())
         {
@@ -1589,7 +1523,7 @@ public class BasePedestalEntity extends BlockEntity
                 }
             }
         }
-    }
+    }*/
 
 
 
@@ -1604,8 +1538,40 @@ public class BasePedestalEntity extends BlockEntity
         e.tick();
     }
 
+    int partTicker = 0;
+    int impTicker = 0;
+    int pedTicker = 0;
+
     public void tick() {
 
+        /*if(!level.isClientSide() && level.isAreaLoaded(worldPosition,1))
+        {
+            if(getNumberOfStoredLocations() >0 && !isPedestalBlockPowered(getWorld(),getPos()) && hasItem())
+            {
+                pedTicker++;
+                if (pedTicker%getOperationSpeed() == 0) {
+
+                    transferActionItems();
+                    //Eventually have Energy, Fluids, XP in here too???
+
+                    if(pedTicker >=20){pedTicker=0;}
+                }
+            }
+        }
+        if(level.isAreaLoaded(worldPosition,1))
+        {
+            if(hasCoin())
+            {
+                Item coinInPed = getCoinOnPedestal().getItem();
+                if(coinInPed instanceof IUpgradeBase)
+                {
+                    impTicker++;
+                    ((IUpgradeBase) coinInPed).updateAction(world,this);
+                    //Has to be bigger than our biggest ticker value for an upgrade, or itll reset the upgrade instance before the upgrade action can fire
+                    if(impTicker >=Integer.MAX_VALUE-100){impTicker=0;}
+                }
+            }
+        }*/
     }
 
     @Override
@@ -1613,12 +1579,16 @@ public class BasePedestalEntity extends BlockEntity
         //thanks http://www.minecraftforge.net/forum/index.php?topic=39162.0
         CompoundTag syncData = new CompoundTag();
         this.save(syncData); //this calls writeInternal
+        int tileEntityType = 42;
         return syncData;
     }
 
     @Override
     public void onDataPacket(net.minecraft.network.Connection net, net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt) {
         this.load(pkt.getTag());
+        BlockState state = this.level.getBlockState(this.worldPosition);
+        this.handleUpdateTag(pkt.getTag());
+        this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
         super.onDataPacket(net, pkt);
     }
 
@@ -1631,11 +1601,70 @@ public class BasePedestalEntity extends BlockEntity
     public void load(CompoundTag tag) {
 
         super.load(tag);
+        handler.ifPresent(h -> {
+            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
+            tag.put("inv", compound);
+        });
+
+        privateHandler.ifPresent(ph -> {
+            CompoundTag compound = ((INBTSerializable<CompoundTag>) ph).serializeNBT();
+            tag.put("invp", compound);
+        });
+
+        tag.putBoolean("boollight", boolLight);
+
+        List<Integer> storedX = new ArrayList<Integer>();
+        List<Integer> storedY = new ArrayList<Integer>();
+        List<Integer> storedZ = new ArrayList<Integer>();
+
+        for(int i=0;i<getNumberOfStoredLocations();i++)
+        {
+            storedX.add(storedLocations.get(i).getX());
+            storedY.add(storedLocations.get(i).getY());
+            storedZ.add(storedLocations.get(i).getZ());
+        }
+
+        tag.putIntArray("intArrayXPos",storedX);
+        tag.putIntArray("intArrayYPos",storedY);
+        tag.putIntArray("intArrayZPos",storedZ);
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
 
+        CompoundTag invTag = tag.getCompound("inv");
+        CompoundTag invTagP = tag.getCompound("invp");
+        handler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTag));
+        privateHandler.ifPresent(ph -> ((INBTSerializable<CompoundTag>) ph).deserializeNBT(invTagP));
+
+        this.boolLight = tag.getBoolean("boollight");
+
+        int[] storedIX = tag.getIntArray("intArrayXPos");
+        int[] storedIY = tag.getIntArray("intArrayYPos");
+        int[] storedIZ = tag.getIntArray("intArrayZPos");
+
+        for(int i=0;i<storedIX.length;i++)
+        {
+            BlockPos gotPos = new BlockPos(storedIX[i],storedIY[i],storedIZ[i]);
+            storedLocations.add(gotPos);
+        }
         return super.save(tag);
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        if(this.handler != null) {
+            this.handler.invalidate();
+        }
+        if(this.privateHandler != null) {
+            this.privateHandler.invalidate();
+        }
+        if(this.energyHandler != null) {
+            this.energyHandler.invalidate();
+        }
+        if(this.fluidHandler != null) {
+            this.fluidHandler.invalidate();
+        }
     }
 }
