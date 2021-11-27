@@ -1,0 +1,25 @@
+{
+"parent": "dust:item/upgrades/pedestal_upgrade",
+"textures": {
+"coin": "dust:items/models/upgrades/pedestal_upgrade",
+"letter": "dust:items/models/upgrades/pedestal_upgrade_import",
+"part": "dust:items/models/upgrades/pedestal_upgrade"
+},
+  "overrides": [
+    { "predicate": { "dust:upgrade_import_mode": 0}, "model": "dust:item/upgrades/pedestal_upgrade_i"},
+    { "predicate": { "dust:upgrade_import_mode": 1}, "model": "dust:item/upgrades/pedestal_upgrade_f"},
+    { "predicate": { "dust:upgrade_import_mode": 2}, "model": "dust:item/upgrades/pedestal_upgrade_e"},
+    { "predicate": { "dust:upgrade_import_mode": 3}, "model": "dust:item/upgrades/pedestal_upgrade_x"},
+    { "predicate": { "dust:upgrade_import_mode": 4}, "model": "dust:item/upgrades/pedestal_upgrade_if"},
+    { "predicate": { "dust:upgrade_import_mode": 5}, "model": "dust:item/upgrades/pedestal_upgrade_ie"},
+    { "predicate": { "dust:upgrade_import_mode": 6}, "model": "dust:item/upgrades/pedestal_upgrade_ix"},
+    { "predicate": { "dust:upgrade_import_mode": 7}, "model": "dust:item/upgrades/pedestal_upgrade_ife"},
+    { "predicate": { "dust:upgrade_import_mode": 8}, "model": "dust:item/upgrades/pedestal_upgrade_ifx"},
+    { "predicate": { "dust:upgrade_import_mode": 9}, "model": "dust:item/upgrades/pedestal_upgrade_iex"},
+    { "predicate": { "dust:upgrade_import_mode": 10}, "model": "dust:item/upgrades/pedestal_upgrade_ifex"},
+    { "predicate": { "dust:upgrade_import_mode": 11}, "model": "dust:item/upgrades/pedestal_upgrade_fe"},
+    { "predicate": { "dust:upgrade_import_mode": 12}, "model": "dust:item/upgrades/pedestal_upgrade_fx"},
+    { "predicate": { "dust:upgrade_import_mode": 13}, "model": "dust:item/upgrades/pedestal_upgrade_ex"},
+    { "predicate": { "dust:upgrade_import_mode": 14}, "model": "dust:item/upgrades/pedestal_upgrade_fex"}
+  ]
+}

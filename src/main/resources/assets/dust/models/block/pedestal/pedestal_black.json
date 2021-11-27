@@ -2,7 +2,7 @@
   "parent": "dust:block/pedestal/base_pedestal_models/pedestal_block_filter",
   "textures": {
     "filter": "dust:blocks/pedestal/filter_black",
-    "type": "dust:block/block_crystal_stone",
-    "typepart":"dust:block/block_crystal_stone"
+    "type": "dust:blocks/block_crystal_stone",
+    "typepart":"dust:blocks/block_crystal_stone"
   }
 }

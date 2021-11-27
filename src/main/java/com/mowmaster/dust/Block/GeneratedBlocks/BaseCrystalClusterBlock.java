@@ -1,7 +1,7 @@
-package com.mowmaster.dust.Blocks.GeneratedBlocks;
+package com.mowmaster.dust.Block.GeneratedBlocks;
 
-import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock;
-import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredCrystalBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;

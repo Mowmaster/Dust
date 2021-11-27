@@ -1,7 +1,6 @@
-package com.mowmaster.dust.Blocks.TileEntityBlocks;
+package com.mowmaster.dust.DeferredRegistery;
 
-import com.mowmaster.dust.Blocks.BuildingBlocks.BaseColoredStairBlock;
-import com.mowmaster.dust.Blocks.TileEntityBlocks.Pedestal.BasePedestalBlock;
+import com.mowmaster.dust.Block.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import net.minecraft.world.item.BlockItem;

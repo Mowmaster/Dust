@@ -1,6 +1,6 @@
 package com.mowmaster.dust.Items;
 
-import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
@@ -23,10 +23,8 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock.*;
 import static com.mowmaster.dust.References.Constants.MODID;
 
 public class ColorApplicator extends Item {

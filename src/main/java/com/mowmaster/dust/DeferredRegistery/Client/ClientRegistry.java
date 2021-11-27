@@ -1,8 +1,9 @@
 package com.mowmaster.dust.DeferredRegistery.Client;
 
-import com.mowmaster.dust.Blocks.TileEntityBlocks.DeferredRegisterTileBlocks;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeModelProperties;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -39,6 +40,10 @@ public class ClientRegistry
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_SLAB.get());
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get());
+
+        ItemUpgradeModelProperties.importUpgradeModes(DeferredRegisterItems.PEDESTAL_UPGRADE_IMPORT.get());
+
+
 
         /*
         *

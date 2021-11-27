@@ -1,6 +1,6 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.Blocks.TileEntityBlocks.DeferredRegisterTileBlocks;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;

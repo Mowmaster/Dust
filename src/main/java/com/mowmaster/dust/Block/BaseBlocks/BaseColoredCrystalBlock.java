@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Blocks.BaseBlocks;
+package com.mowmaster.dust.Block.BaseBlocks;
 
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;

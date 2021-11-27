@@ -1,7 +1,10 @@
-package com.mowmaster.dust.Blocks.BaseBlocks;
+package com.mowmaster.dust.Block.BuildingBlocks;
 
+import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -10,30 +13,29 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class BaseColoredBlock extends Block
+public class BaseColoredStairBlock extends StairBlock
 {
     public static final IntegerProperty COLOR_RED = IntegerProperty.create("color_red", 0, 3);
     public static final IntegerProperty COLOR_GREEN = IntegerProperty.create("color_green", 0, 3);
     public static final IntegerProperty COLOR_BLUE = IntegerProperty.create("color_blue", 0, 3);
 
-    public BaseColoredBlock(BlockBehaviour.Properties p_152915_)
+    public BaseColoredStairBlock(BlockState state, Properties p_152915_)
     {
-        super(p_152915_);
+        super(state,p_152915_);
         this.registerDefaultState(ColorReference.addColorToBlockState(this.defaultBlockState(),ColorReference.DEFAULTCOLOR));
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_56120_) {
-        p_56120_.add(COLOR_RED).add(COLOR_GREEN).add(COLOR_BLUE);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_) {
+        p_152043_.add(WATERLOGGED, FACING, HALF, SHAPE, COLOR_RED, COLOR_GREEN, COLOR_BLUE);
     }
 
     @Nullable
@@ -68,11 +70,35 @@ public class BaseColoredBlock extends Block
     }
 
     @Override
+    public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
+
+        if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ColorApplicator)
+        {
+            int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
+            BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
+            p_60504_.setBlock(p_60505_,newState,3);
+            //p_60504_.markAndNotifyBlock(p_60505_,null,p_60503_,newState,3,1);
+            return InteractionResult.SUCCESS;
+        }
+
+        /*if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ItemChisel)
+        {
+            if(p_60503_.getBlock() instanceof CrystalSlab)
+            {
+                p_60504_.setBlock(p_60505_, BlockReference.getSlab(p_60503_,false),3);
+                return InteractionResult.SUCCESS;
+            }
+        }*/
+
+        return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
+    }
+
+    @Override
     public void playerWillDestroy(Level p_56212_, BlockPos p_56213_, BlockState p_56214_, Player p_56215_) {
 
         if(!p_56212_.isClientSide())
         {
-            if (p_56214_.getBlock() instanceof BaseColoredBlock) {
+            if (p_56214_.getBlock() instanceof BaseColoredStairBlock) {
                 if (!p_56212_.isClientSide && !p_56215_.isCreative()) {
                     ItemStack itemstack = new ItemStack(this);
                     int getColor = ColorReference.getColorFromStateInt(p_56214_);

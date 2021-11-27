@@ -3,7 +3,7 @@
   "textures": {
     "filter": "dust:blocks/pedestal/filter_black",
     "glow":"dust:blocks/pedestal/ancientglowstone",
-    "type": "dust:block/block_crystal_stone",
-    "typepart":"dust:block/block_crystal_stone"
+    "type": "dust:blocks/block_crystal_stone",
+    "typepart":"dust:blocks/block_crystal_stone"
   }
 }

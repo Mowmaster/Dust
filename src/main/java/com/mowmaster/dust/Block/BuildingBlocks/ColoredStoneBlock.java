@@ -1,6 +1,6 @@
-package com.mowmaster.dust.Blocks.BuildingBlocks;
+package com.mowmaster.dust.Block.BuildingBlocks;
 
-import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;

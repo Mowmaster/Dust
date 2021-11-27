@@ -1,8 +1,8 @@
 {
   "parent": "dust:block/default_slab",
   "textures": {
-    "bottom": "dust:block/block_crystal_stone",
-    "top": "dust:block/block_crystal_stone",
-    "side": "dust:block/block_crystal_stone"
+    "bottom": "dust:blocks/block_crystal_stone",
+    "top": "dust:blocks/block_crystal_stone",
+    "side": "dust:blocks/block_crystal_stone"
   }
 }

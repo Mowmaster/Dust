@@ -1,11 +1,11 @@
 package com.mowmaster.dust.DeferredRegistery;
 
-import com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredCrystalBlock;
-import com.mowmaster.dust.Blocks.BuildingBlocks.BaseColoredSlabBlock;
-import com.mowmaster.dust.Blocks.BuildingBlocks.BaseColoredStairBlock;
-import com.mowmaster.dust.Blocks.BuildingBlocks.ColoredStoneBlock;
-import com.mowmaster.dust.Blocks.GeneratedBlocks.BaseCrystalClusterBlock;
-import com.mowmaster.dust.Blocks.GeneratedBlocks.BaseCrystalNodeBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
+import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredSlabBlock;
+import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredStairBlock;
+import com.mowmaster.dust.Block.BuildingBlocks.ColoredStoneBlock;
+import com.mowmaster.dust.Block.GeneratedBlocks.BaseCrystalClusterBlock;
+import com.mowmaster.dust.Block.GeneratedBlocks.BaseCrystalNodeBlock;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import com.mowmaster.dust.World.GeodeGen.GeodeDecorator;
 import net.minecraft.world.item.BlockItem;

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static com.mowmaster.dust.Blocks.BaseBlocks.BaseColoredBlock.*;
 import static com.mowmaster.dust.References.Constants.MODID;
 import static com.mowmaster.dust.World.GeodeGen.GeodeFeatures.*;
 import static com.mowmaster.dust.World.GeodeGen.GeodeFeatures.GEODE_333;

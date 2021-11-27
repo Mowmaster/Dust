@@ -1,6 +1,7 @@
 package com.mowmaster.dust.DeferredRegistery;
 
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeImport;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -18,6 +19,9 @@ public class DeferredRegisterItems
 
     public static final RegistryObject<Item> COLOR_APPLICATOR = ITEMS.register("applicator",
             () -> new ColorApplicator(new Item.Properties()));
+
+    public static final RegistryObject<Item> PEDESTAL_UPGRADE_IMPORT = ITEMS.register("item_pedestal_upgrade_import",
+            () -> new ItemUpgradeImport(new Item.Properties()));
 
 
 
