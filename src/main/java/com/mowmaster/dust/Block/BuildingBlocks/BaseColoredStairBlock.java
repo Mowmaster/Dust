@@ -61,9 +61,18 @@ public class BaseColoredStairBlock extends StairBlock
         if(p_49850_ instanceof Player)
         {
             Player player = ((Player)p_49850_);
-            int getColor = ColorReference.getColorFromItemStackInt(p_49851_);
-            BlockState newState = ColorReference.addColorToBlockState(p_49849_,getColor);
-            p_49847_.setBlock(p_49848_,newState,3);
+            if(player.getOffhandItem().getItem() instanceof ColorApplicator)
+            {
+                int getColor = ColorReference.getColorFromItemStackInt(player.getOffhandItem());
+                BlockState newState = ColorReference.addColorToBlockState(p_49849_,getColor);
+                p_49847_.setBlock(p_49848_,newState,3);
+            }
+            else
+            {
+                int getColor = ColorReference.getColorFromItemStackInt(p_49851_);
+                BlockState newState = ColorReference.addColorToBlockState(p_49849_,getColor);
+                p_49847_.setBlock(p_49848_,newState,3);
+            }
         }
 
         super.setPlacedBy(p_49847_, p_49848_, p_49849_, p_49850_, p_49851_);

@@ -19,28 +19,4 @@ public class ColoredStoneBlock extends BaseColoredBlock
         super(p_152915_);
         this.registerDefaultState(ColorReference.addColorToBlockState(this.defaultBlockState(),ColorReference.DEFAULTCOLOR));
     }
-
-    @Override
-    public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
-
-        if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ColorApplicator)
-        {
-            int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
-            BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
-            p_60504_.setBlock(p_60505_,newState,3);
-            //p_60504_.markAndNotifyBlock(p_60505_,null,p_60503_,newState,3,1);
-            return InteractionResult.SUCCESS;
-        }
-
-        /*if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ItemChisel)
-        {
-            if(p_60503_.getBlock() instanceof CrystalBlock)
-            {
-                p_60504_.setBlock(p_60505_, BlockReference.getBlock(p_60503_,false),3);
-                return InteractionResult.SUCCESS;
-            }
-        }*/
-
-        return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
-    }
 }

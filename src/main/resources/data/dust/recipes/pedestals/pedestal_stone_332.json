@@ -23,7 +23,7 @@
     }
   },
   "result": {
-    "item": "dust:block_crystal",
+    "item": "dust:block_pedestal",
     "type": "forge:nbt",
     "nbt": {
       "dust_color": 16777130

@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Items;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
@@ -110,31 +111,6 @@ public class ColorApplicator extends Item {
                             ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),list.get(setColorPos));
                             player.setItemInHand(hand,newStack);
                         }
-                    }
-                }
-            }
-            else if(result.getType().equals(HitResult.Type.BLOCK))
-            {
-
-                double rayLength = 5.0d;
-                Vec3 playerRot = player.getViewVector(0);
-                Vec3 rayPath = playerRot.scale(rayLength);
-
-                Vec3 playerEyes = player.getEyePosition(0);
-                Vec3 blockEyes = playerEyes.add(rayPath);
-
-                ClipContext clipContext = new ClipContext(playerEyes,blockEyes, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY,null);
-                BlockHitResult blockResult = world.clip(clipContext);
-                BlockState state = world.getBlockState(blockResult.getBlockPos());
-                BlockPos posHitBlock = blockResult.getBlockPos();
-
-                if(state.getBlock() instanceof BaseColoredBlock)
-                {
-                    if(player.getItemInHand(p_41434_).getItem() instanceof ColorApplicator)
-                    {
-                        int getColor = ColorReference.getColorFromItemStackInt(player.getItemInHand(p_41434_));
-                        BlockState newState = ColorReference.addColorToBlockState(state, getColor);
-                        world.setBlock(posHitBlock,newState,3);
                     }
                 }
             }

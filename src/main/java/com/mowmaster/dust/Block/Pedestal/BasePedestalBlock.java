@@ -297,9 +297,16 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                 {
                     return InteractionResult.FAIL;
                 }
+                else if(itemInHand.getItem() instanceof ColorApplicator)
+                {
+                    int getColor = ColorReference.getColorFromItemStackInt(itemInHand);
+                    BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
+                    p_60504_.setBlock(p_60505_,newState,3);
+                    return InteractionResult.SUCCESS;
+                }
                 else if(itemInOffHand.getItem() instanceof ColorApplicator)
                 {
-                    int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
+                    int getColor = ColorReference.getColorFromItemStackInt(itemInOffHand);
                     BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
                     p_60504_.setBlock(p_60505_,newState,3);
                     return InteractionResult.SUCCESS;
