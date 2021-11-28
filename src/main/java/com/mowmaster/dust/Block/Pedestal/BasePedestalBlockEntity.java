@@ -1,18 +1,25 @@
 package com.mowmaster.dust.Block.Pedestal;
 
+import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
+import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
+import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -31,7 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BasePedestalEntity extends BlockEntity
+import static com.mowmaster.dust.Block.Pedestal.BasePedestalBlock.*;
+
+public class BasePedestalBlockEntity extends BlockEntity
 {
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandlerPedestal);
     private LazyOptional<IItemHandler> privateHandler = LazyOptional.of(this::createHandlerPedestalPrivate);
@@ -43,30 +52,20 @@ public class BasePedestalEntity extends BlockEntity
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
     public BlockPos getPos() { return this.worldPosition; }
 
-    public BasePedestalEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
-        super(p_155228_, p_155229_, p_155230_);
+    public BasePedestalBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
+        super(DeferredBlockEntityTypes.PEDESTAL.get(), p_155229_, p_155230_);
     }
 
     public void update()
     {
-        this.update();
-        this.level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),2);
-        //do this for pedestals that do inv buffers
-        this.level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),1);
-        /*public static final int NOTIFY_NEIGHBORS = 1;
-        public static final int BLOCK_UPDATE = 2;
-        public static final int NO_RERENDER = 4;
-        public static final int RERENDER_MAIN_THREAD = 8;
-        public static final int UPDATE_NEIGHBORS = 16;
-        public static final int NO_NEIGHBOR_DROPS = 32;
-        public static final int IS_MOVING = 64;
-        public static final int DEFAULT = 3;
-        public static final int DEFAULT_AND_RERENDER = 11;*/
+        BlockState state = level.getBlockState(worldPosition);
+        this.level.sendBlockUpdated(worldPosition, state, state, Constants.BlockFlags.RERENDER_MAIN_THREAD);
+        this.setChanged();
     }
 
     //9 slots, but only when it has the tank upgrade will we allow more then the first to be used.
     public IItemHandler createHandlerPedestal() {
-        return new ItemStackHandler(9) {
+        return new ItemStackHandler(1) {
             @Override
             protected void onLoad() {
                 super.onLoad();
@@ -79,15 +78,15 @@ public class BasePedestalEntity extends BlockEntity
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                //Run filter checks here
+                //Run filter checks here(slot==0)?(true):(false)
 
-                return (slot==0)?(true):(false);
+                return true;
             }
 
             @Override
             public int getSlots() {
                 //maybe return less if there is no tank upgrade???
-                return 9;
+                return 1;
             }
 
             @Override
@@ -130,7 +129,7 @@ public class BasePedestalEntity extends BlockEntity
 
     private IItemHandler createHandlerPedestalPrivate() {
         //going from 5 to 11 slots to future proof things
-        return new ItemStackHandler(12) {
+        return new ItemStackHandler(10) {
 
             @Override
             protected void onLoad() {
@@ -158,10 +157,11 @@ public class BasePedestalEntity extends BlockEntity
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                //if (slot == 0 && stack.getItem() instanceof IUpgradeBase && !hasCoin() && ((hasFilter())?(!FILTER_BROKE_UPGRADES.contains(stack.getItem())):(true))) return true;
-                // (slot == 1 && stack.getItem().equals(Items.GLOWSTONE) && !hasLight()) return true;
+                if (slot == 0 && stack.getItem() instanceof IPedestalUpgrade && !hasCoin()) return true;
+                //if (slot == 1 && stack.getItem().equals(Items.GLOWSTONE_DUST) && getLightBrightness()<15) return true;
+                if (slot == 1 && stack.getItem().equals(Items.GLOWSTONE) && !hasLight()) return true;
                 //if (slot == 2 && stack.getItem() instanceof IFilterBase && !stack.getItem().equals(ItemFilterBase.BASEFILTER) && !hasFilter() && ((hasCoin())?(!FILTER_BROKE_UPGRADES.contains(getCoinOnPedestal().getItem())):(true))) return true;
-                //if (slot == 3 && stack.getItem().equals(Items.REDSTONE_TORCH) && !hasTorch()) return true;
+                if (slot == 3 && stack.getItem().equals(Items.REDSTONE) && getRedstonePowerNeeded()<15) return true;
                 //if (slot == 4 && stack.getItem().equals(ItemPedestalUpgrades.ROUNDROBIN) && !hasRRobin()) return true;
                 //if (slot == 5 && stack.getItem().equals(ItemPedestalUpgrades.PARTICLEDIFFUSER)) return true;
                 //if (slot == 6 && stack.getItem().equals(ItemPedestalRenderAugment.RENDERAUGMENT)) return true;
@@ -290,7 +290,7 @@ public class BasePedestalEntity extends BlockEntity
     public void dropInventoryItems(Level worldIn, BlockPos pos) {
         IItemHandler h = handler.orElse(null);
         for(int i = 0; i < h.getSlots(); ++i) {
-            spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(-1));
+            spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), h.getStackInSlot(i));
         }
     }
 
@@ -403,7 +403,7 @@ public class BasePedestalEntity extends BlockEntity
         return  range;
     }
 
-    public boolean isPedestalInRange(BasePedestalEntity pedestalCurrent, BlockPos pedestalToBeLinked)
+    public boolean isPedestalInRange(BasePedestalBlockEntity pedestalCurrent, BlockPos pedestalToBeLinked)
     {
         int range = pedestalCurrent.getLinkingRange();
         int x = pedestalToBeLinked.getX();
@@ -457,6 +457,20 @@ public class BasePedestalEntity extends BlockEntity
         else return ItemStack.EMPTY;
     }
 
+    public int countAllowedForInsert(ItemStack stackIn) {
+        if(hasItem())
+        {
+            if(stackIn.getItem().equals(getItemInPedestal().getItem()))
+            {
+                int allowedInsertCount = stackIn.getMaxStackSize() - getItemInPedestal().getCount();
+                return allowedInsertCount;
+            }
+            else return 0;
+        }
+        else return stackIn.getMaxStackSize();
+
+    }
+
     public ItemStack removeItem(int numToRemove) {
         IItemHandler h = handler.orElse(null);
         ItemStack stack = h.extractItem(0,numToRemove,false);
@@ -483,7 +497,7 @@ public class BasePedestalEntity extends BlockEntity
                 if(!simulate)
                 {
                     h.insertItem(0, itemFromBlock.copy(), false);
-                    //update();
+                    update();
                 }
                 return true;
             }
@@ -493,7 +507,7 @@ public class BasePedestalEntity extends BlockEntity
             if(!simulate)
             {
                 h.insertItem(0, itemFromBlock.copy(), false);
-                //update();
+                update();
             }
             return true;
         }
@@ -530,7 +544,7 @@ public class BasePedestalEntity extends BlockEntity
         return  itemRate;
     }
 
-    public void collideWithPedestal(Level world, BasePedestalEntity tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
+    public void collideWithPedestal(Level world, BasePedestalBlockEntity tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
     {
         //Handle items and o things like potions too.
         if(!world.isClientSide()) {
@@ -562,7 +576,7 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    /*public boolean hasCoin()
+    public boolean hasCoin()
     {
         IItemHandler ph = privateHandler.orElse(null);
         if(ph.getStackInSlot(0).isEmpty())
@@ -575,39 +589,23 @@ public class BasePedestalEntity extends BlockEntity
     public ItemStack getCoinOnPedestal()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        return ph.getStackInSlot(0);
-        *//*if(hasCoin())
+        if(hasCoin())
         {
             return ph.getStackInSlot(0);
         }
-        else return ItemStack.EMPTY;*//*
+        else return ItemStack.EMPTY;
     }
 
     public ItemStack removeCoin() {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack stack = ph.getStackInSlot(0);
-        if(stack.getItem() instanceof IUpgradeBase){
-            IUpgradeBase coin = (IUpgradeBase)stack.getItem();
-            coin.removePlayerFromCoin(stack);
-            coin.removeWorkQueueFromCoin(stack);
-            coin.removeWorkQueueTwoFromCoin(stack);
-            coin.removeStoredIntFromCoin(stack);
-            coin.removeStoredIntTwoFromCoin(stack);
-            coin.removeFilterQueueHandler(stack);
-            coin.removeFilterBlock(stack);
-            coin.removeInventoryQueue(stack);
-            coin.removeCraftingQueue(stack);
-            coin.removeOutputIngredientMap(stack);
-            coin.removeFilterChangeUpdated(stack);
-            coin.removeToolChangeUpdated(stack);
-        }
         ph.extractItem(0,stack.getCount(),false);
         //update();
 
         return stack;
     }
 
-    public boolean addCoin(PlayerEntity player, ItemStack coinFromBlock,boolean simulate)
+    public boolean addCoin(Player player, ItemStack coinFromBlock, boolean simulate)
     {
         if(hasCoin())
         {
@@ -622,16 +620,14 @@ public class BasePedestalEntity extends BlockEntity
             {
                 if(!simulate)
                 {
-                    ((IUpgradeBase)coinFromBlock.getItem()).setPlayerOnCoin(coinFromBlock,player);
+                    //((IPedestalUpgrade)coinFromBlock.getItem()).setPlayerOnCoin(coinFromBlock,player);
                     ph.insertItem(0,coinItem,false);
-
-
                 }
                 return true;
             }
             else return false;
         }
-    }*/
+    }
 
     /*============================================================================
     ==============================================================================
@@ -805,7 +801,9 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    /*public boolean addLight()
+    private int slotLight = 1;
+
+    public boolean addLight()
     {
         if(hasLight())
         {
@@ -814,30 +812,117 @@ public class BasePedestalEntity extends BlockEntity
         else
         {
             boolLight = true;
-            BlockState state = world.getBlockState(pos);
-            boolean watered = state.get(PedestalBlock.WATERLOGGED);
-            Direction dir = state.get(PedestalBlock.FACING);
-            int filterState = state.get(PedestalBlock.FILTER_STATUS);
-            BlockState newstate = state.with(PedestalBlock.FACING,dir).with(PedestalBlock.WATERLOGGED,watered).with(PedestalBlock.LIT,true).with(PedestalBlock.FILTER_STATUS,filterState);
             IItemHandler ph = privateHandler.orElse(null);
-            ph.insertItem(1,new ItemStack(Items.GLOWSTONE,1),false);
-            world.notifyBlockUpdate(pos,state,newstate,3);
-            world.setBlockState(pos,newstate,3);
-            world.markBlockRangeForRenderUpdate(pos,state,newstate);
-            //update();
+            BlockState state = level.getBlockState(worldPosition);
+            BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(true)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
+            ph.insertItem(slotLight,new ItemStack(Items.GLOWSTONE,1),false);
+            update();
+            level.setBlock(worldPosition,newstate,3);
             return true;
         }
     }
 
+    /*public boolean addLight()
+    {
+        BlockState state = level.getBlockState(worldPosition);
+        BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(true)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
+        if(hasLight())
+        {
+            if(getLightBrightness()>=15)
+            {
+                return false;
+            }
+            else
+            {
+                IItemHandler ph = privateHandler.orElse(null);
+                ph.insertItem(slotLight,new ItemStack(Items.GLOWSTONE_DUST,1),false);
+                state.updateNeighbourShapes(this.level,this.worldPosition,1,3);
+                return true;
+            }
+        }
+        else
+        {
+            boolLight = true;
+            IItemHandler ph = privateHandler.orElse(null);
+            ph.insertItem(slotLight,new ItemStack(Items.GLOWSTONE_DUST,1),false);
+            update();
+            level.setBlock(worldPosition,newstate,3);
+            return true;
+        }
+    }*/
+
+    public ItemStack removeLight()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        if(hasLight())
+        {
+            BlockState state = level.getBlockState(worldPosition);
+            BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
+            boolLight = true;
+            ph.extractItem(slotLight,1,false);
+            level.setBlock(worldPosition,newstate,3);
+            return new ItemStack(Items.GLOWSTONE,1);
+
+        }
+        else return ItemStack.EMPTY;
+    }
+
+    /*public ItemStack removeLight()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        if(hasLight())
+        {
+            BlockState state = level.getBlockState(worldPosition);
+            BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
+            if(getLightBrightness()<=1)
+            {
+                boolLight = true;
+                ph.extractItem(slotLight,1,false);
+                level.setBlock(worldPosition,newstate,3);
+                return new ItemStack(Items.GLOWSTONE_DUST,1);
+            }
+            else
+            {
+                ph.extractItem(slotLight,1,false);
+                state.updateNeighbourShapes(this.level,this.worldPosition,1,3);
+                return new ItemStack(Items.GLOWSTONE_DUST,1);
+            }
+
+        }
+        else return ItemStack.EMPTY;
+    }*/
+
+    /*public ItemStack removeAllLight()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        if(hasLight())
+        {
+            BlockState state = level.getBlockState(worldPosition);
+            BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
+            int slotCount = ph.getStackInSlot(slotLight).getCount();
+            ph.extractItem(slotLight,slotCount,false);
+            level.setBlock(worldPosition,newstate,3);
+            return new ItemStack(Items.GLOWSTONE_DUST,slotCount);
+        }
+        else return ItemStack.EMPTY;
+    }*/
+
+    /*public int getLightBrightness()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        return ph.getStackInSlot(slotLight).getCount();
+    }*/
+
+
     public boolean hasLight()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(1).isEmpty())
+        if(ph.getStackInSlot(slotLight).isEmpty())
         {
             return false;
         }
         else  return true;
-    }*/
+    }
 
     /*============================================================================
     ==============================================================================
@@ -1016,39 +1101,64 @@ public class BasePedestalEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    /*public boolean hasTorch()
+    private int torchSlot = 3;
+    public boolean hasRedstone()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(7).isEmpty())
+        if(ph.getStackInSlot(torchSlot).isEmpty())
         {
             return false;
         }
         else  return true;
     }
 
-    public ItemStack removeTorch() {
-        IItemHandler ph = privateHandler.orElse(null);
-        return ph.extractItem(7,ph.getStackInSlot(7).getCount(),false);
-    }
-
-    public boolean addTorch()
+    public boolean addRedstone()
     {
         IItemHandler ph = privateHandler.orElse(null);
-
-        ItemStack itemFromBlock = new ItemStack(Items.REDSTONE_TORCH);
+        ItemStack itemFromBlock = new ItemStack(Items.REDSTONE);
         itemFromBlock.setCount(1);
-        if(!hasTorch() && ph.isItemValid(7,itemFromBlock))
+        if(!hasRedstone() || getRedstonePowerNeeded()<15)
         {
-            ph.insertItem(7,itemFromBlock,false);
+            ph.insertItem(torchSlot,itemFromBlock,false);
             return true;
         }
         else return false;
     }
 
-    public boolean isPedestalBlockPowered(World world,BlockPos pos)
+    public ItemStack removeRedstone()
     {
-        boolean returner = world.isBlockPowered(pos);
-        if(hasTorch())
+        IItemHandler ph = privateHandler.orElse(null);
+        if(hasRedstone() && getRedstonePowerNeeded()>=1)
+        {
+            ph.extractItem(torchSlot,1,false);
+            return new ItemStack(Items.REDSTONE,1);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public ItemStack removeAllRedstone()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        if(hasRedstone() && getRedstonePowerNeeded()>=1)
+        {
+            int slotCount = ph.getStackInSlot(torchSlot).getCount();
+            ph.extractItem(torchSlot,slotCount,false);
+            return new ItemStack(Items.REDSTONE,slotCount);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public int getRedstonePowerNeeded()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        return ph.getStackInSlot(torchSlot).getCount();
+    }
+
+    public boolean isPedestalBlockPowered()
+    {
+
+        boolean returner = (this.getLevel().hasNeighborSignal(this.getBlockPos()))?((getRedstonePower()>=getRedstonePowerNeeded())?(true):(false)):(false);
+        if(hasRedstone())
         {
             return !returner;
         }
@@ -1056,13 +1166,9 @@ public class BasePedestalEntity extends BlockEntity
         return returner;
     }
 
-    public boolean isPowered() {
-        return this.getLevel().hasNeighborSignal(this.getBlockPos());
-    }
-
     public int getRedstonePower() {
         return this.getLevel().getBestNeighborSignal(this.getBlockPos());
-    }*/
+    }
 
     /*============================================================================
     ==============================================================================
@@ -1530,11 +1636,11 @@ public class BasePedestalEntity extends BlockEntity
 
 
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, BasePedestalEntity e) {
+    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, BasePedestalBlockEntity e) {
         e.tick();
     }
 
-    public static <E extends BlockEntity> void clientTick(Level level, BlockPos blockPos, BlockState blockState, BasePedestalEntity e) {
+    public static <E extends BlockEntity> void clientTick(Level level, BlockPos blockPos, BlockState blockState, BasePedestalBlockEntity e) {
         e.tick();
     }
 
@@ -1574,82 +1680,59 @@ public class BasePedestalEntity extends BlockEntity
         }*/
     }
 
+
+
     @Override
-    public CompoundTag getUpdateTag() {
-        //thanks http://www.minecraftforge.net/forum/index.php?topic=39162.0
-        CompoundTag syncData = new CompoundTag();
-        this.save(syncData); //this calls writeInternal
-        int tileEntityType = 42;
-        return syncData;
+    public void load(CompoundTag p_155245_) {
+        super.load(p_155245_);
+        CompoundTag invTag = p_155245_.getCompound("inv");
+        handler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTag));
+        CompoundTag invPrivateTag = p_155245_.getCompound("inv_private");
+        privateHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invPrivateTag));
     }
 
     @Override
-    public void onDataPacket(net.minecraft.network.Connection net, net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt) {
-        this.load(pkt.getTag());
-        BlockState state = this.level.getBlockState(this.worldPosition);
-        this.handleUpdateTag(pkt.getTag());
-        this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
-        super.onDataPacket(net, pkt);
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, getUpdateTag());
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-
-        super.load(tag);
+    public CompoundTag save(CompoundTag p_58888_) {
+        super.save(p_58888_);
         handler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
-            tag.put("inv", compound);
+            p_58888_.put("inv", compound);
+        });
+        privateHandler.ifPresent(h -> {
+            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
+            p_58888_.put("inv_private", compound);
         });
 
-        privateHandler.ifPresent(ph -> {
-            CompoundTag compound = ((INBTSerializable<CompoundTag>) ph).serializeNBT();
-            tag.put("invp", compound);
-        });
+        return p_58888_;
+    }
 
-        tag.putBoolean("boollight", boolLight);
-
-        List<Integer> storedX = new ArrayList<Integer>();
-        List<Integer> storedY = new ArrayList<Integer>();
-        List<Integer> storedZ = new ArrayList<Integer>();
-
-        for(int i=0;i<getNumberOfStoredLocations();i++)
-        {
-            storedX.add(storedLocations.get(i).getX());
-            storedY.add(storedLocations.get(i).getY());
-            storedZ.add(storedLocations.get(i).getZ());
-        }
-
-        tag.putIntArray("intArrayXPos",storedX);
-        tag.putIntArray("intArrayYPos",storedY);
-        tag.putIntArray("intArrayZPos",storedZ);
+    @Nullable
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        CompoundTag nbtTagCompound = new CompoundTag();
+        save(nbtTagCompound);
+        //super.getUpdatePacket();
+        return new ClientboundBlockEntityDataPacket(this.worldPosition,42,nbtTagCompound);
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
-
-        CompoundTag invTag = tag.getCompound("inv");
-        CompoundTag invTagP = tag.getCompound("invp");
-        handler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTag));
-        privateHandler.ifPresent(ph -> ((INBTSerializable<CompoundTag>) ph).deserializeNBT(invTagP));
-
-        this.boolLight = tag.getBoolean("boollight");
-
-        int[] storedIX = tag.getIntArray("intArrayXPos");
-        int[] storedIY = tag.getIntArray("intArrayYPos");
-        int[] storedIZ = tag.getIntArray("intArrayZPos");
-
-        for(int i=0;i<storedIX.length;i++)
-        {
-            BlockPos gotPos = new BlockPos(storedIX[i],storedIY[i],storedIZ[i]);
-            storedLocations.add(gotPos);
-        }
-        return super.save(tag);
+    public CompoundTag getUpdateTag() {
+        return save(new CompoundTag());
     }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net,pkt);
+        BlockState state = this.level.getBlockState(worldPosition);
+        this.handleUpdateTag(pkt.getTag());
+        this.level.sendBlockUpdated(worldPosition, state, state, Constants.BlockFlags.RERENDER_MAIN_THREAD);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
+    }
+
 
     @Override
     public void setRemoved() {

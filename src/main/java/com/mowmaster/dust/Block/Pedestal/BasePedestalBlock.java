@@ -1,19 +1,28 @@
 package com.mowmaster.dust.Block.Pedestal;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,10 +36,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.extensions.IForgeBlockState;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
-public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterloggedBlock
+public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterloggedBlock, EntityBlock
 {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -215,28 +226,172 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
         return PushReaction.IGNORE;
     }
 
+    //Left Click Action
+    @Override
+    public void attack(BlockState p_60499_, Level p_60500_, BlockPos p_60501_, Player p_60502_) {
+        if(!p_60500_.isClientSide())
+        {
+            BlockEntity blockEntity = p_60500_.getBlockEntity(p_60501_);
+            if(blockEntity instanceof BasePedestalBlockEntity)
+            {
+                BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity)blockEntity);
+                ItemStack itemInHand = p_60502_.getMainHandItem();
+                ItemStack itemInOffHand = p_60502_.getOffhandItem();
+
+                if(pedestal.hasItem())
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem());
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem(1));
+                    }
+                }
+
+                if(pedestal.hasCoin() && itemInOffHand.getItem().equals(Items.STICK))
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeCoin());
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeCoin());
+                    }
+                }
+
+
+                /*for(int i=0; i<100; i++)
+                {
+                    System.out.println(i + " : " + p_60502_.getSlot(i).get());
+                }*/
+
+                if(pedestal.hasLight() && itemInOffHand.getItem().equals(Items.GLOWSTONE))
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeLight(),99);
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeLight(),99);
+                    }
+                }
+
+                if(pedestal.hasRedstone() && itemInOffHand.getItem().equals(Items.REDSTONE))
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeAllRedstone(),99);
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRedstone(),99);
+                    }
+                }
+
+            }
+        }
+
+        super.attack(p_60499_, p_60500_, p_60501_, p_60502_);
+    }
+
+    //Right Click Action
     @Override
     public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
 
-        if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ColorApplicator)
+        if(!p_60504_.isClientSide())
         {
-            int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
-            BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
-            p_60504_.setBlock(p_60505_,newState,3);
-            //p_60504_.markAndNotifyBlock(p_60505_,null,p_60503_,newState,3,1);
-            return InteractionResult.SUCCESS;
-        }
-
-        /*if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ItemChisel)
-        {
-            if(p_60503_.getBlock() instanceof CrystalBlock)
+            BlockEntity blockEntity = p_60504_.getBlockEntity(p_60505_);
+            if(blockEntity instanceof BasePedestalBlockEntity)
             {
-                p_60504_.setBlock(p_60505_, BlockReference.getBlock(p_60503_,false),3);
-                return InteractionResult.SUCCESS;
-            }
-        }*/
+                BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity)blockEntity);
 
-        return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
+                ItemStack itemInHand = p_60506_.getMainHandItem();
+                ItemStack itemInOffHand = p_60506_.getOffhandItem();
+                if(itemInOffHand.getItem() instanceof ColorApplicator)
+                {
+                    int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
+                    BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
+                    p_60504_.setBlock(p_60505_,newState,3);
+                    return InteractionResult.SUCCESS;
+                }
+                else if(itemInOffHand.getItem() instanceof IPedestalUpgrade)
+                {
+                    if(!pedestal.hasCoin() && pedestal.addCoin(p_60506_,itemInOffHand,true))
+                    {
+                        pedestal.addCoin(p_60506_,itemInOffHand,false);
+                        p_60506_.getOffhandItem().shrink(1);
+                    }
+                }
+                else if(itemInOffHand.getItem().equals(Items.GLOWSTONE))
+                {
+                    if(!pedestal.hasLight())
+                    {
+                        if(pedestal.addLight())
+                        {
+                            p_60506_.getOffhandItem().shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                else if(itemInOffHand.getItem().equals(Items.REDSTONE))
+                {
+                    if(pedestal.getRedstonePowerNeeded()<15)
+                    {
+                        if(pedestal.addRedstone())
+                        {
+                            p_60506_.getOffhandItem().shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                else if(itemInHand.isEmpty())
+                {
+                    if(p_60506_.isCrouching())
+                    {
+                        String redstone = "Redstone Signal Strength Needed to Disable Pedestal: "+ pedestal.getRedstonePowerNeeded();
+                        TranslatableComponent itemCountInPedestal = new TranslatableComponent(redstone);
+                        itemCountInPedestal.withStyle(ChatFormatting.RED);
+                        p_60506_.displayClientMessage(itemCountInPedestal,true);
+                    }
+                    else
+                    {
+                        if(pedestal.hasItem())
+                        {
+                            TranslatableComponent itemCountInPedestal = new TranslatableComponent(pedestal.getItemInPedestal().getDisplayName().getString() + " " + pedestal.getItemInPedestal().getCount());
+                            itemCountInPedestal.withStyle(ChatFormatting.WHITE);
+                            p_60506_.displayClientMessage(itemCountInPedestal,true);
+                        }
+                    }
+                }
+                else
+                {
+                    int allowedInsert = pedestal.countAllowedForInsert(itemInHand);
+                    ItemStack stackToInsert = itemInHand.copy();
+                    int countToSet = (allowedInsert>itemInHand.getCount())?(itemInHand.getCount()):(allowedInsert);
+                    stackToInsert.setCount(countToSet);
+                    ItemStack returnStack = (itemInHand.getCount()>countToSet)?(new ItemStack(itemInHand.getItem(),itemInHand.getCount()-countToSet)):(ItemStack.EMPTY);
+
+                    if(!itemInHand.isEmpty() && allowedInsert>0)
+                    {
+                        if(pedestal.addItem(stackToInsert,true))
+                        {
+                            pedestal.addItem(stackToInsert,false);
+                            p_60506_.setItemInHand(InteractionHand.MAIN_HAND,returnStack);
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+
+            }
+
+        }
+        return InteractionResult.SUCCESS;
     }
 
 
@@ -252,5 +407,115 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
             }
 
         }
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+        /*BlockEntity blockEntity = world.getBlockEntity(pos);
+        if(blockEntity instanceof BasePedestalBlockEntity) {
+            BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity) blockEntity);
+            return (state.getValue(LIT))?(pedestal.getLightBrightness()):(0);
+        }*/
+
+        return (state.getValue(LIT))?(15):(0);
+    }
+
+    @Override
+    public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+        return super.canHarvestBlock(state, world, pos, player);
+    }
+
+    @Override
+    public void playerDestroy(Level p_49827_, Player p_49828_, BlockPos p_49829_, BlockState p_49830_, @Nullable BlockEntity p_49831_, ItemStack p_49832_) {
+        super.playerDestroy(p_49827_, p_49828_, p_49829_, p_49830_, p_49831_, p_49832_);
+        p_49827_.removeBlock(p_49829_,false);
+    }
+
+    @Override
+    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        if (player.isCreative()) {
+            if (player.getOffhandItem().getItem().equals(Items.TORCH))
+                return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
+            else
+                attack(state, world, pos, player);
+
+            return false;
+        }
+
+        return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
+    }
+
+    @Override
+    public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
+        if(p_60515_.getBlock() != p_60518_.getBlock())
+        {
+            BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
+            if(blockEntity instanceof BasePedestalBlockEntity) {
+                BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity) blockEntity);
+                pedestal.dropInventoryItems(p_60516_,p_60517_);
+                pedestal.dropInventoryItemsPrivate(p_60516_,p_60517_);
+
+                p_60516_.updateNeighbourForOutputSignal(p_60517_,p_60518_.getBlock());
+            }
+            super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
+        }
+    }
+
+    @Override
+    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @Nullable Direction direction) {
+        return true;
+    }
+
+    private static int getRedstoneLevelPedestal(Level worldIn, BlockPos pos)
+    {
+        int hasItem=0;
+        BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+        if(blockEntity instanceof BasePedestalBlockEntity) {
+            BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity) blockEntity);
+            ItemStack itemstack = pedestal.getItemInPedestal();
+            ItemStack coin = pedestal.getCoinOnPedestal();
+            /*if(coin.getItem() instanceof IPedestalUpgrade)
+            {
+                return ((IPedestalUpgrade)coin.getItem()).getComparatorRedstoneLevel(worldIn,pos);
+            }*/
+            if(!itemstack.isEmpty())
+            {
+                float f = (float)itemstack.getCount()/(float)itemstack.getMaxStackSize();
+                hasItem = (int)Math.floor(f*14.0F)+1;
+            }
+        }
+
+        return hasItem;
+    }
+
+    /*@Override
+    public boolean shouldCheckWeakPower(BlockState state, LevelReader world, BlockPos pos, Direction side) {
+        return state.shouldCheckWeakPower(world,pos,side);
+    }*/
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState p_60457_) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState p_60487_, Level p_60488_, BlockPos p_60489_) {
+        return getRedstoneLevelPedestal(p_60488_,p_60489_);
+    }
+
+    public RenderShape getRenderShape(BlockState p_50950_) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return DeferredBlockEntityTypes.PEDESTAL.get().create(pos, state);
+    }
+
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide ? null
+                : (level0, pos, state0, blockEntity) -> ((BasePedestalBlockEntity) blockEntity).tick();
     }
 }

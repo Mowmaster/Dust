@@ -24,7 +24,7 @@ public class DeferredRegisterTileBlocks
 
 
     public static final RegistryObject<Block> BLOCK_PEDESTAL = registerBlock("block_pedestal",
-            () -> new BasePedestalBlock(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE)));
+            () -> new BasePedestalBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
 
 
 

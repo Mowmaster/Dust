@@ -1,5 +1,7 @@
 package com.mowmaster.dust;
 
+import com.mowmaster.dust.DeferredRegistery.Client.ClientRegistry;
+import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
@@ -15,6 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -34,6 +37,7 @@ public class Dust
     public Dust() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         // Register the enqueueIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
@@ -52,12 +56,19 @@ public class Dust
         DeferredRegisterItems.ITEMS.register(eventBus);
         DeferredRegisterBlocks.BLOCKS.register(eventBus);
         DeferredRegisterTileBlocks.BLOCKS.register(eventBus);
+        DeferredBlockEntityTypes.BLOCK_ENTITIES.register(eventBus);
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
         LOGGER.info("Initialize "+MODNAME+" WorldGen");
         GeodeFeatures.initialize();
+    }
+
+    private void setupClient(final FMLClientSetupEvent event)
+    {
+        LOGGER.info("Initialize "+MODNAME+" Block Entity Renders");
+        ClientRegistry.registerBlockEntityRenderers();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
