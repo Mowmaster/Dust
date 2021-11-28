@@ -30,7 +30,7 @@ import static com.mowmaster.dust.References.Constants.MODID;
 public class ColorApplicator extends Item {
 
     public ColorApplicator(Properties p_41383_) {
-        super(new Properties().stacksTo(1).tab(DustItemTabs.TAB_ITEMS));
+        super(new Properties());
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.List;
 public class ItemUpgradeImport extends ItemUpgradeBase
 {
     public ItemUpgradeImport(Properties p_41383_) {
-        super(new Properties().durability(15).tab(DustItemTabs.TAB_ITEMS));
+        super(new Properties().durability(15));
     }
 
     public static int getUpgradeMode(ItemStack stack) {

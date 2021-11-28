@@ -2,7 +2,9 @@ package com.mowmaster.dust.Block.Pedestal;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Tools.IPedestalTool;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
@@ -250,45 +252,25 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                     }
                 }
 
-                if(pedestal.hasCoin() && itemInOffHand.getItem().equals(Items.STICK))
+
+
+                if(pedestal.hasCoin() && itemInOffHand.getItem().equals(DeferredRegisterItems.TOOL_UPGRADETOOL.get()))
                 {
-                    if(p_60502_.isCrouching())
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeCoin());
-                    }
-                    else
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeCoin());
-                    }
+                    ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeCoin());
                 }
-
-
-                /*for(int i=0; i<100; i++)
+                else if(pedestal.hasLight() && itemInOffHand.getItem().equals(Items.GLOWSTONE))
                 {
-                    System.out.println(i + " : " + p_60502_.getSlot(i).get());
-                }*/
-
-                if(pedestal.hasLight() && itemInOffHand.getItem().equals(Items.GLOWSTONE))
-                {
-                    if(p_60502_.isCrouching())
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeLight(),99);
-                    }
-                    else
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeLight(),99);
-                    }
+                    ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeLight());
                 }
-
-                if(pedestal.hasRedstone() && itemInOffHand.getItem().equals(Items.REDSTONE))
+                else if(pedestal.hasRedstone() && itemInOffHand.getItem().equals(Items.REDSTONE))
                 {
                     if(p_60502_.isCrouching())
                     {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeAllRedstone(),99);
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeAllRedstone());
                     }
                     else
                     {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRedstone(),99);
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRedstone());
                     }
                 }
 
@@ -311,7 +293,11 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
 
                 ItemStack itemInHand = p_60506_.getMainHandItem();
                 ItemStack itemInOffHand = p_60506_.getOffhandItem();
-                if(itemInOffHand.getItem() instanceof ColorApplicator)
+                if(itemInHand.getItem() instanceof IPedestalTool)
+                {
+                    return InteractionResult.FAIL;
+                }
+                else if(itemInOffHand.getItem() instanceof ColorApplicator)
                 {
                     int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
                     BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
@@ -434,7 +420,7 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
     @Override
     public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if (player.isCreative()) {
-            if (player.getOffhandItem().getItem().equals(Items.TORCH))
+            if (player.getOffhandItem().getItem().equals(DeferredRegisterItems.TOOL_DEVTOOL.get()))
                 return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
             else
                 attack(state, world, pos, player);
