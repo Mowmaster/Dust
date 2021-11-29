@@ -39,7 +39,6 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                 stackInHand.setDamageValue(setNewDamage);
 
                 player.setItemInHand(p_41434_,stackInHand);
-                System.out.println(setNewDamage);
             }
         }
 

@@ -1,0 +1,8 @@
+{
+"parent": "dust:item/filter_item",
+  "textures": {
+    "0": "dust:items/models/filters/filteritemdefault_fluid",
+    "1": "dust:items/models/filters/filteritem",
+    "particle": "dust:items/models/filters/filteritemdefault_fluid"
+  }
+}

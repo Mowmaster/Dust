@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Crafting.InWorld;
+package com.mowmaster.dust.EventHandlers.InWorld;
 
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.References.ColorReference;
@@ -29,7 +29,7 @@ public class ChangeApplicatorColor {
     @SubscribeEvent()
     public static void ColorApply(PlayerInteractEvent.RightClickBlock event)
     {
-        if(!(event.getPlayer() instanceof FakePlayer))
+        if(!(event.getPlayer() instanceof FakePlayer) && event.getPlayer().isCreative())
         {
             Level world = event.getWorld();
             Player player = event.getPlayer();

@@ -4,14 +4,13 @@ import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Tools.IPedestalTool;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -38,7 +37,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.extensions.IForgeBlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -240,23 +238,13 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                 ItemStack itemInHand = p_60502_.getMainHandItem();
                 ItemStack itemInOffHand = p_60502_.getOffhandItem();
 
-                if(pedestal.hasItem())
-                {
-                    if(p_60502_.isCrouching())
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem());
-                    }
-                    else
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem(1));
-                    }
-                }
-
-
-
                 if(pedestal.hasCoin() && itemInOffHand.getItem().equals(DeferredRegisterItems.TOOL_UPGRADETOOL.get()))
                 {
                     ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeCoin());
+                }
+                else if(pedestal.hasFilter() && itemInOffHand.getItem().equals(DeferredRegisterItems.TOOL_FILTERTOOL.get()))
+                {
+                    ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeFilter(true));
                 }
                 else if(pedestal.hasLight() && itemInOffHand.getItem().equals(Items.GLOWSTONE))
                 {
@@ -271,6 +259,17 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                     else
                     {
                         ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRedstone());
+                    }
+                }
+                else if(pedestal.hasItem())
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem());
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem(1));
                     }
                 }
 
@@ -317,6 +316,16 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                     {
                         pedestal.addCoin(p_60506_,itemInOffHand,false);
                         p_60506_.getOffhandItem().shrink(1);
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                else if(itemInOffHand.getItem() instanceof IPedestalFilter)
+                {
+                    if(!pedestal.hasFilter() && pedestal.addFilter(itemInOffHand,true))
+                    {
+                        pedestal.addFilter(itemInOffHand,false);
+                        p_60506_.getOffhandItem().shrink(1);
+                        return InteractionResult.SUCCESS;
                     }
                 }
                 else if(itemInOffHand.getItem().equals(Items.GLOWSTONE))

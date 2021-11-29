@@ -2,6 +2,8 @@ package com.mowmaster.dust.DeferredRegistery;
 
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Filters.BaseFilter;
+import com.mowmaster.dust.Items.Filters.FilterItem;
 import com.mowmaster.dust.Items.Tools.DevTool;
 import com.mowmaster.dust.Items.Tools.FilterTool;
 import com.mowmaster.dust.Items.Tools.LinkingTool;
@@ -35,6 +37,11 @@ public class DeferredRegisterItems
             () -> new FilterTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_DEVTOOL = ITEMS.register("tool_devtool",
             () -> new DevTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+
+    public static final RegistryObject<Item> FILTER_BASE = ITEMS.register("filter_base",
+            () -> new BaseFilter(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_ITEM = ITEMS.register("filter_item",
+            () -> new FilterItem(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
     public static final RegistryObject<Item> PEDESTAL_UPGRADE_IMPORT = ITEMS.register("item_pedestal_upgrade_import",
             () -> new ItemUpgradeImport(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));

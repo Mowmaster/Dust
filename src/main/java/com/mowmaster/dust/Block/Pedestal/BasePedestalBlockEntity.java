@@ -1,7 +1,9 @@
 package com.mowmaster.dust.Block.Pedestal;
 
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
+import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
@@ -51,6 +53,7 @@ public class BasePedestalBlockEntity extends BlockEntity
     private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
     public BlockPos getPos() { return this.worldPosition; }
+    private BasePedestalBlockEntity getPedestal() { return this; }
 
     public BasePedestalBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(DeferredBlockEntityTypes.PEDESTAL.get(), p_155229_, p_155230_);
@@ -79,8 +82,9 @@ public class BasePedestalBlockEntity extends BlockEntity
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 //Run filter checks here(slot==0)?(true):(false)
-
-                return true;
+                IPedestalFilter filter = getIPedestalFilter();
+                if(filter == null)return true;
+                return filter.canAcceptItem(getPedestal(),stack);
             }
 
             @Override
@@ -92,8 +96,10 @@ public class BasePedestalBlockEntity extends BlockEntity
             @Override
             protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
                 //Run filter checks here
+                IPedestalFilter filter = getIPedestalFilter();
+                if(filter == null)return super.getStackLimit(slot, stack);
 
-                return super.getStackLimit(slot, stack);
+                return filter.canAcceptCount(getPedestal(),stack);
             }
 
             @Override
@@ -160,7 +166,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                 if (slot == 0 && stack.getItem() instanceof IPedestalUpgrade && !hasCoin()) return true;
                 //if (slot == 1 && stack.getItem().equals(Items.GLOWSTONE_DUST) && getLightBrightness()<15) return true;
                 if (slot == 1 && stack.getItem().equals(Items.GLOWSTONE) && !hasLight()) return true;
-                //if (slot == 2 && stack.getItem() instanceof IFilterBase && !stack.getItem().equals(ItemFilterBase.BASEFILTER) && !hasFilter() && ((hasCoin())?(!FILTER_BROKE_UPGRADES.contains(getCoinOnPedestal().getItem())):(true))) return true;
+                if (slot == 2 && stack.getItem() instanceof IPedestalFilter && !(stack.getItem().equals(DeferredRegisterItems.FILTER_BASE.get())) && !hasFilter()) return true;
                 if (slot == 3 && stack.getItem().equals(Items.REDSTONE) && getRedstonePowerNeeded()<15) return true;
                 //if (slot == 4 && stack.getItem().equals(ItemPedestalUpgrades.ROUNDROBIN) && !hasRRobin()) return true;
                 //if (slot == 5 && stack.getItem().equals(ItemPedestalUpgrades.PARTICLEDIFFUSER)) return true;
@@ -490,9 +496,21 @@ public class BasePedestalBlockEntity extends BlockEntity
     public boolean addItem(ItemStack itemFromBlock,boolean simulate)
     {
         IItemHandler h = handler.orElse(null);
-        if(hasItem())
+        if(h.isItemValid(0,itemFromBlock))
         {
-            if(ItemHandlerHelper.canItemStacksStack(getItemInPedestal(),itemFromBlock))
+            if(hasItem())
+            {
+                if(ItemHandlerHelper.canItemStacksStack(getItemInPedestal(),itemFromBlock))
+                {
+                    if(!simulate)
+                    {
+                        h.insertItem(0, itemFromBlock.copy(), false);
+                        update();
+                    }
+                    return true;
+                }
+            }
+            else
             {
                 if(!simulate)
                 {
@@ -501,15 +519,6 @@ public class BasePedestalBlockEntity extends BlockEntity
                 }
                 return true;
             }
-        }
-        else
-        {
-            if(!simulate)
-            {
-                h.insertItem(0, itemFromBlock.copy(), false);
-                update();
-            }
-            return true;
         }
 
         return false;
@@ -542,6 +551,12 @@ public class BasePedestalBlockEntity extends BlockEntity
         }*/
 
         return  itemRate;
+    }
+
+    public int getSlotSizeLimit()
+    {
+        IItemHandler h = handler.orElse(null);
+        return (h != null)?(h.getSlotLimit(0)):(0);
     }
 
     public void collideWithPedestal(Level world, BasePedestalBlockEntity tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
@@ -861,6 +876,7 @@ public class BasePedestalBlockEntity extends BlockEntity
             boolLight = true;
             ph.extractItem(slotLight,1,false);
             level.setBlock(worldPosition,newstate,3);
+            update();
             return new ItemStack(Items.GLOWSTONE,1);
 
         }
@@ -938,10 +954,11 @@ public class BasePedestalBlockEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    /*public boolean hasFilter()
+    private int slotFilter = 2;
+    public boolean hasFilter()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(6).isEmpty())
+        if(ph.getStackInSlot(slotFilter).isEmpty())
         {
             return false;
         }
@@ -951,36 +968,36 @@ public class BasePedestalBlockEntity extends BlockEntity
     public ItemStack getFilterInPedestal()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        return ph.getStackInSlot(6);
+        return ph.getStackInSlot(slotFilter);
+    }
+
+    public IPedestalFilter getIPedestalFilter()
+    {
+        if(hasFilter())
+        {
+            if(getFilterInPedestal().getItem() instanceof IPedestalFilter)
+            {
+                return ((IPedestalFilter)getFilterInPedestal().getItem());
+            }
+        }
+
+        return null;
     }
 
     public ItemStack removeFilter(boolean updateBlock) {
         IItemHandler ph = privateHandler.orElse(null);
         if(updateBlock)
         {
-            BlockState state = world.getBlockState(pos);
-            int filterState = 0;
-            boolean watered = state.get(PedestalBlock.WATERLOGGED);
-            Direction dir = state.get(PedestalBlock.FACING);
-            boolean lit = state.get(PedestalBlock.LIT);
-            BlockState newstate = state.with(PedestalBlock.FACING,dir).with(PedestalBlock.WATERLOGGED,watered).with(PedestalBlock.LIT,lit).with(PedestalBlock.FILTER_STATUS,filterState);
-            world.notifyBlockUpdate(pos,state,newstate,3);
-            world.setBlockState(pos,newstate,3);
-            world.markBlockRangeForRenderUpdate(pos,state,newstate);
+            BlockState state = level.getBlockState(worldPosition);
+            BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, state.getValue(LIT)).setValue(FILTER_STATUS, 0);
+            level.setBlock(worldPosition,newstate,3);
+            update();
         }
 
-        if(hasCoin())
-        {
-            if(getCoinOnPedestal().getItem() instanceof IUpgradeBase)
-            {
-                IUpgradeBase coin = ((IUpgradeBase)getCoinOnPedestal().getItem());
-                coin.setFilterChangeUpdate(getCoinOnPedestal());
-            }
-        }
-        return ph.extractItem(6,ph.getStackInSlot(6).getCount(),false);
+        return ph.extractItem(slotFilter,ph.getStackInSlot(slotFilter).getCount(),false);
     }
 
-    public boolean addFilter(ItemStack filter,boolean simulate)
+    public boolean addFilter(ItemStack filter, boolean simulate)
     {
         if(hasFilter())
         {
@@ -988,106 +1005,22 @@ public class BasePedestalBlockEntity extends BlockEntity
         }
         else
         {
-            BlockState state = world.getBlockState(pos);
-            boolean watered = state.get(PedestalBlock.WATERLOGGED);
-            Direction dir = state.get(PedestalBlock.FACING);
-            boolean lit = state.get(PedestalBlock.LIT);
-            int filterState = state.get(PedestalBlock.FILTER_STATUS);
-            if(filter.getItem() instanceof IFilterBase)
-            {
-                //Blacklist = 2 , whitelist = 1
-                filterState = (((IFilterBase) filter.getItem()).getFilterTypeFromNBT(filter))?(2):(1);
-            }
-            BlockState newstate = state.with(PedestalBlock.FACING,dir).with(PedestalBlock.WATERLOGGED,watered).with(PedestalBlock.LIT,lit).with(PedestalBlock.FILTER_STATUS,filterState);
-
             IItemHandler ph = privateHandler.orElse(null);
-            ItemStack filterItem = filter.copy();
-            filterItem.setCount(1);
-            if(!hasFilter() && ph.isItemValid(6,filterItem))
+            if(!hasFilter() && ph.isItemValid(slotFilter,filter))
             {
                 if(!simulate)
                 {
-                    ph.insertItem(6,filterItem,false);
-                    world.notifyBlockUpdate(pos,state,newstate,3);
-                    world.setBlockState(pos,newstate,3);
-                    world.markBlockRangeForRenderUpdate(pos,state,newstate);
-
-                    if(hasCoin())
-                    {
-                        if(getCoinOnPedestal().getItem() instanceof IUpgradeBase)
-                        {
-                            IUpgradeBase coin = ((IUpgradeBase)getCoinOnPedestal().getItem());
-                            coin.setFilterChangeUpdate(getCoinOnPedestal());
-                        }
-                    }
+                    ph.insertItem(slotFilter,filter.copy(),false);
+                    BlockState state = level.getBlockState(worldPosition);
+                    BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, state.getValue(LIT)).setValue(FILTER_STATUS, (((IPedestalFilter) filter.getItem()).getFilterType(filter))?(2):(1));
+                    level.setBlock(worldPosition,newstate,3);
+                    update();
                 }
                 return true;
             }
             else return false;
         }
     }
-
-    public boolean updateFilter(ItemStack filter,boolean updateBlock)
-    {
-        if(hasFilter())
-        {
-            //old filter needing updated
-            ItemStack oldStack = getFilterInPedestal().copy();
-
-            BlockState state = world.getBlockState(pos);
-            int filterState = state.get(PedestalBlock.FILTER_STATUS);
-            int newFilterState = filterState;
-            if(filter.getItem() instanceof IFilterBase)
-            {
-                //Blacklist = 2 , whitelist = 1
-                newFilterState = (((IFilterBase) filter.getItem()).getFilterTypeFromNBT(filter))?(2):(1);
-
-                if(filter.hasTag())
-                {
-                    oldStack.setTag(filter.getTag());
-
-                    if(hasCoin())
-                    {
-                        if(getCoinOnPedestal().getItem() instanceof IUpgradeBase)
-                        {
-                            IUpgradeBase coin = ((IUpgradeBase)getCoinOnPedestal().getItem());
-                            coin.setFilterChangeUpdate(getCoinOnPedestal());
-                        }
-                    }
-                }
-            }
-            IItemHandler ph = privateHandler.orElse(null);
-            if(ph.isItemValid(6,filter))
-            {
-                if(updateBlock) {
-                    removeFilter(false);
-                    ph.insertItem(6, oldStack, false);
-                    if(newFilterState != filterState)
-                    {
-                        boolean watered = state.get(PedestalBlock.WATERLOGGED);
-                        Direction dir = state.get(PedestalBlock.FACING);
-                        boolean lit = state.get(PedestalBlock.LIT);
-                        BlockState newstate = state.with(PedestalBlock.FACING,dir).with(PedestalBlock.WATERLOGGED,watered).with(PedestalBlock.LIT,lit).with(PedestalBlock.FILTER_STATUS,newFilterState);
-                        world.notifyBlockUpdate(pos,state,newstate,3);
-                        world.setBlockState(pos,newstate,3);
-                        world.markBlockRangeForRenderUpdate(pos,state,newstate);
-
-                        if(hasCoin())
-                        {
-                            if(getCoinOnPedestal().getItem() instanceof IUpgradeBase)
-                            {
-                                IUpgradeBase coin = ((IUpgradeBase)getCoinOnPedestal().getItem());
-                                coin.setFilterChangeUpdate(getCoinOnPedestal());
-                            }
-                        }
-                    }
-                }
-                return true;
-            }
-        }
-
-        return false;
-    }*/
 
     /*============================================================================
     ==============================================================================

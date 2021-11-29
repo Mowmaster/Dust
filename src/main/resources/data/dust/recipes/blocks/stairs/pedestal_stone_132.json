@@ -20,7 +20,7 @@
     "type": "forge:nbt",
     "nbt": {
       "dust_color": 5636010
-    ,
+    },
       "count": 8
   }
 
