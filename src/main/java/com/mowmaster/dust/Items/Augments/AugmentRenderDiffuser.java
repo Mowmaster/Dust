@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Items.Augments;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -7,16 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 
+import static com.mowmaster.dust.References.Constants.MODID;
+
 public class AugmentRenderDiffuser extends AugmentBase
 {
 
     public AugmentRenderDiffuser(Properties p_41383_) {
-        super(p_41383_.durability(6));
-    }
-
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) {
-        return false;
+        super(p_41383_);
     }
 
     public static int getAugmentMode(ItemStack stack) {
@@ -29,7 +27,27 @@ public class AugmentRenderDiffuser extends AugmentBase
         // 5 - No Render Item/No Render Upgrade
         // 6 - No Particles/No Render Item/No Render Upgrade
 
-        return (stack.isDamaged())?(stack.getDamageValue()):(0);
+        return readModeFromNBT(stack);
+    }
+
+    public static void saveModeToNBT(ItemStack augment, int mode)
+    {
+        CompoundTag compound = new CompoundTag();
+        if(augment.hasTag())
+        {
+            compound = augment.getTag();
+        }
+        compound.putInt(MODID+"_augment_mode",mode);
+        augment.setTag(compound);
+    }
+
+    public static int readModeFromNBT(ItemStack augment) {
+        if(augment.hasTag())
+        {
+            CompoundTag getCompound = augment.getTag();
+            return getCompound.getInt(MODID+"_augment_mode");
+        }
+        return 0;
     }
 
     @Override
@@ -45,10 +63,9 @@ public class AugmentRenderDiffuser extends AugmentBase
         {
             if(result.getType().equals(HitResult.Type.MISS))
             {
-                int damage = stackInHand.getDamageValue()+1;
-                int setNewDamage = (damage<=6)?(damage):(0);
-                stackInHand.setDamageValue(setNewDamage);
-
+                int mode = getAugmentMode(stackInHand)+1;
+                int setNewMode = (mode<=6)?(mode):(0);
+                saveModeToNBT(stackInHand,setNewMode);
                 player.setItemInHand(p_41434_,stackInHand);
             }
         }

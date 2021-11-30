@@ -4,6 +4,7 @@ import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.Tools.FilterTool;
 import com.mowmaster.dust.References.ColorReference;
+import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -300,7 +301,7 @@ public class BaseFilter extends Item implements IPedestalFilter
     public List<ItemStack> buildFilterQueue(Level world, BlockPos invBlock) {
         List<ItemStack> filterQueue = new ArrayList<>();
 
-        LazyOptional<IItemHandler> cap = findItemHandlerAtPos(world,invBlock,true);
+        LazyOptional<IItemHandler> cap = PedestalUtilities.findItemHandlerAtPos(world,invBlock,true);
         if(cap.isPresent())
         {
             IItemHandler handler = cap.orElse(null);
@@ -374,41 +375,7 @@ public class BaseFilter extends Item implements IPedestalFilter
         return filterType;
     }
 
-    public static LazyOptional<IItemHandler> findItemHandlerAtPos(Level world, BlockPos pos, boolean allowCart)
-    {
-        BlockEntity neighbourTile = world.getBlockEntity(pos);
-        if(neighbourTile!=null)
-        {
-            LazyOptional<IItemHandler> cap = neighbourTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-            if(cap.isPresent())
-                return cap;
-        }
-        if(allowCart)
-        {
-            if(RailBlock.isRail(world, pos))
-            {
-                List<Entity> list = world.getEntitiesOfClass(null, new AABB(pos), entity -> entity instanceof IForgeAbstractMinecart);
-                if(!list.isEmpty())
-                {
-                    LazyOptional<IItemHandler> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-                    if(cap.isPresent())
-                        return cap;
-                }
-            }
-            else
-            {
-                //Added for quark boats with inventories (i hope)
-                List<Entity> list = world.getEntitiesOfClass(null, new AABB(pos), entity -> entity instanceof Boat);
-                if(!list.isEmpty())
-                {
-                    LazyOptional<IItemHandler> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-                    if(cap.isPresent())
-                        return cap;
-                }
-            }
-        }
-        return LazyOptional.empty();
-    }
+
 
     @Override
     public void chatDetails(Player player, BasePedestalBlockEntity pedestal) {

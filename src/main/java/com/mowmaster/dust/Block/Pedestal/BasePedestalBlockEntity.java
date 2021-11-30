@@ -1548,20 +1548,20 @@ public class BasePedestalBlockEntity extends BlockEntity
                 }
             }
         }
-        /*if(level.isAreaLoaded(worldPosition,1))
+        if(level.isAreaLoaded(worldPosition,1))
         {
-            if(hasCoin())
+            if(hasCoin() && !isPedestalBlockPowered())
             {
                 Item coinInPed = getCoinOnPedestal().getItem();
-                if(coinInPed instanceof IUpgradeBase)
+                if(coinInPed instanceof IPedestalUpgrade)
                 {
                     impTicker++;
-                    ((IUpgradeBase) coinInPed).updateAction(world,this);
+                    ((IPedestalUpgrade) coinInPed).updateAction(level,this);
                     //Has to be bigger than our biggest ticker value for an upgrade, or itll reset the upgrade instance before the upgrade action can fire
                     if(impTicker >=Integer.MAX_VALUE-100){impTicker=0;}
                 }
             }
-        }*/
+        }
     }
 
 
