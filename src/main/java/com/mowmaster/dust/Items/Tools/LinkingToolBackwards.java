@@ -287,7 +287,7 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                 for(int i=0;i<locationsNum;i++)
                                 {
                                     List<Integer> color = ColorReference.getIntColor(ColorReference.ALL_COLORS.get(i));
-                                    //if(storedPositionList.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList.get(i),color.get(0),color.get(1),color.get(2));}
+                                    if(storedPositionList.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList.get(i),color.get(0),color.get(1),color.get(2));}
                                 }
                             }
                         }

@@ -6,6 +6,7 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
 import net.minecraft.world.item.Item;
@@ -63,6 +64,7 @@ public class Dust
     {
         LOGGER.info("Initialize "+MODNAME+" WorldGen");
         GeodeFeatures.initialize();
+        DustPacketHandler.registerMessages();
     }
 
     private void setupClient(final FMLClientSetupEvent event)

@@ -6,6 +6,8 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
+import com.mowmaster.dust.Networking.DustPacketParticles;
+import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -1118,10 +1120,10 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public boolean isPedestalBlockPowered()
     {
-        boolean returner = (this.getLevel().hasNeighborSignal(this.getBlockPos()))?((getRedstonePower()>=getRedstonePowerNeeded())?(true):(false)):(false);
+        boolean returner = false;
         if(hasRedstone())
         {
-            return !returner;
+            return (this.getLevel().hasNeighborSignal(this.getBlockPos()))?((getRedstonePower()>=getRedstonePowerNeeded())?(true):(false)):(false);
         }
 
         return returner;
@@ -1469,7 +1471,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                     copyStackToSend.setCount(countToSend);
                     removeItem(copyStackToSend.getCount());
                     tileToSendTo.addItem(copyStackToSend,false);
-                    //if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,worldPosition,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),worldPosition.getX(),worldPosition.getY(),worldPosition.getZ()));
+                    if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,worldPosition,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),worldPosition.getX(),worldPosition.getY(),worldPosition.getZ()));
                 }
             }
         }
