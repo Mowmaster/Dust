@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -43,12 +44,11 @@ public class BaseFilter extends Item implements IPedestalFilter
     public boolean filterType = false;
 
     public BaseFilter(Properties p_41383_) {
-        super(p_41383_.stacksTo(64).durability(3));
+        super(p_41383_);
     }
 
     public static int getFilterMode(ItemStack stack) {
-
-        return (stack.isDamaged())?(stack.getDamageValue()):(0);
+        return readModeFromNBT(stack);
     }
 
     public String getFilterModeString(int mode) {
@@ -59,7 +59,6 @@ public class BaseFilter extends Item implements IPedestalFilter
             case 1: return "fluid";
             case 2: return "energy";
             case 3: return "xp";
-            case 4: return "error";
             default: return "item";
         }
     }
@@ -72,9 +71,33 @@ public class BaseFilter extends Item implements IPedestalFilter
             case 1: return "fluid";
             case 2: return "energy";
             case 3: return "xp";
-            case 4: return "error";
             default: return "item";
         }
+    }
+
+    public static void saveModeToNBT(ItemStack filter, int mode)
+    {
+        CompoundTag compound = new CompoundTag();
+        if(filter.hasTag())
+        {
+            compound = filter.getTag();
+        }
+        compound.putInt(MODID+"_filter_mode",mode);
+        filter.setTag(compound);
+    }
+
+    public static int readModeFromNBT(ItemStack filter) {
+        if(filter.hasTag())
+        {
+            CompoundTag getCompound = filter.getTag();
+            return getCompound.getInt(MODID+"_filter_mode");
+        }
+        return 0;
+    }
+
+    public boolean doItemsMatch(ItemStack stackPedestal, ItemStack itemStackIn)
+    {
+        return ItemHandlerHelper.canItemStacksStack(stackPedestal,itemStackIn);
     }
 
     //Left Click
@@ -175,10 +198,10 @@ public class BaseFilter extends Item implements IPedestalFilter
                     {
                         if(player.isCrouching())
                         {
-                            int damage = itemInOffhand.getDamageValue()+1;
-                            int setNewDamage = (damage<=3)?(damage):(0);
-                            itemInOffhand.setDamageValue(setNewDamage);
-
+                            int mode = getFilterMode(itemInOffhand)+1;
+                            int setNewMode = (mode<=3)?(mode):(0);
+                            saveModeToNBT(itemInOffhand,setNewMode);
+                            ColorReference.addColorToItemStack(itemInOffhand,getFilterTypeColor(itemInOffhand));
                             player.setItemInHand(hand,itemInOffhand);
                         }
                     }
@@ -201,7 +224,7 @@ public class BaseFilter extends Item implements IPedestalFilter
     public boolean getFilterType(ItemStack filterItem) {
         //false = whitelist
         //true = blacklist
-        getFilterTypeFromNBT(filterItem);
+        getFilterTypeFromNBT(filterItem,getFilterMode(filterItem));
         return getFilterType();
     }
 
@@ -210,7 +233,12 @@ public class BaseFilter extends Item implements IPedestalFilter
         filterType = filterSet;
         if(filterSet) { ColorReference.addColorToItemStack(filterItem,2763306); }
         else ColorReference.addColorToItemStack(filterItem,16777215);
-        writeFilterTypeToNBT(filterItem);
+        writeFilterTypeToNBT(filterItem,getFilterMode(filterItem));
+    }
+
+    public int getFilterTypeColor(ItemStack filterItem)
+    {
+        return (getFilterType(filterItem))?(2763306):(16777215);
     }
 
     @Override
@@ -326,63 +354,24 @@ public class BaseFilter extends Item implements IPedestalFilter
     }
 
     @Override
-    public void writeFilterTypeToNBT(ItemStack filterStack) {
+    public void writeFilterTypeToNBT(ItemStack filterStack, int mode) {
         CompoundTag compound = new CompoundTag();
         if(filterStack.hasTag())
         {
             compound = filterStack.getTag();
         }
-        compound.putBoolean("filter_type",this.filterType);
+        compound.putBoolean(getFilterModeString(mode)+"filter_type",this.filterType);
         filterStack.setTag(compound);
     }
 
     @Override
-    public boolean getFilterTypeFromNBT(ItemStack filterStack) {
+    public boolean getFilterTypeFromNBT(ItemStack filterStack, int mode) {
         if(filterStack.hasTag())
         {
             CompoundTag getCompound = filterStack.getTag();
-            this.filterType = getCompound.getBoolean("filter_type");
+            this.filterType = getCompound.getBoolean(getFilterModeString(mode)+"filter_type");
         }
         return filterType;
-    }
-
-    @Override
-    public void chatDetails(Player player, BasePedestalBlockEntity pedestal) {
-        ItemStack filterStack = pedestal.getFilterInPedestal();
-        if(!filterStack.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
-        {
-            TranslatableComponent filterList = new TranslatableComponent(filterStack.getDisplayName().getString());
-            filterList.withStyle(ChatFormatting.GOLD);
-            player.sendMessage(filterList, Util.NIL_UUID);
-
-            //For each Mode
-            for(int i=0;i<4;i++)
-            {
-                List<ItemStack> filterQueue = readFilterQueueFromNBT(filterStack,i);
-                if(filterQueue.size()>0)
-                {
-                    TranslatableComponent enchant = new TranslatableComponent(MODID + ".filters.tooltip_filterlist");
-                    enchant.withStyle(ChatFormatting.LIGHT_PURPLE);
-                    player.sendMessage(enchant, Util.NIL_UUID);
-
-                    for(int j=0;j<filterQueue.size();j++) {
-
-                        if(!filterQueue.get(i).isEmpty())
-                        {
-                            TranslatableComponent enchants = new TranslatableComponent(filterQueue.get(i).getDisplayName().getString());
-                            enchants.withStyle(ChatFormatting.GRAY);
-                            player.sendMessage(enchants, Util.NIL_UUID);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            TranslatableComponent base = new TranslatableComponent(MODID + ".baseItem");
-            base.withStyle(ChatFormatting.DARK_RED);
-            player.sendMessage(base, Util.NIL_UUID);
-        }
     }
 
     public static LazyOptional<IItemHandler> findItemHandlerAtPos(Level world, BlockPos pos, boolean allowCart)
@@ -419,6 +408,45 @@ public class BaseFilter extends Item implements IPedestalFilter
             }
         }
         return LazyOptional.empty();
+    }
+
+    @Override
+    public void chatDetails(Player player, BasePedestalBlockEntity pedestal) {
+        ItemStack filterStack = pedestal.getFilterInPedestal();
+        if(!filterStack.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
+        {
+            TranslatableComponent filterList = new TranslatableComponent(filterStack.getDisplayName().getString());
+            filterList.withStyle(ChatFormatting.GOLD);
+            player.sendMessage(filterList, Util.NIL_UUID);
+
+            //For each Mode
+            for(int i=0;i<4;i++)
+            {
+                List<ItemStack> filterQueue = readFilterQueueFromNBT(filterStack,i);
+                if(filterQueue.size()>0)
+                {
+                    TranslatableComponent enchant = new TranslatableComponent(MODID + ".filters.tooltip_filterlist");
+                    enchant.withStyle(ChatFormatting.LIGHT_PURPLE);
+                    player.sendMessage(enchant, Util.NIL_UUID);
+
+                    for(int j=0;j<filterQueue.size();j++) {
+
+                        if(!filterQueue.get(j).isEmpty())
+                        {
+                            TranslatableComponent enchants = new TranslatableComponent(filterQueue.get(j).getDisplayName().getString());
+                            enchants.withStyle(ChatFormatting.GRAY);
+                            player.sendMessage(enchants, Util.NIL_UUID);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            TranslatableComponent base = new TranslatableComponent(MODID + ".baseItem");
+            base.withStyle(ChatFormatting.DARK_RED);
+            player.sendMessage(base, Util.NIL_UUID);
+        }
     }
 
     @Override

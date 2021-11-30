@@ -31,11 +31,18 @@ public class BasePedestalBlockEntityRenderer implements BlockEntityRenderer<Base
             ItemStack stack = p_112307_.getItemInPedestal();
             ItemStack coin = p_112307_.getCoinOnPedestal();
             Level world = p_112307_.getLevel();
-            //int renderAugmentType = p_112307_.getRenderAugmentType();
-            int renderAugmentType = 0;
+            // 0 - No Particles
+            // 1 - No Render Item
+            // 2 - No Render Upgrade
+            // 3 - No Particles/No Render Item
+            // 4 - No Particles/No Render Upgrade
+            // 5 - No Render Item/No Render Upgrade
+            // 6 - No Particles/No Render Item/No Render Upgrade
+            // 7 - No Augment exists and thus all rendering is fine.
+            int renderAugmentType = p_112307_.getRendererType();
 
-            //if(renderAugmentType !=0)
-            //{
+            if(renderAugmentType !=6)
+            {
                 if(facing== Direction.UP)//when placed on ground
                 {
                     //renderTile(world,p_112309_,p_112310_,coin,stack,p_112311_,p_112312_,renderAugmentType);
@@ -77,21 +84,57 @@ public class BasePedestalBlockEntityRenderer implements BlockEntityRenderer<Base
                     renderTile(world,p_112309_,p_112310_,stack,coin,p_112311_,p_112312_,renderAugmentType);
                     //renderTile(world,p_112309_,p_112310_,coin,stack,p_112311_,p_112312_,renderAugmentType);
                 }
-            //}
+            }
         }
     }
     //public static void  renderTile(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack coin, ItemStack item, int p_112311_, int p_112312_, int renderAugmentType)
     public static void  renderTile(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack item, ItemStack coin, int p_112311_, int p_112312_, int renderAugmentType)
     {
-        //if(renderAugmentType !=2)
-            renderItemRotating(worldIn,p_112309_,p_112310_,item,p_112311_,p_112312_);
-        //if(renderAugmentType !=1)
-        //{
-            renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.3125f,0,0,0,0,p_112311_,p_112312_);
-            renderCoin(worldIn,coin,p_112309_,p_112310_,0.3125f,0.475f,0.5f,90,0,1f,0,p_112311_,p_112312_);
-            renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.6875f,180,0,1f,0,p_112311_,p_112312_);
-            renderCoin(worldIn,coin,p_112309_,p_112310_,0.6875f,0.475f,0.5f,270,0,1f,0,p_112311_,p_112312_);
-        //}
+        switch (renderAugmentType)
+        {
+            case 0:
+                renderItemRotating(worldIn,p_112309_,p_112310_,item,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.3125f,0,0,0,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.3125f,0.475f,0.5f,90,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.6875f,180,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.6875f,0.475f,0.5f,270,0,1f,0,p_112311_,p_112312_);
+            break;
+            case 1:
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.3125f,0,0,0,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.3125f,0.475f,0.5f,90,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.6875f,180,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.6875f,0.475f,0.5f,270,0,1f,0,p_112311_,p_112312_);
+                break;
+            case 2:
+                renderItemRotating(worldIn,p_112309_,p_112310_,item,p_112311_,p_112312_);
+                break;
+            case 3:
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.3125f,0,0,0,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.3125f,0.475f,0.5f,90,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.6875f,180,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.6875f,0.475f,0.5f,270,0,1f,0,p_112311_,p_112312_);
+                break;
+            case 4:
+                renderItemRotating(worldIn,p_112309_,p_112310_,item,p_112311_,p_112312_);
+                break;
+            case 5: break;
+            case 6: break;
+            case 7:
+                renderItemRotating(worldIn,p_112309_,p_112310_,item,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.3125f,0,0,0,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.3125f,0.475f,0.5f,90,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.6875f,180,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.6875f,0.475f,0.5f,270,0,1f,0,p_112311_,p_112312_);
+                break;
+            default:
+                renderItemRotating(worldIn,p_112309_,p_112310_,item,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.3125f,0,0,0,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.3125f,0.475f,0.5f,90,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.5f,0.475f,0.6875f,180,0,1f,0,p_112311_,p_112312_);
+                renderCoin(worldIn,coin,p_112309_,p_112310_,0.6875f,0.475f,0.5f,270,0,1f,0,p_112311_,p_112312_);
+                break;
+
+        }
     }
 
     public static void renderItemRotating(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_)

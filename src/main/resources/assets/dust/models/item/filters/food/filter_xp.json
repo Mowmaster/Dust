@@ -1,0 +1,8 @@
+{
+"parent": "dust:item/filter_food",
+  "textures": {
+    "0": "dust:items/models/filters/filteritemdefault_xp",
+    "1": "dust:items/models/filters/filterbase",
+    "particle": "dust:items/models/filters/filteritemdefault_xp"
+  }
+}

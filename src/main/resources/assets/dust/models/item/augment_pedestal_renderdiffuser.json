@@ -1,0 +1,15 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "dust:items/augments/renderdiffuser"
+  },
+  "overrides": [
+    { "predicate": { "dust:augment_mode": 0}, "model": "dust:item/augments/augment_p"},
+    { "predicate": { "dust:augment_mode": 1}, "model": "dust:item/augments/augment_i"},
+    { "predicate": { "dust:augment_mode": 2}, "model": "dust:item/augments/augment_u"},
+    { "predicate": { "dust:augment_mode": 3}, "model": "dust:item/augments/augment_pi"},
+    { "predicate": { "dust:augment_mode": 4}, "model": "dust:item/augments/augment_pu"},
+    { "predicate": { "dust:augment_mode": 5}, "model": "dust:item/augments/augment_iu"},
+    { "predicate": { "dust:augment_mode": 6}, "model": "dust:item/augments/augment_piu"}
+  ]
+}

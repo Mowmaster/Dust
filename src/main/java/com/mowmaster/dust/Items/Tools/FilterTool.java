@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Items.Tools;
 
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +11,7 @@ import net.minecraft.world.phys.HitResult;
 public class FilterTool extends BaseTool implements IPedestalTool
 {
     public FilterTool(Properties p_41383_) {
-        super(p_41383_);
+        super(p_41383_.stacksTo(1));
     }
 
 

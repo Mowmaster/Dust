@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery;
 
+import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.Filters.BaseFilter;
 import com.mowmaster.dust.Items.Filters.FilterItem;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeImport;
@@ -20,5 +21,8 @@ public class ItemModelPropertiesDust
             return BaseFilter.getFilterMode(p_174625_);});
         ItemProperties.register(item, new ResourceLocation(MODID + ":filter_mode"),(p_174625_, p_174626_, p_174627_, p_174628_) -> {
             return FilterItem.getFilterMode(p_174625_);});
+
+        ItemProperties.register(item, new ResourceLocation(MODID + ":augment_mode"),(p_174625_, p_174626_, p_174627_, p_174628_) -> {
+            return AugmentRenderDiffuser.getAugmentMode(p_174625_);});
     }
 }

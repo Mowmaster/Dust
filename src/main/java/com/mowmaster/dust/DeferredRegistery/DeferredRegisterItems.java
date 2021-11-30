@@ -1,13 +1,11 @@
 package com.mowmaster.dust.DeferredRegistery;
 
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
+import com.mowmaster.dust.Items.Augments.AugmentBase;
+import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.ColorApplicator;
-import com.mowmaster.dust.Items.Filters.BaseFilter;
-import com.mowmaster.dust.Items.Filters.FilterItem;
-import com.mowmaster.dust.Items.Tools.DevTool;
-import com.mowmaster.dust.Items.Tools.FilterTool;
-import com.mowmaster.dust.Items.Tools.LinkingTool;
-import com.mowmaster.dust.Items.Tools.UpgradeTool;
+import com.mowmaster.dust.Items.Filters.*;
+import com.mowmaster.dust.Items.Tools.*;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeImport;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,11 +28,13 @@ public class DeferredRegisterItems
     public static final RegistryObject<Item> TOOL_LINKINGTOOL = ITEMS.register("tool_linkingtool",
             () -> new LinkingTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_LINKINGTOOLBACKWARDS = ITEMS.register("tool_linkingtoolbackwards",
-            () -> new LinkingTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new LinkingToolBackwards(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_UPGRADETOOL = ITEMS.register("tool_upgradetool",
             () -> new UpgradeTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_FILTERTOOL = ITEMS.register("tool_filtertool",
             () -> new FilterTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> TOOL_TAGTOOL = ITEMS.register("tool_tagtool",
+            () -> new TagTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_DEVTOOL = ITEMS.register("tool_devtool",
             () -> new DevTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
@@ -42,9 +42,34 @@ public class DeferredRegisterItems
             () -> new BaseFilter(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> FILTER_ITEM = ITEMS.register("filter_item",
             () -> new FilterItem(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_ITEMSTACK = ITEMS.register("filter_itemstack",
+            () -> new FilterItemStack(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_DURABILITY = ITEMS.register("filter_durability",
+            () -> new FilterDurability(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_ENCHANTED = ITEMS.register("filter_enchanted",
+            () -> new FilterEnchanted(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_ENCHANTED_COUNT = ITEMS.register("filter_enchantedcount",
+            () -> new FilterEnchantCount(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_ENCHANTED_EXACT = ITEMS.register("filter_enchantedexact",
+            () -> new FilterEnchantedExact(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_ENCHANTED_FUZZY = ITEMS.register("filter_enchantedfuzzy",
+            () -> new FilterEnchantedFuzzy(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_FOOD = ITEMS.register("filter_food",
+            () -> new FilterFood(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_MOD = ITEMS.register("filter_mod",
+            () -> new FilterMod(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_RESTRICTED = ITEMS.register("filter_restricted",
+            () -> new FilterRestricted(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> FILTER_TAG = ITEMS.register("filter_tag",
+            () -> new FilterTag(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
     public static final RegistryObject<Item> PEDESTAL_UPGRADE_IMPORT = ITEMS.register("item_pedestal_upgrade_import",
             () -> new ItemUpgradeImport(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+
+    public static final RegistryObject<Item> AUGMENT_PEDESTAL_ROUNDROBIN = ITEMS.register("augment_pedestal_roundrobin",
+            () -> new AugmentBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> AUGMENT_PEDESTAL_RENDERDIFFUSER = ITEMS.register("augment_pedestal_renderdiffuser",
+            () -> new AugmentRenderDiffuser(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
 
 

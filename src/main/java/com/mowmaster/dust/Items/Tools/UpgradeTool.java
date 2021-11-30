@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Items.Tools;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
@@ -20,7 +21,7 @@ import java.util.List;
 public class UpgradeTool extends BaseTool implements IPedestalTool
 {
     public UpgradeTool(Properties p_41383_) {
-        super(p_41383_);
+        super(p_41383_.stacksTo(1));
     }
 
 

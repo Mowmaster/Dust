@@ -101,14 +101,14 @@ public interface IPedestalFilter
      * @param filterStack
      * writes the bool filtertype to the NBT "filter_type"
      */
-    void writeFilterTypeToNBT(ItemStack filterStack);
+    void writeFilterTypeToNBT(ItemStack filterStack, int mode);
 
     /**
      * @param filterStack
      * @return filtertype
      * writes the bool filtertype from the NBT "filter_type"
      */
-    boolean getFilterTypeFromNBT(ItemStack filterStack);
+    boolean getFilterTypeFromNBT(ItemStack filterStack, int mode);
 
 
 

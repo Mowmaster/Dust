@@ -1,6 +1,5 @@
 package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
-import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +18,11 @@ public class ItemUpgradeImport extends ItemUpgradeBase
     public static int getUpgradeMode(ItemStack stack) {
 
         return stack.getDamageValue();
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return false;
     }
 
     @Override

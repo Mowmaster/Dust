@@ -3,6 +3,7 @@ package com.mowmaster.dust.Block.Pedestal;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
+import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -52,6 +54,7 @@ public class BasePedestalBlockEntity extends BlockEntity
     private List<ItemStack> stacksList = new ArrayList<>();
     private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
+    private int storedValueForUpgrades = 0;
     public BlockPos getPos() { return this.worldPosition; }
     private BasePedestalBlockEntity getPedestal() { return this; }
 
@@ -168,9 +171,8 @@ public class BasePedestalBlockEntity extends BlockEntity
                 if (slot == 1 && stack.getItem().equals(Items.GLOWSTONE) && !hasLight()) return true;
                 if (slot == 2 && stack.getItem() instanceof IPedestalFilter && !(stack.getItem().equals(DeferredRegisterItems.FILTER_BASE.get())) && !hasFilter()) return true;
                 if (slot == 3 && stack.getItem().equals(Items.REDSTONE) && getRedstonePowerNeeded()<15) return true;
-                //if (slot == 4 && stack.getItem().equals(ItemPedestalUpgrades.ROUNDROBIN) && !hasRRobin()) return true;
-                //if (slot == 5 && stack.getItem().equals(ItemPedestalUpgrades.PARTICLEDIFFUSER)) return true;
-                //if (slot == 6 && stack.getItem().equals(ItemPedestalRenderAugment.RENDERAUGMENT)) return true;
+                if (slot == 4 && stack.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_ROUNDROBIN.get()) && !hasRRobin()) return true;
+                if (slot == 5 && stack.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get()) && !hasRenderAugment()) return true;
                 return false;
             }
         };
@@ -320,6 +322,33 @@ public class BasePedestalBlockEntity extends BlockEntity
             spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ph.getStackInSlot(i));
         }
     }
+
+
+
+    /*============================================================================
+    ==============================================================================
+    =========================    STORED VALUE START    ===========================
+    ==============================================================================
+    ============================================================================*/
+
+    public int getStoredValueForUpgrades()
+    {
+        return storedValueForUpgrades;
+    }
+
+    public void setStoredValueForUpgrades(int value)
+    {
+        storedValueForUpgrades = value;
+        update();
+    }
+
+    /*============================================================================
+    ==============================================================================
+    =========================     STORED VALUE END     ===========================
+    ==============================================================================
+    ============================================================================*/
+
+
 
     /*============================================================================
     ==============================================================================
@@ -1089,7 +1118,6 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public boolean isPedestalBlockPowered()
     {
-
         boolean returner = (this.getLevel().hasNeighborSignal(this.getBlockPos()))?((getRedstonePower()>=getRedstonePowerNeeded())?(true):(false)):(false);
         if(hasRedstone())
         {
@@ -1117,14 +1145,15 @@ public class BasePedestalBlockEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    /*public boolean addRRobin(ItemStack roundRobin)
+    private int slotRobin = 4;
+    public boolean addRRobin(ItemStack roundRobin)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = roundRobin.copy();
         itemFromBlock.setCount(1);
         if(!hasRRobin())
         {
-            ph.insertItem(8,itemFromBlock,false);
+            ph.insertItem(slotRobin,itemFromBlock,false);
             //update();
             return true;
         }
@@ -1137,7 +1166,7 @@ public class BasePedestalBlockEntity extends BlockEntity
         if(hasRRobin())
         {
             //update();
-            return ph.extractItem(8,ph.getStackInSlot(8).getCount(),false);
+            return ph.extractItem(slotRobin,ph.getStackInSlot(slotRobin).getCount(),false);
         }
         else return ItemStack.EMPTY;
     }
@@ -1145,12 +1174,12 @@ public class BasePedestalBlockEntity extends BlockEntity
     public boolean hasRRobin()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(8).isEmpty())
+        if(ph.getStackInSlot(slotRobin).isEmpty())
         {
             return false;
         }
         else  return true;
-    }*/
+    }
 
     /*============================================================================
     ==============================================================================
@@ -1162,59 +1191,12 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     /*============================================================================
     ==============================================================================
-    ===========================   PARTICLE START    ==============================
-    ==============================================================================
-    ============================================================================*/
-
-    /*public ItemStack addParticleDiffuser(ItemStack particle)
-    {
-        IItemHandler ph = privateHandler.orElse(null);
-        ItemStack itemFromBlock = particle.copy();
-        itemFromBlock.setCount(1);
-        if(!hasParticleDiffuser())
-        {
-            //update();
-            return ph.insertItem(10,itemFromBlock,false);
-        }
-        else return ItemStack.EMPTY;
-    }
-
-    public ItemStack removeParticleDiffuser()
-    {
-        IItemHandler ph = privateHandler.orElse(null);
-        if(hasParticleDiffuser())
-        {
-            //update();
-            return ph.extractItem(10,ph.getStackInSlot(10).getCount(),false);
-        }
-        else return ItemStack.EMPTY;
-    }
-
-    public boolean hasParticleDiffuser()
-    {
-        IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(10).isEmpty())
-        {
-            return false;
-        }
-        else  return true;
-    }*/
-
-    /*============================================================================
-    ==============================================================================
-    ===========================    PARTICLE END     ==============================
-    ==============================================================================
-    ============================================================================*/
-
-
-
-    /*============================================================================
-    ==============================================================================
     ============================   RENDER START    ===============================
     ==============================================================================
     ============================================================================*/
 
-    /*public ItemStack addRenderAugment(ItemStack particle)
+    private int slotRenderer = 5;
+    public boolean addRenderAugment(ItemStack particle)
     {
         IItemHandler ph = privateHandler.orElse(null);
         ItemStack itemFromBlock = particle.copy();
@@ -1222,9 +1204,10 @@ public class BasePedestalBlockEntity extends BlockEntity
         if(!hasRenderAugment())
         {
             //update();
-            return ph.insertItem(11,itemFromBlock,false);
+            ph.insertItem(slotRenderer,itemFromBlock,false);
+            return true;
         }
-        else return ItemStack.EMPTY;
+        else return false;
     }
 
     public ItemStack removeRenderAugment()
@@ -1233,7 +1216,7 @@ public class BasePedestalBlockEntity extends BlockEntity
         if(hasRenderAugment())
         {
             //update();
-            return ph.extractItem(11,ph.getStackInSlot(11).getCount(),false);
+            return ph.extractItem(slotRenderer,ph.getStackInSlot(slotRenderer).getCount(),false);
         }
         else return ItemStack.EMPTY;
     }
@@ -1241,31 +1224,51 @@ public class BasePedestalBlockEntity extends BlockEntity
     public boolean hasRenderAugment()
     {
         IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(11).isEmpty())
+        if(ph.getStackInSlot(slotRenderer).isEmpty())
         {
             return false;
         }
         else  return true;
     }
 
-    public int getRenderAugmentType()
+    public boolean canSpawnParticles()
     {
-        // 0 = BOTH
-        // 1 = UPGRADE
-        // 2 = ITEM
-        // 3 = NORMAL RENDER
+        switch (getRendererType())
+        {
+            case 0: return false;
+            case 1: return true;
+            case 2: return true;
+            case 3: return false;
+            case 4: return false;
+            case 5: return true;
+            case 6: return false;
+            case 7: return true;
+            default: return true;
+        }
+    }
+
+    public int getRendererType()
+    {
+        // 0 - No Particles
+        // 1 - No Render Item
+        // 2 - No Render Upgrade
+        // 3 - No Particles/No Render Item
+        // 4 - No Particles/No Render Upgrade
+        // 5 - No Render Item/No Render Upgrade
+        // 6 - No Particles/No Render Item/No Render Upgrade
+        // 7 - No Augment exists and thus all rendering is fine.
         IItemHandler ph = privateHandler.orElse(null);
         if(hasRenderAugment())
         {
-            if(ph.getStackInSlot(11).getItem() instanceof ItemPedestalRenderAugment)
+            if(ph.getStackInSlot(slotRenderer).getItem() instanceof AugmentRenderDiffuser)
             {
-                ItemPedestalRenderAugment augment = ((ItemPedestalRenderAugment)ph.getStackInSlot(11).getItem());
-                return augment.getAugmentType(ph.getStackInSlot(11));
+                AugmentRenderDiffuser augment = ((AugmentRenderDiffuser)ph.getStackInSlot(slotRenderer).getItem());
+                return augment.getAugmentMode(ph.getStackInSlot(slotRenderer));
             }
             else  return 0;
         }
-        else  return 3;
-    }*/
+        else  return 7;
+    }
 
     /*============================================================================
     ==============================================================================
@@ -1275,20 +1278,9 @@ public class BasePedestalBlockEntity extends BlockEntity
 
 
 
-    /*public boolean canSendItemInPedestal(PedestalTileEntity pedestal)
+    public boolean canSendItemInPedestal(BasePedestalBlockEntity pedestal)
     {
-        if(pedestal.hasItem())
-        {
-            if(hasCoin())
-            {
-                Item coin = getCoinOnPedestal().getItem();
-                if(coin instanceof IUpgradeBase)
-                {
-                    return ((IUpgradeBase)coin).canSendItem(pedestal);
-                }
-            }
-            else return true;
-        }
+        if(pedestal.hasItem())return true;
 
         return false;
     }
@@ -1309,7 +1301,7 @@ public class BasePedestalBlockEntity extends BlockEntity
     public boolean canLinkToPedestalNetwork(BlockPos pedestalToBeLinked)
     {
         //Check to see if pedestal to be linked is a block pedestal
-        if(world.getBlockState(pedestalToBeLinked).getBlock() instanceof PedestalBlock)
+        if(level.getBlockState(pedestalToBeLinked).getBlock() instanceof BasePedestalBlock)
         {
             //isPedestalInRange(tileCurrent,pedestalToBeLinked);
             return true;
@@ -1319,25 +1311,10 @@ public class BasePedestalBlockEntity extends BlockEntity
     }
 
     //Returns items available to be insert, 0 if false
-    public int canAcceptItems(World worldIn, BlockPos posPedestal, ItemStack itemsIncoming)
+    public int canAcceptItems(Level worldIn, BlockPos posPedestal, ItemStack itemsIncoming)
     {
         int canAccept = 0;
         int pedestalAccept = 0;
-        boolean isTank = false;
-
-        if(hasCoin())
-        {
-            Item coinInPed = this.getCoinOnPedestal().getItem();
-            if(coinInPed instanceof IUpgradeBase)
-            {
-                pedestalAccept = ((IUpgradeBase) coinInPed).canAcceptCount(worldIn, posPedestal, getItemInPedestal(), itemsIncoming);
-            }
-
-            if(coinInPed instanceof ItemUpgradeItemTank)
-            {
-                if(((ItemUpgradeItemTank) coinInPed).availableStorageSpace(this) > 0)isTank = true;
-            }
-        }
 
         if(getItemInPedestal().isEmpty() || getItemInPedestal().equals(ItemStack.EMPTY))
         {
@@ -1349,11 +1326,10 @@ public class BasePedestalBlockEntity extends BlockEntity
             {
                 //Two buckets match but cant be stacked since max stack size is 1
                 //BUT if its a tank, its cooler then this
-                if(itemsIncoming.getMaxStackSize() > 1 || isTank)
+                if(itemsIncoming.getMaxStackSize() > 1)
                 {
                     //If i did this right, slot limit should default to stack max size, or custom allowed
                     int allowed = getSlotSizeLimit();
-                    if(allowed> itemsIncoming.getMaxStackSize() && !isTank)allowed=itemsIncoming.getMaxStackSize();
                     if(getItemInPedestal().getCount() < allowed)
                     {
                         canAccept = (allowed - getItemInPedestal().getCount());
@@ -1365,9 +1341,9 @@ public class BasePedestalBlockEntity extends BlockEntity
         if(hasFilter())
         {
             Item filterInPed = this.getFilterInPedestal().getItem();
-            if(filterInPed instanceof IFilterBase)
+            if(filterInPed instanceof IPedestalFilter)
             {
-                pedestalAccept = ((IFilterBase) filterInPed).canAcceptCount(getTile(), itemsIncoming);
+                pedestalAccept = ((IPedestalFilter) filterInPed).canAcceptCount(getPedestal(), itemsIncoming);
             }
         }
 
@@ -1379,13 +1355,13 @@ public class BasePedestalBlockEntity extends BlockEntity
         return canAccept;
     }
 
-    public boolean hasFilter(PedestalTileEntity pedestalSendingTo)
+    public boolean hasFilter(BasePedestalBlockEntity pedestalSendingTo)
     {
         boolean returner = false;
         if(pedestalSendingTo.hasFilter())
         {
             Item filterInPedestal = pedestalSendingTo.getFilterInPedestal().getItem();
-            if(filterInPedestal instanceof IFilterBase)
+            if(filterInPedestal instanceof IPedestalFilter)
             {
                 returner = true;
             }
@@ -1394,28 +1370,11 @@ public class BasePedestalBlockEntity extends BlockEntity
         return returner;
     }
 
-    //Checks to see if we can send an item from the pedestal, like in the case of the import energy/fluid upgrades
-    public Boolean canSendItemInPedestal()
+    public static LazyOptional<IItemHandler> findItemHandlerPedestal(BasePedestalBlockEntity pedestal)
     {
-        boolean returner = true;
-
-        if(hasCoin())
-        {
-            Item coinInPedestal = getCoinOnPedestal().getItem();
-            if(coinInPedestal instanceof IUpgradeBase)
-            {
-                return ((IUpgradeBase) coinInPedestal).canSendItem(this);
-            }
-        }
-
-        return returner;
-    }
-
-    public static LazyOptional<IItemHandler> findItemHandlerPedestal(PedestalTileEntity pedestal)
-    {
-        World world = pedestal.getWorld();
+        Level world = pedestal.getLevel();
         BlockPos pos = pedestal.getPos();
-        TileEntity neighbourTile = world.getTileEntity(pos);
+        BlockEntity neighbourTile = world.getBlockEntity(pos);
         if(neighbourTile!=null)
         {
             LazyOptional<IItemHandler> cap = neighbourTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
@@ -1431,59 +1390,45 @@ public class BasePedestalBlockEntity extends BlockEntity
         boolean returner = false;
 
         //Method to check if we can send items FROM this pedestal???
-        if(canSendItemInPedestal())
+        //Check if Block is Loaded in World
+        if(level.isAreaLoaded(pedestalToSendTo,1))
         {
-            //Check if Block is Loaded in World
-            if(world.isAreaLoaded(pedestalToSendTo,1))
+            //If block ISNT powered
+            if(!isPedestalBlockPowered())
             {
-                //If block ISNT powered
-                if(!world.isBlockPowered(pedestalToSendTo))
+                //Make sure its a pedestal before getting the tile
+                if(level.getBlockState(pedestalToSendTo).getBlock() instanceof BasePedestalBlock)
                 {
-                    //Make sure its a pedestal before getting the tile
-                    if(world.getBlockState(pedestalToSendTo).getBlock() instanceof PedestalBlock)
+                    //Make sure it is still part of the right network
+                    if(canLinkToPedestalNetwork(pedestalToSendTo))
                     {
-                        //Make sure it is still part of the right network
-                        if(canLinkToPedestalNetwork(pedestalToSendTo))
+                        //Get the tile before checking other things
+                        if(level.getBlockEntity(pedestalToSendTo) instanceof BasePedestalBlockEntity)
                         {
-                            //Get the tile before checking other things
-                            if(world.getTileEntity(pedestalToSendTo) instanceof PedestalTileEntity)
+                            BasePedestalBlockEntity tilePedestalToSendTo = (BasePedestalBlockEntity)level.getBlockEntity(pedestalToSendTo);
+
+                            //Checks if pedestal is empty or if not then checks if items match and how many can be insert
+                            if(tilePedestalToSendTo.canAcceptItems(level,pedestalToSendTo,itemStackIncoming) > 0)
                             {
-                                PedestalTileEntity tilePedestalToSendTo = (PedestalTileEntity)world.getTileEntity(pedestalToSendTo);
-
-                                //Checks if pedestal is empty or if not then checks if items match and how many can be insert
-                                if(tilePedestalToSendTo.canAcceptItems(world,pedestalToSendTo,itemStackIncoming) > 0)
+                                boolean filter = true;
+                                //Check if it has filter, if not return true
+                                if(tilePedestalToSendTo.hasFilter())
                                 {
-                                    boolean filter = true;
-                                    boolean coin = true;
-                                    //Check if it has filter, if not return true
-                                    if(tilePedestalToSendTo.hasFilter())
+                                    Item filterInPedestal = tilePedestalToSendTo.getFilterInPedestal().getItem();
+                                    if(filterInPedestal instanceof IPedestalFilter)
                                     {
-                                        Item filterInPedestal = tilePedestalToSendTo.getFilterInPedestal().getItem();
-                                        if(filterInPedestal instanceof IFilterBase)
-                                        {
-                                            filter = ((IFilterBase) filterInPedestal).canAcceptItem(tilePedestalToSendTo,itemStackIncoming);
-                                        }
+                                        filter = ((IPedestalFilter) filterInPedestal).canAcceptItem(tilePedestalToSendTo,itemStackIncoming);
                                     }
-
-                                    if(tilePedestalToSendTo.hasCoin())
-                                    {
-                                        Item coinInPedestal = tilePedestalToSendTo.getCoinOnPedestal().getItem();
-                                        if(coinInPedestal instanceof IUpgradeBase)
-                                        {
-                                            coin = ((IUpgradeBase) coinInPedestal).canAcceptItem(getWorld(),pedestalToSendTo,itemStackIncoming);
-                                        }
-                                    }
-
-                                    //Should return true by default, or fals eif a filter or coin blocks it???
-                                    returner = filter && coin;
                                 }
+
+                                returner = filter;
                             }
                         }
                     }
-                    else
-                    {
-                        removeLocation(pedestalToSendTo);
-                    }
+                }
+                else
+                {
+                    removeLocation(pedestalToSendTo);
                 }
             }
         }
@@ -1497,12 +1442,12 @@ public class BasePedestalBlockEntity extends BlockEntity
     //The actual transfer methods for items
     public void sendItemsToPedestal(BlockPos pedestalToSendTo)
     {
-        if(world.getTileEntity(pedestalToSendTo) instanceof PedestalTileEntity)
+        if(level.getBlockEntity(pedestalToSendTo) instanceof BasePedestalBlockEntity)
         {
-            PedestalTileEntity tileToSendTo = ((PedestalTileEntity)world.getTileEntity(pedestalToSendTo));
+            BasePedestalBlockEntity tileToSendTo = ((BasePedestalBlockEntity)level.getBlockEntity(pedestalToSendTo));
 
             //Max that can be recieved
-            int countToSend = tileToSendTo.canAcceptItems(world,pedestalToSendTo,getItemInPedestal());
+            int countToSend = tileToSendTo.canAcceptItems(level,pedestalToSendTo,getItemInPedestal());
             ItemStack copyStackToSend = getItemInPedestal().copy();
             //Max that is available to send
             if(copyStackToSend.getCount()<countToSend)
@@ -1519,10 +1464,13 @@ public class BasePedestalBlockEntity extends BlockEntity
             if(countToSend >=1)
             {
                 //Send items
-                copyStackToSend.setCount(countToSend);
-                removeItem(copyStackToSend.getCount());
-                tileToSendTo.addItem(copyStackToSend);
-                if(!hasParticleDiffuser())PacketHandler.sendToNearby(world,pos,new PacketParticles(PacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),pos.getX(),pos.getY(),pos.getZ()));
+                if(tileToSendTo.addItem(copyStackToSend,true))
+                {
+                    copyStackToSend.setCount(countToSend);
+                    removeItem(copyStackToSend.getCount());
+                    tileToSendTo.addItem(copyStackToSend,false);
+                    //if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,worldPosition,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),worldPosition.getX(),worldPosition.getY(),worldPosition.getZ()));
+                }
             }
         }
     }
@@ -1562,7 +1510,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                 }
             }
         }
-    }*/
+    }
 
 
 
@@ -1583,21 +1531,22 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public void tick() {
 
-        /*if(!level.isClientSide() && level.isAreaLoaded(worldPosition,1))
+        if(!level.isClientSide() && level.isAreaLoaded(worldPosition,1))
         {
-            if(getNumberOfStoredLocations() >0 && !isPedestalBlockPowered(getWorld(),getPos()) && hasItem())
+            if(getNumberOfStoredLocations() > 0 && !isPedestalBlockPowered() && hasItem())
             {
                 pedTicker++;
-                if (pedTicker%getOperationSpeed() == 0) {
+                //if (pedTicker%getOperationSpeed() == 0) {
+                if (pedTicker%20 == 0) {
 
                     transferActionItems();
                     //Eventually have Energy, Fluids, XP in here too???
 
-                    if(pedTicker >=20){pedTicker=0;}
+                    if(pedTicker >=100){pedTicker=0;}
                 }
             }
         }
-        if(level.isAreaLoaded(worldPosition,1))
+        /*if(level.isAreaLoaded(worldPosition,1))
         {
             if(hasCoin())
             {
@@ -1622,6 +1571,18 @@ public class BasePedestalBlockEntity extends BlockEntity
         handler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTag));
         CompoundTag invPrivateTag = p_155245_.getCompound("inv_private");
         privateHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invPrivateTag));
+
+        this.storedValueForUpgrades = p_155245_.getInt("storedUpgradeValue");
+
+        int[] storedIX = p_155245_.getIntArray("intArrayXPos");
+        int[] storedIY = p_155245_.getIntArray("intArrayYPos");
+        int[] storedIZ = p_155245_.getIntArray("intArrayZPos");
+
+        for(int i=0;i<storedIX.length;i++)
+        {
+            BlockPos gotPos = new BlockPos(storedIX[i],storedIY[i],storedIZ[i]);
+            storedLocations.add(gotPos);
+        }
     }
 
     @Override
@@ -1635,6 +1596,24 @@ public class BasePedestalBlockEntity extends BlockEntity
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_58888_.put("inv_private", compound);
         });
+
+        p_58888_.putInt("storedUpgradeValue",storedValueForUpgrades);
+
+
+        List<Integer> storedX = new ArrayList<Integer>();
+        List<Integer> storedY = new ArrayList<Integer>();
+        List<Integer> storedZ = new ArrayList<Integer>();
+
+        for(int i=0;i<getNumberOfStoredLocations();i++)
+        {
+            storedX.add(storedLocations.get(i).getX());
+            storedY.add(storedLocations.get(i).getY());
+            storedZ.add(storedLocations.get(i).getZ());
+        }
+
+        p_58888_.putIntArray("intArrayXPos",storedX);
+        p_58888_.putIntArray("intArrayYPos",storedY);
+        p_58888_.putIntArray("intArrayZPos",storedZ);
 
         return p_58888_;
     }

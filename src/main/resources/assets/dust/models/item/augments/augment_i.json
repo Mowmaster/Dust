@@ -1,0 +1,6 @@
+{
+  "parent": "dust:item/augment_pedestal_renderdiffuser",
+  "textures": {
+    "layer0": "dust:items/augments/augment_renderdiffuser_i"
+  }
+}

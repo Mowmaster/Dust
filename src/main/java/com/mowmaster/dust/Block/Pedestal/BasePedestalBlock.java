@@ -261,6 +261,14 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRedstone());
                     }
                 }
+                else if(pedestal.hasRRobin() && itemInOffHand.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_ROUNDROBIN.get()))
+                {
+                    ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRRobin());
+                }
+                else if(pedestal.hasRenderAugment() && itemInOffHand.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get()))
+                {
+                    ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRenderAugment());
+                }
                 else if(pedestal.hasItem())
                 {
                     if(p_60502_.isCrouching())
@@ -344,6 +352,28 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                     if(pedestal.getRedstonePowerNeeded()<15)
                     {
                         if(pedestal.addRedstone())
+                        {
+                            p_60506_.getOffhandItem().shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                else if(itemInOffHand.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_ROUNDROBIN.get()))
+                {
+                    if(!pedestal.hasRRobin())
+                    {
+                        if(pedestal.addRRobin(p_60506_.getOffhandItem()))
+                        {
+                            p_60506_.getOffhandItem().shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                else if(itemInOffHand.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get()))
+                {
+                    if(!pedestal.hasRenderAugment())
+                    {
+                        if(pedestal.addRenderAugment(p_60506_.getOffhandItem()))
                         {
                             p_60506_.getOffhandItem().shrink(1);
                             return InteractionResult.SUCCESS;
