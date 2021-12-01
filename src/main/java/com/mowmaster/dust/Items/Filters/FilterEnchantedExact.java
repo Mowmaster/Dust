@@ -35,46 +35,49 @@ public class FilterEnchantedExact extends BaseFilter{
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
         boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
-        boolean returner = filterBool;
 
-        int countAnyMatches = 0;
-        if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+        if(mode==0)
         {
-            ItemStack filter = pedestal.getFilterInPedestal();
-            List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,getFilterMode(filter));
-            int range = stackCurrent.size();
+            int countAnyMatches = 0;
+            if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+            {
+                ItemStack filter = pedestal.getFilterInPedestal();
+                List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,mode);
+                int range = stackCurrent.size();
 
-            Map<Enchantment, Integer> mapIncomming = EnchantmentHelper.getEnchantments(itemStackIn);
-            for(Map.Entry<Enchantment, Integer> entry : mapIncomming.entrySet()) {
-                Enchantment enchantment = entry.getKey();
-                int level = entry.getValue();
+                Map<Enchantment, Integer> mapIncomming = EnchantmentHelper.getEnchantments(itemStackIn);
+                for(Map.Entry<Enchantment, Integer> entry : mapIncomming.entrySet()) {
+                    Enchantment enchantment = entry.getKey();
+                    int level = entry.getValue();
 
-                ItemStack itemFromInv = ItemStack.EMPTY;
-                itemFromInv = IntStream.range(0,range)//Int Range
-                        .mapToObj((stackCurrent)::get)//Function being applied to each interval
-                        //Check to make sure filter item is enchanted
-                        .filter(itemStack -> itemStack.isEnchanted() || itemStack.getItem().equals(Items.ENCHANTED_BOOK))
-                        //Check to see if any have matching enchant sizes
-                        .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).size()==mapIncomming.size())
-                        //Check if filter item has any enchant that the item in the pedestal has
-                        .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).containsKey(enchantment))
-                        .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).get(enchantment).intValue() == level)
-                        .findFirst().orElse(ItemStack.EMPTY);
+                    ItemStack itemFromInv = ItemStack.EMPTY;
+                    itemFromInv = IntStream.range(0,range)//Int Range
+                            .mapToObj((stackCurrent)::get)//Function being applied to each interval
+                            //Check to make sure filter item is enchanted
+                            .filter(itemStack -> itemStack.isEnchanted() || itemStack.getItem().equals(Items.ENCHANTED_BOOK))
+                            //Check to see if any have matching enchant sizes
+                            .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).size()==mapIncomming.size())
+                            //Check if filter item has any enchant that the item in the pedestal has
+                            .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).containsKey(enchantment))
+                            .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).get(enchantment).intValue() == level)
+                            .findFirst().orElse(ItemStack.EMPTY);
 
-                if(!itemFromInv.isEmpty())
+                    if(!itemFromInv.isEmpty())
+                    {
+                        countAnyMatches ++;
+                    }
+                }
+                if(countAnyMatches==mapIncomming.size())
                 {
-                    countAnyMatches ++;
+                    return !filterBool;
                 }
             }
-            if(countAnyMatches==mapIncomming.size())
-            {
-                returner = !filterBool;
-            }
         }
+        else return !filterBool;
 
-        return returner;
+        return filterBool;
     }
 
     //Right Click

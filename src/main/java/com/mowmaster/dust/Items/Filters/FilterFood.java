@@ -35,37 +35,40 @@ public class FilterFood extends BaseFilter{
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
         boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
-        boolean returner = filterBool;
 
-        if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+        if(mode==0)
         {
-            ItemStack filter = pedestal.getFilterInPedestal();
-            List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,getFilterMode(filter));
-            int range = stackCurrent.size();
+            if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+            {
+                ItemStack filter = pedestal.getFilterInPedestal();
+                List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,mode);
+                int range = stackCurrent.size();
 
-            Map<Enchantment, Integer> mapIncomming = EnchantmentHelper.getEnchantments(itemStackIn);
+                Map<Enchantment, Integer> mapIncomming = EnchantmentHelper.getEnchantments(itemStackIn);
 
-            for(Map.Entry<Enchantment, Integer> entry : mapIncomming.entrySet()) {
-                Enchantment enchantment = entry.getKey();
-                ItemStack itemFromInv = ItemStack.EMPTY;
-                itemFromInv = IntStream.range(0,range)//Int Range
-                        .mapToObj((stackCurrent)::get)//Function being applied to each interval
-                        //Check to make sure filter item is enchanted
-                        .filter(itemStack -> itemStack.isEnchanted() || itemStack.getItem().equals(Items.ENCHANTED_BOOK))
-                        //Check if filter item has any enchant that the item in the pedestal has
-                        .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).containsKey(enchantment))
-                        .findFirst().orElse(ItemStack.EMPTY);
+                for(Map.Entry<Enchantment, Integer> entry : mapIncomming.entrySet()) {
+                    Enchantment enchantment = entry.getKey();
+                    ItemStack itemFromInv = ItemStack.EMPTY;
+                    itemFromInv = IntStream.range(0,range)//Int Range
+                            .mapToObj((stackCurrent)::get)//Function being applied to each interval
+                            //Check to make sure filter item is enchanted
+                            .filter(itemStack -> itemStack.isEnchanted() || itemStack.getItem().equals(Items.ENCHANTED_BOOK))
+                            //Check if filter item has any enchant that the item in the pedestal has
+                            .filter(itemStack -> EnchantmentHelper.getEnchantments(itemStack).containsKey(enchantment))
+                            .findFirst().orElse(ItemStack.EMPTY);
 
-                if(!itemFromInv.isEmpty())
-                {
-                    returner = !filterBool;
+                    if(!itemFromInv.isEmpty())
+                    {
+                        return !filterBool;
+                    }
                 }
             }
         }
+        else return !filterBool;
 
-        return returner;
+        return filterBool;
     }
 
     //Right Click

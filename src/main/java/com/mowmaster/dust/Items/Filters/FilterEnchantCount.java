@@ -40,37 +40,40 @@ public class FilterEnchantCount extends BaseFilter{
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
         //This only works one way regardless of white or blacklist
-        boolean returner = false;
 
         ItemStack filter = pedestal.getFilterInPedestal();
-        List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,getFilterMode(filter));
-        int range = stackCurrent.size();
-
-
-        int count = 0;
-        for(int i=0;i<range;i++)
+        if(mode==0)
         {
-            ItemStack stackGet = stackCurrent.get(i);
-            if(stackGet.isEnchanted() || stackGet.getItem().equals(Items.ENCHANTED_BOOK))
+            List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,mode);
+            int range = stackCurrent.size();
+
+
+            int count = 0;
+            for(int i=0;i<range;i++)
             {
-                Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stackGet);
-                count +=map.size();
+                ItemStack stackGet = stackCurrent.get(i);
+                if(stackGet.isEnchanted() || stackGet.getItem().equals(Items.ENCHANTED_BOOK))
+                {
+                    Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stackGet);
+                    count +=map.size();
+                }
+            }
+            count = (count>0)?(count):(1);
+
+            if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+            {
+                Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(itemStackIn);
+                if(map.size() == count)
+                {
+                    return true;
+                }
             }
         }
-        count = (count>0)?(count):(1);
+        else return !getFilterType(filter);
 
-        if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
-        {
-            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(itemStackIn);
-            if(map.size() == count)
-            {
-                returner = true;
-            }
-        }
-
-        return returner;
+        return false;
     }
 
     @Override

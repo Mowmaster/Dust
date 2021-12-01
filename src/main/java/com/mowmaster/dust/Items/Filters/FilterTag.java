@@ -24,10 +24,10 @@ public class FilterTag extends BaseFilter{
     }
 
     @Override
-    public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming) {
+    public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming, int mode) {
 
         ItemStack filter = pedestal.getFilterInPedestal();
-        List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,getFilterMode(filter));
+        List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,mode);
         int range = stackCurrent.size();
 
         ItemStack itemFromInv = ItemStack.EMPTY;
@@ -50,36 +50,43 @@ public class FilterTag extends BaseFilter{
                     if(count>=maxIncomming)break;
                 }
 
-                return (count>0)?((count>maxIncomming)?(maxIncomming):(count)):(1);
+                if(mode==0)
+                {
+                    return (count>0)?((count>maxIncomming)?(maxIncomming):(count)):(1);
+                }
+                else return count;
             }
 
             return 0;
         }
 
-        return super.canAcceptCount(pedestal, world, pos, itemInPedestal, itemStackIncoming);
+        return super.canAcceptCount(pedestal, world, pos, itemInPedestal, itemStackIncoming, mode);
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
         boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
-        boolean returner = filterBool;
 
-        ItemStack filter = pedestal.getFilterInPedestal();
-        List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,getFilterMode(filter));
-        int range = stackCurrent.size();
-
-        ItemStack itemFromInv = ItemStack.EMPTY;
-        itemFromInv = IntStream.range(0,range)//Int Range
-                .mapToObj((stackCurrent)::get)//Function being applied to each interval
-                .filter(itemStack -> itemStackIn.getItem().getTags().toString().contains(itemStack.getDisplayName().getString()))
-                .findFirst().orElse(ItemStack.EMPTY);
-
-        if(!itemFromInv.isEmpty())
+        if(mode<=1)
         {
-            returner = !filterBool;
-        }
+            ItemStack filter = pedestal.getFilterInPedestal();
+            List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,mode);
+            int range = stackCurrent.size();
 
-        return returner;
+            ItemStack itemFromInv = ItemStack.EMPTY;
+            itemFromInv = IntStream.range(0,range)//Int Range
+                    .mapToObj((stackCurrent)::get)//Function being applied to each interval
+                    .filter(itemStack -> itemStackIn.getItem().getTags().toString().contains(itemStack.getDisplayName().getString()))
+                    .findFirst().orElse(ItemStack.EMPTY);
+
+            if(!itemFromInv.isEmpty())
+            {
+                return !filterBool;
+            }
+        }
+        else return !filterBool;
+
+        return filterBool;
     }
 
 

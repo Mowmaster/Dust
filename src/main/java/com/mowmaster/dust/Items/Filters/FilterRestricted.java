@@ -36,11 +36,11 @@ public class FilterRestricted extends BaseFilter{
     }
 
     @Override
-    public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming) {
+    public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming, int mode) {
         if(itemInPedestal.isEmpty())
         {
             ItemStack filter = pedestal.getFilterInPedestal();
-            List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,getFilterMode(filter));
+            List<ItemStack> stackCurrent = readFilterQueueFromNBT(filter,mode);
             int range = stackCurrent.size();
             int count = 0;
             int maxIncomming = itemStackIncoming.getMaxStackSize();
@@ -49,7 +49,11 @@ public class FilterRestricted extends BaseFilter{
                 count +=stackCurrent.get(i).getCount();
                 if(count>=maxIncomming)break;
             }
-            return (count>0)?((count>maxIncomming)?(maxIncomming):(count)):(1);
+            if(mode==0)
+            {
+                return (count>0)?((count>maxIncomming)?(maxIncomming):(count)):(1);
+            }
+            else return count;
         }
         return 0;
     }

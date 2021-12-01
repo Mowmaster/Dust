@@ -28,16 +28,19 @@ public class FilterEnchanted extends BaseFilter{
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
         boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
-        boolean returner = filterBool;
 
-        if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+        if(mode==0)
         {
-            returner = !filterBool;
+            if(itemStackIn.isEnchanted() || itemStackIn.getItem().equals(Items.ENCHANTED_BOOK))
+            {
+                return !filterBool;
+            }
         }
+        else return !filterBool;
 
-        return returner;
+        return filterBool;
     }
 
     //Right Click

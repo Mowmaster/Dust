@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
@@ -40,7 +41,15 @@ public interface IPedestalFilter
      * When this pedestal is about to receive an item, this method is called,
      * if it returns false the itemstack will not be accepted.
      */
-    boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn);
+    boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode);
+
+    boolean canTransferItems(ItemStack filter);
+
+    boolean canTransferFluids(ItemStack filter);
+
+    boolean canTransferEnergy(ItemStack filter);
+
+    boolean canTransferXP(ItemStack filter);
 
     /**
      * @param pedestal pedestal tile filter is in
@@ -55,9 +64,9 @@ public interface IPedestalFilter
      * @return itemstack count allowed to be insert
      * When this pedestal is going to receive an itemstack this is called.
      */
-    int canAcceptCount(BasePedestalBlockEntity pedestal, ItemStack itemStackIncoming);
+    int canAcceptCount(BasePedestalBlockEntity pedestal, ItemStack itemStackIncoming, int mode);
 
-    int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming);
+    int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming, int mode);
 
     /**
      * @param filterStack

@@ -29,6 +29,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -229,6 +230,13 @@ public class BaseFilter extends Item implements IPedestalFilter
         return getFilterType();
     }
 
+    public boolean getFilterType(ItemStack filterItem, int mode) {
+        //false = whitelist
+        //true = blacklist
+        getFilterTypeFromNBT(filterItem,mode);
+        return getFilterType();
+    }
+
     @Override
     public void setFilterType(ItemStack filterItem, boolean filterSet) {
         filterType = filterSet;
@@ -243,8 +251,22 @@ public class BaseFilter extends Item implements IPedestalFilter
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
         return true;
+    }
+
+    public boolean canTransferItems(ItemStack filter) { return !getFilterType(filter,0); }
+
+    public boolean canTransferFluids(ItemStack filter) { return !getFilterType(filter,1); }
+
+    public boolean canTransferEnergy(ItemStack filter)
+    {
+        return !getFilterType(filter,2);
+    }
+
+    public boolean canTransferXP(ItemStack filter)
+    {
+        return !getFilterType(filter,3);
     }
 
     @Override
@@ -253,12 +275,12 @@ public class BaseFilter extends Item implements IPedestalFilter
     }
 
     @Override
-    public int canAcceptCount(BasePedestalBlockEntity pedestal, ItemStack itemStackIncoming) {
-        return canAcceptCount(pedestal, pedestal.getLevel(), pedestal.getPos(), pedestal.getItemInPedestal(), itemStackIncoming);
+    public int canAcceptCount(BasePedestalBlockEntity pedestal, ItemStack itemStackIncoming, int mode) {
+        return canAcceptCount(pedestal, pedestal.getLevel(), pedestal.getPos(), pedestal.getItemInPedestal(), itemStackIncoming, mode);
     }
 
     @Override
-    public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming) {
+    public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming, int mode) {
         return Math.min(pedestal.getSlotSizeLimit(), itemStackIncoming.getMaxStackSize());
     }
 

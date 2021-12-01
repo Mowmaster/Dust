@@ -61,21 +61,26 @@ public class FilterDurability extends BaseFilter{
     }
 
     @Override
-    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn) {
-        boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
+    public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
+        boolean filterBool=getFilterType(pedestal.getFilterInPedestal(),mode);
         int durabilityTarget = getDurabilityTarget(pedestal.getFilterInPedestal());
 
         int percentDurabilityCurrent = getPercentDamaged(itemStackIn);
         int percentToBeat = durabilityTarget;
 
-        if(filterBool)
+        if(mode==0)
         {
-            return (itemStackIn.isDamageableItem())?((percentDurabilityCurrent<=percentToBeat)?(true):(false)):(false);
+            if(filterBool)
+            {
+                return (itemStackIn.isDamageableItem())?((percentDurabilityCurrent<=percentToBeat)?(true):(false)):(false);
+            }
+            else
+            {
+                return (itemStackIn.isDamageableItem())?((percentDurabilityCurrent>=percentToBeat)?(true):(false)):(false);
+            }
         }
-        else
-        {
-            return (itemStackIn.isDamageableItem())?((percentDurabilityCurrent>=percentToBeat)?(true):(false)):(false);
-        }
+        else return !filterBool;
+
     }
 
     @Override
