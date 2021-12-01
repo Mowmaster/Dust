@@ -73,7 +73,8 @@ public class DeferredRegisterItems
             () -> new AugmentBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> AUGMENT_PEDESTAL_RENDERDIFFUSER = ITEMS.register("augment_pedestal_renderdiffuser",
             () -> new AugmentRenderDiffuser(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
-
+    public static final RegistryObject<Item> AUGMENT_PEDESTAL_NOCOLLIDE = ITEMS.register("augment_pedestal_nocollide",
+            () -> new AugmentBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
 
     public static void register(IEventBus eventBus) {

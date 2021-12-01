@@ -1,5 +1,6 @@
 package com.mowmaster.dust;
 
+import com.mowmaster.dust.Capabilities.CapabilityExperience;
 import com.mowmaster.dust.DeferredRegistery.Client.ClientRegistry;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
@@ -7,14 +8,10 @@ import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Networking.DustPacketHandler;
-//import com.mowmaster.dust.World.DustGeneration;
-//import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -29,6 +26,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static com.mowmaster.dust.Capabilities.CapabilityExperience.EXPERIENCE;
+import static com.mowmaster.dust.References.Constants.MODID;
 import static com.mowmaster.dust.References.Constants.MODNAME;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -98,18 +97,12 @@ public class Dust
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)
+    @SuppressWarnings("unused")
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
-        {
-            //BlockRegistry.onBlockRegistryReady(blockRegistryEvent);
-        }
-        @SubscribeEvent
-        public static void onItemRegistry(RegistryEvent.Register<Item> event)
-        {
-            //BlockRegistry.onItemRegistryReady(event);
-            //ItemRegistry.onItemRegistryReady(event);
+        public static void attachCapabilities(final RegisterCapabilitiesEvent event) {
+            CapabilityExperience.register(event);
         }
     }
 }

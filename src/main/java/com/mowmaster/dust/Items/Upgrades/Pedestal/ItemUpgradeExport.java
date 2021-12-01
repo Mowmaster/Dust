@@ -53,9 +53,10 @@ public class ItemUpgradeExport extends ItemUpgradeBase
     @Override
     public void updateAction(Level world, BasePedestalBlockEntity pedestal) {
 
-        if (world.getGameTime()%20 == 0) {
-            upgradeAction(pedestal, world,pedestal.getPos(),pedestal.getCoinOnPedestal());
-        }
+        upgradeAction(pedestal, world,pedestal.getPos(),pedestal.getCoinOnPedestal());
+        /*if (world.getGameTime()%20 == 0) {
+
+        }*/
     }
 
     public void upgradeAction(BasePedestalBlockEntity pedestal, Level world, BlockPos posOfPedestal, ItemStack coinInPedestal)

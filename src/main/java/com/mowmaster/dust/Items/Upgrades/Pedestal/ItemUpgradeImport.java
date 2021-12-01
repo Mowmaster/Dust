@@ -1,11 +1,17 @@
 package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Items.Filters.FilterRestricted;
+import com.mowmaster.dust.Networking.DustPacketHandler;
+import com.mowmaster.dust.Networking.DustPacketParticles;
 import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,9 +62,10 @@ public class ItemUpgradeImport extends ItemUpgradeBase
     @Override
     public void updateAction(Level world, BasePedestalBlockEntity pedestal) {
 
-        if (world.getGameTime()%20 == 0) {
-            upgradeAction(pedestal, world,pedestal.getPos(),pedestal.getCoinOnPedestal());
-        }
+        upgradeAction(pedestal, world,pedestal.getPos(),pedestal.getCoinOnPedestal());
+        /*if (world.getGameTime()%20 == 0) {
+
+        }*/
     }
 
     public void upgradeAction(BasePedestalBlockEntity pedestal, Level world, BlockPos posOfPedestal, ItemStack coinInPedestal)
@@ -241,6 +248,81 @@ public class ItemUpgradeImport extends ItemUpgradeBase
         if(canTransferXP(coinInPedestal))
         {
 
+        }
+    }
+
+
+    @Override
+    public void actionOnCollideWithBlock(BasePedestalBlockEntity pedestal, Entity entityIn) {
+        if(canTransferItems(pedestal.getCoinOnPedestal()))
+        {
+            if(entityIn instanceof ItemEntity)
+            {
+                ItemEntity itemEntity = ((ItemEntity) entityIn);
+                ItemStack itemStack = itemEntity.getItem();
+                ItemStack stackInPedestal = pedestal.getItemInPedestal();
+                boolean stacksMatch = doItemsMatch(stackInPedestal,itemStack);
+                if((!pedestal.hasItem() || stacksMatch) && passesItemFilter(pedestal,itemStack))
+                {
+                    int spaceInPed = stackInPedestal.getMaxStackSize()-stackInPedestal.getCount();
+                    int filterAllowedSpace = getCountItemFilter(pedestal,itemStack);
+                    int actualSpaceInPed = (filterAllowedSpace>spaceInPed)?(spaceInPed):(filterAllowedSpace);
+                    if(actualSpaceInPed>0)
+                    {
+                        int itemInCount = itemStack.getCount();
+                        int countToAdd = ( itemInCount<= actualSpaceInPed)?(itemInCount):(actualSpaceInPed);
+                        ItemStack stackToAdd = itemStack.copy();
+                        stackToAdd.setCount(countToAdd);
+                        if(pedestal.addItem(stackToAdd,true))
+                        {
+                            itemEntity.getItem().setCount(itemInCount-countToAdd);
+                            if(itemInCount<=countToAdd)itemEntity.remove(Entity.RemovalReason.DISCARDED);
+                            pedestal.addItem(stackToAdd,false);
+                            if(pedestal.canSpawnParticles()) DustPacketHandler.sendToNearby(pedestal.getLevel(),pedestal.getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,pedestal.getPos().getX(),pedestal.getPos().getY(),pedestal.getPos().getZ(),180,180,180));
+                        }
+                    }
+                }
+            }
+            else if (entityIn instanceof Player)
+            {
+                Player player = ((Player) entityIn);
+                ItemStack itemFromInv = ItemStack.EMPTY;
+
+                itemFromInv = IntStream.range(0,(player.getInventory().items.size()))//Int Range
+                        .mapToObj((player.getInventory().items)::get)//Function being applied to each interval
+                        .filter(itemStack -> !itemStack.isEmpty())
+                        .filter(itemStack -> passesItemFilter(pedestal,itemStack))
+                        .findFirst().orElse(ItemStack.EMPTY);
+
+                if(!itemFromInv.isEmpty())
+                {
+                    ItemStack itemStack = itemFromInv;
+                    ItemStack stackInPedestal = pedestal.getItemInPedestal();
+                    boolean stacksMatch = doItemsMatch(stackInPedestal,itemStack);
+                    if((!pedestal.hasItem() || stacksMatch) && passesItemFilter(pedestal,itemStack))
+                    {
+                        int spaceInPed = stackInPedestal.getMaxStackSize()-stackInPedestal.getCount();
+                        int filterAllowedSpace = getCountItemFilter(pedestal,itemStack);
+                        int actualSpaceInPed = (filterAllowedSpace>spaceInPed)?(spaceInPed):(filterAllowedSpace);
+                        if(actualSpaceInPed>0)
+                        {
+                            int itemInCount = itemStack.getCount();
+                            int countToAdd = ( itemInCount<= actualSpaceInPed)?(itemInCount):(actualSpaceInPed);
+                            ItemStack stackToAdd = itemStack.copy();
+                            stackToAdd.setCount(countToAdd);
+                            if(pedestal.addItem(stackToAdd,true))
+                            {
+                                ItemStack newStackInPlayer = (itemInCount>countToAdd)?(itemStack.copy()):(ItemStack.EMPTY);
+                                if(!newStackInPlayer.isEmpty())newStackInPlayer.setCount(itemInCount-countToAdd);
+                                int slot = player.getInventory().findSlotMatchingItem(itemStack);
+                                player.getInventory().setItem(slot,newStackInPlayer);
+                                pedestal.addItem(stackToAdd,false);
+                                if(pedestal.canSpawnParticles()) DustPacketHandler.sendToNearby(pedestal.getLevel(),pedestal.getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,pedestal.getPos().getX(),pedestal.getPos().getY(),pedestal.getPos().getZ(),180,180,0));
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

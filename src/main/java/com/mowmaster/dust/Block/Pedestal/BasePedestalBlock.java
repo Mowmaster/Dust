@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -270,6 +271,10 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                 {
                     ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeRenderAugment());
                 }
+                else if(pedestal.hasNoCollide() && itemInOffHand.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_NOCOLLIDE.get()))
+                {
+                    ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeNoCollide());
+                }
                 else if(pedestal.hasItem())
                 {
                     if(p_60502_.isCrouching())
@@ -381,6 +386,17 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         }
                     }
                 }
+                else if(itemInOffHand.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_NOCOLLIDE.get()))
+                {
+                    if(!pedestal.hasNoCollide())
+                    {
+                        if(pedestal.addNoCollide(p_60506_.getOffhandItem()))
+                        {
+                            p_60506_.getOffhandItem().shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
                 else if(itemInHand.isEmpty())
                 {
                     if(p_60506_.isCrouching())
@@ -425,21 +441,6 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
 
         }
         return InteractionResult.SUCCESS;
-    }
-
-
-
-    public void entityInside(BlockState p_57270_, Level p_57271_, BlockPos p_57272_, Entity p_57273_) {
-        boolean isCreative = false;
-        if (p_57273_ instanceof LivingEntity) {
-            if(p_57273_ instanceof ServerPlayer)isCreative = ((ServerPlayer) p_57273_).isCreative();
-
-            if(!isCreative)
-            {
-                //Do something someday???
-            }
-
-        }
     }
 
     @Override

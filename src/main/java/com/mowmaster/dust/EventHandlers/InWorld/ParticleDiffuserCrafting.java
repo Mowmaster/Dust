@@ -78,6 +78,7 @@ public class ParticleDiffuserCrafting
                                 if((rainValue-(float) paper)>0)worldIn.setRainStrength(rainValue);
                                 else worldIn.getWorldInfo().setRaining(false);*/
 
+
                                 //WIll make number of upgrades = to amount of paper available
                                 ItemEntity itemEn = new ItemEntity(worldIn,posX,posY+1,posZ,new ItemStack(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get(),paper));
                                 itemEn.setInvulnerable(true);

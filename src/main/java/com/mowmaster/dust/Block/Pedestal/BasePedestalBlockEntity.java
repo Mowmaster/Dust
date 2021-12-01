@@ -1,9 +1,12 @@
 package com.mowmaster.dust.Block.Pedestal;
 
+import com.mowmaster.dust.Capabilities.CapabilityExperience;
+import com.mowmaster.dust.Capabilities.IExperienceStorage;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
+import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.Networking.DustPacketParticles;
@@ -15,23 +18,29 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -44,8 +53,10 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.Block.Pedestal.BasePedestalBlock.*;
+import static com.mowmaster.dust.References.ColorReference.getTrueColorFromInt;
 
 public class BasePedestalBlockEntity extends BlockEntity
 {
@@ -53,11 +64,13 @@ public class BasePedestalBlockEntity extends BlockEntity
     private LazyOptional<IItemHandler> privateHandler = LazyOptional.of(this::createHandlerPedestalPrivate);
     private LazyOptional<IEnergyStorage> energyHandler = LazyOptional.of(this::createHandlerPedestalEnergy);
     private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(this::createHandlerPedestalFluid);
-    //private LazyOptional<IExperienceHandler> xpHandler = LazyOptional.of(this::createHandlerPedestalXp);
+    private LazyOptional<IExperienceStorage> experienceHandler = LazyOptional.of(this::createHandlerPedestalExperience);
     private List<ItemStack> stacksList = new ArrayList<>();
     private FluidStack storedFluid = FluidStack.EMPTY;
+    private MobEffectInstance storedPotionEffect = null;
+    private int storedPotionEffectDuration = 0;
     private int storedEnergy = 0;
-    private int storedXP = 0;
+    private int storedExperience = 0;
     private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
     private int storedValueForUpgrades = 0;
@@ -70,8 +83,9 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public void update()
     {
-        BlockState state = level.getBlockState(worldPosition);
-        this.level.sendBlockUpdated(worldPosition, state, state, 3);
+
+        BlockState state = level.getBlockState(getPos());
+        this.level.sendBlockUpdated(getPos(), state, state, 3);
         this.setChanged();
     }
 
@@ -179,6 +193,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                 if (slot == 3 && stack.getItem().equals(Items.REDSTONE) && getRedstonePowerNeeded()<15) return true;
                 if (slot == 4 && stack.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_ROUNDROBIN.get()) && !hasRRobin()) return true;
                 if (slot == 5 && stack.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get()) && !hasRenderAugment()) return true;
+                if (slot == 6 && stack.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_NOCOLLIDE.get()) && !hasNoCollide()) return true;
                 return false;
             }
         };
@@ -412,6 +427,76 @@ public class BasePedestalBlockEntity extends BlockEntity
         };
     }
 
+    public IExperienceStorage createHandlerPedestalExperience() {
+        return new IExperienceStorage() {
+
+            @Override
+            public int receiveExperience(int maxReceive, boolean simulate) {
+                if(simulate)
+                {
+                    IPedestalFilter filter = getIPedestalFilter();
+                    int spaceAvailable = getMaxExperienceStored()-getExperienceStored();
+                    if(filter == null)return (maxReceive>spaceAvailable)?(spaceAvailable):(maxReceive);
+                    return filter.canAcceptCount(getPedestal(),ItemStack.EMPTY,3);
+                }
+                else
+                {
+                    int currentExperience = getExperienceStored();
+                    int incomingExperience = maxReceive;
+                    int spaceAvailable = getMaxExperienceStored()-currentExperience;
+                    int newExperience = currentExperience + ((maxReceive>spaceAvailable)?(spaceAvailable):(maxReceive));
+                    storedExperience = newExperience;
+                    update();
+                    return (incomingExperience>spaceAvailable)?(spaceAvailable):(incomingExperience);
+                }
+            }
+
+            @Override
+            public int extractExperience(int maxExtract, boolean simulate) {
+                if(simulate)
+                {
+                    return (maxExtract>getExperienceStored())?(getExperienceStored()):(maxExtract);
+                }
+                else
+                {
+                    int currentExperience = getExperienceStored();
+                    int remaining = (maxExtract>getExperienceStored())?(0):(currentExperience-maxExtract);
+                    storedExperience = remaining;
+                    update();
+                    return (maxExtract>currentExperience)?(currentExperience):(maxExtract);
+                }
+            }
+
+            @Override
+            public int getExperienceStored() {
+                return storedExperience;
+            }
+
+            @Override
+            public int getMaxExperienceStored() {
+                return 1395;//30 levels
+            }
+
+            @Override
+            public boolean canExtract() {
+                if(hasExperience())return true;
+                return false;
+            }
+
+            @Override
+            public boolean canReceive() {
+                if(hasSpaceForExperience())
+                {
+                    IPedestalFilter filter = getIPedestalFilter();
+                    if(filter == null)return true;
+                    return filter.canAcceptItem(getPedestal(),ItemStack.EMPTY,3);
+                }
+
+                return false;
+            }
+        };
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -423,6 +508,9 @@ public class BasePedestalBlockEntity extends BlockEntity
         }
         if ((cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
             return fluidHandler.cast();
+        }
+        if ((cap == CapabilityExperience.EXPERIENCE)) {
+            return experienceHandler.cast();
         }
         return super.getCapability(cap, side);
     }
@@ -737,21 +825,17 @@ public class BasePedestalBlockEntity extends BlockEntity
         return (h != null)?(h.getSlotLimit(0)):(0);
     }
 
-    public void collideWithPedestal(Level world, BasePedestalBlockEntity tilePedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
+    public void collideWithPedestal(Level world, BasePedestalBlockEntity pedestal, BlockPos posPedestal, BlockState state, Entity entityIn)
     {
-        //Handle items and o things like potions too.
-        if(!world.isClientSide()) {
-            /*if(entityIn instanceof ItemEntity)
+        if(!world.isClientSide) {
+            if(pedestal.hasCoin())
             {
-                if(tilePedestal.hasCoin())
+                Item coinInPed = pedestal.getCoinOnPedestal().getItem();
+                if(coinInPed instanceof IPedestalUpgrade)
                 {
-                    Item coinInPed = tilePedestal.getCoinOnPedestal().getItem();
-                    if(coinInPed instanceof IUpgradeBase)
-                    {
-                        ((IUpgradeBase) coinInPed).actionOnCollideWithBlock(tilePedestal, ((ItemEntity)entityIn));
-                    }
+                    ((IPedestalUpgrade) coinInPed).actionOnCollideWithBlock(pedestal, entityIn);
                 }
-            }*/
+            }
         }
     }
 
@@ -954,6 +1038,100 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     /*============================================================================
     ==============================================================================
+    ===========================  EXPERIENCE START    =============================
+    ==============================================================================
+    ============================================================================*/
+
+    public boolean hasExperience()
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        if(h.getExperienceStored()>0)return true;
+
+        return false;
+    }
+
+    public boolean hasSpaceForExperience()
+    {
+        return getExperienceCapacity() - getStoredExperience() > 0;
+    }
+
+    public int getExperienceCapacity()
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        return h.getMaxExperienceStored();
+    }
+
+    public int getStoredExperience()
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        return h.getExperienceStored();
+    }
+
+    public int addExperience(int amountIn, boolean simulate)
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        return h.receiveExperience(amountIn,simulate);
+    }
+
+    public int removeExperience(int amountOut, boolean simulate)
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        return h.extractExperience(amountOut,simulate);
+    }
+
+    public boolean canAcceptExperience()
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        return h.canReceive();
+    }
+
+    public boolean canSendExperience()
+    {
+        IExperienceStorage h = experienceHandler.orElse(null);
+        return h.canExtract();
+    }
+
+    public int getExperienceTransferRate()
+    {
+        //im assuming # = rf value???
+        int experienceTransferRate = 0;
+        int modifier = 1;
+        switch (modifier)
+        {
+            case 0:
+                experienceTransferRate = 55;//5l
+                break;
+            case 1:
+                experienceTransferRate=160;//10l
+                break;
+            case 2:
+                experienceTransferRate = 315;//15l
+                break;
+            case 3:
+                experienceTransferRate = 550;//20l
+                break;
+            case 4:
+                experienceTransferRate = 910;//25l
+                break;
+            case 5:
+                experienceTransferRate=1395;//30l
+                break;
+            default: experienceTransferRate=160;
+        }
+
+        return  experienceTransferRate;
+    }
+
+    /*============================================================================
+    ==============================================================================
+    ===========================   EXPERIENCE END     =============================
+    ==============================================================================
+    ============================================================================*/
+
+
+
+    /*============================================================================
+    ==============================================================================
     ===========================      COIN START      =============================
     ==============================================================================
     ============================================================================*/
@@ -1023,86 +1201,73 @@ public class BasePedestalBlockEntity extends BlockEntity
     ==============================================================================
     ============================================================================*/
 
-    /*public boolean addSpeed(ItemStack speedUpgrade)
+    public boolean hasEffect()
     {
-        IItemHandler ph = privateHandler.orElse(null);
-        ItemStack itemFromBlock = speedUpgrade.copy();
-        itemFromBlock.setCount(1);
-        if(getSpeed() < 5)
+        return this.storedPotionEffect!=null;
+    }
+
+    public boolean decreaseEffect(int decrease)
+    {
+        if(hasEffect())
         {
-            ph.insertItem(2,itemFromBlock,false);
-            //update();
+            if(this.storedPotionEffectDuration-decrease>0)
+            {
+                this.storedPotionEffectDuration-=decrease;
+                update();
+                return true;
+            }
+            else
+            {
+                this.storedPotionEffectDuration=0;
+                this.storedPotionEffect = null;
+                update();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean addEffect(MobEffectInstance incomingInstance)
+    {
+        if(hasEffect()){return false;}
+        else
+        {
+            this.storedPotionEffect = incomingInstance;
+            this.storedPotionEffectDuration = incomingInstance.getDuration();
+            update();
             return true;
         }
-        else return false;
     }
 
-    public ItemStack removeSpeed(int count)
+    public MobEffect getCurrentEffect()
     {
-        IItemHandler ph = privateHandler.orElse(null);
-        if(hasSpeed())
+        if(hasEffect())
         {
-            //update();
-            return ph.extractItem(2,count,false);
-        }
-        else return ItemStack.EMPTY;
-    }
-
-    public ItemStack removeSpeed()
-    {
-        IItemHandler ph = privateHandler.orElse(null);
-        if(hasSpeed())
-        {
-            //update();
-            return ph.extractItem(2,ph.getStackInSlot(2).getCount(),false);
-        }
-        else return ItemStack.EMPTY;
-    }
-
-    public boolean hasSpeed()
-    {
-        IItemHandler ph = privateHandler.orElse(null);
-        if(ph.getStackInSlot(2).isEmpty())
-        {
-            return false;
-        }
-        else  return true;
-    }
-
-    public int getSpeed()
-    {
-        IItemHandler ph = privateHandler.orElse(null);
-        return ph.getStackInSlot(2).getCount();
-    }
-
-    public int getOperationSpeed()
-    {
-        int speed = 20;
-        switch (getSpeed())
-        {
-            case 0:
-                speed = (getSpeed()>0)?(20):(20);//normal speed
-                break;
-            case 1:
-                speed=(getSpeed()>0)?(10):(20);//2x faster
-                break;
-            case 2:
-                speed = (getSpeed()>0)?(5):(20);;//4x faster
-                break;
-            case 3:
-                speed = (getSpeed()>0)?(3):(20);;//6x faster
-                break;
-            case 4:
-                speed = (getSpeed()>0)?(2):(20);;//10x faster
-                break;
-            case 5:
-                speed=(getSpeed()>0)?(1):(20);;//20x faster
-                break;
-            default: speed=20;
+            return this.storedPotionEffect.getEffect();
         }
 
-        return  speed;
-    }*/
+        return null;
+    }
+
+    public int getSpeed(MobEffectInstance effectInstance)
+    {
+        MobEffect effect = effectInstance.getEffect();
+        int strength = effectInstance.getAmplifier();
+
+        if(effect.equals(MobEffects.MOVEMENT_SPEED))
+        {
+            int speed = (int)Math.round(20.0D - (20.0D*(0.2D * (strength+1))));
+            return (speed<0)?(0):(speed);
+        }
+        else if(effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
+        {
+            int speed = (int)Math.round(20.0D + (20.0D*(0.2D * (strength+1))));
+            return (speed>100)?(100):(speed);
+        }
+
+        return 20;
+    }
 
     /*============================================================================
     ==============================================================================
@@ -1195,18 +1360,18 @@ public class BasePedestalBlockEntity extends BlockEntity
         {
             boolLight = true;
             IItemHandler ph = privateHandler.orElse(null);
-            BlockState state = level.getBlockState(worldPosition);
+            BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(true)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
             ph.insertItem(slotLight,new ItemStack(Items.GLOWSTONE,1),false);
             update();
-            level.setBlock(worldPosition,newstate,3);
+            level.setBlock(getPos(),newstate,3);
             return true;
         }
     }
 
     /*public boolean addLight()
     {
-        BlockState state = level.getBlockState(worldPosition);
+        BlockState state = level.getBlockState(getPos());
         BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(true)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
         if(hasLight())
         {
@@ -1218,7 +1383,7 @@ public class BasePedestalBlockEntity extends BlockEntity
             {
                 IItemHandler ph = privateHandler.orElse(null);
                 ph.insertItem(slotLight,new ItemStack(Items.GLOWSTONE_DUST,1),false);
-                state.updateNeighbourShapes(this.level,this.worldPosition,1,3);
+                state.updateNeighbourShapes(this.level,getPos(),1,3);
                 return true;
             }
         }
@@ -1228,7 +1393,7 @@ public class BasePedestalBlockEntity extends BlockEntity
             IItemHandler ph = privateHandler.orElse(null);
             ph.insertItem(slotLight,new ItemStack(Items.GLOWSTONE_DUST,1),false);
             update();
-            level.setBlock(worldPosition,newstate,3);
+            level.setBlock(getPos(),newstate,3);
             return true;
         }
     }*/
@@ -1238,11 +1403,11 @@ public class BasePedestalBlockEntity extends BlockEntity
         IItemHandler ph = privateHandler.orElse(null);
         if(hasLight())
         {
-            BlockState state = level.getBlockState(worldPosition);
+            BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
             boolLight = true;
             ph.extractItem(slotLight,1,false);
-            level.setBlock(worldPosition,newstate,3);
+            level.setBlock(getPos(),newstate,3);
             update();
             return new ItemStack(Items.GLOWSTONE,1);
 
@@ -1255,19 +1420,19 @@ public class BasePedestalBlockEntity extends BlockEntity
         IItemHandler ph = privateHandler.orElse(null);
         if(hasLight())
         {
-            BlockState state = level.getBlockState(worldPosition);
+            BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
             if(getLightBrightness()<=1)
             {
                 boolLight = true;
                 ph.extractItem(slotLight,1,false);
-                level.setBlock(worldPosition,newstate,3);
+                level.setBlock(getPos(),newstate,3);
                 return new ItemStack(Items.GLOWSTONE_DUST,1);
             }
             else
             {
                 ph.extractItem(slotLight,1,false);
-                state.updateNeighbourShapes(this.level,this.worldPosition,1,3);
+                state.updateNeighbourShapes(this.level,getPos(),1,3);
                 return new ItemStack(Items.GLOWSTONE_DUST,1);
             }
 
@@ -1280,11 +1445,11 @@ public class BasePedestalBlockEntity extends BlockEntity
         IItemHandler ph = privateHandler.orElse(null);
         if(hasLight())
         {
-            BlockState state = level.getBlockState(worldPosition);
+            BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
             int slotCount = ph.getStackInSlot(slotLight).getCount();
             ph.extractItem(slotLight,slotCount,false);
-            level.setBlock(worldPosition,newstate,3);
+            level.setBlock(getPos(),newstate,3);
             return new ItemStack(Items.GLOWSTONE_DUST,slotCount);
         }
         else return ItemStack.EMPTY;
@@ -1355,9 +1520,9 @@ public class BasePedestalBlockEntity extends BlockEntity
         IItemHandler ph = privateHandler.orElse(null);
         if(updateBlock)
         {
-            BlockState state = level.getBlockState(worldPosition);
+            BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, state.getValue(LIT)).setValue(FILTER_STATUS, 0);
-            level.setBlock(worldPosition,newstate,3);
+            level.setBlock(getPos(),newstate,3);
             update();
         }
 
@@ -1378,9 +1543,9 @@ public class BasePedestalBlockEntity extends BlockEntity
                 if(!simulate)
                 {
                     ph.insertItem(slotFilter,filter.copy(),false);
-                    BlockState state = level.getBlockState(worldPosition);
+                    BlockState state = level.getBlockState(getPos());
                     BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, state.getValue(LIT)).setValue(FILTER_STATUS, (((IPedestalFilter) filter.getItem()).getFilterType(filter))?(2):(1));
-                    level.setBlock(worldPosition,newstate,3);
+                    level.setBlock(getPos(),newstate,3);
                     update();
                 }
                 return true;
@@ -1616,6 +1781,56 @@ public class BasePedestalBlockEntity extends BlockEntity
 
 
 
+    /*============================================================================
+    ==============================================================================
+    ===========================   NO COLLIDE START  ==============================
+    ==============================================================================
+    ============================================================================*/
+
+    private int slotNoCollide = 6;
+    public boolean addNoCollide(ItemStack roundRobin)
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        ItemStack itemFromBlock = roundRobin.copy();
+        itemFromBlock.setCount(1);
+        if(!hasRRobin())
+        {
+            ph.insertItem(slotNoCollide,itemFromBlock,false);
+            //update();
+            return true;
+        }
+        else return false;
+    }
+
+    public ItemStack removeNoCollide()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        if(hasRRobin())
+        {
+            //update();
+            return ph.extractItem(slotNoCollide,ph.getStackInSlot(slotNoCollide).getCount(),false);
+        }
+        else return ItemStack.EMPTY;
+    }
+
+    public boolean hasNoCollide()
+    {
+        IItemHandler ph = privateHandler.orElse(null);
+        if(ph.getStackInSlot(slotNoCollide).isEmpty())
+        {
+            return false;
+        }
+        else  return true;
+    }
+
+    /*============================================================================
+    ==============================================================================
+    ===========================    NO COLLIDE END   ==============================
+    ==============================================================================
+    ============================================================================*/
+
+
+
     public boolean canSendItemInPedestal(BasePedestalBlockEntity pedestal)
     {
         if(pedestal.hasItem())return true;
@@ -1722,6 +1937,24 @@ public class BasePedestalBlockEntity extends BlockEntity
             if(filterInPed instanceof IPedestalFilter)
             {
                 int filterCount = ((IPedestalFilter) filterInPed).canAcceptCount(getPedestal(), ItemStack.EMPTY,2);
+                if(filterCount>0)canAccept = filterCount;
+            }
+        }
+
+        return canAccept;
+    }
+
+    public int experienceAmountToAccept(Level worldIn, BlockPos posPedestal, int experienceIncoming)
+    {
+        int spaceForExperience = getExperienceCapacity()-getStoredExperience();
+        int canAccept = (experienceIncoming>spaceForExperience)?(spaceForExperience):(experienceIncoming);
+
+        if(hasFilter())
+        {
+            Item filterInPed = this.getFilterInPedestal().getItem();
+            if(filterInPed instanceof IPedestalFilter)
+            {
+                int filterCount = ((IPedestalFilter) filterInPed).canAcceptCount(getPedestal(), ItemStack.EMPTY,3);
                 if(filterCount>0)canAccept = filterCount;
             }
         }
@@ -1836,7 +2069,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                                 copyStackToSend.setCount(countToSend);
                                 removeItem(copyStackToSend.getCount());
                                 tilePedestalToSendTo.addItem(copyStackToSend,false);
-                                if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,worldPosition,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),worldPosition.getX(),worldPosition.getY(),worldPosition.getZ()));
+                                if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
                             }
                         }
                     }
@@ -1884,7 +2117,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                                 {
                                     removeFluid(countFluidToSend, IFluidHandler.FluidAction.EXECUTE);
                                     tilePedestalToSendTo.addFluid(new FluidStack(fluidStackIncoming.getFluid(),finalFluidCountToSend,fluidStackIncoming.getTag()), IFluidHandler.FluidAction.SIMULATE);
-                                    if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,worldPosition,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),worldPosition.getX(),worldPosition.getY(),worldPosition.getZ()));
+                                    if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
                                 }
                             }
                         }
@@ -1933,7 +2166,56 @@ public class BasePedestalBlockEntity extends BlockEntity
                                 {
                                     removeEnergy(finalEnergyCountToSend,false);
                                     tilePedestalToSendTo.addEnergy(finalEnergyCountToSend,false);
-                                    if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,worldPosition,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),worldPosition.getX(),worldPosition.getY(),worldPosition.getZ()));
+                                    if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void sendExperienceToPedestal(BlockPos pedestalToSendTo, int experienceIncoming)
+    {
+        if(hasExperience())
+        {
+            if(level.getBlockEntity(pedestalToSendTo) instanceof BasePedestalBlockEntity)
+            {
+                BasePedestalBlockEntity tilePedestalToSendTo = (BasePedestalBlockEntity)level.getBlockEntity(pedestalToSendTo);
+
+                //Checks if pedestal is empty or if not then checks if items match and how many can be insert
+                if(tilePedestalToSendTo.experienceAmountToAccept(level,pedestalToSendTo,experienceIncoming) > 0)
+                {
+                    if(tilePedestalToSendTo.canAcceptExperience())
+                    {
+                        //Max that can be recieved
+                        int countToSend = tilePedestalToSendTo.getExperienceCapacity()-tilePedestalToSendTo.getStoredExperience();
+
+                        //Max that is available to send
+                        if(experienceIncoming<countToSend)
+                        {
+                            countToSend = experienceIncoming;
+                        }
+                        //Get max that can be sent
+                        if(countToSend > getExperienceTransferRate())
+                        {
+                            countToSend = getExperienceTransferRate();
+                        }
+
+
+                        if(countToSend > 0)
+                        {
+                            //Send items
+                            int countExperienceToSend = tilePedestalToSendTo.addExperience(countToSend,true);
+                            if(countExperienceToSend>0)
+                            {
+                                int finalExperienceCountToSend = removeExperience(countExperienceToSend,true);
+                                if(finalExperienceCountToSend>0)
+                                {
+                                    removeExperience(finalExperienceCountToSend,false);
+                                    tilePedestalToSendTo.addExperience(finalExperienceCountToSend,false);
+                                    if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
                                 }
                             }
                         }
@@ -2003,33 +2285,60 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public void tick() {
 
-        if(!level.isClientSide() && level.isAreaLoaded(worldPosition,1))
+        if(!level.isClientSide() && level.isAreaLoaded(getPos(),1))
         {
-            if(getNumberOfStoredLocations() > 0 && !isPedestalBlockPowered() && hasItem())
-            {
-                pedTicker++;
-                //if (pedTicker%getOperationSpeed() == 0) {
-                if (pedTicker%20 == 0) {
+            pedTicker++;
+            //if (pedTicker%getOperationSpeed() == 0) {
+            int speed = 20;
+            if(hasEffect())speed = getSpeed(storedPotionEffect);
+            if (pedTicker%speed == 0) {
 
-                    transferAction();
-                    //Eventually have Energy, Fluids, XP in here too???
-
-                    if(pedTicker >=100){pedTicker=0;}
-                }
-            }
-        }
-        if(level.isAreaLoaded(worldPosition,1))
-        {
-            if(hasCoin() && !isPedestalBlockPowered())
-            {
-                Item coinInPed = getCoinOnPedestal().getItem();
-                if(coinInPed instanceof IPedestalUpgrade)
+                if(hasEffect() && !isPedestalBlockPowered())
                 {
-                    impTicker++;
-                    ((IPedestalUpgrade) coinInPed).updateAction(level,this);
-                    //Has to be bigger than our biggest ticker value for an upgrade, or itll reset the upgrade instance before the upgrade action can fire
-                    if(impTicker >=Integer.MAX_VALUE-100){impTicker=0;}
+                    List<Integer> colorList = getTrueColorFromInt(storedPotionEffect.getEffect().getColor());
+                    decreaseEffect(speed);
+                    if(canSpawnParticles())DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY(),getPos().getZ(),colorList.get(0),colorList.get(1),colorList.get(2)));
                 }
+
+                if(getNumberOfStoredLocations() > 0 && !isPedestalBlockPowered() && hasItem()) { transferAction(); }
+
+                if(hasCoin() && !isPedestalBlockPowered())
+                {
+                    Item coinInPed = getCoinOnPedestal().getItem();
+                    if(coinInPed instanceof IPedestalUpgrade) { ((IPedestalUpgrade) coinInPed).updateAction(level,this); }
+                }
+
+                List<Entity> entitiesColliding = level.getEntitiesOfClass(Entity.class,new AABB(getPos()));
+                for(Entity getEntity : entitiesColliding)
+                {
+                    if(!hasEffect())
+                    {
+                        if(getEntity instanceof ItemEntity)
+                        {
+                            ItemEntity item = ((ItemEntity)getEntity);
+                            List<MobEffectInstance> effects = PotionUtils.getMobEffects(item.getItem());
+                            MobEffectInstance instance = IntStream.range(0,effects.size())//Int Range
+                                    .mapToObj((effects)::get)//Function being applied to each interval
+                                    .filter(MobEffectInstance -> (MobEffectInstance.getEffect().equals(MobEffects.MOVEMENT_SPEED) || MobEffectInstance.getEffect().equals(MobEffects.MOVEMENT_SLOWDOWN)))
+                                    .findFirst().orElse(null);
+                            if(instance !=null)
+                            {
+                                addEffect(instance);
+                                if(item.getItem().getCount()>1){ item.getItem().shrink(1); }
+                                else { item.remove(Entity.RemovalReason.DISCARDED); }
+                            }
+                        }
+                    }
+                    else if(!hasNoCollide())
+                    {
+                        collideWithPedestal(level, getPedestal(), getPos(), getBlockState(), getEntity);
+                    }
+                }
+
+
+
+
+                if(pedTicker >=100){pedTicker=0;}
             }
         }
     }
@@ -2045,9 +2354,10 @@ public class BasePedestalBlockEntity extends BlockEntity
 
         this.storedValueForUpgrades = p_155245_.getInt("storedUpgradeValue");
         this.storedEnergy = p_155245_.getInt("storedEnergy");
-        this.storedXP = p_155245_.getInt("storedXP");
+        this.storedExperience = p_155245_.getInt("storedExperience");
         this.storedFluid = FluidStack.loadFluidStackFromNBT(p_155245_.getCompound("storedFluid"));
-
+        this.storedPotionEffect = (MobEffectInstance.load(p_155245_)!=null)?(MobEffectInstance.load(p_155245_)):(null);
+        this.storedPotionEffectDuration = p_155245_.getInt("storedEffectDuration");
 
         int[] storedIX = p_155245_.getIntArray("intArrayXPos");
         int[] storedIY = p_155245_.getIntArray("intArrayYPos");
@@ -2063,7 +2373,8 @@ public class BasePedestalBlockEntity extends BlockEntity
     @Override
     protected void saveAdditional(CompoundTag p_187471_) {
         super.saveAdditional(p_187471_);
-        handler.ifPresent(h -> {
+        save(p_187471_);
+        /*handler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_187471_.put("inv", compound);
         });
@@ -2076,6 +2387,9 @@ public class BasePedestalBlockEntity extends BlockEntity
         p_187471_.putInt("storedEnergy",storedEnergy);
         p_187471_.putInt("storedXP",storedXP);
         p_187471_.put("storedFluid",storedFluid.writeToNBT(new CompoundTag()));
+        if(storedPotionEffect!=null)storedPotionEffect.save(p_187471_);
+        p_187471_.putInt("storedEffectDuration",storedPotionEffectDuration);
+            //PotionUtils.getCustomEffects(p_155245_.getCompound("storedEffect")).get(0);
 
         List<Integer> storedX = new ArrayList<Integer>();
         List<Integer> storedY = new ArrayList<Integer>();
@@ -2090,7 +2404,7 @@ public class BasePedestalBlockEntity extends BlockEntity
 
         p_187471_.putIntArray("intArrayXPos",storedX);
         p_187471_.putIntArray("intArrayYPos",storedY);
-        p_187471_.putIntArray("intArrayZPos",storedZ);
+        p_187471_.putIntArray("intArrayZPos",storedZ);*/
     }
 
     @Override
@@ -2107,8 +2421,10 @@ public class BasePedestalBlockEntity extends BlockEntity
 
         p_58888_.putInt("storedUpgradeValue",storedValueForUpgrades);
         p_58888_.putInt("storedEnergy",storedEnergy);
-        p_58888_.putInt("storedXP",storedXP);
+        p_58888_.putInt("storedExperience",storedExperience);
         p_58888_.put("storedFluid",storedFluid.writeToNBT(new CompoundTag()));
+        if(storedPotionEffect!=null)storedPotionEffect.save(p_58888_);
+        p_58888_.putInt("storedEffectDuration",storedPotionEffectDuration);
 
         List<Integer> storedX = new ArrayList<Integer>();
         List<Integer> storedY = new ArrayList<Integer>();
@@ -2134,7 +2450,7 @@ public class BasePedestalBlockEntity extends BlockEntity
         /*CompoundTag nbtTagCompound = new CompoundTag();
         save(nbtTagCompound);*/
         //super.getUpdatePacket();
-        //return new ClientboundBlockEntityDataPacket(this.worldPosition,42,nbtTagCompound);
+        //return new ClientboundBlockEntityDataPacket(getPos(),42,nbtTagCompound);
         return ClientboundBlockEntityDataPacket.create(this.getPedestal());
     }
 
@@ -2146,9 +2462,9 @@ public class BasePedestalBlockEntity extends BlockEntity
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net,pkt);
-        BlockState state = this.level.getBlockState(worldPosition);
+        BlockState state = this.level.getBlockState(getPos());
         this.handleUpdateTag(pkt.getTag());
-        this.level.sendBlockUpdated(worldPosition, state, state, 3);
+        this.level.sendBlockUpdated(getPos(), state, state, 3);
     }
 
     @Override
@@ -2171,6 +2487,9 @@ public class BasePedestalBlockEntity extends BlockEntity
         }
         if(this.fluidHandler != null) {
             this.fluidHandler.invalidate();
+        }
+        if(this.experienceHandler != null) {
+            this.experienceHandler.invalidate();
         }
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
+import java.sql.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -372,6 +373,15 @@ public class ColorReference
         List<Integer> colorOutput = mixColorsList(color1List.get(0), color1List.get(1), color1List.get(2), color2List.get(0), color2List.get(1), color2List.get(2));
 
         return getColor(colorOutput);
+    }
+
+    public static List<Integer> getTrueColorFromInt(int color)
+    {
+        int red=Math.floorDiv(((color/65536)%256),1);
+        int green=Math.floorDiv(((color/256)%256),1);
+        int blue=Math.floorDiv((color%256),1);
+
+        return Arrays.asList(red,green,blue);
     }
 
 

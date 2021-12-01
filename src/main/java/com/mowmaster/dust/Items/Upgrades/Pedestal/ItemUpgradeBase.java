@@ -7,6 +7,7 @@ import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -42,6 +43,12 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
     public void updateAction(Level world, BasePedestalBlockEntity pedestal) {
 
     }
+
+    @Override
+    public void actionOnCollideWithBlock(BasePedestalBlockEntity pedestal, Entity entityIn) {
+
+    }
+
 
     public static void saveModeToNBT(ItemStack augment, int mode)
     {
@@ -409,6 +416,21 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
         }
 
         return returner;
+    }
+
+    public int getCountItemFilter(BasePedestalBlockEntity pedestal, ItemStack stackIn)
+    {
+        if(pedestal.hasFilter())
+        {
+            Item filterInPedestal = pedestal.getFilterInPedestal().getItem();
+            if(filterInPedestal instanceof IPedestalFilter)
+            {
+                return ((IPedestalFilter) filterInPedestal).canAcceptCount(pedestal,stackIn,0);
+            }
+
+        }
+
+        return stackIn.getCount();
     }
 
 
