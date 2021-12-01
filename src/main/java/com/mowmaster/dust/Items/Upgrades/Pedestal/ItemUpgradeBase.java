@@ -10,11 +10,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -238,6 +243,37 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
         return  transferRate;
     }
 
+    public int getFluidTransferRate(ItemStack stack)
+    {
+        //im assuming # = rf value???
+        int fluidTransferRate = 0;
+        int modifier = 1;
+        switch (modifier)
+        {
+            case 0:
+                fluidTransferRate = 1000;//1x
+                break;
+            case 1:
+                fluidTransferRate=2000;//2x
+                break;
+            case 2:
+                fluidTransferRate = 4000;//4x
+                break;
+            case 3:
+                fluidTransferRate = 6000;//6x
+                break;
+            case 4:
+                fluidTransferRate = 10000;//10x
+                break;
+            case 5:
+                fluidTransferRate=20000;//20x
+                break;
+            default: fluidTransferRate=2000;
+        }
+
+        return  fluidTransferRate;
+    }
+
     public boolean isInventoryEmpty(LazyOptional<IItemHandler> cap)
     {
         if(cap.isPresent())
@@ -308,6 +344,57 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
         return slot.get();
     }
 
+    public int getNextSlotEmptyOrMatching(LazyOptional<IItemHandler> cap, ItemStack stackInPedestal)
+    {
+        AtomicInteger slot = new AtomicInteger(-1);
+        if(cap.isPresent())
+        {
+            IItemHandler handler = cap.orElse(null);
+            if(handler != null)
+            {
+                int range = handler.getSlots();
+                for(int i=0;i<range;i++)
+                {
+                    ItemStack stackInSlot = handler.getStackInSlot(i);
+                    int maxSizeSlot = handler.getSlotLimit(i);
+                    if(maxSizeSlot>0)
+                    {
+                        if(stackInSlot.getMaxStackSize()>1)
+                        {
+                            if(doItemsMatch(stackInSlot,stackInPedestal) && stackInSlot.getCount() < handler.getSlotLimit(i))
+                            {
+                                slot.set(i);
+                                break;
+                            }
+                            else if(stackInSlot.isEmpty())
+                            {
+                                slot.set(i);
+                                break;
+                            }
+                            //if chest is full
+                            else if(i==range)
+                            {
+                                slot.set(i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return slot.get();
+    }
+
+    public FluidStack getFluidStored(ItemStack stack)
+    {
+        if(stack.hasTag())
+        {
+            CompoundTag getCompound = stack.getTag();
+            return FluidStack.loadFluidStackFromNBT(getCompound);
+        }
+
+        return FluidStack.EMPTY;
+    }
+
     public boolean passesItemFilter(BasePedestalBlockEntity pedestal, ItemStack stackIn)
     {
         boolean returner = true;
@@ -323,4 +410,6 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
 
         return returner;
     }
+
+
 }

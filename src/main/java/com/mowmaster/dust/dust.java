@@ -7,6 +7,8 @@ import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Networking.DustPacketHandler;
+//import com.mowmaster.dust.World.DustGeneration;
+//import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
 import net.minecraft.world.item.Item;
@@ -22,7 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,18 +48,21 @@ public class Dust
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new DustGeneration());
+        //MinecraftForge.EVENT_BUS.register(new DustGeneration());
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DustGenerationConfig.commonSpec);
 
         eventBus.register(DustGenerationConfig.class);
 
-        DeferredRegisterBlocks.DECORATORS.register(eventBus);
+
         DeferredRegisterItems.ITEMS.register(eventBus);
         DeferredRegisterBlocks.BLOCKS.register(eventBus);
         DeferredRegisterTileBlocks.BLOCKS.register(eventBus);
         DeferredBlockEntityTypes.BLOCK_ENTITIES.register(eventBus);
+
+
+        MinecraftForge.EVENT_BUS.register(new DustGeneration());
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -86,7 +91,7 @@ public class Dust
     }
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
+    public void onServerStarting(ServerStartingEvent event) {
         // do something when the server starts
         //LOGGER.info("HELLO from server starting");
     }

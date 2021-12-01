@@ -181,7 +181,8 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
 
     public BlockState updateShape(BlockState p_152036_, Direction p_152037_, BlockState p_152038_, LevelAccessor p_152039_, BlockPos p_152040_, BlockPos p_152041_) {
         if (p_152036_.getValue(WATERLOGGED)) {
-            p_152039_.getLiquidTicks().scheduleTick(p_152040_, Fluids.WATER, Fluids.WATER.getTickDelay(p_152039_));
+            p_152039_.getFluidTicks();
+            //.scheduleTick(p_152040_, Fluids.WATER, Fluids.WATER.getTickDelay(p_152039_))
         }
 
         return p_152037_ == p_152036_.getValue(FACING).getOpposite() && !p_152036_.canSurvive(p_152039_, p_152040_) ? Blocks.AIR.defaultBlockState() : super.updateShape(p_152036_, p_152037_, p_152038_, p_152039_, p_152040_, p_152041_);
@@ -464,17 +465,17 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if (player.isCreative()) {
             if (player.getOffhandItem().getItem().equals(DeferredRegisterItems.TOOL_DEVTOOL.get()))
-                return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
+                return willHarvest || super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
             else
                 attack(state, world, pos, player);
 
             return false;
         }
 
-        return willHarvest || super.removedByPlayer(state, world, pos, player, false, fluid);
+        return willHarvest || super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override

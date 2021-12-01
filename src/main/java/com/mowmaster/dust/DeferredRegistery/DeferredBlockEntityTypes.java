@@ -2,7 +2,7 @@ package com.mowmaster.dust.DeferredRegistery;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

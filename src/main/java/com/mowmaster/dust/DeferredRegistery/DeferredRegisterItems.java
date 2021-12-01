@@ -6,10 +6,11 @@ import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.Filters.*;
 import com.mowmaster.dust.Items.Tools.*;
+import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeExport;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeImport;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -63,8 +64,10 @@ public class DeferredRegisterItems
     public static final RegistryObject<Item> FILTER_TAG = ITEMS.register("filter_tag",
             () -> new FilterTag(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
-    public static final RegistryObject<Item> PEDESTAL_UPGRADE_IMPORT = ITEMS.register("item_pedestal_upgrade_import",
+    public static final RegistryObject<Item> PEDESTAL_UPGRADE_IMPORT = ITEMS.register("upgrade_pedestal_import",
             () -> new ItemUpgradeImport(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> PEDESTAL_UPGRADE_EXPORT = ITEMS.register("upgrade_pedestal_export",
+            () -> new ItemUpgradeExport(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
     public static final RegistryObject<Item> AUGMENT_PEDESTAL_ROUNDROBIN = ITEMS.register("augment_pedestal_roundrobin",
             () -> new AugmentBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));

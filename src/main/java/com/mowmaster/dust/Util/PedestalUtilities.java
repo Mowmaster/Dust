@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -105,6 +107,42 @@ public class PedestalUtilities
                 if(!list.isEmpty())
                 {
                     LazyOptional<IItemHandler> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+                    if(cap.isPresent())
+                        return cap;
+                }
+            }
+        }
+        return LazyOptional.empty();
+    }
+
+    public static LazyOptional<IFluidHandler> findFluidHandlerAtPos(Level world, BlockPos pos, Direction side, boolean allowCart)
+    {
+        BlockEntity neighbourTile = world.getBlockEntity(pos);
+        if(neighbourTile!=null)
+        {
+            LazyOptional<IFluidHandler> cap = neighbourTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+            if(cap.isPresent())
+                return cap;
+        }
+        if(allowCart)
+        {
+            if(RailBlock.isRail(world, pos))
+            {
+                List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos), entity -> entity instanceof IForgeAbstractMinecart);
+                if(!list.isEmpty())
+                {
+                    LazyOptional<IFluidHandler> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+                    if(cap.isPresent())
+                        return cap;
+                }
+            }
+            else
+            {
+                //Added for quark boats with inventories (i hope)
+                List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos), entity -> entity instanceof Boat);
+                if(!list.isEmpty())
+                {
+                    LazyOptional<IFluidHandler> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
                     if(cap.isPresent())
                         return cap;
                 }

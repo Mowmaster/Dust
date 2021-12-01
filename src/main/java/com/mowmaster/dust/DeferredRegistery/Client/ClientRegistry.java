@@ -73,6 +73,7 @@ public class ClientRegistry
 
 
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.PEDESTAL_UPGRADE_IMPORT.get());
+        ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.PEDESTAL_UPGRADE_EXPORT.get());
 
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.FILTER_ITEM.get());
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.FILTER_ITEMSTACK.get());

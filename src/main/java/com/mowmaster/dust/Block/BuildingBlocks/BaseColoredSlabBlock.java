@@ -82,7 +82,7 @@ public class BaseColoredSlabBlock extends SlabBlock
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         ItemStack picked = state.getBlock().getCloneItemStack(world, pos, state);
         int getColor = ColorReference.getColorFromStateInt(state);
         return ColorReference.addColorToItemStack(picked,getColor);

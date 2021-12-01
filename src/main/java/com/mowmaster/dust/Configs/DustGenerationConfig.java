@@ -15,7 +15,6 @@ public class DustGenerationConfig
         public final ForgeConfigSpec.BooleanValue generate030;
         public final ForgeConfigSpec.BooleanValue generate003;
         public final ForgeConfigSpec.BooleanValue generateGeodeRandom;
-        public final ForgeConfigSpec.BooleanValue generateWorldRandom;
 
         public final ForgeConfigSpec.IntValue geodeRarity333;
         public final ForgeConfigSpec.IntValue geodeRarity000;
@@ -23,44 +22,26 @@ public class DustGenerationConfig
         public final ForgeConfigSpec.IntValue geodeRarity030;
         public final ForgeConfigSpec.IntValue geodeRarity003;
         public final ForgeConfigSpec.IntValue geodeRarityGeodeRandom;
-        public final ForgeConfigSpec.IntValue geodeRarityWorldRandom;
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Dust World Generation Settings")
                     .push("Generation");
 
-            generate333 = builder
-                    .comment("Generate Geode (White) [Default: true]")
-                    .define("generate333", true);
+            generate333 = builder.comment("Generate Geode (White) [Default: true]").define("generate333", true);
 
-            generate000 = builder
-                    .comment("Generate Geode (Black) [Default: true]")
-                    .define("generate000", true);
+            generate000 = builder.comment("Generate Geode (Black) [Default: true]").define("generate000", true);
 
-            generate300 = builder
-                    .comment("Generate Geode (Red) [Default: true]")
-                    .define("generate300", true);
+            generate300 = builder.comment("Generate Geode (Red) [Default: true]").define("generate300", true);
 
-            generate030 = builder
-                    .comment("Generate Geode (Green) [Default: true]")
-                    .define("generate030", true);
+            generate030 = builder.comment("Generate Geode (Green) [Default: true]").define("generate030", true);
 
-            generate003 = builder
-                    .comment("Generate Geode (Blue) [Default: true]")
-                    .define("generate003", true);
+            generate003 = builder.comment("Generate Geode (Blue) [Default: true]").define("generate003", true);
 
-            generateGeodeRandom = builder
-                    .comment("Generate Geode (Random Color) [Default: true]")
-                    .define("generateGeodeRandom", true);
-
-            generateWorldRandom = builder
-                    .comment("Generate In World (Small Random Color Veins) [Default: true]")
-                    .define("generateWorldRandom", true);
+            generateGeodeRandom = builder.comment("Generate Geode (Random Color) [Default: true]").define("generateGeodeRandom", true);
 
 
             builder.pop();
-            builder.comment("Rarity settings")
-                    .push("Rarity");
+            builder.comment("Rarity settings").push("Rarity");
 
             geodeRarity333 = builder
                     .comment("Geode (White) Rarity [Default: 300] (The higher the value the rarer)")
@@ -83,12 +64,8 @@ public class DustGenerationConfig
                     .defineInRange("geodeRarity003", 180, 0, Integer.MAX_VALUE);
 
             geodeRarityGeodeRandom = builder
-                    .comment("Geode (Random Color) Rarity [Default: 60] (The higher the value the rarer)")
-                    .defineInRange("geodeRarityGeodeRandom", 60, 0, Integer.MAX_VALUE);
-
-            geodeRarityWorldRandom = builder
-                    .comment("In World (Small Random Color Veins) Rarity [Default: 60] (The higher the value the rarer)")
-                    .defineInRange("geodeRarityWorldRandom", 60, 0, Integer.MAX_VALUE);
+                    .comment("Geode (Random Color) Rarity [Default: 600] (The higher the value the rarer)")
+                    .defineInRange("geodeRarityGeodeRandom", 600, 0, Integer.MAX_VALUE);
 
             builder.pop();
         }

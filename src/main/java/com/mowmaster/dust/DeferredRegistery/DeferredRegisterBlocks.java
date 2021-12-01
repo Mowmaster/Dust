@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery;
 
+import com.mojang.serialization.Codec;
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
 import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredSlabBlock;
 import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredStairBlock;
@@ -8,30 +9,30 @@ import com.mowmaster.dust.Block.GeneratedBlocks.BaseCrystalClusterBlock;
 import com.mowmaster.dust.Block.GeneratedBlocks.BaseCrystalNodeBlock;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import com.mowmaster.dust.World.GeodeGen.GeodeDecorator;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
 import static com.mowmaster.dust.References.Constants.MODID;
-import static net.minecraftforge.versions.forge.ForgeVersion.MOD_ID;
 
 public class DeferredRegisterBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,MODID);
-    public static final DeferredRegister<FeatureDecorator<?>> DECORATORS = DeferredRegister.create(ForgeRegistries.DECORATORS, MOD_ID);
-
-    public static final RegistryObject<FeatureDecorator<NoneDecoratorConfiguration>> RNG_DECORATOR = DECORATORS.register("rng_initializer", GeodeDecorator::new);
+    public static final PlacementModifierType<GeodeDecorator> RNG_DECORATOR = register("rng_initializer", GeodeDecorator.CODEC);
+    //public static final DeferredRegister<FeatureDecorator<?>> DECORATORS = DeferredRegister.create(ForgeRegistries.DECORATORS, MOD_ID);
+    //public static final RegistryObject<FeatureDecorator<NoneDecoratorConfiguration>> RNG_DECORATOR = DECORATORS.register("rng_initializer", GeodeDecorator::new);
 
     public static final RegistryObject<Block> CRYSTAL_NODE = registerBlock("block_inertnode",
             () -> new BaseCrystalNodeBlock(BlockBehaviour.Properties.of(Material.AMETHYST).randomTicks().strength(3.0F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops().lightLevel((p_152629_) -> { return 10; })));
@@ -72,5 +73,12 @@ public class DeferredRegisterBlocks
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+    }
+
+    //For Geodes
+    private static <P extends PlacementModifier> PlacementModifierType<P> register(String name, Codec<P> codec) {
+        return Registry.register(Registry.PLACEMENT_MODIFIERS, name, () -> {
+            return codec;
+        });
     }
 }

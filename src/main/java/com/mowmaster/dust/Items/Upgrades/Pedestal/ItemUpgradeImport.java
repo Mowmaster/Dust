@@ -14,11 +14,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.References.Constants.MODID;
+import static com.mowmaster.dust.Util.PedestalUtilities.findFluidHandlerAtPos;
 
 public class ItemUpgradeImport extends ItemUpgradeBase
 {
@@ -59,9 +63,10 @@ public class ItemUpgradeImport extends ItemUpgradeBase
 
     public void upgradeAction(BasePedestalBlockEntity pedestal, Level world, BlockPos posOfPedestal, ItemStack coinInPedestal)
     {
+        BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
+
         if(canTransferItems(coinInPedestal))
         {
-            BlockPos posInventory = getPosOfBlockBelow(world,posOfPedestal,1);
             int transferRate = getItemTransferRate(coinInPedestal);
 
             ItemStack itemFromInv = ItemStack.EMPTY;

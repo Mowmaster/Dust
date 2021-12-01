@@ -12,6 +12,7 @@ import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.Entity;
@@ -25,12 +26,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -54,6 +55,9 @@ public class BasePedestalBlockEntity extends BlockEntity
     private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(this::createHandlerPedestalFluid);
     //private LazyOptional<IExperienceHandler> xpHandler = LazyOptional.of(this::createHandlerPedestalXp);
     private List<ItemStack> stacksList = new ArrayList<>();
+    private FluidStack storedFluid;
+    private int storedEnergy;
+    private int storedXP;
     private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
     private int storedValueForUpgrades = 0;
@@ -67,7 +71,7 @@ public class BasePedestalBlockEntity extends BlockEntity
     public void update()
     {
         BlockState state = level.getBlockState(worldPosition);
-        this.level.sendBlockUpdated(worldPosition, state, state, Constants.BlockFlags.RERENDER_MAIN_THREAD);
+        this.level.sendBlockUpdated(worldPosition, state, state, 3);
         this.setChanged();
     }
 
@@ -89,7 +93,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                 //Run filter checks here(slot==0)?(true):(false)
                 IPedestalFilter filter = getIPedestalFilter();
                 if(filter == null)return true;
-                return filter.canAcceptItem(getPedestal(),stack);
+                return filter.canAcceptItem(getPedestal(),stack,0);
             }
 
             @Override
@@ -104,7 +108,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                 IPedestalFilter filter = getIPedestalFilter();
                 if(filter == null)return super.getStackLimit(slot, stack);
 
-                return filter.canAcceptCount(getPedestal(),stack);
+                return filter.canAcceptCount(getPedestal(),stack,0);
             }
 
             @Override
@@ -184,7 +188,10 @@ public class BasePedestalBlockEntity extends BlockEntity
         return new IEnergyStorage() {
             @Override
             public int receiveEnergy(int maxReceive, boolean simulate) {
-                return 0;
+
+                IPedestalFilter filter = getIPedestalFilter();
+                if(filter == null)return getMaxEnergyStored()-getEnergyStored();
+                return filter.canAcceptCount(getPedestal(),ItemStack.EMPTY,2);
             }
 
             @Override
@@ -196,23 +203,25 @@ public class BasePedestalBlockEntity extends BlockEntity
             @Override
             public int getEnergyStored() {
 
-                return 0;
+                return storedEnergy;
             }
 
             @Override
             public int getMaxEnergyStored() {
 
-                return 0;
+                return 20000;
             }
 
             @Override
             public boolean canExtract() {
-                return false;
+                return true;
             }
 
             @Override
             public boolean canReceive() {
-                return false;
+                IPedestalFilter filter = getIPedestalFilter();
+                if(filter == null)return true;
+                return filter.canAcceptItem(getPedestal(),ItemStack.EMPTY,2);
             }
         };
     }
@@ -222,7 +231,7 @@ public class BasePedestalBlockEntity extends BlockEntity
             @Nonnull
             @Override
             public FluidStack getFluidInTank(int i) {
-                return FluidStack.EMPTY;
+                return storedFluid;
             }
 
             @Override
@@ -233,32 +242,138 @@ public class BasePedestalBlockEntity extends BlockEntity
 
             @Nonnull
             @Override
-            public FluidStack drain(int i, FluidAction fluidAction) {
+            public FluidStack drain(FluidStack resource, FluidAction action) {
+
+                FluidStack stored = storedFluid.copy();
+                if(stored.isFluidEqual(resource))
+                {
+                    int storedAmount = stored.getAmount();
+                    int receivingAmount = resource.getAmount();
+                    if(action.simulate())
+                    {
+                        if(receivingAmount>storedAmount)
+                        {
+                            return new FluidStack(resource.getFluid(),storedAmount,resource.getTag());
+                        }
+                        return resource;
+                    }
+                    else if(action.execute())
+                    {
+                        if(receivingAmount>storedAmount)
+                        {
+                            storedFluid = FluidStack.EMPTY;
+                            update();
+                            return new FluidStack(resource.getFluid(),storedAmount,resource.getTag());
+                        }
+
+                        FluidStack newStack = storedFluid.copy();
+                        newStack.setAmount(storedAmount-receivingAmount);
+                        storedFluid = newStack;
+                        update();
+                        return resource;
+                    }
+                }
 
                 return FluidStack.EMPTY;
             }
 
             @Nonnull
             @Override
-            public FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
+            public FluidStack drain(int i, FluidAction fluidAction) {
+
+                FluidStack stored = storedFluid.copy();
+                int storedAmount = stored.getAmount();
+                int receivingAmount = i;
+                if(fluidAction.simulate())
+                {
+                    if(receivingAmount>storedAmount)
+                    {
+                        return stored;
+                    }
+                    return new FluidStack(stored.getFluid(),receivingAmount,stored.getTag());
+                }
+                else if(fluidAction.execute())
+                {
+                    if(receivingAmount>storedAmount)
+                    {
+                        storedFluid = FluidStack.EMPTY;
+                        update();
+                        return stored;
+                    }
+
+                    FluidStack newStack = stored.copy();
+                    newStack.setAmount(storedAmount-receivingAmount);
+                    storedFluid = newStack;
+                    update();
+                    return new FluidStack(stored.getFluid(),receivingAmount,stored.getTag());
+                }
 
                 return FluidStack.EMPTY;
             }
 
             @Override
             public int getTankCapacity(int i) {
-                return 0;
+                return 16000;
             }
 
             @Override
             public boolean isFluidValid(int i, @Nonnull FluidStack fluidStack) {
 
+                if(hasFilter())
+                {
+                    IPedestalFilter filter = getIPedestalFilter();
+                    Item item = fluidStack.getFluid().getBucket();
+                    ItemStack incomingBucket = new ItemStack(item);
+                    return filter.canAcceptItem(getPedestal(),incomingBucket,1);
+                }
+                else
+                {
+                    if(storedFluid.isEmpty())return true;
+                    else if(storedFluid.isFluidEqual(fluidStack))return true;
+                }
 
                 return false;
             }
 
             @Override
             public int fill(FluidStack fluidStack, FluidAction fluidAction) {
+
+                if(isFluidValid(0,fluidStack))
+                {
+                    FluidStack stored = storedFluid.copy();
+                    int storedAmount = stored.getAmount();
+                    int receivingAmount = fluidStack.getAmount();
+                    int canReceive;
+                    IPedestalFilter filter = getIPedestalFilter();
+                    if(filter == null)return getTankCapacity(0)-storedAmount;
+                    canReceive = filter.canAcceptCount(getPedestal(),ItemStack.EMPTY,1);
+
+                    if(canReceive>0)
+                    {
+                        if(fluidAction.simulate())
+                        {
+                            if(receivingAmount>canReceive)return canReceive;
+                            else return receivingAmount;
+                        }
+                        else if(fluidAction.execute())
+                        {
+                            if(receivingAmount>canReceive)
+                            {
+                                stored.setAmount(canReceive);
+                                storedFluid = stored;
+                                update();
+                                return canReceive;
+                            }
+                            else
+                            {
+                                stored.setAmount(storedAmount+receivingAmount);
+                                storedFluid = stored;
+                                update();
+                                return receivingAmount;
+                            }
+                        }
+                    }
+                }
 
                 return 0;
             }
@@ -611,6 +726,90 @@ public class BasePedestalBlockEntity extends BlockEntity
     /*============================================================================
     ==============================================================================
     ===========================      ITEM END        =============================
+    ==============================================================================
+    ============================================================================*/
+
+
+
+    /*============================================================================
+    ==============================================================================
+    ===========================    FLUID  START      =============================
+    ==============================================================================
+    ============================================================================*/
+
+    public boolean hasFluid()
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        if(!h.getFluidInTank(0).isEmpty())return true;
+        return false;
+    }
+
+    public FluidStack getStoredFluid()
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        if(!h.getFluidInTank(0).isEmpty())return h.getFluidInTank(0);
+        return FluidStack.EMPTY;
+    }
+
+    public int getFluidCapacity()
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        return h.getTankCapacity(0);
+    }
+
+    public boolean canAcceptFluid(FluidStack fluidStackIn)
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        return h.isFluidValid(0,fluidStackIn);
+    }
+
+    public FluidStack removeFluid(FluidStack fluidToRemove, IFluidHandler.FluidAction action)
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        return h.drain(fluidToRemove,action);
+    }
+
+    public FluidStack removeFluid(int fluidAmountToRemove, IFluidHandler.FluidAction action)
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        return h.drain(new FluidStack(getStoredFluid().getFluid(),fluidAmountToRemove,getStoredFluid().getTag()),action);
+    }
+
+    public int addFluid(FluidStack fluidStackIn, IFluidHandler.FluidAction fluidAction)
+    {
+        IFluidHandler h = fluidHandler.orElse(null);
+        return h.fill(fluidStackIn,fluidAction);
+    }
+
+
+    /*============================================================================
+    ==============================================================================
+    ===========================     FLUID  END       =============================
+    ==============================================================================
+    ============================================================================*/
+
+
+
+    /*============================================================================
+    ==============================================================================
+    ===========================    ENERGY START      =============================
+    ==============================================================================
+    ============================================================================*/
+
+    public boolean hasEnergy()
+    {
+        IEnergyStorage h = energyHandler.orElse(null);
+        if(h.getEnergyStored()>0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /*============================================================================
+    ==============================================================================
+    ===========================     ENERGY END       =============================
     ==============================================================================
     ============================================================================*/
 
@@ -1120,13 +1319,13 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public boolean isPedestalBlockPowered()
     {
-        boolean returner = false;
         if(hasRedstone())
         {
-            return (this.getLevel().hasNeighborSignal(this.getBlockPos()))?((getRedstonePower()>=getRedstonePowerNeeded())?(true):(false)):(false);
+            //hasRedstone should mean if theres a signal, its off (reverse of normal)
+            return (this.getLevel().hasNeighborSignal(this.getBlockPos()))?((getRedstonePower()>=getRedstonePowerNeeded())?(false):(true)):(true);
         }
 
-        return returner;
+        return getRedstonePower() > 0;
     }
 
     public int getRedstonePower() {
@@ -1345,7 +1544,7 @@ public class BasePedestalBlockEntity extends BlockEntity
             Item filterInPed = this.getFilterInPedestal().getItem();
             if(filterInPed instanceof IPedestalFilter)
             {
-                pedestalAccept = ((IPedestalFilter) filterInPed).canAcceptCount(getPedestal(), itemsIncoming);
+                pedestalAccept = ((IPedestalFilter) filterInPed).canAcceptCount(getPedestal(), itemsIncoming,0);
             }
         }
 
@@ -1419,7 +1618,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                                     Item filterInPedestal = tilePedestalToSendTo.getFilterInPedestal().getItem();
                                     if(filterInPedestal instanceof IPedestalFilter)
                                     {
-                                        filter = ((IPedestalFilter) filterInPedestal).canAcceptItem(tilePedestalToSendTo,itemStackIncoming);
+                                        filter = ((IPedestalFilter) filterInPedestal).canAcceptItem(tilePedestalToSendTo,itemStackIncoming,0);
                                     }
                                 }
 
@@ -1564,8 +1763,6 @@ public class BasePedestalBlockEntity extends BlockEntity
         }
     }
 
-
-
     @Override
     public void load(CompoundTag p_155245_) {
         super.load(p_155245_);
@@ -1574,7 +1771,12 @@ public class BasePedestalBlockEntity extends BlockEntity
         CompoundTag invPrivateTag = p_155245_.getCompound("inv_private");
         privateHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invPrivateTag));
 
+
         this.storedValueForUpgrades = p_155245_.getInt("storedUpgradeValue");
+        this.storedEnergy = p_155245_.getInt("storedEnergy");
+        this.storedXP = p_155245_.getInt("storedXP");
+        this.storedFluid = FluidStack.loadFluidStackFromNBT(p_155245_.getCompound("storedFluid"));
+
 
         int[] storedIX = p_155245_.getIntArray("intArrayXPos");
         int[] storedIY = p_155245_.getIntArray("intArrayYPos");
@@ -1585,6 +1787,39 @@ public class BasePedestalBlockEntity extends BlockEntity
             BlockPos gotPos = new BlockPos(storedIX[i],storedIY[i],storedIZ[i]);
             storedLocations.add(gotPos);
         }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag p_187471_) {
+        super.saveAdditional(p_187471_);
+        handler.ifPresent(h -> {
+            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
+            p_187471_.put("inv", compound);
+        });
+        privateHandler.ifPresent(h -> {
+            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
+            p_187471_.put("inv_private", compound);
+        });
+
+        p_187471_.putInt("storedUpgradeValue",storedValueForUpgrades);
+        p_187471_.putInt("storedEnergy",storedEnergy);
+        p_187471_.putInt("storedXP",storedXP);
+        p_187471_.put("storedFluid",storedFluid.writeToNBT(new CompoundTag()));
+
+        List<Integer> storedX = new ArrayList<Integer>();
+        List<Integer> storedY = new ArrayList<Integer>();
+        List<Integer> storedZ = new ArrayList<Integer>();
+
+        for(int i=0;i<getNumberOfStoredLocations();i++)
+        {
+            storedX.add(storedLocations.get(i).getX());
+            storedY.add(storedLocations.get(i).getY());
+            storedZ.add(storedLocations.get(i).getZ());
+        }
+
+        p_187471_.putIntArray("intArrayXPos",storedX);
+        p_187471_.putIntArray("intArrayYPos",storedY);
+        p_187471_.putIntArray("intArrayZPos",storedZ);
     }
 
     @Override
@@ -1600,7 +1835,9 @@ public class BasePedestalBlockEntity extends BlockEntity
         });
 
         p_58888_.putInt("storedUpgradeValue",storedValueForUpgrades);
-
+        p_58888_.putInt("storedEnergy",storedEnergy);
+        p_58888_.putInt("storedXP",storedXP);
+        p_58888_.put("storedFluid",storedFluid.writeToNBT(new CompoundTag()));
 
         List<Integer> storedX = new ArrayList<Integer>();
         List<Integer> storedY = new ArrayList<Integer>();
@@ -1623,10 +1860,11 @@ public class BasePedestalBlockEntity extends BlockEntity
     @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag nbtTagCompound = new CompoundTag();
-        save(nbtTagCompound);
+        /*CompoundTag nbtTagCompound = new CompoundTag();
+        save(nbtTagCompound);*/
         //super.getUpdatePacket();
-        return new ClientboundBlockEntityDataPacket(this.worldPosition,42,nbtTagCompound);
+        //return new ClientboundBlockEntityDataPacket(this.worldPosition,42,nbtTagCompound);
+        return ClientboundBlockEntityDataPacket.create(this.getPedestal());
     }
 
     @Override
@@ -1639,7 +1877,7 @@ public class BasePedestalBlockEntity extends BlockEntity
         super.onDataPacket(net,pkt);
         BlockState state = this.level.getBlockState(worldPosition);
         this.handleUpdateTag(pkt.getTag());
-        this.level.sendBlockUpdated(worldPosition, state, state, Constants.BlockFlags.RERENDER_MAIN_THREAD);
+        this.level.sendBlockUpdated(worldPosition, state, state, 3);
     }
 
     @Override

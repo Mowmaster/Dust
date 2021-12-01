@@ -6,9 +6,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -34,7 +34,7 @@ public class DustPacketHandler {
         if (world instanceof ServerLevel) {
             ServerLevel ws = (ServerLevel) world;
             ws.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
-                    .filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)
+                    .stream().filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)
                     .forEach(p -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> p), toSend));
         }
     }
