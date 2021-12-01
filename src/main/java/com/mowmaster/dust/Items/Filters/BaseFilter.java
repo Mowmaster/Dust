@@ -276,12 +276,12 @@ public class BaseFilter extends Item implements IPedestalFilter
 
     @Override
     public int canAcceptCount(BasePedestalBlockEntity pedestal, ItemStack itemStackIncoming, int mode) {
-        return canAcceptCount(pedestal, pedestal.getLevel(), pedestal.getPos(), pedestal.getItemInPedestal(), itemStackIncoming, mode);
+        return (mode==0)?(canAcceptCount(pedestal, pedestal.getLevel(), pedestal.getPos(), pedestal.getItemInPedestal(), itemStackIncoming, mode)):(0);
     }
 
     @Override
     public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming, int mode) {
-        return Math.min(pedestal.getSlotSizeLimit(), itemStackIncoming.getMaxStackSize());
+        return (mode==0)?(Math.min(pedestal.getSlotSizeLimit(), itemStackIncoming.getMaxStackSize())):(0);
     }
 
     @Override

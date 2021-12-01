@@ -403,7 +403,7 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
             Item filterInPedestal = pedestal.getFilterInPedestal().getItem();
             if(filterInPedestal instanceof IPedestalFilter)
             {
-                returner = ((IPedestalFilter) filterInPedestal).canAcceptItem(pedestal,stackIn);
+                returner = ((IPedestalFilter) filterInPedestal).canAcceptItem(pedestal,stackIn,0);
             }
 
         }
