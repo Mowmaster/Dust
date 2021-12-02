@@ -1,13 +1,11 @@
 package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
-import com.mowmaster.dust.Items.Filters.FilterRestricted;
+import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
 import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -16,19 +14,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.mowmaster.dust.References.Constants.MODID;
-import static com.mowmaster.dust.Util.PedestalUtilities.findFluidHandlerAtPos;
+import static com.mowmaster.dust.Util.PedestalUtilities.*;
 
 public class ItemUpgradeImport extends ItemUpgradeBase
 {
@@ -242,12 +238,68 @@ public class ItemUpgradeImport extends ItemUpgradeBase
         //Energy
         if(canTransferEnergy(coinInPedestal))
         {
+            int getMaxEnergyValue = pedestal.getEnergyCapacity();
 
+            LazyOptional<IEnergyStorage> cap = findEnergyHandlerAtPos(world,posInventory,getPedestalFacing(world, posOfPedestal),true);
+
+            if(cap.isPresent())
+            {
+                IEnergyStorage handler = cap.orElse(null);
+
+                if(handler != null)
+                {
+                    if(handler.canExtract())
+                    {
+                        int containerCurrentEnergy = handler.getEnergyStored();
+                        int getMaxEnergy = getMaxEnergyValue;
+                        int getCurrentEnergy = pedestal.getStoredEnergy();
+                        int getSpaceForEnergy = getMaxEnergy - getCurrentEnergy;
+                        int transferRate = (getSpaceForEnergy >= pedestal.getEnergyTransferRate())?(pedestal.getEnergyTransferRate()):(getSpaceForEnergy);
+                        if (containerCurrentEnergy < transferRate) {transferRate = containerCurrentEnergy;}
+
+                        //transferRate at this point is equal to what we can send.
+                        if(handler.extractEnergy(transferRate,true) > 0)
+                        {
+                            pedestal.addEnergy(transferRate,false);
+                            handler.extractEnergy(transferRate,false);
+                        }
+                    }
+                }
+            }
         }
-        //XP
         if(canTransferXP(coinInPedestal))
         {
+            int getMaxExperienceValue = pedestal.getExperienceCapacity();
 
+            LazyOptional<IExperienceStorage> cap = PedestalUtilities.findExperienceHandlerAtPos(world,posInventory,getPedestalFacing(world, posOfPedestal),true);
+
+            //Gets inventory TE then makes sure its not a pedestal
+            BlockEntity invToPushTo = world.getBlockEntity(posInventory);
+
+            if(cap.isPresent())
+            {
+                IExperienceStorage handler = cap.orElse(null);
+
+                if(handler != null)
+                {
+                    if(handler.canExtract())
+                    {
+                        int containerCurrentExperience = handler.getExperienceStored();
+                        int getMaxExperience = getMaxExperienceValue;
+                        int getCurrentExperience = pedestal.getStoredExperience();
+                        int getSpaceForExperience = getMaxExperience - getCurrentExperience;
+                        int transferRate = (getSpaceForExperience >= pedestal.getExperienceTransferRate())?(pedestal.getExperienceTransferRate()):(getSpaceForExperience);
+                        if (containerCurrentExperience < transferRate) {transferRate = containerCurrentExperience;}
+
+                        //transferRate at this point is equal to what we can send.
+                        if(handler.extractExperience(transferRate,true) > 0)
+                        {
+                            pedestal.addExperience(transferRate,false);
+                            handler.extractExperience(transferRate,false);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -286,39 +338,63 @@ public class ItemUpgradeImport extends ItemUpgradeBase
             else if (entityIn instanceof Player)
             {
                 Player player = ((Player) entityIn);
-                ItemStack itemFromInv = ItemStack.EMPTY;
-
-                itemFromInv = IntStream.range(0,(player.getInventory().items.size()))//Int Range
-                        .mapToObj((player.getInventory().items)::get)//Function being applied to each interval
-                        .filter(itemStack -> !itemStack.isEmpty())
-                        .filter(itemStack -> passesItemFilter(pedestal,itemStack))
-                        .findFirst().orElse(ItemStack.EMPTY);
-
-                if(!itemFromInv.isEmpty())
+                if(!player.isCrouching())
                 {
-                    ItemStack itemStack = itemFromInv;
-                    ItemStack stackInPedestal = pedestal.getItemInPedestal();
-                    boolean stacksMatch = doItemsMatch(stackInPedestal,itemStack);
-                    if((!pedestal.hasItem() || stacksMatch) && passesItemFilter(pedestal,itemStack))
+                    ItemStack itemFromInv = ItemStack.EMPTY;
+
+                    itemFromInv = IntStream.range(0,(player.getInventory().items.size()))//Int Range
+                            .mapToObj((player.getInventory().items)::get)//Function being applied to each interval
+                            .filter(itemStack -> !itemStack.isEmpty())
+                            .filter(itemStack -> passesItemFilter(pedestal,itemStack))
+                            .findFirst().orElse(ItemStack.EMPTY);
+
+                    if(!itemFromInv.isEmpty())
                     {
-                        int spaceInPed = stackInPedestal.getMaxStackSize()-stackInPedestal.getCount();
-                        int filterAllowedSpace = getCountItemFilter(pedestal,itemStack);
-                        int actualSpaceInPed = (filterAllowedSpace>spaceInPed)?(spaceInPed):(filterAllowedSpace);
-                        if(actualSpaceInPed>0)
+                        ItemStack itemStack = itemFromInv;
+                        ItemStack stackInPedestal = pedestal.getItemInPedestal();
+                        boolean stacksMatch = doItemsMatch(stackInPedestal,itemStack);
+                        if((!pedestal.hasItem() || stacksMatch) && passesItemFilter(pedestal,itemStack))
                         {
-                            int itemInCount = itemStack.getCount();
-                            int countToAdd = ( itemInCount<= actualSpaceInPed)?(itemInCount):(actualSpaceInPed);
-                            ItemStack stackToAdd = itemStack.copy();
-                            stackToAdd.setCount(countToAdd);
-                            if(pedestal.addItem(stackToAdd,true))
+                            int spaceInPed = stackInPedestal.getMaxStackSize()-stackInPedestal.getCount();
+                            int filterAllowedSpace = getCountItemFilter(pedestal,itemStack);
+                            int actualSpaceInPed = (filterAllowedSpace>spaceInPed)?(spaceInPed):(filterAllowedSpace);
+                            if(actualSpaceInPed>0)
                             {
-                                ItemStack newStackInPlayer = (itemInCount>countToAdd)?(itemStack.copy()):(ItemStack.EMPTY);
-                                if(!newStackInPlayer.isEmpty())newStackInPlayer.setCount(itemInCount-countToAdd);
-                                int slot = player.getInventory().findSlotMatchingItem(itemStack);
-                                player.getInventory().setItem(slot,newStackInPlayer);
-                                pedestal.addItem(stackToAdd,false);
-                                if(pedestal.canSpawnParticles()) DustPacketHandler.sendToNearby(pedestal.getLevel(),pedestal.getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,pedestal.getPos().getX(),pedestal.getPos().getY(),pedestal.getPos().getZ(),180,180,0));
+                                int itemInCount = itemStack.getCount();
+                                int countToAdd = ( itemInCount<= actualSpaceInPed)?(itemInCount):(actualSpaceInPed);
+                                ItemStack stackToAdd = itemStack.copy();
+                                stackToAdd.setCount(countToAdd);
+                                if(pedestal.addItem(stackToAdd,true))
+                                {
+                                    ItemStack newStackInPlayer = (itemInCount>countToAdd)?(itemStack.copy()):(ItemStack.EMPTY);
+                                    if(!newStackInPlayer.isEmpty())newStackInPlayer.setCount(itemInCount-countToAdd);
+                                    int slot = player.getInventory().findSlotMatchingItem(itemStack);
+                                    player.getInventory().setItem(slot,newStackInPlayer);
+                                    pedestal.addItem(stackToAdd,false);
+                                    if(pedestal.canSpawnParticles()) DustPacketHandler.sendToNearby(pedestal.getLevel(),pedestal.getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,pedestal.getPos().getX(),pedestal.getPos().getY(),pedestal.getPos().getZ(),180,180,0));
+                                }
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(canTransferXP(pedestal.getCoinOnPedestal()))
+        {
+            if (entityIn instanceof Player) {
+                Player player = ((Player) entityIn);
+                if(!player.isCrouching())
+                {
+                    int currentlyStoredExp = pedestal.getStoredExperience();
+                    if(currentlyStoredExp < pedestal.getExperienceCapacity())
+                    {
+                        int transferRate = pedestal.getExperienceTransferRate();
+                        int value = removeXp(player, transferRate);
+                        if(value > 0)
+                        {
+                            pedestal.addExperience( currentlyStoredExp + value,false);
+                            if(pedestal.canSpawnParticles()) DustPacketHandler.sendToNearby(pedestal.getLevel(),pedestal.getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,pedestal.getPos().getX(),pedestal.getPos().getY(),pedestal.getPos().getZ(),0,255,0));
                         }
                     }
                 }

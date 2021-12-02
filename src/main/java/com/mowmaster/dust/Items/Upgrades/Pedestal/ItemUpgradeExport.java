@@ -1,17 +1,18 @@
 package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
 import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -19,7 +20,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.stream.IntStream;
 
-import static com.mowmaster.dust.Util.PedestalUtilities.findFluidHandlerAtPos;
+import static com.mowmaster.dust.Util.PedestalUtilities.*;
 
 public class ItemUpgradeExport extends ItemUpgradeBase
 {
@@ -244,13 +245,65 @@ public class ItemUpgradeExport extends ItemUpgradeBase
                 }
             }
         }
+        //Energy
         if(canTransferEnergy(coinInPedestal))
         {
+            LazyOptional<IEnergyStorage> cap = findEnergyHandlerAtPos(world,posInventory,getPedestalFacing(world, posOfPedestal),true);
 
+            if(cap.isPresent())
+            {
+                IEnergyStorage handler = cap.orElse(null);
+
+                if(handler != null)
+                {
+                    if(handler.canReceive())
+                    {
+                        int containerMaxEnergy = handler.getMaxEnergyStored();
+                        int containerCurrentEnergy = handler.getEnergyStored();
+                        int containerEnergySpace = containerMaxEnergy - containerCurrentEnergy;
+                        int getCurrentEnergy = pedestal.getStoredEnergy();
+                        int transferRate = (containerEnergySpace >= pedestal.getEnergyTransferRate())?(pedestal.getEnergyTransferRate()):(containerEnergySpace);
+                        if (getCurrentEnergy < transferRate) {transferRate = getCurrentEnergy;}
+
+                        //transferRate at this point is equal to what we can send.
+                        if(handler.receiveEnergy(transferRate,true) > 0)
+                        {
+                            pedestal.removeEnergy(transferRate,false);
+                            handler.receiveEnergy(transferRate,false);
+                        }
+                    }
+                }
+            }
         }
+        //XP
         if(canTransferXP(coinInPedestal))
         {
+            LazyOptional<IExperienceStorage> cap = findExperienceHandlerAtPos(world,posInventory,getPedestalFacing(world, posOfPedestal),true);
 
+            if(cap.isPresent())
+            {
+                IExperienceStorage handler = cap.orElse(null);
+
+                if(handler != null)
+                {
+                    if(handler.canReceive())
+                    {
+                        int containerMaxExperience = handler.getMaxExperienceStored();
+                        int containerCurrentExperience = handler.getExperienceStored();
+                        int containerExperienceSpace = containerMaxExperience - containerCurrentExperience;
+                        int getCurrentExperience = pedestal.getStoredExperience();
+                        int transferRate = (containerExperienceSpace >= pedestal.getExperienceTransferRate())?(pedestal.getExperienceTransferRate()):(containerExperienceSpace);
+                        if (getCurrentExperience < transferRate) {transferRate = getCurrentExperience;}
+
+                        //transferRate at this point is equal to what we can send.
+                        if(handler.receiveExperience(transferRate,true) > 0)
+                        {
+                            pedestal.removeExperience(transferRate,false);
+                            handler.receiveExperience(transferRate,false);
+                        }
+                    }
+                }
+            }
         }
     }
 }

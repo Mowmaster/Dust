@@ -17,6 +17,7 @@ import java.util.Random;
 
 public class BaseCrystalNodeBlock extends BaseColoredCrystalBlock
 {
+
     public static final int GROWTH_CHANCE = 5;
     private static final Direction[] DIRECTIONS = Direction.values();
 

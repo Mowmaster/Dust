@@ -4,8 +4,10 @@ import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import com.mowmaster.dust.Items.Augments.AugmentBase;
 import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.ColoredCrystalBase;
 import com.mowmaster.dust.Items.Filters.*;
 import com.mowmaster.dust.Items.Tools.*;
+import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeBase;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeExport;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeImport;
 import net.minecraft.world.item.Item;
@@ -25,6 +27,8 @@ public class DeferredRegisterItems
 
     public static final RegistryObject<Item> COLOR_APPLICATOR = ITEMS.register("applicator",
             () -> new ColorApplicator(new Item.Properties().stacksTo(1).tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> COLORED_CRYSTAL = ITEMS.register("item_crystal",
+            () -> new ColoredCrystalBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
 
     public static final RegistryObject<Item> TOOL_LINKINGTOOL = ITEMS.register("tool_linkingtool",
             () -> new LinkingTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
@@ -64,6 +68,8 @@ public class DeferredRegisterItems
     public static final RegistryObject<Item> FILTER_TAG = ITEMS.register("filter_tag",
             () -> new FilterTag(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
+    public static final RegistryObject<Item> PEDESTAL_UPGRADE_BASE = ITEMS.register("upgrade_pedestal_base",
+            () -> new ItemUpgradeBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> PEDESTAL_UPGRADE_IMPORT = ITEMS.register("upgrade_pedestal_import",
             () -> new ItemUpgradeImport(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> PEDESTAL_UPGRADE_EXPORT = ITEMS.register("upgrade_pedestal_export",

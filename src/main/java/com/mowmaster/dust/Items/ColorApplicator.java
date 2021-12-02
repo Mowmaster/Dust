@@ -172,6 +172,10 @@ public class ColorApplicator extends Item {
             minNeeded.withStyle(ChatFormatting.WHITE);
             p_41423_.add(minNeeded);
         }
+
+        //Bundle chats: https://discord.com/channels/313125603924639766/915304642668290119/915758371091677225
+        // https://github.com/MinecraftForge/MinecraftForge/commit/7631600b53c9ff8e8bb5de35ecbc26cc1b36c707
+
     }
 
 }

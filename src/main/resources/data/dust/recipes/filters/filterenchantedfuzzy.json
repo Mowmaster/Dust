@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "dust:filter_base"
+    },
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "tag": "minecraft:wool"
+    }
+  ],
+  "result": {
+    "item": "dust:filter_enchantedfuzzy"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "dust:filter_durability"
+    }
+  ],
+  "result": {
+    "item": "dust:filter_durability"
+  }
+}

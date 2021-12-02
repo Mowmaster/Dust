@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Capabilities;
+package com.mowmaster.dust.Capabilities.Experience;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;

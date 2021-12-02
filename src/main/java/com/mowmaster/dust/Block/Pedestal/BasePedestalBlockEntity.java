@@ -1,12 +1,11 @@
 package com.mowmaster.dust.Block.Pedestal;
 
-import com.mowmaster.dust.Capabilities.CapabilityExperience;
-import com.mowmaster.dust.Capabilities.IExperienceStorage;
+import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
+import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
-import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.Networking.DustPacketParticles;
@@ -15,26 +14,26 @@ import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -542,21 +541,55 @@ public class BasePedestalBlockEntity extends BlockEntity
     public void dropInventoryItemsPrivate(Level worldIn, BlockPos pos) {
         IItemHandler ph = privateHandler.orElse(null);
         for(int i = 0; i < ph.getSlots(); ++i) {
-            /*if(i==0 && hasCoin())
-            {
-                IUpgradeBase coin = ((IUpgradeBase)ph.getStackInSlot(0).getItem());
-                ItemStack actualCoin = ph.getStackInSlot(0);
-                coin.removePlayerFromCoin(actualCoin);
-                coin.removeWorkQueueFromCoin(actualCoin);
-                coin.removeWorkQueueTwoFromCoin(actualCoin);
-                coin.removeStoredIntFromCoin(actualCoin);
-                coin.removeStoredIntTwoFromCoin(actualCoin);
-                coin.removeFilterQueueHandler(actualCoin);
-                coin.removeFilterBlock(actualCoin);
-                coin.removeInventoryQueue(actualCoin);
-                coin.removeCraftingQueue(actualCoin);
-            }*/
             spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ph.getStackInSlot(i));
+        }
+    }
+
+    public void dropLiquidsInWorld(Level worldIn, BlockPos pos) {
+        IFluidHandler fluids = fluidHandler.orElse(null);
+        FluidStack fluidStack = fluids.getFluidInTank(0).copy();
+
+        while (fluidStack.getAmount()>=1000)
+        {
+            Item item = fluidStack.getFluid().getBucket();
+            ItemStack incomingBucket = new ItemStack(item);
+            for(int x=-4;x<4;x++)
+            {
+                for(int z=-4;z<4;z++)
+                {
+                    if(x==0 && z==0)continue;
+                    if(item instanceof BucketItem)
+                    {
+                        BucketItem bucketItem = (BucketItem) item;
+                        bucketItem.checkExtraContent(null,level,new ItemStack(bucketItem),pos.offset(x,0,z));
+                        fluidStack.grow(-1000);
+                    }
+                }
+            }
+        }
+    }
+
+    public void removeEnergyFromBrokenPedestal(Level worldIn, BlockPos pos) {
+        IEnergyStorage energy = energyHandler.orElse(null);
+        Random rand = new Random();
+        //MUAHAHAHAHAHAHAHAH
+        if(energy.getEnergyStored()>=5000)
+        {
+            LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(worldIn);
+            lightningbolt.moveTo(Vec3.atBottomCenterOf(pos.offset(rand.nextInt(10),0,rand.nextInt(10))));
+            lightningbolt.setCause(null);
+            worldIn.addFreshEntity(lightningbolt);
+            worldIn.playSound(null, pos, SoundEvents.TRIDENT_THUNDER, SoundSource.WEATHER, 5.0F, 1.0F);
+        }
+    }
+
+    public void dropXPInWorld(Level worldIn, BlockPos pos) {
+        IExperienceStorage experience = experienceHandler.orElse(null);
+        if(experience.getExperienceStored()>0)
+        {
+            ExperienceOrb xpEntity = new ExperienceOrb(level,getPos().getX(), getPos().getY(), getPos().getZ(),experience.getExperienceStored());
+            xpEntity.lerpMotion(0D,0D,0D);
+            level.addFreshEntity(xpEntity);
         }
     }
 
@@ -1538,13 +1571,15 @@ public class BasePedestalBlockEntity extends BlockEntity
         else
         {
             IItemHandler ph = privateHandler.orElse(null);
-            if(!hasFilter() && ph.isItemValid(slotFilter,filter))
+            ItemStack itemFromBlock = filter.copy();
+            itemFromBlock.setCount(1);
+            if(!hasFilter() && ph.isItemValid(slotFilter,itemFromBlock))
             {
                 if(!simulate)
                 {
-                    ph.insertItem(slotFilter,filter.copy(),false);
+                    ph.insertItem(slotFilter,itemFromBlock,false);
                     BlockState state = level.getBlockState(getPos());
-                    BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, state.getValue(LIT)).setValue(FILTER_STATUS, (((IPedestalFilter) filter.getItem()).getFilterType(filter))?(2):(1));
+                    BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, state.getValue(LIT)).setValue(FILTER_STATUS, (((IPedestalFilter) itemFromBlock.getItem()).getFilterType(itemFromBlock))?(2):(1));
                     level.setBlock(getPos(),newstate,3);
                     update();
                 }
@@ -2244,6 +2279,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                     sendItemsToPedestal(posReceiver,getItemInPedestal());
                     sendFluidsToPedestal(posReceiver,getStoredFluid());
                     sendEnergyToPedestal(posReceiver,getStoredEnergy());
+                    sendExperienceToPedestal(posReceiver,getStoredExperience());
                 }
 
                 robinCount++;
@@ -2258,6 +2294,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                         sendItemsToPedestal(posReceiver,getItemInPedestal());
                         sendFluidsToPedestal(posReceiver,getStoredFluid());
                         sendEnergyToPedestal(posReceiver,getStoredEnergy());
+                        sendExperienceToPedestal(posReceiver,getStoredExperience());
                         break;
                     }
                     else continue;
@@ -2300,7 +2337,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                     if(canSpawnParticles())DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY(),getPos().getZ(),colorList.get(0),colorList.get(1),colorList.get(2)));
                 }
 
-                if(getNumberOfStoredLocations() > 0 && !isPedestalBlockPowered() && hasItem()) { transferAction(); }
+                if(getNumberOfStoredLocations() > 0 && !isPedestalBlockPowered()) { transferAction(); }
 
                 if(hasCoin() && !isPedestalBlockPowered())
                 {
@@ -2317,19 +2354,23 @@ public class BasePedestalBlockEntity extends BlockEntity
                         {
                             ItemEntity item = ((ItemEntity)getEntity);
                             List<MobEffectInstance> effects = PotionUtils.getMobEffects(item.getItem());
-                            MobEffectInstance instance = IntStream.range(0,effects.size())//Int Range
-                                    .mapToObj((effects)::get)//Function being applied to each interval
-                                    .filter(MobEffectInstance -> (MobEffectInstance.getEffect().equals(MobEffects.MOVEMENT_SPEED) || MobEffectInstance.getEffect().equals(MobEffects.MOVEMENT_SLOWDOWN)))
-                                    .findFirst().orElse(null);
-                            if(instance !=null)
+                            if(effects!=null)
                             {
-                                addEffect(instance);
-                                if(item.getItem().getCount()>1){ item.getItem().shrink(1); }
-                                else { item.remove(Entity.RemovalReason.DISCARDED); }
+                                MobEffectInstance instance = IntStream.range(0,effects.size())//Int Range
+                                        .mapToObj((effects)::get)//Function being applied to each interval
+                                        .filter(MobEffectInstance -> (MobEffectInstance.getEffect().equals(MobEffects.MOVEMENT_SPEED) || MobEffectInstance.getEffect().equals(MobEffects.MOVEMENT_SLOWDOWN)))
+                                        .findFirst().orElse(null);
+                                if(instance !=null)
+                                {
+                                    addEffect(instance);
+                                    if(item.getItem().getCount()>1){ item.getItem().shrink(1); }
+                                    else { item.remove(Entity.RemovalReason.DISCARDED); }
+                                }
                             }
                         }
                     }
-                    else if(!hasNoCollide())
+
+                    if(!hasNoCollide() && !isPedestalBlockPowered())
                     {
                         collideWithPedestal(level, getPedestal(), getPos(), getBlockState(), getEntity);
                     }
@@ -2339,6 +2380,13 @@ public class BasePedestalBlockEntity extends BlockEntity
 
 
                 if(pedTicker >=100){pedTicker=0;}
+            }
+
+            if(canSpawnParticles())
+            {
+                if(getLevel().getGameTime()%20 == 0){if(this.hasEnergy()){DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0.25,getPos().getY()-0.90,getPos().getZ()+0.25,255,0,0));}}
+                if(getLevel().getGameTime()%20 == 0){if(this.hasExperience()){DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()-0.25,getPos().getY()-0.90,getPos().getZ()-0.25,0,255,0));}}
+                if(getLevel().getGameTime()%20 == 0){if(this.hasFluid()){DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0.25,getPos().getY()-0.90,getPos().getZ()-0.25,0,0,255));}}
             }
         }
     }
@@ -2368,12 +2416,14 @@ public class BasePedestalBlockEntity extends BlockEntity
             BlockPos gotPos = new BlockPos(storedIX[i],storedIY[i],storedIZ[i]);
             storedLocations.add(gotPos);
         }
+        //System.out.println("LOAD");
     }
 
     @Override
     protected void saveAdditional(CompoundTag p_187471_) {
         super.saveAdditional(p_187471_);
         save(p_187471_);
+        //System.out.println("SAVEAdditional");
         /*handler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_187471_.put("inv", compound);
@@ -2409,6 +2459,7 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     @Override
     public CompoundTag save(CompoundTag p_58888_) {
+        //System.out.println("SAVE");
         super.save(p_58888_);
         handler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
@@ -2451,16 +2502,19 @@ public class BasePedestalBlockEntity extends BlockEntity
         save(nbtTagCompound);*/
         //super.getUpdatePacket();
         //return new ClientboundBlockEntityDataPacket(getPos(),42,nbtTagCompound);
+        //System.out.println("ClientBound");
         return ClientboundBlockEntityDataPacket.create(this.getPedestal());
     }
 
     @Override
     public CompoundTag getUpdateTag() {
+        //System.out.println("getUpdateTag");
         return save(new CompoundTag());
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        //System.out.println("onDataPacket");
         super.onDataPacket(net,pkt);
         BlockState state = this.level.getBlockState(getPos());
         this.handleUpdateTag(pkt.getTag());
@@ -2469,6 +2523,7 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
+        //System.out.println("handleUpdateTag");
         this.load(tag);
     }
 

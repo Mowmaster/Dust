@@ -1,9 +1,12 @@
 package com.mowmaster.dust.Util;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
+import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -12,6 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -149,5 +154,108 @@ public class PedestalUtilities
             }
         }
         return LazyOptional.empty();
+    }
+
+    public static LazyOptional<IEnergyStorage> findEnergyHandlerAtPos(Level world, BlockPos pos, Direction side, boolean allowCart)
+    {
+        BlockEntity neighbourTile = world.getBlockEntity(pos);
+        if(neighbourTile!=null)
+        {
+            LazyOptional<IEnergyStorage> cap = neighbourTile.getCapability(CapabilityEnergy.ENERGY, side);
+            if(cap.isPresent())
+                return cap;
+        }
+        if(allowCart)
+        {
+            if(RailBlock.isRail(world, pos))
+            {
+                List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos), entity -> entity instanceof IForgeAbstractMinecart);
+                if(!list.isEmpty())
+                {
+                    LazyOptional<IEnergyStorage> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityEnergy.ENERGY);
+                    if(cap.isPresent())
+                        return cap;
+                }
+            }
+            else
+            {
+                //Added for quark boats with inventories (i hope)
+                List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos), entity -> entity instanceof Boat);
+                if(!list.isEmpty())
+                {
+                    LazyOptional<IEnergyStorage> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityEnergy.ENERGY);
+                    if(cap.isPresent())
+                        return cap;
+                }
+            }
+        }
+        return LazyOptional.empty();
+    }
+
+    public static LazyOptional<IExperienceStorage> findExperienceHandlerAtPos(Level world, BlockPos pos, Direction side, boolean allowCart)
+    {
+        BlockEntity neighbourTile = world.getBlockEntity(pos);
+        if(neighbourTile!=null)
+        {
+            LazyOptional<IExperienceStorage> cap = neighbourTile.getCapability(CapabilityExperience.EXPERIENCE, side);
+            if(cap.isPresent())
+                return cap;
+        }
+        if(allowCart)
+        {
+            if(RailBlock.isRail(world, pos))
+            {
+                List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos), entity -> entity instanceof IForgeAbstractMinecart);
+                if(!list.isEmpty())
+                {
+                    LazyOptional<IExperienceStorage> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityExperience.EXPERIENCE);
+                    if(cap.isPresent())
+                        return cap;
+                }
+            }
+            else
+            {
+                //Added for quark boats with inventories (i hope)
+                List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos), entity -> entity instanceof Boat);
+                if(!list.isEmpty())
+                {
+                    LazyOptional<IExperienceStorage> cap = list.get(world.random.nextInt(list.size())).getCapability(CapabilityExperience.EXPERIENCE);
+                    if(cap.isPresent())
+                        return cap;
+                }
+            }
+        }
+        return LazyOptional.empty();
+    }
+
+    public static int removeXp(Player player, int amount) {
+        //Someday consider using player.addExpierence()
+        int startAmount = amount;
+        while(amount > 0) {
+            int barCap = player.getXpNeededForNextLevel();
+            int barXp = (int) (barCap * player.experienceProgress);
+            int removeXp = Math.min(barXp, amount);
+            int newBarXp = barXp - removeXp;
+            amount -= removeXp;//amount = amount-removeXp
+
+            player.totalExperience -= removeXp;
+            if(player.totalExperience < 0) {
+                player.totalExperience = 0;
+            }
+            if(newBarXp == 0 && amount > 0) {
+                player.experienceLevel--;
+                if(player.experienceLevel < 0) {
+                    player.experienceLevel = 0;
+                    player.totalExperience = 0;
+                    player.experienceProgress = 0;
+                    break;
+                } else {
+                    player.experienceProgress = 1.0F;
+                }
+            } else {
+                player.experienceProgress = newBarXp / (float) barCap;
+            }
+        }
+        return startAmount - amount;
     }
 }

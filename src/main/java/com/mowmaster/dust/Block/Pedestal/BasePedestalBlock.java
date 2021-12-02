@@ -13,11 +13,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,11 +39,12 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -286,7 +293,6 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         ItemHandlerHelper.giveItemToPlayer(p_60502_,pedestal.removeItem(1));
                     }
                 }
-
             }
         }
 
@@ -461,6 +467,20 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
 
     @Override
     public void playerDestroy(Level p_49827_, Player p_49828_, BlockPos p_49829_, BlockState p_49830_, @Nullable BlockEntity p_49831_, ItemStack p_49832_) {
+        if(!p_49827_.isClientSide())
+        {
+            if (p_49830_.getBlock() instanceof BasePedestalBlock) {
+                if (!p_49827_.isClientSide && !p_49828_.isCreative()) {
+                    ItemStack itemstack = new ItemStack(this);
+                    int getColor = ColorReference.getColorFromStateInt(p_49830_);
+                    ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
+                    newStack.setCount(1);
+                    ItemEntity itementity = new ItemEntity(p_49827_, (double)p_49829_.getX() + 0.5D, (double)p_49829_.getY() + 0.5D, (double)p_49829_.getZ() + 0.5D, newStack);
+                    itementity.setDefaultPickUpDelay();
+                    p_49827_.addFreshEntity(itementity);
+                }
+            }
+        }
         super.playerDestroy(p_49827_, p_49828_, p_49829_, p_49830_, p_49831_, p_49832_);
         p_49827_.removeBlock(p_49829_,false);
     }
@@ -488,11 +508,34 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                 BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity) blockEntity);
                 pedestal.dropInventoryItems(p_60516_,p_60517_);
                 pedestal.dropInventoryItemsPrivate(p_60516_,p_60517_);
+                pedestal.dropLiquidsInWorld(p_60516_,p_60517_);
+                pedestal.removeEnergyFromBrokenPedestal(p_60516_,p_60517_);
+                pedestal.dropXPInWorld(p_60516_,p_60517_);
 
                 p_60516_.updateNeighbourForOutputSignal(p_60517_,p_60518_.getBlock());
             }
             super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
         }
+    }
+
+    @Override
+    public void playerWillDestroy(Level p_56212_, BlockPos p_56213_, BlockState p_56214_, Player p_56215_) {
+
+        if(!p_56212_.isClientSide())
+        {
+            if (p_56214_.getBlock() instanceof BasePedestalBlock) {
+                if (!p_56212_.isClientSide && !p_56215_.isCreative()) {
+                    ItemStack itemstack = new ItemStack(this);
+                    int getColor = ColorReference.getColorFromStateInt(p_56214_);
+                    ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
+                    newStack.setCount(1);
+                    ItemEntity itementity = new ItemEntity(p_56212_, (double)p_56213_.getX() + 0.5D, (double)p_56213_.getY() + 0.5D, (double)p_56213_.getZ() + 0.5D, newStack);
+                    itementity.setDefaultPickUpDelay();
+                    p_56212_.addFreshEntity(itementity);
+                }
+            }
+        }
+        super.playerWillDestroy(p_56212_, p_56213_, p_56214_, p_56215_);
     }
 
     @Override
@@ -541,11 +584,39 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
         return RenderShape.MODEL;
     }
 
+
+    public void onProjectileHit(Level p_153713_, BlockState p_153714_, BlockHitResult p_153715_, Projectile p_153716_)
+    {
+        if (p_153713_.isThundering() && p_153716_ instanceof ThrownTrident && ((ThrownTrident)p_153716_).isChanneling()) {
+            BlockPos blockpos = p_153715_.getBlockPos();
+            if (p_153713_.canSeeSky(blockpos)) {
+                BlockEntity be = p_153713_.getBlockEntity(blockpos);
+                {
+                    if(be instanceof BasePedestalBlockEntity)
+                    {
+                        BasePedestalBlockEntity pedestal = ((BasePedestalBlockEntity)be);
+                        if(pedestal.hasEnergy())
+                        {
+                            LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(p_153713_);
+                            lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos.above()));
+                            Entity entity = p_153716_.getOwner();
+                            lightningbolt.setCause(entity instanceof ServerPlayer ? (ServerPlayer)entity : null);
+                            p_153713_.addFreshEntity(lightningbolt);
+                            pedestal.removeEnergy(pedestal.getStoredEnergy(),false);
+                            p_153713_.playSound((Player)null, blockpos, SoundEvents.TRIDENT_THUNDER, SoundSource.WEATHER, 5.0F, 1.0F);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return DeferredBlockEntityTypes.PEDESTAL.get().create(pos, state);
     }
-
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {

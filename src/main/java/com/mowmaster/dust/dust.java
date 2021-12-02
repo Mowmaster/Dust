@@ -1,6 +1,6 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.Capabilities.CapabilityExperience;
+import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
 import com.mowmaster.dust.DeferredRegistery.Client.ClientRegistry;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
@@ -26,8 +26,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.mowmaster.dust.Capabilities.CapabilityExperience.EXPERIENCE;
-import static com.mowmaster.dust.References.Constants.MODID;
 import static com.mowmaster.dust.References.Constants.MODNAME;
 
 // The value here should match an entry in the META-INF/mods.toml file

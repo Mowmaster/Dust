@@ -2,7 +2,9 @@ package com.mowmaster.dust.Block.GeneratedBlocks;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
+import com.mowmaster.dust.Block.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,7 +13,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -156,7 +163,7 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
 
                     if (d0 >= (double)0.003F || d1 >= (double)0.003F) {
                         //WORLD.explode(TARGET_ENTITY,DamageSource,ExplosionDamageCalculator,BlockPosX,BlockPosY,BlockPosZ,ExplosionRadius,SpawnFire, Explosion.BlockInteraction);
-                        p_57271_.explode(p_57273_,CrystalCluster,new EntityBasedExplosionDamageCalculator(p_57273_),p_57272_.getX()+0.5,p_57272_.getY()+2.0,p_57272_.getZ()+0.5,getExplosionSize(p_57270_),false, Explosion.BlockInteraction.NONE);
+                        p_57271_.explode(p_57273_,CrystalCluster,new EntityBasedExplosionDamageCalculator(p_57273_),p_57272_.getX()+0.5,p_57272_.getY()+2.0,p_57272_.getZ()+0.5,getExplosionSize(p_57270_),false, Explosion.BlockInteraction.BREAK);
                         //Instead of blowing up the full area, just destroy the block walked into
                         p_57271_.setBlock(p_57272_,Blocks.AIR.defaultBlockState(),3);
                         float damage = getExplosionSize(p_57270_);
@@ -168,18 +175,55 @@ public class BaseCrystalClusterBlock extends BaseColoredCrystalBlock implements 
         }
     }
 
+    @Override
+    public void playerWillDestroy(Level p_56212_, BlockPos p_56213_, BlockState p_56214_, Player p_56215_) {
+
+        if(!p_56212_.isClientSide())
+        {
+            Random rand = new Random();
+            if (p_56214_.getBlock() instanceof BaseCrystalClusterBlock) {
+                if(EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH,p_56215_)>0)
+                {
+                    ItemStack itemstack = new ItemStack(this);
+                    int getColor = ColorReference.getColorFromStateInt(p_56214_);
+                    ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
+                    newStack.setCount(1);
+                    ItemEntity itementity = new ItemEntity(p_56212_, (double)p_56213_.getX() + 0.5D, (double)p_56213_.getY() + 0.5D, (double)p_56213_.getZ() + 0.5D, newStack);
+                    itementity.setDefaultPickUpDelay();
+                    p_56212_.addFreshEntity(itementity);
+                }
+                else
+                {
+                    ItemStack itemstack = new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get());
+                    if(p_56214_.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get()))itemstack.setCount(rand.nextInt(0, 1));
+                    if(p_56214_.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get()))itemstack.setCount(rand.nextInt(0, 2));
+                    if(p_56214_.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get()))itemstack.setCount(rand.nextInt(1, 3 + 1));
+                    if(p_56214_.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_FULL.get()))itemstack.setCount(rand.nextInt(2, 5 + 1));
+
+                    int getColor = ColorReference.getColorFromStateInt(p_56214_);
+                    ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
+                    ItemEntity itementity = new ItemEntity(p_56212_, (double)p_56213_.getX() + 0.5D, (double)p_56213_.getY() + 0.5D, (double)p_56213_.getZ() + 0.5D, newStack);
+                    itementity.setDefaultPickUpDelay();
+                    p_56212_.addFreshEntity(itementity);
+                }
+
+            }
+            else super.playerWillDestroy(p_56212_, p_56213_, p_56214_, p_56215_);
+        }
+    }
+
     private float getExplosionSize(BlockState state)
     {
         if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get())) return 1.0f;
         else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get())) return 2.0f;
-        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get())) return 4.0f;
-        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_FULL.get())) return 8.0f;
+        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get())) return 3.0f;
+        else if(state.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_CLUSTER_FULL.get())) return 4.0f;
         return 0.0f;
     }
 
     private String getCrystalDamageType(BlockState state)
     {
-        if(state.getBlock() instanceof BaseColoredBlock)
+        if(state.getBlock() instanceof BaseColoredCrystalBlock)
         {
 
             switch(ColorReference.getColorFromStateInt(state))

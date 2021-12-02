@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Capabilities;
+package com.mowmaster.dust.Capabilities.Experience;
 
 public interface IExperienceStorage
 {

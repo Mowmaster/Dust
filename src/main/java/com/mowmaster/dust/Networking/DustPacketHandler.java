@@ -12,6 +12,9 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
+//Ideas: https://discord.com/channels/313125603924639766/915304642668290119/915849937592389673
+
+
 //For learning and testing:
 //https://github.com/baileyholl/Ars-Nouveau/blob/0cdb8fbb483ca0f945de26c633955cfb1c05c925/src/main/java/com/hollingsworth/arsnouveau/common/network/Networking.java#L87
 public class DustPacketHandler {

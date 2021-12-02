@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Capabilities;
+package com.mowmaster.dust.Capabilities.Experience;
 
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
