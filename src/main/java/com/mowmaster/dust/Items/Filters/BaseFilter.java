@@ -1,13 +1,16 @@
 package com.mowmaster.dust.Items.Filters;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Client.ItemTooltipComponent;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.Tools.FilterTool;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.tutorial.BundleTutorial;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -16,9 +19,8 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RailBlock;
@@ -34,10 +36,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -472,7 +476,17 @@ public class BaseFilter extends Item implements IPedestalFilter
     }
 
     @Override
+    public @NotNull Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        List<ItemStack> stackCurrent = readFilterQueueFromNBT(stack,getFilterMode(stack));
+        NonNullList<ItemStack> nonnulllist = NonNullList.create();
+        stackCurrent.forEach(nonnulllist::add);
+
+        return Optional.of(new ItemTooltipComponent(nonnulllist));
+    }
+
+    @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
+
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
         if(!p_41421_.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
@@ -503,6 +517,7 @@ public class BaseFilter extends Item implements IPedestalFilter
             p_41423_.add(changed);
 
 
+
             /*List<ItemStack> filterQueue = readFilterQueueFromNBT(p_41421_,getFilterMode(p_41421_));
             if(filterQueue.size()>0)
             {
@@ -520,6 +535,8 @@ public class BaseFilter extends Item implements IPedestalFilter
                     }
                 }
             }*/
+
+
 
 
         }

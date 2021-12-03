@@ -37,6 +37,7 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
     public static final BlockPos defaultPos = new BlockPos(0,-2000,0);
     public BlockPos storedPosition = defaultPos;
     public List<BlockPos> storedPositionList = new ArrayList<>();
+    public List<BlockPos> storedPositionList2 = new ArrayList<>();
 
     public LinkingToolBackwards(Properties p_41383_) {
         super(p_41383_.stacksTo(1));
@@ -97,7 +98,7 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                 {
                     if(getBlockState.getBlock() instanceof BasePedestalBlock)
                     {
-                        if(stackInHand.isEnchanted()==false)
+                        if(!stackInHand.isEnchanted())
                         {
                             BlockEntity tile = world.getBlockEntity(pos);
                             if(tile instanceof BasePedestalBlockEntity)
@@ -111,46 +112,50 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                             writePosToNBT(stackInHand);
                             writePosListToNBT(stackInHand);
                             //Applies effect to wrench in hand
-                            if(stackInHand.getItem() instanceof LinkingTool)
+                            if(stackInHand.getItem() instanceof LinkingToolBackwards)
                             {
                                 stackInHand.enchant(Enchantments.UNBREAKING,-1);
                             }
+                            return InteractionResultHolder.success(stackInHand);
                         }
                         //If wrench has the compound stacks and has a position stored(is enchanted)
                         else if(stackInHand.hasTag() && stackInHand.isEnchanted())
                         {
+                            BlockPos senderPos = getStoredPosition(stackInHand);
                             //Checks if clicked blocks is a Pedestal
                             if(world.getBlockState(pos).getBlock() instanceof BasePedestalBlock)
                             {
                                 //Checks Tile at location to make sure its a TilePedestal
-                                BlockEntity tileEntity = world.getBlockEntity(pos);
-                                if (tileEntity instanceof BasePedestalBlockEntity) {
-                                    BasePedestalBlockEntity tilePedestal = (BasePedestalBlockEntity) tileEntity;
+                                BlockEntity tileSenderBE = world.getBlockEntity(senderPos);
+                                if (tileSenderBE instanceof BasePedestalBlockEntity) {
+                                    BasePedestalBlockEntity tileSenderPedestal = (BasePedestalBlockEntity) tileSenderBE;
 
                                     //checks if connecting pedestal is out of range of the senderPedestal
-                                    if(isPedestalInRange(tilePedestal,getStoredPosition(stackInHand)))
+                                    if(isPedestalInRange(tileSenderPedestal,pos))
                                     {
                                         //Checks if pedestals to be linked are on same networks or if one is neutral
-                                        if(tilePedestal.canLinkToPedestalNetwork(getStoredPosition(stackInHand)))
+                                        if(tileSenderPedestal.canLinkToPedestalNetwork(pos))
                                         {
                                             //If stored location isnt the same as the connecting pedestal
-                                            if(!tilePedestal.isSamePedestal(getStoredPosition(stackInHand)))
+                                            if(!tileSenderPedestal.isSamePedestal(pos))
                                             {
                                                 //Checks if the conenction hasnt been made once already yet
-                                                if(!tilePedestal.isAlreadyLinked(getStoredPosition(stackInHand)))
+                                                if(!tileSenderPedestal.isAlreadyLinked(pos))
                                                 {
                                                     //Checks if senderPedestal has locationSlots available
                                                     //System.out.println("Stored Locations: "+ tilePedestal.getNumberOfStoredLocations());
-                                                    if(tilePedestal.storeNewLocation(getStoredPosition(stackInHand)))
+                                                    if(tileSenderPedestal.storeNewLocation(pos))
                                                     {
                                                         //If slots are available then set wrench properties back to a default value
                                                         this.storedPosition = defaultPos;
                                                         this.storedPositionList = new ArrayList<>();
+                                                        this.storedPositionList2 = new ArrayList<>();
                                                         writePosToNBT(stackInHand);
                                                         writePosListToNBT(stackInHand);
+                                                        writePosListToNBT2(stackInHand);
                                                         world.sendBlockUpdated(pos,world.getBlockState(pos),world.getBlockState(pos),2);
 
-                                                        if(stackInHand.getItem() instanceof LinkingTool)
+                                                        if(stackInHand.getItem() instanceof LinkingToolBackwards)
                                                         {
                                                             if(stackInHand.isEnchanted())
                                                             {
@@ -159,13 +164,15 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                                             }
                                                         }
                                                         player.sendMessage(linksucess, Util.NIL_UUID);
+                                                        return InteractionResultHolder.success(stackInHand);
                                                     }
                                                     else player.sendMessage(linkunsuccess,Util.NIL_UUID);
                                                 }
                                                 else
                                                 {
-                                                    tilePedestal.removeLocation(getStoredPosition(stackInHand));
-                                                    if(stackInHand.getItem() instanceof LinkingTool)
+                                                    tileSenderPedestal.removeLocation(pos);
+
+                                                    if(stackInHand.getItem() instanceof LinkingToolBackwards)
                                                     {
                                                         if(stackInHand.isEnchanted())
                                                         {
@@ -174,6 +181,7 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                                         }
                                                     }
                                                     player.sendMessage(linkremoved,Util.NIL_UUID);
+                                                    return InteractionResultHolder.success(stackInHand);
                                                 }
                                             }
                                             else player.sendMessage(linkitsself,Util.NIL_UUID);
@@ -183,24 +191,30 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                     else player.sendMessage(linkdistance, Util.NIL_UUID);
                                 }
                             }
+                            return InteractionResultHolder.fail(stackInHand);
                         }
                     }
                     else
                     {
                         this.storedPosition = defaultPos;
                         this.storedPositionList = new ArrayList<>();
+                        this.storedPositionList2 = new ArrayList<>();
                         writePosToNBT(stackInHand);
                         writePosListToNBT(stackInHand);
+                        writePosListToNBT2(stackInHand);
                         world.sendBlockUpdated(pos,world.getBlockState(pos),world.getBlockState(pos),2);
-                        if(stackInHand.getItem() instanceof LinkingTool)
+                        if(stackInHand.getItem() instanceof LinkingToolBackwards)
                         {
                             if(stackInHand.isEnchanted())
                             {
                                 Map<Enchantment, Integer> enchantsNone = Maps.<Enchantment, Integer>newLinkedHashMap();
                                 EnchantmentHelper.setEnchantments(enchantsNone,stackInHand);
+                                return InteractionResultHolder.success(stackInHand);
                             }
                         }
                     }
+
+                    return InteractionResultHolder.fail(stackInHand);
                 }
                 else
                 {
@@ -234,6 +248,9 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                 player.sendMessage(capacity,Util.NIL_UUID);
                             }*/
 
+                            /*System.out.println("Stored Energy: "+pedestal.getStoredEnergy());
+                            System.out.println("Stored Fluid: "+pedestal.getStoredFluid().getDisplayName().getString() +": "+ pedestal.getStoredFluid().getAmount());
+                            System.out.println("Stored Exp: "+pedestal.getStoredExperience());*/
 
                             List<BlockPos> getLocations = tilePedestal.getLocationList();
                             if(getLocations.size()>0)
@@ -276,7 +293,9 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                     this.getPosFromNBT(p_41404_);
 
                     List<BlockPos> storedRecievers = getStoredPositionList(p_41404_);
+                    List<BlockPos> storedRecievers2 = getStoredPositionList2(p_41404_);
                     int locationsNum = storedRecievers.size();
+                    int locationsNum2 = storedRecievers2.size();
 
                     if(storedPosition!=defaultPos)
                     {
@@ -290,10 +309,12 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                 {
                                     List<Integer> color = ColorReference.getIntColor(ColorReference.ALL_COLORS.get(i));
                                     if(storedPositionList.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList.get(i),color.get(0),color.get(1),color.get(2));}
+                                    if(storedPositionList2.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList2.get(i),color.get(0),color.get(1),color.get(2));}
                                 }
                             }
                         }
                     }
+
                 }
             }
         }
@@ -332,6 +353,12 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
         return storedPositionList;
     }
 
+    public List<BlockPos> getStoredPositionList2(ItemStack getWrenchItem)
+    {
+        getPosListFromNBT2(getWrenchItem);
+        return storedPositionList2;
+    }
+
     public void writePosToNBT(ItemStack stack)
     {
         CompoundTag compound = new CompoundTag();
@@ -367,6 +394,28 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
         stack.setTag(compound);
     }
 
+    public void writePosListToNBT2(ItemStack stack)
+    {
+        CompoundTag compound = new CompoundTag();
+        if(stack.hasTag())
+        {
+            compound = stack.getTag();
+        }
+        List<Integer> xval = new ArrayList<Integer>();
+        List<Integer> yval = new ArrayList<Integer>();
+        List<Integer> zval = new ArrayList<Integer>();
+        for(int i=0;i<storedPositionList2.size();i++)
+        {
+            xval.add(i,storedPositionList2.get(i).getX());
+            yval.add(i,storedPositionList2.get(i).getY());
+            zval.add(i,storedPositionList2.get(i).getZ());
+        }
+        compound.putIntArray("storedlist2_x",xval);
+        compound.putIntArray("storedlist2_y",yval);
+        compound.putIntArray("storedlist2_z",zval);
+        stack.setTag(compound);
+    }
+
     public void getPosFromNBT(ItemStack stack)
     {
         if(stack.hasTag())
@@ -397,10 +446,27 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
         }
     }
 
+    public void getPosListFromNBT2(ItemStack stack)
+    {
+        List<BlockPos> posStored = new ArrayList<>();
+        if(stack.hasTag())
+        {
+            CompoundTag getCompound = stack.getTag();
+            int[] xval = getCompound.getIntArray("storedlist2_x");
+            int[] yval = getCompound.getIntArray("storedlist2_y");
+            int[] zval = getCompound.getIntArray("storedlist2_z");
+
+            for(int i = 0;i<xval.length;i++)
+            {
+                posStored.add(i,new BlockPos(xval[i],yval[i],zval[i]));
+            }
+            this.storedPositionList2 = posStored;
+        }
+    }
+
 
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
-        super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
         TranslatableComponent selected = new TranslatableComponent(MODID + ".tool_tip_block_selected");
         TranslatableComponent unselected = new TranslatableComponent(MODID + ".tool_tip_block_unselected");
@@ -410,16 +476,18 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
         if(p_41421_.getItem() instanceof LinkingTool || p_41421_.getItem() instanceof LinkingToolBackwards) {
             if (p_41421_.hasTag()) {
                 if (p_41421_.isEnchanted()) {
-                    selected.append(cordX.getString());
                     selected.append("" + this.getStoredPosition(p_41421_).getX() + "");
-                    selected.append(cordY.getString());
+                    selected.append(cordX.getString());
                     selected.append("" + this.getStoredPosition(p_41421_).getY() + "");
-                    selected.append(cordZ.getString());
+                    selected.append(cordY.getString());
                     selected.append("" + this.getStoredPosition(p_41421_).getZ() + "");
+                    selected.append(cordZ.getString());
                     p_41423_.add(selected);
                 } else p_41423_.add(unselected);
             } else p_41423_.add(unselected);
         }
+
+        super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
     }
 
     @Override

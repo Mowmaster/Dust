@@ -144,6 +144,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
                                                     //System.out.println("Stored Locations: "+ tilePedestal.getNumberOfStoredLocations());
                                                     if(tilePedestal.storeNewLocation(getStoredPosition(stackInHand)))
                                                     {
+
                                                         //If slots are available then set wrench properties back to a default value
                                                         this.storedPosition = defaultPos;
                                                         this.storedPositionList = new ArrayList<>();
@@ -166,6 +167,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
                                                 else
                                                 {
                                                     tilePedestal.removeLocation(getStoredPosition(stackInHand));
+
                                                     if(stackInHand.getItem() instanceof LinkingTool)
                                                     {
                                                         if(stackInHand.isEnchanted())
@@ -266,7 +268,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
 
     int ticker=0;
 
-    @Override
+    /*@Override
     public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
         if(p_41406_ instanceof Player)
         {
@@ -298,7 +300,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
                 }
             }
         }
-    }
+    }*/
 
     public boolean isPedestalInRange(BasePedestalBlockEntity pedestal, BlockPos pedestalToBeLinked)
     {
@@ -399,7 +401,6 @@ public class LinkingTool extends BaseTool implements IPedestalTool
 
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
-        super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
         TranslatableComponent selected = new TranslatableComponent(MODID + ".tool_tip_block_selected");
         TranslatableComponent unselected = new TranslatableComponent(MODID + ".tool_tip_block_unselected");
@@ -409,16 +410,18 @@ public class LinkingTool extends BaseTool implements IPedestalTool
         if(p_41421_.getItem() instanceof LinkingTool || p_41421_.getItem() instanceof LinkingToolBackwards) {
             if (p_41421_.hasTag()) {
                 if (p_41421_.isEnchanted()) {
-                    selected.append(cordX.getString());
                     selected.append("" + this.getStoredPosition(p_41421_).getX() + "");
-                    selected.append(cordY.getString());
+                    selected.append(cordX.getString());
                     selected.append("" + this.getStoredPosition(p_41421_).getY() + "");
-                    selected.append(cordZ.getString());
+                    selected.append(cordY.getString());
                     selected.append("" + this.getStoredPosition(p_41421_).getZ() + "");
+                    selected.append(cordZ.getString());
                     p_41423_.add(selected);
                 } else p_41423_.add(unselected);
             } else p_41423_.add(unselected);
         }
+
+        super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
     }
 
     @Override

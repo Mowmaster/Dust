@@ -10,10 +10,15 @@ import com.mowmaster.dust.Items.Filters.FilterEnchantCount;
 import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import static com.mowmaster.dust.References.Constants.MODID;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = "dust", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientRegistry
@@ -139,6 +144,31 @@ public class ClientRegistry
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
 
+
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("deprecation")
+    public static void textureStitchPreEvent(TextureStitchEvent.Pre event)
+    {
+
+        ResourceLocation location = event.getAtlas().location();
+
+        if(location.equals(TextureAtlas.LOCATION_BLOCKS))
+        {
+
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage"));
+
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage1"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage2"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage3"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage4"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage5"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage6"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage7"));
+            event.addSprite(new ResourceLocation(MODID, "util/whiteimage8"));
+
+        }
 
     }
 

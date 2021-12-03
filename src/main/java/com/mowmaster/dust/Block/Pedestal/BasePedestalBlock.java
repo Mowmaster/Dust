@@ -6,9 +6,12 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Tools.IPedestalTool;
+import com.mowmaster.dust.Items.Tools.LinkingTool;
+import com.mowmaster.dust.Items.Tools.LinkingToolBackwards;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -20,10 +23,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownTrident;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -46,8 +52,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nullable;
+
+import static com.mowmaster.dust.References.Constants.MODID;
 
 public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterloggedBlock, EntityBlock
 {
@@ -214,6 +223,126 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
 
     }
 
+    @Override
+    public void setPlacedBy(Level p_49847_, BlockPos p_49848_, BlockState p_49849_, @org.jetbrains.annotations.Nullable LivingEntity p_49850_, ItemStack p_49851_) {
+        if(!p_49847_.isClientSide())
+        {
+            if(p_49850_ instanceof Player)
+            {
+                Player player = ((Player)p_49850_);
+                TranslatableComponent linksucess = new TranslatableComponent(MODID + ".tool_link_success");
+                linksucess.withStyle(ChatFormatting.WHITE);
+                TranslatableComponent linkunsuccess = new TranslatableComponent(MODID + ".tool_link_unsucess");
+                linkunsuccess.withStyle(ChatFormatting.WHITE);
+                TranslatableComponent linkremoved = new TranslatableComponent(MODID + ".tool_link_removed");
+                linkremoved.withStyle(ChatFormatting.WHITE);
+                TranslatableComponent linkitsself = new TranslatableComponent(MODID + ".tool_link_itsself");
+                linkitsself.withStyle(ChatFormatting.WHITE);
+                TranslatableComponent linknetwork = new TranslatableComponent(MODID + ".tool_link_network");
+                linknetwork.withStyle(ChatFormatting.WHITE);
+                TranslatableComponent linkdistance = new TranslatableComponent(MODID + ".tool_link_distance");
+                linkdistance.withStyle(ChatFormatting.WHITE);
+                if(player.getOffhandItem().getItem().equals(DeferredRegisterItems.TOOL_LINKINGTOOL.get()))
+                {
+                    LinkingTool tool = ((LinkingTool)player.getOffhandItem().getItem());
+                    if(player.getOffhandItem().hasTag() && player.getOffhandItem().isEnchanted())
+                    {
+                        //Checks if clicked blocks is a Pedestal
+                        if(p_49847_.getBlockState(p_49848_).getBlock() instanceof BasePedestalBlock)
+                        {
+                            //Checks Tile at location to make sure its a TilePedestal
+                            BlockEntity tileEntity = p_49847_.getBlockEntity(p_49848_);
+                            if (tileEntity instanceof BasePedestalBlockEntity) {
+                                BasePedestalBlockEntity tilePedestal = (BasePedestalBlockEntity) tileEntity;
+
+                                BlockEntity tileEntitySender = p_49847_.getBlockEntity(p_49848_);
+                                if (tileEntity instanceof BasePedestalBlockEntity) {
+                                    BasePedestalBlockEntity tileSender = (BasePedestalBlockEntity) tileEntitySender;
+
+                                    //checks if connecting pedestal is out of range of the senderPedestal
+                                    if(tilePedestal.isPedestalInRange(tileSender,tool.getStoredPosition(player.getOffhandItem())))
+                                    {
+                                        //Checks if pedestals to be linked are on same networks or if one is neutral
+                                        if(tilePedestal.canLinkToPedestalNetwork(tool.getStoredPosition(player.getOffhandItem())))
+                                        {
+                                            //If stored location isnt the same as the connecting pedestal
+                                            if(!tilePedestal.isSamePedestal(tool.getStoredPosition(player.getOffhandItem())))
+                                            {
+                                                //Checks if the conenction hasnt been made once already yet
+                                                if(!tilePedestal.isAlreadyLinked(tool.getStoredPosition(player.getOffhandItem())))
+                                                {
+                                                    //Checks if senderPedestal has locationSlots available
+                                                    //System.out.println("Stored Locations: "+ tilePedestal.getNumberOfStoredLocations());
+                                                    if(tilePedestal.storeNewLocation(tool.getStoredPosition(player.getOffhandItem())))
+                                                    {
+                                                        player.sendMessage(linksucess, Util.NIL_UUID);
+                                                    }
+                                                    else player.sendMessage(linkunsuccess,Util.NIL_UUID);
+                                                }
+                                            }
+                                            else player.sendMessage(linkitsself,Util.NIL_UUID);
+                                        }
+                                        else player.sendMessage(linknetwork,Util.NIL_UUID);
+                                    }
+                                    else player.sendMessage(linkdistance, Util.NIL_UUID);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(player.getOffhandItem().getItem().equals(DeferredRegisterItems.TOOL_LINKINGTOOLBACKWARDS.get()))
+                {
+                    LinkingToolBackwards tool = ((LinkingToolBackwards)player.getOffhandItem().getItem());
+                    if(player.getOffhandItem().hasTag() && player.getOffhandItem().isEnchanted())
+                    {
+                        //Checks if clicked blocks is a Pedestal
+                        if(p_49847_.getBlockState(p_49848_).getBlock() instanceof BasePedestalBlock)
+                        {
+                            //Checks Tile at location to make sure its a TilePedestal
+                            BlockEntity tileEntity = p_49847_.getBlockEntity(tool.getStoredPosition(player.getOffhandItem()));
+                            if (tileEntity instanceof BasePedestalBlockEntity) {
+                                BasePedestalBlockEntity tilePedestal = (BasePedestalBlockEntity) tileEntity;
+
+                                BlockEntity tileEntitySender = p_49847_.getBlockEntity(tool.getStoredPosition(player.getOffhandItem()));
+                                if (tileEntity instanceof BasePedestalBlockEntity) {
+                                    BasePedestalBlockEntity tileSender = (BasePedestalBlockEntity) tileEntitySender;
+
+                                    //checks if connecting pedestal is out of range of the senderPedestal
+                                    if(tileSender.isPedestalInRange(tilePedestal,p_49848_))
+                                    {
+                                        //Checks if pedestals to be linked are on same networks or if one is neutral
+                                        if(tileSender.canLinkToPedestalNetwork(p_49848_))
+                                        {
+                                            //If stored location isnt the same as the connecting pedestal
+                                            if(!tileSender.isSamePedestal(p_49848_))
+                                            {
+                                                //Checks if the conenction hasnt been made once already yet
+                                                if(!tileSender.isAlreadyLinked(p_49848_))
+                                                {
+                                                    //Checks if senderPedestal has locationSlots available
+                                                    //System.out.println("Stored Locations: "+ tilePedestal.getNumberOfStoredLocations());
+                                                    if(tileSender.storeNewLocation(p_49848_))
+                                                    {
+                                                        player.sendMessage(linksucess, Util.NIL_UUID);
+                                                    }
+                                                    else player.sendMessage(linkunsuccess,Util.NIL_UUID);
+                                                }
+                                            }
+                                            else player.sendMessage(linkitsself,Util.NIL_UUID);
+                                        }
+                                        else player.sendMessage(linknetwork,Util.NIL_UUID);
+                                    }
+                                    else player.sendMessage(linkdistance, Util.NIL_UUID);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        super.setPlacedBy(p_49847_, p_49848_, p_49849_, p_49850_, p_49851_);
+    }
 
     public BlockState rotate(BlockState p_152033_, Rotation p_152034_) {
         return p_152033_.setValue(FACING, p_152034_.rotate(p_152033_.getValue(FACING)));
@@ -314,9 +443,11 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                 ItemStack itemInOffHand = p_60506_.getOffhandItem();
                 if(itemInHand.getItem() instanceof IPedestalTool)
                 {
-                    System.out.println("Stored Energy: "+pedestal.getStoredEnergy());
-                    System.out.println("Stored Fluid: "+pedestal.getStoredFluid().getDisplayName().getString() +": "+ pedestal.getStoredFluid().getAmount());
-                    System.out.println("Stored Exp: "+pedestal.getStoredExperience());
+
+                    if(itemInHand.getItem().equals(DeferredRegisterItems.TOOL_LINKINGTOOL.get()) || itemInHand.getItem().equals(DeferredRegisterItems.TOOL_LINKINGTOOLBACKWARDS.get())){
+                        boolean getCurrentRender = pedestal.getRenderRange();
+                        pedestal.setRenderRange(!getCurrentRender);
+                    }
                     return InteractionResult.FAIL;
                 }
                 else if(itemInHand.getItem() instanceof ColorApplicator)
@@ -406,14 +537,56 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         }
                     }
                 }
+                else if(itemInHand.getItem().equals(Items.BUCKET))
+                {
+                    if(pedestal.hasFluid())
+                    {
+                        Item item = pedestal.getStoredFluid().copy().getFluid().getBucket();
+                        if(item instanceof BucketItem)
+                        {
+                            BucketItem bucketItem = (BucketItem) item;
+                            itemInHand.shrink(1);
+                            ItemHandlerHelper.giveItemToPlayer(p_60506_,new ItemStack(bucketItem));
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
                 else if(itemInHand.isEmpty())
                 {
                     if(p_60506_.isCrouching())
                     {
-                        String redstone = "Redstone Signal Strength Needed to Disable Pedestal: "+ pedestal.getRedstonePowerNeeded();
-                        TranslatableComponent itemCountInPedestal = new TranslatableComponent(redstone);
-                        itemCountInPedestal.withStyle(ChatFormatting.RED);
-                        p_60506_.displayClientMessage(itemCountInPedestal,true);
+                        if(pedestal.hasRedstone())
+                        {
+                            String redstone = "Redstone Signal Strength Needed to Disable Pedestal: "+ pedestal.getRedstonePowerNeeded();
+                            TranslatableComponent itemCountInPedestal = new TranslatableComponent(redstone);
+                            itemCountInPedestal.withStyle(ChatFormatting.LIGHT_PURPLE);
+                            p_60506_.displayClientMessage(itemCountInPedestal,true);
+                        }
+
+                        if(pedestal.hasFluid())
+                        {
+                            String fluid = pedestal.getStoredFluid().getDisplayName().getString() +": " +pedestal.getStoredFluid().getAmount() +"/"+pedestal.getFluidCapacity();
+                            TranslatableComponent pedestalFluid = new TranslatableComponent(fluid);
+                            pedestalFluid.withStyle(ChatFormatting.RED);
+                            p_60506_.sendMessage(pedestalFluid,Util.NIL_UUID);
+                        }
+
+                        if(pedestal.hasEnergy())
+                        {
+                            String energy = "Energy: "+ pedestal.getStoredEnergy() +"/"+pedestal.getEnergyCapacity();
+                            TranslatableComponent pedestalEnergy = new TranslatableComponent(energy);
+                            pedestalEnergy.withStyle(ChatFormatting.RED);
+                            p_60506_.sendMessage(pedestalEnergy,Util.NIL_UUID);
+                        }
+
+                        if(pedestal.hasExperience())
+                        {
+                            String experience = "Experience: "+ pedestal.getStoredExperience() +"/"+pedestal.getExperienceCapacity();
+                            TranslatableComponent pedestalExperience = new TranslatableComponent(experience);
+                            pedestalExperience.withStyle(ChatFormatting.GREEN);
+                            p_60506_.sendMessage(pedestalExperience,Util.NIL_UUID);
+                        }
+
                     }
                     else
                     {

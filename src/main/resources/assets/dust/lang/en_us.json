@@ -38,7 +38,7 @@
   "dust.filter_type_below": "Durability Below",
 
   "dust.tool_link_success": "Linked Successfully",
-  "dust.tool_link_unsucess": "Linking Failed",
+  "dust.tool_link_unsucess": "Linking Failed, Max Connections Reached",
   "dust.tool_link_removed": "Connection Removed",
   "dust.tool_link_itsself": "Cannot be Linked to Itself",
   "dust.tool_link_network": "Cannot be Linked to Another Network",
@@ -54,9 +54,9 @@
 
   "dust.tool_tip_block_selected": "Block Selected: ",
   "dust.tool_tip_block_unselected": "No Selection",
-  "dust.tool_tip_X": "X:",
-  "dust.tool_tip_Y": " Y:",
-  "dust.tool_tip_Z": " Z:",
+  "dust.tool_tip_X": "x ",
+  "dust.tool_tip_Y": "y ",
+  "dust.tool_tip_Z": "z",
 
 
 
@@ -70,9 +70,11 @@
 
 
   "item.dust.tool_linkingtool": "Linking Tool",
-  "item.dust.tool_linkingtool.description": "Crouch Right Click to select a pedestal. (Crouch Right Click on the ground to deselect) Links from the Receiver to the Sender",
+  "item.dust.tool_linkingtool.description": "Links from the Receiver to the Sender",
+  "item.dust.tool_linkingtool.description_use": "Crouch Right Click to select a pedestal. (Crouch Right Click on the ground to deselect)",
   "item.dust.tool_linkingtoolbackwards": "Backwards Linking Tool",
-  "item.dust.tool_linkingtoolbackwards.description": "Crouch Right Click to select a pedestal. (Crouch Right Click on the ground to deselect) Links from the Sender to the Receiver",
+  "item.dust.tool_linkingtoolbackwards.description": "Links from the Sender to the Receiver",
+  "item.dust.tool_linkingtoolbackwards.description_use": "Crouch Right Click to select a pedestal. (Crouch Right Click on the ground to deselect)",
   "item.dust.tool_upgradetool": "Upgrade Tool",
   "item.dust.tool_upgradetool.description": "Offhand Left Tool and Left Click to Remove Upgrades, Crouch Right Click in Air to Switch Tool.",
   "item.dust.tool_filtertool": "Filter Tool",

@@ -30,6 +30,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -70,11 +72,14 @@ public class BasePedestalBlockEntity extends BlockEntity
     private int storedEnergy = 0;
     private FluidStack storedFluid = FluidStack.EMPTY;
     private int storedExperience = 0;
-    private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
     private int storedValueForUpgrades = 0;
+    private boolean showRenderRange = false;
     public BlockPos getPos() { return this.worldPosition; }
     private BasePedestalBlockEntity getPedestal() { return this; }
+
+    public boolean getRenderRange(){return this.showRenderRange;}
+    public void setRenderRange(boolean setRender){ this.showRenderRange = setRender; update();}
 
     public BasePedestalBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(DeferredBlockEntityTypes.PEDESTAL.get(), p_155229_, p_155230_);
@@ -556,24 +561,38 @@ public class BasePedestalBlockEntity extends BlockEntity
     public void dropLiquidsInWorld(Level worldIn, BlockPos pos) {
         IFluidHandler fluids = fluidHandler.orElse(null);
         FluidStack fluidStack = fluids.getFluidInTank(0).copy();
+        Item item = fluidStack.getFluid().getBucket();
 
+        int x = -1;
+        int z = -1;
+        int y = 0;
         while (fluidStack.getAmount()>=1000)
         {
-            Item item = fluidStack.getFluid().getBucket();
-            ItemStack incomingBucket = new ItemStack(item);
-            for(int x=-4;x<4;x++)
+            if(item instanceof BucketItem)
             {
-                for(int z=-4;z<4;z++)
+                BucketItem bucketItem = (BucketItem) item;
+                BlockState state = worldIn.getBlockState(pos.offset(x,y,z));
+                if(state.getBlock().equals(Blocks.AIR))
                 {
-                    if(x==0 && z==0)continue;
-                    if(item instanceof BucketItem)
-                    {
-                        BucketItem bucketItem = (BucketItem) item;
-                        bucketItem.checkExtraContent(null,level,new ItemStack(bucketItem),pos.offset(x,0,z));
-                        fluidStack.grow(-1000);
-                    }
+                    if(bucketItem.emptyContents(null,level,pos.offset(x,y,z),null))fluidStack.grow(-1000);
                 }
+
+                if(x>=1 && z>=1)
+                {
+                    y+=1;
+                    x=-1;
+                    z=-1;
+                }
+
+                if(x>=1)
+                {
+                    x=-1;
+                    z+=1;
+                }
+
+                x+=1;
             }
+
         }
     }
 
@@ -635,6 +654,9 @@ public class BasePedestalBlockEntity extends BlockEntity
     ============================================================================*/
 
     public int getNumberOfStoredLocations() {return storedLocations.size();}
+
+
+
 
     public int getRange()
     {
@@ -1409,7 +1431,6 @@ public class BasePedestalBlockEntity extends BlockEntity
         }
         else
         {
-            boolLight = true;
             IItemHandler ph = privateHandler.orElse(null);
             BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(true)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
@@ -1456,7 +1477,6 @@ public class BasePedestalBlockEntity extends BlockEntity
         {
             BlockState state = level.getBlockState(getPos());
             BlockState newstate = ColorReference.addColorToBlockState(DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().defaultBlockState(),ColorReference.getColorFromStateInt(state)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)).setValue(LIT, Boolean.valueOf(false)).setValue(FILTER_STATUS, state.getValue(FILTER_STATUS));
-            boolLight = true;
             ph.extractItem(slotLight,1,false);
             level.setBlock(getPos(),newstate,3);
             update();
@@ -2394,6 +2414,8 @@ public class BasePedestalBlockEntity extends BlockEntity
                     {
                         collideWithPedestal(level, getPedestal(), getPos(), getBlockState(), getEntity);
                     }
+
+
                 }
 
 
@@ -2401,6 +2423,8 @@ public class BasePedestalBlockEntity extends BlockEntity
 
                 if(pedTicker >=100){pedTicker=0;}
             }
+
+            if(getRenderRange()){ if(getLevel().getGameTime()%20 == 0)DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY(),getPos().getZ(),0,0,0)); }
 
             if(canSpawnParticles())
             {
@@ -2426,10 +2450,15 @@ public class BasePedestalBlockEntity extends BlockEntity
         //this.setFluid(FluidStack.loadFluidStackFromNBT(p_155245_.getCompound("storedFluid")),0);
         this.storedPotionEffect = (MobEffectInstance.load(p_155245_)!=null)?(MobEffectInstance.load(p_155245_)):(null);
         this.storedPotionEffectDuration = p_155245_.getInt("storedEffectDuration");
+        this.showRenderRange = p_155245_.getBoolean("showRenderRange");
 
         int[] storedIX = p_155245_.getIntArray("intArrayXPos");
         int[] storedIY = p_155245_.getIntArray("intArrayYPos");
         int[] storedIZ = p_155245_.getIntArray("intArrayZPos");
+
+        int[] storedIXS = p_155245_.getIntArray("intArrayXSPos");
+        int[] storedIYS = p_155245_.getIntArray("intArrayYSPos");
+        int[] storedIZS = p_155245_.getIntArray("intArrayZSPos");
 
         for(int i=0;i<storedIX.length;i++)
         {
@@ -2464,10 +2493,15 @@ public class BasePedestalBlockEntity extends BlockEntity
         p_58888_.putInt("storedExperience",storedExperience);
         if(storedPotionEffect!=null)storedPotionEffect.save(p_58888_);
         p_58888_.putInt("storedEffectDuration",storedPotionEffectDuration);
+        p_58888_.putBoolean("showRenderRange",showRenderRange);
 
         List<Integer> storedX = new ArrayList<Integer>();
         List<Integer> storedY = new ArrayList<Integer>();
         List<Integer> storedZ = new ArrayList<Integer>();
+
+        List<Integer> storedXS = new ArrayList<Integer>();
+        List<Integer> storedYS = new ArrayList<Integer>();
+        List<Integer> storedZS = new ArrayList<Integer>();
 
         for(int i=0;i<getNumberOfStoredLocations();i++)
         {
@@ -2476,9 +2510,15 @@ public class BasePedestalBlockEntity extends BlockEntity
             storedZ.add(storedLocations.get(i).getZ());
         }
 
+
+
         p_58888_.putIntArray("intArrayXPos",storedX);
         p_58888_.putIntArray("intArrayYPos",storedY);
         p_58888_.putIntArray("intArrayZPos",storedZ);
+
+        p_58888_.putIntArray("intArrayXSPos",storedXS);
+        p_58888_.putIntArray("intArrayYSPos",storedYS);
+        p_58888_.putIntArray("intArrayZSPos",storedZS);
 
         return p_58888_;
     }

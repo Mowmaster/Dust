@@ -1,6 +1,8 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
+import com.mowmaster.dust.Client.ClientItemTooltipComponent;
+import com.mowmaster.dust.Client.ItemTooltipComponent;
 import com.mowmaster.dust.DeferredRegistery.Client.ClientRegistry;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
@@ -10,6 +12,8 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,6 +42,7 @@ public class Dust
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupPreClient);
         // Register the enqueueIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
@@ -73,6 +78,15 @@ public class Dust
     {
         LOGGER.info("Initialize "+MODNAME+" Block Entity Renders");
         ClientRegistry.registerBlockEntityRenderers();
+
+        LOGGER.info("Initialize "+MODNAME+" Tooltip Renders");
+        MinecraftForgeClient.registerTooltipComponentFactory(ItemTooltipComponent.class, ClientItemTooltipComponent::new);
+    }
+
+    private void setupPreClient(final TextureStitchEvent.Pre event)
+    {
+        LOGGER.info("Initialize "+MODNAME+" Texture Sprites/Atlas");
+        ClientRegistry.textureStitchPreEvent(event);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

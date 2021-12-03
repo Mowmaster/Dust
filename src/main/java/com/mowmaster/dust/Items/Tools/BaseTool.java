@@ -98,7 +98,11 @@ public class BaseTool extends Item
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
         TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
-        base.withStyle(ChatFormatting.AQUA);
+        base.withStyle(ChatFormatting.LIGHT_PURPLE);
         p_41423_.add(base);
+
+        TranslatableComponent use = new TranslatableComponent(getDescriptionId() + ".description_use");
+        use.withStyle(ChatFormatting.AQUA);
+        p_41423_.add(use);
     }
 }
