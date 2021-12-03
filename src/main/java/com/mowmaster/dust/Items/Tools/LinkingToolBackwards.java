@@ -422,8 +422,13 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
         }
     }
 
-    /*@Override
+    @Override
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        return DeferredRegisterItems.TOOL_LINKINGTOOLBACKWARDS.get().getDefaultInstance();
+    }
+
+    @Override
     public boolean hasContainerItem(ItemStack stack) {
-        return super.hasContainerItem(DeferredRegisterItems.TOOL_LINKINGTOOLBACKWARDS.get().getDefaultInstance());
-    }*/
+        return true;
+    }
 }

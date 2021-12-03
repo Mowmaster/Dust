@@ -2,6 +2,7 @@ package com.mowmaster.dust.Items.Tools;
 
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlock;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
 import net.minecraft.ChatFormatting;

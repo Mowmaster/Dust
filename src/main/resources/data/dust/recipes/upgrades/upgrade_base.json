@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "dust:item_crystal"
+      "item": "dust:tool_upgradetool"
     },
     {
       "tag": "forge:ingots/gold"

@@ -53,7 +53,12 @@ public class TagTool extends BaseTool implements IPedestalTool
     }
 
     @Override
+    public ItemStack getContainerItem(ItemStack itemStack) {
+        return DeferredRegisterItems.TOOL_TAGTOOL.get().getDefaultInstance();
+    }
+
+    @Override
     public boolean hasContainerItem(ItemStack stack) {
-        return super.hasContainerItem(DeferredRegisterItems.TOOL_TAGTOOL.get().getDefaultInstance());
+        return true;
     }
 }
