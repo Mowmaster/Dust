@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.mowmaster.dust.References.Constants.MODID;
+
 public class LinkingTool extends BaseTool implements IPedestalTool
 {
     public static final BlockPos defaultPos = new BlockPos(0,-2000,0);
@@ -49,17 +51,17 @@ public class LinkingTool extends BaseTool implements IPedestalTool
         InteractionHand hand = p_41434_;
         ItemStack stackInHand = player.getItemInHand(hand);
 
-        TranslatableComponent linksucess = new TranslatableComponent(getDescriptionId() + ".tool_link_success");
+        TranslatableComponent linksucess = new TranslatableComponent(MODID + ".tool_link_success");
         linksucess.withStyle(ChatFormatting.WHITE);
-        TranslatableComponent linkunsuccess = new TranslatableComponent(getDescriptionId() + ".tool_link_unsucess");
+        TranslatableComponent linkunsuccess = new TranslatableComponent(MODID + ".tool_link_unsucess");
         linkunsuccess.withStyle(ChatFormatting.WHITE);
-        TranslatableComponent linkremoved = new TranslatableComponent(getDescriptionId() + ".tool_link_removed");
+        TranslatableComponent linkremoved = new TranslatableComponent(MODID + ".tool_link_removed");
         linkremoved.withStyle(ChatFormatting.WHITE);
-        TranslatableComponent linkitsself = new TranslatableComponent(getDescriptionId() + ".tool_link_itsself");
+        TranslatableComponent linkitsself = new TranslatableComponent(MODID + ".tool_link_itsself");
         linkitsself.withStyle(ChatFormatting.WHITE);
-        TranslatableComponent linknetwork = new TranslatableComponent(getDescriptionId() + ".tool_link_network");
+        TranslatableComponent linknetwork = new TranslatableComponent(MODID + ".tool_link_network");
         linknetwork.withStyle(ChatFormatting.WHITE);
-        TranslatableComponent linkdistance = new TranslatableComponent(getDescriptionId() + ".tool_link_distance");
+        TranslatableComponent linkdistance = new TranslatableComponent(MODID + ".tool_link_distance");
         linkdistance.withStyle(ChatFormatting.WHITE);
 
 
@@ -82,7 +84,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
                         }
                         player.setItemInHand(hand, newTool);
 
-                        TranslatableComponent changed = new TranslatableComponent(getDescriptionId() + ".tool_change");
+                        TranslatableComponent changed = new TranslatableComponent(MODID + ".tool_change");
                         changed.withStyle(ChatFormatting.GREEN);
                         player.displayClientMessage(changed,true);
                         return InteractionResultHolder.success(stackInHand);
@@ -209,9 +211,9 @@ public class LinkingTool extends BaseTool implements IPedestalTool
                         if (tileEntity instanceof BasePedestalBlockEntity) {
                             BasePedestalBlockEntity tilePedestal = (BasePedestalBlockEntity) tileEntity;
 
-                            TranslatableComponent rrobin = new TranslatableComponent(getDescriptionId() + ".tool_rrobin");
-                            TranslatableComponent rrobint = new TranslatableComponent(getDescriptionId() + ".tool_rrobin_true");
-                            TranslatableComponent rrobinf = new TranslatableComponent(getDescriptionId() + ".tool_rrobin_false");
+                            TranslatableComponent rrobin = new TranslatableComponent(MODID + ".tool_chat_rrobin");
+                            TranslatableComponent rrobint = new TranslatableComponent(MODID + ".tool_chat_rrobin_true");
+                            TranslatableComponent rrobinf = new TranslatableComponent(MODID + ".tool_chat_rrobin_false");
                             TranslatableComponent TransferTypeText = (tilePedestal.hasRRobin())?(rrobint):(rrobinf);
                             rrobin.append(TransferTypeText);
                             rrobin.withStyle(ChatFormatting.LIGHT_PURPLE);
@@ -219,7 +221,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
 
                             /*if(tilePedestal.getSpeed()>0)
                             {
-                                TranslatableComponent speed = new TranslatableComponent(getDescriptionId() + ".tool_speed");
+                                TranslatableComponent speed = new TranslatableComponent(MODID + ".tool_speed");
                                 speed.append(""+tilePedestal.getSpeed()+"");
                                 speed.withStyle(ChatFormatting.RED);
                                 player.sendMessage(speed,Util.NIL_UUID);
@@ -227,7 +229,7 @@ public class LinkingTool extends BaseTool implements IPedestalTool
 
                             if(tilePedestal.getCapacity()>0)
                             {
-                                TranslatableComponent capacity = new TranslatableComponent(getDescriptionId() + ".tool_capacity");
+                                TranslatableComponent capacity = new TranslatableComponent(MODID + ".tool_capacity");
                                 capacity.append(""+tilePedestal.getCapacity()+"");
                                 capacity.withStyle(ChatFormatting.BLUE);
                                 player.sendMessage(capacity,Util.NIL_UUID);
@@ -237,14 +239,14 @@ public class LinkingTool extends BaseTool implements IPedestalTool
                             List<BlockPos> getLocations = tilePedestal.getLocationList();
                             if(getLocations.size()>0)
                             {
-                                TranslatableComponent links = new TranslatableComponent(getDescriptionId() + ".tool_linked");
+                                TranslatableComponent links = new TranslatableComponent(MODID + ".tool_chat_linked");
                                 links.withStyle(ChatFormatting.GOLD);
                                 player.sendMessage(links,Util.NIL_UUID);
 
                                 for(int i = 0; i < getLocations.size();i++)
                                 {
                                     TranslatableComponent linked = new TranslatableComponent("   " + getLocations.get(i).getX() + "");
-                                    TranslatableComponent seperator = new TranslatableComponent(getDescriptionId() + ".tool_seperator");
+                                    TranslatableComponent seperator = new TranslatableComponent(MODID + ".tool_chat_seperator");
                                     linked.append(seperator.getString());
                                     linked.append("" + getLocations.get(i).getY() + "");
                                     linked.append(seperator.getString());
@@ -399,11 +401,11 @@ public class LinkingTool extends BaseTool implements IPedestalTool
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
-        TranslatableComponent selected = new TranslatableComponent(getDescriptionId() + ".tool_block_selected");
-        TranslatableComponent unselected = new TranslatableComponent(getDescriptionId() + ".tool_block_unselected");
-        TranslatableComponent cordX = new TranslatableComponent(getDescriptionId() + ".tool_X");
-        TranslatableComponent cordY = new TranslatableComponent(getDescriptionId() + ".tool_Y");
-        TranslatableComponent cordZ = new TranslatableComponent(getDescriptionId() + ".tool_Z");
+        TranslatableComponent selected = new TranslatableComponent(MODID + ".tool_tip_block_selected");
+        TranslatableComponent unselected = new TranslatableComponent(MODID + ".tool_tip_block_unselected");
+        TranslatableComponent cordX = new TranslatableComponent(MODID + ".tool_tip_X");
+        TranslatableComponent cordY = new TranslatableComponent(MODID + ".tool_tip_Y");
+        TranslatableComponent cordZ = new TranslatableComponent(MODID + ".tool_tip_Z");
         if(p_41421_.getItem() instanceof LinkingTool || p_41421_.getItem() instanceof LinkingToolBackwards) {
             if (p_41421_.hasTag()) {
                 if (p_41421_.isEnchanted()) {
@@ -418,6 +420,11 @@ public class LinkingTool extends BaseTool implements IPedestalTool
             } else p_41423_.add(unselected);
         }
     }
+
+    /*@Override
+    public boolean hasContainerItem(ItemStack stack) {
+        return super.hasContainerItem(DeferredRegisterItems.TOOL_LINKINGTOOL.get().getDefaultInstance());
+    }*/
 
 
 }

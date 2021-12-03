@@ -2,28 +2,43 @@ package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import com.mowmaster.dust.Items.Filters.IPedestalFilter;
+import com.mowmaster.dust.Items.Tools.FilterTool;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
+import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.Util.PedestalUtilities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.mowmaster.dust.References.Constants.MODID;
 import static com.mowmaster.dust.Util.PedestalUtilities.*;
 
 public class ItemUpgradeImport extends ItemUpgradeBase
@@ -37,18 +52,59 @@ public class ItemUpgradeImport extends ItemUpgradeBase
         Level world = p_41432_;
         Player player = p_41433_;
         InteractionHand hand = p_41434_;
-        ItemStack stackInHand = player.getItemInHand(hand);
-        //Build Color List from NBT
+        ItemStack itemInHand = player.getItemInHand(hand);
+        ItemStack itemInOffhand = player.getOffhandItem();
 
-        HitResult result = player.pick(5,0,false);
-        if(player.isCrouching())
+
+        if(itemInOffhand.isEmpty())
         {
-            if(result.getType().equals(HitResult.Type.MISS))
+
+        }
+        else
+        {
+            if(!itemInHand.getItem().equals(DeferredRegisterItems.PEDESTAL_UPGRADE_IMPORT))
             {
-                int mode = getUpgradeMode(stackInHand)+1;
-                int setNewMode = (mode<=14)?(mode):(0);
-                saveModeToNBT(stackInHand,setNewMode);
-                player.setItemInHand(p_41434_,stackInHand);
+                if(itemInOffhand.getItem() instanceof IPedestalUpgrade)
+                {
+                    HitResult result = player.pick(5,0,false);
+                    if(result.getType().equals(HitResult.Type.MISS))
+                    {
+                        if(player.isCrouching())
+                        {
+                            int mode = getUpgradeMode(itemInOffhand)+1;
+                            int setNewMode = (mode<=14)?(mode):(0);
+                            saveModeToNBT(itemInOffhand,setNewMode);
+                            player.setItemInHand(p_41434_,itemInOffhand);
+
+                            TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
+                            ChatFormatting colorChange = ChatFormatting.BLACK;
+                            String typeString = "";
+                            switch(setNewMode)
+                            {
+                                case 0: typeString = ".mode_items"; colorChange = ChatFormatting.GOLD; break;
+                                case 1: typeString = ".mode_fluids"; colorChange = ChatFormatting.DARK_BLUE; break;
+                                case 2: typeString = ".mode_energy"; colorChange = ChatFormatting.RED; break;
+                                case 3: typeString = ".mode_experience"; colorChange = ChatFormatting.GREEN; break;
+                                case 4: typeString = ".mode_if"; colorChange = ChatFormatting.BLUE; break;
+                                case 5: typeString = ".mode_ie"; colorChange = ChatFormatting.LIGHT_PURPLE; break;
+                                case 6: typeString = ".mode_ix"; colorChange = ChatFormatting.DARK_GREEN; break;
+                                case 7: typeString = ".mode_ife"; colorChange = ChatFormatting.DARK_PURPLE; break;
+                                case 8: typeString = ".mode_ifx"; colorChange = ChatFormatting.AQUA; break;
+                                case 9: typeString = ".mode_iex"; colorChange = ChatFormatting.GOLD; break;
+                                case 10: typeString = ".mode_ifex"; colorChange = ChatFormatting.BLACK; break;
+                                case 11: typeString = ".mode_fe"; colorChange = ChatFormatting.LIGHT_PURPLE; break;
+                                case 12: typeString = ".mode_fx"; colorChange = ChatFormatting.AQUA; break;
+                                case 13: typeString = ".mode_ex"; colorChange = ChatFormatting.GOLD; break;
+                                case 14: typeString = ".mode_fex"; colorChange = ChatFormatting.WHITE; break;
+                                default: typeString = ".error"; colorChange = ChatFormatting.DARK_RED; break;
+                            }
+                            changed.withStyle(colorChange);
+                            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+                            changed.append(type);
+                            player.displayClientMessage(changed,true);
+                        }
+                    }
+                }
             }
         }
 
@@ -137,8 +193,6 @@ public class ItemUpgradeImport extends ItemUpgradeBase
         if(canTransferFluids(coinInPedestal))
         {
             LazyOptional<IFluidHandler> cap = findFluidHandlerAtPos(world,posInventory,getPedestalFacing(world, posOfPedestal),true);
-
-            BlockEntity invToPushTo = world.getBlockEntity(posInventory);
             if(cap.isPresent())
             {
                 IFluidHandler handler = cap.orElse(null);
@@ -154,7 +208,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                     if(!fluidCheckedMatching.isEmpty())
                     {
                         FluidStack fluidInPedestal = pedestal.getStoredFluid();
-                        int spaceInCoin = pedestal.getFluidCapacity()-fluidInPedestal.getAmount();
+                        int fluidSpaceInPedestal = pedestal.spaceForFluid();
                         if(tanks > 1)
                         {
                             if(!fluidInPedestal.isEmpty())
@@ -162,13 +216,14 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                                 //Default grab from first tank
                                 FluidStack fluidInTank = handler.getFluidInTank(0);
                                 int amountIn = fluidInTank.getAmount();
-                                int rate = getFluidTransferRate(coinInPedestal);
-                                int actualCoinRate = (spaceInCoin>=rate)?(rate):(spaceInCoin);
+                                int rate = pedestal.getFluidTransferRate();
+                                int actualCoinRate = (fluidSpaceInPedestal>=rate)?(rate):(fluidSpaceInPedestal);
                                 int transferRate = (amountIn>=actualCoinRate)?(actualCoinRate):(amountIn);
 
-                                if(spaceInCoin >= transferRate || getFluidStored(coinInPedestal).isEmpty())
+                                if(fluidSpaceInPedestal >= transferRate || pedestal.getStoredFluid().isEmpty())
                                 {
-                                    FluidStack estFluidToDrain = new FluidStack(fluidInTank,transferRate);
+                                    FluidStack estFluidToDrain = fluidInTank.copy();
+                                    estFluidToDrain.setAmount(transferRate);
                                     FluidStack fluidToActuallyDrain = handler.drain(estFluidToDrain,IFluidHandler.FluidAction.SIMULATE);
                                     int amountCanAddToPedestal = pedestal.addFluid(fluidToActuallyDrain,IFluidHandler.FluidAction.SIMULATE);
                                     if(!fluidInTank.isEmpty() && amountCanAddToPedestal>0)
@@ -189,13 +244,14 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                                 if(!fluidMatching.isEmpty())
                                 {
                                     int amountIn = fluidMatching.getAmount();
-                                    int rate = getFluidTransferRate(coinInPedestal);
-                                    int actualCoinRate = (spaceInCoin>=rate)?(rate):(spaceInCoin);
+                                    int rate = pedestal.getFluidTransferRate();
+                                    int actualCoinRate = (fluidSpaceInPedestal>=rate)?(rate):(fluidSpaceInPedestal);
                                     int transferRate = (amountIn>=actualCoinRate)?(actualCoinRate):(amountIn);
 
-                                    if(spaceInCoin >= transferRate || getFluidStored(coinInPedestal).isEmpty())
+                                    if(fluidSpaceInPedestal >= transferRate || pedestal.getStoredFluid().isEmpty())
                                     {
-                                        FluidStack estFluidToDrain = new FluidStack(fluidMatching,transferRate);
+                                        FluidStack estFluidToDrain = fluidMatching.copy();
+                                        estFluidToDrain.setAmount(transferRate);
                                         FluidStack fluidToActuallyDrain = handler.drain(estFluidToDrain,IFluidHandler.FluidAction.SIMULATE);
                                         int amountCanAddToPedestal = pedestal.addFluid(fluidToActuallyDrain,IFluidHandler.FluidAction.SIMULATE);
                                         if(!fluidMatching.isEmpty() && amountCanAddToPedestal>0)
@@ -214,13 +270,14 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                             if(fluidInPedestal.isEmpty() || fluidInPedestal.isFluidEqual(fluidInTank))
                             {
                                 int amountIn = fluidInTank.getAmount();
-                                int rate = getFluidTransferRate(coinInPedestal);
-                                int actualCoinRate = (spaceInCoin>=rate)?(rate):(spaceInCoin);
+                                int rate = pedestal.getFluidTransferRate();
+                                int actualCoinRate = (fluidSpaceInPedestal>=rate)?(rate):(fluidSpaceInPedestal);
                                 int transferRate = (amountIn>=actualCoinRate)?(actualCoinRate):(amountIn);
 
-                                if(spaceInCoin >= transferRate || getFluidStored(coinInPedestal).isEmpty())
+                                if(fluidSpaceInPedestal >= transferRate || pedestal.getStoredFluid().isEmpty())
                                 {
-                                    FluidStack estFluidToDrain = new FluidStack(fluidInTank,transferRate);
+                                    FluidStack estFluidToDrain = fluidInTank.copy();
+                                    estFluidToDrain.setAmount(transferRate);
                                     FluidStack fluidToActuallyDrain = handler.drain(estFluidToDrain,IFluidHandler.FluidAction.SIMULATE);
                                     int amountCanAddToPedestal = pedestal.addFluid(fluidToActuallyDrain,IFluidHandler.FluidAction.SIMULATE);
                                     if(!fluidInTank.isEmpty() && amountCanAddToPedestal>0)
@@ -395,6 +452,48 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                         {
                             pedestal.addExperience( currentlyStoredExp + value,false);
                             if(pedestal.canSpawnParticles()) DustPacketHandler.sendToNearby(pedestal.getLevel(),pedestal.getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,pedestal.getPos().getX(),pedestal.getPos().getY(),pedestal.getPos().getZ(),0,255,0));
+                        }
+                    }
+                }
+            }
+        }
+
+        if(canTransferFluids(pedestal.getCoinOnPedestal()))
+        {
+            if (entityIn instanceof Player) {
+                Player player = ((Player) entityIn);
+                if(!player.isCrouching())
+                {
+                    ItemStack bucketItemStack = IntStream.range(0,(player.getInventory().items.size()))//Int Range
+                            .mapToObj((player.getInventory().items)::get)//Function being applied to each interval
+                            .filter(itemStack -> !itemStack.isEmpty())
+                            .filter(itemStack -> !itemStack.getItem().equals(Items.BUCKET))
+                            .filter(itemStack -> itemStack.getItem() instanceof BucketItem)
+                            .filter(itemStack -> passesFluidFilter(pedestal,itemStack))
+                            .findFirst().orElse(ItemStack.EMPTY);
+
+                    if(!bucketItemStack.isEmpty())
+                    {
+                        BucketItem bucket = ((BucketItem)bucketItemStack.getItem());
+                        Fluid bucketFluid = bucket.getFluid();
+                        FluidStack fluidInTank = new FluidStack(bucketFluid,1000);
+                        int fluidSpaceInPedestal = pedestal.spaceForFluid();
+
+                        FluidStack fluidInPedestal = pedestal.getStoredFluid();
+                        if(fluidInPedestal.isEmpty() || fluidInPedestal.isFluidEqual(fluidInTank))
+                        {
+                            int transferRate = 1000;
+                            if(fluidSpaceInPedestal >= transferRate || pedestal.getStoredFluid().isEmpty())
+                            {
+                                FluidStack fluidDrained = fluidInTank.copy();
+                                if(!fluidInTank.isEmpty())
+                                {
+                                    pedestal.addFluid(fluidDrained,IFluidHandler.FluidAction.EXECUTE);
+                                    int slot = player.getInventory().findSlotMatchingItem(bucketItemStack);
+                                    player.getInventory().getItem(slot).shrink(1);
+                                    ItemHandlerHelper.giveItemToPlayer(player,new ItemStack(Items.BUCKET,1));
+                                }
+                            }
                         }
                     }
                 }

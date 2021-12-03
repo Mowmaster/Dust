@@ -65,10 +65,10 @@ public class BasePedestalBlockEntity extends BlockEntity
     private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(this::createHandlerPedestalFluid);
     private LazyOptional<IExperienceStorage> experienceHandler = LazyOptional.of(this::createHandlerPedestalExperience);
     private List<ItemStack> stacksList = new ArrayList<>();
-    private FluidStack storedFluid = FluidStack.EMPTY;
     private MobEffectInstance storedPotionEffect = null;
     private int storedPotionEffectDuration = 0;
     private int storedEnergy = 0;
+    private FluidStack storedFluid = FluidStack.EMPTY;
     private int storedExperience = 0;
     private boolean boolLight = false;
     private final List<BlockPos> storedLocations = new ArrayList<BlockPos>();
@@ -274,6 +274,7 @@ public class BasePedestalBlockEntity extends BlockEntity
 
     public IFluidHandler createHandlerPedestalFluid() {
         return new IFluidHandler() {
+
             @Nonnull
             @Override
             public FluidStack getFluidInTank(int i) {
@@ -364,7 +365,6 @@ public class BasePedestalBlockEntity extends BlockEntity
 
             @Override
             public boolean isFluidValid(int i, @Nonnull FluidStack fluidStack) {
-
                 if(hasFilter())
                 {
                     IPedestalFilter filter = getIPedestalFilter();
@@ -383,16 +383,20 @@ public class BasePedestalBlockEntity extends BlockEntity
 
             @Override
             public int fill(FluidStack fluidStack, FluidAction fluidAction) {
-
                 if(isFluidValid(0,fluidStack))
                 {
                     FluidStack stored = storedFluid.copy();
+                    FluidStack receivingFluid = fluidStack.copy();
                     int storedAmount = stored.getAmount();
-                    int receivingAmount = fluidStack.getAmount();
+                    int receivingAmount = receivingFluid.getAmount();
                     int canReceive;
                     IPedestalFilter filter = getIPedestalFilter();
-                    if(filter == null)return getTankCapacity(0)-storedAmount;
-                    canReceive = filter.canAcceptCount(getPedestal(),ItemStack.EMPTY,1);
+                    if(filter == null){
+                        canReceive = spaceForFluid();
+                    }
+                    else {
+                        canReceive = filter.canAcceptCount(getPedestal(),ItemStack.EMPTY,1);
+                    }
 
                     if(canReceive>0)
                     {
@@ -403,17 +407,21 @@ public class BasePedestalBlockEntity extends BlockEntity
                         }
                         else if(fluidAction.execute())
                         {
-                            if(receivingAmount>canReceive)
+                            if(receivingFluid.isEmpty())
                             {
-                                stored.setAmount(canReceive);
-                                storedFluid = stored;
+                                storedFluid = FluidStack.EMPTY;
+                            }
+                            else if(receivingAmount>canReceive)
+                            {
+                                receivingFluid.setAmount(canReceive);
+                                storedFluid = receivingFluid;
                                 update();
                                 return canReceive;
                             }
                             else
                             {
-                                stored.setAmount(storedAmount+receivingAmount);
-                                storedFluid = stored;
+                                receivingFluid.setAmount(storedAmount+receivingAmount);
+                                storedFluid = receivingFluid;
                                 update();
                                 return receivingAmount;
                             }
@@ -935,6 +943,7 @@ public class BasePedestalBlockEntity extends BlockEntity
         return h.fill(fluidStackIn,fluidAction);
     }
 
+
     public int getFluidTransferRate()
     {
         //im assuming # = rf value???
@@ -1037,14 +1046,23 @@ public class BasePedestalBlockEntity extends BlockEntity
         int modifier = 1;
         switch (modifier)
         {
-            case 0:
+            case -3:
                 fluidTransferRate = 125;//1x
                 break;
+            case -2:
+                fluidTransferRate = 250;//1x
+                break;
+            case -1:
+                fluidTransferRate = 500;//1x
+                break;
+            case 0:
+                fluidTransferRate = 750;//1x
+                break;
             case 1:
-                fluidTransferRate=250;//2x
+                fluidTransferRate=1000;//2x
                 break;
             case 2:
-                fluidTransferRate = 500;//4x
+                fluidTransferRate = 750;//4x
                 break;
             case 3:
                 fluidTransferRate = 1000;//6x
@@ -2121,10 +2139,9 @@ public class BasePedestalBlockEntity extends BlockEntity
             {
                 BasePedestalBlockEntity tilePedestalToSendTo = (BasePedestalBlockEntity)level.getBlockEntity(pedestalToSendTo);
 
-                //Checks if pedestal is empty or if not then checks if items match and how many can be insert
-                if(tilePedestalToSendTo.fluidAmountToAccept(level,pedestalToSendTo,fluidStackIncoming) > 0)
+                if(tilePedestalToSendTo.canAcceptFluid(fluidStackIncoming))
                 {
-                    if(tilePedestalToSendTo.canAcceptFluid(fluidStackIncoming))
+                    if(tilePedestalToSendTo.fluidAmountToAccept(level,pedestalToSendTo,fluidStackIncoming) > 0)
                     {
                         //Max that can be recieved
                         int countToSend = tilePedestalToSendTo.spaceForFluid();
@@ -2144,14 +2161,17 @@ public class BasePedestalBlockEntity extends BlockEntity
                         if(countToSend > 0)
                         {
                             //Send items
-                            int countFluidToSend = tilePedestalToSendTo.addFluid(new FluidStack(fluidStackIncoming.getFluid(),countToSend,fluidStackIncoming.getTag()), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack stackFluidToSend = fluidStackIncoming.copy();
+                            stackFluidToSend.setAmount(countToSend);
+                            int countFluidToSend = tilePedestalToSendTo.addFluid(stackFluidToSend, IFluidHandler.FluidAction.SIMULATE);
+
                             if(countFluidToSend>0)
                             {
                                 int finalFluidCountToSend = removeFluid(countFluidToSend, IFluidHandler.FluidAction.SIMULATE).getAmount();
                                 if(finalFluidCountToSend>0)
                                 {
+                                    tilePedestalToSendTo.addFluid(new FluidStack(fluidStackIncoming.getFluid(),finalFluidCountToSend,fluidStackIncoming.getTag()), IFluidHandler.FluidAction.EXECUTE);
                                     removeFluid(countFluidToSend, IFluidHandler.FluidAction.EXECUTE);
-                                    tilePedestalToSendTo.addFluid(new FluidStack(fluidStackIncoming.getFluid(),finalFluidCountToSend,fluidStackIncoming.getTag()), IFluidHandler.FluidAction.SIMULATE);
                                     if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
                                 }
                             }
@@ -2219,11 +2239,11 @@ public class BasePedestalBlockEntity extends BlockEntity
             {
                 BasePedestalBlockEntity tilePedestalToSendTo = (BasePedestalBlockEntity)level.getBlockEntity(pedestalToSendTo);
 
-                //Checks if pedestal is empty or if not then checks if items match and how many can be insert
-                if(tilePedestalToSendTo.experienceAmountToAccept(level,pedestalToSendTo,experienceIncoming) > 0)
+                if(tilePedestalToSendTo.canAcceptExperience())
                 {
-                    if(tilePedestalToSendTo.canAcceptExperience())
+                    if(tilePedestalToSendTo.experienceAmountToAccept(level,pedestalToSendTo,experienceIncoming) > 0)
                     {
+
                         //Max that can be recieved
                         int countToSend = tilePedestalToSendTo.getExperienceCapacity()-tilePedestalToSendTo.getStoredExperience();
 
@@ -2399,11 +2419,11 @@ public class BasePedestalBlockEntity extends BlockEntity
         CompoundTag invPrivateTag = p_155245_.getCompound("inv_private");
         privateHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invPrivateTag));
 
-
         this.storedValueForUpgrades = p_155245_.getInt("storedUpgradeValue");
         this.storedEnergy = p_155245_.getInt("storedEnergy");
-        this.storedExperience = p_155245_.getInt("storedExperience");
         this.storedFluid = FluidStack.loadFluidStackFromNBT(p_155245_.getCompound("storedFluid"));
+        this.storedExperience = p_155245_.getInt("storedExperience");
+        //this.setFluid(FluidStack.loadFluidStackFromNBT(p_155245_.getCompound("storedFluid")),0);
         this.storedPotionEffect = (MobEffectInstance.load(p_155245_)!=null)?(MobEffectInstance.load(p_155245_)):(null);
         this.storedPotionEffectDuration = p_155245_.getInt("storedEffectDuration");
 
@@ -2416,45 +2436,13 @@ public class BasePedestalBlockEntity extends BlockEntity
             BlockPos gotPos = new BlockPos(storedIX[i],storedIY[i],storedIZ[i]);
             storedLocations.add(gotPos);
         }
-        //System.out.println("LOAD");
+
     }
 
     @Override
     protected void saveAdditional(CompoundTag p_187471_) {
         super.saveAdditional(p_187471_);
         save(p_187471_);
-        //System.out.println("SAVEAdditional");
-        /*handler.ifPresent(h -> {
-            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
-            p_187471_.put("inv", compound);
-        });
-        privateHandler.ifPresent(h -> {
-            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
-            p_187471_.put("inv_private", compound);
-        });
-
-        p_187471_.putInt("storedUpgradeValue",storedValueForUpgrades);
-        p_187471_.putInt("storedEnergy",storedEnergy);
-        p_187471_.putInt("storedXP",storedXP);
-        p_187471_.put("storedFluid",storedFluid.writeToNBT(new CompoundTag()));
-        if(storedPotionEffect!=null)storedPotionEffect.save(p_187471_);
-        p_187471_.putInt("storedEffectDuration",storedPotionEffectDuration);
-            //PotionUtils.getCustomEffects(p_155245_.getCompound("storedEffect")).get(0);
-
-        List<Integer> storedX = new ArrayList<Integer>();
-        List<Integer> storedY = new ArrayList<Integer>();
-        List<Integer> storedZ = new ArrayList<Integer>();
-
-        for(int i=0;i<getNumberOfStoredLocations();i++)
-        {
-            storedX.add(storedLocations.get(i).getX());
-            storedY.add(storedLocations.get(i).getY());
-            storedZ.add(storedLocations.get(i).getZ());
-        }
-
-        p_187471_.putIntArray("intArrayXPos",storedX);
-        p_187471_.putIntArray("intArrayYPos",storedY);
-        p_187471_.putIntArray("intArrayZPos",storedZ);*/
     }
 
     @Override
@@ -2472,8 +2460,8 @@ public class BasePedestalBlockEntity extends BlockEntity
 
         p_58888_.putInt("storedUpgradeValue",storedValueForUpgrades);
         p_58888_.putInt("storedEnergy",storedEnergy);
-        p_58888_.putInt("storedExperience",storedExperience);
         p_58888_.put("storedFluid",storedFluid.writeToNBT(new CompoundTag()));
+        p_58888_.putInt("storedExperience",storedExperience);
         if(storedPotionEffect!=null)storedPotionEffect.save(p_58888_);
         p_58888_.putInt("storedEffectDuration",storedPotionEffectDuration);
 

@@ -55,7 +55,7 @@ public class FilterItem extends BaseFilter{
 
     @Override
     public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
-        boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
+        boolean filterBool=getFilterType(pedestal.getFilterInPedestal(),mode);
 
         if(mode<=1)
         {
@@ -73,9 +73,9 @@ public class FilterItem extends BaseFilter{
             {
                 return !filterBool;
             }
+            else return filterBool;
         }
         else return !filterBool;
 
-        return filterBool;
     }
 }

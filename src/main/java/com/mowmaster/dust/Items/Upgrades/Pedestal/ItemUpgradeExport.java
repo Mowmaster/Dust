@@ -2,8 +2,11 @@ package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Util.PedestalUtilities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +23,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.stream.IntStream;
 
+import static com.mowmaster.dust.References.Constants.MODID;
 import static com.mowmaster.dust.Util.PedestalUtilities.*;
 
 public class ItemUpgradeExport extends ItemUpgradeBase
@@ -33,18 +37,59 @@ public class ItemUpgradeExport extends ItemUpgradeBase
         Level world = p_41432_;
         Player player = p_41433_;
         InteractionHand hand = p_41434_;
-        ItemStack stackInHand = player.getItemInHand(hand);
-        //Build Color List from NBT
+        ItemStack itemInHand = player.getItemInHand(hand);
+        ItemStack itemInOffhand = player.getOffhandItem();
 
-        HitResult result = player.pick(5,0,false);
-        if(player.isCrouching())
+
+        if(itemInOffhand.isEmpty())
         {
-            if(result.getType().equals(HitResult.Type.MISS))
+
+        }
+        else
+        {
+            if(!itemInHand.getItem().equals(DeferredRegisterItems.PEDESTAL_UPGRADE_EXPORT))
             {
-                int mode = getUpgradeMode(stackInHand)+1;
-                int setNewMode = (mode<=14)?(mode):(0);
-                saveModeToNBT(stackInHand,setNewMode);
-                player.setItemInHand(p_41434_,stackInHand);
+                if(itemInOffhand.getItem() instanceof IPedestalUpgrade)
+                {
+                    HitResult result = player.pick(5,0,false);
+                    if(result.getType().equals(HitResult.Type.MISS))
+                    {
+                        if(player.isCrouching())
+                        {
+                            int mode = getUpgradeMode(itemInOffhand)+1;
+                            int setNewMode = (mode<=14)?(mode):(0);
+                            saveModeToNBT(itemInOffhand,setNewMode);
+                            player.setItemInHand(p_41434_,itemInOffhand);
+
+                            TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
+                            ChatFormatting colorChange = ChatFormatting.BLACK;
+                            String typeString = "";
+                            switch(setNewMode)
+                            {
+                                case 0: typeString = ".mode_items"; colorChange = ChatFormatting.GOLD; break;
+                                case 1: typeString = ".mode_fluids"; colorChange = ChatFormatting.DARK_BLUE; break;
+                                case 2: typeString = ".mode_energy"; colorChange = ChatFormatting.RED; break;
+                                case 3: typeString = ".mode_experience"; colorChange = ChatFormatting.GREEN; break;
+                                case 4: typeString = ".mode_if"; colorChange = ChatFormatting.DARK_BLUE; break;
+                                case 5: typeString = ".mode_ie"; colorChange = ChatFormatting.LIGHT_PURPLE; break;
+                                case 6: typeString = ".mode_ix"; colorChange = ChatFormatting.DARK_GREEN; break;
+                                case 7: typeString = ".mode_ife"; colorChange = ChatFormatting.WHITE; break;
+                                case 8: typeString = ".mode_ifx"; colorChange = ChatFormatting.AQUA; break;
+                                case 9: typeString = ".mode_iex"; colorChange = ChatFormatting.GOLD; break;
+                                case 10: typeString = ".mode_ifex"; colorChange = ChatFormatting.BLACK; break;
+                                case 11: typeString = ".mode_fe"; colorChange = ChatFormatting.LIGHT_PURPLE; break;
+                                case 12: typeString = ".mode_fx"; colorChange = ChatFormatting.AQUA; break;
+                                case 13: typeString = ".mode_ex"; colorChange = ChatFormatting.GOLD; break;
+                                case 14: typeString = ".mode_fex"; colorChange = ChatFormatting.WHITE; break;
+                                default: typeString = ".error"; colorChange = ChatFormatting.DARK_RED; break;
+                            }
+                            changed.withStyle(colorChange);
+                            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+                            changed.append(type);
+                            player.displayClientMessage(changed,true);
+                        }
+                    }
+                }
             }
         }
 
@@ -128,7 +173,6 @@ public class ItemUpgradeExport extends ItemUpgradeBase
         if(canTransferFluids(coinInPedestal))
         {
             LazyOptional<IFluidHandler> cap = findFluidHandlerAtPos(world,posInventory,getPedestalFacing(world, posOfPedestal),true);
-            BlockEntity invToPushTo = world.getBlockEntity(posInventory);
             if(cap.isPresent())
             {
                 IFluidHandler handler = cap.orElse(null);
@@ -162,7 +206,7 @@ public class ItemUpgradeExport extends ItemUpgradeBase
                             int spaceInTank = getTankCapacity-tankCurrentlyStored;
                             int amountInCoin = fluidInPedestal.getAmount();
 
-                            int rate = getFluidTransferRate(coinInPedestal);
+                            int rate = pedestal.getFluidTransferRate();
                             int actualCoinRate = (spaceInTank>=rate)?(rate):(spaceInTank);
                             int transferRate = (amountInCoin>=actualCoinRate)?(actualCoinRate):(amountInCoin);
 
@@ -195,7 +239,7 @@ public class ItemUpgradeExport extends ItemUpgradeBase
                             int spaceInTank = getTankCapacity-tankCurrentlyStored;
                             int amountInCoin = fluidInPedestal.getAmount();
 
-                            int rate = getFluidTransferRate(coinInPedestal);
+                            int rate = pedestal.getFluidTransferRate();
                             int actualCoinRate = (spaceInTank>=rate)?(rate):(spaceInTank);
                             int transferRate = (amountInCoin>=actualCoinRate)?(actualCoinRate):(amountInCoin);
 
@@ -225,7 +269,7 @@ public class ItemUpgradeExport extends ItemUpgradeBase
                             int spaceInTank = getTankCapacity-tankCurrentlyStored;
                             int amountInCoin = fluidInPedestal.getAmount();
 
-                            int rate = getFluidTransferRate(coinInPedestal);
+                            int rate = pedestal.getFluidTransferRate();
                             int actualCoinRate = (spaceInTank>=rate)?(rate):(spaceInTank);
                             int transferRate = (amountInCoin>=actualCoinRate)?(actualCoinRate):(amountInCoin);
                             if(spaceInTank >= transferRate)

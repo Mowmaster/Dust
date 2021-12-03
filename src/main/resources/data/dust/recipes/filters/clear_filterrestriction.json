@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "dust:filter_restriction"
+      "item": "dust:filter_restricted"
     }
   ],
   "result": {

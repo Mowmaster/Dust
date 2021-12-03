@@ -19,7 +19,7 @@
       "tag": "forge:rods/wooden"
     },
     "D": {
-      "tag": "forge:gems/diamond"
+      "item": "dust:item_crystal"
     }
   },
   "result": {

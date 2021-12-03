@@ -146,21 +146,6 @@ public class BaseFilter extends Item implements IPedestalFilter
                                         return InteractionResultHolder.success(itemInHand);
                                     }
                                 }
-                                else
-                                {
-                                    if(itemInHand.getItem() instanceof IPedestalFilter)
-                                    {
-                                        boolean getCurrentType = getFilterType(itemInHand);
-                                        setFilterType(itemInHand,!getCurrentType);
-                                        TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_message_changed");
-                                        changed.withStyle(ChatFormatting.GREEN);
-                                        TranslatableComponent white = new TranslatableComponent(MODID + ".filter_message_whitelist");
-                                        TranslatableComponent black = new TranslatableComponent(MODID + ".filter_message_blacklist");
-                                        changed.append((!getCurrentType)?(black):(white));
-                                        player.displayClientMessage(changed,true);
-                                        return InteractionResultHolder.success(itemInHand);
-                                    }
-                                }
                             }
                         }
                         else if(result.getType().equals(HitResult.Type.BLOCK))
@@ -198,13 +183,47 @@ public class BaseFilter extends Item implements IPedestalFilter
                     HitResult result = player.pick(5,0,false);
                     if(result.getType().equals(HitResult.Type.MISS))
                     {
-                        if(player.isCrouching())
+                        if(!itemInOffhand.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
                         {
-                            int mode = getFilterMode(itemInOffhand)+1;
-                            int setNewMode = (mode<=3)?(mode):(0);
-                            saveModeToNBT(itemInOffhand,setNewMode);
-                            ColorReference.addColorToItemStack(itemInOffhand,getFilterTypeColor(itemInOffhand));
-                            player.setItemInHand(hand,itemInOffhand);
+                            if(player.isCrouching())
+                            {
+                                int mode = getFilterMode(itemInOffhand)+1;
+                                int setNewMode = (mode<=3)?(mode):(0);
+                                saveModeToNBT(itemInOffhand,setNewMode);
+                                ColorReference.addColorToItemStack(itemInOffhand,getFilterTypeColor(itemInOffhand));
+                                player.setItemInHand(hand,itemInOffhand);
+
+                                TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
+                                ChatFormatting colorChange = ChatFormatting.BLACK;
+                                String typeString = "";
+                                switch(setNewMode)
+                                {
+                                    case 0: typeString = ".mode_items"; colorChange = ChatFormatting.GOLD; break;
+                                    case 1: typeString = ".mode_fluids"; colorChange = ChatFormatting.DARK_BLUE; break;
+                                    case 2: typeString = ".mode_energy"; colorChange = ChatFormatting.RED; break;
+                                    case 3: typeString = ".mode_experience"; colorChange = ChatFormatting.DARK_GREEN; break;
+                                    default: typeString = ".error"; colorChange = ChatFormatting.DARK_RED; break;
+                                }
+                                changed.withStyle(colorChange);
+                                TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+                                changed.append(type);
+                                player.displayClientMessage(changed,true);
+                            }
+                            else
+                            {
+                                if(itemInOffhand.getItem() instanceof IPedestalFilter)
+                                {
+                                    boolean getCurrentType = getFilterType(itemInOffhand,getFilterMode(itemInHand));
+                                    setFilterType(itemInOffhand,!getCurrentType);
+                                    TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_type_changed");
+                                    changed.withStyle((!getCurrentType)?(ChatFormatting.BLACK):(ChatFormatting.WHITE));
+                                    TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_whitelist");
+                                    TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_blacklist");
+                                    changed.append((!getCurrentType)?(black):(white));
+                                    player.displayClientMessage(changed,true);
+                                    return InteractionResultHolder.success(itemInOffhand);
+                                }
+                            }
                         }
                     }
                 }
@@ -276,12 +295,26 @@ public class BaseFilter extends Item implements IPedestalFilter
 
     @Override
     public int canAcceptCount(BasePedestalBlockEntity pedestal, ItemStack itemStackIncoming, int mode) {
-        return (mode==0)?(canAcceptCount(pedestal, pedestal.getLevel(), pedestal.getPos(), pedestal.getItemInPedestal(), itemStackIncoming, mode)):(0);
+        switch (mode)
+        {
+            case 0: return canAcceptCount(pedestal, pedestal.getLevel(), pedestal.getPos(), pedestal.getItemInPedestal(), itemStackIncoming, mode);
+            case 1: return pedestal.getFluidTransferRate();
+            case 2: return pedestal.getEnergyTransferRate();
+            case 3: return pedestal.getExperienceTransferRate();
+            default: return -1;
+        }
     }
 
     @Override
     public int canAcceptCount(BasePedestalBlockEntity pedestal, Level world, BlockPos pos, ItemStack itemInPedestal, ItemStack itemStackIncoming, int mode) {
-        return (mode==0)?(Math.min(pedestal.getSlotSizeLimit(), itemStackIncoming.getMaxStackSize())):(0);
+        switch (mode)
+        {
+            case 0: return Math.min(pedestal.getSlotSizeLimit(), itemStackIncoming.getMaxStackSize());
+            case 1: return pedestal.getFluidTransferRate();
+            case 2: return pedestal.getEnergyTransferRate();
+            case 3: return pedestal.getExperienceTransferRate();
+            default: return -1;
+        }
     }
 
     @Override
@@ -442,17 +475,35 @@ public class BaseFilter extends Item implements IPedestalFilter
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
-        if(!p_41421_.getItem().equals(DeferredRegisterItems.FILTER_BASE))
+        if(!p_41421_.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
         {
-            boolean filterType = getFilterType(p_41421_);
-            TranslatableComponent filterList = new TranslatableComponent(MODID + ".filters.tooltip_filtertype");
-            TranslatableComponent white = new TranslatableComponent(MODID + ".filters.tooltip_filterwhite");
-            TranslatableComponent black = new TranslatableComponent(MODID + ".filters.tooltip_filterblack");
+            boolean filterType = getFilterType(p_41421_,getFilterMode(p_41421_));
+            int filterMode = getFilterMode(p_41421_);
+
+            TranslatableComponent filterList = new TranslatableComponent(MODID + ".filter_type");
+            TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_whitelist");
+            TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_blacklist");
             filterList.append((filterType)?(black):(white));
-            filterList.withStyle(ChatFormatting.GOLD);
+            filterList.withStyle(ChatFormatting.WHITE);
             p_41423_.add(filterList);
 
-            List<ItemStack> filterQueue = readFilterQueueFromNBT(p_41421_,getFilterMode(p_41421_));
+            TranslatableComponent changed = new TranslatableComponent(MODID + ".tooltip_mode");
+            String typeString = "";
+            switch(filterMode)
+            {
+                case 0: typeString = ".mode_items"; break;
+                case 1: typeString = ".mode_fluids"; break;
+                case 2: typeString = ".mode_energy"; break;
+                case 3: typeString = ".mode_experience"; break;
+                default: typeString = ".error"; break;
+            }
+            changed.withStyle(ChatFormatting.GOLD);
+            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+            changed.append(type);
+            p_41423_.add(changed);
+
+
+            /*List<ItemStack> filterQueue = readFilterQueueFromNBT(p_41421_,getFilterMode(p_41421_));
             if(filterQueue.size()>0)
             {
                 TranslatableComponent enchant = new TranslatableComponent(MODID + ".filters.tooltip_filterlist");
@@ -468,13 +519,23 @@ public class BaseFilter extends Item implements IPedestalFilter
                         p_41423_.add(enchants);
                     }
                 }
-            }
+            }*/
+
+
         }
         else
         {
-            TranslatableComponent base = new TranslatableComponent(MODID + ".filter_tooltip_baseItem");
+            TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".base_description");
             base.withStyle(ChatFormatting.DARK_RED);
             p_41423_.add(base);
         }
+
+        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
+        base.withStyle(ChatFormatting.LIGHT_PURPLE);
+        p_41423_.add(base);
+
+        TranslatableComponent use = new TranslatableComponent(getDescriptionId() + ".description_use");
+        use.withStyle(ChatFormatting.AQUA);
+        p_41423_.add(use);
     }
 }

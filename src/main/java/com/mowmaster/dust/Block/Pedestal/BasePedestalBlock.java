@@ -314,6 +314,9 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                 ItemStack itemInOffHand = p_60506_.getOffhandItem();
                 if(itemInHand.getItem() instanceof IPedestalTool)
                 {
+                    System.out.println("Stored Energy: "+pedestal.getStoredEnergy());
+                    System.out.println("Stored Fluid: "+pedestal.getStoredFluid().getDisplayName().getString() +": "+ pedestal.getStoredFluid().getAmount());
+                    System.out.println("Stored Exp: "+pedestal.getStoredExperience());
                     return InteractionResult.FAIL;
                 }
                 else if(itemInHand.getItem() instanceof ColorApplicator)
@@ -602,7 +605,9 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                             Entity entity = p_153716_.getOwner();
                             lightningbolt.setCause(entity instanceof ServerPlayer ? (ServerPlayer)entity : null);
                             p_153713_.addFreshEntity(lightningbolt);
-                            pedestal.removeEnergy(pedestal.getStoredEnergy(),false);
+                            //Todo: remove the energy add thing later
+                            pedestal.addEnergy(1000,false);
+                            //pedestal.removeEnergy(pedestal.getStoredEnergy(),false);
                             p_153713_.playSound((Player)null, blockpos, SoundEvents.TRIDENT_THUNDER, SoundSource.WEATHER, 5.0F, 1.0F);
                         }
                     }

@@ -189,6 +189,46 @@ public class FilterRestricted extends BaseFilter{
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
 
+        if(!p_41421_.getItem().equals(DeferredRegisterItems.FILTER_BASE))
+        {
+            boolean filterType = getFilterType(p_41421_,getFilterMode(p_41421_));
+            int filterMode = getFilterMode(p_41421_);
+
+            TranslatableComponent filterList = new TranslatableComponent(MODID + ".filter_type");
+            TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_whitelist");
+            TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_blacklist");
+            filterList.append((filterType)?(black):(white));
+            filterList.withStyle(ChatFormatting.WHITE);
+            p_41423_.add(filterList);
+
+            TranslatableComponent changed = new TranslatableComponent(MODID + ".tooltip_mode");
+            String typeString = "";
+            switch(filterMode)
+            {
+                case 0: typeString = ".mode_items"; break;
+                case 1: typeString = ".mode_fluids"; break;
+                case 2: typeString = ".mode_energy"; break;
+                case 3: typeString = ".mode_experience"; break;
+                default: typeString = ".error"; break;
+            }
+            changed.withStyle(ChatFormatting.GOLD);
+            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+            changed.append(type);
+            p_41423_.add(changed);
+        }
+
+        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
+        base.withStyle(ChatFormatting.LIGHT_PURPLE);
+        p_41423_.add(base);
+
+        TranslatableComponent use = new TranslatableComponent(getDescriptionId() + ".description_use");
+        use.withStyle(ChatFormatting.AQUA);
+        p_41423_.add(use);
+    }
+
+    /*@Override
+    public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
+
         TranslatableComponent enchant = new TranslatableComponent(MODID + ".filters.tooltip_filterlist_count");
         enchant.withStyle(ChatFormatting.LIGHT_PURPLE);
         p_41423_.add(enchant);
@@ -210,5 +250,5 @@ public class FilterRestricted extends BaseFilter{
         }
         enchants.withStyle(ChatFormatting.GRAY);
         p_41423_.add(enchants);
-    }
+    }*/
 }

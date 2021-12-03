@@ -123,21 +123,6 @@ public class FilterDurability extends BaseFilter{
                                         return InteractionResultHolder.success(itemInHand);
                                     }
                                 }
-                                else
-                                {
-                                    if(itemInHand.getItem() instanceof IPedestalFilter)
-                                    {
-                                        boolean getCurrentType = getFilterType(itemInHand);
-                                        setFilterType(itemInHand,!getCurrentType);
-                                        TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_message_changed");
-                                        changed.withStyle(ChatFormatting.GREEN);
-                                        TranslatableComponent white = new TranslatableComponent(MODID + ".filter_message_above");
-                                        TranslatableComponent black = new TranslatableComponent(MODID + ".filter_message_below");
-                                        changed.append((!getCurrentType)?(black):(white));
-                                        player.displayClientMessage(changed,true);
-                                        return InteractionResultHolder.success(itemInHand);
-                                    }
-                                }
                             }
                         }
                         else if(result.getType().equals(HitResult.Type.BLOCK))
@@ -153,7 +138,7 @@ public class FilterDurability extends BaseFilter{
                                     List<ItemStack> buildQueue = buildFilterQueue(world,posBlock);
 
                                     //Restricts it to Items and Fluids only, this way Energy and XP are toggles on/off using the whitelist/blacklist
-                                    if(buildQueue.size() > 0 && getFilterMode(itemInHand)<=0)
+                                    if(buildQueue.size() > 0 && getFilterMode(itemInHand)<=1)
                                     {
                                         writeFilterQueueToNBT(itemInHand,buildQueue, getFilterMode(itemInHand));
                                         return InteractionResultHolder.success(itemInHand);
@@ -175,21 +160,54 @@ public class FilterDurability extends BaseFilter{
                     HitResult result = player.pick(5,0,false);
                     if(result.getType().equals(HitResult.Type.MISS))
                     {
-                        if(player.isCrouching())
+                        if(!itemInOffhand.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
                         {
-                            int mode = getFilterMode(itemInOffhand)+1;
-                            int setNewMode = (mode<=3)?(mode):(0);
-                            saveModeToNBT(itemInOffhand,setNewMode);
-                            ColorReference.addColorToItemStack(itemInOffhand,getFilterTypeColor(itemInOffhand));
-                            player.setItemInHand(hand,itemInOffhand);
-                            return InteractionResultHolder.success(itemInHand);
+                            if(player.isCrouching())
+                            {
+                                int mode = getFilterMode(itemInOffhand)+1;
+                                int setNewMode = (mode<=3)?(mode):(0);
+                                saveModeToNBT(itemInOffhand,setNewMode);
+                                ColorReference.addColorToItemStack(itemInOffhand,getFilterTypeColor(itemInOffhand));
+                                player.setItemInHand(hand,itemInOffhand);
+
+                                TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
+                                ChatFormatting colorChange = ChatFormatting.BLACK;
+                                String typeString = "";
+                                switch(setNewMode)
+                                {
+                                    case 0: typeString = ".mode_items"; colorChange = ChatFormatting.GOLD; break;
+                                    case 1: typeString = ".mode_fluids"; colorChange = ChatFormatting.DARK_BLUE; break;
+                                    case 2: typeString = ".mode_energy"; colorChange = ChatFormatting.RED; break;
+                                    case 3: typeString = ".mode_experience"; colorChange = ChatFormatting.DARK_GREEN; break;
+                                    default: typeString = ".error"; colorChange = ChatFormatting.DARK_RED; break;
+                                }
+                                changed.withStyle(colorChange);
+                                TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+                                changed.append(type);
+                                player.displayClientMessage(changed,true);
+                            }
+                            else
+                            {
+                                if(itemInOffhand.getItem() instanceof IPedestalFilter)
+                                {
+                                    boolean getCurrentType = getFilterType(itemInOffhand,getFilterMode(itemInHand));
+                                    setFilterType(itemInOffhand,!getCurrentType);
+                                    TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_type_changed");
+                                    changed.withStyle((!getCurrentType)?(ChatFormatting.BLACK):(ChatFormatting.WHITE));
+                                    TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_above");
+                                    TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_below");
+                                    changed.append((!getCurrentType)?(black):(white));
+                                    player.displayClientMessage(changed,true);
+                                    return InteractionResultHolder.success(itemInOffhand);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-        return InteractionResultHolder.fail(itemInHand);
+        return super.use(p_41432_, p_41433_, p_41434_);
     }
 
     @Override
@@ -201,7 +219,7 @@ public class FilterDurability extends BaseFilter{
             filterList.withStyle(ChatFormatting.WHITE);
             player.sendMessage(filterList, Util.NIL_UUID);
 
-            boolean filterType = getFilterType(filterStack);
+            boolean filterType = getFilterType(filterStack,getFilterMode(filterStack));
             TranslatableComponent filterList2 = new TranslatableComponent(MODID + ".filters.tooltip_filtertype");
             TranslatableComponent above = new TranslatableComponent(MODID + ".filters.tooltip_filterabove");
             TranslatableComponent below = new TranslatableComponent(MODID + ".filters.tooltip_filterbelow");
@@ -231,26 +249,41 @@ public class FilterDurability extends BaseFilter{
 
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
-        super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
-        boolean filterType = getFilterType(p_41421_);
-        TranslatableComponent filterList = new TranslatableComponent(MODID + ".filters.tooltip_filtertype");
-        TranslatableComponent white = new TranslatableComponent(MODID + ".filters.tooltip_filterabove");
-        TranslatableComponent black = new TranslatableComponent(MODID + ".filters.tooltip_filterbelow");
-        filterList.append((filterType)?(black):(white));
-        filterList.withStyle(ChatFormatting.GOLD);
-        p_41423_.add(filterList);
-
-        List<ItemStack> filterQueue = readFilterQueueFromNBT(p_41421_,getFilterMode(p_41421_));
-        if(filterQueue.size()>0)
+        if(!p_41421_.getItem().equals(DeferredRegisterItems.FILTER_BASE))
         {
-            TranslatableComponent enchant = new TranslatableComponent(MODID + ".filters.tooltip_filterlist_durability");
-            enchant.withStyle(ChatFormatting.LIGHT_PURPLE);
-            p_41423_.add(enchant);
+            boolean filterType = getFilterType(p_41421_,getFilterMode(p_41421_));
+            int filterMode = getFilterMode(p_41421_);
 
-            TranslatableComponent enchants = new TranslatableComponent(""+getDurabilityTarget(p_41421_)+"");
-            enchants.withStyle(ChatFormatting.GRAY);
-            p_41423_.add(enchants);
+            TranslatableComponent filterList = new TranslatableComponent(MODID + ".filter_type");
+            TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_above");
+            TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_below");
+            filterList.append((filterType)?(black):(white));
+            filterList.withStyle(ChatFormatting.WHITE);
+            p_41423_.add(filterList);
+
+            TranslatableComponent changed = new TranslatableComponent(MODID + ".tooltip_mode");
+            String typeString = "";
+            switch(filterMode)
+            {
+                case 0: typeString = ".mode_items"; break;
+                case 1: typeString = ".mode_fluids"; break;
+                case 2: typeString = ".mode_energy"; break;
+                case 3: typeString = ".mode_experience"; break;
+                default: typeString = ".error"; break;
+            }
+            changed.withStyle(ChatFormatting.GOLD);
+            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+            changed.append(type);
+            p_41423_.add(changed);
         }
+
+        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
+        base.withStyle(ChatFormatting.LIGHT_PURPLE);
+        p_41423_.add(base);
+
+        TranslatableComponent use = new TranslatableComponent(getDescriptionId() + ".description_use");
+        use.withStyle(ChatFormatting.AQUA);
+        p_41423_.add(use);
     }
 }

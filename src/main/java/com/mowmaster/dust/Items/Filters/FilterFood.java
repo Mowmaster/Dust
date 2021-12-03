@@ -36,7 +36,7 @@ public class FilterFood extends BaseFilter{
 
     @Override
     public boolean canAcceptItem(BasePedestalBlockEntity pedestal, ItemStack itemStackIn, int mode) {
-        boolean filterBool=getFilterType(pedestal.getFilterInPedestal());
+        boolean filterBool=getFilterType(pedestal.getFilterInPedestal(),mode);
 
         if(mode==0)
         {
@@ -115,7 +115,7 @@ public class FilterFood extends BaseFilter{
                                 {
                                     if(itemInHand.getItem() instanceof IPedestalFilter)
                                     {
-                                        boolean getCurrentType = getFilterType(itemInHand);
+                                        boolean getCurrentType = getFilterType(itemInHand,getFilterMode(itemInHand));
                                         setFilterType(itemInHand,!getCurrentType);
                                         TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_message_changed");
                                         changed.withStyle(ChatFormatting.GREEN);

@@ -1,9 +1,13 @@
 package com.mowmaster.dust.Block.BaseBlocks;
 
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.References.ColorReference;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +17,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,6 +31,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BaseColoredCrystalBlock extends Block
 {
@@ -128,6 +134,17 @@ public class BaseColoredCrystalBlock extends Block
             BlockPos blockpos = p_152003_.getBlockPos();
             p_152001_.playSound((Player)null, blockpos, SoundEvents.AMETHYST_BLOCK_HIT, SoundSource.BLOCKS, 1.0F, 0.5F + p_152001_.random.nextFloat() * 1.2F);
             p_152001_.playSound((Player)null, blockpos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.5F + p_152001_.random.nextFloat() * 1.2F);
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack p_49816_, @org.jetbrains.annotations.Nullable BlockGetter p_49817_, List<Component> p_49818_, TooltipFlag p_49819_) {
+        super.appendHoverText(p_49816_, p_49817_, p_49818_, p_49819_);
+
+        if(!p_49816_.getItem().equals(DeferredRegisterItems.PEDESTAL_UPGRADE_BASE)) {
+            TranslatableComponent description = new TranslatableComponent(getDescriptionId() + ".description");
+            description.withStyle(ChatFormatting.AQUA);
+            p_49818_.add(description);
         }
     }
 }

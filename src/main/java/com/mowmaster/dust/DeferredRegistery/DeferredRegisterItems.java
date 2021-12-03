@@ -11,6 +11,7 @@ import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeBase;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeExport;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeImport;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -31,17 +32,17 @@ public class DeferredRegisterItems
             () -> new ColoredCrystalBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
 
     public static final RegistryObject<Item> TOOL_LINKINGTOOL = ITEMS.register("tool_linkingtool",
-            () -> new LinkingTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new LinkingTool(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_LINKINGTOOLBACKWARDS = ITEMS.register("tool_linkingtoolbackwards",
-            () -> new LinkingToolBackwards(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new LinkingToolBackwards(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_UPGRADETOOL = ITEMS.register("tool_upgradetool",
-            () -> new UpgradeTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new UpgradeTool(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_FILTERTOOL = ITEMS.register("tool_filtertool",
-            () -> new FilterTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new FilterTool(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_TAGTOOL = ITEMS.register("tool_tagtool",
-            () -> new TagTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new TagTool(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> TOOL_DEVTOOL = ITEMS.register("tool_devtool",
-            () -> new DevTool(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+            () -> new DevTool(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
 
     public static final RegistryObject<Item> FILTER_BASE = ITEMS.register("filter_base",
             () -> new BaseFilter(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));

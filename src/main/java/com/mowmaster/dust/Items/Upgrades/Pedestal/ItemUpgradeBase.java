@@ -2,14 +2,19 @@ package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
 import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Util.PedestalUtilities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,6 +25,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -250,37 +256,6 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
         return  transferRate;
     }
 
-    public int getFluidTransferRate(ItemStack stack)
-    {
-        //im assuming # = rf value???
-        int fluidTransferRate = 0;
-        int modifier = 1;
-        switch (modifier)
-        {
-            case 0:
-                fluidTransferRate = 1000;//1x
-                break;
-            case 1:
-                fluidTransferRate=2000;//2x
-                break;
-            case 2:
-                fluidTransferRate = 4000;//4x
-                break;
-            case 3:
-                fluidTransferRate = 6000;//6x
-                break;
-            case 4:
-                fluidTransferRate = 10000;//10x
-                break;
-            case 5:
-                fluidTransferRate=20000;//20x
-                break;
-            default: fluidTransferRate=2000;
-        }
-
-        return  fluidTransferRate;
-    }
-
     public boolean isInventoryEmpty(LazyOptional<IItemHandler> cap)
     {
         if(cap.isPresent())
@@ -391,17 +366,6 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
         return slot.get();
     }
 
-    public FluidStack getFluidStored(ItemStack stack)
-    {
-        if(stack.hasTag())
-        {
-            CompoundTag getCompound = stack.getTag();
-            return FluidStack.loadFluidStackFromNBT(getCompound);
-        }
-
-        return FluidStack.EMPTY;
-    }
-
     public boolean passesItemFilter(BasePedestalBlockEntity pedestal, ItemStack stackIn)
     {
         boolean returner = true;
@@ -411,6 +375,22 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
             if(filterInPedestal instanceof IPedestalFilter)
             {
                 returner = ((IPedestalFilter) filterInPedestal).canAcceptItem(pedestal,stackIn,0);
+            }
+
+        }
+
+        return returner;
+    }
+
+    public boolean passesFluidFilter(BasePedestalBlockEntity pedestal, ItemStack stackIn)
+    {
+        boolean returner = true;
+        if(pedestal.hasFilter())
+        {
+            Item filterInPedestal = pedestal.getFilterInPedestal().getItem();
+            if(filterInPedestal instanceof IPedestalFilter)
+            {
+                returner = ((IPedestalFilter) filterInPedestal).canAcceptItem(pedestal,stackIn,1);
             }
 
         }
@@ -431,6 +411,53 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
         }
 
         return stackIn.getCount();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
+        super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
+
+        if(!p_41421_.getItem().equals(DeferredRegisterItems.PEDESTAL_UPGRADE_BASE.get()))
+        {
+            //Display Current Mode
+            int mode = getUpgradeMode(p_41421_);
+            TranslatableComponent changed = new TranslatableComponent(MODID + ".tooltip_mode");
+            ChatFormatting colorChange = ChatFormatting.GOLD;
+            String typeString = "";
+            switch(mode)
+            {
+                case 0: typeString = ".mode_items"; break;
+                case 1: typeString = ".mode_fluids"; break;
+                case 2: typeString = ".mode_energy"; break;
+                case 3: typeString = ".mode_experience"; break;
+                case 4: typeString = ".mode_if"; break;
+                case 5: typeString = ".mode_ie"; break;
+                case 6: typeString = ".mode_ix"; break;
+                case 7: typeString = ".mode_ife"; break;
+                case 8: typeString = ".mode_ifx"; break;
+                case 9: typeString = ".mode_iex"; break;
+                case 10: typeString = ".mode_ifex"; break;
+                case 11: typeString = ".mode_fe"; break;
+                case 12: typeString = ".mode_fx"; break;
+                case 13: typeString = ".mode_ex"; break;
+                case 14: typeString = ".mode_fex"; break;
+                default: typeString = ".error"; break;
+            }
+            changed.withStyle(colorChange);
+            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+            changed.append(type);
+            p_41423_.add(changed);
+        }
+        else
+        {
+            TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".base_description");
+            base.withStyle(ChatFormatting.DARK_RED);
+            p_41423_.add(base);
+        }
+
+        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
+        base.withStyle(ChatFormatting.AQUA);
+        p_41423_.add(base);
     }
 
 

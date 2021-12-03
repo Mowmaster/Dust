@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Items.Tools;
 
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -34,4 +35,9 @@ public class DevTool extends BaseTool implements IPedestalTool
 
         return super.use(p_41432_, p_41433_, p_41434_);
     }
+
+    /*@Override
+    public boolean hasContainerItem(ItemStack stack) {
+        return super.hasContainerItem(DeferredRegisterItems.TOOL_DEVTOOL.get().getDefaultInstance());
+    }*/
 }
