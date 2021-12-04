@@ -12,12 +12,14 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -42,17 +44,19 @@ public class Dust
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupPreClient);
         // Register the enqueueIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+
+
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         //MinecraftForge.EVENT_BUS.register(new DustGeneration());
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> eventBus.register(new ClientRegistry()));
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DustGenerationConfig.commonSpec);
 
         eventBus.register(DustGenerationConfig.class);
@@ -83,11 +87,11 @@ public class Dust
         MinecraftForgeClient.registerTooltipComponentFactory(ItemTooltipComponent.class, ClientItemTooltipComponent::new);
     }
 
-    private void setupPreClient(final TextureStitchEvent.Pre event)
+    /*private void setupPreClient(final TextureStitchEvent.Pre event)
     {
         LOGGER.info("Initialize "+MODNAME+" Texture Sprites/Atlas");
         ClientRegistry.textureStitchPreEvent(event);
-    }
+    }*/
 
     private void enqueueIMC(final InterModEnqueueEvent event)
     {

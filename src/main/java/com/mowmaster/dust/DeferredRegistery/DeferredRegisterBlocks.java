@@ -30,7 +30,7 @@ import static com.mowmaster.dust.References.Constants.MODID;
 public class DeferredRegisterBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,MODID);
-    public static final PlacementModifierType<GeodeDecorator> RNG_DECORATOR = register("rng_initializer", GeodeDecorator.CODEC);
+    public static final PlacementModifierType<GeodeDecorator> RNG_DECORATOR = register("dust_rng_initializer", GeodeDecorator.CODEC);
     //public static final DeferredRegister<FeatureDecorator<?>> DECORATORS = DeferredRegister.create(ForgeRegistries.DECORATORS, MOD_ID);
     //public static final RegistryObject<FeatureDecorator<NoneDecoratorConfiguration>> RNG_DECORATOR = DECORATORS.register("rng_initializer", GeodeDecorator::new);
 
