@@ -602,11 +602,15 @@ public class BasePedestalBlockEntity extends BlockEntity
         //MUAHAHAHAHAHAHAHAH
         if(energy.getEnergyStored()>=5000)
         {
-            LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(worldIn);
-            lightningbolt.moveTo(Vec3.atBottomCenterOf(pos.offset(rand.nextInt(10),0,rand.nextInt(10))));
-            lightningbolt.setCause(null);
-            worldIn.addFreshEntity(lightningbolt);
-            worldIn.playSound(null, pos, SoundEvents.TRIDENT_THUNDER, SoundSource.WEATHER, 5.0F, 1.0F);
+            while(energy.getEnergyStored()>=5000)
+            {
+                LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(worldIn);
+                lightningbolt.moveTo(Vec3.atBottomCenterOf(pos.offset(rand.nextInt(10),-1,rand.nextInt(10))));
+                lightningbolt.setCause(null);
+                worldIn.addFreshEntity(lightningbolt);
+                worldIn.playSound(null, pos, SoundEvents.TRIDENT_THUNDER, SoundSource.WEATHER, 5.0F, 1.0F);
+                energy.extractEnergy(5000,false);
+            }
         }
     }
 
