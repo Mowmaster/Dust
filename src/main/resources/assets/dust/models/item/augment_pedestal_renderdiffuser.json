@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "dust:items/augments/renderdiffuser"
+    "layer0": "dust:items/augments/renderaugment"
   },
   "overrides": [
     { "predicate": { "dust:augment_mode": 0}, "model": "dust:item/augments/augment_p"},

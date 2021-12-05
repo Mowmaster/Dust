@@ -29,7 +29,10 @@ displayName="Dust" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="dust.png" #optional
 # A text field displayed in the mod UI
-credits="Thanks for this example mod goes to Java" #optional
+credits='''
+ A huge thanks to: Jonathan, Schrubbls, Jared, and David on the Patron for your continued support!
+'''
+#optional
 # A text field displayed in the mod UI
 authors="Mowmaster" #optional
 # The description text for the mod (multi line!) (#mandatory)
