@@ -122,13 +122,29 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    //maven {
+    //    name = "Patchouli"
+    //    url 'https://maven.blamejared.com'
+    //}
 }
 
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18-38.0.14'
+    minecraft 'net.minecraftforge:forge:1.18-38.0.15'
+    // compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+
+    // compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
+    // runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
