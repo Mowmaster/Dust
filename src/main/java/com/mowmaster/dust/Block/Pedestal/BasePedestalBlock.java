@@ -51,6 +51,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.lwjgl.system.CallbackI;
 
@@ -537,28 +538,14 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         }
                     }
                 }
-                else if(itemInHand.getItem().equals(Items.BUCKET))
-                {
-                    if(pedestal.hasFluid())
-                    {
-                        Item item = pedestal.getStoredFluid().copy().getFluid().getBucket();
-                        if(item instanceof BucketItem)
-                        {
-                            BucketItem bucketItem = (BucketItem) item;
-                            itemInHand.shrink(1);
-                            ItemHandlerHelper.giveItemToPlayer(p_60506_,new ItemStack(bucketItem));
-                            return InteractionResult.SUCCESS;
-                        }
-                    }
-                }
                 else if(itemInHand.isEmpty())
                 {
                     if(p_60506_.isCrouching())
                     {
                         if(pedestal.hasRedstone())
                         {
-                            String redstone = "Redstone Signal Strength Needed to Disable Pedestal: "+ pedestal.getRedstonePowerNeeded();
-                            TranslatableComponent itemCountInPedestal = new TranslatableComponent(redstone);
+                            TranslatableComponent itemCountInPedestal = new TranslatableComponent(MODID + ".pedestal.message_redstone_disable");
+                            itemCountInPedestal.append(""+pedestal.getRedstonePowerNeeded()+"");
                             itemCountInPedestal.withStyle(ChatFormatting.LIGHT_PURPLE);
                             p_60506_.displayClientMessage(itemCountInPedestal,true);
                         }
@@ -567,7 +554,7 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         {
                             String fluid = pedestal.getStoredFluid().getDisplayName().getString() +": " +pedestal.getStoredFluid().getAmount() +"/"+pedestal.getFluidCapacity();
                             TranslatableComponent pedestalFluid = new TranslatableComponent(fluid);
-                            pedestalFluid.withStyle(ChatFormatting.RED);
+                            pedestalFluid.withStyle(ChatFormatting.BLUE);
                             p_60506_.sendMessage(pedestalFluid,Util.NIL_UUID);
                         }
 
@@ -593,13 +580,35 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                         if(pedestal.hasItem())
                         {
                             TranslatableComponent itemCountInPedestal = new TranslatableComponent(pedestal.getItemInPedestal().getDisplayName().getString() + " " + pedestal.getItemInPedestal().getCount());
-                            itemCountInPedestal.withStyle(ChatFormatting.WHITE);
+                            itemCountInPedestal.withStyle(ChatFormatting.GOLD);
                             p_60506_.displayClientMessage(itemCountInPedestal,true);
                         }
                     }
                 }
                 else
                 {
+                    if(pedestal.hasFluid() && itemInHand.getItem().equals(Items.BUCKET))
+                    {
+                        Item item = pedestal.getStoredFluid().copy().getFluid().getBucket();
+                        if(item instanceof BucketItem)
+                        {
+                            BucketItem bucketItem = (BucketItem) item;
+                            String fluid = pedestal.getStoredFluid().getDisplayName().getString();
+                            if(!pedestal.removeFluid(1000, IFluidHandler.FluidAction.EXECUTE).isEmpty())
+                            {
+                                if(!p_60506_.isCreative())itemInHand.shrink(1);
+                                if(!p_60506_.isCreative())ItemHandlerHelper.giveItemToPlayer(p_60506_,new ItemStack(bucketItem));
+
+                                String fluidRemoved = fluid +": " +pedestal.getStoredFluid().getAmount() +"/"+pedestal.getFluidCapacity();
+                                TranslatableComponent pedestalFluid = new TranslatableComponent(fluidRemoved);
+                                pedestalFluid.withStyle(ChatFormatting.WHITE);
+                                p_60506_.displayClientMessage(pedestalFluid,true);
+
+                                return InteractionResult.SUCCESS;
+                            }
+                        }
+                    }
+
                     int allowedInsert = pedestal.countAllowedForInsert(itemInHand);
                     ItemStack stackToInsert = itemInHand.copy();
                     int countToSet = (allowedInsert>itemInHand.getCount())?(itemInHand.getCount()):(allowedInsert);
@@ -778,9 +787,7 @@ public class BasePedestalBlock extends BaseColoredBlock implements SimpleWaterlo
                             Entity entity = p_153716_.getOwner();
                             lightningbolt.setCause(entity instanceof ServerPlayer ? (ServerPlayer)entity : null);
                             p_153713_.addFreshEntity(lightningbolt);
-                            //Todo: remove the energy add thing later
-                            pedestal.addEnergy(1000,false);
-                            //pedestal.removeEnergy(pedestal.getStoredEnergy(),false);
+                            pedestal.removeEnergy(pedestal.getStoredEnergy(),false);
                             p_153713_.playSound((Player)null, blockpos, SoundEvents.TRIDENT_THUNDER, SoundSource.WEATHER, 5.0F, 1.0F);
                         }
                     }

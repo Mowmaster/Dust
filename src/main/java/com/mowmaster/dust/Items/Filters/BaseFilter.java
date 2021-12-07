@@ -115,17 +115,15 @@ public class BaseFilter extends Item implements IPedestalFilter
         Level world = p_41432_;
         Player player = p_41433_;
         InteractionHand hand = p_41434_;
-        ItemStack itemInHand = player.getItemInHand(hand);
+        ItemStack itemInMainhand = player.getMainHandItem();
         ItemStack itemInOffhand = player.getOffhandItem();
 
-
-        if(itemInOffhand.isEmpty())
+        if(!world.isClientSide())
         {
-            if(!itemInHand.getItem().equals(DeferredRegisterItems.FILTER_BASE))
+            if(itemInMainhand.getItem() instanceof IPedestalFilter && !(itemInOffhand.getItem() instanceof IPedestalFilter))
             {
-                if(itemInHand.getItem() instanceof IPedestalFilter)
+                if(!itemInMainhand.getItem().equals(DeferredRegisterItems.FILTER_BASE))
                 {
-
                     HitResult result = player.pick(5,0,false);
                     if(player.isCrouching() || player.getAbilities().flying)
                     {
@@ -147,7 +145,7 @@ public class BaseFilter extends Item implements IPedestalFilter
                                         TranslatableComponent output = new TranslatableComponent(MODID + ".filter_message_cleared");
                                         output.withStyle(ChatFormatting.WHITE);
                                         player.displayClientMessage(output,true);
-                                        return InteractionResultHolder.success(itemInHand);
+                                        return InteractionResultHolder.success(itemInOffhand);
                                     }
                                 }
                             }
@@ -156,7 +154,7 @@ public class BaseFilter extends Item implements IPedestalFilter
                         {
                             if(player.isCrouching())
                             {
-                                if(itemInHand.getItem() instanceof IPedestalFilter)
+                                if(itemInOffhand.getItem() instanceof IPedestalFilter)
                                 {
                                     UseOnContext context = new UseOnContext(player,hand,((BlockHitResult) result));
                                     BlockHitResult res = new BlockHitResult(context.getClickLocation(), context.getHorizontalDirection(), context.getClickedPos(), false);
@@ -165,24 +163,21 @@ public class BaseFilter extends Item implements IPedestalFilter
                                     List<ItemStack> buildQueue = buildFilterQueue(world,posBlock);
 
                                     //Restricts it to Items and Fluids only, this way Energy and XP are toggles on/off using the whitelist/blacklist
-                                    if(buildQueue.size() > 0 && getFilterMode(itemInHand)<=1)
+                                    if(buildQueue.size() > 0 && getFilterMode(itemInOffhand)<=1)
                                     {
-                                        writeFilterQueueToNBT(itemInHand,buildQueue, getFilterMode(itemInHand));
-                                        return InteractionResultHolder.success(itemInHand);
+                                        writeFilterQueueToNBT(itemInOffhand,buildQueue, getFilterMode(itemInOffhand));
+                                        return InteractionResultHolder.success(itemInOffhand);
                                     }
-                                    return InteractionResultHolder.fail(itemInHand);
+                                    return InteractionResultHolder.fail(itemInOffhand);
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        else
-        {
-            if(!itemInHand.getItem().equals(DeferredRegisterItems.FILTER_BASE))
+            else if(itemInOffhand.getItem() instanceof IPedestalFilter && !(itemInMainhand.getItem() instanceof IPedestalFilter))
             {
-                if(itemInOffhand.getItem() instanceof IPedestalFilter)
+                if(!itemInOffhand.getItem().equals(DeferredRegisterItems.FILTER_BASE))
                 {
                     HitResult result = player.pick(5,0,false);
                     if(result.getType().equals(HitResult.Type.MISS))
@@ -212,12 +207,13 @@ public class BaseFilter extends Item implements IPedestalFilter
                                 TranslatableComponent type = new TranslatableComponent(MODID + typeString);
                                 changed.append(type);
                                 player.displayClientMessage(changed,true);
+                                return InteractionResultHolder.success(itemInOffhand);
                             }
                             else
                             {
                                 if(itemInOffhand.getItem() instanceof IPedestalFilter)
                                 {
-                                    boolean getCurrentType = getFilterType(itemInOffhand,getFilterMode(itemInHand));
+                                    boolean getCurrentType = getFilterType(itemInOffhand,getFilterMode(itemInOffhand));
                                     setFilterType(itemInOffhand,!getCurrentType);
                                     TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_type_changed");
                                     changed.withStyle((!getCurrentType)?(ChatFormatting.BLACK):(ChatFormatting.WHITE));
@@ -231,6 +227,13 @@ public class BaseFilter extends Item implements IPedestalFilter
                         }
                     }
                 }
+            }
+            else
+            {
+                TranslatableComponent pedestalFluid = new TranslatableComponent(MODID + ".filter.message_twohanded");
+                pedestalFluid.withStyle(ChatFormatting.RED);
+                player.displayClientMessage(pedestalFluid,true);
+                return InteractionResultHolder.fail(itemInOffhand);
             }
         }
 

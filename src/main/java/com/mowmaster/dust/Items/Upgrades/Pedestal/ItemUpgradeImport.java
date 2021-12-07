@@ -490,8 +490,13 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                                 {
                                     pedestal.addFluid(fluidDrained,IFluidHandler.FluidAction.EXECUTE);
                                     int slot = player.getInventory().findSlotMatchingItem(bucketItemStack);
-                                    player.getInventory().getItem(slot).shrink(1);
-                                    ItemHandlerHelper.giveItemToPlayer(player,new ItemStack(Items.BUCKET,1));
+                                    if(!player.isCreative())player.getInventory().getItem(slot).shrink(1);
+                                    if(!player.isCreative())ItemHandlerHelper.giveItemToPlayer(player,new ItemStack(Items.BUCKET,1));
+
+                                    String fluid = pedestal.getStoredFluid().getDisplayName().getString() +": " +pedestal.getStoredFluid().getAmount() +"/"+pedestal.getFluidCapacity();
+                                    TranslatableComponent pedestalFluid = new TranslatableComponent(fluid);
+                                    pedestalFluid.withStyle(ChatFormatting.WHITE);
+                                    player.displayClientMessage(pedestalFluid,true);
                                 }
                             }
                         }

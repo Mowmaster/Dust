@@ -37,6 +37,9 @@
   "dust.filter_type_above": "Durability Above",
   "dust.filter_type_below": "Durability Below",
 
+  "dust.filter.message_twohanded": "Cannot Be Holding Filters in Both Hands for this Action",
+
+
   "dust.tool_link_success": "Linked Successfully",
   "dust.tool_link_unsucess": "Linking Failed, Max Connections Reached",
   "dust.tool_link_removed": "Connection Removed",
@@ -62,6 +65,8 @@
 
 
   "dust.tooltip_mode": "Mode: ",
+  "dust.pedestal.message_redstone_disable": "Redstone Signal Strength Needed to Activate Pedestal: ",
+
 
 
 
