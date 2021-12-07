@@ -25,19 +25,6 @@ public class AugmentBase extends Item implements IPedestalAugment
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
 
-        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
-        base.withStyle(ChatFormatting.LIGHT_PURPLE);
-        p_41423_.add(base);
 
-        if(p_41421_.getItem().equals(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get()))
-        {
-            TranslatableComponent use = new TranslatableComponent(getDescriptionId() + ".description_use");
-            use.withStyle(ChatFormatting.AQUA);
-            p_41423_.add(use);
-        }
-
-        TranslatableComponent crafted = new TranslatableComponent(getDescriptionId() + ".description_crafted");
-        crafted.withStyle(ChatFormatting.RED);
-        p_41423_.add(crafted);
     }
 }

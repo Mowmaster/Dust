@@ -155,14 +155,6 @@ public class FilterMod extends BaseFilter{
             changed.append(type);
             p_41423_.add(changed);
         }
-
-        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
-        base.withStyle(ChatFormatting.LIGHT_PURPLE);
-        p_41423_.add(base);
-
-        TranslatableComponent use = new TranslatableComponent(getDescriptionId() + ".description_use");
-        use.withStyle(ChatFormatting.AQUA);
-        p_41423_.add(use);
     }
 
     /*@Override

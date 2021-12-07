@@ -33,9 +33,7 @@ public class BaseTool extends Item
         super(p_41383_.stacksTo(1));
     }
 
-
-
-    public void spawnParticleAroundPedestalBase(Level world, int tick, BlockPos pos, int r, int g, int b)
+    public void spawnParticleAroundPedestalBase(Level world, BlockPos pos, int r, int g, int b)
     {
         double dx = (double)pos.getX();
         double dy = (double)pos.getY();
@@ -48,50 +46,49 @@ public class BaseTool extends Item
             enumfacing = state.getValue(FACING);
         }
 
-
         switch (enumfacing)
         {
             case UP:
-                if (tick%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.25D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.75D,r,g,b));
-                if (tick%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.25D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.75D,r,g,b));
                 return;
             case DOWN:
-                if (tick%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.25D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.75D,r,g,b));
-                if (tick%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.25D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.75D,r,g,b));
                 return;
             case NORTH:
-                if (tick%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.25D,dz+ 0.5D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.75D,dz+ 0.5D,r,g,b));
-                if (tick%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.25D,dz+ 0.5D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.75D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.25D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.75D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.25D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.75D,dz+ 0.5D,r,g,b));
                 return;
             case SOUTH:
-                if (tick%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.25D,dz+ 0.5D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.75D,dz+ 0.5D,r,g,b));
-                if (tick%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.25D,dz+ 0.5D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.75D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.25D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.75D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.25D,dz+ 0.5D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.75D,dz+ 0.5D,r,g,b));
                 return;
             case EAST:
-                if (tick%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.25D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.75D,r,g,b));
-                if (tick%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.25D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.75D,r,g,b));
                 return;
             case WEST:
-                if (tick%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.25D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.75D,r,g,b));
-                if (tick%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.25D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%20 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.25D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%15 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.5D,dy+0.75D,dz+ 0.75D,r,g,b));
                 return;
             default:
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.25D,r,g,b));
-                if (tick%35 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.75D,r,g,b));
-                if (tick%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.25D,r,g,b));
-                if (tick%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%35 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.25D,dy+0.5D,dz+ 0.75D,r,g,b));
+                if (world.getGameTime()%25 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.25D,r,g,b));
+                if (world.getGameTime()%30 == 0) DustPacketHandler.sendToNearby(world,pos,new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,dx+ 0.75D,dy+0.5D,dz+ 0.75D,r,g,b));
                 return;
         }
     }
@@ -99,9 +96,8 @@ public class BaseTool extends Item
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
-
-        TooltipUtils.addTooltipShiftMessageWithStyle(p_41423_,getDescriptionId() + ".description",ChatFormatting.LIGHT_PURPLE);
+        /*TooltipUtils.addTooltipShiftMessageWithStyle(p_41423_,getDescriptionId() + ".description",ChatFormatting.LIGHT_PURPLE);
         TooltipUtils.addTooltipAltMessageWithStyle(p_41423_,getDescriptionId() + ".description_use",ChatFormatting.AQUA);
-
+*/
     }
 }

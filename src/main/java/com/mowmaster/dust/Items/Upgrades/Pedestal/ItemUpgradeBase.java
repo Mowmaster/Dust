@@ -454,10 +454,6 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
             base.withStyle(ChatFormatting.DARK_RED);
             p_41423_.add(base);
         }
-
-        TranslatableComponent base = new TranslatableComponent(getDescriptionId() + ".description");
-        base.withStyle(ChatFormatting.AQUA);
-        p_41423_.add(base);
     }
 
 

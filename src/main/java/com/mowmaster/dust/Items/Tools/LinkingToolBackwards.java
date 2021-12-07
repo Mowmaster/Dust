@@ -282,7 +282,7 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
 
     int ticker=0;
 
-    @Override
+    /*@Override
     public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
         if(p_41406_ instanceof Player)
         {
@@ -308,8 +308,8 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                                 for(int i=0;i<locationsNum;i++)
                                 {
                                     List<Integer> color = ColorReference.getIntColor(ColorReference.ALL_COLORS.get(i));
-                                    if(storedPositionList.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList.get(i),color.get(0),color.get(1),color.get(2));}
-                                    if(storedPositionList2.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList2.get(i),color.get(0),color.get(1),color.get(2));}
+                                    //if(storedPositionList.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList.get(i),color.get(0),color.get(1),color.get(2));}
+                                    //if(storedPositionList2.size()>i){spawnParticleAroundPedestalBase(p_41405_,ticker,storedPositionList2.get(i),color.get(0),color.get(1),color.get(2));}
                                 }
                             }
                         }
@@ -318,7 +318,7 @@ public class LinkingToolBackwards extends BaseTool implements IPedestalTool
                 }
             }
         }
-    }
+    }*/
 
 
     public boolean isPedestalInRange(BasePedestalBlockEntity pedestal, BlockPos pedestalToBeLinked)

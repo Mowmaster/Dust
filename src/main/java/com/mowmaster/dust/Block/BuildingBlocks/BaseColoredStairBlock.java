@@ -132,10 +132,5 @@ public class BaseColoredStairBlock extends StairBlock
     public void appendHoverText(ItemStack p_49816_, @org.jetbrains.annotations.Nullable BlockGetter p_49817_, List<Component> p_49818_, TooltipFlag p_49819_) {
         super.appendHoverText(p_49816_, p_49817_, p_49818_, p_49819_);
 
-        if(!p_49816_.getItem().equals(DeferredRegisterItems.PEDESTAL_UPGRADE_BASE)) {
-            TranslatableComponent description = new TranslatableComponent(getDescriptionId() + ".description");
-            description.withStyle(ChatFormatting.AQUA);
-            p_49818_.add(description);
-        }
     }
 }
