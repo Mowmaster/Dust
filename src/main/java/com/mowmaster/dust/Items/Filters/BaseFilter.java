@@ -154,9 +154,8 @@ public class BaseFilter extends Item implements IPedestalFilter
                             if(buildQueue.size() > 0 && this.getFilterMode(itemInOffhand)<=1)
                             {
                                 this.writeFilterQueueToNBT(itemInOffhand,buildQueue, this.getFilterMode(itemInOffhand));
-                                Random rand = new Random();
                                 ChatFormatting color;
-                                switch (rand.nextInt(4))
+                                switch (getFilterMode(itemInOffhand))
                                 {
                                     case 0: color = ChatFormatting.GOLD; break;
                                     case 1: color = ChatFormatting.BLUE; break;
@@ -171,12 +170,11 @@ public class BaseFilter extends Item implements IPedestalFilter
                         }
                     }
                 }
-            }
-            else {
-                TranslatableComponent pedestalFluid = new TranslatableComponent(MODID + ".filter.message_twohanded");
-                pedestalFluid.withStyle(ChatFormatting.RED);
-                player.displayClientMessage(pedestalFluid,true);
-                return InteractionResultHolder.fail(itemInOffhand);
+                else if(itemInOffhand.getItem() instanceof IPedestalFilter && itemInMainhand.getItem() instanceof IPedestalFilter){
+                    TranslatableComponent pedestalFluid = new TranslatableComponent(MODID + ".filter.message_twohanded");
+                    pedestalFluid.withStyle(ChatFormatting.RED);
+                    player.displayClientMessage(pedestalFluid,true);
+                }
             }
         }
 
