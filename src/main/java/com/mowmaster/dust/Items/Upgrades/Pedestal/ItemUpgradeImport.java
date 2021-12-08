@@ -74,7 +74,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
                             int mode = getUpgradeMode(itemInOffhand)+1;
                             int setNewMode = (mode<=14)?(mode):(0);
                             saveModeToNBT(itemInOffhand,setNewMode);
-                            player.setItemInHand(p_41434_,itemInOffhand);
+                            player.setItemInHand(InteractionHand.OFF_HAND,itemInOffhand);
 
                             TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
                             ChatFormatting colorChange = ChatFormatting.BLACK;
@@ -108,7 +108,7 @@ public class ItemUpgradeImport extends ItemUpgradeBase
             }
         }
 
-        return super.use(p_41432_, p_41433_, p_41434_);
+        return InteractionResultHolder.fail(p_41433_.getItemInHand(p_41434_));
     }
 
     @Override
