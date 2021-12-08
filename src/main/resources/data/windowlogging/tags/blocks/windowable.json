@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "dust:block_crystal_stone_slab",
+    "dust:block_crystal_stone_stair"
+  ]
+}
