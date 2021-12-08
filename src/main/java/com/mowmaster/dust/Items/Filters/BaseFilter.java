@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -117,119 +118,61 @@ public class BaseFilter extends Item implements IPedestalFilter
         InteractionHand hand = p_41434_;
         ItemStack itemInMainhand = player.getMainHandItem();
         ItemStack itemInOffhand = player.getOffhandItem();
+        HitResult result = player.pick(5,0,false);
 
         if(!world.isClientSide())
         {
-            if(itemInMainhand.getItem() instanceof IPedestalFilter && !(itemInOffhand.getItem() instanceof IPedestalFilter))
+            //Disable Filter Base
+            if(!(itemInOffhand.getItem().equals(DeferredRegisterItems.FILTER_BASE.get())) || !(itemInMainhand.getItem().equals(DeferredRegisterItems.FILTER_BASE.get())))
             {
-                if(!itemInMainhand.getItem().equals(DeferredRegisterItems.FILTER_BASE))
+                //Check for Offhand Only Filter
+                if(itemInOffhand.getItem() instanceof IPedestalFilter && !(itemInMainhand.getItem() instanceof IPedestalFilter))
                 {
-                    HitResult result = player.pick(5,0,false);
-                    if(player.isCrouching() || player.getAbilities().flying)
-                    {
-                        //System.out.println(result.getType());
-
-                        if(result.getType().equals(HitResult.Type.MISS))
-                        {
-                            if(player.isCrouching())
-                            {
-                                ItemStack itemInMainHand = player.getMainHandItem();
-                                ItemStack itemInOffHand = player.getOffhandItem();
-                                //Should prevent it from its nbt changing???
-                                if(itemInOffHand.getItem() instanceof FilterTool)
-                                {
-                                    if(itemInMainHand.getItem() instanceof IPedestalFilter)
-                                    {
-                                        removeFilterQueueHandler(itemInMainHand);
-                                        //TODO: localize this text
-                                        TranslatableComponent output = new TranslatableComponent(MODID + ".filter_message_cleared");
-                                        output.withStyle(ChatFormatting.WHITE);
-                                        player.displayClientMessage(output,true);
-                                        return InteractionResultHolder.success(itemInOffhand);
-                                    }
-                                }
-                            }
-                        }
-                        else if(result.getType().equals(HitResult.Type.BLOCK))
-                        {
-                            if(player.isCrouching())
-                            {
-                                if(itemInOffhand.getItem() instanceof IPedestalFilter)
-                                {
-                                    UseOnContext context = new UseOnContext(player,hand,((BlockHitResult) result));
-                                    BlockHitResult res = new BlockHitResult(context.getClickLocation(), context.getHorizontalDirection(), context.getClickedPos(), false);
-                                    BlockPos posBlock = res.getBlockPos();
-
-                                    List<ItemStack> buildQueue = buildFilterQueue(world,posBlock);
-
-                                    //Restricts it to Items and Fluids only, this way Energy and XP are toggles on/off using the whitelist/blacklist
-                                    if(buildQueue.size() > 0 && getFilterMode(itemInOffhand)<=1)
-                                    {
-                                        writeFilterQueueToNBT(itemInOffhand,buildQueue, getFilterMode(itemInOffhand));
-                                        return InteractionResultHolder.success(itemInOffhand);
-                                    }
-                                    return InteractionResultHolder.fail(itemInOffhand);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else if(itemInOffhand.getItem() instanceof IPedestalFilter && !(itemInMainhand.getItem() instanceof IPedestalFilter))
-            {
-                if(!itemInOffhand.getItem().equals(DeferredRegisterItems.FILTER_BASE))
-                {
-                    HitResult result = player.pick(5,0,false);
                     if(result.getType().equals(HitResult.Type.MISS))
                     {
-                        if(!itemInOffhand.getItem().equals(DeferredRegisterItems.FILTER_BASE.get()))
+                        if(player.isCrouching())
                         {
-                            if(player.isCrouching())
-                            {
-                                int mode = getFilterMode(itemInOffhand)+1;
-                                int setNewMode = (mode<=3)?(mode):(0);
-                                saveModeToNBT(itemInOffhand,setNewMode);
-                                ColorReference.addColorToItemStack(itemInOffhand,getFilterTypeColor(itemInOffhand));
-                                player.setItemInHand(hand,itemInOffhand);
+                            setFilterMode(player,itemInOffhand,InteractionHand.OFF_HAND);
+                            //return InteractionResultHolder.success(itemInOffhand);
+                        }
+                        else
+                        {
+                            setFilterTypeWhiteBlacklist(player,itemInOffhand);
+                            //return InteractionResultHolder.success(itemInOffhand);
+                        }
+                    }
+                    else if(result.getType().equals(HitResult.Type.BLOCK))
+                    {
+                        if(player.isCrouching())
+                        {
+                            UseOnContext context = new UseOnContext(player,hand,((BlockHitResult) result));
+                            BlockHitResult res = new BlockHitResult(context.getClickLocation(), context.getHorizontalDirection(), context.getClickedPos(), false);
+                            BlockPos posBlock = res.getBlockPos();
 
-                                TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
-                                ChatFormatting colorChange = ChatFormatting.BLACK;
-                                String typeString = "";
-                                switch(setNewMode)
-                                {
-                                    case 0: typeString = ".mode_items"; colorChange = ChatFormatting.GOLD; break;
-                                    case 1: typeString = ".mode_fluids"; colorChange = ChatFormatting.DARK_BLUE; break;
-                                    case 2: typeString = ".mode_energy"; colorChange = ChatFormatting.RED; break;
-                                    case 3: typeString = ".mode_experience"; colorChange = ChatFormatting.DARK_GREEN; break;
-                                    default: typeString = ".error"; colorChange = ChatFormatting.DARK_RED; break;
-                                }
-                                changed.withStyle(colorChange);
-                                TranslatableComponent type = new TranslatableComponent(MODID + typeString);
-                                changed.append(type);
-                                player.displayClientMessage(changed,true);
-                                return InteractionResultHolder.success(itemInOffhand);
-                            }
-                            else
+                            List<ItemStack> buildQueue = this.buildFilterQueue(world,posBlock);
+
+                            if(buildQueue.size() > 0 && this.getFilterMode(itemInOffhand)<=1)
                             {
-                                if(itemInOffhand.getItem() instanceof IPedestalFilter)
+                                this.writeFilterQueueToNBT(itemInOffhand,buildQueue, this.getFilterMode(itemInOffhand));
+                                Random rand = new Random();
+                                ChatFormatting color;
+                                switch (rand.nextInt(4))
                                 {
-                                    boolean getCurrentType = getFilterType(itemInOffhand,getFilterMode(itemInOffhand));
-                                    setFilterType(itemInOffhand,!getCurrentType);
-                                    TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_type_changed");
-                                    changed.withStyle((!getCurrentType)?(ChatFormatting.BLACK):(ChatFormatting.WHITE));
-                                    TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_whitelist");
-                                    TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_blacklist");
-                                    changed.append((!getCurrentType)?(black):(white));
-                                    player.displayClientMessage(changed,true);
-                                    return InteractionResultHolder.success(itemInOffhand);
+                                    case 0: color = ChatFormatting.GOLD; break;
+                                    case 1: color = ChatFormatting.BLUE; break;
+                                    case 2: color = ChatFormatting.RED; break;
+                                    case 3: color = ChatFormatting.GREEN; break;
+                                    default: color = ChatFormatting.WHITE; break;
                                 }
+                                TranslatableComponent filterChanged = new TranslatableComponent(MODID + ".filter_changed");
+                                filterChanged.withStyle(color);
+                                player.displayClientMessage(filterChanged,true);
                             }
                         }
                     }
                 }
             }
-            else
-            {
+            else {
                 TranslatableComponent pedestalFluid = new TranslatableComponent(MODID + ".filter.message_twohanded");
                 pedestalFluid.withStyle(ChatFormatting.RED);
                 player.displayClientMessage(pedestalFluid,true);
@@ -238,6 +181,64 @@ public class BaseFilter extends Item implements IPedestalFilter
         }
 
         return super.use(p_41432_, p_41433_, p_41434_);
+    }
+
+    public void setFilterTypeWhiteBlacklist(Player player, ItemStack heldItem)
+    {
+        boolean getCurrentType = getFilterType(heldItem,getFilterMode(heldItem));
+        this.setFilterType(heldItem,!getCurrentType);
+        TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_type_changed");
+        changed.withStyle((!getCurrentType)?(ChatFormatting.BLACK):(ChatFormatting.WHITE));
+        TranslatableComponent white = new TranslatableComponent(MODID + ".filter_type_whitelist");
+        TranslatableComponent black = new TranslatableComponent(MODID + ".filter_type_blacklist");
+        changed.append((!getCurrentType)?(black):(white));
+        player.displayClientMessage(changed,true);
+    }
+
+    public void setFilterTypeAboveBelow(Player player, ItemStack heldItem)
+    {
+        if(heldItem.getItem() instanceof BaseFilter) {
+            BaseFilter filterItem = ((BaseFilter) heldItem.getItem());
+
+            boolean getCurrentType = filterItem.getFilterType(heldItem,getFilterMode(heldItem));
+            filterItem.setFilterType(heldItem,!getCurrentType);
+            TranslatableComponent changed = new TranslatableComponent(MODID + ".filter_type_changed");
+            changed.withStyle((!getCurrentType)?(ChatFormatting.BLACK):(ChatFormatting.WHITE));
+            TranslatableComponent above = new TranslatableComponent(MODID + ".filter_type_above");
+            TranslatableComponent below = new TranslatableComponent(MODID + ".filter_type_below");
+            changed.append((!getCurrentType)?(below):(above));
+            player.displayClientMessage(changed,true);
+        }
+    }
+
+    public void setFilterMode(Player player, ItemStack heldItem, InteractionHand hand)
+    {
+        if(heldItem.getItem() instanceof BaseFilter)
+        {
+            BaseFilter filterItem = ((BaseFilter)heldItem.getItem());
+
+            int mode = filterItem.getFilterMode(heldItem)+1;
+            int setNewMode = (mode<=3)?(mode):(0);
+            filterItem.saveModeToNBT(heldItem,setNewMode);
+            ColorReference.addColorToItemStack(heldItem,filterItem.getFilterTypeColor(heldItem));
+            player.setItemInHand(hand,heldItem);
+
+            TranslatableComponent changed = new TranslatableComponent(MODID + ".mode_changed");
+            ChatFormatting colorChange = ChatFormatting.BLACK;
+            String typeString = "";
+            switch(setNewMode)
+            {
+                case 0: typeString = ".mode_items"; colorChange = ChatFormatting.GOLD; break;
+                case 1: typeString = ".mode_fluids"; colorChange = ChatFormatting.DARK_BLUE; break;
+                case 2: typeString = ".mode_energy"; colorChange = ChatFormatting.RED; break;
+                case 3: typeString = ".mode_experience"; colorChange = ChatFormatting.DARK_GREEN; break;
+                default: typeString = ".error"; colorChange = ChatFormatting.DARK_RED; break;
+            }
+            changed.withStyle(colorChange);
+            TranslatableComponent type = new TranslatableComponent(MODID + typeString);
+            changed.append(type);
+            player.displayClientMessage(changed,true);
+        }
     }
 
     @Override

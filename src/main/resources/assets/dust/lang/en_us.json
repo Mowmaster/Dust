@@ -30,6 +30,7 @@
   "dust.mode_augment_iu": "Disable: Item & Upgrade Render",
   "dust.mode_augment_piu": "Disable: Particles / Item & Upgrade Render",
 
+  "dust.filter_changed": "Filter Changed",
   "dust.filter_type_changed": "Filter Type Change: ",
   "dust.filter_type": "Filter Type: ",
   "dust.filter_type_whitelist": "Whitelist",
