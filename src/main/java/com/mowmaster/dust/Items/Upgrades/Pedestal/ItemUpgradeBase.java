@@ -12,12 +12,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -385,6 +387,7 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
     public boolean passesFluidFilter(BasePedestalBlockEntity pedestal, ItemStack stackIn)
     {
         boolean returner = true;
+
         if(pedestal.hasFilter())
         {
             Item filterInPedestal = pedestal.getFilterInPedestal().getItem();
@@ -393,6 +396,13 @@ public class ItemUpgradeBase extends Item implements IPedestalUpgrade
                 returner = ((IPedestalFilter) filterInPedestal).canAcceptItem(pedestal,stackIn,1);
             }
 
+        }
+        else
+        {
+            BucketItem bucket = ((BucketItem)stackIn.getItem());
+            Fluid bucketFluid = bucket.getFluid();
+            FluidStack fluidInTank = new FluidStack(bucketFluid,1000);
+            return pedestal.canAcceptFluid(fluidInTank);
         }
 
         return returner;
