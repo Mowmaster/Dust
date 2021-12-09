@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Block.Pedestal;
+package com.mowmaster.dust.Block.BlockEntities.Pedestal;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
@@ -50,10 +50,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nullable;
 

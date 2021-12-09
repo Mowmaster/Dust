@@ -30,6 +30,9 @@ public class DeferredRegisterItems
             () -> new ColorApplicator(new Item.Properties().stacksTo(1).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> COLORED_CRYSTAL = ITEMS.register("item_crystal",
             () -> new ColoredCrystalBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
+    public static final RegistryObject<Item> COLORED_CRYSTAL_DUST = ITEMS.register("item_crystal_dust",
+            () -> new ColoredCrystalBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
+
 
     public static final RegistryObject<Item> TOOL_LINKINGTOOL = ITEMS.register("tool_linkingtool",
             () -> new LinkingTool(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));

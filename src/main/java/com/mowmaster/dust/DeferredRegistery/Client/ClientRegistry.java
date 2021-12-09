@@ -1,6 +1,10 @@
 package com.mowmaster.dust.DeferredRegistery.Client;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntityRenderer;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlock;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockColor;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockItemColor;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
@@ -12,11 +16,13 @@ import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegistryObject;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -31,6 +37,9 @@ public class ClientRegistry
          {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterItems.COLOR_APPLICATOR.get());
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterItems.COLORED_CRYSTAL.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterItems.COLORED_CRYSTAL_DUST.get());
+
 
 
         event.getItemColors().register((stack, color) ->
@@ -107,7 +116,10 @@ public class ClientRegistry
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
 
+        /*event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST.get());*/
 
+        event.getItemColors().register(new CustomPowderedBlockItemColor(),DeferredRegisterTileBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
     }
 
     @SubscribeEvent
@@ -136,6 +148,10 @@ public class ClientRegistry
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get());
 
 
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_DUST_BLOCK.get());
+
+
         /*
          *
          * TILE ENTITY BLOCKS HERE
@@ -144,7 +160,10 @@ public class ClientRegistry
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
 
-
+        /*event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ((CustomPowderedBlockEntity)blockReader.getBlockEntity(blockPos)).getColor();} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST.get());
+*/
+        event.getBlockColors().register(new CustomPowderedBlockColor(),DeferredRegisterTileBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
     }
 
     @SubscribeEvent

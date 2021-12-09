@@ -1,8 +1,6 @@
 package com.mowmaster.dust.Block.GeneratedBlocks;
 
-import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.References.ColorReference;

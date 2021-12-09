@@ -1,6 +1,7 @@
 package com.mowmaster.dust.DeferredRegistery;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,6 +17,11 @@ public class DeferredBlockEntityTypes
     public static final RegistryObject<BlockEntityType<BasePedestalBlockEntity>> PEDESTAL = BLOCK_ENTITIES.register(
             "block_entity_pedestal",
             () -> BlockEntityType.Builder.of(BasePedestalBlockEntity::new, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CustomPowderedBlockEntity>> DUST = BLOCK_ENTITIES.register(
+            "block_entity_dust",
+            () -> BlockEntityType.Builder.of(CustomPowderedBlockEntity::new, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get()).build(null));
+
 
     private DeferredBlockEntityTypes() {
     }

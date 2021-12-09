@@ -1,14 +1,12 @@
 package com.mowmaster.dust.Items.Filters;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Client.ItemTooltipComponent;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
-import com.mowmaster.dust.Items.Tools.FilterTool;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.Util.PedestalUtilities;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.tutorial.BundleTutorial;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -16,23 +14,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RailBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -42,7 +32,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 

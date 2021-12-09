@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Block.Pedestal;
+package com.mowmaster.dust.Block.BlockEntities.Pedestal;
 
 import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
 import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
@@ -31,7 +31,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -56,7 +55,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static com.mowmaster.dust.Block.Pedestal.BasePedestalBlock.*;
+import static com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock.*;
 import static com.mowmaster.dust.References.ColorReference.getTrueColorFromInt;
 
 public class BasePedestalBlockEntity extends BlockEntity

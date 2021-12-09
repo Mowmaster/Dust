@@ -1,6 +1,6 @@
 package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Util.PedestalUtilities;

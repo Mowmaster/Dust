@@ -2,10 +2,9 @@ package com.mowmaster.dust.Items.Tools;
 
 
 import com.google.common.collect.Maps;
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlock;
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
-import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -14,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;

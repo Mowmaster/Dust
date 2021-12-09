@@ -1,6 +1,6 @@
 package com.mowmaster.dust.Items.Upgrades.Pedestal;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
@@ -17,13 +17,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -32,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-import static com.mowmaster.dust.Block.Pedestal.BasePedestalBlock.FACING;
+import static com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock.FACING;
 import static com.mowmaster.dust.References.Constants.MODID;
 
 

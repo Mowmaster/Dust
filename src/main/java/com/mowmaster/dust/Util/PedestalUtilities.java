@@ -1,6 +1,6 @@
 package com.mowmaster.dust.Util;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
 import com.mowmaster.dust.Capabilities.Experience.IExperienceStorage;
 import net.minecraft.core.BlockPos;

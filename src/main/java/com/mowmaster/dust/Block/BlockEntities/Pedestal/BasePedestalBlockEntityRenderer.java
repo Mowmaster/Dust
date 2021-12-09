@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Block.Pedestal;
+package com.mowmaster.dust.Block.BlockEntities.Pedestal;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -26,9 +26,8 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-import static com.mowmaster.dust.Block.Pedestal.BasePedestalBlock.FACING;
+import static com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock.FACING;
 import static com.mowmaster.dust.References.Constants.MODID;
-import static net.minecraftforge.versions.forge.ForgeVersion.MOD_ID;
 
 public class BasePedestalBlockEntityRenderer implements BlockEntityRenderer<BasePedestalBlockEntity>
 {

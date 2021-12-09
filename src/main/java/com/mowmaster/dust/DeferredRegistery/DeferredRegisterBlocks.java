@@ -2,6 +2,8 @@ package com.mowmaster.dust.DeferredRegistery;
 
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
+import com.mowmaster.dust.Block.BaseBlocks.BaseColoredPowderedBlock;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockItem;
 import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredSlabBlock;
 import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredStairBlock;
 import com.mowmaster.dust.Block.BuildingBlocks.ColoredStoneBlock;
@@ -57,6 +59,9 @@ public class DeferredRegisterBlocks
 
     public static final RegistryObject<Block> CRYSTAL_STONE_STAIR = registerBlock("block_crystal_stone_stair",
             () -> new BaseColoredStairBlock(CRYSTAL_STONE.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> CRYSTAL_DUST_BLOCK = registerBlock("block_crystal_dust",
+            () -> new BaseColoredPowderedBlock(BlockBehaviour.Properties.of(Material.SAND).strength(0.5F).sound(SoundType.SAND)));
 
 
 

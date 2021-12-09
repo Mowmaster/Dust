@@ -1,19 +1,12 @@
 package com.mowmaster.dust.Items.Tools;
 
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlock;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
-import com.mowmaster.dust.Util.TooltipUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,8 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static com.mowmaster.dust.Block.Pedestal.BasePedestalBlock.FACING;
-import static com.mowmaster.dust.References.Constants.MODID;
+import static com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock.FACING;
 
 public class BaseTool extends Item
 {

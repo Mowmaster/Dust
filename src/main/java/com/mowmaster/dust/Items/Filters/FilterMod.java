@@ -1,6 +1,6 @@
 package com.mowmaster.dust.Items.Filters;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;

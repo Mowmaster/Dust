@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dust:block/block_crystal_dust"
+    }
+  }
+}

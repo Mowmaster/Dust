@@ -1,8 +1,7 @@
 package com.mowmaster.dust.Items.Filters;
 
-import com.mowmaster.dust.Block.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
-import com.mowmaster.dust.Items.Tools.FilterTool;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -25,7 +24,6 @@ import net.minecraft.world.phys.HitResult;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
