@@ -3,6 +3,7 @@ package com.mowmaster.dust.Block.BlockEntities.CustomDustBlock;
 import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.Items.Filters.IPedestalFilter;
+import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -30,14 +31,15 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.mowmaster.dust.References.Constants.MODID;
 
 public class CustomPowderedBlockEntity extends BlockEntity
 {
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandlerDrops);
-    private int blockColor;
+    private int blockColor = ColorReference.DEFAULTCOLOR;
     public BlockPos getPos() { return this.worldPosition; }
 
     public CustomPowderedBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
@@ -46,13 +48,13 @@ public class CustomPowderedBlockEntity extends BlockEntity
 
     public void setColor(int color)
     {
-        blockColor = color;
-        update();
+        this.blockColor = color;
+        this.update();
     }
 
     public int getColor()
     {
-        return blockColor;
+        return this.blockColor;
     }
 
     public void update()
@@ -180,7 +182,7 @@ public class CustomPowderedBlockEntity extends BlockEntity
     @Override
     public void load(CompoundTag p_155245_) {
         super.load(p_155245_);
-        this.blockColor = p_155245_.getInt("intColor");
+        this.blockColor = (p_155245_.getInt(MODID+"_color") <= 0)?(ColorReference.DEFAULTCOLOR):(p_155245_.getInt("intColor"));
         CompoundTag invTag = p_155245_.getCompound("inv");
         handler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTag));
     }
@@ -194,7 +196,7 @@ public class CustomPowderedBlockEntity extends BlockEntity
     @Override
     public CompoundTag save(CompoundTag p_58888_) {
         super.save(p_58888_);
-        p_58888_.putInt("intColor",blockColor);
+        p_58888_.putInt(MODID+"_color",this.blockColor);
         handler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_58888_.put("inv", compound);

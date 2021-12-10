@@ -1,0 +1,11 @@
+{
+  "type": "dust:dust_crushing",
+  "input": {
+    "item": "minecraft:blaze_rod"
+  },
+  "result": {
+    "item": "minecraft:blaze_powder",
+    "count": 5
+  },
+  "color": 11163050
+}

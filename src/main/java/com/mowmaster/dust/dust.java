@@ -3,12 +3,9 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
 import com.mowmaster.dust.Client.ClientItemTooltipComponent;
 import com.mowmaster.dust.Client.ItemTooltipComponent;
+import com.mowmaster.dust.DeferredRegistery.*;
 import com.mowmaster.dust.DeferredRegistery.Client.ClientRegistry;
-import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Configs.DustGenerationConfig;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
@@ -67,8 +64,13 @@ public class Dust
         DeferredRegisterTileBlocks.BLOCKS.register(eventBus);
         DeferredBlockEntityTypes.BLOCK_ENTITIES.register(eventBus);
 
-
+        addRecipes(eventBus);
         MinecraftForge.EVENT_BUS.register(new DustGeneration());
+    }
+
+    public void addRecipes(IEventBus event)
+    {
+        DeferredRecipeSerializers.RECIPES.register(event);
     }
 
     private void setup(final FMLCommonSetupEvent event)

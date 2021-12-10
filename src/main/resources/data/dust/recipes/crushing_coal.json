@@ -1,0 +1,11 @@
+{
+  "type": "dust:dust_crushing",
+  "input": {
+    "item": "minecraft:coal_ore"
+  },
+  "result": {
+    "item": "minecraft:coal",
+    "count": 5
+  },
+  "color": 256
+}

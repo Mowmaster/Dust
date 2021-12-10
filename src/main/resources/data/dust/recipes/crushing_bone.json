@@ -1,0 +1,11 @@
+{
+  "type": "dust:dust_crushing",
+  "input": {
+    "item": "minecraft:bone"
+  },
+  "result": {
+    "item": "minecraft:bone_meal",
+    "count": 5
+  },
+  "color": 5592405
+}

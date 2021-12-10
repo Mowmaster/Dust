@@ -1,7 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery;
 
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlock;
-import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import net.minecraft.world.item.BlockItem;
@@ -30,7 +29,7 @@ public class DeferredRegisterTileBlocks
     public static final RegistryObject<Block> BLOCK_PEDESTAL = registerBlock("block_pedestal",
             () -> new BasePedestalBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
 
-    public static final RegistryObject<Block> BLOCK_POWDERED_DUST = registerPowderedBlock("block_powdered_dust", () -> new CustomPowderedBlock(BlockBehaviour.Properties.of(Material.SAND).strength(0.25F).sound(SoundType.SAND)));
+    public static final RegistryObject<Block> BLOCK_POWDERED_DUST = registerBlock("block_powdered_dust", () -> new CustomPowderedBlock(BlockBehaviour.Properties.of(Material.SAND).strength(0.25F).sound(SoundType.SAND)));
 
 
 
@@ -45,18 +44,6 @@ public class DeferredRegisterTileBlocks
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         DeferredRegisterItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)));
-    }
-
-
-    private static <T extends Block> RegistryObject<T> registerPowderedBlock(String name, Supplier<T> block) {
-        RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerCustomPowderedItemBlock(name, toReturn);
-        return toReturn;
-    }
-
-    private static <T extends Block> void registerCustomPowderedItemBlock(String name, RegistryObject<T> block) {
-        DeferredRegisterItems.ITEMS.register(name, () -> new CustomPowderedBlockItem(block.get(),
                 new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)));
     }
 

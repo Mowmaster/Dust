@@ -179,6 +179,7 @@ public class ColorReference
 
 
 
+
     public static List<Integer> ALL_COLORS = Arrays.asList(
             2763306,
             85,
@@ -302,6 +303,18 @@ public class ColorReference
     public static int getColorFromItemStackInt(ItemStack stackIn)
     {
         CompoundTag blockColors = stackIn.getOrCreateTag();
+        if(blockColors.contains(MODID+"_color"))
+        {
+            int color = blockColors.getInt(MODID+"_color");
+            return color;
+        }
+
+        return DEFAULTCOLOR;
+    }
+
+    public static int getColorFromTag(CompoundTag tag)
+    {
+        CompoundTag blockColors = tag;
         if(blockColors.contains(MODID+"_color"))
         {
             int color = blockColors.getInt(MODID+"_color");

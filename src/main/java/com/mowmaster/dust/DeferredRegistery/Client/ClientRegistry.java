@@ -1,9 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery.Client;
 
-import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlock;
-import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockColor;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
-import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockItemColor;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
@@ -16,13 +13,11 @@ import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -116,10 +111,8 @@ public class ClientRegistry
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
 
-        /*event.getItemColors().register((stack, color) ->
-        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST.get());*/
-
-        event.getItemColors().register(new CustomPowderedBlockItemColor(),DeferredRegisterTileBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
     }
 
     @SubscribeEvent
@@ -157,13 +150,14 @@ public class ClientRegistry
          * TILE ENTITY BLOCKS HERE
          *
          */
+
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
 
-        /*event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
-        {if (color == 1) {return ((CustomPowderedBlockEntity)blockReader.getBlockEntity(blockPos)).getColor();} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST.get());
-*/
-        event.getBlockColors().register(new CustomPowderedBlockColor(),DeferredRegisterTileBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toArray(Block[]::new));
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ((blockReader.getBlockEntity(blockPos))!=null)?(ColorReference.getColorFromTag(((CustomPowderedBlockEntity)blockReader.getBlockEntity(blockPos)).getUpdateTag())):(ColorReference.DEFAULTCOLOR);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
+
     }
 
     @SubscribeEvent

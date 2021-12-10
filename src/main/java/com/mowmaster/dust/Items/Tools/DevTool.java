@@ -1,6 +1,8 @@
 package com.mowmaster.dust.Items.Tools;
 
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -29,8 +31,12 @@ public class DevTool extends BaseTool implements IPedestalTool
         }
         else if(result.getType().equals(HitResult.Type.BLOCK))
         {
-
-
+            BlockPos pos = new BlockPos(result.getLocation().x,result.getLocation().y,result.getLocation().z);
+            if(world.getBlockEntity(pos) instanceof CustomPowderedBlockEntity)
+            {
+                CustomPowderedBlockEntity block = ((CustomPowderedBlockEntity)world.getBlockEntity(pos));
+                System.out.println("COLOR IN BE"+block.getColor());
+            }
         }
 
         return super.use(p_41432_, p_41433_, p_41434_);
