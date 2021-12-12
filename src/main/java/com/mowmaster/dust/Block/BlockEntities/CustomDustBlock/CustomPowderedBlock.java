@@ -73,7 +73,7 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
 
     @Override
     public void setPlacedBy(Level p_49847_, BlockPos p_49848_, BlockState p_49849_, @Nullable LivingEntity p_49850_, ItemStack p_49851_) {
-
+        super.setPlacedBy(p_49847_, p_49848_, p_49849_, p_49850_, p_49851_);
         if(p_49850_ instanceof Player)
         {
             Player player = ((Player)p_49850_);
@@ -81,7 +81,6 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
             if(!player.getOffhandItem().isEmpty())input = player.getOffhandItem();
             placeCustomDustBlock(p_49847_,p_49848_,input);
         }
-        super.setPlacedBy(p_49847_, p_49848_, p_49849_, p_49850_, p_49851_);
     }
 
     @Override
@@ -294,6 +293,8 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
             }
         }
     }
+
+
 
     @Override
     public Object getRenderPropertiesInternal() {
