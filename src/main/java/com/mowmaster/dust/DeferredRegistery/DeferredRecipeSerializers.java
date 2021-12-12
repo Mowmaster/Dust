@@ -1,6 +1,9 @@
 package com.mowmaster.dust.DeferredRegistery;
 
+import com.mowmaster.dust.Recipes.BaseBlockEntityFilter;
 import com.mowmaster.dust.Recipes.CrusherRecipe;
+import com.mowmaster.dust.Recipes.CrystalClusterFuelRecipe;
+import com.mowmaster.dust.Recipes.CrystalClusterModifiers;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,4 +17,10 @@ public final class DeferredRecipeSerializers
 
     public static final RegistryObject<RecipeSerializer<?>> CRUSHING = RECIPES.register(MODID + "_crushing", () ->
             CrusherRecipe.SERIALIZER);
+    public static final RegistryObject<RecipeSerializer<?>> CLUSTER_FUEL = RECIPES.register(MODID + "_cluster_fuel", () ->
+            CrystalClusterFuelRecipe.SERIALIZER);
+    public static final RegistryObject<RecipeSerializer<?>> CLUSTER_MODIFIER = RECIPES.register(MODID + "_cluster_modifier", () ->
+            CrystalClusterModifiers.SERIALIZER);
+    public static final RegistryObject<RecipeSerializer<?>> CLUSTER_FILTER = RECIPES.register(MODID + "_entity_filter", () ->
+            BaseBlockEntityFilter.SERIALIZER);
 }

@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery;
 
+import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlock;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlock;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
@@ -29,8 +30,11 @@ public class DeferredRegisterTileBlocks
     public static final RegistryObject<Block> BLOCK_PEDESTAL = registerBlock("block_pedestal",
             () -> new BasePedestalBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
 
-    public static final RegistryObject<Block> BLOCK_POWDERED_DUST = registerBlock("block_powdered_dust", () -> new CustomPowderedBlock(BlockBehaviour.Properties.of(Material.SAND).strength(0.25F).sound(SoundType.SAND)));
+    public static final RegistryObject<Block> BLOCK_POWDERED_DUST = registerBlock("block_powdered_dust",
+            () -> new CustomPowderedBlock(BlockBehaviour.Properties.of(Material.SAND).strength(0.25F).sound(SoundType.SAND)));
 
+    public static final RegistryObject<Block> BLOCK_CRYSTAL_CLUSTER = registerBlock("block_crystal_cluster",
+            () -> new EffectCrystalClusterBlock(BlockBehaviour.Properties.of(Material.AMETHYST).strength(2.0F).sound(SoundType.AMETHYST)));
 
 
 

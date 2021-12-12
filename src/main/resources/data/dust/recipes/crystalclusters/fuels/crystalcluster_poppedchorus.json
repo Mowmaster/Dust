@@ -1,0 +1,8 @@
+{
+  "type": "dust:dust_cluster_fuel",
+  "input": {
+    "item": "minecraft:popped_chorus_fruit"
+  },
+  "fuelReturn": 180,
+  "potencyCap": 2
+}

@@ -1,0 +1,8 @@
+{
+  "type": "dust:dust_cluster_fuel",
+  "input": {
+    "item": "minecraft:blaze_powder"
+  },
+  "fuelReturn": 180,
+  "potencyCap": 1
+}

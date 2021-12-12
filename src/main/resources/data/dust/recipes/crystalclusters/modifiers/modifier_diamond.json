@@ -1,0 +1,8 @@
+{
+  "type": "dust:dust_cluster_modifier",
+  "input": {
+    "item": "minecraft:diamond"
+  },
+  "durationModifier": -2.0,
+  "potencyModifier": 2.0
+}

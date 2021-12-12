@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery.Client;
 
+import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntityRenderer;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
@@ -188,5 +189,6 @@ public class ClientRegistry
     public static void registerBlockEntityRenderers()
     {
         BlockEntityRenderers.register(DeferredBlockEntityTypes.PEDESTAL.get(), BasePedestalBlockEntityRenderer::new);
+        BlockEntityRenderers.register(DeferredBlockEntityTypes.CLUSTER.get(), EffectCrystalClusterBlockEntityRenderer::new);
     }
 }

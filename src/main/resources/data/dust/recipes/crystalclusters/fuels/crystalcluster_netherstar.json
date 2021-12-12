@@ -1,0 +1,8 @@
+{
+  "type": "dust:dust_cluster_fuel",
+  "input": {
+    "item": "minecraft:nether_star"
+  },
+  "fuelReturn": 360,
+  "potencyCap": 4
+}
