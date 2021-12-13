@@ -182,20 +182,24 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     IItemHandler h = handlerCrystalCluster.orElse(null);
                     for(int i=0;i<4;i++)
                     {
-                        if(h.getStackInSlot(i).isEmpty())nextAvailableSlot=i;
-                        break;
+                        if(h.getStackInSlot(i).isEmpty())
+                        {
+                            nextAvailableSlot=i;
+                            break;
+                        }
                     }
                     ItemStack crystalToAdd = stackIncoming.copy();
                     crystalToAdd.setCount(1);
                     h.insertItem(nextAvailableSlot,crystalToAdd,simulate);
 
                     int color = getCurrentColor();
-                    int newColor = ColorReference.mixColorsInt(color,ColorReference.getColorFromItemStackInt(crystalToAdd));
-                    this.currentColor = newColor;
-                    this.allColors.add(newColor);
-                    //Default Effect to 5 seconds or 100 ticks as that'll be whats applied to the entities
-                    MobEffectInstance newInstance = new MobEffectInstance(EffectReference.getIntEffect(newColor),100,calculateModifiedPotency(),false,false,false,null);
-                    this.storedPotionEffect = newInstance;
+                    int newColor = ColorReference.getColorFromItemStackInt(crystalToAdd);
+                    int mixedColor = (color != newColor)?((color==0)?(newColor):(ColorReference.mixColorsInt(color,newColor))):(color);
+                    System.out.println("New Color: "+newColor);
+                    System.out.println("Mixed Color: "+mixedColor);
+                    this.currentColor = mixedColor;
+                    this.allColors.add(mixedColor);
+
                     update();
 
                     return true;
@@ -317,7 +321,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     {
                         if(!simulate)
                         {
-                            ItemStack returner = getFuelStack().copy();
+                            ItemStack returner = stack.copy();
                             returner.setCount(countToAdd);
                             IItemHandler h = handlerCrystalCluster.orElse(null);
                             h.insertItem(5,returner,simulate);
@@ -326,10 +330,33 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                         }
                         else
                         {
-                            ItemStack returner = getFuelStack().copy();
+                            ItemStack returner = stack.copy();
                             returner.setCount(countToAdd);
                             return returner;
                         }
+                    }
+                }
+            }
+            else
+            {
+                int spaceAvailable = stack.getMaxStackSize();
+                int countToAdd = (stack.getCount()>spaceAvailable)?(spaceAvailable):(stack.getCount());
+                if(countToAdd > 0)
+                {
+                    if(!simulate)
+                    {
+                        ItemStack returner = stack.copy();
+                        returner.setCount(countToAdd);
+                        IItemHandler h = handlerCrystalCluster.orElse(null);
+                        h.insertItem(5,returner,simulate);
+
+                        return returner;
+                    }
+                    else
+                    {
+                        ItemStack returner = stack.copy();
+                        returner.setCount(countToAdd);
+                        return returner;
                     }
                 }
             }
@@ -443,7 +470,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     {
                         if(!simulate)
                         {
-                            ItemStack returner = getModifierStack().copy();
+                            ItemStack returner = stack.copy();
                             returner.setCount(countToAdd);
                             IItemHandler h = handlerCrystalCluster.orElse(null);
                             h.insertItem(6,returner,simulate);
@@ -452,7 +479,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                         }
                         else
                         {
-                            ItemStack returner = getModifierStack().copy();
+                            ItemStack returner = stack.copy();
                             returner.setCount(countToAdd);
                             return returner;
                         }
@@ -468,7 +495,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                 {
                     if(!simulate)
                     {
-                        ItemStack returner = getModifierStack().copy();
+                        ItemStack returner = stack.copy();
                         returner.setCount(countToAdd);
                         IItemHandler h = handlerCrystalCluster.orElse(null);
                         h.insertItem(6,returner,simulate);
@@ -477,7 +504,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     }
                     else
                     {
-                        ItemStack returner = getModifierStack().copy();
+                        ItemStack returner = stack.copy();
                         returner.setCount(countToAdd);
                         return returner;
                     }
@@ -517,6 +544,11 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
             double modifierAbs = Math.abs(durationMod);
             return (int)((double)fuelDuration * modifierAbs);
         }
+        else if(fuelDuration > 0)
+        {
+            return fuelDuration;
+        }
+
 
         return 0;
     }
@@ -563,10 +595,12 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     public ItemStack addBaseBlock(ItemStack stack)
     {
         ItemStack returnStack = ItemStack.EMPTY;
+        ItemStack baseStack = stack.copy();
+        baseStack.setCount(1);
         IItemHandler h = handlerCrystalCluster.orElse(null);
         if(hasBaseBlock())returnStack = h.extractItem(4,1,false);
         else returnStack = new ItemStack(Blocks.STONE,1);
-        h.insertItem(4,stack,false);
+        h.insertItem(4,baseStack,false);
 
         return returnStack;
     }
@@ -611,10 +645,14 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
             //Calculate Effect before consuming fuel each time, this does mean that any 'unlearned' effects will randomize every time fuel is consumed.
             MobEffectInstance newInstance = new MobEffectInstance(EffectReference.getIntEffect(getCurrentColor()),100,calculateModifiedPotency(),false,false,false,null);
             this.storedPotionEffect = newInstance;
-            setFuelTime(calculateFuelModifiedDuration());
-            removeFuel(1);
-            removeModifier(1);
-            return true;
+            int duration = calculateFuelModifiedDuration();
+            if(duration>0)
+            {
+                setFuelTime(duration);
+                removeFuel(1);
+                if(hasModifierItems())removeModifier(1);
+                return true;
+            }
         }
 
         return false;
@@ -702,30 +740,24 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
             if(getEntity instanceof LivingEntity)
             {
                 LivingEntity entity = ((LivingEntity)getEntity);
-                if(entity.hasEffect(this.storedPotionEffect.getEffect()))
+                if(hasBaseBlock)
                 {
-                    if(entity.getEffect(this.storedPotionEffect.getEffect()).getDuration()<30)
+                    if(storedAllowedEntities.contains(getEntity))
                     {
-                        if(hasBaseBlock)
+                        entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                    }
+                    else
+                    {
+                        if(allowEntity(baseBlock,getEntity))
                         {
-                            if(storedAllowedEntities.contains(getEntity))
-                            {
-                                entity.addEffect(this.storedPotionEffect);
-                            }
-                            else
-                            {
-                                if(allowEntity(baseBlock,getEntity))
-                                {
-                                    storedAllowedEntities.add(getEntity);
-                                    entity.addEffect(this.storedPotionEffect);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            entity.addEffect(this.storedPotionEffect);
+                            storedAllowedEntities.add(getEntity);
+                            entity.addEffect(new MobEffectInstance(storedPotionEffect));
                         }
                     }
+                }
+                else
+                {
+                    entity.addEffect(new MobEffectInstance(storedPotionEffect));
                 }
             }
         }
@@ -814,7 +846,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
 
             if (clusterTicker%20 == 0) {
 
-                if(!level.hasNeighborSignal(getPos()))
+                if(!level.hasNeighborSignal(getPos()) && crystalCount()>0)
                 {
                     BlockPos posAdjusted = getPosOfBlockBelow(level, getPos(), -1);
                     if(this.currentFuelTime>0)

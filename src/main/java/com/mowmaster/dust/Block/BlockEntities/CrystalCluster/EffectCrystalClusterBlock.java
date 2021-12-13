@@ -75,24 +75,12 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
         int p_152015_ = 12;
         int p_152016_ = 8;
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(FACING, Direction.UP));
-        this.CUP = Shapes.or(Block.box(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D),
-                Block.box(5.0D, 2.0D, 5.0D, 11.0D, 10.0D, 11.0D),
-                Block.box(4.0D, 10.0D, 4.0D, 12.0D, 12.0D, 12.0D));
-        this.CDOWN = Shapes.or(Block.box(3.0D, 14.0D, 3.0D, 13.0D, 16.0D, 13.0D),
-                Block.box(5.0D, 6.0D, 5.0D, 11.0D, 14.0D, 11.0D),
-                Block.box(4.0D, 4.0D, 4.0D, 12.0D, 6.0D, 12.0D));
-        this.CNORTH = Shapes.or(Block.box(3.0D, 3.0D, 14.0D, 13.0D, 13.0D, 16.0D),
-                Block.box(5.0D, 5.0D, 6.0D, 11.0D, 11.0D, 14.0D),
-                Block.box(4.0D, 4.0D, 4.0D, 12.0D, 12.0D, 6.0D));
-        this.CSOUTH = Shapes.or(Block.box(3.0D, 3.0D, 0.0D, 13.0D, 13.0D, 2.0D),
-                Block.box(5.0D, 5.0D, 2.0D, 11.0D, 11.0D, 10.0D),
-                Block.box(4.0D, 4.0D, 10.0D, 12.0D, 12.0D, 12.0D));
-        this.CEAST = Shapes.or(Block.box(0.0D, 3.0D, 3.0D, 2.0D, 13.0D, 13.0D),
-                Block.box(2.0D, 5.0D, 5.0D, 10.0D, 11.0D, 11.0D),
-                Block.box(10.0D, 4.0D, 4.0D, 12.0D, 12.0D, 12.0D));
-        this.CWEST = Shapes.or(Block.box(14.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D),
-                Block.box(6.0D, 5.0D, 5.0D, 14.0D, 11.0D, 11.0D),
-                Block.box(4.0D, 4.0D, 4.0D, 6.0D, 12.0D, 12.0D));
+        this.CUP = Shapes.or(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D));
+        this.CDOWN = Shapes.or(Block.box(2.0D, 14.0D, 2.0D, 14.0D, 16.0D, 14.0D));
+        this.CNORTH = Shapes.or(Block.box(2.0D, 2.0D, 14.0D, 14.0D, 14.0D, 16.0D));
+        this.CSOUTH = Shapes.or(Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 2.0D));
+        this.CEAST = Shapes.or(Block.box(0.0D, 2.0D, 2.0D, 2.0D, 14.0D, 14.0D));
+        this.CWEST = Shapes.or(Block.box(14.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D));
     }
 
     public VoxelShape getShape(BlockState p_152021_, BlockGetter p_152022_, BlockPos p_152023_, CollisionContext p_152024_) {
@@ -189,14 +177,15 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
 
                 if(itemInHand.getItem() instanceof ColoredCrystalBase)
                 {
-
                     if(cluster.addCrystal(itemInHand,true)){
 
-                        itemInHand.shrink(1);
-                        cluster.addCrystal(itemInHand,false);
-                        return InteractionResult.SUCCESS;
+                        if(cluster.addCrystal(itemInHand,false))
+                        {
+                            itemInHand.shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
+
                     }
-                    return InteractionResult.FAIL;
                 }
                 else if(itemInHand.getItem() instanceof BlockItem)
                 {
@@ -218,6 +207,7 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
                 }
             }
         }
+
         return InteractionResult.SUCCESS;
     }
 
@@ -241,13 +231,11 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
     public void playerDestroy(Level p_49827_, Player p_49828_, BlockPos p_49829_, BlockState p_49830_, @Nullable BlockEntity p_49831_, ItemStack p_49832_) {
         if(!p_49827_.isClientSide())
         {
-            if (p_49830_.getBlock() instanceof BasePedestalBlock) {
+            if (p_49830_.getBlock() instanceof EffectCrystalClusterBlock) {
                 if (!p_49827_.isClientSide && !p_49828_.isCreative()) {
                     ItemStack itemstack = new ItemStack(this);
-                    int getColor = ColorReference.getColorFromStateInt(p_49830_);
-                    ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
-                    newStack.setCount(1);
-                    ItemEntity itementity = new ItemEntity(p_49827_, (double)p_49829_.getX() + 0.5D, (double)p_49829_.getY() + 0.5D, (double)p_49829_.getZ() + 0.5D, newStack);
+                    itemstack.setCount(1);
+                    ItemEntity itementity = new ItemEntity(p_49827_, (double)p_49829_.getX() + 0.5D, (double)p_49829_.getY() + 0.5D, (double)p_49829_.getZ() + 0.5D, itemstack);
                     itementity.setDefaultPickUpDelay();
                     p_49827_.addFreshEntity(itementity);
                 }
@@ -332,7 +320,7 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
     }*/
 
     public RenderShape getRenderShape(BlockState p_50950_) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override

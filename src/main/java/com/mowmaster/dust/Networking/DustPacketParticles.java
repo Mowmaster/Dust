@@ -76,7 +76,7 @@ public class DustPacketParticles
                         case ANY_COLOR:{
                             for(int i =0; i < 10; i++){
                                 double d0 = message.x +0.5; //+ world.rand.nextFloat();
-                                double d1 = message.y +1.0;//+ world.rand.nextFloat() ;
+                                double d1 = message.y ;//+ world.rand.nextFloat() ;
                                 double d2 = message.z +0.5 ; //+ world.rand.nextFloat();
                                 float red = (float)message.args[0]/255;
                                 float green = (float)message.args[1]/255;
@@ -89,7 +89,7 @@ public class DustPacketParticles
                         case ANY_COLOR_CENTERED:{
                             for(int i =0; i < 10; i++){
                                 double d0 = message.x +0.5; //+ world.rand.nextFloat();
-                                double d1 = message.y +0.5;//+ world.rand.nextFloat() ;
+                                double d1 = message.y ;//+ world.rand.nextFloat() ;
                                 double d2 = message.z +0.5; //+ world.rand.nextFloat();
                                 float red = (float)message.args[0]/255;
                                 float green = (float)message.args[1]/255;
