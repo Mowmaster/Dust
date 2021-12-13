@@ -195,8 +195,6 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     int color = getCurrentColor();
                     int newColor = ColorReference.getColorFromItemStackInt(crystalToAdd);
                     int mixedColor = (color != newColor)?((color==0)?(newColor):(ColorReference.mixColorsInt(color,newColor))):(color);
-                    System.out.println("New Color: "+newColor);
-                    System.out.println("Mixed Color: "+mixedColor);
                     this.currentColor = mixedColor;
                     this.allColors.add(mixedColor);
 
