@@ -34,13 +34,17 @@ public class BaseBlockEntityFilter implements Recipe<Container>
     @Nullable
     private final Ingredient input;
     private final String entityString;
+    private final int type;
+    private final boolean isbaby;
 
-    public BaseBlockEntityFilter(ResourceLocation id, String group, @Nullable Ingredient input, String entityString)
+    public BaseBlockEntityFilter(ResourceLocation id, String group, @Nullable Ingredient input, String entityString, int type, boolean isbaby)
     {
         this.group = group;
         this.id = id;
         this.input = input;
         this.entityString = entityString;
+        this.type = type;
+        this.isbaby = isbaby;
     }
 
     public static Collection<BaseBlockEntityFilter> getAllRecipes(Level world)
@@ -91,6 +95,16 @@ public class BaseBlockEntityFilter implements Recipe<Container>
         return getEntityString();
     }
 
+    public int getResultMobType()
+    {
+        return getMobType();
+    }
+
+    public boolean getResultBaby()
+    {
+        return getBaby();
+    }
+
     @Override
     public ResourceLocation getId()
     {
@@ -120,6 +134,15 @@ public class BaseBlockEntityFilter implements Recipe<Container>
         return entityString;
     }
 
+    public int getMobType()
+    {
+        return type;
+    }
+
+    public boolean getBaby()
+    {
+        return isbaby;
+    }
 
     public Ingredient getPattern()
     {
@@ -129,9 +152,9 @@ public class BaseBlockEntityFilter implements Recipe<Container>
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>>
             implements RecipeSerializer<BaseBlockEntityFilter>
     {
-        protected BaseBlockEntityFilter createRecipe(ResourceLocation recipeId, String group, Ingredient input, String entityString)
+        protected BaseBlockEntityFilter createRecipe(ResourceLocation recipeId, String group, Ingredient input, String entityString, int type, boolean isbaby)
         {
-            return new BaseBlockEntityFilter(recipeId, group, input, entityString);
+            return new BaseBlockEntityFilter(recipeId, group, input, entityString, type, isbaby);
         }
 
         @Override
@@ -140,7 +163,10 @@ public class BaseBlockEntityFilter implements Recipe<Container>
             String group = GsonHelper.getAsString(json, "group", "");
             Ingredient input = json.has("input") ? CraftingHelper.getIngredient(json.get("input")) : null;
             String entityString = json.has("entityString") ? GsonHelper.getAsString(json,"entityString") : "";
-            return createRecipe(recipeId, group, input, entityString);
+            //most people will be setting up mobtype and not mob category so default to 1
+            int mobType = json.has("mobType") ? GsonHelper.getAsInt(json,"mobType") : (1);
+            boolean isBaby = json.has("isBaby") ? GsonHelper.getAsBoolean(json,"isBaby") : false;
+            return createRecipe(recipeId, group, input, entityString, mobType, isBaby);
         }
 
         @Override
@@ -150,7 +176,9 @@ public class BaseBlockEntityFilter implements Recipe<Container>
             boolean hasInput = buffer.readBoolean();
             Ingredient input = hasInput ? Ingredient.fromNetwork(buffer) : null;
             String entityString = buffer.readUtf(32767);
-            return createRecipe(recipeId, group,  input, entityString);
+            int mobType = buffer.readInt();
+            boolean isBaby = buffer.readBoolean();
+            return createRecipe(recipeId, group,  input, entityString, mobType, isBaby);
         }
 
         @Override
@@ -161,6 +189,8 @@ public class BaseBlockEntityFilter implements Recipe<Container>
             buffer.writeBoolean(hasInput);
             if (hasInput) recipe.input.toNetwork(buffer);
             buffer.writeUtf(recipe.entityString);
+            buffer.writeInt(recipe.type);
+            buffer.writeBoolean(recipe.isbaby);
         }
     }
 }

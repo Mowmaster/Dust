@@ -1,37 +1,16 @@
 package com.mowmaster.dust.Block.BlockEntities.CrystalCluster;
-
-import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
-import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
-import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
-import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.ColoredCrystalBase;
-import com.mowmaster.dust.Items.Filters.IPedestalFilter;
-import com.mowmaster.dust.Items.Tools.IPedestalTool;
-import com.mowmaster.dust.Items.Tools.LinkingTool;
-import com.mowmaster.dust.Items.Tools.LinkingToolBackwards;
-import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.References.ColorReference;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,17 +25,12 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.Random;
-
-import static com.mowmaster.dust.References.Constants.MODID;
 
 public class EffectCrystalClusterBlock extends Block implements SimpleWaterloggedBlock, EntityBlock
 {
@@ -189,8 +163,8 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
                 }
                 else if(itemInHand.getItem() instanceof BlockItem)
                 {
-                    itemInHand.shrink(1);
                     ItemHandlerHelper.giveItemToPlayer(p_60506_,cluster.addBaseBlock(itemInHand));
+                    itemInHand.shrink(1);
                     return InteractionResult.SUCCESS;
                 }
                 else if(cluster.addFuel(itemInHand,true).getCount()>0)

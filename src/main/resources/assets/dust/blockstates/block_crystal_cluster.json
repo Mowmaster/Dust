@@ -1,11 +1,11 @@
 {
   "variants":
   {
-    "facing=down": { "model": "dust:block/block_inertcluster_small","x": 180 },
-    "facing=east": { "model": "dust:block/block_inertcluster_small","x": 90, "y": 90 },
-    "facing=north": { "model": "dust:block/block_inertcluster_small","x": 90 },
-    "facing=south": { "model": "dust:block/block_inertcluster_small","x": 90, "y": 180 },
-    "facing=up": { "model": "dust:block/block_inertcluster_small","x": 0 },
-    "facing=west": { "model": "dust:block/block_inertcluster_small","x": 90, "y": 270 }
+    "facing=down": { "model": "dust:block/block_crystal_cluster","x": 180 },
+    "facing=east": { "model": "dust:block/block_crystal_cluster","x": 90, "y": 90 },
+    "facing=north": { "model": "dust:block/block_crystal_cluster","x": 90 },
+    "facing=south": { "model": "dust:block/block_crystal_cluster","x": 90, "y": 180 },
+    "facing=up": { "model": "dust:block/block_crystal_cluster","x": 0 },
+    "facing=west": { "model": "dust:block/block_crystal_cluster","x": 90, "y": 270 }
   }
 }

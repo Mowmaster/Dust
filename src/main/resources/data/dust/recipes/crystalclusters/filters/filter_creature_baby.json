@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_entity_filter",
+  "input": {
+    "item": "minecraft:hay_block"
+  },
+  "entityString": "minecraft:creature",
+  "type": 0,
+  "isbaby": true
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "B",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stone_slab"
+    },
+    "B": {
+      "item": "dust:block_crystal_stone_slab"
+    }
+  },
+  "result": {
+    "item": "dust:block_crystal_cluster"
+  }
+
+}

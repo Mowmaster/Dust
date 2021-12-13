@@ -599,7 +599,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         baseStack.setCount(1);
         IItemHandler h = handlerCrystalCluster.orElse(null);
         if(hasBaseBlock())returnStack = h.extractItem(4,1,false);
-        else returnStack = new ItemStack(Blocks.STONE,1);
+        else returnStack = ItemStack.EMPTY;
         h.insertItem(4,baseStack,false);
 
         return returnStack;
@@ -667,7 +667,15 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     }
 
     protected String getProcessResultFilterBlock(BaseBlockEntityFilter recipe) {
-        return (recipe == null)?(""):(recipe.getEntityString());
+        return (recipe == null)?(""):(recipe.getResultEntityString());
+    }
+
+    protected int getProcessResultFilterBlockMobType(BaseBlockEntityFilter recipe) {
+        return (recipe == null)?(1):(recipe.getResultMobType());
+    }
+
+    protected boolean getProcessResultFilterBlockIsBaby(BaseBlockEntityFilter recipe) {
+        return (recipe == null)?(false):(recipe.getResultBaby());
     }
 
     //This is to check if any of the base blocks are filters, cause if so we have to restrict which entities get the effects.
@@ -675,19 +683,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     {
         if(!baseBlock.isEmpty())
         {
-            if(baseBlock.getItem().equals(Items.EMERALD_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.DIAMOND_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.GOLD_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.LAPIS_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.IRON_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.COAL_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.HAY_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.DRIED_KELP_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.MAGMA_BLOCK)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.LIME_STAINED_GLASS)) {return true;}
-            else if(baseBlock.getItem().equals(Blocks.BLACK_STAINED_GLASS)) {return true;}
-            String jsonResultsInt = getProcessResultFilterBlock(getRecipeFilterBlock(getLevel(),getBaseBlock()));
-            if(jsonResultsInt != "")
+            if(getProcessResultFilterBlock(getRecipeFilterBlock(getLevel(),getBaseBlock())) != "")
             {
                 return true;
             }
@@ -700,23 +696,44 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     {
         if(!baseBlock.isEmpty())
         {
-            if(baseBlock.getItem().equals(Items.EMERALD_BLOCK)) {if(entityIn instanceof Player) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.DIAMOND_BLOCK)) {if(entityIn instanceof Monster) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.GOLD_BLOCK)) {if(entityIn instanceof Animal) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.LAPIS_BLOCK)) {if(entityIn instanceof FlyingMob) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.IRON_BLOCK)) {if(entityIn instanceof AmbientCreature) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.COAL_BLOCK)) {if(entityIn instanceof Mob) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.HAY_BLOCK)) {if(entityIn instanceof Mob) {if(((Mob) entityIn).isBaby())return true;}}
-            else if(baseBlock.getItem().equals(Blocks.DRIED_KELP_BLOCK)) {if(entityIn instanceof Mob) {if(!((Mob) entityIn).isBaby())return true;}}
-            else if(baseBlock.getItem().equals(Blocks.MAGMA_BLOCK)) {if(entityIn instanceof AbstractPiglin) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.LIME_STAINED_GLASS)) {if(entityIn instanceof AbstractVillager) {return true;}}
-            else if(baseBlock.getItem().equals(Blocks.BLACK_STAINED_GLASS)) {if(entityIn instanceof PatrollingMonster) {return true;}}
-            String jsonResultsInt = getProcessResultFilterBlock(getRecipeFilterBlock(getLevel(),getBaseBlock()));
-            if(jsonResultsInt != "")
+            BaseBlockEntityFilter filter = getRecipeFilterBlock(getLevel(),getBaseBlock());
+            if(getProcessResultFilterBlock(filter) != "")
             {
-                if(entityIn.getType().equals(EntityType.byString(jsonResultsInt).orElse(null)))
+                if(getProcessResultFilterBlockMobType(filter)==0)
                 {
-                    return true;
+                    if(entityIn.getClassification(false).equals(MobCategory.byName(getProcessResultFilterBlock(filter))))
+                    {
+                        if(getProcessResultFilterBlockIsBaby(filter) && entityIn instanceof LivingEntity)
+                        {
+                            LivingEntity entity = ((LivingEntity)entityIn);
+                            if (entity.isBaby())
+                            {
+                                return true;
+                            }
+
+                            return false;
+                        }
+
+                        return true;
+                    }
+                }
+                else if(getProcessResultFilterBlockMobType(filter)==1)
+                {
+                    if(entityIn.getType().equals(EntityType.byString(getProcessResultFilterBlock(filter))))
+                    {
+                        if(getProcessResultFilterBlockIsBaby(filter) && entityIn instanceof LivingEntity)
+                        {
+                            LivingEntity entity = ((LivingEntity)entityIn);
+                            if (entity.isBaby())
+                            {
+                                return true;
+                            }
+
+                            return false;
+                        }
+
+                        return true;
+                    }
                 }
             }
         }
@@ -742,13 +759,13 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                 LivingEntity entity = ((LivingEntity)getEntity);
                 if(hasBaseBlock)
                 {
-                    if(storedAllowedEntities.contains(getEntity))
+                    if(allowEntity(baseBlock,getEntity))
                     {
-                        entity.addEffect(new MobEffectInstance(storedPotionEffect));
-                    }
-                    else
-                    {
-                        if(allowEntity(baseBlock,getEntity))
+                        if(storedAllowedEntities.contains(getEntity))
+                        {
+                            entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                        }
+                        else
                         {
                             storedAllowedEntities.add(getEntity);
                             entity.addEffect(new MobEffectInstance(storedPotionEffect));
