@@ -1,0 +1,8 @@
+{
+  "type": "dust:dust_mobeffect_color",
+  "input": {
+    "item": "dust:item_crystal"
+  },
+  "color": 5592320,
+  "mobEffect": ""
+}

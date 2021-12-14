@@ -64,6 +64,15 @@
 
 
 
+  "dust.crystal_cluster.crystal_add": "Crystal Added, New Effect is: ",
+  "dust.crystal_cluster.base_changed": "Base Block Changed",
+  "dust.crystal_cluster.base_type": " - New Filter Type: ",
+  "dust.crystal_cluster.base_baby": "Baby ",
+  "dust.crystal_cluster.fuel_add": "Fuel Added",
+  "dust.crystal_cluster.modifier_add": "Modifier Added",
+
+
+
 
   "dust.tooltip_mode": "Mode: ",
   "dust.pedestal.message_redstone_disable": "Redstone Signal Strength Needed to Activate Pedestal: ",
@@ -163,7 +172,6 @@
   "block.dust.block_inertcluster_medium.description": "§5 A Medium Cluster of Crystals",
   "block.dust.block_inertcluster_small": "Cluster of Crystals",
   "block.dust.block_inertcluster_small.description": "§5 A Small Cluster of Crystals",
-
   "block.dust.block_crystal_stone": "Crystal Stone",
   "block.dust.block_crystal_stone.description": "§5 Made from Converting Stone with a Crystal Node, used in Crafting/Building - Can be Recolored with Applicator",
   "block.dust.block_crystal_stone_slab": "Crystal Stone Slab",
@@ -172,5 +180,7 @@
   "block.dust.block_crystal_stone_stair.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
 
   "block.dust.block_pedestal": "Pedestal",
-  "block.dust.block_pedestal.description": "§5 Can Transport Items, Fluids, Energy, and XP, Drop Speed and Slowness Potions on it for Special Effects - Can be Recolored with Applicator"
+  "block.dust.block_pedestal.description": "§5 Can Transport Items, Fluids, Energy, and XP, Drop Speed and Slowness Potions on it for Special Effects - Can be Recolored with Applicator",
+  "block.dust.block_crystal_cluster": "Crystal Cluster Base",
+  "block.dust.block_crystal_cluster.description": "§5 Made from SandWitching a Crystal Stone Slab between some Stone Slabs, this can hold crystals, and when fueled, give off effects, Any block can be used as its base, and Redstone can be applied to turn it off."
 }

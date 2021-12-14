@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_cluster_modifier",
+  "input": {
+    "item": "minecraft:redstone"
+  },
+  "durationModifier": 2.0,
+  "potencyModifier": 1.0,
+  "corruption": false
+}

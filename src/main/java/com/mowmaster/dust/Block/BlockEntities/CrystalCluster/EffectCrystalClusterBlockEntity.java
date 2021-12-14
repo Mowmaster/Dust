@@ -1,38 +1,31 @@
 package com.mowmaster.dust.Block.BlockEntities.CrystalCluster;
 
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColoredCrystalBase;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
-import com.mowmaster.dust.Recipes.BaseBlockEntityFilter;
-import com.mowmaster.dust.Recipes.CrystalClusterFuelRecipe;
-import com.mowmaster.dust.Recipes.CrystalClusterModifiers;
+import com.mowmaster.dust.Recipes.*;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
-import com.mowmaster.dust.References.EffectReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ambient.AmbientCreature;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.PatrollingMonster;
-import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -60,7 +53,6 @@ import static com.mowmaster.dust.References.ColorReference.getTrueColorFromInt;
 
 public class EffectCrystalClusterBlockEntity extends BlockEntity
 {
-
     private LazyOptional<IItemHandler> handlerCrystalCluster = LazyOptional.of(this::createHandlerCrystalCluster);
     private MobEffectInstance storedPotionEffect = null;
     private int currentFuelTime = 0;
@@ -117,7 +109,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                 //Allow any block to be used as a base block, but only some will be special filters...
                 if ((slot == 4) && stack.getItem() instanceof BlockItem) return true;
                 if ((slot == 5) && addFuel(stack,true).getCount()>0) return true;
-                if ((slot == 6) && hasFuelItems() && addModifier(stack, true).getCount()>0) return true;
+                if ((slot == 6) && addModifier(stack, true).getCount()>0) return true;
                 return false;
 
                 /*
@@ -197,6 +189,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     int mixedColor = (color != newColor)?((color==0)?(newColor):(ColorReference.mixColorsInt(color,newColor))):(color);
                     this.currentColor = mixedColor;
                     this.allColors.add(mixedColor);
+                    //set current fuel to 0 to recalc the effect
+                    this.currentFuelTime=0;
 
                     update();
 
@@ -220,18 +214,24 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
             IItemHandler h = handlerCrystalCluster.orElse(null);
             for(int i=0;i<4;i++)
             {
-                if(h.getStackInSlot(i).isEmpty())nextAvailableSlot=i;
-                break;
+                if(h.getStackInSlot(i).isEmpty())
+                {
+                    nextAvailableSlot=i;
+                    break;
+                }
             }
             int lastSlot = nextAvailableSlot-1;
 
             int color = getCurrentColor();
             int newColor = allColors.get(lastSlot-1);
-            this.currentColor = newColor;
+            int mixedColor = (color != newColor)?((color==0)?(newColor):(ColorReference.mixColorsInt(color,newColor))):(color);
+            this.currentColor = mixedColor;
             this.allColors.remove(lastSlot);
+            //set current fuel to 0 to recalc the effect
+            this.currentFuelTime=0;
             //Default Effect to 5 seconds or 100 ticks as that'll be whats applied to the entities
-            MobEffectInstance newInstance = new MobEffectInstance(EffectReference.getIntEffect(newColor),100,calculateModifiedPotency(),false,false,false,null);
-            this.storedPotionEffect = newInstance;
+            //MobEffectInstance newInstance = new MobEffectInstance(EffectReference.getIntEffect(newColor),100,calculateModifiedPotency(),false,false,false,null);
+            //this.storedPotionEffect = newInstance;
             update();
 
             return h.extractItem(lastSlot,1,false);
@@ -264,8 +264,6 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     protected int getProcessResultPotencyLimit(CrystalClusterFuelRecipe recipe) {
         return (recipe == null)?(0):(recipe.getResultPotencyCap());
     }
-
-
 
     public boolean hasFuelItems()
     {
@@ -397,11 +395,15 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     }
 
     protected double getProcessResultModifierDuration(CrystalClusterModifiers recipe) {
-        return (recipe == null)?(0.0):(recipe.getDurationModifier());
+        return (recipe == null)?(0.0):(recipe.getResultDurationModifier());
     }
 
     protected double getProcessResultModifierPotency(CrystalClusterModifiers recipe) {
-        return (recipe == null)?(0.0):(recipe.getPotencyModifier());
+        return (recipe == null)?(0.0):(recipe.getResultPotencyModifier());
+    }
+
+    protected boolean getProcessResultCorruption(CrystalClusterModifiers recipe) {
+        return (recipe == null)?(false):(recipe.getResultCorruption());
     }
 
 
@@ -424,7 +426,20 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         if(potencyMod > fuelAllowedPotency)return false;
         //Since we only check for INT values, and +/- ones count, but 0 would result null values in our maths, so those are bad.
         if(durationMod > 0.0 || durationMod < 0.0)return true;
+        else if(potencyMod > 0.0 || potencyMod < 0.0)return true;
+        else if(hasCorruption())return true;
+
+        return false;
+    }
+
+    public boolean isModifierItem(ItemStack stack)
+    {
+        double durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),stack));
+        double potencyMod = getProcessResultModifierPotency(getRecipeModifier(getLevel(),stack));
+        //Since we only check for INT values, and +/- ones count, but 0 would result null values in our maths, so those are bad.
+        if(durationMod > 0.0 || durationMod < 0.0)return true;
         if(potencyMod > 0.0 || potencyMod < 0.0)return true;
+        else if(hasCorruption())return true;
 
         return false;
     }
@@ -455,7 +470,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     // Returns the stack that can/will be added.
     public ItemStack addModifier(ItemStack stack, boolean simulate)
     {
-        if(isAcceptedModifierItem(stack))
+        if(isModifierItem(stack))
         {
             if(hasModifierItems())
             {
@@ -484,9 +499,10 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     }
                 }
             }
-            //For When Adding new Modifiers
             else
             {
+                //For When Adding new Modifiers
+
                 int spaceAvailable = stack.getMaxStackSize();
                 int countToAdd = (stack.getCount()>spaceAvailable)?(spaceAvailable):(stack.getCount());
                 if(countToAdd > 0)
@@ -532,7 +548,9 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     public int calculateFuelModifiedDuration()
     {
         int fuelDuration = getProcessResultFuelAmount(getRecipe(getLevel(),getFuelStack()));
-        double durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),getModifierStack()));
+        double durationMod = 0;
+        //Verify fuel can support modifier
+        if(isAcceptedModifierItem(getModifierStack())) durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),getModifierStack()));
         if(durationMod > 0)
         {
             return (int)((double)fuelDuration * durationMod);
@@ -555,11 +573,87 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
     {
         //0 + 1 But will have to subtract 1 later
         double defaultPotency = 1.0;
+        double calculatedPotency = 0.0;
         double potencyMod = getProcessResultModifierPotency(getRecipeModifier(getLevel(),getModifierStack()));
-        double calculatedPotency = defaultPotency * potencyMod;
+        //Verify fuel can support potency modifier
+        if(isAcceptedModifierItem(getModifierStack()))calculatedPotency = defaultPotency * potencyMod;
 
         //Subtracting 1 'Later'
         return (int)(calculatedPotency-1.0);
+    }
+
+    @Nullable
+    protected MobEffectColorRecipe getRecipeMobEffectColor(Level level, ItemStack stackIn) {
+        Container container = Constants.blankContainer;
+        container.setItem(0,stackIn);
+        List<MobEffectColorRecipe> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level);
+        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level).get(0) : null;
+    }
+
+    protected String getProcessResultMobEffectColorRecipe(MobEffectColorRecipe recipe) {
+        return (recipe == null)?(""):(recipe.getResultEffectName());
+    }
+
+    @Nullable
+    protected MobEffectColorRecipeCorrupted getRecipeMobEffectColorCorrupted(Level level, ItemStack stackIn) {
+        Container container = Constants.blankContainer;
+        container.setItem(0,stackIn);
+        List<MobEffectColorRecipeCorrupted> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level);
+        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level).get(0) : null;
+    }
+
+    protected String getProcessResultMobEffectColorRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
+        return (recipe == null)?(""):(recipe.getResultEffectName());
+    }
+
+    public boolean hasCorruption()
+    {
+        if(hasModifierItems())
+        {
+            return getProcessResultCorruption(getRecipeModifier(getLevel(),getModifierStack()));
+        }
+        return false;
+    }
+
+    public MobEffect calculateMobEffect()
+    {
+        boolean corruption = hasCorruption();
+        if(corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),getCurrentColor());
+            ResourceLocation location = new ResourceLocation(getProcessResultMobEffectColorRecipeCorrupted(getRecipeMobEffectColorCorrupted(getLevel(),stack)));
+            if(Registry.MOB_EFFECT.getOptional(location).isPresent())return Registry.MOB_EFFECT.getOptional(location).get();
+        }
+        else if (!corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),getCurrentColor());
+            ResourceLocation location = new ResourceLocation(getProcessResultMobEffectColorRecipe(getRecipeMobEffectColor(getLevel(),stack)));
+            if(Registry.MOB_EFFECT.getOptional(location).isPresent())return Registry.MOB_EFFECT.getOptional(location).get();
+        }
+
+        return getRandomNegativeEffect();
+    }
+
+    public MobEffect getRandomNegativeEffect()
+    {
+        Random rand = new Random();
+        Map<Integer, MobEffect> NEGEFFECT = Map.ofEntries(
+                Map.entry(0, MobEffects.BAD_OMEN),
+                Map.entry(1,MobEffects.BLINDNESS),
+                Map.entry(2,MobEffects.GLOWING),
+                Map.entry(3,MobEffects.HUNGER),
+                Map.entry(4,MobEffects.HARM),
+                Map.entry(5,MobEffects.LEVITATION),
+                Map.entry(6,MobEffects.DIG_SLOWDOWN),
+                Map.entry(7,MobEffects.CONFUSION),
+                Map.entry(8,MobEffects.POISON),
+                Map.entry(9,MobEffects.MOVEMENT_SLOWDOWN),
+                Map.entry(10,MobEffects.UNLUCK),
+                Map.entry(11,MobEffects.WEAKNESS),
+                Map.entry(12,MobEffects.WITHER)
+        );
+
+        return NEGEFFECT.getOrDefault(rand.nextInt(13),MobEffects.HUNGER);
     }
 
 
@@ -641,14 +735,15 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         if(hasFuelItems())
         {
             //Calculate Effect before consuming fuel each time, this does mean that any 'unlearned' effects will randomize every time fuel is consumed.
-            MobEffectInstance newInstance = new MobEffectInstance(EffectReference.getIntEffect(getCurrentColor()),100,calculateModifiedPotency(),false,false,false,null);
+            MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),100,calculateModifiedPotency(),false,false,false,null);
             this.storedPotionEffect = newInstance;
             int duration = calculateFuelModifiedDuration();
             if(duration>0)
             {
                 setFuelTime(duration);
                 removeFuel(1);
-                if(hasModifierItems())removeModifier(1);
+                //Verify that modifier exists and was actually able to be used
+                if(hasModifierItems() && isAcceptedModifierItem(getModifierStack()))removeModifier(1);
                 return true;
             }
         }
@@ -717,7 +812,12 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                 }
                 else if(getProcessResultFilterBlockMobType(filter)==1)
                 {
-                    if(entityIn.getType().equals(EntityType.byString(getProcessResultFilterBlock(filter))))
+                    if(!EntityType.byString(getProcessResultFilterBlock(filter)).isPresent())
+                    {
+                        System.out.println(getProcessResultFilterBlock(filter) +" is Not a Valid Entity Type");
+                        return false;
+                    }
+                    else if(entityIn.getType().equals(EntityType.byString(getProcessResultFilterBlock(filter)).get()))
                     {
                         if(getProcessResultFilterBlockIsBaby(filter) && entityIn instanceof LivingEntity)
                         {
@@ -733,6 +833,46 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                         return true;
                     }
                 }
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public String getEntityForFilter(ItemStack baseBlock)
+    {
+        if(!baseBlock.isEmpty())
+        {
+            BaseBlockEntityFilter filter = getRecipeFilterBlock(getLevel(),getBaseBlock());
+            if(getProcessResultFilterBlock(filter) != "")
+            {
+                if(getProcessResultFilterBlockMobType(filter)==0)
+                {
+                    return MobCategory.byName(getProcessResultFilterBlock(filter)).getName();
+                }
+                else if(getProcessResultFilterBlockMobType(filter)==1)
+                {
+                    if(EntityType.byString(getProcessResultFilterBlock(filter)).isPresent())
+                    {
+                        return EntityType.byString(getProcessResultFilterBlock(filter)).get().getDescription().getString();
+                    }
+                }
+            }
+        }
+
+        return "";
+    }
+
+    public boolean isFilteredEntityBaby(ItemStack baseBlock)
+    {
+        if(!baseBlock.isEmpty())
+        {
+            BaseBlockEntityFilter filter = getRecipeFilterBlock(getLevel(),getBaseBlock());
+            if(getProcessResultFilterBlock(filter) != "")
+            {
+                return getProcessResultFilterBlockIsBaby(filter);
             }
         }
 
@@ -761,18 +901,42 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                     {
                         if(storedAllowedEntities.contains(getEntity))
                         {
-                            entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                            if(storedPotionEffect.getEffect().isInstantenous()){
+                                storedPotionEffect.getEffect().applyInstantenousEffect(null, null, entity, storedPotionEffect.getAmplifier()+1, 0.25D);
+                                this.currentFuelTime-=45;
+                                if(this.currentFuelTime<=0)break;
+                            }
+                            else
+                            {
+                                entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                            }
                         }
                         else
                         {
-                            storedAllowedEntities.add(getEntity);
-                            entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                            if(storedPotionEffect.getEffect().isInstantenous()){
+                                storedPotionEffect.getEffect().applyInstantenousEffect(null, null, entity, storedPotionEffect.getAmplifier()+1, 0.25D);
+                                this.currentFuelTime-=45;
+                                if(this.currentFuelTime<=0)break;
+                            }
+                            else
+                            {
+                                entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                            }
                         }
                     }
                 }
                 else
                 {
-                    entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                    //MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon, new MEI(hiddenEffect))
+                    if(storedPotionEffect.getEffect().isInstantenous()){
+                        storedPotionEffect.getEffect().applyInstantenousEffect(null, null, entity, storedPotionEffect.getAmplifier()+1, 0.25D);
+                        this.currentFuelTime-=45;
+                        if(this.currentFuelTime<=0)break;
+                    }
+                    else
+                    {
+                        entity.addEffect(new MobEffectInstance(storedPotionEffect));
+                    }
                 }
             }
         }
@@ -874,7 +1038,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
                         List<Integer> colorList = getTrueColorFromInt(storedPotionEffect.getEffect().getColor());
                         DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,posAdjusted.getX(),posAdjusted.getY(),posAdjusted.getZ(),colorList.get(0),colorList.get(1),colorList.get(2)));
 
-                        this.currentFuelTime--;
+                        if(!storedPotionEffect.getEffect().isInstantenous())this.currentFuelTime--;
                     }
                     else
                     {

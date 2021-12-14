@@ -35,14 +35,16 @@ public class CrystalClusterModifiers implements Recipe<Container>
     private final Ingredient input;
     private final double durationModifier;
     private final double potencyModifier;
+    private final boolean corruption;
 
-    public CrystalClusterModifiers(ResourceLocation id, String group, @Nullable Ingredient input, double durationModifier, double potencyModifier)
+    public CrystalClusterModifiers(ResourceLocation id, String group, @Nullable Ingredient input, double durationModifier, double potencyModifier, boolean corruption)
     {
         this.group = group;
         this.id = id;
         this.input = input;
         this.durationModifier = durationModifier;
         this.potencyModifier = potencyModifier;
+        this.corruption = corruption;
     }
 
     public static Collection<CrystalClusterModifiers> getAllRecipes(Level world)
@@ -99,6 +101,11 @@ public class CrystalClusterModifiers implements Recipe<Container>
         return getPotencyModifier();
     }
 
+    public boolean getResultCorruption()
+    {
+        return getCorruption();
+    }
+
     @Override
     public ResourceLocation getId()
     {
@@ -135,6 +142,11 @@ public class CrystalClusterModifiers implements Recipe<Container>
         return potencyModifier;
     }
 
+    public boolean getCorruption()
+    {
+        return corruption;
+    }
+
     public Ingredient getPattern()
     {
         return input != null ? input : Ingredient.EMPTY;
@@ -143,9 +155,9 @@ public class CrystalClusterModifiers implements Recipe<Container>
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>>
             implements RecipeSerializer<CrystalClusterModifiers>
     {
-        protected CrystalClusterModifiers createRecipe(ResourceLocation recipeId, String group, Ingredient input, double durationModifier, double potencyCap)
+        protected CrystalClusterModifiers createRecipe(ResourceLocation recipeId, String group, Ingredient input, double durationModifier, double potencyCap, boolean corruption)
         {
-            return new CrystalClusterModifiers(recipeId, group, input, durationModifier, potencyCap);
+            return new CrystalClusterModifiers(recipeId, group, input, durationModifier, potencyCap, corruption);
         }
 
         @Override
@@ -155,7 +167,8 @@ public class CrystalClusterModifiers implements Recipe<Container>
             Ingredient input = json.has("input") ? CraftingHelper.getIngredient(json.get("input")) : null;
             double durationModifier = json.has("durationModifier") ? GsonHelper.getAsDouble(json,"durationModifier") : 1;
             double potencyCap = json.has("potencyModifier") ? GsonHelper.getAsDouble(json,"potencyModifier") : 1;
-            return createRecipe(recipeId, group, input, durationModifier, potencyCap);
+            boolean corruption = json.has("corruption") ? GsonHelper.getAsBoolean(json,"corruption") : false;
+            return createRecipe(recipeId, group, input, durationModifier, potencyCap, corruption);
         }
 
         @Override
@@ -166,7 +179,8 @@ public class CrystalClusterModifiers implements Recipe<Container>
             Ingredient input = hasInput ? Ingredient.fromNetwork(buffer) : null;
             double durationModifier = buffer.readDouble();
             double potencyCap = buffer.readDouble();
-            return createRecipe(recipeId, group,  input, durationModifier, potencyCap);
+            boolean corruption = buffer.readBoolean();
+            return createRecipe(recipeId, group,  input, durationModifier, potencyCap, corruption);
         }
 
         @Override
@@ -178,6 +192,7 @@ public class CrystalClusterModifiers implements Recipe<Container>
             if (hasInput) recipe.input.toNetwork(buffer);
             buffer.writeDouble(recipe.durationModifier);
             buffer.writeDouble(recipe.potencyModifier);
+            buffer.writeBoolean(recipe.corruption);
         }
     }
 }

@@ -2,8 +2,12 @@ package com.mowmaster.dust.Block.BlockEntities.CrystalCluster;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.Items.ColoredCrystalBase;
 import com.mowmaster.dust.References.ColorReference;
+import com.mowmaster.dust.References.EffectPickerReference;
+import com.mowmaster.dust.Util.MessageUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +35,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+
+import java.util.Arrays;
+
+import static com.mowmaster.dust.References.Constants.MODID;
 
 public class EffectCrystalClusterBlock extends Block implements SimpleWaterloggedBlock, EntityBlock
 {
@@ -156,6 +164,7 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
                         if(cluster.addCrystal(itemInHand,false))
                         {
                             itemInHand.shrink(1);
+                            MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.crystal_add", Arrays.asList(EffectPickerReference.getEffectForColor(p_60504_, cluster.hasCorruption(), cluster.getCurrentColor()).getDisplayName().getString()));
                             return InteractionResult.SUCCESS;
                         }
 
@@ -165,18 +174,23 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
                 {
                     ItemHandlerHelper.giveItemToPlayer(p_60506_,cluster.addBaseBlock(itemInHand));
                     itemInHand.shrink(1);
+                    if(cluster.getEntityForFilter(cluster.getBaseBlock()) == "")MessageUtils.messagePopup(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.base_changed");
+                    else if(cluster.isFilteredEntityBaby(cluster.getBaseBlock()))MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.base_changed",Arrays.asList(MODID + ".crystal_cluster.base_type", MODID + ".crystal_cluster.base_baby", cluster.getEntityForFilter(cluster.getBaseBlock())));
+                    else MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.base_changed",Arrays.asList(MODID + ".crystal_cluster.base_type",cluster.getEntityForFilter(cluster.getBaseBlock())));
                     return InteractionResult.SUCCESS;
                 }
                 else if(cluster.addFuel(itemInHand,true).getCount()>0)
                 {
                     int amountToShrink = cluster.addFuel(itemInHand,false).getCount();
                     itemInHand.shrink(amountToShrink);
+                    MessageUtils.messagePopup(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.fuel_add");
                     return InteractionResult.SUCCESS;
                 }
-                else if(cluster.hasFuelItems() && cluster.addModifier(itemInHand, true).getCount()>0)
+                else if(cluster.addModifier(itemInHand, true).getCount()>0)
                 {
                     int amountToShrink = cluster.addModifier(itemInHand, false).getCount();
                     itemInHand.shrink(amountToShrink);
+                    MessageUtils.messagePopup(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.modifier_add");
                     return InteractionResult.SUCCESS;
                 }
             }

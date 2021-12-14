@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_entity_filter",
+  "input": {
+    "item": "minecraft:iron_block"
+  },
+  "entityString": "ambient",
+  "mobType": 0,
+  "isBaby": false
+}

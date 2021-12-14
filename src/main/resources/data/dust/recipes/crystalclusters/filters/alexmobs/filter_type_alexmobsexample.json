@@ -1,0 +1,15 @@
+{
+  "type": "dust:dust_entity_filter",
+  "input": {
+    "item": "alexmobsmodidhere:trashpandafoodblock"
+  },
+  "entityString": "alexmobs:trashpanda",
+  "mobType": 1,
+  "isBaby": false,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexmobsmodidhere"
+    }
+  ]
+}

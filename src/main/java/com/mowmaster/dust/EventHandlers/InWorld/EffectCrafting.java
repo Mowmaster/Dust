@@ -1,21 +1,24 @@
 package com.mowmaster.dust.EventHandlers.InWorld;
 
 import com.mowmaster.dust.Configs.DustEffectConfig;
-import com.mowmaster.dust.Configs.DustGenerationConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.Tools.LinkingTool;
 import com.mowmaster.dust.Items.Tools.LinkingToolBackwards;
+import com.mowmaster.dust.Recipes.MobEffectColorRecipe;
+import com.mowmaster.dust.Recipes.MobEffectColorRecipeCorrupted;
 import com.mowmaster.dust.References.ColorReference;
-import com.mowmaster.dust.References.EffectReference;
+import com.mowmaster.dust.References.Constants;
+import com.mowmaster.dust.References.EffectPickerReference;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.animal.Parrot;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,11 +35,14 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 
 @Mod.EventBusSubscriber
 public class EffectCrafting
 {
+
     @SubscribeEvent()
     public static void DustEffectCrafting(PlayerInteractEvent.RightClickBlock event)
     {
@@ -65,6 +71,7 @@ public class EffectCrafting
                 BlockState blockstate1 = ColorReference.addColorToBlockState(block.defaultBlockState(),colorMix);
                 p_152729_.setBlockAndUpdate(blockpos, blockstate1);
             }*/
+            boolean corrupted = false;
 
             int dustDuration=0;
 
@@ -88,6 +95,11 @@ public class EffectCrafting
                                 }
                                 item.remove(Entity.RemovalReason.DISCARDED);
                             }
+                            else if(stack.getItem().equals(Items.FERMENTED_SPIDER_EYE))
+                            {
+                                corrupted = true;
+                                item.remove(Entity.RemovalReason.DISCARDED);
+                            }
                         }
 
                         if(dustDuration > 0)
@@ -95,8 +107,11 @@ public class EffectCrafting
                             worldIn.explode(new ItemEntity(worldIn, posX, posY, posZ,new ItemStack(Items.PAPER)),(DamageSource)null,new EntityBasedExplosionDamageCalculator(player), posX + 0.5, posY + 2.0, posZ + 0.25, 0.0F,false, Explosion.BlockInteraction.NONE);
                             if(dustDuration>0)
                             {
+
+
+
                                 int finalPotency = (potency>DustEffectConfig.COMMON.effectMaxPotency.get())?(DustEffectConfig.COMMON.effectMaxPotency.get()):(potency)+1;
-                                MobEffectInstance effectPlayer = new MobEffectInstance(EffectReference.getIntEffect(currentColor),(dustDuration*10)/finalPotency,finalPotency-1,false,false,false,null);
+                                MobEffectInstance effectPlayer = new MobEffectInstance(EffectPickerReference.getEffectForColor(worldIn, corrupted, currentColor),(dustDuration*10)/finalPotency,finalPotency-1,false,false,false,null);
                                 /*public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect)*/
                                 player.addEffect(effectPlayer);
                             }
@@ -106,4 +121,7 @@ public class EffectCrafting
             }
         }
     }
+
+
+
 }

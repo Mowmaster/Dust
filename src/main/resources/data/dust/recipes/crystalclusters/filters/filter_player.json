@@ -1,9 +1,0 @@
-{
-  "type": "dust:dust_entity_filter",
-  "input": {
-    "item": "minecraft:emerald_block"
-  },
-  "entityString": "minecraft:player",
-  "type": 1,
-  "isbaby": false
-}

@@ -154,6 +154,7 @@ public class DustPlugin implements IModPlugin {
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get().asItem(),DeferredRegisterBlocks.CRYSTAL_CLUSTER_LARGE.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get().asItem(),DeferredRegisterBlocks.CRYSTAL_CLUSTER_MEDIUM.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get().asItem(),DeferredRegisterBlocks.CRYSTAL_CLUSTER_SMALL.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_CRYSTAL_CLUSTER.get().asItem(),DeferredRegisterTileBlocks.BLOCK_CRYSTAL_CLUSTER.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_BLOCK.get().asItem(),DeferredRegisterBlocks.CRYSTAL_BLOCK.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE.get().getDescriptionId()+".crafting");

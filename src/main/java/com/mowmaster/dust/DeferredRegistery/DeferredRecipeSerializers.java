@@ -1,9 +1,6 @@
 package com.mowmaster.dust.DeferredRegistery;
 
-import com.mowmaster.dust.Recipes.BaseBlockEntityFilter;
-import com.mowmaster.dust.Recipes.CrusherRecipe;
-import com.mowmaster.dust.Recipes.CrystalClusterFuelRecipe;
-import com.mowmaster.dust.Recipes.CrystalClusterModifiers;
+import com.mowmaster.dust.Recipes.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,4 +20,8 @@ public final class DeferredRecipeSerializers
             CrystalClusterModifiers.SERIALIZER);
     public static final RegistryObject<RecipeSerializer<?>> CLUSTER_FILTER = RECIPES.register(MODID + "_entity_filter", () ->
             BaseBlockEntityFilter.SERIALIZER);
+    public static final RegistryObject<RecipeSerializer<?>> MOB_EFFECT_COLOR = RECIPES.register(MODID + "_mobeffect_color", () ->
+            MobEffectColorRecipe.SERIALIZER);
+    public static final RegistryObject<RecipeSerializer<?>> MOB_EFFECTCORRUPTED_COLOR = RECIPES.register(MODID + "_mobeffectcorrupted_color", () ->
+            MobEffectColorRecipeCorrupted.SERIALIZER);
 }

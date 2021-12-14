@@ -1,9 +1,0 @@
-{
-  "type": "dust:dust_entity_filter",
-  "input": {
-    "item": "minecraft:dried_kelp_block"
-  },
-  "entityString": "minecraft:water_creature",
-  "type": 0,
-  "isbaby": true
-}

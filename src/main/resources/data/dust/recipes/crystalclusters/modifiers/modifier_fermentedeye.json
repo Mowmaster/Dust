@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_cluster_modifier",
+  "input": {
+    "item": "minecraft:fermented_spider_eye"
+  },
+  "durationModifier": 1.0,
+  "potencyModifier": 1.0,
+  "corruption": true
+}
