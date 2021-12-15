@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Block.BlockEntities.CustomDustBlock;
 
+import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntity;
 import com.mowmaster.dust.Configs.DustMachineConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
@@ -8,6 +9,7 @@ import com.mowmaster.dust.Items.ColoredCrystalBase;
 import com.mowmaster.dust.Items.Tools.DevTool;
 import com.mowmaster.dust.Recipes.CrusherRecipe;
 import com.mowmaster.dust.References.ColorReference;
+import com.mowmaster.dust.References.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,6 +32,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -77,9 +81,12 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
         if(p_49850_ instanceof Player)
         {
             Player player = ((Player)p_49850_);
-            ItemStack input = new ItemStack(Items.DIAMOND_ORE);
-            if(!player.getOffhandItem().isEmpty())input = player.getOffhandItem();
-            placeCustomDustBlock(p_49847_,p_49848_,input);
+            if(player.isCreative())
+            {
+                ItemStack input = new ItemStack(Items.BLAZE_ROD);
+                if(!player.getOffhandItem().isEmpty())input = player.getOffhandItem();
+                placeCustomDustBlock(p_49847_,p_49848_,input);
+            }
         }
     }
 
@@ -175,88 +182,9 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
         return true;
     }
 
-
-    @Override
-    public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
-        if(p_60504_.isClientSide())
-        {
-            if(p_60506_.getOffhandItem().getItem() instanceof DevTool)
-            {
-                System.out.println(((CustomPowderedBlockEntity)p_60504_.getBlockEntity(p_60505_)).getColor());
-            }
-        }
-
-        return InteractionResult.SUCCESS;
-
-    }
-
     @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return DeferredBlockEntityTypes.DUST.get().create(p_153215_,p_153216_);
-    }
-
-
-
-
-
-
-
-
-
-
-
-    Container cont = new Container() {
-        ItemStack stack = ItemStack.EMPTY;
-
-        @Override
-        public int getContainerSize() {
-            return 1;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return stack.isEmpty();
-        }
-
-        @Override
-        public ItemStack getItem(int p_18941_) {
-            return stack;
-        }
-
-        @Override
-        public ItemStack removeItem(int p_18942_, int p_18943_) {
-            return stack = ItemStack.EMPTY;
-        }
-
-        @Override
-        public ItemStack removeItemNoUpdate(int p_18951_) {
-            return stack = ItemStack.EMPTY;
-        }
-
-        @Override
-        public void setItem(int p_18944_, ItemStack p_18945_) {
-            stack = p_18945_;
-        }
-
-        @Override
-        public void setChanged() {
-
-        }
-
-        @Override
-        public boolean stillValid(Player p_18946_) {
-            return stack.isEmpty();
-        }
-
-        @Override
-        public void clearContent() {
-            stack = ItemStack.EMPTY;
-        }
-    };
-
-    @javax.annotation.Nullable
     protected CrusherRecipe getRecipe(Level level, ItemStack stackIn) {
+        Container cont = Constants.blankContainer;
         cont.setItem(0,stackIn);
         List<CrusherRecipe> recipes = level.getRecipeManager().getRecipesFor(CrusherRecipe.CRUSHING,cont,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(CrusherRecipe.CRUSHING,cont,level).get(0) : null;
@@ -288,18 +216,21 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
                 int jsonResultsInt = getProcessResultColor(getRecipe(world,input));
                 CustomPowderedBlockEntity customDust = ((CustomPowderedBlockEntity)world.getBlockEntity(pos));
                 //Set these based on some recipe handler
-                customDust.addItem((jsonResults.iterator().next().isEmpty())?(ItemStack.EMPTY):(jsonResults.iterator().next()));
                 customDust.setColor(jsonResultsInt);
+                customDust.addItem((jsonResults.iterator().next().isEmpty())?(ItemStack.EMPTY):(jsonResults.iterator().next()));
+                List<Integer> colorList = ColorReference.getTrueColorFromInt(jsonResultsInt);
             }
         }
     }
 
-
-
     @Override
-    public Object getRenderPropertiesInternal() {
-        return RenderShape.MODEL;
+    public RenderShape getRenderShape(BlockState p_50950_) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
-
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+        return DeferredBlockEntityTypes.DUST.get().create(p_153215_,p_153216_);
+    }
 }

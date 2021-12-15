@@ -388,6 +388,12 @@ public class ColorReference
         return getColor(colorOutput);
     }
 
+
+    /*
+    *
+    * RGB to Int is
+    * r*65536 + g*256 + b
+     */
     public static List<Integer> getTrueColorFromInt(int color)
     {
         int red=Math.floorDiv(((color/65536)%256),1);

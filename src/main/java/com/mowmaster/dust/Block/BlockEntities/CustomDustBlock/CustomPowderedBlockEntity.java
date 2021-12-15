@@ -41,7 +41,7 @@ import static com.mowmaster.dust.References.Constants.MODID;
 public class CustomPowderedBlockEntity extends BlockEntity
 {
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandlerDrops);
-    private int blockColor = ColorReference.DEFAULTCOLOR;
+    private int blockColor =  0;
     public BlockPos getPos() { return this.worldPosition; }
 
     public CustomPowderedBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
@@ -51,7 +51,6 @@ public class CustomPowderedBlockEntity extends BlockEntity
     public void setColor(int color)
     {
         this.blockColor = color;
-        this.update();
     }
 
     public int getColor()
@@ -173,7 +172,6 @@ public class CustomPowderedBlockEntity extends BlockEntity
             if(h.getStackInSlot(i).isEmpty())
             {
                 h.insertItem(i, itemFromBlock.copy(), false);
-                update();
                 return true;
             }
         }
@@ -184,9 +182,9 @@ public class CustomPowderedBlockEntity extends BlockEntity
     @Override
     public void load(CompoundTag p_155245_) {
         super.load(p_155245_);
-        this.blockColor = (p_155245_.getInt(MODID+"_color") <= 0)?(ColorReference.DEFAULTCOLOR):(p_155245_.getInt("intColor"));
         CompoundTag invTag = p_155245_.getCompound("inv");
         handler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTag));
+        this.blockColor = p_155245_.getInt("currentColor");
     }
 
     @Override
@@ -197,12 +195,14 @@ public class CustomPowderedBlockEntity extends BlockEntity
 
     @Override
     public CompoundTag save(CompoundTag p_58888_) {
+
         super.save(p_58888_);
-        p_58888_.putInt(MODID+"_color",this.blockColor);
         handler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_58888_.put("inv", compound);
         });
+        p_58888_.putInt("currentColor",getColor());
+
         return p_58888_;
     }
 

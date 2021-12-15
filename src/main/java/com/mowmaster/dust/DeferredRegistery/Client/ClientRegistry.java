@@ -2,6 +2,7 @@ package com.mowmaster.dust.DeferredRegistery.Client;
 
 import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntityRenderer;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntityRender;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
@@ -111,9 +112,6 @@ public class ClientRegistry
          */
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
-
-        event.getItemColors().register((stack, color) ->
-        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
     }
 
     @SubscribeEvent
@@ -154,11 +152,6 @@ public class ClientRegistry
 
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
-
-
-        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
-        {if (color == 1) {return ((blockReader.getBlockEntity(blockPos))!=null)?(ColorReference.getColorFromTag(((CustomPowderedBlockEntity)blockReader.getBlockEntity(blockPos)).getUpdateTag())):(ColorReference.DEFAULTCOLOR);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
-
     }
 
     @SubscribeEvent
@@ -182,6 +175,8 @@ public class ClientRegistry
             event.addSprite(new ResourceLocation(MODID, "util/whiteimage7"));
             event.addSprite(new ResourceLocation(MODID, "util/whiteimage8"));
 
+            event.addSprite(new ResourceLocation(MODID, "util/crystal_dust"));
+
         }
 
     }
@@ -190,5 +185,6 @@ public class ClientRegistry
     {
         BlockEntityRenderers.register(DeferredBlockEntityTypes.PEDESTAL.get(), BasePedestalBlockEntityRenderer::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.CLUSTER.get(), EffectCrystalClusterBlockEntityRenderer::new);
+        BlockEntityRenderers.register(DeferredBlockEntityTypes.DUST.get(), CustomPowderedBlockEntityRender::new);
     }
 }

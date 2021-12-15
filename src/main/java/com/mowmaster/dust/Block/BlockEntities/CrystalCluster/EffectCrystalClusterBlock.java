@@ -307,6 +307,7 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
         return getRedstoneLevelPedestal(p_60488_,p_60489_);
     }*/
 
+    @Override
     public RenderShape getRenderShape(BlockState p_50950_) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }

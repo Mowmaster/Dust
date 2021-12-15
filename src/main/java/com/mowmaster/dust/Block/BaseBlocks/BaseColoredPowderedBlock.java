@@ -106,30 +106,6 @@ public class BaseColoredPowderedBlock extends FallingBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
-
-        if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ColorApplicator)
-        {
-            int getColor = ColorReference.getColorFromItemStackInt(p_60506_.getItemInHand(p_60507_));
-            BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
-            p_60504_.setBlock(p_60505_,newState,3);
-            //p_60504_.markAndNotifyBlock(p_60505_,null,p_60503_,newState,3,1);
-            return InteractionResult.SUCCESS;
-        }
-
-        /*if(p_60506_.getItemInHand(p_60507_).getItem() instanceof ItemChisel)
-        {
-            if(p_60503_.getBlock() instanceof CrystalSlab)
-            {
-                p_60504_.setBlock(p_60505_, BlockReference.getSlab(p_60503_,false),3);
-                return InteractionResult.SUCCESS;
-            }
-        }*/
-
-        return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
-    }
-
-    @Override
     public void playerWillDestroy(Level p_56212_, BlockPos p_56213_, BlockState p_56214_, Player p_56215_) {
 
         if(!p_56212_.isClientSide())
