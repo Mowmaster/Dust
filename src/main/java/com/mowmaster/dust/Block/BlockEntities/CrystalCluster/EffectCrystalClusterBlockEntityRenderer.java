@@ -25,7 +25,7 @@ import java.util.Random;
 
 import static com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock.FACING;
 
-public class EffectCrystalClusterBlockEntityRenderer  implements BlockEntityRenderer<EffectCrystalClusterBlockEntity> {
+public class EffectCrystalClusterBlockEntityRenderer implements BlockEntityRenderer<EffectCrystalClusterBlockEntity> {
 
     public EffectCrystalClusterBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 

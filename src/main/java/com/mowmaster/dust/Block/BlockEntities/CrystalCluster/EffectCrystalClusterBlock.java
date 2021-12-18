@@ -159,16 +159,38 @@ public class EffectCrystalClusterBlock extends Block implements SimpleWaterlogge
 
                 if(itemInHand.getItem() instanceof ColoredCrystalBase)
                 {
-                    if(cluster.addCrystal(itemInHand,true)){
-
-                        if(cluster.addCrystal(itemInHand,false))
+                    if(!p_60506_.isCreative() && cluster.crystalCount()>0)
+                    {
+                        //TODO: Change this to check player if they CAN Mix Colors
+                        if(ColorReference.getColorFromItemStackInt(itemInHand) == cluster.getCurrentColor())
                         {
-                            itemInHand.shrink(1);
-                            MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.crystal_add", Arrays.asList(EffectPickerReference.getEffectForColor(p_60504_, cluster.hasCorruption(), cluster.getCurrentColor()).getDisplayName().getString()));
-                            return InteractionResult.SUCCESS;
+                            if(cluster.addCrystal(itemInHand,true)){
+
+                                if(cluster.addCrystal(itemInHand,false))
+                                {
+                                    itemInHand.shrink(1);
+                                    MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.crystal_add", Arrays.asList(EffectPickerReference.getEffectForColor(p_60504_, cluster.hasCorruption(), cluster.getCurrentColor()).getDisplayName().getString()));
+                                    return InteractionResult.SUCCESS;
+                                }
+                            }
                         }
+                        else MessageUtils.messagePopup(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.color_mix");
 
                     }
+                    else
+                    {
+                        if(cluster.addCrystal(itemInHand,true)){
+
+                            if(cluster.addCrystal(itemInHand,false))
+                            {
+                                itemInHand.shrink(1);
+                                MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".crystal_cluster.crystal_add", Arrays.asList(EffectPickerReference.getEffectForColor(p_60504_, cluster.hasCorruption(), cluster.getCurrentColor()).getDisplayName().getString()));
+                                return InteractionResult.SUCCESS;
+                            }
+
+                        }
+                    }
+
                 }
                 else if(itemInHand.getItem() instanceof BlockItem)
                 {

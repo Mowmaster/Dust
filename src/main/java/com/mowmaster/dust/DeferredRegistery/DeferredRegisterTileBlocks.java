@@ -2,12 +2,12 @@ package com.mowmaster.dust.DeferredRegistery;
 
 import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlock;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlock;
+import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlock;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlock_T15;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -20,7 +20,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 
 import static com.mowmaster.dust.References.Constants.MODID;
-import static net.minecraftforge.versions.forge.ForgeVersion.MOD_ID;
 
 public class DeferredRegisterTileBlocks
 {
@@ -35,6 +34,13 @@ public class DeferredRegisterTileBlocks
 
     public static final RegistryObject<Block> BLOCK_CRYSTAL_CLUSTER = registerBlock("block_crystal_cluster",
             () -> new EffectCrystalClusterBlock(BlockBehaviour.Properties.of(Material.AMETHYST).strength(2.0F).sound(SoundType.AMETHYST)));
+
+    public static final RegistryObject<Block> BLOCK_CRAFTER_SCROLL_T15 = registerBlock("block_crafter_scroll_t15",
+            () -> new ScrollCrafterBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> BLOCK_DUST_JAR = registerBlock("block_dust_jar",
+            () -> new DustJarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.25F).sound(SoundType.GLASS)));
+
 
 
 

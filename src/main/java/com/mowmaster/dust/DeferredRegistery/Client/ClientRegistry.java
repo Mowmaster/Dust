@@ -1,9 +1,9 @@
 package com.mowmaster.dust.DeferredRegistery.Client;
 
 import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntityRenderer;
-import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntityRender;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntityRender_T15;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
@@ -12,6 +12,8 @@ import com.mowmaster.dust.DeferredRegistery.ItemModelPropertiesDust;
 import com.mowmaster.dust.Items.Filters.FilterEnchantCount;
 import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.References.ColorReference;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +22,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -152,6 +155,12 @@ public class ClientRegistry
 
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get());
+
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get());
     }
 
     @SubscribeEvent
@@ -181,10 +190,19 @@ public class ClientRegistry
 
     }
 
+    @SubscribeEvent
+    public static void registerLayers(FMLClientSetupEvent event)
+    {
+        ItemBlockRenderTypes.setRenderLayer(DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get(), RenderType.cutout());
+    }
+
+
     public static void registerBlockEntityRenderers()
     {
         BlockEntityRenderers.register(DeferredBlockEntityTypes.PEDESTAL.get(), BasePedestalBlockEntityRenderer::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.CLUSTER.get(), EffectCrystalClusterBlockEntityRenderer::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.DUST.get(), CustomPowderedBlockEntityRender::new);
+        //BlockEntityRenderers.register(DeferredBlockEntityTypes.CRAFTER_SCROLL_T15.get(), ScrollCrafterBlockEntityRender_T15::new);
     }
 }

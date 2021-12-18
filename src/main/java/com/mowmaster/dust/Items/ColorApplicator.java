@@ -2,6 +2,8 @@ package com.mowmaster.dust.Items;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
+import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredSlabBlock;
+import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredStairBlock;
 import com.mowmaster.dust.CreativeTabs.DustItemTabs;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.ChatFormatting;
@@ -84,7 +86,7 @@ public class ColorApplicator extends Item {
                     BlockHitResult blockResult = world.clip(clipContext);
                     BlockState state = world.getBlockState(blockResult.getBlockPos());
 
-                    if(state.getBlock() instanceof BaseColoredBlock)
+                    if(state.getBlock() instanceof BaseColoredBlock || state.getBlock() instanceof BaseColoredStairBlock || state.getBlock() instanceof BaseColoredSlabBlock)
                     {
                         int getColor = ColorReference.getColorFromStateInt(state);
                         ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),getColor);
