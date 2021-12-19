@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_crystalnode",
+  "input": {
+    "tag": "forge:stone"
+  },
+  "result": {
+    "item": "dust:block_crystal_stone"
+  }
+}

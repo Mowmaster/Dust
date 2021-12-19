@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_crystalnode",
+  "input": {
+    "item": "minecraft:brewing_stand"
+  },
+  "result": {
+    "item": "dust:block_crafter_scroll_t15"
+  }
+}

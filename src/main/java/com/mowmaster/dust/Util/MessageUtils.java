@@ -1,10 +1,13 @@
 package com.mowmaster.dust.Util;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -34,5 +37,30 @@ public class MessageUtils
         }
         message.withStyle(color);
         player.displayClientMessage(message,true);
+    }
+
+    public static void messagePlayerChat(Player player, ChatFormatting color, String localizedMessage)
+    {
+        TranslatableComponent message = new TranslatableComponent(localizedMessage);
+        message.withStyle(color);
+        player.sendMessage(message, Util.NIL_UUID);
+    }
+
+    public static void messagePlayerChatWithAppend(Player player, ChatFormatting color, String localizedMessage, List<String> appendedMessage)
+    {
+        TranslatableComponent message = new TranslatableComponent(localizedMessage);
+        for(int i = 0; i<appendedMessage.size(); i++)
+        {
+            if(appendedMessage.get(i).contains(MODID))
+            {
+                message.append(new TranslatableComponent(appendedMessage.get(i)));
+            }
+            else
+            {
+                message.append(appendedMessage.get(i));
+            }
+        }
+        message.withStyle(color);
+        player.sendMessage(message, Util.NIL_UUID);
     }
 }

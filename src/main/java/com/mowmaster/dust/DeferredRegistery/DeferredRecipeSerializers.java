@@ -24,4 +24,6 @@ public final class DeferredRecipeSerializers
             MobEffectColorRecipe.SERIALIZER);
     public static final RegistryObject<RecipeSerializer<?>> MOB_EFFECTCORRUPTED_COLOR = RECIPES.register(MODID + "_mobeffectcorrupted_color", () ->
             MobEffectColorRecipeCorrupted.SERIALIZER);
+    public static final RegistryObject<RecipeSerializer<?>> CRYSTAL_NODE_RECIPES = RECIPES.register(MODID + "_crystalnode", () ->
+            CrystalNodeRecipe.SERIALIZER);
 }

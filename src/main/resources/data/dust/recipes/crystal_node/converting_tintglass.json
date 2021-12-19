@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_crystalnode",
+  "input": {
+    "item": "minecraft:tinted_glass"
+  },
+  "result": {
+    "item": "dust:block_dust_jar"
+  }
+}
