@@ -2,6 +2,7 @@ package com.mowmaster.dust.DeferredRegistery.Client;
 
 import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntityRenderer;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntityRender;
+import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockEntityRender;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntityRender_T15;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
@@ -9,6 +10,8 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.ItemModelPropertiesDust;
+import com.mowmaster.dust.Items.ColoredCrystalBase;
+import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Filters.FilterEnchantCount;
 import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.References.ColorReference;
@@ -55,6 +58,8 @@ public class ClientRegistry
 
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_BLOCK.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_DUST_BLOCK.get());
 
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE.get());
@@ -62,6 +67,14 @@ public class ClientRegistry
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_SLAB.get());
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get());
+
+
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get());
 
 
         event.getItemColors().register((stack, color) ->
@@ -203,6 +216,7 @@ public class ClientRegistry
         BlockEntityRenderers.register(DeferredBlockEntityTypes.PEDESTAL.get(), BasePedestalBlockEntityRenderer::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.CLUSTER.get(), EffectCrystalClusterBlockEntityRenderer::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.DUST.get(), CustomPowderedBlockEntityRender::new);
+        BlockEntityRenderers.register(DeferredBlockEntityTypes.DUST_JAR.get(), DustJarBlockEntityRender::new);
         //BlockEntityRenderers.register(DeferredBlockEntityTypes.CRAFTER_SCROLL_T15.get(), ScrollCrafterBlockEntityRender_T15::new);
     }
 }

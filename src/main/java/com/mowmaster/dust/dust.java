@@ -1,5 +1,6 @@
 package com.mowmaster.dust;
 
+import com.mowmaster.dust.Capabilities.Dust.CapabilityDust;
 import com.mowmaster.dust.Capabilities.Experience.CapabilityExperience;
 import com.mowmaster.dust.Client.ClientItemTooltipComponent;
 import com.mowmaster.dust.Client.ItemTooltipComponent;
@@ -121,6 +122,7 @@ public class Dust
         @SubscribeEvent
         public static void attachCapabilities(final RegisterCapabilitiesEvent event) {
             CapabilityExperience.register(event);
+            CapabilityDust.register(event);
         }
     }
 }

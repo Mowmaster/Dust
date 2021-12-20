@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ColoredCrystalBase extends Item {
+public class ColoredCrystalBase extends DustMagicItemBase {
     public ColoredCrystalBase(Properties p_41383_) {
         super(p_41383_);
     }

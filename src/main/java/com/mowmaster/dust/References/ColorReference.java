@@ -178,6 +178,81 @@ public class ColorReference
     }
 
 
+    public static String getColorName(int color)
+    {
+        Random rand = new Random();
+
+        Map<Integer,String> COLORS_INT_REFERENCE = Map.ofEntries(
+                Map.entry(2763306,MODID + "_colorName000"),
+                Map.entry(85,MODID + "_colorName001"),
+                Map.entry(170,MODID + "_colorName002"),
+                Map.entry(255,MODID + "_colorName003"),
+                Map.entry(21760,MODID + "_colorName010"),
+                Map.entry(21845,MODID + "_colorName011"),
+                Map.entry(21930,MODID + "_colorName012"),
+                Map.entry(22015,MODID + "_colorName013"),
+                Map.entry(43520,MODID + "_colorName020"),
+                Map.entry(43605,MODID + "_colorName021"),
+                Map.entry(43690,MODID + "_colorName022"),
+                Map.entry(43775,MODID + "_colorName023"),
+                Map.entry(65280,MODID + "_colorName030"),
+                Map.entry(65365,MODID + "_colorName031"),
+                Map.entry(65450,MODID + "_colorName032"),
+                Map.entry(65535,MODID + "_colorName033"),
+                Map.entry(5570560,MODID + "_colorName100"),
+                Map.entry(5570645,MODID + "_colorName101"),
+                Map.entry(5570730,MODID + "_colorName102"),
+                Map.entry(5570815,MODID + "_colorName103"),
+                Map.entry(5592320,MODID + "_colorName110"),
+                Map.entry(5592405,MODID + "_colorName111"),
+                Map.entry(5592490,MODID + "_colorName112"),
+                Map.entry(5592575,MODID + "_colorName113"),
+                Map.entry(5614080,MODID + "_colorName120"),
+                Map.entry(5614165,MODID + "_colorName121"),
+                Map.entry(5614250,MODID + "_colorName122"),
+                Map.entry(5614335,MODID + "_colorName123"),
+                Map.entry(5635840,MODID + "_colorName130"),
+                Map.entry(5635925,MODID + "_colorName131"),
+                Map.entry(5636010,MODID + "_colorName132"),
+                Map.entry(5636095,MODID + "_colorName133"),
+                Map.entry(11141120,MODID + "_colorName200"),
+                Map.entry(11141205,MODID + "_colorName201"),
+                Map.entry(11141290,MODID + "_colorName202"),
+                Map.entry(11141375,MODID + "_colorName203"),
+                Map.entry(11162880,MODID + "_colorName210"),
+                Map.entry(11162965,MODID + "_colorName211"),
+                Map.entry(11163050,MODID + "_colorName212"),
+                Map.entry(11163135,MODID + "_colorName213"),
+                Map.entry(11184640,MODID + "_colorName220"),
+                Map.entry(11184725,MODID + "_colorName221"),
+                Map.entry(11184810,MODID + "_colorName222"),
+                Map.entry(11184895,MODID + "_colorName223"),
+                Map.entry(11206400,MODID + "_colorName230"),
+                Map.entry(11206485,MODID + "_colorName231"),
+                Map.entry(11206570,MODID + "_colorName232"),
+                Map.entry(11206655,MODID + "_colorName233"),
+                Map.entry(16711680,MODID + "_colorName300"),
+                Map.entry(16711765,MODID + "_colorName301"),
+                Map.entry(16711850,MODID + "_colorName302"),
+                Map.entry(16711935,MODID + "_colorName303"),
+                Map.entry(16733440,MODID + "_colorName310"),
+                Map.entry(16733525,MODID + "_colorName311"),
+                Map.entry(16733610,MODID + "_colorName312"),
+                Map.entry(16733695,MODID + "_colorName313"),
+                Map.entry(16755200,MODID + "_colorName320"),
+                Map.entry(16755285,MODID + "_colorName321"),
+                Map.entry(16755370,MODID + "_colorName322"),
+                Map.entry(16755455,MODID + "_colorName323"),
+                Map.entry(16776960,MODID + "_colorName330"),
+                Map.entry(16777045,MODID + "_colorName331"),
+                Map.entry(16777130,MODID + "_colorName332"),
+                Map.entry(16777215,MODID + "_colorName333")
+        );
+
+        return COLORS_INT_REFERENCE.getOrDefault(color,COLORS_INT_REFERENCE.get(getColor(Arrays.asList(rand.nextInt(3),rand.nextInt(3),rand.nextInt(3)))));
+    }
+
+
 
 
     public static List<Integer> ALL_COLORS = Arrays.asList(

@@ -5,6 +5,7 @@ import com.mowmaster.dust.Items.Augments.AugmentBase;
 import com.mowmaster.dust.Items.Augments.AugmentRenderDiffuser;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.ColoredCrystalBase;
+import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Filters.*;
 import com.mowmaster.dust.Items.Tools.*;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeBase;
@@ -31,7 +32,7 @@ public class DeferredRegisterItems
     public static final RegistryObject<Item> COLORED_CRYSTAL = ITEMS.register("item_crystal",
             () -> new ColoredCrystalBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> COLORED_CRYSTAL_DUST = ITEMS.register("item_crystal_dust",
-            () -> new ColoredCrystalBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
+            () -> new ColoredCrystalDustBase(new Item.Properties().stacksTo(64).tab(DustItemTabs.TAB_ITEMS)));
 
 
     public static final RegistryObject<Item> TOOL_LINKINGTOOL = ITEMS.register("tool_linkingtool",
