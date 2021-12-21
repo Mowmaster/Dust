@@ -3,6 +3,7 @@ package com.mowmaster.dust.DeferredRegistery.Client;
 import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntityRenderer;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntityRender;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockEntityRender;
+import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntityRender_T15;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
@@ -68,15 +69,6 @@ public class ClientRegistry
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get());
 
-
-        event.getItemColors().register((stack, color) ->
-        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
-        event.getItemColors().register((stack, color) ->
-        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get());
-        event.getItemColors().register((stack, color) ->
-        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get());
-
-
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterItems.FILTER_ITEM.get());
         event.getItemColors().register((stack, color) ->
@@ -120,6 +112,9 @@ public class ClientRegistry
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get());
 
 
+        ItemModelPropertiesDust.dustItemModes(DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get().asItem());
+
+
 
         /*
         *
@@ -128,6 +123,21 @@ public class ClientRegistry
          */
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get());
+        event.getItemColors().register((stack, color) ->
+        {
+            if (color == 1) {
+                return ColorReference.getColorFromItemStackInt(stack);
+            }
+            else if (color == 2) {
+                return DustJarBlockItem.getFillColor(stack);
+            }
+            else {return -1;}
+        }, DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get());
+
     }
 
     @SubscribeEvent

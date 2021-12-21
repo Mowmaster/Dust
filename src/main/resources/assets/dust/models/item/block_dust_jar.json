@@ -1,3 +1,17 @@
 {
-  "parent": "dust:block/jar/jar_empty"
+  "parent": "dust:block/jar/jar_empty",
+  "overrides": [
+    { "predicate": { "dust:jar_filled": 0}, "model": "dust:block/jar/jar_empty"},
+    { "predicate": { "dust:jar_filled": 1}, "model": "dust:block/jar/jar_notempty"},
+    { "predicate": { "dust:jar_filled": 2}, "model": "dust:block/jar/jar_10"},
+    { "predicate": { "dust:jar_filled": 3}, "model": "dust:block/jar/jar_20"},
+    { "predicate": { "dust:jar_filled": 4}, "model": "dust:block/jar/jar_30"},
+    { "predicate": { "dust:jar_filled": 5}, "model": "dust:block/jar/jar_40"},
+    { "predicate": { "dust:jar_filled": 6}, "model": "dust:block/jar/jar_50"},
+    { "predicate": { "dust:jar_filled": 7}, "model": "dust:block/jar/jar_60"},
+    { "predicate": { "dust:jar_filled": 8}, "model": "dust:block/jar/jar_70"},
+    { "predicate": { "dust:jar_filled": 9}, "model": "dust:block/jar/jar_80"},
+    { "predicate": { "dust:jar_filled": 10}, "model": "dust:block/jar/jar_90"},
+    { "predicate": { "dust:jar_filled": 11}, "model": "dust:block/jar/jar_full"}
+  ]
 }

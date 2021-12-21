@@ -3,13 +3,17 @@ package com.mowmaster.dust.Block.BlockEntities.DustJar;
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
 import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -157,7 +161,7 @@ public class DustJarBlockEntity extends BlockEntity {
         return new DustMagic(-1, 0);
     }
 
-    private void setDustCapacity(int capacity)
+    public void setDustCapacity(int capacity)
     {
         this.dustCapacity = capacity;
     }

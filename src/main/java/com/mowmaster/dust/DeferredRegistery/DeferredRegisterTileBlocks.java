@@ -3,6 +3,7 @@ package com.mowmaster.dust.DeferredRegistery;
 import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlock;
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlock;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlock;
+import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlock_T15;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
@@ -38,7 +39,7 @@ public class DeferredRegisterTileBlocks
     public static final RegistryObject<Block> BLOCK_CRAFTER_SCROLL_T15 = registerBlock("block_crafter_scroll_t15",
             () -> new ScrollCrafterBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
 
-    public static final RegistryObject<Block> BLOCK_DUST_JAR = registerBlock("block_dust_jar",
+    public static final RegistryObject<Block> BLOCK_DUST_JAR = registerBlockJar("block_dust_jar",
             () -> new DustJarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.25F).sound(SoundType.GLASS)));
 
 
@@ -54,6 +55,17 @@ public class DeferredRegisterTileBlocks
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         DeferredRegisterItems.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)));
+    }
+
+    private static <T extends Block> RegistryObject<T> registerBlockJar(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerJarBlockItem(name, toReturn);
+        return toReturn;
+    }
+
+    private static <T extends Block> void registerJarBlockItem(String name, RegistryObject<T> block) {
+        DeferredRegisterItems.ITEMS.register(name, () -> new DustJarBlockItem(block.get(),
                 new Item.Properties().tab(DustBlockTabs.TAB_BLOCKS)));
     }
 
