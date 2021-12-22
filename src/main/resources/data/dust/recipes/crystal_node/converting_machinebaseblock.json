@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_crystalnode",
+  "input": {
+    "item": "minecraft:furnace"
+  },
+  "result": {
+    "item": "dust:block_machine_base"
+  }
+}

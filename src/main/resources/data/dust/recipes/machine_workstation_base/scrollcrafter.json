@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_workstationbase",
+  "input": {
+    "item": "minecraft:blaze_rod"
+  },
+  "result": {
+    "item": "dust:block_crafter_scroll_t15"
+  }
+}

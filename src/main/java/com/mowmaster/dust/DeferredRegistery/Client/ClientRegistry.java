@@ -69,6 +69,15 @@ public class ClientRegistry
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get());
 
+
+
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.BASE_MACHINE_BLOCK.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterBlocks.BASE_WORKSTATION_BLOCK.get());
+
+
+
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterItems.FILTER_ITEM.get());
         event.getItemColors().register((stack, color) ->
@@ -165,6 +174,10 @@ public class ClientRegistry
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get());
 
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterBlocks.BASE_MACHINE_BLOCK.get());
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterBlocks.BASE_WORKSTATION_BLOCK.get());
 
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterBlocks.CRYSTAL_DUST_BLOCK.get());
@@ -216,6 +229,7 @@ public class ClientRegistry
     @SubscribeEvent
     public static void registerLayers(FMLClientSetupEvent event)
     {
+        ItemBlockRenderTypes.setRenderLayer(DeferredRegisterBlocks.BASE_WORKSTATION_BLOCK.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get(), RenderType.cutout());
     }

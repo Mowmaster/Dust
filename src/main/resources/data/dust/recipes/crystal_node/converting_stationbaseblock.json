@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_crystalnode",
+  "input": {
+    "item": "minecraft:crafting_table"
+  },
+  "result": {
+    "item": "dust:block_workstation_base"
+  }
+}

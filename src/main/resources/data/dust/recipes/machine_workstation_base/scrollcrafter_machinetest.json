@@ -1,7 +1,7 @@
 {
-  "type": "dust:dust_crystalnode",
+  "type": "dust:dust_machinebase",
   "input": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:blaze_rod"
   },
   "result": {
     "item": "dust:block_crafter_scroll_t15"

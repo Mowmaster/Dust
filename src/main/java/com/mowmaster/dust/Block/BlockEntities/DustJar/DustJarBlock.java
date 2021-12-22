@@ -80,12 +80,16 @@ public class DustJarBlock extends BaseColoredBlock implements EntityBlock {
         if(p_49850_ instanceof Player)
         {
             Player player = ((Player)p_49850_);
-            DustMagic getJarMagic = DustMagic.getDustMagicInItemStack(p_49851_);
-            int capacity = (p_49851_.getTag().contains(MODID + "_dustCapacity"))?(p_49851_.getTag().getInt(MODID + "_dustCapacity")):(1000);
-            int color = ColorReference.getColorFromItemStackInt(p_49851_);
-            p_49847_.setBlockAndUpdate(p_49848_,ColorReference.addColorToBlockState(p_49849_,color));
+
             if(p_49847_.getBlockEntity(p_49848_) instanceof DustJarBlockEntity)
             {
+                DustMagic getJarMagic = DustMagic.getDustMagicInItemStack(p_49851_);
+                int capacity = (p_49851_.getTag().contains(MODID + "_dustCapacity"))?(p_49851_.getTag().getInt(MODID + "_dustCapacity")):(1000);
+                int color = ColorReference.getColorFromItemStackInt(p_49851_);
+                if(player.getOffhandItem().getItem() instanceof ColorApplicator)color = ColorReference.getColorFromItemStackInt(player.getOffhandItem());
+
+                p_49847_.setBlockAndUpdate(p_49848_,ColorReference.addColorToBlockState(p_49849_,color));
+
                 DustJarBlockEntity jar = (DustJarBlockEntity)p_49847_.getBlockEntity(p_49848_);
                 jar.setDustCapacity(capacity);
                 jar.addDust(getJarMagic, IDustHandler.DustAction.EXECUTE);
