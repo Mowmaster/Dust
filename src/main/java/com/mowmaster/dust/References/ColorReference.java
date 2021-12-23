@@ -343,6 +343,14 @@ public class ColorReference
         return stackIn;
     }
 
+    public static ItemStack addSecondColorToItemStack(ItemStack stackIn, int color)
+    {
+        CompoundTag blockColors = stackIn.getOrCreateTag();
+        blockColors.putInt(MODID+"_colorTwo",color);
+        stackIn.setTag(blockColors);
+        return stackIn;
+    }
+
     public static BlockState addColorToBlockState(BlockState stateIn, int color)
     {
         List<Integer> getColor = getIntColor(color);
@@ -381,6 +389,18 @@ public class ColorReference
         if(blockColors.contains(MODID+"_color"))
         {
             int color = blockColors.getInt(MODID+"_color");
+            return color;
+        }
+
+        return DEFAULTCOLOR;
+    }
+
+    public static int getSecondColorFromItemStackInt(ItemStack stackIn)
+    {
+        CompoundTag blockColors = stackIn.getOrCreateTag();
+        if(blockColors.contains(MODID+"_colorTwo"))
+        {
+            int color = blockColors.getInt(MODID+"_colorTwo");
             return color;
         }
 

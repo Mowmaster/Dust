@@ -7,6 +7,7 @@ import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.ColoredCrystalBase;
 import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Filters.*;
+import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
 import com.mowmaster.dust.Items.Tools.*;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeBase;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.ItemUpgradeExport;
@@ -86,6 +87,9 @@ public class DeferredRegisterItems
             () -> new AugmentRenderDiffuser(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
     public static final RegistryObject<Item> AUGMENT_PEDESTAL_NOCOLLIDE = ITEMS.register("augment_pedestal_nocollide",
             () -> new AugmentBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
+
+    public static final RegistryObject<Item> SCROLL_T2_REPAIR = ITEMS.register("scroll_t2_repair",
+            () -> new T2RepairScroll(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
 
     public static void register(IEventBus eventBus) {

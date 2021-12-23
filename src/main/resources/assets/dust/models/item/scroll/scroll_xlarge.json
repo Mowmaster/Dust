@@ -252,6 +252,7 @@
 			}
 		}
 	],
+	"gui_light": "front",
 	"groups": [
 		0,
 		{
