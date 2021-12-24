@@ -91,13 +91,31 @@ public class BaseRepairScroll extends Item {
     //Needed for the Work Order Display
     public ItemStack getRepairItem(ItemStack scroll)
     {
-        List<ItemStack> list = DustItemHandling.readItemStackFromNBT(scroll);
+        List<ItemStack> list = getRepairItemList(scroll);
         if(list.size()>0)
         {
             return list.stream().findFirst().get();
         }
 
         return ItemStack.EMPTY;
+    }
+
+    //Set by the BlockEntity Machine
+    public void setRepairItem(ItemStack scroll, List<ItemStack> repairItemList)
+    {
+        DustItemHandling.writeItemStackToNBT(scroll,repairItemList);
+    }
+
+    //Needed for the Work Order Display
+    public List<ItemStack> getRepairItemList(ItemStack scroll)
+    {
+        List<ItemStack> list = DustItemHandling.readItemStackFromNBT(scroll);
+        if(list.size()>0)
+        {
+            return list;
+        }
+
+        return list;
     }
 
     @Override

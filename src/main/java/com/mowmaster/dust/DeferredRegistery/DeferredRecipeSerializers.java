@@ -30,4 +30,7 @@ public final class DeferredRecipeSerializers
             MachineBaseTypeRecipe.SERIALIZER);
     public static final RegistryObject<RecipeSerializer<?>> WORKSTATION_BASE_RECIPE = RECIPES.register(MODID + "_workstationbase", () ->
             WorkStationBaseTypeRecipe.SERIALIZER);
+
+    public static final RegistryObject<RecipeSerializer<?>> MACHINE_REPAIR_ITEMS = RECIPES.register(MODID + "_machine_repair_items", () ->
+            MachineBlockRepairItemsRecipe.SERIALIZER);
 }

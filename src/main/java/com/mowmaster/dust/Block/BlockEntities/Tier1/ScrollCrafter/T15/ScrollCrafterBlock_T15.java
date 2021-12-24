@@ -2,19 +2,22 @@ package com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15;
 
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.ScrollCrafterBlockBase;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FurnaceBlock;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,11 +26,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+
+import static com.mowmaster.dust.References.Constants.MODID;
 
 public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
 
@@ -80,6 +88,28 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
     @Override
     public BlockState mirror(BlockState p_152030_, Mirror p_152031_) {
         return p_152030_.rotate(p_152031_.getRotation(p_152030_.getValue(SIDED_ROTATION_4)));
+    }
+
+    @Override
+    public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
+
+        if(!p_60504_.isClientSide())
+        {
+            ItemStack itemInHand = p_60506_.getItemInHand(p_60507_);
+            ItemStack itemInMainHand = p_60506_.getMainHandItem();
+            ItemStack itemInOffHand = p_60506_.getOffhandItem();
+
+            if(itemInMainHand.getItem() instanceof T2RepairScroll)
+            {
+                if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15)
+                {
+                    ScrollCrafterBlockEntity_T15 table = (ScrollCrafterBlockEntity_T15)p_60504_.getBlockEntity(p_60505_);
+                    table.getRepairList();
+                }
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
