@@ -98,15 +98,19 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
             ItemStack itemInHand = p_60506_.getItemInHand(p_60507_);
             ItemStack itemInMainHand = p_60506_.getMainHandItem();
             ItemStack itemInOffHand = p_60506_.getOffhandItem();
-
-            if(itemInMainHand.getItem() instanceof T2RepairScroll)
+            if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15)
             {
-                if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15)
+                ScrollCrafterBlockEntity_T15 table = (ScrollCrafterBlockEntity_T15)p_60504_.getBlockEntity(p_60505_);
+                if(!table.isFullyRepaired())
                 {
-                    ScrollCrafterBlockEntity_T15 table = (ScrollCrafterBlockEntity_T15)p_60504_.getBlockEntity(p_60505_);
-                    table.getRepairList();
+                    if(itemInMainHand.getItem() instanceof T2RepairScroll)
+                    {
+                        T2RepairScroll scroll = (T2RepairScroll)itemInMainHand.getItem();
+                        scroll.setMachineBlock(itemInMainHand,this);
+                        scroll.setRepairItem(itemInMainHand,table.getNextRepairItem());
+                        return InteractionResult.SUCCESS;
+                    }
                 }
-                return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.SUCCESS;

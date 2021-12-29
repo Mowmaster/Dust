@@ -14,6 +14,19 @@ import static com.mowmaster.dust.References.Constants.MODID;
 public class TooltipUtils
 {
 
+    public static void addTooltipMessage(List<Component> componentList, ItemStack stack, TranslatableComponent translatableComponent)
+    {
+        TranslatableComponent base = translatableComponent;
+        componentList.add(base);
+    }
+
+    public static void addTooltipMessageWithStyle(List<Component> componentList, String localizationString, ChatFormatting chatFormatting)
+    {
+        TranslatableComponent base = new TranslatableComponent(localizationString);
+        base.withStyle(chatFormatting);
+        componentList.add(base);
+    }
+
     public static void addTooltipShiftMessage(List<Component> componentList, ItemStack stack, TranslatableComponent translatableComponent)
     {
         if(!Screen.hasShiftDown())

@@ -2,11 +2,17 @@ package com.mowmaster.dust.Items.Readable.RepairScrolls;
 
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.Util.DustItemHandling;
+import com.mowmaster.dust.Util.MessageUtils;
+import com.mowmaster.dust.Util.TooltipUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
@@ -85,7 +91,14 @@ public class BaseRepairScroll extends Item {
     {
         List<ItemStack> list = new ArrayList<>();
         list.add(repairItem);
-        DustItemHandling.writeItemStackToNBT(scroll,list);
+        setRepairItem(scroll, list);
+    }
+
+    //Set by the BlockEntity Machine
+    public void setRepairItem(ItemStack scroll, List<ItemStack> repairItemList)
+    {
+        if(!scroll.isEnchanted())scroll.enchant(Enchantments.UNBREAKING,-1);
+        DustItemHandling.writeItemStackToNBT(scroll,repairItemList);
     }
 
     //Needed for the Work Order Display
@@ -98,12 +111,6 @@ public class BaseRepairScroll extends Item {
         }
 
         return ItemStack.EMPTY;
-    }
-
-    //Set by the BlockEntity Machine
-    public void setRepairItem(ItemStack scroll, List<ItemStack> repairItemList)
-    {
-        DustItemHandling.writeItemStackToNBT(scroll,repairItemList);
     }
 
     //Needed for the Work Order Display
@@ -121,6 +128,12 @@ public class BaseRepairScroll extends Item {
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
+
+        if(!getRepairItem(p_41421_).isEmpty())
+        {
+            TooltipUtils.addTooltipMessageWithStyle(p_41423_,MODID + ".scroll_shift_message", ChatFormatting.LIGHT_PURPLE);
+            TooltipUtils.addTooltipShiftMessage(p_41423_,p_41421_,new TranslatableComponent(getRepairItem(p_41421_).getDisplayName().getString()));
+        }
 
     }
 }
