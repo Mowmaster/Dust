@@ -1,24 +1,29 @@
 package com.mowmaster.dust.Items.Readable.RepairScrolls;
 
+import com.google.common.collect.Maps;
+import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.Util.DustItemHandling;
-import com.mowmaster.dust.Util.MessageUtils;
 import com.mowmaster.dust.Util.TooltipUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -67,6 +72,48 @@ public class BaseRepairScroll extends Item {
         if(tag.contains(MODID + "_repairLocalized"))return tag.getBoolean(MODID + "_repairLocalized");
         return false;
     }
+
+    public void setHintTitle(ItemStack stack, String titleString)
+    {
+        CompoundTag tag = new CompoundTag();
+        if(stack.hasTag()){tag = stack.getTag();}
+        tag.putString(MODID + "_repairTitle", titleString);
+        stack.setTag(tag);
+    }
+
+    public void setHintDescription(ItemStack stack, String titleDescription)
+    {
+        CompoundTag tag = new CompoundTag();
+        if(stack.hasTag()){tag = stack.getTag();}
+        tag.putString(MODID + "_repairDescription", titleDescription);
+        stack.setTag(tag);
+    }
+
+    public void setHintLocalization(ItemStack stack, boolean isLocalized)
+    {
+        CompoundTag tag = new CompoundTag();
+        if(stack.hasTag()){tag = stack.getTag();}
+        tag.putBoolean(MODID + "_repairLocalized", isLocalized);
+        stack.setTag(tag);
+    }
+
+    public void setItemFound(ItemStack stack, boolean isLocalized)
+    {
+        CompoundTag tag = new CompoundTag();
+        if(stack.hasTag()){tag = stack.getTag();}
+        tag.putBoolean(MODID + "_itemFound", isLocalized);
+        stack.setTag(tag);
+    }
+
+    public boolean getItemFound(ItemStack stack)
+    {
+        CompoundTag tag = new CompoundTag();
+        if(stack.hasTag()){tag = stack.getTag();}
+        if(tag.contains(MODID + "_itemFound"))return tag.getBoolean(MODID + "_itemFound");
+        return false;
+    }
+
+
 
     public void setMachineBlock(ItemStack scroll, Block machineBlock)
     {
@@ -125,14 +172,68 @@ public class BaseRepairScroll extends Item {
         return list;
     }
 
+    public boolean isItemRepairItem(ItemStack scroll, ItemStack incomingItem)
+    {
+        List<ItemStack> repairList = getRepairItemList(scroll);
+        ItemStack itemFound = ItemStack.EMPTY;
+        itemFound = IntStream.range(0,repairList.size())
+                .mapToObj((repairList)::get)
+                .filter(itemStack -> itemStack.getItem().equals(incomingItem.getItem()))
+                .findFirst().orElse(ItemStack.EMPTY);
+
+        return !itemFound.isEmpty();
+    }
+
+    @Override
+    public void inventoryTick(ItemStack p_41404_, Level p_41405_, Entity p_41406_, int p_41407_, boolean p_41408_) {
+        super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);
+        if(p_41406_ instanceof Player)
+        {
+            Player player = (Player)p_41406_;
+            Inventory inv = player.getInventory();
+            ItemStack itemFound = ItemStack.EMPTY;
+            itemFound = IntStream.range(0,inv.getContainerSize())
+                    .mapToObj((inv)::getItem)//Function being applied to each interval
+                    .filter(itemStack -> isItemRepairItem(p_41404_,itemStack))
+                    .findFirst().orElse(ItemStack.EMPTY);
+
+            if(!itemFound.isEmpty())
+            {
+                if(p_41404_.isEnchanted())
+                {
+                    Map<Enchantment, Integer> enchantsNone = Maps.<Enchantment, Integer>newLinkedHashMap();
+                    EnchantmentHelper.setEnchantments(enchantsNone,p_41404_);
+                }
+            }
+        }
+    }
+
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> p_41423_, TooltipFlag p_41424_) {
         super.appendHoverText(p_41421_, p_41422_, p_41423_, p_41424_);
+        ItemStack repairItem = getRepairItem(p_41421_);
 
-        if(!getRepairItem(p_41421_).isEmpty())
+        if(!repairItem.isEmpty())
         {
-            TooltipUtils.addTooltipMessageWithStyle(p_41423_,MODID + ".scroll_shift_message", ChatFormatting.LIGHT_PURPLE);
-            TooltipUtils.addTooltipShiftMessage(p_41423_,p_41421_,new TranslatableComponent(getRepairItem(p_41421_).getDisplayName().getString()));
+            boolean localized = getHintLocalization(p_41421_);
+            if(localized)
+            {
+                TooltipUtils.addTooltipMessageWithStyle(p_41423_,new TranslatableComponent(getHintTitle(p_41421_)), ChatFormatting.LIGHT_PURPLE);
+            }
+            else
+            {
+                TooltipUtils.addTooltipMessageWithStyle(p_41423_,getHintTitle(p_41421_), ChatFormatting.LIGHT_PURPLE);
+            }
+
+            if(localized)
+            {
+                TooltipUtils.addTooltipMessageWithStyle(p_41423_,new TranslatableComponent(getHintDescription(p_41421_)), ChatFormatting.WHITE);
+            }
+            else
+            {
+                TooltipUtils.addTooltipMessageWithStyle(p_41423_,getHintDescription(p_41421_), ChatFormatting.WHITE);
+            }
+
         }
 
     }

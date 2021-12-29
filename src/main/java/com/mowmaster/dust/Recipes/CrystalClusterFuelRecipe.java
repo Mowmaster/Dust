@@ -45,6 +45,11 @@ public class CrystalClusterFuelRecipe implements Recipe<Container>
         this.potencyLimit = potencyLimit;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<CrystalClusterFuelRecipe> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(CRYSTALCLUSTERFUEL);

@@ -47,6 +47,11 @@ public class BaseBlockEntityFilter implements Recipe<Container>
         this.isbaby = isbaby;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<BaseBlockEntityFilter> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(BLOCKENTITYFILTER);

@@ -43,6 +43,11 @@ public class MachineBaseTypeRecipe implements Recipe<Container>
         this.output = output;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<MachineBaseTypeRecipe> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(MACHINE_BASE);

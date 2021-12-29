@@ -47,6 +47,11 @@ public class CrystalClusterModifiers implements Recipe<Container>
         this.corruption = corruption;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<CrystalClusterModifiers> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(CRYSTALCLUSTERMODIFIER);

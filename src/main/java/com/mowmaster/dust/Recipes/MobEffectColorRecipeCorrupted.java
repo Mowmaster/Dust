@@ -46,6 +46,11 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
         this.mobEffect = mobEffect;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<MobEffectColorRecipeCorrupted> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(MOBEFFECTCOLORCORRUPTED);

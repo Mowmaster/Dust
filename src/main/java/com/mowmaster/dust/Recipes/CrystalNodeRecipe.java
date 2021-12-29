@@ -44,6 +44,11 @@ public class CrystalNodeRecipe implements Recipe<Container>
         this.output = output;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<CrystalNodeRecipe> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(CRYSTAL_NODE);

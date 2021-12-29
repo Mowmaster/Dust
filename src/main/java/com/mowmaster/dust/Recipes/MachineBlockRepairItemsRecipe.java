@@ -45,6 +45,11 @@ public class MachineBlockRepairItemsRecipe implements Recipe<Container>
         this.tagname = tagname;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<MachineBlockRepairItemsRecipe> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(MACHINE_REPAIR_ITEMS);

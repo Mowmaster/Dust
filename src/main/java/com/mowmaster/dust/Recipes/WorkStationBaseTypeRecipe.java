@@ -43,6 +43,11 @@ public class WorkStationBaseTypeRecipe implements Recipe<Container>
         this.output = output;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public static Collection<WorkStationBaseTypeRecipe> getAllRecipes(Level world)
     {
         return world.getRecipeManager().getAllRecipesFor(WORKSTATION_BASE);
