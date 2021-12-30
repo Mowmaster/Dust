@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "tag": "minecraft:wooden_slabs"
+  },
+  "result": {
+    "item": "minecraft:oak_slab"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "Half a plank should be enough for this repair.",
+  "localized": false
+}

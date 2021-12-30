@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "minecraft:bowl"
+  },
+  "result": {
+    "item": "minecraft:bowl"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "A small way to contain bits and bobs. You might also eat food out of this.",
+  "localized": false
+}

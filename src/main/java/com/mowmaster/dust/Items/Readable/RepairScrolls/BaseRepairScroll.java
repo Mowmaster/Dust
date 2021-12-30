@@ -1,7 +1,6 @@
 package com.mowmaster.dust.Items.Readable.RepairScrolls;
 
 import com.google.common.collect.Maps;
-import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.Util.DustItemHandling;
 import com.mowmaster.dust.Util.TooltipUtils;
@@ -9,6 +8,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -189,20 +190,25 @@ public class BaseRepairScroll extends Item {
         super.inventoryTick(p_41404_, p_41405_, p_41406_, p_41407_, p_41408_);
         if(p_41406_ instanceof Player)
         {
-            Player player = (Player)p_41406_;
-            Inventory inv = player.getInventory();
-            ItemStack itemFound = ItemStack.EMPTY;
-            itemFound = IntStream.range(0,inv.getContainerSize())
-                    .mapToObj((inv)::getItem)//Function being applied to each interval
-                    .filter(itemStack -> isItemRepairItem(p_41404_,itemStack))
-                    .findFirst().orElse(ItemStack.EMPTY);
-
-            if(!itemFound.isEmpty())
+            if(!getItemFound(p_41404_))
             {
-                if(p_41404_.isEnchanted())
+                Player player = (Player)p_41406_;
+                Inventory inv = player.getInventory();
+                ItemStack itemFound = ItemStack.EMPTY;
+                itemFound = IntStream.range(0,inv.getContainerSize())
+                        .mapToObj((inv)::getItem)//Function being applied to each interval
+                        .filter(itemStack -> isItemRepairItem(p_41404_,itemStack))
+                        .findFirst().orElse(ItemStack.EMPTY);
+
+                if(!itemFound.isEmpty())
                 {
-                    Map<Enchantment, Integer> enchantsNone = Maps.<Enchantment, Integer>newLinkedHashMap();
-                    EnchantmentHelper.setEnchantments(enchantsNone,p_41404_);
+                    if(p_41404_.isEnchanted())
+                    {
+                        Map<Enchantment, Integer> enchantsNone = Maps.<Enchantment, Integer>newLinkedHashMap();
+                        EnchantmentHelper.setEnchantments(enchantsNone,p_41404_);
+                    }
+                    setItemFound(p_41404_,true);
+                    p_41405_.playSound(player,player.getOnPos(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS,0.75F, 1.0F);
                 }
             }
         }
@@ -234,7 +240,10 @@ public class BaseRepairScroll extends Item {
                 TooltipUtils.addTooltipMessageWithStyle(p_41423_,getHintDescription(p_41421_), ChatFormatting.WHITE);
             }
 
+            if(getItemFound(p_41421_))
+            {
+                TooltipUtils.addTooltipMessageWithStyle(p_41423_,new TranslatableComponent(MODID + ".hint.found"), ChatFormatting.GOLD);
+            }
         }
-
     }
 }

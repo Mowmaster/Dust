@@ -20,6 +20,13 @@ public class TooltipUtils
         componentList.add(base);
     }
 
+    public static void addTooltipMessageWithStyle(List<Component> componentList, TranslatableComponent translatableComponent, ChatFormatting chatFormatting)
+    {
+        TranslatableComponent base = translatableComponent;
+        base.withStyle(chatFormatting);
+        componentList.add(base);
+    }
+
     public static void addTooltipMessageWithStyle(List<Component> componentList, String localizationString, ChatFormatting chatFormatting)
     {
         TranslatableComponent base = new TranslatableComponent(localizationString);

@@ -1,19 +1,30 @@
 package com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15;
 
+import com.google.common.collect.Maps;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.ScrollCrafterBlockBase;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.Readable.RepairScrolls.BaseRepairScroll;
 import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
+import com.mowmaster.dust.Recipes.CrystalNodeRecipe;
+import com.mowmaster.dust.Recipes.MachineBlockRepairItemsHintRecipe;
 import com.mowmaster.dust.References.ColorReference;
+import com.mowmaster.dust.References.Constants;
+import com.mowmaster.dust.Util.MessageUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -31,9 +42,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.stream.IntStream;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -90,6 +102,26 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
         return p_152030_.rotate(p_152031_.getRotation(p_152030_.getValue(SIDED_ROTATION_4)));
     }
 
+    @Nullable
+    protected MachineBlockRepairItemsHintRecipe getRecipe(Level level, ItemStack stackIn) {
+        Container cont = Constants.blankContainer;
+        cont.setItem(0,stackIn);
+        List<MachineBlockRepairItemsHintRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsHintRecipe.MACHINE_REPAIR_ITEMS_HINT,cont,level);
+        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsHintRecipe.MACHINE_REPAIR_ITEMS_HINT,cont,level).get(0) : null;
+    }
+
+    protected String getProcessResultTitle(MachineBlockRepairItemsHintRecipe recipe) {
+        return (recipe == null)?(""):(recipe.getResultTitle());
+    }
+
+    protected String getProcessResultDescription(MachineBlockRepairItemsHintRecipe recipe) {
+        return (recipe == null)?(""):(recipe.getResultDescription());
+    }
+
+    protected boolean getProcessResultIsLocalized(MachineBlockRepairItemsHintRecipe recipe) {
+        return (recipe == null)?(false):(recipe.getResultLocalized());
+    }
+
     @Override
     public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
 
@@ -108,7 +140,56 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                         T2RepairScroll scroll = (T2RepairScroll)itemInMainHand.getItem();
                         scroll.setMachineBlock(itemInMainHand,this);
                         scroll.setRepairItem(itemInMainHand,table.getNextRepairItem());
+                        if(!scroll.getRepairItem(itemInMainHand).isEmpty())
+                        {
+                            ItemStack repairItemOnScroll = scroll.getRepairItem(itemInMainHand);
+                            MachineBlockRepairItemsHintRecipe recipe = getRecipe(p_60504_,repairItemOnScroll);
+                            String title = getProcessResultTitle(recipe);
+                            String description = getProcessResultDescription(recipe);
+                            boolean isLocalized = getProcessResultIsLocalized(recipe);
+                            scroll.setHintTitle(itemInMainHand,title);
+                            scroll.setHintDescription(itemInMainHand,description);
+                            scroll.setHintLocalization(itemInMainHand,isLocalized);
+                            if(scroll.getItemFound(itemInMainHand))scroll.setItemFound(itemInMainHand,false);
+                            MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.scroll_made");
+                        }
                         return InteractionResult.SUCCESS;
+                    }
+                    else if(table.isValidItem(itemInMainHand))
+                    {
+                        if(table.addRepairItem(p_60506_,itemInMainHand,false))
+                        {
+                            itemInMainHand.shrink(1);
+                            Inventory inv = p_60506_.getInventory();
+                            ItemStack itemFound = ItemStack.EMPTY;
+                            itemFound = IntStream.range(0,inv.getContainerSize())
+                                    .mapToObj((inv)::getItem)//Function being applied to each interval
+                                    .filter(itemStack -> itemStack.getItem() instanceof T2RepairScroll)
+                                    //.filter(itemStack -> ((T2RepairScroll)itemStack.getItem()).getRepairItem(itemStack).getItem().equals(itemInMainHand.getItem()))
+                                    .findFirst().orElse(ItemStack.EMPTY);
+                            if(!itemFound.isEmpty())
+                            {
+                                for(int i=0;i<inv.getContainerSize();i++)
+                                {
+                                    if(inv.getItem(i).getItem().equals(itemFound.getItem()))
+                                    {
+                                        ItemStack stackie = inv.getItem(i);
+                                        T2RepairScroll scroll = ((T2RepairScroll)stackie.getItem());
+                                        scroll.setMachineBlock(stackie,Blocks.AIR);
+                                        scroll.setRepairItem(stackie,ItemStack.EMPTY);
+                                        scroll.setHintTitle(stackie,"");
+                                        scroll.setHintDescription(stackie, "");
+                                        scroll.setHintLocalization(stackie, false);
+                                        Map<Enchantment, Integer> enchantsNone = Maps.<Enchantment, Integer>newLinkedHashMap();
+                                        EnchantmentHelper.setEnchantments(enchantsNone,stackie);
+                                        inv.setItem(i,stackie);
+                                        break;
+                                    }
+                                }
+                            }
+                            MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.repair_made");
+                            return InteractionResult.SUCCESS;
+                        }
                     }
                 }
             }

@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "dust:block_dust_jar"
+  },
+  "result": {
+    "item": "dust:block_dust_jar"
+  },
+  "hintTitle": "dust.hint.title",
+  "hintDescription": "dust.hint.dustjar_desc",
+  "localized": true
+}
