@@ -26,7 +26,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,7 +44,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         super(DeferredBlockEntityTypes.CRAFTER_SCROLL_T15.get(), p_155229_, p_155230_);
     }
 
-    protected List<ItemStack> getListofRepairs(@NotNull Level level, ItemStack stackIn) {
+    protected List<ItemStack> getListofRepairs(Level level, ItemStack stackIn) {
         Container cont = Constants.blankContainer;
         cont.setItem(0,stackIn);
         List<MachineBlockRepairItemsRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsRecipe.MACHINE_REPAIR_ITEMS,cont,level);
@@ -199,12 +198,19 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     }
 
     private IItemHandler createRepairItemsHandler() {
-        //Make the slot size the same as the number of repair items
-        return new ItemStackHandler(getRepairListStacks().size()) {
+        /*
+        *
+        *
+        * NEED TO MAKE A CONFIG TO SET THE SIZE OF THE MACHINE SINCE I GUESS I CANT DO IT WITH A RECIPE HANDLER SINCE THE WORLD IS NULL
+        *
+        *
+         */
+        return new ItemStackHandler(3) {
 
             @Override
             protected void onLoad() {
-                if(getSlots()<getRepairListStacks().size())
+
+                if(getSlots()<3)
                 {
                     for(int i = 0; i < getSlots(); ++i) {
                         stacksList.add(i,getStackInSlot(i));
@@ -423,9 +429,9 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         CompoundTag invPrivateTag = p_155245_.getCompound("inv_repairs");
         repairItemsHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invPrivateTag));
 
-        List<ItemStack> repairList = new ArrayList<>();
         if(p_155245_.contains("inv_repairsList"))
         {
+            List<ItemStack> repairList = new ArrayList<>();
             CompoundTag invTag = p_155245_.getCompound("inv_repairsList");
             ItemStackHandler handler = new ItemStackHandler();
             ((INBTSerializable<CompoundTag>) handler).deserializeNBT(invTag);
