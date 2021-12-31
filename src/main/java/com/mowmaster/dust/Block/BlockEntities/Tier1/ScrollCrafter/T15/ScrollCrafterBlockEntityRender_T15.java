@@ -46,6 +46,8 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
             Level world = p_112307_.getLevel();
             Direction facing = p_112307_.getBlockState().getValue(SIDED_ROTATION_4);
             List<ItemStack> stacksList = p_112307_.getListOfInsertedItemsToDisplay();
+            ItemStack paper = p_112307_.getItemInTable(0);
+            ItemStack nuggs = p_112307_.getItemInTable(1);
 
             if(!(stacksList.size() == 0))
             {
@@ -55,7 +57,17 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     for(int i=0;i<stacksList.size();i++)
                     {
                         List<Float> floatValues = p_112307_.getRenderParams(stacksList.get(i));
-                        renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6), p_112307_.getRenderAsBlock(stacksList.get(i)));
+                        if(floatValues.size()>0)renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6),0, p_112307_.getRenderAsBlock(stacksList.get(i)));
+                    }
+                    if(!paper.isEmpty())
+                    {
+                        List<Float> floatValuesTablePaper = p_112307_.getRenderParams(paper);
+                        if(floatValuesTablePaper.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(paper),p_112311_,p_112312_, floatValuesTablePaper.get(0), floatValuesTablePaper.get(1), floatValuesTablePaper.get(2), floatValuesTablePaper.get(3), floatValuesTablePaper.get(4), floatValuesTablePaper.get(5),floatValuesTablePaper.get(6));
+                    }
+                    if(!nuggs.isEmpty())
+                    {
+                        List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(nuggs).getItem().equals(nuggs.getItem()))?(p_112307_.getRenderItem(nuggs)):(new ItemStack(p_112307_.getRenderItem(nuggs).getItem(),nuggs.getCount())),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                 }
                 if(facing == Direction.NORTH) {
@@ -64,7 +76,17 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     for(int i=0;i<stacksList.size();i++)
                     {
                         List<Float> floatValues = p_112307_.getRenderParams(stacksList.get(i));
-                        renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6), p_112307_.getRenderAsBlock(stacksList.get(i)));
+                        if(floatValues.size()>0)renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6),0, p_112307_.getRenderAsBlock(stacksList.get(i)));
+                    }
+                    if(!paper.isEmpty())
+                    {
+                        List<Float> floatValuesTablePaper = p_112307_.getRenderParams(paper);
+                        if(floatValuesTablePaper.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(paper),p_112311_,p_112312_, floatValuesTablePaper.get(0), floatValuesTablePaper.get(1), floatValuesTablePaper.get(2), floatValuesTablePaper.get(3), floatValuesTablePaper.get(4), floatValuesTablePaper.get(5),floatValuesTablePaper.get(6));
+                    }
+                    if(!nuggs.isEmpty())
+                    {
+                        List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                 }
                 if(facing == Direction.EAST) {
@@ -73,7 +95,17 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     for(int i=0;i<stacksList.size();i++)
                     {
                         List<Float> floatValues = p_112307_.getRenderParams(stacksList.get(i));
-                        renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6), p_112307_.getRenderAsBlock(stacksList.get(i)));
+                        if(floatValues.size()>0)renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6),0, p_112307_.getRenderAsBlock(stacksList.get(i)));
+                    }
+                    if(!paper.isEmpty())
+                    {
+                        List<Float> floatValuesTablePaper = p_112307_.getRenderParams(paper);
+                        if(floatValuesTablePaper.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(paper),p_112311_,p_112312_, floatValuesTablePaper.get(0), floatValuesTablePaper.get(1), floatValuesTablePaper.get(2), floatValuesTablePaper.get(3), floatValuesTablePaper.get(4), floatValuesTablePaper.get(5),floatValuesTablePaper.get(6));
+                    }
+                    if(!nuggs.isEmpty())
+                    {
+                        List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                 }
                 if(facing == Direction.WEST) {
@@ -82,20 +114,38 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     for(int i=0;i<stacksList.size();i++)
                     {
                         List<Float> floatValues = p_112307_.getRenderParams(stacksList.get(i));
-                        renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6), p_112307_.getRenderAsBlock(stacksList.get(i)));
+                        if(floatValues.size()>0)renderItem(world,p_112309_,p_112310_,p_112307_.getRenderItem(stacksList.get(i)),p_112311_,p_112312_, floatValues.get(0), floatValues.get(1), floatValues.get(2), floatValues.get(3), floatValues.get(4), floatValues.get(5),floatValues.get(6),0, p_112307_.getRenderAsBlock(stacksList.get(i)));
+                    }
+                    if(!paper.isEmpty())
+                    {
+                        List<Float> floatValuesTablePaper = p_112307_.getRenderParams(paper);
+                        if(floatValuesTablePaper.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(paper),p_112311_,p_112312_, floatValuesTablePaper.get(0), floatValuesTablePaper.get(1), floatValuesTablePaper.get(2), floatValuesTablePaper.get(3), floatValuesTablePaper.get(4), floatValuesTablePaper.get(5),floatValuesTablePaper.get(6));
+                    }
+                    if(!nuggs.isEmpty())
+                    {
+                        List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                 }
             }
         }
     }
 
-    public static void renderItem(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle, boolean renderAsBlock)
+    public static void renderItem(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle,int axis, boolean renderAsBlock)
     {
         if (!itemStack.isEmpty()) {
             p_112309_.pushPose();
             p_112309_.translate(x, y, z);
             p_112309_.scale(scaleX, scaleY, scaleZ);
-            p_112309_.mulPose(Vector3f.YP.rotationDegrees(angle));
+            switch(axis)
+            {
+                case 1: p_112309_.mulPose(Vector3f.XP.rotationDegrees(angle));
+                    break;
+                case 2: p_112309_.mulPose(Vector3f.ZP.rotationDegrees(angle));
+                    break;
+                default: p_112309_.mulPose(Vector3f.YP.rotationDegrees(angle));
+                    break;
+            }
             ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
             BlockRenderDispatcher renderBlock = Minecraft.getInstance().getBlockRenderer();
             BakedModel baked = renderer.getModel(itemStack,worldIn,null,0);
@@ -104,6 +154,21 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                 baked = renderBlock.getBlockModel(Block.byItem(itemStack.getItem()).defaultBlockState());
             }
             renderer.render(itemStack, ItemTransforms.TransformType.FIXED,true,p_112309_,p_112310_,p_112311_,p_112312_,baked);
+            p_112309_.popPose();
+        }
+    }
+
+    public static void renderItemStacked(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle)
+    {
+        if (!itemStack.isEmpty()) {
+            int displayLayersByStackSize = itemStack.getCount() / 8;
+            if(!itemStack.isEmpty() && displayLayersByStackSize==0) displayLayersByStackSize=1;
+            p_112309_.pushPose();
+            for(int i=0;i<displayLayersByStackSize;i++)
+            {
+                p_112309_.translate(0, 0.015625, 0);
+                renderItem(worldIn,p_112309_,p_112310_,itemStack,p_112311_,p_112312_, x, y, z, scaleX, scaleY, scaleZ,angle,1, false);
+            }
             p_112309_.popPose();
         }
     }

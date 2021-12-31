@@ -281,9 +281,10 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                 }
                 else if(table.isItemAllowedInTable(itemInHand))
                 {
-                    if(table.addItem(itemInHand,true))
+                    if(table.addItemInTable(itemInHand,true).getCount() < itemInHand.getCount())
                     {
-                        
+                        ItemStack stackReturned = table.addItemInTable(itemInHand,false);
+                        itemInHand.shrink(itemInHand.getCount()-stackReturned.getCount());
                     }
                 }
                 else if(itemInMainHand.isEmpty())

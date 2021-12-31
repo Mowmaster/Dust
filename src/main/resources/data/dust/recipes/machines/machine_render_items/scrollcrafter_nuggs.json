@@ -1,0 +1,19 @@
+{
+  "type": "dust:dust_machine_render_items",
+  "input": {
+    "item": "dust:block_crafter_scroll_t15",
+    "item": "minecraft:gold_nugget"
+  },
+  "result": {
+    "item": "dust:upgrade_pedestal_base"
+  },
+  "transitionX": 0.21875,
+  "transitionY": 1.046875,
+  "transitionZ": 0.21875,
+  "scaleX": 0.125,
+  "scaleY": 0.125,
+  "scaleZ": 0.125,
+  "angle": 90.0,
+  "renderItem": true,
+  "renderAsBlock": false
+}

@@ -756,7 +756,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         Container container = Constants.blankContainer;
         container.setItem(0,stackIn);
         List<BaseBlockEntityFilter> recipes = getLevel().getRecipeManager().getRecipesFor(BaseBlockEntityFilter.BLOCKENTITYFILTER,container,getLevel());
-        return getLevel() != null ? (recipes.size() > 0)?(getLevel().getRecipeManager().getRecipesFor(BaseBlockEntityFilter.BLOCKENTITYFILTER,container,getLevel()).get(0)):(null) : null;
+        return getLevel() != null ? (recipes.size() > 0)?(recipes.stream().findFirst().get()):(null) : null;
     }
 
     protected String getProcessResultFilterBlock(BaseBlockEntityFilter recipe) {

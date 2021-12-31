@@ -409,7 +409,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             cont.setItem(i,stackIn.get(i));
         }
         List<MachineBlockRenderItemsRecipe> recipes = getLevel().getRecipeManager().getRecipesFor(MachineBlockRenderItemsRecipe.MACHINE_RENDER_ITEMS,cont,getLevel());
-        return getLevel() != null ? (recipes.size() > 0)?(getLevel().getRecipeManager().getRecipesFor(MachineBlockRenderItemsRecipe.MACHINE_RENDER_ITEMS,cont,getLevel()).get(0)):(null) : null;
+        return getLevel() != null ? (recipes.size() > 0)?(recipes.get(0)):(null) : null;
     }
 
     protected List<Float> getProcessResultRenderList(MachineBlockRenderItemsRecipe recipe) {
@@ -733,7 +733,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     ==============================================================================
     ============================================================================*/
 
-    public int getSlotForItemStack(ItemStack stackIncoming)
+    public int getSlotForItemStackInTable(ItemStack stackIncoming)
     {
         IItemHandler h = tableItemHandler.orElse(null);
         if(h!=null)
@@ -761,7 +761,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return false;
     }
 
-    public boolean hasItem(int slot)
+    public boolean hasItemInTable(int slot)
     {
         IItemHandler h = tableItemHandler.orElse(null);
         if(h!=null)
@@ -777,12 +777,12 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         IItemHandler h = tableItemHandler.orElse(null);
         if(h!=null)
         {
-            if(hasItem(slot))return h.getStackInSlot(slot);
+            if(hasItemInTable(slot))return h.getStackInSlot(slot);
         }
         return ItemStack.EMPTY;
     }
 
-    public ItemStack removeItem(int numToRemove, int slot) {
+    public ItemStack removeItemInTable(int numToRemove, int slot) {
         IItemHandler h = tableItemHandler.orElse(null);
         ItemStack stack = ItemStack.EMPTY;
         if(h!=null)
@@ -793,7 +793,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return stack;
     }
 
-    public ItemStack removeItem(int slot) {
+    public ItemStack removeItemInTable(int slot) {
         IItemHandler h = tableItemHandler.orElse(null);
         ItemStack stack = ItemStack.EMPTY;
         if(h!=null)
@@ -804,42 +804,37 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return stack;
     }
 
-    public boolean addItem(ItemStack stackIncoming ,boolean simulate)
+    public ItemStack addItemInTable(ItemStack stackIncoming ,boolean simulate)
     {
+        ItemStack returner = stackIncoming.copy();
         if(isItemAllowedInTable(stackIncoming))
         {
             IItemHandler h = tableItemHandler.orElse(null);
-            int slot = getAllowedSlot(stackIncoming);
-            if(h.isItemValid(0,stackIncoming))
+            int slot = getSlotForItemStackInTable(stackIncoming);
+            if(h.isItemValid(slot,stackIncoming))
             {
-                if(hasItem(slot))
+                if(hasItemInTable(slot))
                 {
                     if(ItemHandlerHelper.canItemStacksStack(getItemInTable(slot),stackIncoming))
                     {
-                        if(!simulate)
-                        {
-                            h.insertItem(0, stackIncoming.copy(), false);
-                            update();
-                        }
-                        return true;
+                        returner = h.insertItem(slot, stackIncoming.copy(), simulate);
+                        if(!simulate) {update();}
+                        return returner;
                     }
                 }
                 else
                 {
-                    if(!simulate)
-                    {
-                        h.insertItem(0, stackIncoming.copy(), false);
-                        update();
-                    }
-                    return true;
+                    returner = h.insertItem(slot, stackIncoming.copy(), simulate);
+                    if(!simulate) {update();}
+                    return returner;
                 }
             }
         }
 
-        return false;
+        return returner;
     }
 
-    public int getSlotSizeLimit(int slot)
+    public int getSlotSizeLimitInTable(int slot)
     {
         IItemHandler h = tableItemHandler.orElse(null);
         return (h != null)?(h.getSlotLimit(slot)):(0);
@@ -895,6 +890,9 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         CompoundTag invPrivateTag = p_155245_.getCompound("inv_repairs");
         repairItemsHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invPrivateTag));
 
+        CompoundTag invTableTag = p_155245_.getCompound("inv_table");
+        tableItemHandler.ifPresent(h -> ((INBTSerializable<CompoundTag>) h).deserializeNBT(invTableTag));
+
         if(p_155245_.contains("inv_repairsList"))
         {
             List<ItemStack> repairList = new ArrayList<>();
@@ -923,6 +921,11 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         repairItemsHandler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_58888_.put("inv_repairs", compound);
+        });
+
+        tableItemHandler.ifPresent(h -> {
+            CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
+            p_58888_.put("inv_table", compound);
         });
 
         CompoundTag compoundStorage = new CompoundTag();
