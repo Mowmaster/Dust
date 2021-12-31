@@ -45,8 +45,9 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
     private final float scaleZ;
     private final float angle;
     private final boolean renderItem;
+    private final boolean renderAsBlock;
 
-    public MachineBlockRenderItemsRecipe(ResourceLocation id, String group, @Nullable Ingredient input, ItemStack output, float transitionX, float transitionY, float transitionZ, float scaleX, float scaleY, float scaleZ, float angle, boolean renderItem)
+    public MachineBlockRenderItemsRecipe(ResourceLocation id, String group, @Nullable Ingredient input, ItemStack output, float transitionX, float transitionY, float transitionZ, float scaleX, float scaleY, float scaleZ, float angle, boolean renderItem, boolean renderAsBlock)
     {
         this.group = group;
         this.id = id;
@@ -60,6 +61,7 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
         this.scaleZ = scaleZ;
         this.angle = angle;
         this.renderItem = renderItem;
+        this.renderAsBlock = renderAsBlock;
     }
 
     @Override
@@ -119,6 +121,11 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
         return renderItem;
     }
 
+    public boolean getResultRenderAsBlock()
+    {
+        return renderAsBlock;
+    }
+
     @Override
     public ResourceLocation getId()
     {
@@ -151,9 +158,9 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>>
             implements RecipeSerializer<MachineBlockRenderItemsRecipe>
     {
-        protected MachineBlockRenderItemsRecipe createRecipe(ResourceLocation recipeId, String group, Ingredient input, ItemStack result, float transitionX, float transitionY, float transitionZ, float scaleX, float scaleY, float scaleZ, float angle, boolean renderItem)
+        protected MachineBlockRenderItemsRecipe createRecipe(ResourceLocation recipeId, String group, Ingredient input, ItemStack result, float transitionX, float transitionY, float transitionZ, float scaleX, float scaleY, float scaleZ, float angle, boolean renderItem, boolean renderAsBlock)
         {
-            return new MachineBlockRenderItemsRecipe(recipeId, group, input, result, transitionX, transitionY, transitionZ, scaleX, scaleY, scaleZ, angle, renderItem);
+            return new MachineBlockRenderItemsRecipe(recipeId, group, input, result, transitionX, transitionY, transitionZ, scaleX, scaleY, scaleZ, angle, renderItem, renderAsBlock);
         }
 
         @Override
@@ -170,7 +177,8 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
             float scaleZ = json.has("scaleZ") ? GsonHelper.getAsFloat(json,"scaleZ") : 0.0f;
             float angle = json.has("angle") ? GsonHelper.getAsFloat(json,"angle") : 0.0f;
             boolean renderItem = json.has("renderItem") ? GsonHelper.getAsBoolean(json,"renderItem") : false;
-            return createRecipe(recipeId, group, input, result, transitionX, transitionY, transitionZ, scaleX, scaleY, scaleZ, angle, renderItem);
+            boolean renderAsBlock = json.has("renderAsBlock") ? GsonHelper.getAsBoolean(json,"renderAsBlock") : false;
+            return createRecipe(recipeId, group, input, result, transitionX, transitionY, transitionZ, scaleX, scaleY, scaleZ, angle, renderItem, renderAsBlock);
         }
 
         @Override
@@ -188,7 +196,8 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
             float scaleZ = buffer.readFloat();
             float angle = buffer.readFloat();
             boolean renderItem = buffer.readBoolean();
-            return createRecipe(recipeId, group,  input, result, transitionX, transitionY, transitionZ, scaleX, scaleY, scaleZ, angle, renderItem);
+            boolean renderAsBlock = buffer.readBoolean();
+            return createRecipe(recipeId, group,  input, result, transitionX, transitionY, transitionZ, scaleX, scaleY, scaleZ, angle, renderItem, renderAsBlock);
         }
 
         @Override
@@ -207,6 +216,7 @@ public class MachineBlockRenderItemsRecipe implements Recipe<Container>
             buffer.writeFloat(recipe.scaleZ);
             buffer.writeFloat(recipe.angle);
             buffer.writeBoolean(recipe.renderItem);
+            buffer.writeBoolean(recipe.renderAsBlock);
         }
     }
 }

@@ -14,5 +14,7 @@
   "scaleY": 0.5,
   "scaleZ": 0.5,
   "angle": 0.0,
-  "renderItem": true
+  "renderItem": true,
+  "renderAsBlock": true
+
 }

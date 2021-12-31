@@ -1,15 +1,20 @@
 package com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15;
 
 import com.google.common.collect.Maps;
+import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.ScrollCrafterBlockBase;
+import com.mowmaster.dust.Capabilities.Dust.DustMagic;
+import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.Items.ColorApplicator;
+import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Readable.RepairScrolls.BaseRepairScroll;
 import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
 import com.mowmaster.dust.Recipes.CrystalNodeRecipe;
 import com.mowmaster.dust.Recipes.MachineBlockRepairItemsHintRecipe;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
+import com.mowmaster.dust.Util.DustMagicUtil;
 import com.mowmaster.dust.Util.MessageUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -130,7 +135,21 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
             ItemStack itemInHand = p_60506_.getItemInHand(p_60507_);
             ItemStack itemInMainHand = p_60506_.getMainHandItem();
             ItemStack itemInOffHand = p_60506_.getOffhandItem();
-            if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15)
+            if(itemInMainHand.getItem() instanceof ColorApplicator)
+            {
+                int getColor = ColorReference.getColorFromItemStackInt(itemInMainHand);
+                BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
+                p_60504_.setBlock(p_60505_,newState,3);
+                return InteractionResult.SUCCESS;
+            }
+            else if(itemInOffHand.getItem() instanceof ColorApplicator)
+            {
+                int getColor = ColorReference.getColorFromItemStackInt(itemInOffHand);
+                BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
+                p_60504_.setBlock(p_60505_,newState,3);
+                return InteractionResult.SUCCESS;
+            }
+            else if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15)
             {
                 ScrollCrafterBlockEntity_T15 table = (ScrollCrafterBlockEntity_T15)p_60504_.getBlockEntity(p_60505_);
                 if(!table.isFullyRepaired())
@@ -189,6 +208,92 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                             }
                             MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.repair_made");
                             return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                else if(itemInHand.getItem() instanceof ColoredCrystalDustBase)
+                {
+                    //System.out.println("THIS IS DUST");
+                    if(table.hasDust())
+                    {
+                        //System.out.println("HAS DUST");
+                        if(table.canAcceptDust(DustMagic.getDustMagicInItemStack(itemInHand)))
+                        {
+                            if(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.SIMULATE)>0)
+                            {
+                                itemInHand.shrink(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.EXECUTE));
+                                return InteractionResult.SUCCESS;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.SIMULATE)>0)
+                        {
+                            itemInHand.shrink(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.EXECUTE));
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                }
+                else if(itemInHand.getItem() instanceof DustJarBlockItem)
+                {
+                    DustMagic magicJar = DustMagic.getDustMagicInItemStack(itemInHand);
+                    if(table.hasDust())
+                    {
+                        if(magicJar.getDustAmount()>0)
+                        {
+                            DustMagic magicTable = table.getStoredDust();
+                            if(magicJar.isDustEqual(magicTable))
+                            {
+                                int count = table.getStoredDust().getDustAmount();
+                                int capacity = table.getDustCapacity();
+                                int spaceInTable = capacity-count;
+                                int countToAdd = (magicJar.getDustAmount()>spaceInTable)?(spaceInTable):(magicJar.getDustAmount());
+                                DustMagic magicToAdd = new DustMagic(magicJar.getDustColor(),countToAdd);
+                                if(table.addDust(magicToAdd, IDustHandler.DustAction.SIMULATE)>0)
+                                {
+                                    int countHappened = table.addDust(magicToAdd, IDustHandler.DustAction.EXECUTE);
+                                    if(countHappened>0)
+                                    {
+                                        int magicLeftAmount = magicJar.getDustAmount()-countHappened;
+                                        DustMagic magicLeft = (magicLeftAmount<=0)?(new DustMagic(-1, 0)):(new DustMagic(magicJar.getDustColor(),magicLeftAmount));
+                                        DustMagic.setDustMagicInStack(itemInHand,magicLeft);
+                                        return InteractionResult.SUCCESS;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(magicJar.getDustAmount()>0)
+                        {
+                            if(table.addDust(magicJar, IDustHandler.DustAction.SIMULATE) > 0)
+                            {
+                                if(table.addDust(magicJar, IDustHandler.DustAction.EXECUTE) > 0)
+                                {
+                                    DustMagic.setDustMagicInStack(itemInHand,new DustMagic(-1, 0));
+                                    return InteractionResult.SUCCESS;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if(table.isItemAllowedInTable(itemInHand))
+                {
+                    if(table.addItem(itemInHand,true))
+                    {
+                        
+                    }
+                }
+                else if(itemInMainHand.isEmpty())
+                {
+                    if(p_60506_.isCrouching())
+                    {
+                        if(table.hasDust())
+                        {
+                            DustMagic magic = table.getStoredDust();
+                            MessageUtils.messagePlayerChatWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dust_in_jar", Arrays.asList(ColorReference.getColorName(magic.getDustColor()),": ",""+magic.getDustAmount()+""));
                         }
                     }
                 }

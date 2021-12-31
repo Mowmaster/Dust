@@ -1,12 +1,10 @@
 package com.mowmaster.dust.Block.BlockEntities.CustomDustBlock;
 
-import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalClusterBlockEntity;
-import com.mowmaster.dust.Configs.DustMachineConfig;
+import com.mowmaster.dust.Configs.DustConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Items.ColoredCrystalBase;
-import com.mowmaster.dust.Items.Tools.DevTool;
 import com.mowmaster.dust.Recipes.CrusherRecipe;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
@@ -17,8 +15,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -32,11 +28,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -201,7 +194,7 @@ public class CustomPowderedBlock extends Block implements EntityBlock {
     {
         if(input.getItem() instanceof ColoredCrystalBase)
         {
-            int dustAmount = DustMachineConfig.COMMON.dustPerCrystal.get();
+            int dustAmount = DustConfig.COMMON.dustPerCrystal.get();
             for(int i=1;i<=dustAmount;i++)
             {
                 world.setBlock(pos.offset(0,i-1,0), ColorReference.addColorToBlockState(DeferredRegisterBlocks.CRYSTAL_DUST_BLOCK.get().defaultBlockState(),ColorReference.getColorFromItemStackInt(input)),3);

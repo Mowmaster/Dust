@@ -6,13 +6,12 @@ import com.mowmaster.dust.Client.ClientItemTooltipComponent;
 import com.mowmaster.dust.Client.ItemTooltipComponent;
 import com.mowmaster.dust.DeferredRegistery.*;
 import com.mowmaster.dust.DeferredRegistery.Client.ClientRegistry;
-import com.mowmaster.dust.Configs.DustGenerationConfig;
+import com.mowmaster.dust.Configs.DustConfig;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.World.DustGeneration;
 import com.mowmaster.dust.World.GeodeGen.GeodeFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -55,9 +54,9 @@ public class Dust
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> eventBus.register(new ClientRegistry()));
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DustGenerationConfig.commonSpec);
-
-        eventBus.register(DustGenerationConfig.class);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, DustConfig.commonSpec);
+        
+        eventBus.register(DustConfig.class);
 
 
         DeferredRegisterItems.ITEMS.register(eventBus);

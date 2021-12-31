@@ -6,7 +6,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class DustGenerationConfig
+public class DustConfig
 {
     public static class Common {
         public final ForgeConfigSpec.BooleanValue generate333;
@@ -22,6 +22,12 @@ public class DustGenerationConfig
         public final ForgeConfigSpec.IntValue geodeRarity030;
         public final ForgeConfigSpec.IntValue geodeRarity003;
         public final ForgeConfigSpec.IntValue geodeRarityGeodeRandom;
+
+        public final ForgeConfigSpec.IntValue effectMaxPotency;
+
+        public final ForgeConfigSpec.IntValue dustPerCrystal;
+        public final ForgeConfigSpec.IntValue repairitemsToCraft_ScrollCrafter_T15;
+
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Dust World Generation Settings")
@@ -67,6 +73,23 @@ public class DustGenerationConfig
                     .comment("Geode (Random Color) Rarity [Default: 600] (The higher the value the rarer)")
                     .defineInRange("geodeRarityGeodeRandom", 600, 0, Integer.MAX_VALUE);
 
+            builder.pop();
+
+            builder.comment("Potency Setting").push("Potency");
+
+            effectMaxPotency = builder
+                    .comment("Max Effect Potency")
+                    .defineInRange("maxPotency", 5, 0, Integer.MAX_VALUE);
+            builder.pop();
+
+            builder.comment("Machine Settings").push("Machines");
+
+            dustPerCrystal = builder
+                    .comment("Dust Return per Crushed Crystal")
+                    .defineInRange("dustPerCrystal", 1, 0, Integer.MAX_VALUE);
+            repairitemsToCraft_ScrollCrafter_T15 = builder
+                    .comment("Repair Items Needed To Craft the Scroll Crafter Tier 1.5")
+                    .defineInRange("repairItemsNeeded", 3, 1, Integer.MAX_VALUE);
             builder.pop();
         }
     }

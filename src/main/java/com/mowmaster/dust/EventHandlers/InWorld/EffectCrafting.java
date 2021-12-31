@@ -1,23 +1,15 @@
 package com.mowmaster.dust.EventHandlers.InWorld;
 
-import com.mowmaster.dust.Configs.DustEffectConfig;
+import com.mowmaster.dust.Configs.DustConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.Tools.LinkingTool;
 import com.mowmaster.dust.Items.Tools.LinkingToolBackwards;
-import com.mowmaster.dust.Recipes.MobEffectColorRecipe;
-import com.mowmaster.dust.Recipes.MobEffectColorRecipeCorrupted;
 import com.mowmaster.dust.References.ColorReference;
-import com.mowmaster.dust.References.Constants;
 import com.mowmaster.dust.References.EffectPickerReference;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,10 +25,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 
 @Mod.EventBusSubscriber
@@ -110,7 +99,7 @@ public class EffectCrafting
 
 
 
-                                int finalPotency = (potency>DustEffectConfig.COMMON.effectMaxPotency.get())?(DustEffectConfig.COMMON.effectMaxPotency.get()):(potency)+1;
+                                int finalPotency = (potency> DustConfig.COMMON.effectMaxPotency.get())?(DustConfig.COMMON.effectMaxPotency.get()):(potency)+1;
                                 MobEffectInstance effectPlayer = new MobEffectInstance(EffectPickerReference.getEffectForColor(worldIn, corrupted, currentColor),(dustDuration*10)/finalPotency,finalPotency-1,false,false,false,null);
                                 /*public MobEffectInstance(MobEffect effect, int duration, int amplifier, boolean ambient, boolean visible, boolean showIcon, @Nullable MobEffectInstance hiddenEffect)*/
                                 player.addEffect(effectPlayer);
