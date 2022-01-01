@@ -587,7 +587,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         Container container = Constants.blankContainer;
         container.setItem(0,stackIn);
         List<MobEffectColorRecipe> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level);
-        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level).get(0) : null;
+        return recipes.size() > 0 ? recipes.get(0) : null;
     }
 
     protected String getProcessResultMobEffectColorRecipe(MobEffectColorRecipe recipe) {

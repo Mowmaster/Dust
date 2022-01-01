@@ -13,7 +13,7 @@
   "scaleX": 0.125,
   "scaleY": 0.125,
   "scaleZ": 0.125,
-  "angle": 90.0,
+  "angle": 270.0,
   "renderItem": true,
   "renderAsBlock": false
 }

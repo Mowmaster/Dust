@@ -15,6 +15,7 @@ import com.mowmaster.dust.Items.ColoredCrystalBase;
 import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Filters.FilterEnchantCount;
 import com.mowmaster.dust.Items.Filters.FilterRestricted;
+import com.mowmaster.dust.Items.Scrolls.ScrollBase;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -101,6 +102,22 @@ public class ClientRegistry
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterItems.FILTER_TAG.get());
 
+        event.getItemColors().register((stack, color) ->
+        {
+            if (color == 1) {
+                return ScrollBase.getColorRender(stack);
+            }
+            else if (color == 2) {
+                return ScrollBase.getColorRenderRibbon(stack);
+            }
+            else if (color == 3) {
+                return ScrollBase.getColorRenderCoin(stack);
+            }
+            else {return -1;}
+
+        }, DeferredRegisterItems.EFFECT_SCROLL.get());
+
+
 
 
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.PEDESTAL_UPGRADE_IMPORT.get());
@@ -120,8 +137,13 @@ public class ClientRegistry
 
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.AUGMENT_PEDESTAL_RENDERDIFFUSER.get());
 
+        ItemModelPropertiesDust.dustItemModes(DeferredRegisterItems.EFFECT_SCROLL.get());
+
 
         ItemModelPropertiesDust.dustItemModes(DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get().asItem());
+
+
+
 
 
 

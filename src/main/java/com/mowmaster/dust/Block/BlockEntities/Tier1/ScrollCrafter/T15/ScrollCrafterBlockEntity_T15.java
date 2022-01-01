@@ -12,6 +12,7 @@ import com.mowmaster.dust.Items.Filters.IPedestalFilter;
 import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
+import com.mowmaster.dust.Recipes.CrystalClusterModifiers;
 import com.mowmaster.dust.Recipes.MachineBlockRenderItemsRecipe;
 import com.mowmaster.dust.Recipes.MachineBlockRepairItemsRecipe;
 import com.mowmaster.dust.References.Constants;
@@ -691,12 +692,12 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
          * CONFIG IS USED TO SET THIS, USERS MUST DEFINE RECIPES AND CHANGE CONFIG TO MAKE CHANGES TO MACHINES NOW
          */
 
-        return new ItemStackHandler(2) {
+        return new ItemStackHandler(3) {
 
             @Override
             protected void onLoad() {
 
-                if(getSlots()<2)
+                if(getSlots()<3)
                 {
                     for(int i = 0; i < getSlots(); ++i) {
                         stacksListTable.add(i,getStackInSlot(i));
@@ -722,6 +723,8 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 if (slot == 0 && stack.getItem().equals(Items.PAPER)) return true;
                 if (slot == 1 && stack.getItem().equals(Items.GOLD_NUGGET)) return true;
+                if (slot == 2 && addModifier(stack, true).getCount()>0) return true;
+
                 return false;
             }
         };
@@ -845,6 +848,227 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     ===========================      ITEM END        =============================
     ==============================================================================
     ============================================================================*/
+
+
+
+    /*============================================================================
+    ==============================================================================
+    ===========================    MODIFIER START    =============================
+    ==============================================================================
+    ============================================================================*/
+
+    @Nullable
+    protected CrystalClusterModifiers getRecipeModifier(Level level, ItemStack stackIn) {
+        Container container = Constants.blankContainer;
+        container.setItem(0,stackIn);
+        List<CrystalClusterModifiers> recipes = level.getRecipeManager().getRecipesFor(CrystalClusterModifiers.CRYSTALCLUSTERMODIFIER,container,level);
+        return recipes.size() > 0 ? recipes.stream().findFirst().get() : null;
+    }
+
+    protected double getProcessResultModifierDuration(CrystalClusterModifiers recipe) {
+        return (recipe == null)?(0.0):(recipe.getResultDurationModifier());
+    }
+
+    protected double getProcessResultModifierPotency(CrystalClusterModifiers recipe) {
+        return (recipe == null)?(0.0):(recipe.getResultPotencyModifier());
+    }
+
+    protected boolean getProcessResultCorruption(CrystalClusterModifiers recipe) {
+        return (recipe == null)?(false):(recipe.getResultCorruption());
+    }
+
+
+
+    public boolean hasModifierItems()
+    {
+        IItemHandler h = tableItemHandler.orElse(null);
+        if(h.getStackInSlot(2).isEmpty())return false;
+
+        return true;
+    }
+
+    //Also has check for if fuel supports modifier
+    public boolean isAcceptedModifierItem(ItemStack stack)
+    {
+        double durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),stack));
+        double potencyMod = getProcessResultModifierPotency(getRecipeModifier(getLevel(),stack));
+        //add 1 since potencyMod needs over 1 to be more effective by default, but default effect potency is 0
+        int fuelAllowedPotency = DustConfig.COMMON.effectMaxPotency.get();
+        if(potencyMod > fuelAllowedPotency)return false;
+        //Since we only check for INT values, and +/- ones count, but 0 would result null values in our maths, so those are bad.
+        if(durationMod > 0.0 || durationMod < 0.0)return true;
+        else if(potencyMod > 0.0 || potencyMod < 0.0)return true;
+        else if(hasCorruption())return true;
+
+        return false;
+    }
+
+    public boolean isModifierItem(ItemStack stack)
+    {
+        double durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),stack));
+        double potencyMod = getProcessResultModifierPotency(getRecipeModifier(getLevel(),stack));
+        //Since we only check for INT values, and +/- ones count, but 0 would result null values in our maths, so those are bad.
+        if(durationMod > 0.0 || durationMod < 0.0)return true;
+        if(potencyMod > 0.0 || potencyMod < 0.0)return true;
+        else if(hasCorruption())return true;
+
+        return false;
+    }
+
+    public ItemStack getModifierStack()
+    {
+        if(hasModifierItems())
+        {
+            IItemHandler h = tableItemHandler.orElse(null);
+            return h.getStackInSlot(2);
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    public boolean doModifiersMatch(ItemStack stackIncoming)
+    {
+        if(hasModifierItems())
+        {
+            ItemStack currentModifier = getModifierStack();
+            return ItemHandlerHelper.canItemStacksStack(currentModifier,stackIncoming);
+        }
+
+        return false;
+    }
+
+
+    // Returns the stack that can/will be added.
+    public ItemStack addModifier(ItemStack stack, boolean simulate)
+    {
+        if(isModifierItem(stack))
+        {
+            if(hasModifierItems())
+            {
+                if(doModifiersMatch(stack))
+                {
+                    ItemStack currentModifier = getModifierStack();
+                    int spaceAvailable = currentModifier.getMaxStackSize() - currentModifier.getCount();
+                    int countToAdd = (stack.getCount()>spaceAvailable)?(spaceAvailable):(stack.getCount());
+                    if(countToAdd > 0)
+                    {
+                        if(!simulate)
+                        {
+                            ItemStack returner = stack.copy();
+                            returner.setCount(countToAdd);
+                            IItemHandler h = tableItemHandler.orElse(null);
+                            h.insertItem(2,returner,simulate);
+
+                            return returner;
+                        }
+                        else
+                        {
+                            ItemStack returner = stack.copy();
+                            returner.setCount(countToAdd);
+                            return returner;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //For When Adding new Modifiers
+
+                int spaceAvailable = stack.getMaxStackSize();
+                int countToAdd = (stack.getCount()>spaceAvailable)?(spaceAvailable):(stack.getCount());
+                if(countToAdd > 0)
+                {
+                    if(!simulate)
+                    {
+                        ItemStack returner = stack.copy();
+                        returner.setCount(countToAdd);
+                        IItemHandler h = tableItemHandler.orElse(null);
+                        h.insertItem(2,returner,simulate);
+
+                        return returner;
+                    }
+                    else
+                    {
+                        ItemStack returner = stack.copy();
+                        returner.setCount(countToAdd);
+                        return returner;
+                    }
+                }
+            }
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    public ItemStack removeModifier(int removalAmount)
+    {
+        if(hasModifierItems())
+        {
+            ItemStack returnStack = getModifierStack().copy();
+            //-1 as an option to remove all
+            int countToRemove = (removalAmount == -1)?(returnStack.getCount()):(removalAmount);
+            returnStack.setCount(countToRemove);
+            IItemHandler h = tableItemHandler.orElse(null);
+            h.extractItem(2,countToRemove,false);
+
+            return returnStack;
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public boolean hasCorruption()
+    {
+        if(hasModifierItems())
+        {
+            return getProcessResultCorruption(getRecipeModifier(getLevel(),getModifierStack()));
+        }
+        return false;
+    }
+
+    /*public int calculateFuelModifiedDuration()
+    {
+        int fuelDuration = 0;
+        double durationMod = 0;
+        //Verify fuel can support modifier
+        if(isAcceptedModifierItem(getModifierStack())) durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),getModifierStack()));
+        if(durationMod > 0)
+        {
+            return (int)((double)fuelDuration * durationMod);
+        }
+        else if(durationMod < 0)
+        {
+            double modifierAbs = Math.abs(durationMod);
+            return (int)((double)fuelDuration * modifierAbs);
+        }
+        else if(fuelDuration > 0)
+        {
+            return fuelDuration;
+        }
+
+
+        return 0;
+    }*/
+
+    public int calculateModifiedPotency()
+    {
+        //0 + 1 But will have to subtract 1 later
+        double defaultPotency = 1.0;
+        double calculatedPotency = 0.0;
+        double potencyMod = getProcessResultModifierPotency(getRecipeModifier(getLevel(),getModifierStack()));
+        //Verify fuel can support potency modifier
+        if(isAcceptedModifierItem(getModifierStack()))calculatedPotency = defaultPotency * potencyMod;
+
+        //Subtracting 1 'Later'
+        return (int)(calculatedPotency-1.0);
+    }
+
+    /*============================================================================
+    ==============================================================================
+    ===========================     MODIFIER END     =============================
+    ==============================================================================
+    ============================================================================*/
+
+
 
     public void spawnItemStack(Level worldIn, double x, double y, double z, ItemStack stack) {
         Random RANDOM = new Random();

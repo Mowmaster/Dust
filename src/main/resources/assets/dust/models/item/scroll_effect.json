@@ -1,0 +1,15 @@
+{
+"parent": "dust:item/scroll/scroll_small",
+  "textures": {
+    "0": "dust:items/models/upgrades/pedestal_upgrade",
+    "1": "dust:items/scroll/ribbons",
+    "2": "dust:items/scroll/scroll_1",
+    "particle": "dust:items/models/upgrades/pedestal_upgrade"
+  },
+  "overrides": [
+    { "predicate": { "dust:filter_mode": 0}, "model": "dust:item/scroll/scroll_small"},
+    { "predicate": { "dust:filter_mode": 1}, "model": "dust:item/scroll/scroll_medium"},
+    { "predicate": { "dust:filter_mode": 2}, "model": "dust:item/scroll/scroll_large"},
+    { "predicate": { "dust:filter_mode": 3}, "model": "dust:item/scroll/scroll_xlarge"}
+  ]
+}

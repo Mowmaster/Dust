@@ -48,6 +48,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
             List<ItemStack> stacksList = p_112307_.getListOfInsertedItemsToDisplay();
             ItemStack paper = p_112307_.getItemInTable(0);
             ItemStack nuggs = p_112307_.getItemInTable(1);
+            ItemStack mods = p_112307_.getItemInTable(2);
 
             if(!(stacksList.size() == 0))
             {
@@ -69,6 +70,11 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
                         if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(nuggs).getItem().equals(nuggs.getItem()))?(p_112307_.getRenderItem(nuggs)):(new ItemStack(p_112307_.getRenderItem(nuggs).getItem(),nuggs.getCount())),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
+                    if(!mods.isEmpty())
+                    {
+                        List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
+                        if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
+                    }
                 }
                 if(facing == Direction.NORTH) {
                     p_112309_.mulPose(Vector3f.YP.rotationDegrees(180));
@@ -87,6 +93,11 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     {
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
                         if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
+                    }
+                    if(!mods.isEmpty())
+                    {
+                        List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
+                        if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
                     }
                 }
                 if(facing == Direction.EAST) {
@@ -107,6 +118,11 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
                         if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
+                    if(!mods.isEmpty())
+                    {
+                        List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
+                        if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
+                    }
                 }
                 if(facing == Direction.WEST) {
                     p_112309_.mulPose(Vector3f.YP.rotationDegrees(270));
@@ -125,6 +141,11 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     {
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
                         if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
+                    }
+                    if(!mods.isEmpty())
+                    {
+                        List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
+                        if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
                     }
                 }
             }
