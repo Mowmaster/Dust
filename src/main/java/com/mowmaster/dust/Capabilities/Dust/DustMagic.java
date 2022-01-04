@@ -48,8 +48,9 @@ public class DustMagic {
 
     public boolean isDustEqualOrEmpty(DustMagic magicIn)
     {
-        if(this.isEmpty())return true;
-        return magicIn.getDustColor() == this.dustColor;
+        if(this.equals(new DustMagic(-1, 0)) || this.dustAmount <=0)return true;
+        else if(this.dustAmount > 0)return magicIn.getDustColor() == this.dustColor;
+        return false;
     }
 
     public static CompoundTag setDustMagicInTag(CompoundTag tag, DustMagic magicIn)

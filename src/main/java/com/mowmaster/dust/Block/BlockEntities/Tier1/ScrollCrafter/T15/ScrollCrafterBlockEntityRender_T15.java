@@ -6,6 +6,7 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -49,6 +50,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
             ItemStack paper = p_112307_.getItemInTable(0);
             ItemStack nuggs = p_112307_.getItemInTable(1);
             ItemStack mods = p_112307_.getItemInTable(2);
+            ItemStack stackScroll = p_112307_.getScrollCraftingOutput();
 
             if(!(stacksList.size() == 0))
             {
@@ -75,6 +77,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                         List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
                         if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
                     }
+                    if(!stackScroll.isEmpty())renderItemRotating(world,p_112309_,p_112310_, stackScroll, p_112311_, p_112312_);
                 }
                 if(facing == Direction.NORTH) {
                     p_112309_.mulPose(Vector3f.YP.rotationDegrees(180));
@@ -99,6 +102,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                         List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
                         if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
                     }
+                    if(!stackScroll.isEmpty())renderItemRotating(world,p_112309_,p_112310_, stackScroll, p_112311_, p_112312_);
                 }
                 if(facing == Direction.EAST) {
                     p_112309_.mulPose(Vector3f.YP.rotationDegrees(90));
@@ -123,6 +127,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                         List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
                         if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
                     }
+                    if(!stackScroll.isEmpty())renderItemRotating(world,p_112309_,p_112310_, stackScroll, p_112311_, p_112312_);
                 }
                 if(facing == Direction.WEST) {
                     p_112309_.mulPose(Vector3f.YP.rotationDegrees(270));
@@ -147,8 +152,29 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                         List<Float> floatValuesTableMods = p_112307_.getRenderParams(mods);
                         if(floatValuesTableMods.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(mods).getItem().equals(mods.getItem()))?(p_112307_.getRenderItem(mods)):(new ItemStack(p_112307_.getRenderItem(mods).getItem(),mods.getCount())),p_112311_,p_112312_, floatValuesTableMods.get(0), floatValuesTableMods.get(1), floatValuesTableMods.get(2), floatValuesTableMods.get(3), floatValuesTableMods.get(4), floatValuesTableMods.get(5),floatValuesTableMods.get(6));
                     }
+                    if(!stackScroll.isEmpty())renderItemRotating(world,p_112309_,p_112310_, stackScroll, p_112311_, p_112312_);
                 }
             }
+        }
+    }
+
+    public static void renderItemRotating(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_)
+    {
+        if (!itemStack.isEmpty()) {
+            p_112309_.pushPose();
+            p_112309_.translate(0.5, 1.25, 0.65);
+            //p_112309_.translate(0, MathHelper.sin((worldIn.getGameTime()) / 10.0F) * 0.1 + 0.1, 0); BOBBING ITEM
+            p_112309_.scale(0.5F, 0.5F, 0.5F);
+            long time = System.currentTimeMillis();
+            float angle = (time/50) % 360;
+            //float angle = (worldIn.getGameTime()) / 20.0F * (180F / (float) Math.PI);
+            p_112309_.mulPose(Vector3f.YP.rotationDegrees(angle));
+            ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
+            BakedModel baked = renderer.getModel(itemStack,worldIn,null,0);
+            renderer.render(itemStack, ItemTransforms.TransformType.GROUND,true,p_112309_,p_112310_,p_112311_,p_112312_,baked);
+
+            //Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.GROUND, p_112311_, p_112312_, p_112309_, p_112310_);
+            p_112309_.popPose();
         }
     }
 

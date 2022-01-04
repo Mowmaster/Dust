@@ -1,22 +1,20 @@
 package com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15;
 
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
-import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
 import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
 import com.mowmaster.dust.Configs.DustConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
-import com.mowmaster.dust.Items.Filters.IPedestalFilter;
-import com.mowmaster.dust.Items.Upgrades.Pedestal.IPedestalUpgrade;
+import com.mowmaster.dust.Items.Scrolls.EffectItemBase;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
-import com.mowmaster.dust.Recipes.CrystalClusterModifiers;
-import com.mowmaster.dust.Recipes.MachineBlockRenderItemsRecipe;
-import com.mowmaster.dust.Recipes.MachineBlockRepairItemsRecipe;
+import com.mowmaster.dust.Recipes.*;
+import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -24,7 +22,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -46,6 +45,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 import static com.mowmaster.dust.References.Constants.MODID;
+import static com.mowmaster.dust.References.EffectPickerReference.getRandomNegativeEffect;
 
 public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
 
@@ -60,6 +60,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     private List<String> repairTagList = new ArrayList<>();
     private boolean isRepaired = false;
     public BlockPos getPos() { return this.worldPosition; }
+    private ItemStack getScrollCrafted = ItemStack.EMPTY;
 
     public ScrollCrafterBlockEntity_T15(BlockPos p_155229_, BlockState p_155230_) {
         super(DeferredBlockEntityTypes.CRAFTER_SCROLL_T15.get(), p_155229_, p_155230_);
@@ -217,6 +218,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
 
     public void update()
     {
+        this.getScrollCrafted = ItemStack.EMPTY;
         BlockState state = level.getBlockState(getPos());
         this.level.sendBlockUpdated(getPos(), state, state, 3);
         this.setChanged();
@@ -560,14 +562,13 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             @Override
             public DustMagic drain(int maxDrain, DustAction action) {
                 int drained = maxDrain;
-                if (dustMagic.getDustAmount() < drained)
-                {
-                    drained = dustMagic.getDustAmount();
-                }
+                if (dustMagic.getDustAmount() < drained)drained = dustMagic.getDustAmount();
+
                 DustMagic magic = new DustMagic(dustMagic.getDustColor(), drained);
                 if (action.execute() && drained > 0)
                 {
-                    dustMagic.shrink(drained);
+                    if(dustMagic.getDustAmount() <= magic.getDustAmount()) dustMagic = new DustMagic(-1, 0);
+                    else dustMagic.shrink(drained);
                     onContentsChanged();
                 }
                 return magic;
@@ -662,21 +663,18 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     public DustMagic removeDust(DustMagic dustMagicToRemove, IDustHandler.DustAction action)
     {
         IDustHandler h = dustHandler.orElse(null);
-        update();
         return h.drain(dustMagicToRemove,action);
     }
 
     public DustMagic removeDust(int dustAmountToRemove, IDustHandler.DustAction action)
     {
         IDustHandler h = dustHandler.orElse(null);
-        update();
         return h.drain(new DustMagic(getStoredDust().getDustColor(),dustAmountToRemove),action);
     }
 
     public int addDust(DustMagic dustMagicIn, IDustHandler.DustAction action)
     {
         IDustHandler h = dustHandler.orElse(null);
-        update();
         return h.fill(dustMagicIn,action);
     }
 
@@ -1025,6 +1023,30 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return false;
     }
 
+    @Nullable
+    protected MobEffectColorRecipe getRecipeMobEffectColor(Level level, ItemStack stackIn) {
+        Container container = Constants.blankContainer;
+        container.setItem(0,stackIn);
+        List<MobEffectColorRecipe> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level);
+        return recipes.size() > 0 ? recipes.get(0) : null;
+    }
+
+    protected String getProcessResultMobEffectColorRecipe(MobEffectColorRecipe recipe) {
+        return (recipe == null)?(""):(recipe.getResultEffectName());
+    }
+
+    @Nullable
+    protected MobEffectColorRecipeCorrupted getRecipeMobEffectColorCorrupted(Level level, ItemStack stackIn) {
+        Container container = Constants.blankContainer;
+        container.setItem(0,stackIn);
+        List<MobEffectColorRecipeCorrupted> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level);
+        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level).get(0) : null;
+    }
+
+    protected String getProcessResultMobEffectColorRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
+        return (recipe == null)?(""):(recipe.getResultEffectName());
+    }
+
     /*public int calculateFuelModifiedDuration()
     {
         int fuelDuration = 0;
@@ -1067,6 +1089,158 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     ===========================     MODIFIER END     =============================
     ==============================================================================
     ============================================================================*/
+
+
+
+    /*============================================================================
+    ==============================================================================
+    ===========================   CRAFTING START     =============================
+    ==============================================================================
+    ============================================================================*/
+
+    public boolean hasEnoughToCraftScroll()
+    {
+        if(dustMagic.getDustAmount()>0)
+        {
+            if(hasItemInTable(0) && hasItemInTable(1)) return true;
+        }
+
+        return false;
+    }
+
+    public MobEffect calculateMobEffect()
+    {
+        boolean corruption = hasCorruption();
+        if(corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),getStoredDust().getDustColor());
+            ResourceLocation location = new ResourceLocation(getProcessResultMobEffectColorRecipeCorrupted(getRecipeMobEffectColorCorrupted(getLevel(),stack)));
+            if(Registry.MOB_EFFECT.getOptional(location).isPresent())return Registry.MOB_EFFECT.getOptional(location).get();
+        }
+        else if (!corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),getStoredDust().getDustColor());
+            ResourceLocation location = new ResourceLocation(getProcessResultMobEffectColorRecipe(getRecipeMobEffectColor(getLevel(),stack)));
+            if(Registry.MOB_EFFECT.getOptional(location).isPresent())return Registry.MOB_EFFECT.getOptional(location).get();
+        }
+
+        return getRandomNegativeEffect();
+    }
+
+    public int calculateFuelModifiedDuration()
+    {
+        int fuelDuration = getStoredDust().getDustAmount();
+        double durationMod = 0;
+        //Verify fuel can support modifier
+        if(isAcceptedModifierItem(getModifierStack())) durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),getModifierStack()));
+        if(durationMod > 0)
+        {
+            return (int)((double)fuelDuration * durationMod);
+        }
+        else if(durationMod < 0)
+        {
+            double modifierAbs = Math.abs(durationMod);
+            return (int)((double)fuelDuration * modifierAbs);
+        }
+        else if(fuelDuration > 0)
+        {
+            return fuelDuration;
+        }
+
+        return 0;
+    }
+
+    public ItemStack setupCraftedScroll()
+    {
+        ItemStack returnedStack = ItemStack.EMPTY;
+        if(hasEnoughToCraftScroll())
+        {
+            int duration = calculateFuelModifiedDuration();
+            returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get());
+            if(duration>=1)
+            {
+                MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),duration*20,calculateModifiedPotency(),false,false,false,null);
+                if(returnedStack.getItem() instanceof EffectItemBase)
+                {
+                    EffectItemBase scroll = (EffectItemBase)returnedStack.getItem();
+                    scroll.setEffectToScroll(returnedStack, newInstance);
+                    ColorReference.addColorToItemStack(returnedStack,getStoredDust().getDustColor());
+                }
+            }
+        }
+
+        return returnedStack;
+    }
+
+    public ItemStack setupCraftedScroll(int count)
+    {
+        ItemStack returnedStack = ItemStack.EMPTY;
+        if(hasEnoughToCraftScroll())
+        {
+            int duration = calculateFuelModifiedDuration()/count;
+            returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get(),count);
+            if(duration>=1)
+            {
+                MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),duration*20,calculateModifiedPotency(),false,false,false,null);
+                if(returnedStack.getItem() instanceof EffectItemBase)
+                {
+                    EffectItemBase scroll = (EffectItemBase)returnedStack.getItem();
+                    scroll.setEffectToScroll(returnedStack, newInstance);
+                    ColorReference.addColorToItemStack(returnedStack,getStoredDust().getDustColor());
+                }
+            }
+        }
+
+        return returnedStack;
+    }
+
+    public ItemStack craftScrolls(int count)
+    {
+        int getPaper = getItemInTable(0).getCount();
+        int getNuggs = getItemInTable(1).getCount();
+        ItemStack getModifier = getItemInTable(2);
+
+        int allowedCount = (count > getPaper)?(getPaper):(count);
+        allowedCount = (allowedCount > getNuggs)?(getNuggs):(allowedCount);
+        if(!getModifier.isEmpty())allowedCount = (allowedCount > getModifier.getCount())?(getModifier.getCount()):(allowedCount);
+
+        ItemStack returnerStack = setupCraftedScroll(allowedCount);
+        if(!returnerStack.isEmpty())
+        {
+            removeDust(getStoredDust().getDustAmount(), IDustHandler.DustAction.EXECUTE);
+            removeItemInTable(allowedCount,0);
+            removeItemInTable(allowedCount,1);
+            removeItemInTable(allowedCount,2);
+            this.getScrollCrafted = ItemStack.EMPTY;
+            update();
+            return returnerStack;
+        }
+        return ItemStack.EMPTY;
+    }
+
+
+    public ItemStack getScrollCraftingOutput()
+    {
+        if(hasEnoughToCraftScroll())
+        {
+            if(this.getScrollCrafted.isEmpty())
+            {
+                this.getScrollCrafted = setupCraftedScroll();
+            }
+        }
+        return this.getScrollCrafted;
+    }
+
+
+
+    /*============================================================================
+    ==============================================================================
+    ===========================    CRAFTING END      =============================
+    ==============================================================================
+    ============================================================================*/
+
+
+
 
 
 

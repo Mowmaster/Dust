@@ -86,9 +86,12 @@ public class MobEffectColorRecipe implements Recipe<Container>
     {
         ItemStack inputStack = inv.getItem(0);
         int count = 0;
-        if(inputStack.getTag().contains(MODID+"_color"))
+        if(inputStack.hasTag())
         {
-            count = inputStack.getTag().getInt(MODID+"_color");
+            if(inputStack.getTag().contains(MODID+"_color"))
+            {
+                count = inputStack.getTag().getInt(MODID+"_color");
+            }
         }
         return input.test(inputStack) && count == color;
     }

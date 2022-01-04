@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -47,6 +48,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -285,6 +287,15 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                     {
                         ItemStack stackReturned = table.addItemInTable(itemInHand,false);
                         itemInHand.shrink(itemInHand.getCount()-stackReturned.getCount());
+                    }
+                }
+                else if(itemInHand.getItem().equals(Items.STRING))
+                {
+                    if(!table.getScrollCraftingOutput().isEmpty())
+                    {
+                        ItemStack stackReturned = table.craftScrolls(itemInHand.getCount());
+                        itemInHand.shrink(stackReturned.getCount());
+                        ItemHandlerHelper.giveItemToPlayer(p_60506_,stackReturned);
                     }
                 }
                 else if(itemInMainHand.isEmpty())

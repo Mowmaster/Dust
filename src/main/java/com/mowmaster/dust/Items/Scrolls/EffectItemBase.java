@@ -21,6 +21,15 @@ public class EffectItemBase extends Item
         CompoundTag tag = new CompoundTag();
         if(stack.hasTag())tag = stack.getTag();
         if(storedPotionEffect!=null)storedPotionEffect.save(tag);
+        stack.setTag(tag);
+    }
+
+    public void setEffectToScroll(ItemStack stack, MobEffectInstance instance)
+    {
+        CompoundTag tag = new CompoundTag();
+        if(stack.hasTag())tag = stack.getTag();
+        if(instance!=null)instance.save(tag);
+        stack.setTag(tag);
     }
 
     public static MobEffectInstance getEffectFromScroll(ItemStack stack)
