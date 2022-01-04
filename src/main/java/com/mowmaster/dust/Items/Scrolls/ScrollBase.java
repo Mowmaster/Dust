@@ -26,7 +26,10 @@ public class ScrollBase extends EffectItemBase
     @Override
     public int getItemStackLimit(ItemStack stack) {
 
-        if(getEffectFromScroll(stack).getEffect().isInstantenous())return 4;
+        if(getEffectFromScroll(stack) !=null)
+        {
+            if(getEffectFromScroll(stack).getEffect().isInstantenous())return 4;
+        }
 
         switch(getRenderType(stack))
         {
@@ -78,11 +81,14 @@ public class ScrollBase extends EffectItemBase
 
     public int getRenderType(ItemStack stack)
     {
-        int girth = getEffectFromScroll(stack).getDuration();
-        if(girth>0 && girth<=450)return 0;
-        else if(girth>450 && girth<=1800)return 1;
-        else if(girth>1800 && girth<=3600)return 2;
-        else if(girth>3600 && girth<=9600)return 3;
+        if(getEffectFromScroll(stack) != null)
+        {
+            int girth = getEffectFromScroll(stack).getDuration();
+            if(girth>0 && girth<=450)return 0;
+            else if(girth>450 && girth<=1800)return 1;
+            else if(girth>1800 && girth<=3600)return 2;
+            else if(girth>3600 && girth<=9600)return 3;
+        }
         return 0;
     }
 
