@@ -2,6 +2,7 @@ package com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15;
 
 import com.google.common.collect.Maps;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
+import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.ScrollCrafterBlockBase;
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
 import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
@@ -291,7 +292,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                 }
                 else if(itemInHand.getItem().equals(Items.STRING))
                 {
-                    if(!table.getScrollCraftingOutput().isEmpty())
+                    if(!table.getScrollCrafted().isEmpty())
                     {
                         ItemStack stackReturned = table.craftScrolls(itemInHand.getCount());
                         itemInHand.shrink(stackReturned.getCount());
@@ -307,11 +308,26 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                             DustMagic magic = table.getStoredDust();
                             MessageUtils.messagePlayerChatWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dust_in_jar", Arrays.asList(ColorReference.getColorName(magic.getDustColor()),": ",""+magic.getDustAmount()+""));
                         }
+                        MessageUtils.messagePlayerChat(p_60506_,ChatFormatting.RED,table.getScrollCrafted().getDisplayName().getString());
                     }
                 }
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
+        if(p_60515_.getBlock() != p_60518_.getBlock())
+        {
+            BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
+            if(blockEntity instanceof ScrollCrafterBlockEntity_T15) {
+                ScrollCrafterBlockEntity_T15 crafter = ((ScrollCrafterBlockEntity_T15) blockEntity);
+                crafter.dropInventoryItems(p_60516_,p_60517_);
+                crafter.dropInventoryItemsPrivate(p_60516_,p_60517_);
+            }
+            super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
+        }
     }
 
     @Override

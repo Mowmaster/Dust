@@ -558,7 +558,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         else if(durationMod < 0)
         {
             double modifierAbs = Math.abs(durationMod);
-            return (int)((double)fuelDuration * modifierAbs);
+            return (int)((double)fuelDuration / modifierAbs);
         }
         else if(fuelDuration > 0)
         {

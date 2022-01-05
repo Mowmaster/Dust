@@ -218,7 +218,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
 
     public void update()
     {
-        this.getScrollCrafted = ItemStack.EMPTY;
+        getScrollCraftingOutput();
         BlockState state = level.getBlockState(getPos());
         this.level.sendBlockUpdated(getPos(), state, state, 3);
         this.setChanged();
@@ -1028,8 +1028,10 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         Container container = Constants.blankContainer;
         container.setItem(0,stackIn);
         List<MobEffectColorRecipe> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level);
-        return recipes.size() > 0 ? recipes.get(0) : null;
+        return getLevel() != null ? ((recipes.size() > 0)?(recipes.stream().findFirst().get()):(null)) : null;
     }
+
+
 
     protected String getProcessResultMobEffectColorRecipe(MobEffectColorRecipe recipe) {
         return (recipe == null)?(""):(recipe.getResultEffectName());
@@ -1040,36 +1042,12 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         Container container = Constants.blankContainer;
         container.setItem(0,stackIn);
         List<MobEffectColorRecipeCorrupted> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level);
-        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level).get(0) : null;
+        return getLevel() != null ? ((recipes.size() > 0)?(recipes.stream().findFirst().get()):(null)) : null;
     }
 
     protected String getProcessResultMobEffectColorRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
         return (recipe == null)?(""):(recipe.getResultEffectName());
     }
-
-    /*public int calculateFuelModifiedDuration()
-    {
-        int fuelDuration = 0;
-        double durationMod = 0;
-        //Verify fuel can support modifier
-        if(isAcceptedModifierItem(getModifierStack())) durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),getModifierStack()));
-        if(durationMod > 0)
-        {
-            return (int)((double)fuelDuration * durationMod);
-        }
-        else if(durationMod < 0)
-        {
-            double modifierAbs = Math.abs(durationMod);
-            return (int)((double)fuelDuration * modifierAbs);
-        }
-        else if(fuelDuration > 0)
-        {
-            return fuelDuration;
-        }
-
-
-        return 0;
-    }*/
 
     public int calculateModifiedPotency()
     {
@@ -1131,7 +1109,6 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     {
         int fuelDuration = getStoredDust().getDustAmount();
         double durationMod = 0;
-        //Verify fuel can support modifier
         if(isAcceptedModifierItem(getModifierStack())) durationMod = getProcessResultModifierDuration(getRecipeModifier(getLevel(),getModifierStack()));
         if(durationMod > 0)
         {
@@ -1140,7 +1117,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         else if(durationMod < 0)
         {
             double modifierAbs = Math.abs(durationMod);
-            return (int)((double)fuelDuration * modifierAbs);
+            return (int)((double)fuelDuration / modifierAbs);
         }
         else if(fuelDuration > 0)
         {
@@ -1207,11 +1184,10 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         ItemStack returnerStack = setupCraftedScroll(allowedCount);
         if(!returnerStack.isEmpty())
         {
-            removeDust(getStoredDust().getDustAmount(), IDustHandler.DustAction.EXECUTE);
             removeItemInTable(allowedCount,0);
             removeItemInTable(allowedCount,1);
             removeItemInTable(allowedCount,2);
-            this.getScrollCrafted = ItemStack.EMPTY;
+            removeDust(getStoredDust().getDustAmount(), IDustHandler.DustAction.EXECUTE);
             update();
             return returnerStack;
         }
@@ -1219,15 +1195,33 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     }
 
 
-    public ItemStack getScrollCraftingOutput()
+
+    private ItemStack getScrollCraftingOutput()
     {
-        if(hasEnoughToCraftScroll())
+        if(isFullyRepaired())
         {
-            if(this.getScrollCrafted.isEmpty())
+            if(hasEnoughToCraftScroll())
             {
-                this.getScrollCrafted = setupCraftedScroll();
+                if(this.getScrollCrafted.isEmpty())
+                {
+                    this.getScrollCrafted = setupCraftedScroll();
+                }
+            }
+            else
+            {
+                this.getScrollCrafted = ItemStack.EMPTY;
             }
         }
+        else
+        {
+            this.getScrollCrafted = ItemStack.EMPTY;
+        }
+
+        return this.getScrollCrafted;
+    }
+
+    public ItemStack getScrollCrafted()
+    {
         return this.getScrollCrafted;
     }
 
@@ -1301,6 +1295,14 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             this.repairStackList = repairList;
         }
 
+        if(p_155245_.contains("stackCrafted"))
+        {
+            CompoundTag invTag = p_155245_.getCompound("stackCrafted");
+            ItemStackHandler handler = new ItemStackHandler();
+            ((INBTSerializable<CompoundTag>) handler).deserializeNBT(invTag);
+            this.getScrollCrafted = handler.getStackInSlot(0);
+        }
+
         this.isRepaired = p_155245_.getBoolean("isRepaired");
         this.dustCapacity = p_155245_.getInt(MODID + "_dustCapacity");
         this.dustMagic = DustMagic.getDustMagicInTag(p_155245_);
@@ -1326,12 +1328,24 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             p_58888_.put("inv_table", compound);
         });
 
+
+        List<ItemStack> listed = getRepairListStacks();
+        if(listed.size()>0)
+        {
+            CompoundTag compoundStorage = new CompoundTag();
+            ItemStackHandler handler = new ItemStackHandler();
+            handler.setSize(listed.size());
+            for(int i=0;i<handler.getSlots();i++) {handler.setStackInSlot(i,listed.get(i));}
+            compoundStorage = handler.serializeNBT();
+            p_58888_.put("inv_repairsList",compoundStorage);
+        }
+
         CompoundTag compoundStorage = new CompoundTag();
         ItemStackHandler handler = new ItemStackHandler();
-        handler.setSize(getRepairListStacks().size());
-        for(int i=0;i<handler.getSlots();i++) {handler.setStackInSlot(i,getRepairListStacks().get(i));}
+        handler.setSize(1);
+        handler.setStackInSlot(0,this.getScrollCrafted);
         compoundStorage = handler.serializeNBT();
-        p_58888_.put("inv_repairsList",compoundStorage);
+        p_58888_.put("stackCrafted",compoundStorage);
 
         p_58888_.putBoolean("isRepaired",isRepaired);
 

@@ -1,10 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "dust:items/models/upgrades/pedestal_upgrade",
-		"1": "dust:items/scroll/ribbons",
-		"2": "dust:items/scroll/scroll_1",
-		"particle": "dust:items/models/upgrades/pedestal_upgrade"
+		"0": "dust:items/scroll/pedestal_upgrade",
+		"1": "dust:items/scroll/ribbonstint",
+		"2": "dust:items/scroll/scroll_1"
 	},
 	"elements": [
 		{

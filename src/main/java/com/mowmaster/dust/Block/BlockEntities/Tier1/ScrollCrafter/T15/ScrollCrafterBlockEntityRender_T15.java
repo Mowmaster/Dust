@@ -50,7 +50,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
             ItemStack paper = p_112307_.getItemInTable(0);
             ItemStack nuggs = p_112307_.getItemInTable(1);
             ItemStack mods = p_112307_.getItemInTable(2);
-            ItemStack stackScroll = p_112307_.getScrollCraftingOutput();
+            ItemStack stackScroll = p_112307_.getScrollCrafted();
 
             if(!(stacksList.size() == 0))
             {

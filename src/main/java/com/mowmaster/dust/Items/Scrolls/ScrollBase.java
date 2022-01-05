@@ -1,34 +1,26 @@
 package com.mowmaster.dust.Items.Scrolls;
 
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
-import com.mowmaster.dust.Items.DustMagicItemBase;
 import com.mowmaster.dust.References.ColorReference;
-import com.mowmaster.dust.Util.MessageUtils;
 import com.mowmaster.dust.Util.TooltipUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static com.mowmaster.dust.References.Constants.MODID;
 
 public class ScrollBase extends EffectItemBase
 {
@@ -63,28 +55,28 @@ public class ScrollBase extends EffectItemBase
     {
         /*
         ribbon = potency color
-        normal:RED - 16711680
-        1:ORANGE -
-        2:YELLOW -
-        3:GREEN - 65280
-        4:BLUE - 255
-        5:PURPLE -
-        6+:PINK -
+        normal:RED - 16733525
+        1:ORANGE - 16755200
+        2:YELLOW - 16777045
+        3:GREEN - 5635925
+        4:BLUE - 43775
+        5:PURPLE - 11163135
+        6+:PINK - 16755455
          */
         if(getEffectFromScroll(stack) != null)
         {
             switch(getEffectFromScroll(stack).getAmplifier())
             {
-                case 0: return 16711680;
-                case 1: return 16711680;
-                case 2: return 16711680;
-                case 3: return 16711680;
-                case 4: return 16711680;
-                case 5: return 16711680;
-                default: return 16711680;
+                case 0: return 16733525;
+                case 1: return 16755200;
+                case 2: return 16777045;
+                case 3: return 5635925;
+                case 4: return 43775;
+                case 5: return 11163135;
+                default: return 16755455;
             }
         }
-        return 16711680;
+        return 16733525;
     }
 
     public static int getColorRenderCoin(ItemStack stack)
@@ -92,25 +84,27 @@ public class ScrollBase extends EffectItemBase
         if(getEffectFromScroll(stack) != null)
         {
             MobEffectCategory category = getEffectFromScroll(stack).getEffect().getCategory();
-            if(category == MobEffectCategory.BENEFICIAL) {return 65280;}//Green
-            else if(category == MobEffectCategory.NEUTRAL) {return 255;}//Blue
-            else if(category == MobEffectCategory.HARMFUL) {return 16711680;}//Red
+            if(category == MobEffectCategory.BENEFICIAL) {return 5635925;}//Green
+            else if(category == MobEffectCategory.NEUTRAL) {return 43775;}//Blue
+            else if(category == MobEffectCategory.HARMFUL) {return 16733525;}//Red
         }
         return ColorReference.getColorFromItemStackInt(stack);
     }
 
-    public int getRenderType(ItemStack stack)
+    public static int getRenderType(ItemStack stack)
     {
         if(getEffectFromScroll(stack) != null)
         {
-            int girth = getEffectFromScroll(stack).getDuration();
+            int girth = (getEffectFromScroll(stack).getDuration()/20);
             if(girth>0 && girth<=450)return 0;
             else if(girth>450 && girth<=1800)return 1;
             else if(girth>1800 && girth<=3600)return 2;
-            else if(girth>3600 && girth<=9600)return 3;
+            else if(girth>3600)return 3;
         }
         return 0;
     }
+
+
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
@@ -131,9 +125,11 @@ public class ScrollBase extends EffectItemBase
                 MobEffectInstance getEffect = getEffectFromScroll(stackInHand);
                 if(getEffect != null)
                 {
+                    System.out.println(result.getType());
                     if(result.getType().equals(HitResult.Type.ENTITY))
                     {
                         //Give Effects to Entity
+
                         List<LivingEntity> eList = world.getEntitiesOfClass(LivingEntity.class,new AABB(pos));
                         LivingEntity entity = (eList.size()>0)?(eList.get(0)):(null);
                         if(entity != null)

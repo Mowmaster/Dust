@@ -7,9 +7,9 @@
     "particle": "dust:items/models/upgrades/pedestal_upgrade"
   },
   "overrides": [
-    { "predicate": { "dust:filter_mode": 0}, "model": "dust:item/scroll/scroll_small"},
-    { "predicate": { "dust:filter_mode": 1}, "model": "dust:item/scroll/scroll_medium"},
-    { "predicate": { "dust:filter_mode": 2}, "model": "dust:item/scroll/scroll_large"},
-    { "predicate": { "dust:filter_mode": 3}, "model": "dust:item/scroll/scroll_xlarge"}
+    { "predicate": { "dust:scroll_mode": 0}, "model": "dust:item/scroll/scroll_small"},
+    { "predicate": { "dust:scroll_mode": 1}, "model": "dust:item/scroll/scroll_medium"},
+    { "predicate": { "dust:scroll_mode": 2}, "model": "dust:item/scroll/scroll_large"},
+    { "predicate": { "dust:scroll_mode": 3}, "model": "dust:item/scroll/scroll_xlarge"}
   ]
 }
