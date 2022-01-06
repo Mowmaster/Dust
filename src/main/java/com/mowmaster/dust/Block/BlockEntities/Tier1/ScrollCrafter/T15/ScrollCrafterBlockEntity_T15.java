@@ -30,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -1158,7 +1159,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get(),count);
             if(duration>=1)
             {
-                MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),duration*20,calculateModifiedPotency(),false,false,false,null);
+                MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),duration*20,calculateModifiedPotency(),false,false,true,null);
                 if(returnedStack.getItem() instanceof EffectItemBase)
                 {
                     EffectItemBase scroll = (EffectItemBase)returnedStack.getItem();
@@ -1224,6 +1225,8 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
     {
         return this.getScrollCrafted;
     }
+
+
 
 
 

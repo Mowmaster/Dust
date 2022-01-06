@@ -735,7 +735,7 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         if(hasFuelItems())
         {
             //Calculate Effect before consuming fuel each time, this does mean that any 'unlearned' effects will randomize every time fuel is consumed.
-            MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),100,calculateModifiedPotency(),false,false,false,null);
+            MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),100,calculateModifiedPotency(),true,false,true,null);
             this.storedPotionEffect = newInstance;
             int duration = calculateFuelModifiedDuration();
             if(duration>0)

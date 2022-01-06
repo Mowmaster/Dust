@@ -63,6 +63,24 @@ public class TooltipUtils
         }
     }
 
+    public static void addTooltipShiftMessageMultiWithStyle(List<Component> componentList, List<String> localizationString, List<ChatFormatting> chatFormatting)
+    {
+        if(!Screen.hasShiftDown())
+        {
+            TranslatableComponent base = new TranslatableComponent(MODID + ".description_shift");
+            base.withStyle(ChatFormatting.WHITE);
+            componentList.add(base);
+        }
+        else {
+            for(int i=0;i<localizationString.size();i++)
+            {
+                TranslatableComponent base = new TranslatableComponent(localizationString.get(i));
+                base.withStyle((chatFormatting.size()>=i)?(chatFormatting.get(i)):(chatFormatting.get(0)));
+                componentList.add(base);
+            }
+        }
+    }
+
     public static void addTooltipShiftMessageWithStyle(List<Component> componentList, TranslatableComponent translatableComponent, ChatFormatting chatFormatting)
     {
         if(!Screen.hasShiftDown())

@@ -3,6 +3,8 @@
   "itemGroup.tab_dustitems": "Dust Items",
 
   "dust.error": "ERROR",
+  "dust.description_shift": "Press Shift for More Info",
+  "dust.description_alt": "Press Alt for More Info",
 
   "dust.mode_changed": "Mode Changed: ",
   "dust.mode_items": "Item",
@@ -84,6 +86,12 @@
   "dust.hint.found": "An Item In your Inventory can be used to repair the Machine",
   "dust.hint.title": "Repair Item Needed:",
   "dust.hint.dustjar_desc": "A way to store Dust is needed to repair this workstation.",
+
+  "dust.effect_scroll.text": "Effect Scroll of ",
+  "dust.effect_scroll.use": "Right Click to Use on Self",
+  "dust.effect_scroll.use_on": "Crouch Right Click a Mob/Player to Apply it to them.",
+
+
 
 
 
