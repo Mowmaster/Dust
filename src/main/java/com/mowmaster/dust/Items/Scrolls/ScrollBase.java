@@ -5,37 +5,24 @@ import com.mowmaster.dust.Util.NameComponentUtils;
 import com.mowmaster.dust.Util.TooltipUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.EntityGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.jar.Attributes;
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
@@ -57,10 +44,10 @@ public class ScrollBase extends EffectItemBase
 
         switch(getRenderType(stack))
         {
-            case 0: return 32;
-            case 1: return 16;
-            case 2: return 8;
-            case 3: return 4;
+            case 0: return 16;
+            case 1: return 8;
+            case 2: return 4;
+            case 3: return 1;
             default: return 64;
         }
     }
@@ -112,13 +99,22 @@ public class ScrollBase extends EffectItemBase
 
     public static int getRenderType(ItemStack stack)
     {
-        if(getEffectFromScroll(stack) != null)
+        MobEffectInstance getEffect = getEffectFromScroll(stack);
+        if(getEffect != null)
         {
             int girth = (getEffectFromScroll(stack).getDuration()/20);
-            if(girth>0 && girth<=450)return 0;
-            else if(girth>450 && girth<=1800)return 1;
-            else if(girth>1800 && girth<=3600)return 2;
-            else if(girth>3600)return 3;
+            if(getEffect.getEffect().isInstantenous())
+            {
+                int dur = getEffect.getDuration();
+                if(dur>0 && dur<=2)return 0;
+                else if(dur>2 && dur<=5)return 1;
+                else if(dur>5 && dur<=7)return 2;
+                else if(dur>7)return 3;
+            }
+            if(girth>0 && girth<=45)return 0;
+            else if(girth>45 && girth<=180)return 1;
+            else if(girth>180 && girth<=720)return 2;
+            else if(girth>720)return 3;
         }
         return 0;
     }
@@ -240,7 +236,9 @@ public class ScrollBase extends EffectItemBase
             else if(cat == MobEffectCategory.HARMFUL) {format = ChatFormatting.RED;}//Red
             int minutes = (getEffect.getDuration()/20)/60;
             int seconds =  (int)(((double)(getEffect.getDuration()/20)%60));
-            TooltipUtils.addTooltipMessageWithStyle(p_41423_,getEffect.getEffect().getDisplayName().getString() + " " + TooltipUtils.getRomanNumeral(getEffect.getAmplifier()) + " - " + minutes + ":" + ((seconds<10)?("0"+seconds):(seconds)),format);
+            String time = "" + minutes + ":" + ((seconds<10)?("0"+seconds):(seconds)) + "";
+            if(getEffect.getEffect().isInstantenous()) time = new TranslatableComponent(MODID + ".effect_scroll.instant").getString() + getEffect.getDuration() + "";
+            TooltipUtils.addTooltipMessageWithStyle(p_41423_,getEffect.getEffect().getDisplayName().getString() + " " + TooltipUtils.getRomanNumeral(getEffect.getAmplifier()) + " - " + time,format);
         }
 
         List<String> listy = Arrays.asList(MODID + ".effect_scroll.use",MODID + ".effect_scroll.use_on");

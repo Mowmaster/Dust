@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_cluster_modifier",
+  "input": {
+    "item": "minecraft:dragon_breath"
+  },
+  "durationModifier": -3.0,
+  "potencyModifier": 3.0,
+  "corruption": true
+}

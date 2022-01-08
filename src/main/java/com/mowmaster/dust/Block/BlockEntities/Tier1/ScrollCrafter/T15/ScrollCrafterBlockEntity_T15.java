@@ -1134,10 +1134,14 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         if(hasEnoughToCraftScroll())
         {
             int duration = calculateFuelModifiedDuration();
-            returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get());
+            returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get(),1);
             if(duration>=1)
             {
-                MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),duration*20,calculateModifiedPotency(),false,false,false,null);
+                MobEffect getEffect = calculateMobEffect();
+                int durationModified = duration*20;
+                if(getEffect.isInstantenous())durationModified = duration/100;
+                MobEffectInstance newInstance = new MobEffectInstance(getEffect,(durationModified<=0)?(1):(durationModified),calculateModifiedPotency(),false,false,true,null);
+
                 if(returnedStack.getItem() instanceof EffectItemBase)
                 {
                     EffectItemBase scroll = (EffectItemBase)returnedStack.getItem();
@@ -1159,7 +1163,11 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get(),count);
             if(duration>=1)
             {
-                MobEffectInstance newInstance = new MobEffectInstance(calculateMobEffect(),duration*20,calculateModifiedPotency(),false,false,true,null);
+                MobEffect getEffect = calculateMobEffect();
+                int durationModified = duration*20;
+                if(getEffect.isInstantenous())durationModified = duration/100;
+                MobEffectInstance newInstance = new MobEffectInstance(getEffect,(durationModified<=0)?(1):(durationModified),calculateModifiedPotency(),false,false,true,null);
+
                 if(returnedStack.getItem() instanceof EffectItemBase)
                 {
                     EffectItemBase scroll = (EffectItemBase)returnedStack.getItem();
@@ -1203,10 +1211,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         {
             if(hasEnoughToCraftScroll())
             {
-                if(this.getScrollCrafted.isEmpty())
-                {
-                    this.getScrollCrafted = setupCraftedScroll();
-                }
+                this.getScrollCrafted = setupCraftedScroll();
             }
             else
             {

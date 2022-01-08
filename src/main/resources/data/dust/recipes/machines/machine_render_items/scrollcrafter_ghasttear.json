@@ -1,0 +1,19 @@
+{
+  "type": "dust:dust_machine_render_items",
+  "input": {
+    "item": "dust:block_crafter_scroll_t15",
+    "item": "minecraft:ghast_tear"
+  },
+  "result": {
+    "item": "minecraft:barrier"
+  },
+  "transitionX": 0.5,
+  "transitionY": 0.96875,
+  "transitionZ": 0.25,
+  "scaleX": 0.25,
+  "scaleY": 0.25,
+  "scaleZ": 0.25,
+  "angle": 270.0,
+  "renderItem": true,
+  "renderAsBlock": false
+}

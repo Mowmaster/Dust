@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_cluster_modifier",
+  "input": {
+    "item": "minecraft:rabbit_foot"
+  },
+  "durationModifier": -3.0,
+  "potencyModifier": 3.0,
+  "corruption": false
+}

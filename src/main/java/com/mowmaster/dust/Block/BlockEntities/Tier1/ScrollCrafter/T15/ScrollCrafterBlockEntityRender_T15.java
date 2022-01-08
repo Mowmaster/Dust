@@ -95,7 +95,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     if(!nuggs.isEmpty())
                     {
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
-                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(nuggs).getItem().equals(nuggs.getItem()))?(p_112307_.getRenderItem(nuggs)):(new ItemStack(p_112307_.getRenderItem(nuggs).getItem(),nuggs.getCount())),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                     if(!mods.isEmpty())
                     {
@@ -120,7 +120,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     if(!nuggs.isEmpty())
                     {
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
-                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(nuggs).getItem().equals(nuggs.getItem()))?(p_112307_.getRenderItem(nuggs)):(new ItemStack(p_112307_.getRenderItem(nuggs).getItem(),nuggs.getCount())),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                     if(!mods.isEmpty())
                     {
@@ -145,7 +145,7 @@ public class ScrollCrafterBlockEntityRender_T15 implements BlockEntityRenderer<S
                     if(!nuggs.isEmpty())
                     {
                         List<Float> floatValuesTableNuggs = p_112307_.getRenderParams(nuggs);
-                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,p_112307_.getRenderItem(nuggs),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
+                        if(floatValuesTableNuggs.size()>0)renderItemStacked(world,p_112309_,p_112310_,(p_112307_.getRenderItem(nuggs).getItem().equals(nuggs.getItem()))?(p_112307_.getRenderItem(nuggs)):(new ItemStack(p_112307_.getRenderItem(nuggs).getItem(),nuggs.getCount())),p_112311_,p_112312_, floatValuesTableNuggs.get(0), floatValuesTableNuggs.get(1), floatValuesTableNuggs.get(2), floatValuesTableNuggs.get(3), floatValuesTableNuggs.get(4), floatValuesTableNuggs.get(5),floatValuesTableNuggs.get(6));
                     }
                     if(!mods.isEmpty())
                     {

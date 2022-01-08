@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_cluster_modifier",
+  "input": {
+    "item": "minecraft:ghast_tear"
+  },
+  "durationModifier": -2.0,
+  "potencyModifier": 2.0,
+  "corruption": true
+}
