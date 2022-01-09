@@ -1,6 +1,7 @@
 package com.mowmaster.dust.References;
 
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
+import com.mowmaster.dust.Recipes.MachineBlockRepairItemsRecipe;
 import com.mowmaster.dust.Recipes.MobEffectColorRecipe;
 import com.mowmaster.dust.Recipes.MobEffectColorRecipeCorrupted;
 import net.minecraft.core.Registry;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -30,6 +32,14 @@ public class EffectPickerReference
         return (recipe == null)?(""):(recipe.getResultEffectName());
     }
 
+    protected static int getProcessResultEffectColorRecipe(MobEffectColorRecipe recipe) {
+        return (recipe == null)?(ColorReference.DEFAULTCOLOR):(recipe.getResultEffectColor());
+    }
+
+    protected static int getProcessResultEffectInstantDurationRecipe(MobEffectColorRecipe recipe) {
+        return (recipe == null)?(1):(recipe.getResultInstantTickDuration());
+    }
+
     @Nullable
     protected static MobEffectColorRecipeCorrupted getRecipeMobEffectColorCorrupted(Level level, ItemStack stackIn) {
         Container container = Constants.blankContainer;
@@ -40,6 +50,14 @@ public class EffectPickerReference
 
     protected static String getProcessResultMobEffectColorRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
         return (recipe == null)?(""):(recipe.getResultEffectName());
+    }
+
+    protected static int getProcessResultEffectColorRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
+        return (recipe == null)?(ColorReference.DEFAULTCOLOR):(recipe.getResultEffectColor());
+    }
+
+    protected static int getProcessResultEffectInstantDurationRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
+        return (recipe == null)?(1):(recipe.getResultInstantTickDuration());
     }
 
     public static MobEffect getEffectForColor(Level level, boolean corruption, int currentColor)
@@ -58,6 +76,39 @@ public class EffectPickerReference
         }
 
         return getRandomNegativeEffect();
+    }
+
+    public static int getColorForEffect(Level level, boolean corruption, int currentColor)
+    {
+        if(corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),currentColor);
+            return getProcessResultEffectColorRecipeCorrupted(getRecipeMobEffectColorCorrupted(level,stack));
+        }
+        else if (!corruption)
+        {
+
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),currentColor);
+            return getProcessResultEffectColorRecipe(getRecipeMobEffectColor(level,stack));
+        }
+
+        return ColorReference.DEFAULTCOLOR;
+    }
+
+    public static int getInstantDuration(Level level, boolean corruption, int currentColor)
+    {
+        if(corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),currentColor);
+            return getProcessResultEffectInstantDurationRecipeCorrupted(getRecipeMobEffectColorCorrupted(level,stack));
+        }
+        else if (!corruption)
+        {
+            ItemStack stack = ColorReference.addColorToItemStack(new ItemStack(DeferredRegisterItems.COLORED_CRYSTAL.get()),currentColor);
+            return getProcessResultEffectInstantDurationRecipe(getRecipeMobEffectColor(level,stack));
+        }
+
+        return ColorReference.DEFAULTCOLOR;
     }
 
     public static MobEffect getRandomNegativeEffect()

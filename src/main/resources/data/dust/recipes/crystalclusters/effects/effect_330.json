@@ -4,5 +4,6 @@
     "item": "dust:item_crystal"
   },
   "color": 16776960,
-  "mobEffect": "minecraft:saturation"
+  "mobEffect": "minecraft:saturation",
+  "instaTickDuration": 1
 }

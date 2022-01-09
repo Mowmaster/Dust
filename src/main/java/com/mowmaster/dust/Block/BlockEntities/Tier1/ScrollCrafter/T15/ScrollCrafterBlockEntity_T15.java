@@ -13,8 +13,8 @@ import com.mowmaster.dust.Networking.DustPacketParticles;
 import com.mowmaster.dust.Recipes.*;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
+import com.mowmaster.dust.References.EffectPickerReference;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -30,7 +30,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,7 +45,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 import static com.mowmaster.dust.References.Constants.MODID;
-import static com.mowmaster.dust.References.EffectPickerReference.getRandomNegativeEffect;
 
 public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
 
@@ -1024,7 +1022,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return false;
     }
 
-    @Nullable
+    /*@Nullable
     protected MobEffectColorRecipe getRecipeMobEffectColor(Level level, ItemStack stackIn) {
         Container container = Constants.blankContainer;
         container.setItem(0,stackIn);
@@ -1048,7 +1046,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
 
     protected String getProcessResultMobEffectColorRecipeCorrupted(MobEffectColorRecipeCorrupted recipe) {
         return (recipe == null)?(""):(recipe.getResultEffectName());
-    }
+    }*/
 
     public int calculateModifiedPotency()
     {
@@ -1087,7 +1085,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return false;
     }
 
-    public MobEffect calculateMobEffect()
+    /*public MobEffect calculateMobEffect()
     {
         boolean corruption = hasCorruption();
         if(corruption)
@@ -1104,7 +1102,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         }
 
         return getRandomNegativeEffect();
-    }
+    }*/
 
     public int calculateFuelModifiedDuration()
     {
@@ -1130,28 +1128,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
 
     public ItemStack setupCraftedScroll()
     {
-        ItemStack returnedStack = ItemStack.EMPTY;
-        if(hasEnoughToCraftScroll())
-        {
-            int duration = calculateFuelModifiedDuration();
-            returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get(),1);
-            if(duration>=1)
-            {
-                MobEffect getEffect = calculateMobEffect();
-                int durationModified = duration*20;
-                if(getEffect.isInstantenous())durationModified = duration/100;
-                MobEffectInstance newInstance = new MobEffectInstance(getEffect,(durationModified<=0)?(1):(durationModified),calculateModifiedPotency(),false,false,true,null);
-
-                if(returnedStack.getItem() instanceof EffectItemBase)
-                {
-                    EffectItemBase scroll = (EffectItemBase)returnedStack.getItem();
-                    scroll.setEffectToScroll(returnedStack, newInstance);
-                    ColorReference.addColorToItemStack(returnedStack,getStoredDust().getDustColor());
-                }
-            }
-        }
-
-        return returnedStack;
+        return setupCraftedScroll(1);
     }
 
     public ItemStack setupCraftedScroll(int count)
@@ -1163,10 +1140,16 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             returnedStack = new ItemStack(DeferredRegisterItems.EFFECT_SCROLL.get(),count);
             if(duration>=1)
             {
-                MobEffect getEffect = calculateMobEffect();
+                //MobEffect getEffect = calculateMobEffect();
+                MobEffect getEffect = EffectPickerReference.getEffectForColor(getLevel(),hasCorruption(), getStoredDust().getDustColor());
                 int durationModified = duration*20;
-                if(getEffect.isInstantenous())durationModified = duration/100;
-                MobEffectInstance newInstance = new MobEffectInstance(getEffect,(durationModified<=0)?(1):(durationModified),calculateModifiedPotency(),false,false,true,null);
+                if(getEffect.isInstantenous())
+                {
+                    int instantDurationTicks = EffectPickerReference.getInstantDuration(getLevel(),hasCorruption(),getStoredDust().getDustColor());
+                    int instantMod = duration/100;
+                    durationModified = instantDurationTicks * ((instantMod<=0)?(1):(instantMod));
+                }
+                MobEffectInstance newInstance = new MobEffectInstance(getEffect,durationModified,calculateModifiedPotency(),false,false,true,null);
 
                 if(returnedStack.getItem() instanceof EffectItemBase)
                 {

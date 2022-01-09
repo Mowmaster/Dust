@@ -36,14 +36,16 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
     private final Ingredient input;
     private final int color;
     private final String mobEffect;
+    private final int instaTickDuration;
 
-    public MobEffectColorRecipeCorrupted(ResourceLocation id, String group, @Nullable Ingredient input, int color, String mobEffect)
+    public MobEffectColorRecipeCorrupted(ResourceLocation id, String group, @Nullable Ingredient input, int color, String mobEffect, int instaTickDuration)
     {
         this.group = group;
         this.id = id;
         this.input = input;
         this.color = color;
         this.mobEffect = mobEffect;
+        this.instaTickDuration = instaTickDuration;
     }
 
     @Override
@@ -104,6 +106,8 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
 
     public int getResultEffectColor() { return getEffectColor(); }
 
+    public int getResultInstantTickDuration() { return getInstantTickDuration(); }
+
     public String getResultEffectName()
     {
         return getEffectName();
@@ -143,6 +147,11 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
         return mobEffect;
     }
 
+    public int getInstantTickDuration()
+    {
+        return instaTickDuration;
+    }
+
     public Ingredient getPattern()
     {
         return input != null ? input : Ingredient.EMPTY;
@@ -151,9 +160,9 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>>
             implements RecipeSerializer<MobEffectColorRecipeCorrupted>
     {
-        protected MobEffectColorRecipeCorrupted createRecipe(ResourceLocation recipeId, String group, @Nullable Ingredient input, int color, String mobEffect)
+        protected MobEffectColorRecipeCorrupted createRecipe(ResourceLocation recipeId, String group, @Nullable Ingredient input, int color, String mobEffect, int instaTickDuration)
         {
-            return new MobEffectColorRecipeCorrupted(recipeId, group, input, color, mobEffect);
+            return new MobEffectColorRecipeCorrupted(recipeId, group, input, color, mobEffect, instaTickDuration);
         }
 
         @Override
@@ -163,7 +172,8 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
             Ingredient input = json.has("input") ? CraftingHelper.getIngredient(json.get("input")) : null;
             int color = json.has("color") ? GsonHelper.getAsInt(json,"color") : (ColorReference.DEFAULTCOLOR);
             String mobEffect = json.has("mobEffect") ? GsonHelper.getAsString(json,"mobEffect") : "";
-            return createRecipe(recipeId, group, input, color, mobEffect);
+            int instaTickDuration = json.has("instaTickDuration") ? GsonHelper.getAsInt(json,"instaTickDuration") : 1;
+            return createRecipe(recipeId, group, input, color, mobEffect, instaTickDuration);
         }
 
         @Override
@@ -174,7 +184,8 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
             Ingredient input = hasInput ? Ingredient.fromNetwork(buffer) : null;
             int color = buffer.readInt();
             String mobEffect = buffer.readUtf(32767);
-            return createRecipe(recipeId, group,  input, color, mobEffect);
+            int instaTickDuration = buffer.readInt();
+            return createRecipe(recipeId, group,  input, color, mobEffect, instaTickDuration);
         }
 
         @Override
@@ -186,6 +197,7 @@ public class MobEffectColorRecipeCorrupted implements Recipe<Container>
             if (hasInput) recipe.input.toNetwork(buffer);
             buffer.writeInt(recipe.color);
             buffer.writeUtf(recipe.mobEffect);
+            buffer.writeInt(recipe.instaTickDuration);
         }
     }
 }

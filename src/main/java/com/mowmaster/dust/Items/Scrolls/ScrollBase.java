@@ -106,10 +106,10 @@ public class ScrollBase extends EffectItemBase
             if(getEffect.getEffect().isInstantenous())
             {
                 int dur = getEffect.getDuration();
-                if(dur>0 && dur<=2)return 0;
-                else if(dur>2 && dur<=5)return 1;
-                else if(dur>5 && dur<=7)return 2;
-                else if(dur>7)return 3;
+                if(dur>0 && dur<=25)return 0;
+                else if(dur>50 && dur<=100)return 1;
+                else if(dur>100 && dur<=200)return 2;
+                else if(dur>200)return 3;
             }
             if(girth>0 && girth<=45)return 0;
             else if(girth>45 && girth<=180)return 1;
@@ -237,7 +237,7 @@ public class ScrollBase extends EffectItemBase
             int minutes = (getEffect.getDuration()/20)/60;
             int seconds =  (int)(((double)(getEffect.getDuration()/20)%60));
             String time = "" + minutes + ":" + ((seconds<10)?("0"+seconds):(seconds)) + "";
-            if(getEffect.getEffect().isInstantenous()) time = new TranslatableComponent(MODID + ".effect_scroll.instant").getString() + getEffect.getDuration() + "";
+            if(getEffect.getEffect().isInstantenous()) time = new TranslatableComponent(MODID + ".effect_scroll.instant").getString() + getEffect.getDuration() + new TranslatableComponent(MODID + ".effect_scroll.instant_time").getString();
             TooltipUtils.addTooltipMessageWithStyle(p_41423_,getEffect.getEffect().getDisplayName().getString() + " " + TooltipUtils.getRomanNumeral(getEffect.getAmplifier()) + " - " + time,format);
         }
 
