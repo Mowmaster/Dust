@@ -78,6 +78,8 @@
   "dust.pedestal.message_redstone_disable": "Redstone Signal Strength Needed to Activate Pedestal: ",
 
   "dust.dust_in_jar": "Dust in Jar - ",
+  "dust.dustmagic_amount_post_removal": "Dust In Block: ",
+
 
 
   "dust.hint.scroll_made": "A New Repair Order has been Created.",

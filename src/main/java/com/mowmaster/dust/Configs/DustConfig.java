@@ -28,6 +28,9 @@ public class DustConfig
         public final ForgeConfigSpec.IntValue dustPerCrystal;
         public final ForgeConfigSpec.IntValue repairitemsToCraft_ScrollCrafter_T15;
 
+        public final ForgeConfigSpec.IntValue normalEffectTicksDurationPerDust;
+        public final ForgeConfigSpec.IntValue instaEffectDustPerEffectBurst;
+
 
         Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Dust World Generation Settings")
@@ -90,6 +93,14 @@ public class DustConfig
             repairitemsToCraft_ScrollCrafter_T15 = builder
                     .comment("Repair Items Needed To Craft the Scroll Crafter Tier 1.5")
                     .defineInRange("repairItemsNeeded", 3, 1, Integer.MAX_VALUE);
+
+
+            normalEffectTicksDurationPerDust = builder
+                    .comment("Ticks Of Duration for Normal Effects Per Dust Used")
+                    .defineInRange("normalEffectTicksDurationPerDust", 20, 1, Integer.MAX_VALUE);
+            instaEffectDustPerEffectBurst = builder
+                    .comment("Dust Need per Burst of an Instant Effect")
+                    .defineInRange("instaEffectDustPerEffectBurst", 16, 1, Integer.MAX_VALUE);
             builder.pop();
         }
     }

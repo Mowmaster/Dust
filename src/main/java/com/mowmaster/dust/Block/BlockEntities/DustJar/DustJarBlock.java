@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Block.BlockEntities.DustJar;
 
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntity_T15;
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
 import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -179,6 +181,82 @@ public class DustJarBlock extends BaseColoredBlock implements EntityBlock {
   }
      */
 
+    //Left Click Action
+    @Override
+    public void attack(BlockState p_60499_, Level p_60500_, BlockPos p_60501_, Player p_60502_) {
+        if(!p_60500_.isClientSide())
+        {
+            BlockEntity blockEntity = p_60500_.getBlockEntity(p_60501_);
+            if(blockEntity instanceof DustJarBlockEntity jar)
+            {
+                ItemStack itemInHand = p_60502_.getMainHandItem();
+                ItemStack itemInOffHand = p_60502_.getOffhandItem();
+                ItemStack itemInMainHand = p_60502_.getMainHandItem();
+
+                if(jar.hasDust() && itemInOffHand.getItem() instanceof DustJarBlockItem && !(itemInMainHand.getItem() instanceof DustJarBlockItem))
+                {
+                    DustMagic getJarMagic = DustMagic.getDustMagicInItemStack(itemInOffHand);
+                    int capacity = (itemInOffHand.hasTag())?((itemInOffHand.getTag().contains(MODID + "_dustCapacity"))?(itemInOffHand.getTag().getInt(MODID + "_dustCapacity")):(1000)):(1000);
+                    int spaceInJar = capacity - getJarMagic.getDustAmount();
+                    if(getJarMagic.isDustEqualOrEmpty(jar.getStoredDust()))
+                    {
+
+                        if(jar.removeDust(spaceInJar, IDustHandler.DustAction.SIMULATE).getDustAmount()>0)
+                        {
+                            if(p_60502_.isCrouching())
+                            {
+                                DustMagic crafterRemoval = jar.removeDust(10, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInOffHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+jar.getStoredDust().getDustAmount()+""));
+                            }
+                            else
+                            {
+                                DustMagic crafterRemoval = jar.removeDust(1, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInOffHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+jar.getStoredDust().getDustAmount()+""));
+                            }
+                        }
+                    }
+                }
+                else if(jar.hasDust() && itemInMainHand.getItem() instanceof DustJarBlockItem && !(itemInOffHand.getItem() instanceof DustJarBlockItem))
+                {
+                    DustMagic getJarMagic = DustMagic.getDustMagicInItemStack(itemInOffHand);
+                    int capacity = (itemInOffHand.hasTag())?((itemInOffHand.getTag().contains(MODID + "_dustCapacity"))?(itemInOffHand.getTag().getInt(MODID + "_dustCapacity")):(1000)):(1000);
+                    int spaceInJar = capacity - getJarMagic.getDustAmount();
+                    if(getJarMagic.isDustEqualOrEmpty(jar.getStoredDust()))
+                    {
+
+                        if(jar.removeDust(spaceInJar, IDustHandler.DustAction.SIMULATE).getDustAmount()>0)
+                        {
+                            if(p_60502_.isCrouching())
+                            {
+                                DustMagic crafterRemoval = jar.removeDust(spaceInJar, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInOffHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+jar.getStoredDust().getDustAmount()+""));
+                            }
+                            else
+                            {
+                                DustMagic crafterRemoval = jar.removeDust(100, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInOffHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+jar.getStoredDust().getDustAmount()+""));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        super.attack(p_60499_, p_60500_, p_60501_, p_60502_);
+    }
+
     @Override
     public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
 
@@ -231,6 +309,50 @@ public class DustJarBlock extends BaseColoredBlock implements EntityBlock {
                         }
                     }
                 }
+                else if(itemInHand.getItem() instanceof DustJarBlockItem)
+                {
+                    DustMagic magicJar = DustMagic.getDustMagicInItemStack(itemInHand);
+                    if(jar.hasDust())
+                    {
+                        if(magicJar.getDustAmount()>0)
+                        {
+                            DustMagic magicTable = jar.getStoredDust();
+                            if(magicJar.isDustEqual(magicTable))
+                            {
+                                int count = jar.getStoredDust().getDustAmount();
+                                int capacity = jar.getDustCapacity();
+                                int spaceInTable = capacity-count;
+                                int countToAdd = (magicJar.getDustAmount()>spaceInTable)?(spaceInTable):(magicJar.getDustAmount());
+                                DustMagic magicToAdd = new DustMagic(magicJar.getDustColor(),countToAdd);
+                                if(jar.addDust(magicToAdd, IDustHandler.DustAction.SIMULATE)>0)
+                                {
+                                    int countHappened = jar.addDust(magicToAdd, IDustHandler.DustAction.EXECUTE);
+                                    if(countHappened>0)
+                                    {
+                                        int magicLeftAmount = magicJar.getDustAmount()-countHappened;
+                                        DustMagic magicLeft = (magicLeftAmount<=0)?(new DustMagic(-1, 0)):(new DustMagic(magicJar.getDustColor(),magicLeftAmount));
+                                        DustMagic.setDustMagicInStack(itemInHand,magicLeft);
+                                        return InteractionResult.SUCCESS;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(magicJar.getDustAmount()>0)
+                        {
+                            if(jar.addDust(magicJar, IDustHandler.DustAction.SIMULATE) > 0)
+                            {
+                                if(jar.addDust(magicJar, IDustHandler.DustAction.EXECUTE) > 0)
+                                {
+                                    DustMagic.setDustMagicInStack(itemInHand,new DustMagic(-1, 0));
+                                    return InteractionResult.SUCCESS;
+                                }
+                            }
+                        }
+                    }
+                }
                 else if(itemInMainHand.isEmpty())
                 {
                     if(p_60506_.isCrouching())
@@ -242,9 +364,7 @@ public class DustJarBlock extends BaseColoredBlock implements EntityBlock {
                         }
                     }
                 }
-
             }
-
         }
         return InteractionResult.SUCCESS;
     }

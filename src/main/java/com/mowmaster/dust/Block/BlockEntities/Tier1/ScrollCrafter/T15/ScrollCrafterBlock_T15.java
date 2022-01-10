@@ -7,6 +7,7 @@ import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.ScrollCrafterB
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
 import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
+import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Readable.RepairScrolls.BaseRepairScroll;
@@ -128,6 +129,113 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
 
     protected boolean getProcessResultIsLocalized(MachineBlockRepairItemsHintRecipe recipe) {
         return (recipe == null)?(false):(recipe.getResultLocalized());
+    }
+
+    //Left Click Action
+    @Override
+    public void attack(BlockState p_60499_, Level p_60500_, BlockPos p_60501_, Player p_60502_) {
+        if(!p_60500_.isClientSide())
+        {
+            BlockEntity blockEntity = p_60500_.getBlockEntity(p_60501_);
+            if(blockEntity instanceof ScrollCrafterBlockEntity_T15 scrollCrafter)
+            {
+                ItemStack itemInHand = p_60502_.getMainHandItem();
+                ItemStack itemInOffHand = p_60502_.getOffhandItem();
+                ItemStack itemInMainHand = p_60502_.getMainHandItem();
+
+                if(scrollCrafter.hasItemInTable(0) && itemInOffHand.getItem().equals(scrollCrafter.getItemInTable(0).getItem()))
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,scrollCrafter.removeItemInTable(0,scrollCrafter.getItemInTable(0).getCount()));
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,scrollCrafter.removeItemInTable(0,1));
+                    }
+                }
+                else if(scrollCrafter.hasItemInTable(1) && itemInOffHand.getItem().equals(scrollCrafter.getItemInTable(1).getItem()))
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,scrollCrafter.removeItemInTable(1,scrollCrafter.getItemInTable(1).getCount()));
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,scrollCrafter.removeItemInTable(1,1));
+                    }
+                }
+                else if(scrollCrafter.hasItemInTable(2) && itemInOffHand.getItem().equals(scrollCrafter.getItemInTable(2).getItem()))
+                {
+                    if(p_60502_.isCrouching())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,scrollCrafter.removeItemInTable(2, scrollCrafter.getItemInTable(2).getCount()));
+                    }
+                    else
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(p_60502_,scrollCrafter.removeItemInTable(2, 1));
+                    }
+                }
+                else if(scrollCrafter.hasDust() && itemInOffHand.getItem() instanceof DustJarBlockItem && !(itemInMainHand.getItem() instanceof DustJarBlockItem))
+                {
+                    DustMagic getJarMagic = DustMagic.getDustMagicInItemStack(itemInOffHand);
+                    int capacity = (itemInOffHand.hasTag())?((itemInOffHand.getTag().contains(MODID + "_dustCapacity"))?(itemInOffHand.getTag().getInt(MODID + "_dustCapacity")):(1000)):(1000);
+                    int spaceInJar = capacity - getJarMagic.getDustAmount();
+                    if(getJarMagic.isDustEqualOrEmpty(scrollCrafter.getStoredDust()))
+                    {
+                        if(scrollCrafter.removeDust(spaceInJar, IDustHandler.DustAction.SIMULATE).getDustAmount()>0)
+                        {
+                            if(p_60502_.isCrouching())
+                            {
+                                DustMagic crafterRemoval = scrollCrafter.removeDust(10, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInOffHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+scrollCrafter.getStoredDust().getDustAmount()+""));
+                            }
+                            else
+                            {
+                                DustMagic crafterRemoval = scrollCrafter.removeDust(1, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInOffHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+scrollCrafter.getStoredDust().getDustAmount()+""));
+                            }
+                        }
+                    }
+                }
+                else if(scrollCrafter.hasDust() && !(itemInOffHand.getItem() instanceof DustJarBlockItem) && itemInMainHand.getItem() instanceof DustJarBlockItem)
+                {
+                    DustMagic getJarMagic = DustMagic.getDustMagicInItemStack(itemInMainHand);
+                    int capacity = (itemInMainHand.hasTag())?((itemInMainHand.getTag().contains(MODID + "_dustCapacity"))?(itemInMainHand.getTag().getInt(MODID + "_dustCapacity")):(1000)):(1000);
+                    int spaceInJar = capacity - getJarMagic.getDustAmount();
+                    if(getJarMagic.isDustEqualOrEmpty(scrollCrafter.getStoredDust()))
+                    {
+                        if(scrollCrafter.removeDust(spaceInJar, IDustHandler.DustAction.SIMULATE).getDustAmount()>0)
+                        {
+                            if(p_60502_.isCrouching())
+                            {
+                                DustMagic crafterRemoval = scrollCrafter.removeDust(spaceInJar, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInMainHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+scrollCrafter.getStoredDust().getDustAmount()+""));
+                            }
+                            else
+                            {
+                                DustMagic crafterRemoval = scrollCrafter.removeDust(100, IDustHandler.DustAction.EXECUTE);
+                                if(getJarMagic.getDustColor()<0 && getJarMagic.getDustAmount()<=0) { getJarMagic = crafterRemoval; }
+                                else { getJarMagic.setDustAmount((getJarMagic.getDustAmount() + crafterRemoval.getDustAmount())); }
+                                DustMagic.setDustMagicInStack(itemInMainHand,getJarMagic);
+                                MessageUtils.messagePopupWithAppend(p_60502_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+scrollCrafter.getStoredDust().getDustAmount()+""));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        super.attack(p_60499_, p_60500_, p_60501_, p_60502_);
     }
 
     @Override

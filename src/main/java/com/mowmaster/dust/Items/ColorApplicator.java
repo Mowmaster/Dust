@@ -86,7 +86,7 @@ public class ColorApplicator extends Item {
                     BlockHitResult blockResult = world.clip(clipContext);
                     BlockState state = world.getBlockState(blockResult.getBlockPos());
 
-                    if(state.getBlock() instanceof BaseColoredBlock || state.getBlock() instanceof BaseColoredStairBlock || state.getBlock() instanceof BaseColoredSlabBlock)
+                    if(state.getBlock() instanceof BaseColoredBlock || state.getBlock() instanceof BaseColoredCrystalBlock || state.getBlock() instanceof BaseColoredStairBlock || state.getBlock() instanceof BaseColoredSlabBlock)
                     {
                         int getColor = ColorReference.getColorFromStateInt(state);
                         ItemStack newStack = ColorReference.addColorToItemStack(player.getItemInHand(hand).copy(),getColor);

@@ -8,6 +8,7 @@ import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Items.Scrolls.EffectItemBase;
+import com.mowmaster.dust.Items.Scrolls.ScrollBase;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
 import com.mowmaster.dust.Recipes.*;
@@ -782,7 +783,7 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
-    public ItemStack removeItemInTable(int numToRemove, int slot) {
+    public ItemStack removeItemInTable(int slot, int numToRemove) {
         IItemHandler h = tableItemHandler.orElse(null);
         ItemStack stack = ItemStack.EMPTY;
         if(h!=null)
@@ -1142,11 +1143,13 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
             {
                 //MobEffect getEffect = calculateMobEffect();
                 MobEffect getEffect = EffectPickerReference.getEffectForColor(getLevel(),hasCorruption(), getStoredDust().getDustColor());
-                int durationModified = duration*20;
+                int ticksPerDust = DustConfig.COMMON.normalEffectTicksDurationPerDust.get();
+                int durationModified = duration*ticksPerDust;
                 if(getEffect.isInstantenous())
                 {
                     int instantDurationTicks = EffectPickerReference.getInstantDuration(getLevel(),hasCorruption(),getStoredDust().getDustColor());
-                    int instantMod = duration/100;
+                    int dustPerBurst = DustConfig.COMMON.instaEffectDustPerEffectBurst.get();
+                    int instantMod = duration/dustPerBurst;
                     durationModified = instantDurationTicks * ((instantMod<=0)?(1):(instantMod));
                 }
                 MobEffectInstance newInstance = new MobEffectInstance(getEffect,durationModified,calculateModifiedPotency(),false,false,true,null);
@@ -1173,12 +1176,22 @@ public class ScrollCrafterBlockEntity_T15 extends BlockEntity {
         allowedCount = (allowedCount > getNuggs)?(getNuggs):(allowedCount);
         if(!getModifier.isEmpty())allowedCount = (allowedCount > getModifier.getCount())?(getModifier.getCount()):(allowedCount);
 
+        if( this.getScrollCrafted.getItem() instanceof ScrollBase scroll)
+        {
+            MobEffectInstance effect = scroll.getEffectFromScroll(this.getScrollCrafted);
+            if(effect.getEffect().isInstantenous())
+            {
+                int scrollSize = scroll.getItemStackLimit(this.getScrollCrafted);
+                allowedCount = (allowedCount > scrollSize)?(scrollSize):(allowedCount);
+            }
+        }
+
         ItemStack returnerStack = setupCraftedScroll(allowedCount);
         if(!returnerStack.isEmpty())
         {
-            removeItemInTable(allowedCount,0);
-            removeItemInTable(allowedCount,1);
-            removeItemInTable(allowedCount,2);
+            removeItemInTable(0, allowedCount);
+            removeItemInTable(1, allowedCount);
+            removeItemInTable(2, allowedCount);
             removeDust(getStoredDust().getDustAmount(), IDustHandler.DustAction.EXECUTE);
             update();
             return returnerStack;
