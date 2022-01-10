@@ -333,6 +333,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                             if(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.SIMULATE)>0)
                             {
                                 itemInHand.shrink(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.EXECUTE));
+                                MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+table.getStoredDust().getDustAmount()+""));
                                 return InteractionResult.SUCCESS;
                             }
                         }
@@ -342,6 +343,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                         if(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.SIMULATE)>0)
                         {
                             itemInHand.shrink(table.addDust(DustMagic.getDustMagicInItemStack(itemInHand), IDustHandler.DustAction.EXECUTE));
+                            MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+table.getStoredDust().getDustAmount()+""));
                             return InteractionResult.SUCCESS;
                         }
                     }
@@ -369,6 +371,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                                         int magicLeftAmount = magicJar.getDustAmount()-countHappened;
                                         DustMagic magicLeft = (magicLeftAmount<=0)?(new DustMagic(-1, 0)):(new DustMagic(magicJar.getDustColor(),magicLeftAmount));
                                         DustMagic.setDustMagicInStack(itemInHand,magicLeft);
+                                        MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+table.getStoredDust().getDustAmount()+""));
                                         return InteractionResult.SUCCESS;
                                     }
                                 }
@@ -384,6 +387,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                                 if(table.addDust(magicJar, IDustHandler.DustAction.EXECUTE) > 0)
                                 {
                                     DustMagic.setDustMagicInStack(itemInHand,new DustMagic(-1, 0));
+                                    MessageUtils.messagePopupWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dustmagic_amount_post_removal", Arrays.asList(""+table.getStoredDust().getDustAmount()+""));
                                     return InteractionResult.SUCCESS;
                                 }
                             }
@@ -416,7 +420,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                             DustMagic magic = table.getStoredDust();
                             MessageUtils.messagePlayerChatWithAppend(p_60506_,ChatFormatting.WHITE,MODID + ".dust_in_jar", Arrays.asList(ColorReference.getColorName(magic.getDustColor()),": ",""+magic.getDustAmount()+""));
                         }
-                        MessageUtils.messagePlayerChat(p_60506_,ChatFormatting.RED,table.getScrollCrafted().getDisplayName().getString());
+                        if(!table.getScrollCrafted().isEmpty())MessageUtils.messagePlayerChat(p_60506_,ChatFormatting.RED,table.getScrollCrafted().getDisplayName().getString());
                     }
                 }
             }
