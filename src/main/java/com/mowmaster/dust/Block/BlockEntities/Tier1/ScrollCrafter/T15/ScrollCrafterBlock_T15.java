@@ -1,38 +1,22 @@
 package com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15;
 
-import com.google.common.collect.Maps;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
-import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.ScrollCrafterBlockBase;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlock;
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
 import com.mowmaster.dust.Capabilities.Dust.IDustHandler;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
-import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.ColoredCrystalDustBase;
-import com.mowmaster.dust.Items.Readable.RepairScrolls.BaseRepairScroll;
-import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
-import com.mowmaster.dust.Recipes.CrystalNodeRecipe;
-import com.mowmaster.dust.Recipes.MachineBlockRepairItemsHintRecipe;
 import com.mowmaster.dust.References.ColorReference;
-import com.mowmaster.dust.References.Constants;
-import com.mowmaster.dust.Util.DustMagicUtil;
 import com.mowmaster.dust.Util.MessageUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -44,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -52,13 +35,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.*; 
 
 import static com.mowmaster.dust.References.Constants.MODID;
 
-public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
+public class ScrollCrafterBlock_T15 extends Tier1BaseBlock {
 
 
     public static final DirectionProperty SIDED_ROTATION_4 = BlockStateProperties.HORIZONTAL_FACING;
@@ -109,26 +90,6 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
     @Override
     public BlockState mirror(BlockState p_152030_, Mirror p_152031_) {
         return p_152030_.rotate(p_152031_.getRotation(p_152030_.getValue(SIDED_ROTATION_4)));
-    }
-
-    @Nullable
-    protected MachineBlockRepairItemsHintRecipe getRecipe(Level level, ItemStack stackIn) {
-        Container cont = Constants.blankContainer;
-        cont.setItem(0,stackIn);
-        List<MachineBlockRepairItemsHintRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsHintRecipe.MACHINE_REPAIR_ITEMS_HINT,cont,level);
-        return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsHintRecipe.MACHINE_REPAIR_ITEMS_HINT,cont,level).get(0) : null;
-    }
-
-    protected String getProcessResultTitle(MachineBlockRepairItemsHintRecipe recipe) {
-        return (recipe == null)?(""):(recipe.getResultTitle());
-    }
-
-    protected String getProcessResultDescription(MachineBlockRepairItemsHintRecipe recipe) {
-        return (recipe == null)?(""):(recipe.getResultDescription());
-    }
-
-    protected boolean getProcessResultIsLocalized(MachineBlockRepairItemsHintRecipe recipe) {
-        return (recipe == null)?(false):(recipe.getResultLocalized());
     }
 
     //Left Click Action
@@ -246,82 +207,10 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
             ItemStack itemInHand = p_60506_.getItemInHand(p_60507_);
             ItemStack itemInMainHand = p_60506_.getMainHandItem();
             ItemStack itemInOffHand = p_60506_.getOffhandItem();
-            if(itemInMainHand.getItem() instanceof ColorApplicator)
+
+            if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15 table)
             {
-                int getColor = ColorReference.getColorFromItemStackInt(itemInMainHand);
-                BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
-                p_60504_.setBlock(p_60505_,newState,3);
-                return InteractionResult.SUCCESS;
-            }
-            else if(itemInOffHand.getItem() instanceof ColorApplicator)
-            {
-                int getColor = ColorReference.getColorFromItemStackInt(itemInOffHand);
-                BlockState newState = ColorReference.addColorToBlockState(p_60503_,getColor);
-                p_60504_.setBlock(p_60505_,newState,3);
-                return InteractionResult.SUCCESS;
-            }
-            else if(p_60504_.getBlockEntity(p_60505_) instanceof ScrollCrafterBlockEntity_T15)
-            {
-                ScrollCrafterBlockEntity_T15 table = (ScrollCrafterBlockEntity_T15)p_60504_.getBlockEntity(p_60505_);
-                if(!table.isFullyRepaired())
-                {
-                    if(itemInMainHand.getItem() instanceof T2RepairScroll)
-                    {
-                        T2RepairScroll scroll = (T2RepairScroll)itemInMainHand.getItem();
-                        scroll.setMachineBlock(itemInMainHand,this);
-                        scroll.setRepairItem(itemInMainHand,table.getNextRepairItem());
-                        if(!scroll.getRepairItem(itemInMainHand).isEmpty())
-                        {
-                            ItemStack repairItemOnScroll = scroll.getRepairItem(itemInMainHand);
-                            MachineBlockRepairItemsHintRecipe recipe = getRecipe(p_60504_,repairItemOnScroll);
-                            String title = getProcessResultTitle(recipe);
-                            String description = getProcessResultDescription(recipe);
-                            boolean isLocalized = getProcessResultIsLocalized(recipe);
-                            scroll.setHintTitle(itemInMainHand,title);
-                            scroll.setHintDescription(itemInMainHand,description);
-                            scroll.setHintLocalization(itemInMainHand,isLocalized);
-                            if(scroll.getItemFound(itemInMainHand))scroll.setItemFound(itemInMainHand,false);
-                            MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.scroll_made");
-                        }
-                        return InteractionResult.SUCCESS;
-                    }
-                    else if(table.isValidItem(itemInMainHand))
-                    {
-                        if(table.addRepairItem(p_60506_,itemInMainHand,false))
-                        {
-                            itemInMainHand.shrink(1);
-                            Inventory inv = p_60506_.getInventory();
-                            ItemStack itemFound = ItemStack.EMPTY;
-                            itemFound = IntStream.range(0,inv.getContainerSize())
-                                    .mapToObj((inv)::getItem)//Function being applied to each interval
-                                    .filter(itemStack -> itemStack.getItem() instanceof T2RepairScroll)
-                                    //.filter(itemStack -> ((T2RepairScroll)itemStack.getItem()).getRepairItem(itemStack).getItem().equals(itemInMainHand.getItem()))
-                                    .findFirst().orElse(ItemStack.EMPTY);
-                            if(!itemFound.isEmpty())
-                            {
-                                for(int i=0;i<inv.getContainerSize();i++)
-                                {
-                                    if(inv.getItem(i).getItem().equals(itemFound.getItem()))
-                                    {
-                                        ItemStack stackie = inv.getItem(i);
-                                        T2RepairScroll scroll = ((T2RepairScroll)stackie.getItem());
-                                        scroll.setMachineBlock(stackie,Blocks.AIR);
-                                        scroll.setRepairItem(stackie,ItemStack.EMPTY);
-                                        scroll.setHintTitle(stackie,"");
-                                        scroll.setHintDescription(stackie, "");
-                                        scroll.setHintLocalization(stackie, false);
-                                        Map<Enchantment, Integer> enchantsNone = Maps.<Enchantment, Integer>newLinkedHashMap();
-                                        EnchantmentHelper.setEnchantments(enchantsNone,stackie);
-                                        inv.setItem(i,stackie);
-                                        break;
-                                    }
-                                }
-                            }
-                            MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.repair_made");
-                            return InteractionResult.SUCCESS;
-                        }
-                    }
-                }
+                if(!table.isFullyRepaired()) return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
                 else if(itemInHand.getItem() instanceof ColoredCrystalDustBase)
                 {
                     //System.out.println("THIS IS DUST");
@@ -404,12 +293,17 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                 }
                 else if(itemInHand.getItem().equals(Items.STRING))
                 {
-                    if(!table.getScrollCrafted().isEmpty())
+                    if(table.hasEnoughToCraftScroll())
                     {
-                        ItemStack stackReturned = table.craftScrolls(itemInHand.getCount());
-                        itemInHand.shrink(stackReturned.getCount());
-                        ItemHandlerHelper.giveItemToPlayer(p_60506_,stackReturned);
+                        if(!table.getScrollCrafted().isEmpty())
+                        {
+                            ItemStack stackReturned = table.craftScrolls(itemInHand.getCount());
+                            itemInHand.shrink(stackReturned.getCount());
+                            ItemHandlerHelper.giveItemToPlayer(p_60506_,stackReturned);
+                        }
+                        else {MessageUtils.messagePopup(p_60506_,ChatFormatting.WHITE,MODID + ".scroll_crafter.not_enough_dust");}
                     }
+                    else {MessageUtils.messagePopup(p_60506_,ChatFormatting.WHITE,MODID + ".scroll_crafter.not_enough_to_craft");}
                 }
                 else if(itemInMainHand.isEmpty())
                 {
@@ -425,7 +319,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
                 }
             }
         }
-        return InteractionResult.SUCCESS;
+        return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
     }
 
     @Override
@@ -433,8 +327,7 @@ public class ScrollCrafterBlock_T15 extends ScrollCrafterBlockBase {
         if(p_60515_.getBlock() != p_60518_.getBlock())
         {
             BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
-            if(blockEntity instanceof ScrollCrafterBlockEntity_T15) {
-                ScrollCrafterBlockEntity_T15 crafter = ((ScrollCrafterBlockEntity_T15) blockEntity);
+            if(blockEntity instanceof ScrollCrafterBlockEntity_T15 crafter) {
                 crafter.dropInventoryItems(p_60516_,p_60517_);
                 crafter.dropInventoryItemsPrivate(p_60516_,p_60517_);
             }

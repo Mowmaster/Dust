@@ -26,7 +26,6 @@ public class DeferredRegisterTileBlocks
 {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,MODID);
 
-
     public static final RegistryObject<Block> BLOCK_PEDESTAL = registerBlock("block_pedestal",
             () -> new BasePedestalBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
 

@@ -80,8 +80,6 @@
   "dust.dust_in_jar": "Dust in Jar - ",
   "dust.dustmagic_amount_post_removal": "Dust In Block: ",
 
-
-
   "dust.hint.scroll_made": "A New Repair Order has been Created.",
   "dust.hint.repair_made": "A Repair has been Made.",
   "dust.hint.repair_finished": "A Workstation or Machine nearby has been fully repaired.",
@@ -95,8 +93,8 @@
   "dust.effect_scroll.instant": "Instantenous: ",
   "dust.effect_scroll.instant_time": " ticks",
 
-
-
+  "dust.scroll_crafter.not_enough_to_craft": "You lack an ingredient for crafting Scrolls",
+  "dust.scroll_crafter.not_enough_dust": "More Dust is needed to craft that amount of Scrolls",
 
 
 
