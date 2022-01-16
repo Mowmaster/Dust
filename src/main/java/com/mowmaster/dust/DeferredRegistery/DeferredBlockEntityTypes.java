@@ -4,6 +4,7 @@ import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalCluste
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntity_T15;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
@@ -29,13 +30,17 @@ public class DeferredBlockEntityTypes
             "block_entity_cluster",
             () -> BlockEntityType.Builder.of(EffectCrystalClusterBlockEntity::new, DeferredRegisterTileBlocks.BLOCK_CRYSTAL_CLUSTER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<DustJarBlockEntity>> DUST_JAR = BLOCK_ENTITIES.register(
+            "block_entity_dust_jar",
+            () -> BlockEntityType.Builder.of(DustJarBlockEntity::new, DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<ScrollCrafterBlockEntity_T15>> CRAFTER_SCROLL_T15 = BLOCK_ENTITIES.register(
             "block_entity_crafter_scroll_t15",
             () -> BlockEntityType.Builder.of(ScrollCrafterBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<DustJarBlockEntity>> DUST_JAR = BLOCK_ENTITIES.register(
-            "block_entity_dust_jar",
-            () -> BlockEntityType.Builder.of(DustJarBlockEntity::new, DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity_T15>> FURNACE_BLAST_T15 = BLOCK_ENTITIES.register(
+            "block_entity_furnace_blast_t15",
+            () -> BlockEntityType.Builder.of(BlastFurnaceBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_FURNACE_BLAST_T15.get()).build(null));
 
 
 
