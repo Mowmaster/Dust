@@ -8,7 +8,7 @@
     "item": "dust:block_renderblock_grate"
   },
   "transitionX": 0.5,
-  "transitionY": 0.625,
+  "transitionY": 1.0,
   "transitionZ": 0.5,
   "scaleX": 1.75,
   "scaleY": 1.75,
