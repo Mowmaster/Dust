@@ -1,40 +1,32 @@
-package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace;
+package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker;
 
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.DustFurnacesBaseBlock;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntity_T15;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
-import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlastFurnaceBlock_T15 extends DustFurnacesBaseBlock
+public class SmokerFurnaceBlock_T15 extends DustFurnacesBaseBlock
 {
 
     protected final VoxelShape FURNACE;
 
-    public BlastFurnaceBlock_T15(Properties p_152915_) {
+    public SmokerFurnaceBlock_T15(Properties p_152915_) {
         super(p_152915_);
         this.FURNACE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 2.0D, 8.0D, 16.0D),
                 Block.box(14.0D, 0.0D, 0.0D, 16.0D, 8.00, 16.0D),
                 Block.box(2.0D, 0.0D, 0.0D, 14.0D, 8.0D, 2.0D),
-                Block.box(2.0D, 0.0D, 14.0D, 14.0D, 8.0D, 16.0D));
+                Block.box(2.0D, 0.0D, 14.0D, 14.0D, 8.0D, 16.0D),
+                Block.box(2.0D, 7.0D, 2.0D, 14.0D, 8.0D, 14.0D));
 
     }
 
@@ -45,13 +37,13 @@ public class BlastFurnaceBlock_T15 extends DustFurnacesBaseBlock
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return DeferredBlockEntityTypes.FURNACE_BLAST_T15.get().create(pos, state);
+        return DeferredBlockEntityTypes.FURNACE_SMOKER_T15.get().create(pos, state);
     }
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null
-                : (level0, pos, state0, blockEntity) -> ((BlastFurnaceBlockEntity_T15) blockEntity).tick();
+                : (level0, pos, state0, blockEntity) -> ((SmokerFurnaceBlockEntity_T15) blockEntity).tick();
     }
 
 

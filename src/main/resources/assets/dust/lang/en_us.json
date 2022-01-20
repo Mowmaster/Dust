@@ -82,7 +82,7 @@
 
   "dust.hint.scroll_made": "A New Repair Order has been Created.",
   "dust.hint.repair_made": "A Repair has been Made.",
-  "dust.hint.repair_finished": "A Workstation or Machine nearby has been fully repaired.",
+  "dust.hint.repair_finished": "A Workstation or Machine has been fully repaired.",
   "dust.hint.found": "An Item In your Inventory can be used to repair the Machine",
   "dust.hint.title": "Repair Item Needed:",
   "dust.hint.dustjar_desc": "A way to store Dust is needed to repair this workstation.",

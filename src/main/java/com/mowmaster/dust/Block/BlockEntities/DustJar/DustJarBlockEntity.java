@@ -224,9 +224,7 @@ public class DustJarBlockEntity extends BlockEntity {
         save(p_187471_);
     }
 
-    @Override
     public CompoundTag save(CompoundTag p_58888_) {
-        super.save(p_58888_);
         p_58888_.putInt(MODID + "_dustCapacity", this.getDustCapacity());
         return DustMagic.setDustMagicInTag(p_58888_,this.dustMagic);
     }

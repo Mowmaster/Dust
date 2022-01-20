@@ -1,10 +1,7 @@
 package com.mowmaster.dust.DeferredRegistery;
 
 import com.mojang.serialization.Codec;
-import com.mowmaster.dust.Block.BaseBlocks.BaseColoredCrystalBlock;
-import com.mowmaster.dust.Block.BaseBlocks.BaseColoredPowderedBlock;
-import com.mowmaster.dust.Block.BaseBlocks.BaseMachineBlock;
-import com.mowmaster.dust.Block.BaseBlocks.BaseWorkStationBlock;
+import com.mowmaster.dust.Block.BaseBlocks.*;
 import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredSlabBlock;
 import com.mowmaster.dust.Block.BuildingBlocks.BaseColoredStairBlock;
 import com.mowmaster.dust.Block.BuildingBlocks.ColoredStoneBlock;
@@ -66,6 +63,15 @@ public class DeferredRegisterBlocks
             () -> new BaseMachineBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> BASE_WORKSTATION_BLOCK = registerBlock("block_workstation_base",
             () -> new BaseWorkStationBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+
+
+
+
+
+
+
+    public static final RegistryObject<Block> RENDER_BLOCK_GRATE = registerBlock("block_renderblock_grate",
+            () -> new BaseRenderBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
 
 
 

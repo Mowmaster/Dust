@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dust:block/renderblocks/renderblock_grate"
+    }
+  }
+}

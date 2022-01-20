@@ -6,6 +6,8 @@ import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlock;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlock_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Furnace.SmelterFurnaceBlock_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker.SmokerFurnaceBlock_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlock_T15;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import net.minecraft.world.item.BlockItem;
@@ -44,6 +46,12 @@ public class DeferredRegisterTileBlocks
 
     public static final RegistryObject<Block> BLOCK_FURNACE_BLAST_T15 = registerBlock("block_furnace_blast_t15",
             () -> new BlastFurnaceBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> BLOCK_FURNACE_SMOKER_T15 = registerBlock("block_furnace_smoker_t15",
+            () -> new SmokerFurnaceBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> BLOCK_FURNACE_SMELTER_T15 = registerBlock("block_furnace_smelter_t15",
+            () -> new SmelterFurnaceBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
 
 
 

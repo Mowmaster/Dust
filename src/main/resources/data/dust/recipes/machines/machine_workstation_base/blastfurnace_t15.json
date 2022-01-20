@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_machinebase",
+  "input": {
+    "item": "minecraft:tripwire_hook"
+  },
+  "result": {
+    "item": "dust:block_furnace_blast_t15"
+  }
+}

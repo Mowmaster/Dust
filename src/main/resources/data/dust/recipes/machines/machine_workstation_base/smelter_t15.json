@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_machinebase",
+  "input": {
+    "item": "minecraft:furnace"
+  },
+  "result": {
+    "item": "dust:block_furnace_smelter_t15"
+  }
+}

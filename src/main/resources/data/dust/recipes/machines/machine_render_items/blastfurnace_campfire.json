@@ -1,0 +1,20 @@
+{
+  "type": "dust:dust_machine_render_items",
+  "input": {
+    "item": "dust:block_furnace_blast_t15",
+    "item": "minecraft:campfire"
+  },
+  "result": {
+    "item": "minecraft:barrier"
+  },
+  "transitionX": 0.5,
+  "transitionY": 0.5,
+  "transitionZ": 0.5,
+  "scaleX": 1.75,
+  "scaleY": 1.0,
+  "scaleZ": 1.75,
+  "angle": 0.0,
+  "renderItem": true,
+  "renderAsBlock": true
+
+}

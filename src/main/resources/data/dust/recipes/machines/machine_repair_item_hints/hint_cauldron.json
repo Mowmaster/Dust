@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "minecraft:cauldron"
+  },
+  "result": {
+    "item": "minecraft:cauldron"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "Some container made from metal, that can handle hot liquids.",
+  "localized": false
+}

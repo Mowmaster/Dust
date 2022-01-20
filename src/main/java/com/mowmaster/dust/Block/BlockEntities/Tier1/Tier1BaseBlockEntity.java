@@ -2,7 +2,8 @@ package com.mowmaster.dust.Block.BlockEntities.Tier1;
 
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Capabilities.Dust.DustMagic;
-import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
+import com.mowmaster.dust.Networking.DustPacketHandler;
+import com.mowmaster.dust.Networking.DustPacketParticles;
 import com.mowmaster.dust.Recipes.MachineBlockRenderItemsRecipe;
 import com.mowmaster.dust.Recipes.MachineBlockRepairItemsRecipe;
 import com.mowmaster.dust.References.Constants;
@@ -245,6 +246,8 @@ public class Tier1BaseBlockEntity extends BlockEntity {
     public List<ItemStack> getListofRepairs(Level level, ItemStack stackIn) {
         if(!level.isClientSide())
         {
+            if(stackIn.isEmpty()) return new ArrayList<>();
+
             Container cont = Constants.blankContainer;
             cont.setItem(0,stackIn);
             List<MachineBlockRepairItemsRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsRecipe.MACHINE_REPAIR_ITEMS,cont,level);
@@ -259,6 +262,8 @@ public class Tier1BaseBlockEntity extends BlockEntity {
     }
 
     public List<String> getListofRepairTags(Level level, ItemStack stackIn) {
+        if(stackIn.isEmpty()) return new ArrayList<>();
+
         Container cont = Constants.blankContainer;
         cont.setItem(0,stackIn);
         List<MachineBlockRepairItemsRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsRecipe.MACHINE_REPAIR_ITEMS,cont,level);
@@ -274,7 +279,7 @@ public class Tier1BaseBlockEntity extends BlockEntity {
     {
         if(repairStackList.size() == 0)
         {
-            return getListofRepairs(getLevel(),new ItemStack(DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get()));
+            return getListofRepairs(getLevel(),new ItemStack(getBlockForThisBlockEntity()));
         }
         else
         {
@@ -286,7 +291,7 @@ public class Tier1BaseBlockEntity extends BlockEntity {
     {
         if(repairTagList.size() == 0)
         {
-            return getListofRepairTags(getLevel(),new ItemStack(DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get()));
+            return getListofRepairTags(getLevel(),new ItemStack(getBlockForThisBlockEntity()));
         }
         else
         {
@@ -530,6 +535,11 @@ public class Tier1BaseBlockEntity extends BlockEntity {
         }
     }
 
+    public void tick()
+    {
+        if(getLevel().getGameTime()%20 == 0){if(!isFullyRepaired()){ DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY()+1,getPos().getZ(),255,255,255));}}
+    }
+
     @Override
     public void load(CompoundTag p_155245_) {
         super.load(p_155245_);
@@ -557,9 +567,16 @@ public class Tier1BaseBlockEntity extends BlockEntity {
         save(p_187471_);
     }
 
-    @Override
+    /*
+    https://discord.com/channels/313125603924639766/915304642668290119/933514186267459658
+
+    When you want to save some BE to something else:
+- saveWithFullMetadata()if you want the full data (includes the position of the block, this may be problematic for certain applications)
+- saveWithId() if you want to be able to reconstruct a BE from this data without knowing beforehand which BE type you need (for example picking up a BE with a special "carrier" item could use this)
+- saveWithoutMetadata() if you only need the actual data but not the BE type or position
+     */
+
     public CompoundTag save(CompoundTag p_58888_) {
-        super.save(p_58888_);
 
         repairItemsHandler.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();

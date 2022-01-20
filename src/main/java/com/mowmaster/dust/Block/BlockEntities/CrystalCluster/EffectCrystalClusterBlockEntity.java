@@ -1078,9 +1078,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
         save(p_187471_);
     }
 
-    @Override
+
     public CompoundTag save(CompoundTag p_58888_) {
-        super.save(p_58888_);
         handlerCrystalCluster.ifPresent(h -> {
             CompoundTag compound = ((INBTSerializable<CompoundTag>) h).serializeNBT();
             p_58888_.put("inv", compound);

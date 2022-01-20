@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "minecraft:iron_bars"
+  },
+  "result": {
+    "item": "minecraft:iron_bars"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "Some way to hold items above a flame, preferably something that wont burn up when used...",
+  "localized": false
+}

@@ -5,6 +5,8 @@ import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBloc
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Furnace.SmelterFurnaceBlockEntity_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker.SmokerFurnaceBlockEntity_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntity_T15;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
@@ -41,6 +43,14 @@ public class DeferredBlockEntityTypes
     public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity_T15>> FURNACE_BLAST_T15 = BLOCK_ENTITIES.register(
             "block_entity_furnace_blast_t15",
             () -> BlockEntityType.Builder.of(BlastFurnaceBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_FURNACE_BLAST_T15.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<SmokerFurnaceBlockEntity_T15>> FURNACE_SMOKER_T15 = BLOCK_ENTITIES.register(
+            "block_entity_furnace_smoker_t15",
+            () -> BlockEntityType.Builder.of(SmokerFurnaceBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<SmelterFurnaceBlockEntity_T15>> FURNACE_SMELTER_T15 = BLOCK_ENTITIES.register(
+            "block_entity_furnace_smelter_t15",
+            () -> BlockEntityType.Builder.of(SmelterFurnaceBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get()).build(null));
 
 
 

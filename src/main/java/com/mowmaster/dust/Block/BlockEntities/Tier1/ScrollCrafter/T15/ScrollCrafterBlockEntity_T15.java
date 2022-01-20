@@ -9,8 +9,6 @@ import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Items.Scrolls.EffectItemBase;
 import com.mowmaster.dust.Items.Scrolls.ScrollBase;
-import com.mowmaster.dust.Networking.DustPacketHandler;
-import com.mowmaster.dust.Networking.DustPacketParticles;
 import com.mowmaster.dust.Recipes.*;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
@@ -762,11 +760,6 @@ public class ScrollCrafterBlockEntity_T15 extends Tier1BaseBlockEntity {
         for(int i = 0; i < ph.getSlots(); ++i) {
             spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ph.getStackInSlot(i));
         }
-    }
-
-    public void tick()
-    {
-        if(getLevel().getGameTime()%20 == 0){if(!isFullyRepaired()){ DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY()+1,getPos().getZ(),255,255,255));}}
     }
 
     @Override

@@ -1,0 +1,10 @@
+{
+  "type": "dust:dust_machine_repair_items",
+  "input": {
+    "item": "dust:block_furnace_smoker_t15"
+  },
+  "result": {
+    "item": "minecraft:campfire"
+  },
+  "tagname": ""
+}

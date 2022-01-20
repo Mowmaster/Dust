@@ -5,14 +5,15 @@ import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBloc
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockEntityRender;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntityRenderer;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntityRenderer_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Furnace.SmelterFurnaceBlockEntityRenderer_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker.SmokerFurnaceBlockEntityRenderer_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntityRender_T15;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterBlocks;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterItems;
 import com.mowmaster.dust.DeferredRegistery.ItemModelPropertiesDust;
-import com.mowmaster.dust.Items.ColoredCrystalBase;
-import com.mowmaster.dust.Items.ColoredCrystalDustBase;
 import com.mowmaster.dust.Items.Filters.FilterEnchantCount;
 import com.mowmaster.dust.Items.Filters.FilterRestricted;
 import com.mowmaster.dust.Items.Scrolls.ScrollBase;
@@ -171,6 +172,10 @@ public class ClientRegistry
 
         event.getItemColors().register((stack, color) ->
         {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_FURNACE_BLAST_T15.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get());
+        event.getItemColors().register((stack, color) ->
+        {if (color == 1) {return ColorReference.getColorFromItemStackInt(stack);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get());
 
     }
 
@@ -225,6 +230,10 @@ public class ClientRegistry
 
         event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
         {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_FURNACE_BLAST_T15.get());
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get());
+        event.getBlockColors().register((blockstate, blockReader, blockPos, color) ->
+        {if (color == 1) {return ColorReference.getColorFromStateInt(blockstate);} else {return -1;}}, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get());
 
 
     }
@@ -272,5 +281,8 @@ public class ClientRegistry
         BlockEntityRenderers.register(DeferredBlockEntityTypes.DUST.get(), CustomPowderedBlockEntityRender::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.DUST_JAR.get(), DustJarBlockEntityRender::new);
         BlockEntityRenderers.register(DeferredBlockEntityTypes.CRAFTER_SCROLL_T15.get(), ScrollCrafterBlockEntityRender_T15::new);
+        BlockEntityRenderers.register(DeferredBlockEntityTypes.FURNACE_BLAST_T15.get(), BlastFurnaceBlockEntityRenderer_T15::new);
+        BlockEntityRenderers.register(DeferredBlockEntityTypes.FURNACE_SMELTER_T15.get(), SmelterFurnaceBlockEntityRenderer_T15::new);
+        BlockEntityRenderers.register(DeferredBlockEntityTypes.FURNACE_SMOKER_T15.get(), SmokerFurnaceBlockEntityRenderer_T15::new);
     }
 }

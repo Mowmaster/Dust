@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "minecraft:campfire"
+  },
+  "result": {
+    "item": "minecraft:campfire"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "Some way to heat things.",
+  "localized": false
+}

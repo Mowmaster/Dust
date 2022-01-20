@@ -2,6 +2,7 @@ package com.mowmaster.dust.Block.BlockEntities.Tier1;
 
 import com.google.common.collect.Maps;
 import com.mowmaster.dust.Block.BaseBlocks.BaseColoredBlock;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntity_T15;
 import com.mowmaster.dust.Items.ColorApplicator;
 import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
 import com.mowmaster.dust.Recipes.MachineBlockRepairItemsHintRecipe;
@@ -137,7 +138,10 @@ public class Tier1BaseBlock extends BaseColoredBlock implements EntityBlock
                                     }
                                 }
                             }
-                            MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.repair_made");
+
+                            if(table.isFullyRepaired()) { MessageUtils.messagePopup(p_60506_, ChatFormatting.GREEN,MODID + ".hint.repair_finished"); }
+                            else { MessageUtils.messagePopup(p_60506_, ChatFormatting.GOLD,MODID + ".hint.repair_made"); }
+
                             return InteractionResult.SUCCESS;
                         }
                     }
@@ -145,6 +149,18 @@ public class Tier1BaseBlock extends BaseColoredBlock implements EntityBlock
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
+        if(p_60515_.getBlock() != p_60518_.getBlock())
+        {
+            BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
+            if(blockEntity instanceof Tier1BaseBlockEntity t1blockentity) {
+                t1blockentity.dropInventoryItems(p_60516_,p_60517_);
+            }
+            super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
+        }
     }
 
     @Nullable

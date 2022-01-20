@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_machinebase",
+  "input": {
+    "item": "minecraft:iron_bars"
+  },
+  "result": {
+    "item": "dust:block_furnace_smoker_t15"
+  }
+}
