@@ -1,14 +1,17 @@
 package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces;
 
 import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlock;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlockEntity;
 import com.mowmaster.dust.References.ColorReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -50,5 +53,17 @@ public class DustFurnacesBaseBlock extends Tier1BaseBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_152043_) {
         p_152043_.add(SIDED_ROTATION_4, COLOR_RED, COLOR_GREEN, COLOR_BLUE);
+    }
+
+    @Override
+    public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
+        if(p_60515_.getBlock() != p_60518_.getBlock())
+        {
+            BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
+            if(blockEntity instanceof DustFurnacesBaseBlockEntity furnaceblockentity) {
+                furnaceblockentity.dropInputsItems(p_60516_,p_60517_);
+            }
+            super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
+        }
     }
 }
