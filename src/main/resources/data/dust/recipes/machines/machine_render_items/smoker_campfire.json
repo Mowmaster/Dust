@@ -1,14 +1,18 @@
 {
   "type": "dust:dust_machine_render_items",
-  "input": {
-    "item": "dust:block_furnace_smoker_t15",
-    "item": "minecraft:campfire"
-  },
+  "input": [
+    {
+      "item": "dust:block_furnace_smoker_t15"
+    },
+    {
+      "item": "minecraft:campfire"
+    }
+  ],
   "result": {
     "item": "minecraft:barrier"
   },
   "transitionX": 0.5,
-  "transitionY": 0.4,
+  "transitionY": 0.26,
   "transitionZ": 0.5,
   "scaleX": 1.75,
   "scaleY": 1.0,

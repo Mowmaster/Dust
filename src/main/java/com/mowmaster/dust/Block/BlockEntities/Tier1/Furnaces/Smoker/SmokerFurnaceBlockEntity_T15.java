@@ -1,16 +1,17 @@
 package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker;
 
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlockEntity;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.DustFurnacesBaseBlockEntity;
 import com.mowmaster.dust.Configs.DustConfig;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SmokerFurnaceBlockEntity_T15 extends Tier1BaseBlockEntity {
+public class SmokerFurnaceBlockEntity_T15 extends DustFurnacesBaseBlockEntity {
     public SmokerFurnaceBlockEntity_T15(BlockPos p_155229_, BlockState p_155230_) {
         super(DeferredBlockEntityTypes.FURNACE_SMOKER_T15.get(), p_155229_, p_155230_);
     }
@@ -20,14 +21,6 @@ public class SmokerFurnaceBlockEntity_T15 extends Tier1BaseBlockEntity {
     =====================   BASE CLASS OVERRIDES - START   =======================
     ==============================================================================
     ============================================================================*/
-
-    @Override
-    public void update()
-    {
-        BlockState state = level.getBlockState(getPos());
-        this.level.sendBlockUpdated(getPos(), state, state, 3);
-        this.setChanged();
-    }
 
     @Override
     public int getRepairSlotsForRepairs()
@@ -40,6 +33,9 @@ public class SmokerFurnaceBlockEntity_T15 extends Tier1BaseBlockEntity {
     {
         return DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get();
     }
+
+    @Override
+    public RecipeType getRecipeTypeForBlock() { return RecipeType.SMOKING; }
 
     /*============================================================================
     ==============================================================================

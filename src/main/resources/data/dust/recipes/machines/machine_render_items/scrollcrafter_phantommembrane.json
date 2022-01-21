@@ -1,9 +1,13 @@
 {
   "type": "dust:dust_machine_render_items",
-  "input": {
-    "item": "dust:block_crafter_scroll_t15",
-    "item": "minecraft:phantom_membrane"
-  },
+  "input": [
+    {
+      "item": "dust:block_crafter_scroll_t15"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    }
+  ],
   "result": {
     "item": "minecraft:barrier"
   },

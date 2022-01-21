@@ -42,8 +42,8 @@ public class BaseCrystalNodeBlock extends BaseColoredCrystalBlock
 
     @Nullable
     protected CrystalNodeRecipe getRecipe(Level level, ItemStack stackIn) {
-        Container cont = Constants.blankContainer;
-        cont.setItem(0,stackIn);
+        Container cont = Constants.getContainer(1);
+        cont.setItem(-1,stackIn);
         List<CrystalNodeRecipe> recipes = level.getRecipeManager().getRecipesFor(CrystalNodeRecipe.CRYSTAL_NODE,cont,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(CrystalNodeRecipe.CRYSTAL_NODE,cont,level).get(0) : null;
     }

@@ -1,14 +1,18 @@
 {
   "type": "dust:dust_machine_render_items",
-  "input": {
-    "item": "dust:block_furnace_blast_t15",
-    "item": "minecraft:cauldron"
-  },
+  "input": [
+    {
+      "item": "dust:block_furnace_blast_t15"
+    },
+    {
+      "item": "minecraft:cauldron"
+    }
+  ],
   "result": {
     "item": "minecraft:barrier"
   },
   "transitionX": 0.5,
-  "transitionY": 0.5,
+  "transitionY": 0.4,
   "transitionZ": 0.5,
   "scaleX": 0.25,
   "scaleY": 0.25,

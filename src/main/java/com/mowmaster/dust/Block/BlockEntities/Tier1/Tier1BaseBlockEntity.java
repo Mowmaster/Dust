@@ -248,8 +248,8 @@ public class Tier1BaseBlockEntity extends BlockEntity {
         {
             if(stackIn.isEmpty()) return new ArrayList<>();
 
-            Container cont = Constants.blankContainer;
-            cont.setItem(0,stackIn);
+            Container cont = Constants.getContainer(2);
+            cont.setItem(-1,stackIn);
             List<MachineBlockRepairItemsRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsRecipe.MACHINE_REPAIR_ITEMS,cont,level);
             List<ItemStack> stackie = new ArrayList<>();
             for(MachineBlockRepairItemsRecipe recipe : recipes)
@@ -264,8 +264,8 @@ public class Tier1BaseBlockEntity extends BlockEntity {
     public List<String> getListofRepairTags(Level level, ItemStack stackIn) {
         if(stackIn.isEmpty()) return new ArrayList<>();
 
-        Container cont = Constants.blankContainer;
-        cont.setItem(0,stackIn);
+        Container cont = Constants.getContainer(2);
+        cont.setItem(-1,stackIn);
         List<MachineBlockRepairItemsRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsRecipe.MACHINE_REPAIR_ITEMS,cont,level);
         List<String> stackie = new ArrayList<>();
         for(MachineBlockRepairItemsRecipe recipe : recipes)
@@ -441,10 +441,12 @@ public class Tier1BaseBlockEntity extends BlockEntity {
 
     @Nullable
     protected MachineBlockRenderItemsRecipe getRenderRecipe(List<ItemStack> stackIn) {
-        Container cont = Constants.blankContainer;
+        Container cont = Constants.getContainer(2);
         for(int i=0;i<stackIn.size();i++)
         {
-            cont.setItem(i,stackIn.get(i));
+            if(cont.canPlaceItem(i,stackIn.get(i))) {
+                cont.setItem(-1, stackIn.get(i));
+            }
         }
         List<MachineBlockRenderItemsRecipe> recipes = getLevel().getRecipeManager().getRecipesFor(MachineBlockRenderItemsRecipe.MACHINE_RENDER_ITEMS,cont,getLevel());
         return getLevel() != null ? (recipes.size() > 0)?(recipes.get(0)):(null) : null;

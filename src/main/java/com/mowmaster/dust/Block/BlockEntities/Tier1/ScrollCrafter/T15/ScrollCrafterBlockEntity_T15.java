@@ -425,8 +425,8 @@ public class ScrollCrafterBlockEntity_T15 extends Tier1BaseBlockEntity {
 
     @Nullable
     protected CrystalClusterModifiers getRecipeModifier(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<CrystalClusterModifiers> recipes = level.getRecipeManager().getRecipesFor(CrystalClusterModifiers.CRYSTALCLUSTERMODIFIER,container,level);
         return recipes.size() > 0 ? recipes.stream().findFirst().get() : null;
     }

@@ -22,8 +22,8 @@ public class EffectPickerReference
 {
     @Nullable
     protected static MobEffectColorRecipe getRecipeMobEffectColor(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<MobEffectColorRecipe> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level).get(0) : null;
     }
@@ -42,8 +42,8 @@ public class EffectPickerReference
 
     @Nullable
     protected static MobEffectColorRecipeCorrupted getRecipeMobEffectColorCorrupted(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<MobEffectColorRecipeCorrupted> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level).get(0) : null;
     }

@@ -1,9 +1,13 @@
 {
   "type": "dust:dust_machine_render_items",
-  "input": {
-    "item": "dust:block_furnace_smelter_t15",
-    "item": "minecraft:iron_bars"
-  },
+  "input": [
+    {
+      "item": "dust:block_furnace_smelter_t15"
+    },
+    {
+      "item": "minecraft:iron_bars"
+    }
+  ],
   "result": {
     "item": "dust:block_renderblock_grate"
   },

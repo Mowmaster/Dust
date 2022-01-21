@@ -251,8 +251,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
      */
     @Nullable
     protected CrystalClusterFuelRecipe getRecipe(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<CrystalClusterFuelRecipe> recipes = level.getRecipeManager().getRecipesFor(CrystalClusterFuelRecipe.CRYSTALCLUSTERFUEL,container,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(CrystalClusterFuelRecipe.CRYSTALCLUSTERFUEL,container,level).get(0) : null;
     }
@@ -388,8 +388,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
 
     @Nullable
     protected CrystalClusterModifiers getRecipeModifier(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<CrystalClusterModifiers> recipes = level.getRecipeManager().getRecipesFor(CrystalClusterModifiers.CRYSTALCLUSTERMODIFIER,container,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(CrystalClusterModifiers.CRYSTALCLUSTERMODIFIER,container,level).get(0) : null;
     }
@@ -584,8 +584,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
 
     @Nullable
     protected MobEffectColorRecipe getRecipeMobEffectColor(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<MobEffectColorRecipe> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipe.MOBEFFECTCOLOR,container,level);
         return recipes.size() > 0 ? recipes.get(0) : null;
     }
@@ -596,8 +596,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
 
     @Nullable
     protected MobEffectColorRecipeCorrupted getRecipeMobEffectColorCorrupted(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<MobEffectColorRecipeCorrupted> recipes = level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MobEffectColorRecipeCorrupted.MOBEFFECTCOLORCORRUPTED,container,level).get(0) : null;
     }
@@ -753,8 +753,8 @@ public class EffectCrystalClusterBlockEntity extends BlockEntity
 
     @Nullable
     protected BaseBlockEntityFilter getRecipeFilterBlock(Level level, ItemStack stackIn) {
-        Container container = Constants.blankContainer;
-        container.setItem(0,stackIn);
+        Container container = Constants.getContainer(1);
+        container.setItem(-1,stackIn);
         List<BaseBlockEntityFilter> recipes = getLevel().getRecipeManager().getRecipesFor(BaseBlockEntityFilter.BLOCKENTITYFILTER,container,getLevel());
         return getLevel() != null ? (recipes.size() > 0)?(recipes.stream().findFirst().get()):(null) : null;
     }

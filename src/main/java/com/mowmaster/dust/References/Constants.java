@@ -4,17 +4,23 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Constants {
     public static final String MODID = "dust";
     public static final String MODNAME = "Dust";
 
 
-    public static Container blankContainer = new Container() {
-        ItemStack stack = ItemStack.EMPTY;
+    public static Container getContainer(int size)
+    {
+        return new Container() {
+        List<ItemStack> stack = new ArrayList<>();
 
         @Override
         public int getContainerSize() {
-            return 1;
+            return size;
         }
 
         @Override
@@ -24,22 +30,27 @@ public class Constants {
 
         @Override
         public ItemStack getItem(int p_18941_) {
-            return stack;
+            return stack.get(p_18941_);
         }
 
         @Override
         public ItemStack removeItem(int p_18942_, int p_18943_) {
-            return stack = ItemStack.EMPTY;
+            ItemStack oldStack = stack.get(p_18942_).copy();
+            stack.remove(p_18942_);
+            return oldStack;
         }
 
         @Override
         public ItemStack removeItemNoUpdate(int p_18951_) {
-            return stack = ItemStack.EMPTY;
+            ItemStack oldStack = stack.get(p_18951_).copy();
+            stack.remove(p_18951_);
+            return oldStack;
         }
 
         @Override
         public void setItem(int p_18944_, ItemStack p_18945_) {
-            stack = p_18945_;
+            if(p_18944_ == -1)stack.add(p_18945_);
+            else stack.set(p_18944_,p_18945_);
         }
 
         @Override
@@ -54,7 +65,8 @@ public class Constants {
 
         @Override
         public void clearContent() {
-            stack = ItemStack.EMPTY;
+            stack = new ArrayList<>();
         }
     };
+    }
 }

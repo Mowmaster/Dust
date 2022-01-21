@@ -42,8 +42,8 @@ public class Tier1BaseBlock extends BaseColoredBlock implements EntityBlock
 
     @Nullable
     public MachineBlockRepairItemsHintRecipe getRecipe(Level level, ItemStack stackIn) {
-        Container cont = Constants.blankContainer;
-        cont.setItem(0,stackIn);
+        Container cont = Constants.getContainer(1);
+        cont.setItem(-1,stackIn);
         List<MachineBlockRepairItemsHintRecipe> recipes = level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsHintRecipe.MACHINE_REPAIR_ITEMS_HINT,cont,level);
         return recipes.size() > 0 ? level.getRecipeManager().getRecipesFor(MachineBlockRepairItemsHintRecipe.MACHINE_REPAIR_ITEMS_HINT,cont,level).get(0) : null;
     }
