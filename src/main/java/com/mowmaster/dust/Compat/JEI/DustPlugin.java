@@ -174,6 +174,13 @@ public class DustPlugin implements IModPlugin {
         addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_CRUSHER_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_CRUSHER_T15.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_BRICK.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_BRICK.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_BRICK_SLAB.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_BRICK_SLAB.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_BRICK_STAIR.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_BRICK_STAIR.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_BRICKS.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_BRICKS.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_BRICKS_SLAB.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_BRICKS_SLAB.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_BRICKS_STAIR.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_BRICKS_STAIR.get().getDescriptionId()+".description");
+
 
 
 

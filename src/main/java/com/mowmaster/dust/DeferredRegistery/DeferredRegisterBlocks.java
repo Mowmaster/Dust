@@ -55,6 +55,18 @@ public class DeferredRegisterBlocks
             () -> new BaseColoredSlabBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
     public static final RegistryObject<Block> CRYSTAL_STONE_STAIR = registerBlock("block_crystal_stone_stair",
             () -> new BaseColoredStairBlock(CRYSTAL_STONE.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> CRYSTAL_STONE_BRICK = registerBlock("block_crystal_stone_brick",
+            () -> new ColoredStoneBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> CRYSTAL_STONE_BRICK_SLAB = registerBlock("block_crystal_stone_brick_slab",
+            () -> new BaseColoredSlabBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> CRYSTAL_STONE_BRICK_STAIR = registerBlock("block_crystal_stone_brick_stair",
+            () -> new BaseColoredStairBlock(CRYSTAL_STONE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> CRYSTAL_STONE_BRICKS = registerBlock("block_crystal_stone_bricks",
+            () -> new ColoredStoneBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> CRYSTAL_STONE_BRICKS_SLAB = registerBlock("block_crystal_stone_bricks_slab",
+            () -> new BaseColoredSlabBlock(BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
+    public static final RegistryObject<Block> CRYSTAL_STONE_BRICKS_STAIR = registerBlock("block_crystal_stone_bricks_stair",
+            () -> new BaseColoredStairBlock(CRYSTAL_STONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE).strength(1.0F).sound(SoundType.STONE)));
 
     public static final RegistryObject<Block> CRYSTAL_DUST_BLOCK = registerBlock("block_crystal_dust",
             () -> new BaseColoredPowderedBlock(BlockBehaviour.Properties.of(Material.SAND).strength(0.25F).sound(SoundType.SAND).requiresCorrectToolForDrops()));

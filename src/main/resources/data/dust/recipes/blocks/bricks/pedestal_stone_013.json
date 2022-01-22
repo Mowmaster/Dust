@@ -1,0 +1,26 @@
+{
+
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": {
+      "item": "dust:block_crystal_stone_brick",
+      "type": "forge:nbt",
+      "nbt": {
+        "dust_color": 22015
+      }
+    }
+  },
+  "result": {
+    "item": "dust:block_crystal_stone_bricks",
+    "type": "forge:nbt",
+    "nbt": {
+      "dust_color": 22015
+    },
+    "count": 4
+  }
+
+}

@@ -273,6 +273,21 @@
   "block.dust.block_crystal_stone_stair": "Crystal Stone Stair",
   "block.dust.block_crystal_stone_stair.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
 
+  "block.dust.block_crystal_stone_brick": "Crystal Stone Brick",
+  "block.dust.block_crystal_stone_brick.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+  "block.dust.block_crystal_stone_brick_slab": "Crystal Stone Brick Slab",
+  "block.dust.block_crystal_stone_brick_slab.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+  "block.dust.block_crystal_stone_brick_stair": "Crystal Stone Brick Stair",
+  "block.dust.block_crystal_stone_brick_stair.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+
+  "block.dust.block_crystal_stone_bricks": "Crystal Stone Bricks",
+  "block.dust.block_crystal_stone_bricks.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+  "block.dust.block_crystal_stone_bricks_slab": "Crystal Stone Bricks Slab",
+  "block.dust.block_crystal_stone_bricks_slab.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+  "block.dust.block_crystal_stone_bricks_stair": "Crystal Stone Bricks Stair",
+  "block.dust.block_crystal_stone_bricks_stair.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+
+
   "block.dust.block_crystal_dust": "Block of Dust",
   "block.dust.block_crystal_dust.description": "§5 Can be dug up, will yield some kind of dust.",
   "block.dust.block_powdered_dust": "Block of Dust",
