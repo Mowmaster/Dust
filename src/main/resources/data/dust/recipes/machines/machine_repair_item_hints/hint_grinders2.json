@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "minecraft:obsidian"
+  },
+  "result": {
+    "item": "minecraft:obsidian"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "A very hard block",
+  "localized": false
+}

@@ -1,0 +1,24 @@
+{
+  "type": "dust:dust_machine_render_items",
+  "input": [
+    {
+      "item": "dust:block_crafter_t15"
+    },
+    {
+      "item": "minecraft:crafting_table"
+    }
+  ],
+  "result": {
+    "item": "minecraft:barrier"
+  },
+  "transitionX": 0.5,
+  "transitionY": 0.95,
+  "transitionZ": 0.5,
+  "scaleX": 1.75,
+  "scaleY": 0.05,
+  "scaleZ": 1.75,
+  "angle": 0.0,
+  "renderItem": true,
+  "renderAsBlock": true
+
+}

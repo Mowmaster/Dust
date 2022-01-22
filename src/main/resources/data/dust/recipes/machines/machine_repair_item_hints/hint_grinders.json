@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "tag": "forge:storage_blocks"
+  },
+  "result": {
+    "item": "minecraft:iron_block"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "Any block of refined ore",
+  "localized": false
+}

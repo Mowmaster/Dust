@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_workstationbase",
+  "input": {
+    "item": "minecraft:stick"
+  },
+  "result": {
+    "item": "dust:block_crafter_t15"
+  }
+}

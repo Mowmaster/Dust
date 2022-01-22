@@ -1,0 +1,11 @@
+{
+  "type": "dust:dust_crushing",
+  "input": {
+    "item": "minecraft:beetroot"
+  },
+  "result": {
+    "item": "minecraft:sugar",
+    "count": 1
+  },
+  "color": 55585
+}

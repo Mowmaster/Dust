@@ -4,9 +4,11 @@ import com.mowmaster.dust.Block.BlockEntities.CrystalCluster.EffectCrystalCluste
 import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockEntity;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlockEntity;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Furnace.SmelterFurnaceBlockEntity_T15;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker.SmokerFurnaceBlockEntity_T15;
+//import com.mowmaster.dust.Block.BlockEntities.Tier1.Crafter.CrafterBlockEntity_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Crusher.CrusherBlockEntity_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.Furnace.SmelterFurnaceBlockEntity_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.Smoker.SmokerFurnaceBlockEntity_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlockEntity_T15;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.RegistryObject;
@@ -51,6 +53,15 @@ public class DeferredBlockEntityTypes
     public static final RegistryObject<BlockEntityType<SmelterFurnaceBlockEntity_T15>> FURNACE_SMELTER_T15 = BLOCK_ENTITIES.register(
             "block_entity_furnace_smelter_t15",
             () -> BlockEntityType.Builder.of(SmelterFurnaceBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<CrusherBlockEntity_T15>> CRUSHER_T15 = BLOCK_ENTITIES.register(
+            "block_entity_crusher_t15",
+            () -> BlockEntityType.Builder.of(CrusherBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_CRUSHER_T15.get()).build(null));
+
+    /*public static final RegistryObject<BlockEntityType<CrafterBlockEntity_T15>> CRAFTER_T15 = BLOCK_ENTITIES.register(
+            "block_entity_crafter_t15",
+            () -> BlockEntityType.Builder.of(CrafterBlockEntity_T15::new, DeferredRegisterTileBlocks.BLOCK_CRAFTER_T15.get()).build(null));
+*/
 
 
 

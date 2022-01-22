@@ -1,0 +1,24 @@
+{
+  "type": "dust:dust_machine_render_items",
+  "input": [
+    {
+      "item": "dust:block_crusher_t15"
+    },
+    {
+      "item": "minecraft:campfire"
+    }
+  ],
+  "result": {
+    "item": "minecraft:barrier"
+  },
+  "transitionX": 0.5,
+  "transitionY": 0.175,
+  "transitionZ": 0.5,
+  "scaleX": 1.75,
+  "scaleY": 0.625,
+  "scaleZ": 1.0,
+  "angle": 0.0,
+  "renderItem": true,
+  "renderAsBlock": true
+
+}

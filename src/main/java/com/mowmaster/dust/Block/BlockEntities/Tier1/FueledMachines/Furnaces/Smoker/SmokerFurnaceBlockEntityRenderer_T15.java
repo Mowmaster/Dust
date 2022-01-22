@@ -1,8 +1,8 @@
-package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker;
+package com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.Smoker;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.DustFurnacesBaseBlockEntityRenderer;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.DustFueledMachineBlockEntityRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlock_T15.SIDED_ROTATION_4;
 
-public class SmokerFurnaceBlockEntityRenderer_T15 extends DustFurnacesBaseBlockEntityRenderer implements BlockEntityRenderer<SmokerFurnaceBlockEntity_T15>
+public class SmokerFurnaceBlockEntityRenderer_T15 extends DustFueledMachineBlockEntityRenderer implements BlockEntityRenderer<SmokerFurnaceBlockEntity_T15>
 {
     public SmokerFurnaceBlockEntityRenderer_T15(BlockEntityRendererProvider.Context context) {}
 

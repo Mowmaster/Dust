@@ -161,6 +161,27 @@ public class DustPlugin implements IModPlugin {
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_SLAB.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_SLAB.get().getDescriptionId()+".description");
         addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get().asItem(),DeferredRegisterBlocks.CRYSTAL_STONE_STAIR.get().getDescriptionId()+".description");
 
+        addValueInfoPage(registration,DeferredRegisterBlocks.CRYSTAL_DUST_BLOCK.get().asItem(),DeferredRegisterBlocks.CRYSTAL_DUST_BLOCK.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterItems.COLORED_CRYSTAL_DUST.get(),DeferredRegisterItems.COLORED_CRYSTAL_DUST.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get().asItem(),DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_CRAFTER_SCROLL_T15.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get().asItem(),DeferredRegisterTileBlocks.BLOCK_DUST_JAR.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterItems.SCROLL_T2_REPAIR.get(),DeferredRegisterItems.SCROLL_T2_REPAIR.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterItems.EFFECT_SCROLL.get(),DeferredRegisterItems.EFFECT_SCROLL.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.BASE_MACHINE_BLOCK.get().asItem(),DeferredRegisterBlocks.BASE_MACHINE_BLOCK.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterBlocks.BASE_WORKSTATION_BLOCK.get().asItem(),DeferredRegisterBlocks.BASE_WORKSTATION_BLOCK.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_FURNACE_BLAST_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_FURNACE_BLAST_T15.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_FURNACE_SMOKER_T15.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_FURNACE_SMELTER_T15.get().getDescriptionId()+".description");
+        addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_CRUSHER_T15.get().asItem(),DeferredRegisterTileBlocks.BLOCK_CRUSHER_T15.get().getDescriptionId()+".description");
+
+
+
+
+
+
+
+
 
         addValueInfoPage(registration,DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().asItem(),DeferredRegisterTileBlocks.BLOCK_PEDESTAL.get().getDescriptionId()+".description");
     }

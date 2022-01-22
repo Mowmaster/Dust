@@ -1,0 +1,9 @@
+{
+  "type": "dust:dust_machinebase",
+  "input": {
+    "item": "minecraft:grindstone"
+  },
+  "result": {
+    "item": "dust:block_crusher_t15"
+  }
+}

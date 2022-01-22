@@ -5,9 +5,11 @@ import com.mowmaster.dust.Block.BlockEntities.CustomDustBlock.CustomPowderedBloc
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlock;
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Pedestal.BasePedestalBlock;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlock_T15;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Furnace.SmelterFurnaceBlock_T15;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Smoker.SmokerFurnaceBlock_T15;
+//import com.mowmaster.dust.Block.BlockEntities.Tier1.Crafter.CrafterBlock_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Crusher.CrusherBlock_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.BlastFurnace.BlastFurnaceBlock_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.Furnace.SmelterFurnaceBlock_T15;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.Smoker.SmokerFurnaceBlock_T15;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlock_T15;
 import com.mowmaster.dust.CreativeTabs.DustBlockTabs;
 import net.minecraft.world.item.BlockItem;
@@ -52,6 +54,13 @@ public class DeferredRegisterTileBlocks
 
     public static final RegistryObject<Block> BLOCK_FURNACE_SMELTER_T15 = registerBlock("block_furnace_smelter_t15",
             () -> new SmelterFurnaceBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> BLOCK_CRUSHER_T15 = registerBlock("block_crusher_t15",
+            () -> new CrusherBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+    /*public static final RegistryObject<Block> BLOCK_CRAFTER_T15 = registerBlock("block_crafter_t15",
+            () -> new CrafterBlock_T15(BlockBehaviour.Properties.of(Material.STONE).strength(2.0F).sound(SoundType.STONE)));
+*/
 
 
 

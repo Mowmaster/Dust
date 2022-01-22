@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces;
+package com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines;
 
 import com.mowmaster.dust.Block.BlockEntities.DustJar.DustJarBlockItem;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlock;
@@ -9,6 +9,7 @@ import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import com.mowmaster.dust.DeferredRegistery.DeferredRegisterTileBlocks;
 import com.mowmaster.dust.Networking.DustPacketHandler;
 import com.mowmaster.dust.Networking.DustPacketParticles;
+import com.mowmaster.dust.Recipes.CrusherRecipe;
 import com.mowmaster.dust.Recipes.MachineBlockRenderItemsRecipe;
 import com.mowmaster.dust.References.ColorReference;
 import com.mowmaster.dust.References.Constants;
@@ -24,15 +25,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
@@ -51,7 +52,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
+public class DustFueledMachineBaseBlockEntity extends Tier1BaseBlockEntity
 {
     private LazyOptional<IItemHandler> allowedInputsHandler = LazyOptional.of(this::createAllowedInputsHandler);
     private List<ItemStack> stacksListAllowedInputsHandler = new ArrayList<>();
@@ -62,7 +63,7 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
     private ItemStack outputItemStack = ItemStack.EMPTY;
     private boolean isLit = false;
 
-    public DustFurnacesBaseBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
+    public DustFueledMachineBaseBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
         super(p_155228_, p_155229_, p_155230_);
     }
 
@@ -139,7 +140,7 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
     }
 
     @Nullable
-    protected AbstractCookingRecipe getRecipe(Level world, ItemStack stackIn) {
+    public Recipe<Container> getRecipe(Level world, ItemStack stackIn) {
         if (world == null) return null;
 
         Container inv = Constants.getContainer(1);
@@ -163,19 +164,32 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
             List<SmeltingRecipe> optional1 = recipeManager.getRecipesFor(RecipeType.SMELTING, inv, world);
             return getLevel() != null ? (optional.size() > 0 || optional2.size() > 0)?(null):((optional1.size() > 0)?(optional1.stream().findFirst().get()):(null)) : null;
         }
+        else if(getRecipeTypeForBlock() == CrusherRecipe.CRUSHING)
+        {
+            List<CrusherRecipe> optional = recipeManager.getRecipesFor(CrusherRecipe.CRUSHING, inv, world);
+            return getLevel() != null ? (optional.size() > 0)?(optional.stream().findFirst().get()):(null) : null;
+        }
         else return null;
     }
 
-    protected ItemStack getProcessResults(AbstractCookingRecipe recipe) {
+    public ItemStack getProcessResults(Recipe<Container> recipe) {
         return (recipe == null)?(ItemStack.EMPTY):(recipe.getResultItem());
     }
 
-    protected float getProcessResultsXP(AbstractCookingRecipe recipe) {
-        return (recipe == null)?(0.0f):(recipe.getExperience());
+    public float getProcessResultsXP(Recipe<Container> recipe) {
+        if(recipe instanceof AbstractCookingRecipe recipeCook)
+        {
+            return (recipe == null)?(0.0f):(recipeCook.getExperience());
+        }
+        else return 0.0f;
     }
 
-    protected int getProcessCookTime(AbstractCookingRecipe recipe) {
-        return (recipe == null)?(0):(recipe.getCookingTime());
+    public int getProcessCookTime(Recipe<Container> recipe) {
+        if(recipe instanceof AbstractCookingRecipe recipeCook)
+        {
+            return (recipe == null)?(0):(recipeCook.getCookingTime());
+        }
+        else return 200;
     }
 
     public boolean isAllowedInputItemForMachineSlot(int slot, ItemStack stack)
@@ -222,7 +236,7 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
                         {
                             if(slot==1 && getInputItemInSlot(slot).isEmpty())
                             {
-                                AbstractCookingRecipe recipe = getRecipe(getLevel(),insertedItem);
+                                Recipe<Container> recipe = getRecipe(getLevel(),insertedItem);
                                 this.outputItemStack = getProcessResults(recipe);
                                 this.xpForOutput = getProcessResultsXP(recipe);
                                 this.maxCookTime = getProcessCookTime(recipe);
@@ -305,11 +319,65 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
         {
             if(!removeItemFromSlot(0,1,true).isEmpty())
             {
-                this.burnTime = calcFuelBurnTime();
-                this.isLit = true;
+                changeBurnTime(calcFuelBurnTime(), true);
+                setLit(true);
                 removeItemFromSlot(0,1,false);
             }
         }
+    }
+
+    public void setLit(boolean isLitValue)
+    {
+        this.isLit = isLitValue;
+    }
+
+    public void setBurnTime(int setAmount)
+    {
+        this.burnTime = setAmount;
+    }
+
+    public void changeBurnTime(int amount, boolean increase)
+    {
+        if(increase)
+        {
+            this.burnTime += amount;
+        }
+        else this.burnTime -= amount;
+
+    }
+
+    public ItemStack getOutputItem()
+    {
+        return this.outputItemStack;
+    }
+
+    public float getXPOutput()
+    {
+        return this.xpForOutput;
+    }
+
+    public int getMaxCookTime()
+    {
+        return this.maxCookTime;
+    }
+
+    public int getCurrentCookTime()
+    {
+        return this.currentCookTime;
+    }
+
+    public void setCurrentCookTime(int setAmount)
+    {
+        this.currentCookTime = setAmount;
+    }
+
+    public void changeCurrentCookTime(int amount, boolean increase)
+    {
+        if(increase)
+        {
+            this.currentCookTime += amount;
+        }
+        else this.currentCookTime -= amount;
     }
 
 
@@ -325,7 +393,7 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
         while(!stack.isEmpty()) {
             ItemEntity itementity = new ItemEntity(worldIn, d3, d4, d5, stack.split(RANDOM.nextInt(21) + 10));
             float f = 0.05F;
-            itementity.lerpMotion(0.1D*RANDOM.nextInt(5),0.1D*RANDOM.nextInt(5),0.1D*RANDOM.nextInt(5));
+            itementity.lerpMotion(0.1D*RANDOM.nextInt(-5, 5 + 1),0.1D*RANDOM.nextInt( 5 ),0.1D*RANDOM.nextInt(-5, 5 + 1));
             //itementity.lerpMotion(RANDOM.nextGaussian() * 0.05000000074505806D, RANDOM.nextGaussian() * 0.05000000074505806D + 0.20000000298023224D, RANDOM.nextGaussian() * 0.05000000074505806D);
             worldIn.addFreshEntity(itementity);
         }
@@ -341,26 +409,26 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
             {
                 if(getBurnTime()>0)
                 {
-                    this.burnTime -=20;
+                    changeBurnTime(20, false);
                     if(getBurnTime()<=5)addToBurnTime();
                     if(getBurnTime()<=0)
                     {
-                        this.isLit = false;
+                        setLit(false);
                         update();
                     }
 
                     if(!removeItemFromSlot(1,1,true).isEmpty())
                     {
-                        this.currentCookTime+=20;
-                        if(this.currentCookTime >= this.maxCookTime)
+                        changeCurrentCookTime(20, true);
+                        if(getCurrentCookTime() >= getMaxCookTime())
                         {
-                            this.currentCookTime = 0;
-                            spawnItemStackOutput(getLevel(), getPos().getX(), getPos().getY()+1, getPos().getZ(), this.outputItemStack.copy());
+                            setCurrentCookTime(0);
+                            spawnItemStackOutput(getLevel(), getPos().getX(), getPos().getY()+1, getPos().getZ(), getOutputItem().copy());
                             removeItemFromSlot(1,1,false);
-                            if(this.xpForOutput>0f)
+                            if(getXPOutput()>0f)
                             {
                                 Random rand = new Random();
-                                ExperienceOrb xpEntity = new ExperienceOrb(level,getPos().getX(), getPos().getY()+1, getPos().getZ(),(int)this.xpForOutput);
+                                ExperienceOrb xpEntity = new ExperienceOrb(level,getPos().getX(), getPos().getY()+1, getPos().getZ(),(int)getXPOutput());
                                 xpEntity.lerpMotion(0.1D*rand.nextInt(5),0.1D*rand.nextInt(5),0.1D*rand.nextInt(5));
                                 getLevel().addFreshEntity(xpEntity);
                             }
@@ -370,32 +438,7 @@ public class DustFurnacesBaseBlockEntity extends Tier1BaseBlockEntity
                 else
                 {
                     if(!getInputItemInSlot(0).isEmpty())addToBurnTime();
-                    else if(this.currentCookTime>0)this.currentCookTime-=20;
-                }
-
-                if(isFurnaceLit())
-                {
-                    if(getBurnTime()>=1000)
-                    {
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0.0,getPos().getY()-1,getPos().getZ()+0.0,255,255,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+1,getPos().getY()-1,getPos().getZ()+0.0,255,255,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0,getPos().getY()-1,getPos().getZ()+1,255,255,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+1,getPos().getY()-1,getPos().getZ()+1,255,255,0));
-                    }
-                    else if(getBurnTime()<1000 && getBurnTime()>=200)
-                    {
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0.0,getPos().getY()-1,getPos().getZ()+0.0,255,125,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+1,getPos().getY()-1,getPos().getZ()+0.0,255,125,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0,getPos().getY()-1,getPos().getZ()+1,255,125,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+1,getPos().getY()-1,getPos().getZ()+1,255,125,0));
-                    }
-                    else if(getBurnTime()<200)
-                    {
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0.0,getPos().getY()-1,getPos().getZ()+0.0,255,0,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+1,getPos().getY()-1,getPos().getZ()+0.0,255,0,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+0,getPos().getY()-1,getPos().getZ()+1,255,0,0));
-                        DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX()+1,getPos().getY()-1,getPos().getZ()+1,255,0,0));
-                    }
+                    else if(getCurrentCookTime()>0)changeCurrentCookTime(20, false);
                 }
             }
 

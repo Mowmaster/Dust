@@ -1,29 +1,23 @@
-package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces;
+package com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-import java.util.List;
-
-import static com.mowmaster.dust.Block.BlockEntities.Tier1.ScrollCrafter.T15.ScrollCrafterBlock_T15.SIDED_ROTATION_4;
-
-public class DustFurnacesBaseBlockEntityRenderer
+public class DustFueledMachineBlockEntityRenderer
 {
 
-    public void render(DustFurnacesBaseBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) {
+    public void render(DustFueledMachineBaseBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) {
 
     }
 
@@ -56,7 +50,7 @@ public class DustFurnacesBaseBlockEntityRenderer
         else return block.defaultBlockState();
     }
 
-    public static void renderItem(DustFurnacesBaseBlockEntity tile, Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle,int axis, boolean renderAsBlock)
+    public static void renderItem(DustFueledMachineBaseBlockEntity tile, Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle, int axis, boolean renderAsBlock)
     {
         if (!itemStack.isEmpty()) {
             p_112309_.pushPose();
@@ -84,7 +78,7 @@ public class DustFurnacesBaseBlockEntityRenderer
         }
     }
 
-    public static void renderItemStacked(DustFurnacesBaseBlockEntity tile, Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle, boolean renderAsBlock)
+    public static void renderItemStacked(DustFueledMachineBaseBlockEntity tile, Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle, boolean renderAsBlock)
     {
         if (!itemStack.isEmpty()) {
             int displayLayersByStackSize = itemStack.getCount();
@@ -106,7 +100,7 @@ public class DustFurnacesBaseBlockEntityRenderer
         }
     }
 
-    public boolean shouldRenderOffScreen(DustFurnacesBaseBlockEntity p_112306_) {
+    public boolean shouldRenderOffScreen(DustFueledMachineBaseBlockEntity p_112306_) {
         return true;
     }
 }

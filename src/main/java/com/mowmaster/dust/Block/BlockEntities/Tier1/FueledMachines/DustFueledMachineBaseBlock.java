@@ -1,28 +1,17 @@
-package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces;
+package com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines;
 
-import com.google.common.collect.Maps;
 import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlock;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Tier1BaseBlockEntity;
-import com.mowmaster.dust.Items.ColorApplicator;
-import com.mowmaster.dust.Items.Readable.RepairScrolls.T2RepairScroll;
-import com.mowmaster.dust.Recipes.MachineBlockRepairItemsHintRecipe;
 import com.mowmaster.dust.References.ColorReference;
-import com.mowmaster.dust.Util.MessageUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,16 +21,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-import java.util.Map;
-import java.util.stream.IntStream;
-
-import static com.mowmaster.dust.References.Constants.MODID;
-
-public class DustFurnacesBaseBlock extends Tier1BaseBlock
+public class DustFueledMachineBaseBlock extends Tier1BaseBlock
 {
     public static final DirectionProperty SIDED_ROTATION_4 = BlockStateProperties.HORIZONTAL_FACING;
 
-    public DustFurnacesBaseBlock(Properties p_152915_) {
+    public DustFueledMachineBaseBlock(Properties p_152915_) {
         super(p_152915_);
         this.registerDefaultState(ColorReference.addColorToBlockState(this.defaultBlockState(),ColorReference.DEFAULTCOLOR).setValue(SIDED_ROTATION_4, Direction.NORTH));
     }
@@ -81,7 +65,7 @@ public class DustFurnacesBaseBlock extends Tier1BaseBlock
         if(!p_60504_.isClientSide())
         {
             ItemStack itemInHand = p_60506_.getItemInHand(p_60507_);
-            if(p_60504_.getBlockEntity(p_60505_) instanceof DustFurnacesBaseBlockEntity furnaceBE)
+            if(p_60504_.getBlockEntity(p_60505_) instanceof DustFueledMachineBaseBlockEntity furnaceBE)
             {
                 if(!furnaceBE.isFullyRepaired()) return super.use(p_60503_, p_60504_, p_60505_, p_60506_, p_60507_, p_60508_);
                 else if(furnaceBE.getAllowedInputSlotForMachine(itemInHand) != -1)
@@ -106,7 +90,7 @@ public class DustFurnacesBaseBlock extends Tier1BaseBlock
         if(p_60515_.getBlock() != p_60518_.getBlock())
         {
             BlockEntity blockEntity = p_60516_.getBlockEntity(p_60517_);
-            if(blockEntity instanceof DustFurnacesBaseBlockEntity furnaceblockentity) {
+            if(blockEntity instanceof DustFueledMachineBaseBlockEntity furnaceblockentity) {
                 furnaceblockentity.dropInputsItems(p_60516_,p_60517_);
             }
             super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);

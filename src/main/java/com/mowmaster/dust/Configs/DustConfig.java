@@ -30,6 +30,8 @@ public class DustConfig
         public final ForgeConfigSpec.IntValue repairitemsToCraft_BlastFurnace_T15;
         public final ForgeConfigSpec.IntValue repairitemsToCraft_Smoker_T15;
         public final ForgeConfigSpec.IntValue repairitemsToCraft_Smelter_T15;
+        public final ForgeConfigSpec.IntValue repairitemsToCraft_Crusher_T15;
+        public final ForgeConfigSpec.IntValue repairitemsToCraft_Crafter_T15;
 
         public final ForgeConfigSpec.IntValue normalEffectTicksDurationPerDust;
         public final ForgeConfigSpec.IntValue instaEffectDustPerEffectBurst;
@@ -105,7 +107,12 @@ public class DustConfig
             repairitemsToCraft_Smelter_T15 = builder
                     .comment("Repair Items Needed To Craft the Smelter Tier 1.5")
                     .defineInRange("repairItemsNeeded_smelter_t15", 2, 1, Integer.MAX_VALUE);
-
+            repairitemsToCraft_Crusher_T15 = builder
+                    .comment("Repair Items Needed To Craft the Crusher Tier 1.5")
+                    .defineInRange("repairItemsNeeded_crusher_t15", 3, 1, Integer.MAX_VALUE);
+            repairitemsToCraft_Crafter_T15 = builder
+                    .comment("Repair Items Needed To Craft the Crafter Tier 1.5")
+                    .defineInRange("repairItemsNeeded_crafter_t15", 1, 1, Integer.MAX_VALUE);
 
 
             normalEffectTicksDurationPerDust = builder

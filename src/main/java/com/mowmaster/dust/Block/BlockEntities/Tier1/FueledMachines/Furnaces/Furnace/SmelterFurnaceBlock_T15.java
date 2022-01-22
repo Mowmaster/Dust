@@ -1,7 +1,6 @@
-package com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.Furnace;
+package com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.Furnaces.Furnace;
 
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.BlastFurnace.BlastFurnaceBlockEntity_T15;
-import com.mowmaster.dust.Block.BlockEntities.Tier1.Furnaces.DustFurnacesBaseBlock;
+import com.mowmaster.dust.Block.BlockEntities.Tier1.FueledMachines.DustFueledMachineBaseBlock;
 import com.mowmaster.dust.DeferredRegistery.DeferredBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -15,7 +14,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SmelterFurnaceBlock_T15 extends DustFurnacesBaseBlock
+public class SmelterFurnaceBlock_T15 extends DustFueledMachineBaseBlock
 {
 
     protected final VoxelShape FURNACE;

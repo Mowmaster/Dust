@@ -1,0 +1,24 @@
+{
+  "type": "dust:dust_machine_render_items",
+  "input": [
+    {
+      "item": "dust:block_crusher_t15"
+    },
+    {
+      "item": "minecraft:obsidian"
+    }
+  ],
+  "result": {
+    "item": "minecraft:barrier"
+  },
+  "transitionX": 0.65,
+  "transitionY": 0.5,
+  "transitionZ": 0.5,
+  "scaleX": 0.5,
+  "scaleY": 0.5,
+  "scaleZ": 1.0,
+  "angle": 45.0,
+  "renderItem": true,
+  "renderAsBlock": true
+
+}

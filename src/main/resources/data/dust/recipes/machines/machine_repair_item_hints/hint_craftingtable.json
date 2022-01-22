@@ -1,0 +1,12 @@
+{
+  "type": "dust:dust_machine_repair_item_hints",
+  "input": {
+    "item": "minecraft:crafting_table"
+  },
+  "result": {
+    "item": "minecraft:crafting_table"
+  },
+  "hintTitle": "Repair Item Needed:",
+  "hintDescription": "A block used for crafting",
+  "localized": false
+}

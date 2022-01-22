@@ -241,9 +241,18 @@
 
   "item.dust.item_crystal": "Crystal",
   "item.dust.item_crystal.description": "§5 Obtained from Breaking Clusters of Crystals in Geodes",
+  "item.dust.item_crystal_dust": "Crystal Dust",
+  "item.dust.item_crystal_dust.description": "§5 Obtained from Digging Blocks of Dust, which come from crushing crystals in the Crusher.",
+
 
   "item.dust.applicator": "Color Applicator",
-  "item.dust.applicator.interaction": "§3 Crouch Right Click to Save Color, Right Click to Apply Color, Offhand and Any Placed Crystal Stone Blocks will Place with Current Color.",
+  "item.dust.applicator.description": "§3 Crouch Right Click to Save Color, Right Click to Apply Color, Offhand and Any Placed Crystal Stone Blocks will Place with Current Color.",
+
+  "item.dust.scroll_t2_repair": "Repair Request Scroll",
+  "item.dust.scroll_t2_repair.description": "§3 Right Click on a Machine or Workstation that is 'smoking' to receive a new repair request. If it is enchanted, right clicking again will just get another repair request unless the first request hasn't been fulfilled.",
+  "item.dust.scroll_effect": "Effect Scroll",
+  "item.dust.scroll_effect.description": "Comes in many colors and sizes, §5 Right Clicking string on a Scroll Crafter Workstation that has Dust, Paper, Gold Nuggets, and Optionally a Modifier item, will yield one of these. Different dusts produce different effects, more dust means longer durations.",
+
 
   "block.dust.block_inertnode": "Crystal Node",
   "block.dust.block_inertnode.description": "§5 Over time: Generates Clusters Of Crystals, or Converts Stone into Colored Crystal Stone",
@@ -263,6 +272,31 @@
   "block.dust.block_crystal_stone_slab.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
   "block.dust.block_crystal_stone_stair": "Crystal Stone Stair",
   "block.dust.block_crystal_stone_stair.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
+
+  "block.dust.block_crystal_dust": "Block of Dust",
+  "block.dust.block_crystal_dust.description": "§5 Can be dug up, will yield some kind of dust.",
+  "block.dust.block_powdered_dust": "Block of Dust",
+  "block.dust.block_powdered_dust.description": "§5 Can be dug up, will yield some kind of dust.",
+
+  "block.dust.block_machine_base": "Machine Base",
+  "block.dust.block_machine_base.description": "§5 Crafted By Placing a Furnace next to a Crystal Node, and waiting some time...",
+  "block.dust.block_workstation_base": "WorkStation Base",
+  "block.dust.block_workstation_base.description": "§5 Crafted By Placing a Crafting Bench next to a Crystal Node, and waiting some time...",
+
+  "block.dust.block_crafter_scroll_t15": "Scroll Crafter Base",
+  "block.dust.block_crafter_scroll_t15.description": "§5 Right Click a Blaze Rod on a Work Station Base Block",
+  "block.dust.block_furnace_blast_t15": "Metal Crucible Base",
+  "block.dust.block_furnace_blast_t15.description": "§5 Right Click a TripWire Hook on a Machine Base Block",
+  "block.dust.block_furnace_smelter_t15": "Smelter Base",
+  "block.dust.block_furnace_smelter_t15.description": "§5 Right Click a Furnace on a Machine Base Block",
+  "block.dust.block_furnace_smoker_t15": "Smoker Base",
+  "block.dust.block_furnace_smoker_t15.description": "§5 Right Click an Iron Bar on a Machine Base Block",
+  "block.dust.block_crusher_t15": "Crusher Base",
+  "block.dust.block_crusher_t15.description": "§5 Right Click a Grindstone on a Machine Base Block",
+  "block.dust.block_dust_jar": "Dust Jar",
+  "block.dust.block_dust_jar.description": "§5 Crafted By Placing Tinted Glass next to a Crystal Node, and waiting some time...",
+
+  "block.dust.block_renderblock_grate": "Not Craftable, Please Ignore.",
 
   "block.dust.block_pedestal": "Pedestal",
   "block.dust.block_pedestal.description": "§5 Can Transport Items, Fluids, Energy, and XP, Drop Speed and Slowness Potions on it for Special Effects - Can be Recolored with Applicator",

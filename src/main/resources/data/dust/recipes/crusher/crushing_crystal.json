@@ -1,0 +1,10 @@
+{
+  "type": "dust:dust_crushing",
+  "input": {
+    "item": "dust:item_crystal"
+  },
+  "result": {
+    "item": "dust:item_crystal_dust"
+  },
+  "color": 0
+}
