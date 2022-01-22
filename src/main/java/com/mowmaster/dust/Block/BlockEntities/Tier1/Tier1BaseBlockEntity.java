@@ -537,9 +537,11 @@ public class Tier1BaseBlockEntity extends BlockEntity {
         }
     }
 
+    public double getRepairParticleHeight(){ return 1.0;}
+
     public void tick()
     {
-        if(getLevel().getGameTime()%20 == 0){if(!isFullyRepaired()){ DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY()+1,getPos().getZ(),255,255,255));}}
+        if(getLevel().getGameTime()%20 == 0){if(!isFullyRepaired()){ DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY()+getRepairParticleHeight(),getPos().getZ(),255,255,255));}}
     }
 
     @Override

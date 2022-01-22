@@ -37,15 +37,12 @@ public class SmokerFurnaceBlockEntity_T15 extends DustFurnacesBaseBlockEntity {
     @Override
     public RecipeType getRecipeTypeForBlock() { return RecipeType.SMOKING; }
 
+    @Override
+    public double getRepairParticleHeight(){ return 0.5;}
+
     /*============================================================================
     ==============================================================================
     =====================    BASE CLASS OVERRIDES - END    =======================
     ==============================================================================
     ============================================================================*/
-
-    @Override
-    public void tick()
-    {
-        if(getLevel().getGameTime()%20 == 0){if(!isFullyRepaired()){ DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR,getPos().getX(),getPos().getY()+0.5,getPos().getZ(),255,255,255));}}
-    }
 }

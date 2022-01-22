@@ -84,16 +84,23 @@ public class DustFurnacesBaseBlockEntityRenderer
         }
     }
 
-    public static void renderItemStacked(DustFurnacesBaseBlockEntity tile, Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle)
+    public static void renderItemStacked(DustFurnacesBaseBlockEntity tile, Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_, float x, float y, float z, float scaleX, float scaleY, float scaleZ, float angle, boolean renderAsBlock)
     {
         if (!itemStack.isEmpty()) {
-            int displayLayersByStackSize = itemStack.getCount() / 8;
+            int displayLayersByStackSize = itemStack.getCount();
             if(!itemStack.isEmpty() && displayLayersByStackSize==0) displayLayersByStackSize=1;
             p_112309_.pushPose();
-            for(int i=0;i<displayLayersByStackSize;i++)
+            if(renderAsBlock)
             {
-                p_112309_.translate(0, 0.015625, 0);
-                renderItem(tile,worldIn,p_112309_,p_112310_,itemStack,p_112311_,p_112312_, x, y, z, scaleX, scaleY, scaleZ,angle,1, false);
+                renderItem(tile,worldIn,p_112309_,p_112310_,itemStack,p_112311_,p_112312_, x, y, z, scaleX, scaleY, scaleZ,0.0f,0, renderAsBlock);
+            }
+            else
+            {
+                for(int i=0;i<displayLayersByStackSize;i++)
+                {
+                    p_112309_.translate(0, 0.04, 0);
+                    renderItem(tile,worldIn,p_112309_,p_112310_,itemStack,p_112311_,p_112312_, x, y, z, scaleX, scaleY, scaleZ,angle,1, renderAsBlock);
+                }
             }
             p_112309_.popPose();
         }

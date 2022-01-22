@@ -12,7 +12,7 @@
     "item": "minecraft:barrier"
   },
   "transitionX": 0.5,
-  "transitionY": 0.4,
+  "transitionY": 0.45,
   "transitionZ": 0.5,
   "scaleX": 0.25,
   "scaleY": 0.25,
