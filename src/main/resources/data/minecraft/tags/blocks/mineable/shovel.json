@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "dust:block_crystal_dust",
+    "dust:block_powdered_dust",
+    "dust:block_dust_jar"
+
+  ]
+}

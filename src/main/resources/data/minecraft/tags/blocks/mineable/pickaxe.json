@@ -1,0 +1,28 @@
+{
+  "replace": false,
+  "values": [
+    "dust:block_crystal",
+    "dust:block_inertcluster_full",
+    "dust:block_inertcluster_large",
+    "dust:block_inertcluster_medium",
+    "dust:block_inertcluster_small",
+    "dust:block_crystal_stone",
+    "dust:block_crystal_stone_slab",
+    "dust:block_crystal_stone_stair",
+    "dust:block_crystal_stone_brick",
+    "dust:block_crystal_stone_brick_slab",
+    "dust:block_crystal_stone_brick_stair",
+    "dust:block_crystal_stone_bricks",
+    "dust:block_crystal_stone_bricks_slab",
+    "dust:block_crystal_stone_bricks_stair",
+    "dust:block_machine_base",
+    "dust:block_workstation_base",
+    "dust:block_crafter_scroll_t15",
+    "dust:block_furnace_blast_t15",
+    "dust:block_furnace_smelter_t15",
+    "dust:block_furnace_smoker_t15",
+    "dust:block_crusher_t15",
+    "dust:block_dust_jar",
+    "dust:block_crystal_cluster"
+  ]
+}
