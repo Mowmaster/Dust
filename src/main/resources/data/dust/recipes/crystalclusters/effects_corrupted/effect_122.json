@@ -4,5 +4,5 @@
     "item": "dust:item_crystal"
   },
   "color": 5614250,
-  "mobEffect": "minecraft:slowness"
+  "mobEffect": ""
 }

@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 5592490,
-  "mobEffect": ""
+  "mobEffect": "tetra:howling",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tetra"
+    }
+  ]
 }

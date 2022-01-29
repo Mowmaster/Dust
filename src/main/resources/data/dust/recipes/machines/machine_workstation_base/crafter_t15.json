@@ -5,5 +5,11 @@
   },
   "result": {
     "item": "dust:block_crafter_t15"
-  }
+  },
+  "conditions": [
+    {
+      "type": "forge:item_exists",
+      "item": "dust:block_crafter_t15"
+    }
+  ]
 }

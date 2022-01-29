@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 21760,
-  "mobEffect": "minecraft:unluck"
+  "mobEffect": "ars_nouveau:snared",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ]
 }

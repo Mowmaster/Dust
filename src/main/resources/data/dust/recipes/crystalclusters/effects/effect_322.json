@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 16755370,
-  "mobEffect": ""
+  "mobEffect": "tetra:small_health",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tetra"
+    }
+  ]
 }

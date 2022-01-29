@@ -4,5 +4,12 @@
     "item": "dust:item_crystal"
   },
   "color": 11162880,
-  "mobEffect": "minecraft:mining_fatigue"
+  "mobEffect": "tetra:stun",
+  "instaTickDuration": 1,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tetra"
+    }
+  ]
 }

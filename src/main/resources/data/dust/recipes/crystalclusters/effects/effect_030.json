@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 65280,
-  "mobEffect": ""
+  "mobEffect": "occultism:dragon_greed",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "occultism"
+    }
+  ]
 }

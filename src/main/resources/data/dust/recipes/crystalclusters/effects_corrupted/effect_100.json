@@ -4,6 +4,5 @@
     "item": "dust:item_crystal"
   },
   "color": 5570560,
-  "mobEffect": "minecraft:instant_damage",
-  "instaTickDuration": 10
+  "mobEffect": ""
 }

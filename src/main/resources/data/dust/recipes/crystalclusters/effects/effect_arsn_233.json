@@ -3,12 +3,12 @@
   "input": {
     "item": "dust:item_crystal"
   },
-  "color": 16711765,
-  "mobEffect": "tetra:small_strength",
+  "color": 11206655,
+  "mobEffect": "ars_nouveau:glide",
   "conditions": [
     {
       "type": "forge:mod_loaded",
-      "modid": "tetra"
+      "modid": "ars_nouveau"
     }
   ]
 }

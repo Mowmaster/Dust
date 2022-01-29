@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 16777130,
-  "mobEffect": ""
+  "mobEffect": "immersiveengineering:flashed",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ]
 }

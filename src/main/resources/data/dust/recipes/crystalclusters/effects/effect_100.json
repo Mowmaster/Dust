@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 5570560,
-  "mobEffect": ""
+  "mobEffect": "occultism:bat_lifesteal",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "occultism"
+    }
+  ]
 }

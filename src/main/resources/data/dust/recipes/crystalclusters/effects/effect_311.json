@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 16733525,
-  "mobEffect": ""
+  "mobEffect": "farmersdelight:nourishment",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ]
 }

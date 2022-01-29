@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 65365,
-  "mobEffect": ""
+  "mobEffect": "tetra:earthbound",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tetra"
+    }
+  ]
 }

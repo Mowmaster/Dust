@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 11163050,
-  "mobEffect": ""
+  "mobEffect": "tetra:unwavering",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tetra"
+    }
+  ]
 }

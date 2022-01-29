@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 5614165,
-  "mobEffect": ""
+  "mobEffect": "occultism:mummy_dodge",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "occultism"
+    }
+  ]
 }

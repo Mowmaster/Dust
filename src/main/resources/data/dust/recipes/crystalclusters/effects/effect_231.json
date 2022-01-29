@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 11206485,
-  "mobEffect": ""
+  "mobEffect": "farmersdelight:comfort",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ]
 }

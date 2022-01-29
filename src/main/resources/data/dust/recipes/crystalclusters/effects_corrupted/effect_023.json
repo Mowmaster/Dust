@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 43775,
-  "mobEffect": ""
+  "mobEffect": "naturesaura:breathless",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "naturesaura"
+    }
+  ]
 }

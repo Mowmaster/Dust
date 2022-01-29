@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 11184725,
-  "mobEffect": ""
+  "mobEffect": "ars_nouveau:shocked",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ]
 }

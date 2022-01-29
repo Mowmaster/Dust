@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 16777215,
-  "mobEffect": ""
+  "mobEffect": "ars_nouveau:flight",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ]
 }

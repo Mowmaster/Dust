@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 5614250,
-  "mobEffect": ""
+  "mobEffect": "occultism:third_eye",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "occultism"
+    }
+  ]
 }

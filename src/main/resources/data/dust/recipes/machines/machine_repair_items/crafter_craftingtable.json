@@ -6,5 +6,11 @@
   "result": {
     "item": "minecraft:crafting_table"
   },
-  "tagname": ""
+  "tagname": "",
+  "conditions": [
+    {
+      "type": "forge:item_exists",
+      "item": "dust:block_crafter_t15"
+    }
+  ]
 }

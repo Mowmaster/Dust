@@ -4,5 +4,11 @@
     "item": "dust:item_crystal"
   },
   "color": 11163135,
-  "mobEffect": ""
+  "mobEffect": "tetra:pried",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tetra"
+    }
+  ]
 }

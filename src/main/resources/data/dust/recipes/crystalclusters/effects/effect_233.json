@@ -4,5 +4,14 @@
     "item": "dust:item_crystal"
   },
   "color": 11206655,
-  "mobEffect": "minecraft:levitation"
+  "mobEffect": "minecraft:levitation",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "ars_nouveau"
+      }
+    }
+  ]
 }
