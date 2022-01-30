@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "dust:block_crystal_stone"
+    "dust:block_crystal_stone",
+    "dust:block_crystal_stone_brick",
+    "dust:block_crystal_stone_bricks"
   ]
 }

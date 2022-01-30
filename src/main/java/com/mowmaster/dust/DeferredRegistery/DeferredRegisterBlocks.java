@@ -47,6 +47,8 @@ public class DeferredRegisterBlocks
             () -> new BaseCrystalClusterBlock(3, 4, BlockBehaviour.Properties.of(Material.AMETHYST).strength(0.25F).sound(SoundType.SMALL_AMETHYST_BUD).requiresCorrectToolForDrops().lightLevel((p_152629_) -> { return 1; })));
 
     public static final RegistryObject<Block> CRYSTAL_BLOCK = registerBlock("block_crystal",
+            () -> new BaseColoredCrystalBlock(BlockBehaviour.Properties.of(Material.AMETHYST).strength(1.0F).requiresCorrectToolForDrops().sound(SoundType.AMETHYST).lightLevel((p_152629_) -> { return 10; })));
+    public static final RegistryObject<Block> CRYSTAL_BLOCK_COMPACT = registerBlock("block_crystal_compact",
             () -> new BaseColoredCrystalBlock(BlockBehaviour.Properties.of(Material.AMETHYST).strength(1.0F).requiresCorrectToolForDrops().sound(SoundType.AMETHYST).lightLevel((p_152629_) -> { return 15; })));
 
     public static final RegistryObject<Block> CRYSTAL_STONE = registerBlock("block_crystal_stone",

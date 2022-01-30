@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "dust:block_crystal",
+    "dust:block_crystal_compact",
     "dust:block_inertcluster_full",
     "dust:block_inertcluster_large",
     "dust:block_inertcluster_medium",

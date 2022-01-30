@@ -96,6 +96,12 @@ public class DeferredRegisterItems
             () -> new ScrollBase(new Item.Properties().tab(DustItemTabs.TAB_ITEMS)));
 
 
+
+
+
+
+
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

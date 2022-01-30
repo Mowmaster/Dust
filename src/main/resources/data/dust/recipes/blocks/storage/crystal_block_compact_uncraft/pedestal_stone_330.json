@@ -1,0 +1,25 @@
+{
+
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B"
+  ],
+  "key": {
+    "B": {
+      "item": "dust:block_crystal_compact",
+      "type": "forge:nbt",
+      "nbt": {
+        "dust_color": 16776960
+      }
+    }
+  },
+  "result": {
+    "item": "dust:block_crystal",
+    "type": "forge:nbt",
+    "nbt": {
+      "dust_color": 16776960
+    },
+    "count": 4
+  }
+
+}
