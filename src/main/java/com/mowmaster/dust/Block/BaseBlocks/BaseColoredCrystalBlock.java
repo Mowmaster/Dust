@@ -116,7 +116,7 @@ public class BaseColoredCrystalBlock extends Block
 
         if(!p_56212_.isClientSide())
         {
-            if (p_56214_.getBlock().equals(DeferredRegisterBlocks.CRYSTAL_BLOCK.get())) {
+            if (p_56214_.getBlock() instanceof BaseColoredCrystalBlock) {
                 ItemStack itemstack = new ItemStack(this);
                 int getColor = ColorReference.getColorFromStateInt(p_56214_);
                 ItemStack newStack = ColorReference.addColorToItemStack(itemstack,getColor);
