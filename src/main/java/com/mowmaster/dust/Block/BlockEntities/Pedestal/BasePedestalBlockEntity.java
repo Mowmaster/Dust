@@ -2180,7 +2180,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                         //Get max that can be sent
                         if(countToSend > getFluidTransferRate())
                         {
-                            countToSend = getItemTransferRate();
+                            countToSend = getFluidTransferRate();
                         }
 
 
