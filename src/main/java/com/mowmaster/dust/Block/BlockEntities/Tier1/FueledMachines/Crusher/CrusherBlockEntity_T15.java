@@ -91,7 +91,9 @@ public class CrusherBlockEntity_T15 extends DustFueledMachineBaseBlockEntity {
 
     public void placeCustomDustBlock(Level worldIn, BlockPos pos, ItemStack input)
     {
+        ItemStack stackToAdd = ItemStack.EMPTY;
         BlockState stated = Blocks.AIR.defaultBlockState();
+        CrusherRecipe recipe = null;
         if(input.getItem() instanceof ColoredCrystalBase)
         {
             int dustAmount = DustConfig.COMMON.dustPerCrystal.get();
@@ -102,7 +104,18 @@ public class CrusherBlockEntity_T15 extends DustFueledMachineBaseBlockEntity {
         }
         else
         {
-            stated = DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get().defaultBlockState();
+            recipe = getRecipe(worldIn,input);
+            Collection<ItemStack> jsonResults = getProcessResults(recipe);
+            stackToAdd = (jsonResults.iterator().next().isEmpty())?(ItemStack.EMPTY):(jsonResults.iterator().next());
+
+            if(Block.byItem(stackToAdd.getItem()) instanceof FallingBlock && stackToAdd.getCount()<=1)
+            {
+                stated = Block.byItem(stackToAdd.getItem()).defaultBlockState();
+            }
+            else
+            {
+                stated = DeferredRegisterTileBlocks.BLOCK_POWDERED_DUST.get().defaultBlockState();
+            }
         }
 
         Random RANDOM = new Random();
@@ -130,13 +143,10 @@ public class CrusherBlockEntity_T15 extends DustFueledMachineBaseBlockEntity {
 
         if(worldIn.getBlockEntity(posFound) instanceof CustomPowderedBlockEntity)
         {
-            Collection<ItemStack> jsonResults = getProcessResults(getRecipe(worldIn,input));
-            int jsonResultsInt = getProcessResultColor(getRecipe(worldIn,input));
+            int jsonResultsInt = (recipe != null)?(getProcessResultColor(recipe)):(0);
             CustomPowderedBlockEntity customDust = ((CustomPowderedBlockEntity)worldIn.getBlockEntity(posFound));
-            //Set these based on some recipe handler
             customDust.setColor(jsonResultsInt);
-            customDust.addItem((jsonResults.iterator().next().isEmpty())?(ItemStack.EMPTY):(jsonResults.iterator().next()));
-            List<Integer> colorList = ColorReference.getTrueColorFromInt(jsonResultsInt);
+            customDust.addItem(stackToAdd);
         }
     }
 
