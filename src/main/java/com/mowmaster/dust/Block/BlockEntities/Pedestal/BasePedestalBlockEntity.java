@@ -2169,6 +2169,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                 {
                     if(tilePedestalToSendTo.fluidAmountToAccept(level,pedestalToSendTo,fluidStackIncoming) > 0)
                     {
+
                         //Max that can be recieved
                         int countToSend = tilePedestalToSendTo.spaceForFluid();
                         FluidStack currentFluid = getStoredFluid().copy();
