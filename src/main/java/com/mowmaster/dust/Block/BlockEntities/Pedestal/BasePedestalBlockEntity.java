@@ -2101,7 +2101,7 @@ public class BasePedestalBlockEntity extends BlockEntity
 
 
     //The actual transfer methods for items
-    public void sendItemsToPedestal(BlockPos pedestalToSendTo, ItemStack itemStackIncoming)
+    public boolean sendItemsToPedestal(BlockPos pedestalToSendTo, ItemStack itemStackIncoming)
     {
         if(hasItem())
         {
@@ -2149,15 +2149,18 @@ public class BasePedestalBlockEntity extends BlockEntity
                                 removeItem(copyStackToSend.getCount());
                                 tilePedestalToSendTo.addItem(copyStackToSend,false);
                                 if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
+                                return true;
                             }
                         }
                     }
                 }
             }
         }
+
+        return false;
     }
 
-    public void sendFluidsToPedestal(BlockPos pedestalToSendTo, FluidStack fluidStackIncoming)
+    public boolean sendFluidsToPedestal(BlockPos pedestalToSendTo, FluidStack fluidStackIncoming)
     {
         if(hasFluid())
         {
@@ -2200,6 +2203,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                                     tilePedestalToSendTo.addFluid(new FluidStack(fluidStackIncoming.getFluid(),finalFluidCountToSend,fluidStackIncoming.getTag()), IFluidHandler.FluidAction.EXECUTE);
                                     removeFluid(countFluidToSend, IFluidHandler.FluidAction.EXECUTE);
                                     if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
+                                    return true;
                                 }
                             }
                         }
@@ -2207,9 +2211,11 @@ public class BasePedestalBlockEntity extends BlockEntity
                 }
             }
         }
+
+        return false;
     }
 
-    public void sendEnergyToPedestal(BlockPos pedestalToSendTo, int energyIncoming)
+    public boolean sendEnergyToPedestal(BlockPos pedestalToSendTo, int energyIncoming)
     {
         if(hasEnergy())
         {
@@ -2249,6 +2255,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                                     removeEnergy(finalEnergyCountToSend,false);
                                     tilePedestalToSendTo.addEnergy(finalEnergyCountToSend,false);
                                     if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
+                                    return true;
                                 }
                             }
                         }
@@ -2256,9 +2263,11 @@ public class BasePedestalBlockEntity extends BlockEntity
                 }
             }
         }
+
+        return false;
     }
 
-    public void sendExperienceToPedestal(BlockPos pedestalToSendTo, int experienceIncoming)
+    public boolean sendExperienceToPedestal(BlockPos pedestalToSendTo, int experienceIncoming)
     {
         if(hasExperience())
         {
@@ -2298,6 +2307,7 @@ public class BasePedestalBlockEntity extends BlockEntity
                                     removeExperience(finalExperienceCountToSend,false);
                                     tilePedestalToSendTo.addExperience(finalExperienceCountToSend,false);
                                     if(canSpawnParticles()) DustPacketHandler.sendToNearby(level,getPos(),new DustPacketParticles(DustPacketParticles.EffectType.ANY_COLOR_BEAM,pedestalToSendTo.getX(),pedestalToSendTo.getY(),pedestalToSendTo.getZ(),getPos().getX(),getPos().getY(),getPos().getZ()));
+                                    return true;
                                 }
                             }
                         }
@@ -2305,6 +2315,8 @@ public class BasePedestalBlockEntity extends BlockEntity
                 }
             }
         }
+
+        return false;
     }
 
     public void transferAction()
@@ -2338,13 +2350,14 @@ public class BasePedestalBlockEntity extends BlockEntity
                     BlockPos posReceiver = getStoredPositionAt(i);
                     if(canSendToPedestal(posReceiver))
                     {
-                        sendItemsToPedestal(posReceiver,getItemInPedestal());
-                        sendFluidsToPedestal(posReceiver,getStoredFluid());
-                        sendEnergyToPedestal(posReceiver,getStoredEnergy());
-                        sendExperienceToPedestal(posReceiver,getStoredExperience());
-                        break;
+                        int b = 0;
+                        if(sendItemsToPedestal(posReceiver,getItemInPedestal()))b++;
+                        if(sendFluidsToPedestal(posReceiver,getStoredFluid()))b++;
+                        if(sendEnergyToPedestal(posReceiver,getStoredEnergy()))b++;
+                        if(sendExperienceToPedestal(posReceiver,getStoredExperience()))b++;
+
+                        if(b>0)break;
                     }
-                    else continue;
                 }
             }
         }

@@ -209,8 +209,7 @@ public class DustPlugin implements IModPlugin {
         registry.addRecipeCategories(new FluidtoExpConverterRecipeCategory(registry.getJeiHelpers().getGuiHelper()));*/
     }
 
-    @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
+
     {
         /*
         OLD PEDESTALS CODE, MAY WORK, MAY NOT

@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.18.002d'
+version = '1.18.2 - 1.0.0'
 group = 'com.mowmaster.dust' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'dust'
 
@@ -138,7 +138,7 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
 
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.58'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.73'
     // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     // at runtime, use the full JEI jar

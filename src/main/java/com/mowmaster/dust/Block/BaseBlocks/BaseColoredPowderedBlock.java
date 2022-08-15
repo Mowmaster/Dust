@@ -188,11 +188,10 @@ public class BaseColoredPowderedBlock extends FallingBlock {
         return Shapes.empty();
     }
 
-    public static boolean canEntityWalkOnPowderBlock(Entity p_154256_) {
-        if (p_154256_.getType().is(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)) {
+    public static boolean canEntityWalkOnPowderSnow(Entity p_154256_) {
+        if (p_154256_.getType().m_204039_(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)) {
             return true;
         } else {
-            //return p_154256_ instanceof LivingEntity ? ((LivingEntity)p_154256_).getItemBySlot(EquipmentSlot.FEET).is(Items.LEATHER_BOOTS) : false;
             return false;
         }
     }

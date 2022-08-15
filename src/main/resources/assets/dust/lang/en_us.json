@@ -42,7 +42,6 @@
 
   "dust.filter.message_twohanded": "Cannot Be Holding Filters in Both Hands for this Action",
 
-
   "dust.tool_link_success": "Linked Successfully",
   "dust.tool_link_unsucess": "Linking Failed, Max Connections Reached",
   "dust.tool_link_removed": "Connection Removed",
@@ -63,8 +62,6 @@
   "dust.tool_tip_X": "x ",
   "dust.tool_tip_Y": "y ",
   "dust.tool_tip_Z": "z",
-
-
 
   "dust.crystal_cluster.crystal_add": "Crystal Added, New Effect is: ",
   "dust.crystal_cluster.base_changed": "Base Block Changed",
@@ -249,7 +246,7 @@
   "item.dust.applicator.description": "§3 Crouch Right Click to Save Color, Right Click to Apply Color, Offhand and Any Placed Crystal Stone Blocks will Place with Current Color.",
 
   "item.dust.scroll_t2_repair": "Repair Request Scroll",
-  "item.dust.scroll_t2_repair.description": "§3 Right Click on a Machine or Workstation that is 'smoking' to receive a new repair request. If it is enchanted, right clicking again will just get another repair request unless the first request hasn't been fulfilled.",
+  "item.dust.scroll_t2_repair.description": "z",
   "item.dust.scroll_effect": "Effect Scroll",
   "item.dust.scroll_effect.description": "Comes in many colors and sizes, §5 Right Clicking string on a Scroll Crafter Workstation that has Dust, Paper, Gold Nuggets, and Optionally a Modifier item, will yield one of these. Different dusts produce different effects, more dust means longer durations.",
 
@@ -286,7 +283,6 @@
   "block.dust.block_crystal_stone_bricks_slab.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
   "block.dust.block_crystal_stone_bricks_stair": "Crystal Stone Bricks Stair",
   "block.dust.block_crystal_stone_bricks_stair.description": "§5 Used in Crafting/Building - Can be Recolored with Applicator",
-
 
   "block.dust.block_crystal_dust": "Block of Dust",
   "block.dust.block_crystal_dust.description": "§5 Can be dug up, will yield some kind of dust.",
