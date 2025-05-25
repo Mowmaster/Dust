@@ -1,9 +1,0 @@
-{
-  "type": "dust:dust_mobeffectcorrupted_color",
-  "input": {
-    "item": "dust:item_crystal"
-  },
-  "color": 16733695,
-  "mobEffect": "minecraft:instant_damage",
-  "instaTickDuration": 10
-}

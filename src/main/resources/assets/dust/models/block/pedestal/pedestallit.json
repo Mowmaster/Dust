@@ -1,9 +1,0 @@
-{
-  "parent": "dust:block/pedestal/base_pedestal_models/pedestal_blocklit",
-  "textures": {
-    "filter": "dust:blocks/block_crystal_stone",
-    "glow":"dust:blocks/pedestal/ancientglowstone",
-    "type": "dust:blocks/block_crystal_stone",
-    "typepart":"dust:blocks/block_crystal_stone"
-  }
-}

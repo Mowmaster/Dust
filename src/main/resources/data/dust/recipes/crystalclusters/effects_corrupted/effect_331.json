@@ -1,8 +1,0 @@
-{
-  "type": "dust:dust_mobeffectcorrupted_color",
-  "input": {
-    "item": "dust:item_crystal"
-  },
-  "color": 16777045,
-  "mobEffect": "minecraft:glowing"
-}
