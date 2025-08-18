@@ -1,0 +1,13 @@
+{
+  "itemGroup.dust": "Example Mod Tab",
+  "block.dust.example_block": "Example Block",
+  "item.dust.example_item": "Example Item",
+
+  "dust.configuration.title": "Dust Configs",
+  "dust.configuration.section.dust.common.toml": "Dust Configs",
+  "dust.configuration.section.dust.common.toml.title": "Dust Configs",
+  "dust.configuration.items": "Item List",
+  "dust.configuration.logDirtBlock": "Log Dirt Block",
+  "dust.configuration.magicNumberIntroduction": "Magic Number Text",
+  "dust.configuration.magicNumber": "Magic Number"
+}
