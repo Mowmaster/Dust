@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "dust:dust_red"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "  D",
+    " S ",
+    "S  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "dust:wand_basic_red"
+  }
+}

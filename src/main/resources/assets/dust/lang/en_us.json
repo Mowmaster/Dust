@@ -1,7 +1,18 @@
 {
-  "itemGroup.dust": "Example Mod Tab",
-  "block.dust.example_block": "Example Block",
-  "item.dust.example_item": "Example Item",
+
+  "creativetab.dust.dust_items": "Dust Items",
+  "creativetab.dust.dust_blocks": "Dust Blocks",
+
+
+
+  "block.dust.dustblock_red": "Block of Dust (Red)",
+  "block.dust.dustfireblock_red": "Dust Fire (Red)",
+
+
+
+  "item.dust.dust_red": "Dust (Red)",
+  "item.dust.wand_basic_red": "Basic Wand (Red)",
+
 
   "dust.configuration.title": "Dust Configs",
   "dust.configuration.section.dust.common.toml": "Dust Configs",
