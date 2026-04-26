@@ -1,8 +1,0 @@
-{
-  "parent": "dust:item/upgrade_pedestal_import",
-"textures": {
-"coin": "dust:items/models/upgrades/pedestal_upgrade_x",
-"letter": "dust:items/models/upgrades/pedestal_upgrade_import",
-"part": "dust:items/models/upgrades/pedestal_upgrade_x"
-}
-}

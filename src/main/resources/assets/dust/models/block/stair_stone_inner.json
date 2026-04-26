@@ -1,8 +1,0 @@
-{
-  "parent": "dust:block/default_stairs_inner",
-  "textures": {
-    "bottom": "dust:blocks/block_crystal_stone",
-    "top": "dust:blocks/block_crystal_stone",
-    "side": "dust:blocks/block_crystal_stone"
-  }
-}
