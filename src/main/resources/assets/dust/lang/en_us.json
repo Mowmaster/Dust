@@ -1,13 +1,38 @@
 {
-  "itemGroup.dust": "Example Mod Tab",
-  "block.dust.example_block": "Example Block",
-  "item.dust.example_item": "Example Item",
+  "creativetab.dust.dusttab_items": "Dust Items",
+  "creativetab.dust.dusttab_blocks": "Dust Blocks",
 
-  "dust.configuration.title": "Dust Configs",
-  "dust.configuration.section.dust.common.toml": "Dust Configs",
-  "dust.configuration.section.dust.common.toml.title": "Dust Configs",
-  "dust.configuration.items": "Item List",
-  "dust.configuration.logDirtBlock": "Log Dirt Block",
-  "dust.configuration.magicNumberIntroduction": "Magic Number Text",
-  "dust.configuration.magicNumber": "Magic Number"
+
+
+
+
+  "item.dust.dust_red": "Red Dust",
+  "item.dust.dust_green": "Green Dust",
+  "item.dust.dust_blue": "Blue Dust",
+  "item.dust.dust_white": "White Dust",
+  "item.dust.dust_black": "Black Dust",
+
+  "item.dust.crystal_red": "Red Crystal",
+  "item.dust.crystal_green": "Green Crystal",
+  "item.dust.crystal_blue": "Blue Crystal",
+  "item.dust.crystal_white": "White Crystal",
+  "item.dust.crystal_black": "Black Crystal",
+
+  "block.dust.blockofdust_red": "Block of Dust (Red)",
+  "block.dust.blockofdust_green": "Block of Dust (Green)",
+  "block.dust.blockofdust_blue": "Block of Dust (Blue)",
+  "block.dust.blockofdust_white": "Block of Dust (White)",
+  "block.dust.blockofdust_black": "Block of Dust (Black)",
+
+  "block.dust.blockofcrystal_red": "Block of Crystal (Red)",
+  "block.dust.blockofcrystal_green": "Block of Crystal (Green)",
+  "block.dust.blockofcrystal_blue": "Block of Crystal (Blue)",
+  "block.dust.blockofcrystal_white": "Block of Crystal (White)",
+  "block.dust.blockofcrystal_black": "Block of Crystal (Black)",
+
+  "block.dust.block_inert_crystal_ore": "Inert Crystal Ore",
+  "block.dust.block_inert_crystal_ore_deepslate": "Deepslate Inert Crystal Ore"
+
+
+
 }
