@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "dust:blockofcrystal_red"
+  ],
+  "result": {
+    "count": 9,
+    "id": "dust:crystal_red"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "values": [
+    "dust:crystal_path_tier1",
+    "dust:crystal_path_tier2",
+    "dust:crystal_path_tier3",
+    "dust:crystal_path_tier4",
+    "dust:blockofdust_red",
+    "dust:blockofdust_green",
+    "dust:blockofdust_blue",
+    "dust:blockofdust_white",
+    "dust:blockofdust_black",
+    "dust:blockofcrystal_red",
+    "dust:blockofcrystal_green",
+    "dust:blockofcrystal_blue",
+    "dust:blockofcrystal_white",
+    "dust:blockofcrystal_black",
+    "dust:block_inert_crystal_ore",
+    "dust:block_inert_crystal_ore_deepslate"
+  ]
+}

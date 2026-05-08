@@ -3,7 +3,6 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustCreativeTabRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import com.mowmaster.dust.DustUtils.DustReferences;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;

@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-import static com.mowmaster.dust.DustUtils.DustReferences.MODID;
+import static com.mowmaster.dust.DustReferences.MODID;
 
 public class DustCreativeTabRegistry {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
@@ -23,11 +23,39 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.DUST_WHITE.asItem());
                         output.accept(DustItemRegistry.DUST_BLACK.asItem());
 
+                        output.accept(DustItemRegistry.CRYSTAL_INERT.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_RED.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_GREEN.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_BLUE.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_WHITE.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_BLACK.asItem());
+                    }).build());
+
+    public static final Supplier<CreativeModeTab> DUSTTAB_DECORATION = CREATIVE_MODE_TABS.register("dusttab_decor",
+            () -> CreativeModeTab.builder()
+                    .icon(()-> new ItemStack(DustItemRegistry.CRYSTAL_CHISEL_IRON.get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_decor"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(DustItemRegistry.CRYSTAL_CHISEL_IRON.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_HALFSAW_IRON.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_PATH_TIER1.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_PATH_TIER2.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_PATH_TIER3.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_PATH_TIER4.asItem());
+                        output.accept(DustItemRegistry.CHARCOAL_WHITE.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_PLANKS_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_STAIRS_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_SLAB_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_BUTTON_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.asItem());
+                    }).build());
+
+    public static final Supplier<CreativeModeTab> DUSTTAB_FOOD = CREATIVE_MODE_TABS.register("dusttab_food",
+            () -> CreativeModeTab.builder()
+                    .icon(()-> new ItemStack(DustItemRegistry.CORNBREAD.get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_food"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(DustItemRegistry.CORNBREAD.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",

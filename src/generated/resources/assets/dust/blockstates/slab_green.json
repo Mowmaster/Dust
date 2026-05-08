@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dust:block/slab_green"
+    },
+    "type=double": {
+      "model": "dust:block/planks_green"
+    },
+    "type=top": {
+      "model": "dust:block/slab_green_top"
+    }
+  }
+}

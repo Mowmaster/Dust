@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "dust:block/pressureplate_green"
+    },
+    "powered=true": {
+      "model": "dust:block/pressureplate_green_down"
+    }
+  }
+}

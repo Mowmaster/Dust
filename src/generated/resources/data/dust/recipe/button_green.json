@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "dust",
+  "ingredients": [
+    "dust:planks_green"
+  ],
+  "result": {
+    "id": "dust:button_green"
+  }
+}

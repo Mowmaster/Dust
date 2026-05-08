@@ -1,10 +1,29 @@
 {
+  "tooltip.dust.shiftprompt": "Press §eShift§r for more Info",
   "creativetab.dust.dusttab_items": "Dust Items",
   "creativetab.dust.dusttab_blocks": "Dust Blocks",
+  "creativetab.dust.dusttab_decor": "Dust Decorations",
+  "creativetab.dust.dusttab_food": "Dusty Delights",
 
 
+  "item.dust.food_cornbread": "Cornbread",
+  "tooltip.dust.cornbread": "Cornbread is So Filling!",
 
 
+  "item.dust.chisel_iron": "Crystal Chisel (Iron)",
+  "tooltip_shift.dust.chisel_iron": "Right Click on Some Blocks to Chisel Them.",
+  "item.dust.halfsaw_iron": "Crystal HalfSaw (Iron)",
+  "tooltip_shift.dust.halfsaw_iron": "Right Click on Wood Plank Blocks to Slab Them.",
+  "item.dust.fuel_charcoal_white": "Dusty Coal (White)",
+  "block.dust.crystal_path_tier1": "Crystal Path (Normal)",
+  "block.dust.crystal_path_tier2": "Crystal Path (Fast)",
+  "block.dust.crystal_path_tier3": "Crystal Path (Faster)",
+  "block.dust.crystal_path_tier4": "Crystal Path (Fastest)",
+  "block.dust.planks_green": "Crystal Planks (Green)",
+  "block.dust.stairs_green": "Crystal Stairs (Green)",
+  "block.dust.slab_green": "Crystal Slab (Green)",
+  "block.dust.button_green": "Crystal Button (Green)",
+  "block.dust.pressureplate_green": "Crystal Pressure Plate (Green)",
 
   "item.dust.dust_red": "Red Dust",
   "item.dust.dust_green": "Green Dust",
@@ -12,6 +31,7 @@
   "item.dust.dust_white": "White Dust",
   "item.dust.dust_black": "Black Dust",
 
+  "item.dust.crystal_inert": "Inert Crystal",
   "item.dust.crystal_red": "Red Crystal",
   "item.dust.crystal_green": "Green Crystal",
   "item.dust.crystal_blue": "Blue Crystal",

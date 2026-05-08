@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "dust:planks_green"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "dust:pressureplate_green"
+  }
+}
