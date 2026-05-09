@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "dust",
+  "key": {
+    "#": "minecraft:stick",
+    "W": "dust:planks_green"
+  },
+  "pattern": [
+    "#W#",
+    "#W#"
+  ],
+  "result": {
+    "id": "dust:fencegate_green"
+  }
+}
