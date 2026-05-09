@@ -36,6 +36,11 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         add(DustBlockRegistry.BLOCK_SLAB_GREEN.get(), this::createSlabItemTable);
         dropSelf(DustBlockRegistry.BLOCK_BUTTON_GREEN.get());
         dropSelf(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get());
+        dropSelf(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.get());
+        dropSelf(DustBlockRegistry.BLOCK_FENCE_GREEN.get());
+        dropSelf(DustBlockRegistry.BLOCK_WALL_GREEN.get());
+        add(DustBlockRegistry.BLOCK_DOOR_GREEN.get(), this::createDoorTable);
+        dropSelf(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get());
 
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_RED.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_GREEN.get());

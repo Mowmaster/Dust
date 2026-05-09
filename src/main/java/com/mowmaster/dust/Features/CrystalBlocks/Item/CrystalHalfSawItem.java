@@ -28,16 +28,20 @@ import java.util.function.Consumer;
 
 public class CrystalHalfSawItem extends Item {
     private static final Map<Block, Block> SAW_MAP =
-            Map.of(Blocks.ACACIA_PLANKS, Blocks.ACACIA_SLAB,
-                    Blocks.PALE_OAK_PLANKS, Blocks.PALE_OAK_SLAB,
-                    Blocks.BIRCH_PLANKS, Blocks.BIRCH_SLAB,
-                    Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_SLAB,
-                    Blocks.CHERRY_PLANKS, Blocks.CHERRY_SLAB,
-                    Blocks.JUNGLE_PLANKS, Blocks.JUNGLE_SLAB,
-                    Blocks.MANGROVE_PLANKS, Blocks.MANGROVE_SLAB,
-                    Blocks.OAK_PLANKS, Blocks.OAK_SLAB,
-                    Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_SLAB,
-                    DustBlockRegistry.BLOCK_PLANKS_GREEN.get(), DustBlockRegistry.BLOCK_SLAB_GREEN.get()
+            Map.ofEntries(
+                    Map.entry(Blocks.ACACIA_PLANKS, Blocks.ACACIA_SLAB),
+                    Map.entry(Blocks.PALE_OAK_PLANKS, Blocks.PALE_OAK_SLAB),
+                    Map.entry(Blocks.BIRCH_PLANKS, Blocks.BIRCH_SLAB),
+                    Map.entry(Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_SLAB),
+                    Map.entry(Blocks.CHERRY_PLANKS, Blocks.CHERRY_SLAB),
+                    Map.entry(Blocks.JUNGLE_PLANKS, Blocks.JUNGLE_SLAB),
+                    Map.entry(Blocks.MANGROVE_PLANKS, Blocks.MANGROVE_SLAB),
+                    Map.entry(Blocks.OAK_PLANKS, Blocks.OAK_SLAB),
+                    Map.entry(Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_SLAB),
+                    Map.entry(Blocks.BAMBOO_PLANKS, Blocks.BAMBOO_SLAB),
+                    Map.entry(Blocks.CRIMSON_PLANKS, Blocks.CRIMSON_SLAB),
+                    Map.entry(Blocks.WARPED_PLANKS, Blocks.WARPED_SLAB),
+                    Map.entry(DustBlockRegistry.BLOCK_PLANKS_GREEN.get(), DustBlockRegistry.BLOCK_SLAB_GREEN.get())
             );
 
 
@@ -68,8 +72,7 @@ public class CrystalHalfSawItem extends Item {
                     {
                         level.addFreshEntity(new ItemEntity(level,context.getClickedPos().getX(),context.getClickedPos().getY(),context.getClickedPos().getZ(), new ItemStack(Items.STICK,4)));
                         level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
-                    }
-                    else{
+                    }                    else{
                         level.addFreshEntity(new ItemEntity(level,context.getClickedPos().getX(),context.getClickedPos().getY(),context.getClickedPos().getZ(), new ItemStack(Items.STICK,2)));
                         level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
                     }

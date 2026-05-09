@@ -24,6 +24,22 @@
   "block.dust.slab_green": "Crystal Slab (Green)",
   "block.dust.button_green": "Crystal Button (Green)",
   "block.dust.pressureplate_green": "Crystal Pressure Plate (Green)",
+  "block.dust.fence_green": "Crystal Fence (Green)",
+  "block.dust.fencegate_green": "Crystal Fence Gate (Green)",
+  "block.dust.wall_green": "Crystal Wood Wall (Green)",
+  "block.dust.door_green": "Crystal Door (Green)",
+  "block.dust.trapdoor_green": "Crystal Trapdoor (Green)",
+
+
+  "item.dust.crystal_sword": "Crystal Sword",
+  "item.dust.crystal_pickaxe": "Crystal Pickaxe",
+  "item.dust.crystal_axe": "Crystal Axe",
+  "item.dust.crystal_shovel": "Crystal Shovel",
+  "item.dust.crystal_hoe": "Crystal Hoe",
+  "item.dust.crystal_spear": "Crystal Spear",
+  "item.dust.crystal_mattock": "Crystal Mattock",
+  "item.dust.crystal_pickadze": "Crystal Pickadze",
+  "item.dust.crystal_kama": "Crystal Kama",
 
   "item.dust.dust_red": "Red Dust",
   "item.dust.dust_green": "Green Dust",

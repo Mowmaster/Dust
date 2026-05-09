@@ -52,6 +52,16 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.BLOCK_BUTTON_GREEN.get());
         tag(BlockTags.WOODEN_PRESSURE_PLATES)
                 .add(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get());
+        tag(BlockTags.WOODEN_FENCES)
+                .add(DustBlockRegistry.BLOCK_FENCE_GREEN.get());
+        tag(BlockTags.FENCE_GATES)
+                .add(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.get());
+        tag(BlockTags.WALLS)
+                .add(DustBlockRegistry.BLOCK_WALL_GREEN.get());
+        tag(BlockTags.WOODEN_TRAPDOORS)
+                .add(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get());
+        tag(BlockTags.WOODEN_DOORS)
+                .add(DustBlockRegistry.BLOCK_DOOR_GREEN.get());
 
         tag(DustTags.Blocks.MAGICAL_CRYSTAL_BLOCKS)
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get())
@@ -59,5 +69,17 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.get())
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.get())
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.get());
+
+        tag(DustTags.Blocks.NEEDS_CRYSTAL_TOOL)
+                .addTags(BlockTags.NEEDS_DIAMOND_TOOL);
+        tag(DustTags.Blocks.INCORRECT_FOR_CRYSTAL_TOOL)
+                .addTags(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
+                .remove(DustTags.Blocks.NEEDS_CRYSTAL_TOOL);
+
+
+        tag(DustTags.Blocks.MATTOCK_MINEABLE)
+                .addTags(BlockTags.MINEABLE_WITH_AXE)
+                .addTags(BlockTags.MINEABLE_WITH_SHOVEL)
+                .addTags(BlockTags.MINEABLE_WITH_HOE);
     }
 }

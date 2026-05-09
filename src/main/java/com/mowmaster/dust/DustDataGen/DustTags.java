@@ -13,6 +13,8 @@ public class DustTags
     public static class Items {
         public static final TagKey<Item> MAGICAL_DUST_ITEMS = createTag("magical_dusts");
         public static final TagKey<Item> MAGICAL_CRYSTAL_ITEMS = createTag("magical_crystals");
+        public static final TagKey<Item> CRYSTAL_REPAIRABLES = createTag("crystal_repairables");
+        public static final TagKey<Item> CRYSTAL_BLOCK_REPAIRABLES = createTag("crystal_block_repairables");
 
         public static TagKey<Item> createTag(String name)
         {
@@ -22,6 +24,10 @@ public class DustTags
 
     public static class Blocks {
         public static final TagKey<Block> MAGICAL_CRYSTAL_BLOCKS = createTag("magical_crystal_blocks");
+        public static final TagKey<Block> NEEDS_CRYSTAL_TOOL = createTag("needs_crystal_tool");
+        public static final TagKey<Block> INCORRECT_FOR_CRYSTAL_TOOL = createTag("incorrect_for_crystal_tool");
+        public static final TagKey<Block> PICKADZE_MINEABLE = createTag("mineable/pickadze");
+        public static final TagKey<Block> MATTOCK_MINEABLE = createTag("mineable/mattock");
 
         public static TagKey<Block> createTag(String name)
         {

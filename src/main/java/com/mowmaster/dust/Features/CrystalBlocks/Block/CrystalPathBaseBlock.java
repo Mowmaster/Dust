@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CrystalPathBaseBlock extends Block {
-    int blockSpeedMultiplier = 0;
+    private static final int blockSpeedMultiplier = 0;
     public CrystalPathBaseBlock(Properties properties, int speedMultiplier) {
         int blockSpeedMultiplier = speedMultiplier;
         super(properties);

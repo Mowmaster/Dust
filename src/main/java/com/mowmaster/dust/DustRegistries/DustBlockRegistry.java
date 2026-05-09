@@ -7,6 +7,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -88,6 +89,37 @@ public class DustBlockRegistry {
                     .noCollision()
                     .forceSolidOn()
                     .pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final DeferredBlock<Block> BLOCK_FENCE_GREEN = registerBlock("fence_green", properties -> new FenceBlock(
+            properties.sound(SoundType.WOOD).strength(2.0f, 3.0f).ignitedByLava())
+    );
+    public static final DeferredBlock<Block> BLOCK_FENCEGATE_GREEN = registerBlock("fencegate_green", properties -> new FenceGateBlock(WoodType.OAK,
+            properties.sound(SoundType.WOOD).strength(2.0f, 3.0f).ignitedByLava())
+    );
+    public static final DeferredBlock<Block> BLOCK_WALL_GREEN = registerBlock("wall_green", properties -> new WallBlock(
+            properties.sound(SoundType.WOOD).strength(2.0f, 3.0f).ignitedByLava().forceSolidOn())
+    );
+
+    public static final DeferredBlock<Block> BLOCK_TRAPDOOR_GREEN = registerBlock("trapdoor_green", properties -> new TrapDoorBlock(
+                    BlockSetType.OAK,
+                    properties
+                            .sound(SoundType.WOOD)
+                            .strength(0.5f)
+                            .ignitedByLava()
+                            .noOcclusion()
+                            .isValidSpawn(Blocks::never)
+            )
+    );
+    public static final DeferredBlock<Block> BLOCK_DOOR_GREEN = registerBlock("door_green", properties -> new DoorBlock(
+                    BlockSetType.OAK,
+                    properties
+                            .sound(SoundType.WOOD)
+                            .strength(0.5f)
+                            .ignitedByLava()
+                            .noOcclusion()
+                            .pushReaction(PushReaction.DESTROY)
+            )
     );
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)

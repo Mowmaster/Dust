@@ -48,6 +48,11 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.BLOCK_SLAB_GREEN.asItem());
                         output.accept(DustBlockRegistry.BLOCK_BUTTON_GREEN.asItem());
                         output.accept(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_FENCE_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_WALL_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_DOOR_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_FOOD = CREATIVE_MODE_TABS.register("dusttab_food",
@@ -56,6 +61,21 @@ public class DustCreativeTabRegistry {
                     .title(Component.translatable("creativetab.dust.dusttab_food"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(DustItemRegistry.CORNBREAD.asItem());
+                    }).build());
+
+    public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",
+            () -> CreativeModeTab.builder()
+                    .icon(()-> new ItemStack(DustItemRegistry.CRYSTAL_SWORD.get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_combat"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(DustItemRegistry.CRYSTAL_SWORD.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_PICKAXE.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_AXE.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_SHOVEL.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_HOE.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_SPEAR.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_MATTOCK.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_HAMMER.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",

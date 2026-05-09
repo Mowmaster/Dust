@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -65,6 +66,80 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
                 .save(output);
         pressurePlate(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get(), DustBlockRegistry.BLOCK_PLANKS_GREEN.get());
+        fenceBuilder(DustBlockRegistry.BLOCK_FENCE_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .group(DustReferences.MODID)
+                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .save(output);
+        fenceGateBuilder(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .group(DustReferences.MODID)
+                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .save(output);
+        //wALL AND TRAPDOOR HAVE SAME RECIPE...
+        //wall(RecipeCategory.BUILDING_BLOCKS, DustBlockRegistry.BLOCK_WALL_GREEN.get(), DustBlockRegistry.BLOCK_PLANKS_GREEN.get());
+        doorBuilder(DustBlockRegistry.BLOCK_DOOR_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .group(DustReferences.MODID)
+                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .save(output);
+        trapdoorBuilder(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .group(DustReferences.MODID)
+                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
+                .save(output);
+
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SWORD.get())
+                .pattern("C")
+                .pattern("C")
+                .pattern("S")
+                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
+                .save(output);
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_AXE.get())
+                .pattern("CC")
+                .pattern("CS")
+                .pattern(" S")
+                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
+                .save(output);
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_PICKAXE.get())
+                .pattern("CCC")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
+                .save(output);
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SHOVEL.get())
+                .pattern(" C ")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
+                .save(output);
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_HOE.get())
+                .pattern("CC")
+                .pattern(" S")
+                .pattern(" S")
+                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
+                .save(output);
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SPEAR.get())
+                .pattern("  C")
+                .pattern(" C ")
+                .pattern("S  ")
+                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
+                .save(output);
+        shapeless(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_MATTOCK.get())
+                .requires(DustItemRegistry.CRYSTAL_HOE.get())
+                .requires(DustItemRegistry.CRYSTAL_AXE.get())
+                .requires(DustItemRegistry.CRYSTAL_SHOVEL.get())
+                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_AXE.get()), has(DustItemRegistry.CRYSTAL_AXE.get()))
+                .save(output);
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_HAMMER.get())
+                .pattern("BBB")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('B', DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.asItem()).define('S', Items.STICK)
+                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()), has(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()))
+                .save(output);
     }
 
     @Override

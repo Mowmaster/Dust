@@ -65,7 +65,22 @@ public class DustProviderModel extends ModelProvider {
                 .stairs(DustBlockRegistry.BLOCK_STAIRS_GREEN.get())
                 .slab(DustBlockRegistry.BLOCK_SLAB_GREEN.get())
                 .button(DustBlockRegistry.BLOCK_BUTTON_GREEN.get())
-                .pressurePlate(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get());
+                .pressurePlate(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get())
+                .fence(DustBlockRegistry.BLOCK_FENCE_GREEN.get())
+                .fenceGate(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.get())
+                .wall(DustBlockRegistry.BLOCK_WALL_GREEN.get())
+                .door(DustBlockRegistry.BLOCK_DOOR_GREEN.get())
+                .trapdoor(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get());
+
+
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateSpear(DustItemRegistry.CRYSTAL_SPEAR.get());
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_MATTOCK.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HAMMER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
     }
 }
