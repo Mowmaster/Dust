@@ -34,5 +34,8 @@ public class DustDataGenerator {
         generator.addProvider(true, new DustTagProviderBlock(packOutput,lookupProvider));
 
 
+        generator.addProvider(true, new DustAssetsEquipment(packOutput));
+
+
     }
 }

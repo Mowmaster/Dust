@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustDataGen;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -81,6 +82,13 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateSpear(DustItemRegistry.CRYSTAL_SPEAR.get());
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_MATTOCK.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HAMMER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+        itemModels.generateTrimmableItem(DustItemRegistry.CRYSTAL_HELMET.get(), DustMaterialArmor.DUST_ARMOR_MATERIAL_KEY, ItemModelGenerators.TRIM_PREFIX_HELMET, false);
+        itemModels.generateTrimmableItem(DustItemRegistry.CRYSTAL_CHESTPLATE.get(), DustMaterialArmor.DUST_ARMOR_MATERIAL_KEY, ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, false);
+        itemModels.generateTrimmableItem(DustItemRegistry.CRYSTAL_LEGGINGS.get(), DustMaterialArmor.DUST_ARMOR_MATERIAL_KEY, ItemModelGenerators.TRIM_PREFIX_LEGGINGS, false);
+        itemModels.generateTrimmableItem(DustItemRegistry.CRYSTAL_BOOTS.get(), DustMaterialArmor.DUST_ARMOR_MATERIAL_KEY, ItemModelGenerators.TRIM_PREFIX_BOOTS, false);
+
+        itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HORSE_ARMOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
     }
 }

@@ -76,6 +76,12 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.CRYSTAL_SPEAR.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_MATTOCK.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_HAMMER.asItem());
+
+                        output.accept(DustItemRegistry.CRYSTAL_HELMET.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_CHESTPLATE.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_LEGGINGS.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_BOOTS.asItem());
+                        output.accept(DustItemRegistry.CRYSTAL_HORSE_ARMOR.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",

@@ -63,5 +63,15 @@ public class DustTagProviderItem extends ItemTagsProvider {
         tag(ItemTags.SPEARS)
                 .add(DustItemRegistry.CRYSTAL_SPEAR.get());
 
+
+        tag(ItemTags.HEAD_ARMOR)
+                .add(DustItemRegistry.CRYSTAL_HELMET.get());
+        tag(ItemTags.CHEST_ARMOR)
+                .add(DustItemRegistry.CRYSTAL_CHESTPLATE.get());
+        tag(ItemTags.LEG_ARMOR)
+                .add(DustItemRegistry.CRYSTAL_LEGGINGS.get());
+        tag(ItemTags.FOOT_ARMOR)
+                .add(DustItemRegistry.CRYSTAL_BOOTS.get());
+
     }
 }

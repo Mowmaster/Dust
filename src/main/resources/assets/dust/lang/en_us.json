@@ -4,6 +4,9 @@
   "creativetab.dust.dusttab_blocks": "Dust Blocks",
   "creativetab.dust.dusttab_decor": "Dust Decorations",
   "creativetab.dust.dusttab_food": "Dusty Delights",
+  "creativetab.dust.dusttab_combat": "Crystal Combat",
+
+  "key.dust.dust_keyaction": "Dust Key Press",
 
 
   "item.dust.food_cornbread": "Cornbread",
@@ -40,6 +43,13 @@
   "item.dust.crystal_mattock": "Crystal Mattock",
   "item.dust.crystal_pickadze": "Crystal Pickadze",
   "item.dust.crystal_kama": "Crystal Kama",
+  "item.dust.crystal_helmet": "Crystal Helmet",
+  "item.dust.crystal_chestplate": "Crystal Chestplate",
+  "item.dust.crystal_leggings": "Crystal Leggings",
+  "item.dust.crystal_boots": "Crystal Boots",
+  "item.dust.crystal_horse_armor": "Crystal Horse Armor",
+
+
 
   "item.dust.dust_red": "Red Dust",
   "item.dust.dust_green": "Green Dust",

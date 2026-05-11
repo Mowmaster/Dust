@@ -3,13 +3,17 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.Features.CrystalBlocks.Item.CrystalChiselBaseItem;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.CrystalBlocks.Item.CrystalHalfSawItem;
+import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
+import com.mowmaster.dust.Features.CrystalTools.Item.CrystalWeaponSword;
+import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialTools;
 import com.mowmaster.dust.Features.DustyDelights.DDFoodProperties;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -56,7 +60,7 @@ public class DustItemRegistry
 
 
     public static final DeferredItem<Item> CRYSTAL_SWORD = DUSTITEMS.registerItem("crystal_sword",
-            properties -> new Item(properties.sword(DustMaterialTools.CRYSTAL, 3.0f,-2.4f)));
+            properties -> new CrystalWeaponSword(properties.sword(DustMaterialTools.CRYSTAL, 3.0f,-2.4f)));
     public static final DeferredItem<Item> CRYSTAL_PICKAXE = DUSTITEMS.registerItem("crystal_pickaxe",
             properties -> new Item(properties.pickaxe(DustMaterialTools.CRYSTAL, 1.0f,-2.8f)));
     public static final DeferredItem<Item> CRYSTAL_AXE = DUSTITEMS.registerItem("crystal_axe",
@@ -72,6 +76,19 @@ public class DustItemRegistry
             properties -> new CrystalToolMattock(DustMaterialTools.CRYSTAL, 5.0f, -3.0f, properties));
     public static final DeferredItem<Item> CRYSTAL_HAMMER = DUSTITEMS.registerItem("crystal_hammer",
             properties -> new CrystalToolHammer(DustMaterialTools.CRYSTAL_BLOCK, 1.0f, -2.8f, properties));
+
+
+    public static final DeferredItem<Item> CRYSTAL_HELMET = DUSTITEMS.registerItem("crystal_helmet",
+            properties -> new CrystalArmorItem(properties.humanoidArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL, ArmorType.HELMET)));
+    public static final DeferredItem<Item> CRYSTAL_CHESTPLATE = DUSTITEMS.registerItem("crystal_chestplate",
+            properties -> new CrystalArmorItem(properties.humanoidArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL, ArmorType.CHESTPLATE)));
+    public static final DeferredItem<Item> CRYSTAL_LEGGINGS = DUSTITEMS.registerItem("crystal_leggings",
+            properties -> new CrystalArmorItem(properties.humanoidArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL, ArmorType.LEGGINGS)));
+    public static final DeferredItem<Item> CRYSTAL_BOOTS = DUSTITEMS.registerItem("crystal_boots",
+            properties -> new CrystalArmorItem(properties.humanoidArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL, ArmorType.BOOTS)));
+
+    public static final DeferredItem<Item> CRYSTAL_HORSE_ARMOR = DUSTITEMS.registerItem("crystal_horse_armor",
+            properties -> new Item(properties.horseArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL)));
 
     public static void register(IEventBus eventBus)
     {

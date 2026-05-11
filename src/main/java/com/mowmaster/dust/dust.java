@@ -3,6 +3,8 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustCreativeTabRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
+import com.mowmaster.dust.Features.CrystalTools.Components.DustDataComponentTypes;
+import com.mowmaster.dust.Features.EffectScrolls.AttachmentTypes.DustAttachmentTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -27,8 +29,11 @@ public class Dust {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        DustItemRegistry.DUSTITEMS.register(modEventBus);
-        DustBlockRegistry.DUSTBLOCKS.register(modEventBus);
+        DustItemRegistry.register(modEventBus);
+        DustBlockRegistry.register(modEventBus);
+
+        DustDataComponentTypes.register(modEventBus);
+        DustAttachmentTypes.register(modEventBus);
 
         DustCreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);

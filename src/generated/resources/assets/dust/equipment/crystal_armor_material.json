@@ -1,0 +1,24 @@
+{
+  "layers": {
+    "horse_body": [
+      {
+        "texture": "dust:crystal"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "dust:crystal"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:crystal"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:crystal"
+      }
+    ]
+  }
+}
