@@ -1,8 +1,7 @@
-package com.mowmaster.dust.Features.EffectScrolls.AttachmentTypes;
+package com.mowmaster.dust.DustRegistries;
 
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -10,7 +9,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Supplier;
 
-public class DustAttachmentTypes
+public class DustAttachmentTypeRegistry
 {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, DustReferences.MODID);

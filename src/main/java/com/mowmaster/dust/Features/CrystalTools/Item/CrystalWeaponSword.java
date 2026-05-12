@@ -1,6 +1,8 @@
 package com.mowmaster.dust.Features.CrystalTools.Item;
 
 import com.mowmaster.dust.DustDataGen.DustTags;
+import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,13 +27,13 @@ public class CrystalWeaponSword extends Item {
     @Override
     public void postHurtEnemy(ItemStack itemStack, LivingEntity mob, LivingEntity attacker) {
 
-        if(attacker.getOffhandItem().is(DustTags.Items.MAGICAL_DUST_ITEMS))
+        int ampAmount = 1;
+        if(attacker instanceof ServerPlayer player)
         {
-            int ampAmount = 1;
-            if(attacker.getOffhandItem().getCount() > ampAmount)
+            if(DustAuraPacketHelper.canRemoveAura(player,ampAmount))
             {
                 mob.addEffect(new MobEffectInstance(MobEffects.INSTANT_DAMAGE,1,ampAmount), attacker);
-                attacker.getOffhandItem().shrink(ampAmount);
+                DustAuraPacketHelper.removeAura(player,ampAmount);
             }
         }
         super.postHurtEnemy(itemStack, mob, attacker);

@@ -176,6 +176,14 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_HORSE_ARMOR)
                 .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
                 .save(output);
+
+        shaped(RecipeCategory.COMBAT, DustItemRegistry.CORNBREAD.get())
+                .pattern("CCC")
+                .pattern("CAC")
+                .pattern("CCC")
+                .define('C', DustTags.Items.MAGICAL_DUST_ITEMS).define('A', Items.BREAD)
+                .unlockedBy(getHasName(DustItemRegistry.DUST_RED.get()), has(DustItemRegistry.DUST_RED.get()))
+                .save(output);
     }
 
     @Override

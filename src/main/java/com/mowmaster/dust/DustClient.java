@@ -1,11 +1,10 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.Features.EffectScrolls.AttachmentTypes.DustAttachmentTypes;
+import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustPacketTestC2S;
+import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -46,7 +45,7 @@ public class DustClient {
         while(DustKeyMappings.PRESSKEY.get().consumeClick()) {
             //Client side stuff here
             //Minecraft.getInstance().player.sendSystemMessage(Component.literal("Key Pressed"));
-            ClientPacketDistributor.sendToServer(new DustPacketTestC2S("Key Pressed", 1));
+            ClientPacketDistributor.sendToServer(new PacketOfDustAuraC2S("Key Pressed", 1));
         }
     }
 
@@ -57,13 +56,13 @@ public class DustClient {
             int y = guiGraphics.guiHeight();
 
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypes.DUST_AURA)) {
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUST_AURA)) {
                 for (int i = 0; i < 10; i++) {
                     guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_icon_bg"),
                             8, 8, 0, 0, x - 200, y - 20 - i * 9, 8, 8);
                 }
 
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypes.DUST_AURA); i++) {
+                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUST_AURA); i++) {
                     guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_icon"),
                             8, 8, 0, 0, x - 200, y - 20 - i * 9, 8, 8);
                 }

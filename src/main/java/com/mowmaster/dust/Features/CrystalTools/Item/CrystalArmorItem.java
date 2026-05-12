@@ -2,10 +2,9 @@ package com.mowmaster.dust.Features.CrystalTools.Item;
 
 import com.google.common.collect.ImmutableMap;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
-import com.mowmaster.dust.Features.EffectScrolls.AttachmentTypes.DustAttachmentTypes;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
+import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.Equippable;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -52,15 +50,11 @@ public class CrystalArmorItem extends Item {
     private void addEffectToPlayer(Player player, List<MobEffectInstance> mapEffect, int amplifier) {
         boolean hasPlayerEffect = mapEffect.stream().allMatch(effect -> player.hasEffect(effect.getEffect()));
 
-        if(!hasPlayerEffect && player.hasData(DustAttachmentTypes.DUST_AURA) && player.getData(DustAttachmentTypes.DUST_AURA) > 0) {
+        if(!hasPlayerEffect && DustAuraPacketHelper.canRemoveAura((ServerPlayer) player,amplifier)) {
             for (MobEffectInstance effect : mapEffect) {
                 player.addEffect(new MobEffectInstance(effect.getEffect(), 1600, amplifier-1, false, false));
-                player.setData(DustAttachmentTypes.DUST_AURA,player.getData(DustAttachmentTypes.DUST_AURA)-amplifier);
+                DustAuraPacketHelper.removeAura((ServerPlayer) player,amplifier);
             }
-        }
-        else if(player.getData(DustAttachmentTypes.DUST_AURA) <= 0)
-        {
-            player.sendSystemMessage(Component.literal("Out of Mana"));
         }
     }
 

@@ -4,23 +4,21 @@ import com.mowmaster.dust.DustReferences;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
-import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-public record DustPacketTestC2S(String name, int value) implements CustomPacketPayload
+public record PacketOfDustAuraC2S(String name, int value) implements CustomPacketPayload
 {
-    public static final Type<DustPacketTestC2S> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "test_packet"));
+    public static final Type<PacketOfDustAuraC2S> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "test_packet"));
     //SIMILAR TO RECIPES IN 1.19 your coding the packet send data, bytebufcodec type first then the value second
-    public static final StreamCodec<ByteBuf, DustPacketTestC2S> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, PacketOfDustAuraC2S> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8,
-            DustPacketTestC2S::name,
+            PacketOfDustAuraC2S::name,
 
             ByteBufCodecs.VAR_INT,
-            DustPacketTestC2S::value,
+            PacketOfDustAuraC2S::value,
 
-            DustPacketTestC2S::new);
+            PacketOfDustAuraC2S::new);
 
     @Override
     public Type<? extends CustomPacketPayload> type() {

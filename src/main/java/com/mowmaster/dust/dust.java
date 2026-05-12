@@ -1,10 +1,11 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
+import com.mowmaster.dust.DustRegistries.DustConsumeEffectsRegistry;
 import com.mowmaster.dust.DustRegistries.DustCreativeTabRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import com.mowmaster.dust.Features.CrystalTools.Components.DustDataComponentTypes;
-import com.mowmaster.dust.Features.EffectScrolls.AttachmentTypes.DustAttachmentTypes;
+import com.mowmaster.dust.DustRegistries.DustDataComponentTypeRegistry;
+import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -32,8 +33,10 @@ public class Dust {
         DustItemRegistry.register(modEventBus);
         DustBlockRegistry.register(modEventBus);
 
-        DustDataComponentTypes.register(modEventBus);
-        DustAttachmentTypes.register(modEventBus);
+        DustDataComponentTypeRegistry.register(modEventBus);
+        DustAttachmentTypeRegistry.register(modEventBus);
+
+        DustConsumeEffectsRegistry.register(modEventBus);
 
         DustCreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);

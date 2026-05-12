@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Features.CrystalTools.Components;
+package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.DustReferences;
 import net.minecraft.core.BlockPos;
@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.UnaryOperator;
 
-public class DustDataComponentTypes
+public class DustDataComponentTypeRegistry
 {
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES =
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, DustReferences.MODID);
