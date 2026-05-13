@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dust_red": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:dust_red"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "dust:food_cornbread"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_dust_red"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:food_cornbread"
+    ]
+  }
+}

@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class DustAssetsEquipment implements DataProvider {
+public class DustEquipmentAssets implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
 
-    public DustAssetsEquipment(PackOutput output) {
+    public DustEquipmentAssets(PackOutput output) {
         this.pathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "equipment");
     }
 

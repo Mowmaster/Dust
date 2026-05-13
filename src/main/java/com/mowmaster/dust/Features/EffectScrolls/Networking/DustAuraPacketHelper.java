@@ -22,6 +22,21 @@ public class DustAuraPacketHelper
         setAura(player, newValue);
     }
 
+    public static int addAuraWithConsumedCount(ServerPlayer player, int val)
+    {
+        int newValue = player.getData(DustAttachmentTypeRegistry.DUST_AURA) + val;
+        int consumedCount = 0;
+        if(newValue > maxAura)
+        {
+            newValue = maxAura;
+            consumedCount = maxAura - getAuraLevel(player);
+        }
+        else consumedCount = val;
+
+        if(consumedCount>0)setAura(player, newValue);
+        return consumedCount;
+    }
+
     public static boolean canAddAura(ServerPlayer player, int val)
     {
         if(!player.hasData(DustAttachmentTypeRegistry.DUST_AURA))return false;
