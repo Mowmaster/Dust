@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustLoot.AddItemStackModifier;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -29,7 +30,7 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
     protected void start() {
         add("earth_dust_to_dirt",
                 new AddItemStackModifier(new LootItemCondition[]{
-                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.WHEAT).build(),
+                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.CROP_LETTUCE.get()).build(),
                         LootItemRandomChanceCondition.randomChance(0.25f).build()
                 }, new ItemStackTemplate(DustItemRegistry.DUST_GREEN, 1)));
 

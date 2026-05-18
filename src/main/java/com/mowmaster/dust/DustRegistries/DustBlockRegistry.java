@@ -2,12 +2,16 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.Features.CrystalBlocks.Block.CrystalPathBaseBlock;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.CrystalBlocks.Block.CrystalStone;
+import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -121,6 +125,62 @@ public class DustBlockRegistry {
                             .pushReaction(PushReaction.DESTROY)
             )
     );
+
+    public static final DeferredBlock<Block> CROP_LETTUCE = DUSTBLOCKS.registerBlock("crop_lettuce",
+            properties -> new CropBlockLettuce(properties.mapColor(MapColor.PLANT)
+                    .noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY)));
+
+    public static final DeferredBlock<Block> BLOCK_FLOWER_WHINDWHEEL = registerBlock("flower_windwheel",
+            properties -> new FlowerBlock(
+                    MobEffects.WIND_CHARGED, 10F, properties
+                    .mapColor(MapColor.PLANT)
+                    .noCollision()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)
+            ));
+    public static final DeferredBlock<Block> BLOCK_POTTEDFLOWER_WINDWHEEL = DUSTBLOCKS.registerBlock("pottedflower_windwheel",
+            properties -> new FlowerPotBlock(null, BLOCK_FLOWER_WHINDWHEEL,
+                    properties
+                            .noOcclusion()
+                            .instabreak()
+                            .pushReaction(PushReaction.DESTROY)
+            ));
+
+    public static final DeferredBlock<Block> CRYSTAL_STONE_RED = registerBlock("crystal_stone_red",
+            properties -> new CrystalStone(properties
+                    .mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(2f)
+                    .pushReaction(PushReaction.NORMAL).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> CRYSTAL_STONE_GREEN = registerBlock("crystal_stone_green",
+            properties -> new CrystalStone(properties
+                    .mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(2f)
+                    .pushReaction(PushReaction.NORMAL).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> CRYSTAL_STONE_BLUE = registerBlock("crystal_stone_blue",
+            properties -> new CrystalStone(properties
+                    .mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(2f)
+                    .pushReaction(PushReaction.NORMAL).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> CRYSTAL_STONE_WHITE = registerBlock("crystal_stone_white",
+            properties -> new CrystalStone(properties
+                    .mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(2f)
+                    .pushReaction(PushReaction.NORMAL).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> CRYSTAL_STONE_BLACK = registerBlock("crystal_stone_black",
+            properties -> new CrystalStone(properties
+                    .mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(2f)
+                    .pushReaction(PushReaction.NORMAL).requiresCorrectToolForDrops()));
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {

@@ -81,5 +81,14 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .addTags(BlockTags.MINEABLE_WITH_AXE)
                 .addTags(BlockTags.MINEABLE_WITH_SHOVEL)
                 .addTags(BlockTags.MINEABLE_WITH_HOE);
+
+        tag(BlockTags.CROPS)
+                .add(DustBlockRegistry.CROP_LETTUCE.get());
+        tag(BlockTags.MAINTAINS_FARMLAND)
+                .add(DustBlockRegistry.CROP_LETTUCE.get());
+        tag(BlockTags.SMALL_FLOWERS)
+                .add(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
+        tag(BlockTags.FLOWER_POTS)
+                .add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get());
     }
 }

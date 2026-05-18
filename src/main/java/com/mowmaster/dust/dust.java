@@ -1,6 +1,8 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -41,8 +43,11 @@ public class Dust {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    private void commonSetup(FMLCommonSetupEvent event) {
-
+    private void commonSetup(FMLCommonSetupEvent event)
+    {
+        event.enqueueWork(()-> {
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.getId(), DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL);
+        });
     }
 
     // Add the example block item to the building blocks tab

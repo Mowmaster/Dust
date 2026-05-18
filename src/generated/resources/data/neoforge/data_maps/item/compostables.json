@@ -1,0 +1,13 @@
+{
+  "values": {
+    "dust:flower_windwheel": {
+      "chance": 0.3
+    },
+    "dust:food_lettuce": {
+      "chance": 0.65
+    },
+    "dust:seeds_lettuce": {
+      "chance": 0.3
+    }
+  }
+}

@@ -11,6 +11,23 @@
 
   "item.dust.food_cornbread": "Cornbread",
   "tooltip.dust.cornbread": "Cornbread is So Filling!",
+  "item.dust.food_lettuce": "Lettuce Leaf",
+  "item.dust.seeds_lettuce": "Lettuce Seeds",
+  "block.dust.crop_lettuce": "Lettuce Plant",
+
+  "block.dust.flower_windwheel": "Windwheel Aster",
+  "block.dust.pottedflower_windwheel": "Windwheel Aster in a Pot",
+
+
+  "block.dust.crystal_stone_red": "Fire Stone",
+  "block.dust.crystal_stone_green": "Earth Stone",
+  "block.dust.crystal_stone_blue": "Water Stone",
+  "block.dust.crystal_stone_white": "Order Stone",
+  "block.dust.crystal_stone_black": "Chaos Stone",
+
+
+
+
 
 
   "item.dust.chisel_iron": "Crystal Chisel (Iron)",

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:block/crystal_stone_blue",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -16776961
+      }
+    ]
+  }
+}

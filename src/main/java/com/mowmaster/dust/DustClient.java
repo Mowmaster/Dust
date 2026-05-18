@@ -1,9 +1,11 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
+import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
@@ -13,9 +15,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
+import java.util.List;
+import java.util.Objects;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = DustReferences.MODID, dist = Dist.CLIENT)
@@ -68,6 +74,17 @@ public class DustClient {
                 }
             }
         });
+    }
+
+
+    @SubscribeEvent
+    public static void registerTintBlocks(RegisterColorHandlersEvent.BlockTintSources event)
+    {
+        event.register(List.of(BlockTintSources.constant(16711680)), DustBlockRegistry.CRYSTAL_STONE_RED.get());
+        event.register(List.of(BlockTintSources.constant(65280)), DustBlockRegistry.CRYSTAL_STONE_GREEN.get());
+        event.register(List.of(BlockTintSources.constant(255)), DustBlockRegistry.CRYSTAL_STONE_BLUE.get());
+        event.register(List.of(BlockTintSources.constant(16777215)), DustBlockRegistry.CRYSTAL_STONE_WHITE.get());
+        event.register(List.of(BlockTintSources.constant(2763306)), DustBlockRegistry.CRYSTAL_STONE_BLACK.get());
     }
 
 }

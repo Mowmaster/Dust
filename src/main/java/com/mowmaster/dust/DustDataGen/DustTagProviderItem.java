@@ -73,5 +73,9 @@ public class DustTagProviderItem extends ItemTagsProvider {
         tag(ItemTags.FOOT_ARMOR)
                 .add(DustItemRegistry.CRYSTAL_BOOTS.get());
 
+
+        tag(ItemTags.VILLAGER_PLANTABLE_SEEDS)
+                .add(DustItemRegistry.SEEDS_LETTUCE.get());
+
     }
 }

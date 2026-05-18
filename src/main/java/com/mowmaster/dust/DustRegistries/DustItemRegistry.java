@@ -90,6 +90,14 @@ public class DustItemRegistry
     public static final DeferredItem<Item> CRYSTAL_HORSE_ARMOR = DUSTITEMS.registerItem("crystal_horse_armor",
             properties -> new Item(properties.horseArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL)));
 
+    public static final DeferredItem<Item> SEEDS_LETTUCE = DUSTITEMS.registerItem("seeds_lettuce",
+        properties -> new BlockItem(DustBlockRegistry.CROP_LETTUCE.get(), properties.useItemDescriptionPrefix()));
+
+    public static final DeferredItem<Item> FOOD_LETTUCE = DUSTITEMS.registerItem("food_lettuce",
+            properties -> new Item(properties.food(DDFoodProperties.LETTUCE)));
+
+
+
     public static void register(IEventBus eventBus)
     {
         DUSTITEMS.register(eventBus);

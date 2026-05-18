@@ -53,6 +53,12 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.BLOCK_WALL_GREEN.asItem());
                         output.accept(DustBlockRegistry.BLOCK_DOOR_GREEN.asItem());
                         output.accept(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.asItem());
+                        output.accept(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_STONE_RED.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_STONE_GREEN.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_STONE_BLUE.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_STONE_WHITE.asItem());
+                        output.accept(DustBlockRegistry.CRYSTAL_STONE_BLACK.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_FOOD = CREATIVE_MODE_TABS.register("dusttab_food",
@@ -61,6 +67,9 @@ public class DustCreativeTabRegistry {
                     .title(Component.translatable("creativetab.dust.dusttab_food"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(DustItemRegistry.CORNBREAD.asItem());
+
+                        output.accept(DustItemRegistry.FOOD_LETTUCE.asItem());
+                        output.accept(DustItemRegistry.SEEDS_LETTUCE.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",

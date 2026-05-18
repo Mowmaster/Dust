@@ -2,7 +2,7 @@
   "type": "dust:add_itemstack",
   "conditions": [
     {
-      "block": "minecraft:wheat",
+      "block": "dust:crop_lettuce",
       "condition": "minecraft:block_state_property"
     },
     {

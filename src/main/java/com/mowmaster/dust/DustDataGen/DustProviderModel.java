@@ -4,10 +4,12 @@ import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
+import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.data.PackOutput;
 
 public class DustProviderModel extends ModelProvider {
@@ -19,6 +21,7 @@ public class DustProviderModel extends ModelProvider {
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
 
         itemModels.generateFlatItem(DustItemRegistry.CORNBREAD.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.FOOD_LETTUCE.get(), ModelTemplates.FLAT_ITEM);
 
 
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_CHISEL_IRON.get(), ModelTemplates.FLAT_ITEM);
@@ -73,6 +76,7 @@ public class DustProviderModel extends ModelProvider {
                 .door(DustBlockRegistry.BLOCK_DOOR_GREEN.get())
                 .trapdoor(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get());
 
+        blockModels.createCropBlock(DustBlockRegistry.CROP_LETTUCE.get(), CropBlockLettuce.AGE, 0, 1, 2, 3);
 
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -89,6 +93,22 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateTrimmableItem(DustItemRegistry.CRYSTAL_BOOTS.get(), DustMaterialArmor.DUST_ARMOR_MATERIAL_KEY, ItemModelGenerators.TRIM_PREFIX_BOOTS, false);
 
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HORSE_ARMOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+
+
+
+        blockModels.createPlantWithDefaultItem(
+                DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get(),
+                DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(),
+                BlockModelGenerators.PlantType.TINTED
+        );
+
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_RED.get(), TexturedModel.LEAVES,16711680);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_GREEN.get(), TexturedModel.LEAVES,65280);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLUE.get(), TexturedModel.LEAVES,255);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_WHITE.get(), TexturedModel.LEAVES,16777215);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLACK.get(), TexturedModel.LEAVES,2763306);
+
 
     }
 }
