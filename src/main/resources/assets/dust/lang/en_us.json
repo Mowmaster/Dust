@@ -9,11 +9,31 @@
   "key.dust.dust_keyaction": "Dust Key Press",
 
 
+  "effect.dust.effect_scorch": "Scorched",
+  "effect.dust.effect_scorch.description": "Burns entity until it reaches 100, at which point it explodes.",
+  "item.minecraft.potion.effect.potion_scorch": "Scorch Potion (20)",
+  "item.minecraft.splash_potion.effect.potion_scorch": "Scorch Potion (20)",
+  "item.minecraft.lingering_potion.effect.potion_scorch": "Scorch Potion (20)",
+  "death.attack.scorch": "%s was scorched to death!",
+  "death.attack.scorch.player": "%s was scorched to death trying to out run %s",
+
+  "death.attack.ignition": "%s was ignited and died!",
+  "death.attack.ignition.player": "%s was ignited by %s",
+
+  "effect.dust.effect_magnet": "Magnetized",
+  "effect.dust.effect_magnet.description": "Magnetizes items, xp, and dust to the player.",
+
+
   "item.dust.food_cornbread": "Cornbread",
   "tooltip.dust.cornbread": "Cornbread is So Filling!",
   "item.dust.food_lettuce": "Lettuce Leaf",
   "item.dust.seeds_lettuce": "Lettuce Seeds",
   "block.dust.crop_lettuce": "Lettuce Plant",
+
+
+  "item.dust.food_falloldberry": "Fallold Berry",
+  "block.dust.bush_falloldberry": "Fallold Berry Bush",
+
 
   "block.dust.flower_windwheel": "Windwheel Aster",
   "block.dust.pottedflower_windwheel": "Windwheel Aster in a Pot",

@@ -4,6 +4,7 @@ import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
+import com.mowmaster.dust.Features.DustyDelights.Block.BushFalloldBerryBlock;
 import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -108,6 +109,8 @@ public class DustProviderModel extends ModelProvider {
         blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLUE.get(), TexturedModel.LEAVES,255);
         blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_WHITE.get(), TexturedModel.LEAVES,16777215);
         blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLACK.get(), TexturedModel.LEAVES,2763306);
+
+        blockModels.createCropBlock(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), BushFalloldBerryBlock.AGE, 0, 1, 2, 3);
 
 
     }

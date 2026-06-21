@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.Features.CrystalBlocks.Block.CrystalPathBaseBlock;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.CrystalBlocks.Block.CrystalStone;
+import com.mowmaster.dust.Features.DustyDelights.Block.BushFalloldBerryBlock;
 import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
@@ -169,6 +170,14 @@ public class DustBlockRegistry {
                     .mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(2f)
                     .pushReaction(PushReaction.NORMAL).requiresCorrectToolForDrops()));
 
+    public static final DeferredBlock<Block> BLOCK_FALLOLDBERRY_BUSH = DUSTBLOCKS.registerBlock("bush_falloldberry",
+            properties -> new BushFalloldBerryBlock(properties
+                    .mapColor(MapColor.PLANT)
+                    .randomTicks()
+                    .noCollision()
+                    .sound(SoundType.SWEET_BERRY_BUSH)
+                    .pushReaction(PushReaction.DESTROY)
+            ));
 
 
 

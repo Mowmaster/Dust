@@ -11,10 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import net.minecraft.world.level.Level;
 
-public class AuraReplentishEffect implements ConsumeEffect {
-    public static final MapCodec<AuraReplentishEffect> CODEC = MapCodec.unit(AuraReplentishEffect::new);
-    public static final StreamCodec<RegistryFriendlyByteBuf, AuraReplentishEffect> STREAM_CODEC =
-            StreamCodec.unit(new AuraReplentishEffect());
+public class EffectAuraReplentish implements ConsumeEffect {
+    public static final MapCodec<EffectAuraReplentish> CODEC = MapCodec.unit(EffectAuraReplentish::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, EffectAuraReplentish> STREAM_CODEC =
+            StreamCodec.unit(new EffectAuraReplentish());
 
     @Override
     public Type<? extends ConsumeEffect> getType() {

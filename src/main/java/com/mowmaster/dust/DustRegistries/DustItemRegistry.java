@@ -95,6 +95,11 @@ public class DustItemRegistry
 
     public static final DeferredItem<Item> FOOD_LETTUCE = DUSTITEMS.registerItem("food_lettuce",
             properties -> new Item(properties.food(DDFoodProperties.LETTUCE)));
+    public static final DeferredItem<Item> FOOD_FALLOLDBERRY = DUSTITEMS.registerItem("food_falloldberry",
+            properties -> new BlockItem(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), properties
+                    .useItemDescriptionPrefix()
+                    .food(DDFoodProperties.LETTUCE)
+            ));
 
 
 

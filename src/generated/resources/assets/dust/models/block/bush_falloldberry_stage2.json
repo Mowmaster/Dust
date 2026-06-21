@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "dust:block/bush_falloldberry_stage2"
+  }
+}

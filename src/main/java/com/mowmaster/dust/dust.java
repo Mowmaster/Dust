@@ -34,6 +34,8 @@ public class Dust {
         DustAttachmentTypeRegistry.register(modEventBus);
 
         DustConsumeEffectsRegistry.register(modEventBus);
+        DustEffectsRegistry.register(modEventBus);
+        DustPotionRegistry.register(modEventBus);
 
         DustLootRegistry.register(modEventBus);
 

@@ -13,6 +13,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SweetBerryBushBlock;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
@@ -29,6 +31,7 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        var enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
         dropSelf(DustBlockRegistry.CRYSTAL_PATH_TIER1.get());
         dropSelf(DustBlockRegistry.CRYSTAL_PATH_TIER2.get());
@@ -79,6 +82,24 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         dropSelf(DustBlockRegistry.CRYSTAL_STONE_BLUE.get());
         dropSelf(DustBlockRegistry.CRYSTAL_STONE_WHITE.get());
         dropSelf(DustBlockRegistry.CRYSTAL_STONE_BLACK.get());
+
+        this.add(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), block -> this.applyExplosionDecay(
+                block, LootTable.lootTable()
+                        .withPool(LootPool.lootPool().when(
+                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get())
+                                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SweetBerryBushBlock.AGE, 3)))
+                            .add(LootItem.lootTableItem(DustItemRegistry.FOOD_FALLOLDBERRY))
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))
+                            .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
+                        )
+                        .withPool(LootPool.lootPool().when(
+                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get())
+                                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SweetBerryBushBlock.AGE, 2)))
+                            .add(LootItem.lootTableItem(DustItemRegistry.FOOD_FALLOLDBERRY))
+                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+                            .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
+                        )
+        ));
 
 
     }

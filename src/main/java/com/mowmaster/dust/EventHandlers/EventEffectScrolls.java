@@ -1,17 +1,23 @@
 package com.mowmaster.dust.EventHandlers;
 
+import com.mowmaster.dust.DustCommands.PlayerAuraSet;
 import com.mowmaster.dust.DustDataGen.DustTagProviderItem;
 import com.mowmaster.dust.DustDataGen.DustTags;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
+import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -59,6 +65,17 @@ public class EventEffectScrolls {
         Player player = event.getEntity();
         DustAuraPacketHelper.setAura((ServerPlayer) player, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
     }
+
+    @SubscribeEvent
+    public static void onCommandAuraSet(RegisterCommandsEvent event) {
+        new PlayerAuraSet(event.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public static void onBrewingRegister(RegisterBrewingRecipesEvent event) {
+        event.getBuilder().addMix(Potions.FIRE_RESISTANCE, Items.BLAZE_POWDER, DustPotionRegistry.POTION_SCORCH);
+    }
+
 
     @SubscribeEvent
     public static void onDustPickup(ItemEntityPickupEvent.Pre event) {

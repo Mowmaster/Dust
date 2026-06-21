@@ -70,6 +70,7 @@ public class DustCreativeTabRegistry {
 
                         output.accept(DustItemRegistry.FOOD_LETTUCE.asItem());
                         output.accept(DustItemRegistry.SEEDS_LETTUCE.asItem());
+                        output.accept(DustItemRegistry.FOOD_FALLOLDBERRY.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",
