@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Features.DustEntities;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

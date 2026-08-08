@@ -31,36 +31,28 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
     protected void start() {
         add("earth_dust_to_dirt",
                 new AddRandomItemStackModifier(
-                        new LootItemCondition[]{
-                                LootItemBlockStatePropertyCondition
-                                        .hasBlockStateProperties(
-                                                DustBlockRegistry.CROP_LETTUCE.get()
-                                        )
-                                        .build(),
-
-                                LootItemRandomChanceCondition
-                                        .randomChance(1.0F)
-                                        .build()
-                        },
+                        new LootItemCondition[]{LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.CROP_LETTUCE.get()).build(),
+                                LootItemRandomChanceCondition.randomChance(1.0F).build()},
                         DustItemRegistry.DUST_GREEN,
                         1,
-                        3
-                ));
+                        3));
 
         add("earth_crystal_in_jungle_loot",
-                new AddItemStackModifier(new LootItemCondition[]{
-                        new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("chests/jungle_temple")).build(),
-                }, new ItemStackTemplate(DustItemRegistry.CRYSTAL_GREEN)));
+                new AddItemStackModifier(new LootItemCondition[]{new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("chests/jungle_temple")).build()}
+                , new ItemStackTemplate(DustItemRegistry.CRYSTAL_GREEN)));
 
         add("fire_dust_from_blaze",
-                new AddItemStackModifier(new LootItemCondition[]{
-                        new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("entities/blaze")).build() },
+                new AddItemStackModifier(new LootItemCondition[]{new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("entities/blaze")).build()},
                         new ItemStackTemplate(DustItemRegistry.DUST_RED, 1)));
 
         add("slime_dustdrop_water",
-                new AddItemStackModifier(new LootItemCondition[]{
-                        new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("entities/slime")).build() },
-                        new ItemStackTemplate(DustItemRegistry.DUST_GREEN, 1)));
+                new AddRandomItemStackModifier(
+                        new LootItemCondition[]{new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("entities/slime")).build(),
+                                LootItemRandomChanceCondition.randomChance(1.0F).build()},
+                        DustItemRegistry.DUST_BLUE,
+                        1,
+                        3));
+
 
     }
 }

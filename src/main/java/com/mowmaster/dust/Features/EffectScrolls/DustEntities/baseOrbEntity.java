@@ -1,5 +1,7 @@
-package com.mowmaster.dust.Features.DustEntities;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities;
 
+import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
+import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -47,28 +49,7 @@ public class baseOrbEntity extends Entity {
 
     @Override
     public void playerTouch(Player player) {
-        if (!this.level().isClientSide()) {
-            int orbValue = this.getValue();
 
-            // Prevent unreasonable values from creating an excessively long effect
-            orbValue = Math.clamp(orbValue, 1, 100);
-
-            /*int duration = BASE_DURATION * orbValue;
-
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.FIRE_RESISTANCE,
-                    duration,
-                    0,       // amplifier
-                    false,   // ambient
-                    true,    // visible particles
-                    true     // show icon
-            ));*/
-            DustAuraPacketHelper.addAuraWithConsumedCount((ServerPlayer) player, orbValue);
-            player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.1F, 0.9F + this.level().getRandom().nextFloat() * 0.2F);
-
-
-            this.discard();
-        }
     }
 
     private void setUnderwaterMovement() {

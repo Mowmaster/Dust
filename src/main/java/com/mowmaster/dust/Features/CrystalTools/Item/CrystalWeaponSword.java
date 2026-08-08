@@ -30,10 +30,10 @@ public class CrystalWeaponSword extends Item {
         int ampAmount = 1;
         if(attacker instanceof ServerPlayer player)
         {
-            if(DustAuraPacketHelper.canRemoveAura(player,ampAmount))
+            if(DustAuraPacketHelper.canRemoveAura(player,0,ampAmount))
             {
                 mob.addEffect(new MobEffectInstance(MobEffects.INSTANT_DAMAGE,1,ampAmount), attacker);
-                DustAuraPacketHelper.removeAura(player,ampAmount);
+                DustAuraPacketHelper.removeAura(player,0,ampAmount);
             }
         }
         super.postHurtEnemy(itemStack, mob, attacker);

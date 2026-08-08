@@ -14,9 +14,9 @@ public class PacketReceiverServer
     public static void handleTestPacket(PacketOfDustAuraC2S dustTestPacket, IPayloadContext context) {
         Player player = context.player();
         ServerLevel level = ((ServerLevel) player.level());
-        if(player.getOffhandItem().is(DustTags.Items.MAGICAL_DUST_ITEMS) && DustAuraPacketHelper.canAddAura(((ServerPlayer) player),dustTestPacket.value()))
+        if(player.getOffhandItem().is(DustTags.Items.MAGICAL_DUST_ITEMS) && DustAuraPacketHelper.canAddAura(((ServerPlayer) player),0,dustTestPacket.value()))
         {
-            DustAuraPacketHelper.addAura(((ServerPlayer) player),dustTestPacket.value());
+            DustAuraPacketHelper.addAura(((ServerPlayer) player),0,dustTestPacket.value());
             player.getOffhandItem().shrink(dustTestPacket.value());
             player.sendOverlayMessage(Component.literal("Aura Replentished by: " + dustTestPacket.value()));
         }

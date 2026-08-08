@@ -11,6 +11,11 @@ public class PacketReceiverClient
     public static void handleClientPacket(PacketOfDustAuraS2C dustClientPacket, IPayloadContext context) {
         Player player = context.player();
         player.setData(DustAttachmentTypeRegistry.DUST_AURA, dustClientPacket.newValue());
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE, dustClientPacket.newValue());
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER, dustClientPacket.newValue());
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH, dustClientPacket.newValue());
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS, dustClientPacket.newValue());
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER, dustClientPacket.newValue());
 
     }
 }

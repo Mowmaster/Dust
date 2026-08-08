@@ -50,10 +50,10 @@ public class CrystalArmorItem extends Item {
     private void addEffectToPlayer(Player player, List<MobEffectInstance> mapEffect, int amplifier) {
         boolean hasPlayerEffect = mapEffect.stream().allMatch(effect -> player.hasEffect(effect.getEffect()));
 
-        if(!hasPlayerEffect && DustAuraPacketHelper.canRemoveAura((ServerPlayer) player,amplifier)) {
+        if(!hasPlayerEffect && DustAuraPacketHelper.canRemoveAura((ServerPlayer) player,0,amplifier)) {
             for (MobEffectInstance effect : mapEffect) {
                 player.addEffect(new MobEffectInstance(effect.getEffect(), 1600, amplifier-1, false, false));
-                DustAuraPacketHelper.removeAura((ServerPlayer) player,amplifier);
+                DustAuraPacketHelper.removeAura((ServerPlayer) player,0,amplifier);
             }
         }
     }

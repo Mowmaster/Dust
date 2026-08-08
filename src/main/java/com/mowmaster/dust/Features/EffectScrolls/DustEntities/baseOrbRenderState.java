@@ -1,4 +1,4 @@
-package com.mowmaster.dust.Features.DustEntities;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities;
 
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.neoforged.api.distmarker.Dist;

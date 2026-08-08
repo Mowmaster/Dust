@@ -1,10 +1,10 @@
-package com.mowmaster.dust.Features.DustEntities.fireDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mowmaster.dust.DustReferences;
-import com.mowmaster.dust.Features.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.DustEntities.baseOrbRenderState;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
-public class FireOrbRenderer extends EntityRenderer<baseOrbEntity, baseOrbRenderState> {
+public class FireOrbRenderer extends EntityRenderer<FireOrbEntity, baseOrbRenderState> {
 
     private static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(
@@ -31,7 +31,7 @@ public class FireOrbRenderer extends EntityRenderer<baseOrbEntity, baseOrbRender
         this.shadowStrength = 0.75F;
     }
 
-    protected int getBlockLightLevel(baseOrbEntity entity, BlockPos blockPos) {
+    protected int getBlockLightLevel(FireOrbEntity entity, BlockPos blockPos) {
         return Mth.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
     }
 
@@ -77,7 +77,7 @@ public class FireOrbRenderer extends EntityRenderer<baseOrbEntity, baseOrbRender
         return new baseOrbRenderState();
     }
 
-    public void extractRenderState(baseOrbEntity entity, baseOrbRenderState state, float partialTicks) {
+    public void extractRenderState(FireOrbEntity entity, baseOrbRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.icon = entity.getIcon();
     }

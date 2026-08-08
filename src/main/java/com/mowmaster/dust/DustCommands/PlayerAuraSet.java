@@ -41,7 +41,7 @@ public class PlayerAuraSet
             if (entity instanceof LivingEntity target) {
                 if(target instanceof ServerPlayer player)
                 {
-                    DustAuraPacketHelper.setAura(player,amount);
+                    DustAuraPacketHelper.setAura(player,0,amount);
                     source.sendSuccess(()-> Component.literal(target.getPlainTextName() + "'s Aura Set To: " + amount), false);
                     return 1;
                 }

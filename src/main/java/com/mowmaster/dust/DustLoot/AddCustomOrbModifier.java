@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustLootRegistry;
-import com.mowmaster.dust.Features.DustEntities.baseOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;

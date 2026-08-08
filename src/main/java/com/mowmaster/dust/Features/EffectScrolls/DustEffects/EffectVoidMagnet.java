@@ -1,5 +1,11 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEffects;
 
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust.EarthOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -35,6 +41,31 @@ public class EffectVoidMagnet extends MobEffect {
                 {
                     player.giveExperiencePoints(experienceOrb.getValue());
                     experienceOrb.remove(Entity.RemovalReason.DISCARDED);
+                }
+                if(entity instanceof FireOrbEntity magicOrb)
+                {
+                    DustAuraPacketHelper.addAura(player,1,magicOrb.getValue());
+                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
+                }
+                if(entity instanceof WaterOrbEntity magicOrb)
+                {
+                    DustAuraPacketHelper.addAura(player,2,magicOrb.getValue());
+                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
+                }
+                if(entity instanceof EarthOrbEntity magicOrb)
+                {
+                    DustAuraPacketHelper.addAura(player,3,magicOrb.getValue());
+                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
+                }
+                if(entity instanceof ChaosOrbEntity magicOrb)
+                {
+                    DustAuraPacketHelper.addAura(player,4,magicOrb.getValue());
+                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
+                }
+                if(entity instanceof OrderOrbEntity magicOrb)
+                {
+                    DustAuraPacketHelper.addAura(player,5,magicOrb.getValue());
+                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
             }
         }

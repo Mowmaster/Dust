@@ -7,7 +7,7 @@ import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
-import com.mowmaster.dust.Features.DustEntities.baseOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,29 +43,54 @@ public class EventEffectScrolls {
         Player player = event.getEntity();
         if(player.hasData(DustAttachmentTypeRegistry.DUST_AURA))
         {
-            DustAuraPacketHelper.setAura((ServerPlayer) player, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
+            DustAuraPacketHelper.setAura((ServerPlayer) player,0, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
+            DustAuraPacketHelper.setAura((ServerPlayer) player,1, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE));
+            DustAuraPacketHelper.setAura((ServerPlayer) player,2, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER));
+            DustAuraPacketHelper.setAura((ServerPlayer) player,3, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH));
+            DustAuraPacketHelper.setAura((ServerPlayer) player,4, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS));
+            DustAuraPacketHelper.setAura((ServerPlayer) player,5, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER));
         }
         else {
-            DustAuraPacketHelper.setAura((ServerPlayer) player, 0);
+            DustAuraPacketHelper.setAura((ServerPlayer) player,0, 0);
+            DustAuraPacketHelper.setAura((ServerPlayer) player,1,0);
+            DustAuraPacketHelper.setAura((ServerPlayer) player,2, 0);
+            DustAuraPacketHelper.setAura((ServerPlayer) player,3, 0);
+            DustAuraPacketHelper.setAura((ServerPlayer) player,4, 0);
+            DustAuraPacketHelper.setAura((ServerPlayer) player,5, 0);
         }
     }
 
     @SubscribeEvent
     public static void setPlayersManaOnClone(PlayerEvent.Clone event) {
         Player newPlayer = event.getEntity();
-        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer, event.getOriginal().getData(DustAttachmentTypeRegistry.DUST_AURA));
+        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer,0, event.getOriginal().getData(DustAttachmentTypeRegistry.DUST_AURA));
+        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer,1, event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE));
+        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer,2, event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER));
+        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer,3, event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH));
+        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer,4, event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS));
+        DustAuraPacketHelper.setAura((ServerPlayer) newPlayer,5, event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER));
     }
 
     @SubscribeEvent
     public static void setPlayersManaOnDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
-        DustAuraPacketHelper.setAura((ServerPlayer) player, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,0, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,1, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,2, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,3, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,4, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,5, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER));
     }
 
     @SubscribeEvent
     public static void setPlayersManaOnRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getEntity();
-        DustAuraPacketHelper.setAura((ServerPlayer) player, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,0, player.getData(DustAttachmentTypeRegistry.DUST_AURA));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,1, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,2, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,3, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,4, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS));
+        DustAuraPacketHelper.setAura((ServerPlayer) player,5, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER));
     }
 
     @SubscribeEvent

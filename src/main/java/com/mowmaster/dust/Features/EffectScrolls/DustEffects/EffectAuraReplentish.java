@@ -26,7 +26,7 @@ public class EffectAuraReplentish implements ConsumeEffect {
         if (!level.isClientSide() && livingEntity instanceof ServerPlayer player)
         {
             //Bypasses the canAddAuraCheck to allow over consumption without overflowing the aura value
-            DustAuraPacketHelper.addAura(player,8);
+            DustAuraPacketHelper.addAura(player,0,8);
         }
         return true;
     }
