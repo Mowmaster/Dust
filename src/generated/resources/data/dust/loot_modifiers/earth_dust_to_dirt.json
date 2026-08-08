@@ -1,16 +1,16 @@
 {
-  "type": "dust:add_itemstack",
+  "type": "dust:add_random_item_stack",
   "conditions": [
     {
       "block": "dust:crop_lettuce",
       "condition": "minecraft:block_state_property"
     },
     {
-      "chance": 0.25,
+      "chance": 1.0,
       "condition": "minecraft:random_chance"
     }
   ],
-  "stack": {
-    "id": "dust:dust_green"
-  }
+  "item": "dust:dust_green",
+  "max_count": 3,
+  "min_count": 1
 }

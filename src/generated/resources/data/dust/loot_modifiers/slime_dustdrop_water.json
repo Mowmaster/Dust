@@ -1,0 +1,12 @@
+{
+  "type": "dust:add_itemstack",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/slime"
+    }
+  ],
+  "stack": {
+    "id": "dust:dust_green"
+  }
+}

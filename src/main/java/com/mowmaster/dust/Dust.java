@@ -29,6 +29,7 @@ public class Dust {
 
         DustItemRegistry.register(modEventBus);
         DustBlockRegistry.register(modEventBus);
+        DustEntityRegistry.register(modEventBus);
 
         DustDataComponentTypeRegistry.register(modEventBus);
         DustAttachmentTypeRegistry.register(modEventBus);

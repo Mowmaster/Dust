@@ -2,6 +2,13 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
+import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
+import com.mowmaster.dust.Features.DustEntities.baseOrbRenderer;
+import com.mowmaster.dust.Features.DustEntities.chaosDust.ChaosOrbRenderer;
+import com.mowmaster.dust.Features.DustEntities.earthDust.EarthOrbRenderer;
+import com.mowmaster.dust.Features.DustEntities.fireDust.FireOrbRenderer;
+import com.mowmaster.dust.Features.DustEntities.orderDust.OrderOrbRenderer;
+import com.mowmaster.dust.Features.DustEntities.waterDust.WaterOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import net.minecraft.client.Minecraft;
@@ -14,14 +21,10 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import java.util.List;
-import java.util.Objects;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = DustReferences.MODID, dist = Dist.CLIENT)
@@ -53,6 +56,15 @@ public class DustClient {
             //Minecraft.getInstance().player.sendSystemMessage(Component.literal("Key Pressed"));
             ClientPacketDistributor.sendToServer(new PacketOfDustAuraC2S("Key Pressed", 1));
         }
+    }
+
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(DustEntityRegistry.FIRE_ORB.get(), FireOrbRenderer::new);
+        event.registerEntityRenderer(DustEntityRegistry.EARTH_ORB.get(), EarthOrbRenderer::new);
+        event.registerEntityRenderer(DustEntityRegistry.WATER_ORB.get(), WaterOrbRenderer::new);
+        event.registerEntityRenderer(DustEntityRegistry.CHAOS_ORB.get(), ChaosOrbRenderer::new);
+        event.registerEntityRenderer(DustEntityRegistry.ORDER_ORB.get(), OrderOrbRenderer::new);
     }
 
     @SubscribeEvent

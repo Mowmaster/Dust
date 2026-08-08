@@ -1,6 +1,7 @@
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustLoot.AddItemStackModifier;
+import com.mowmaster.dust.DustLoot.AddRandomItemStackModifier;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
@@ -29,12 +30,24 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
     @Override
     protected void start() {
         add("earth_dust_to_dirt",
-                new AddItemStackModifier(new LootItemCondition[]{
-                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.CROP_LETTUCE.get()).build(),
-                        LootItemRandomChanceCondition.randomChance(0.25f).build()
-                }, new ItemStackTemplate(DustItemRegistry.DUST_GREEN, 1)));
+                new AddRandomItemStackModifier(
+                        new LootItemCondition[]{
+                                LootItemBlockStatePropertyCondition
+                                        .hasBlockStateProperties(
+                                                DustBlockRegistry.CROP_LETTUCE.get()
+                                        )
+                                        .build(),
 
-        add("earth_cryatl_in_jungle_loot",
+                                LootItemRandomChanceCondition
+                                        .randomChance(1.0F)
+                                        .build()
+                        },
+                        DustItemRegistry.DUST_GREEN,
+                        1,
+                        3
+                ));
+
+        add("earth_crystal_in_jungle_loot",
                 new AddItemStackModifier(new LootItemCondition[]{
                         new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("chests/jungle_temple")).build(),
                 }, new ItemStackTemplate(DustItemRegistry.CRYSTAL_GREEN)));
@@ -43,5 +56,11 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
                 new AddItemStackModifier(new LootItemCondition[]{
                         new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("entities/blaze")).build() },
                         new ItemStackTemplate(DustItemRegistry.DUST_RED, 1)));
+
+        add("slime_dustdrop_water",
+                new AddItemStackModifier(new LootItemCondition[]{
+                        new LootTableIdCondition.Builder(Identifier.withDefaultNamespace("entities/slime")).build() },
+                        new ItemStackTemplate(DustItemRegistry.DUST_GREEN, 1)));
+
     }
 }

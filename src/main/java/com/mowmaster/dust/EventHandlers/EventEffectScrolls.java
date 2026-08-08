@@ -1,24 +1,26 @@
 package com.mowmaster.dust.EventHandlers;
 
 import com.mowmaster.dust.DustCommands.PlayerAuraSet;
-import com.mowmaster.dust.DustDataGen.DustTagProviderItem;
 import com.mowmaster.dust.DustDataGen.DustTags;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
+import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
+import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
+import com.mowmaster.dust.Features.DustEntities.baseOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -78,24 +80,43 @@ public class EventEffectScrolls {
 
 
     @SubscribeEvent
-    public static void onDustPickup(ItemEntityPickupEvent.Pre event) {
-        Level level = event.getPlayer().level();
-        Player player = event.getPlayer();
-        if(!level.isClientSide())
-        {
-            ItemStack pickedUpItemStack = event.getItemEntity().getItem();
-            if(pickedUpItemStack.is(DustTags.Items.MAGICAL_DUST_ITEMS))
-            {
-                int consumed = DustAuraPacketHelper.addAuraWithConsumedCount((ServerPlayer) player, pickedUpItemStack.count());
-                if(consumed>0)
-                {
-                    if(pickedUpItemStack.count()>consumed)
-                    {
-                        pickedUpItemStack.shrink(consumed);
-                    }
-                    else event.getItemEntity().remove(Entity.RemovalReason.DISCARDED);
-                }
+    public static void onDustPickup(EntityJoinLevelEvent event) {
+        if (!(event.getEntity() instanceof ItemEntity itemEntity)) {
+            return;
+        }
+
+        // EntityJoinLevelEvent can run on both logical sides
+        if (event.getLevel().isClientSide()) {
+            return;
+        }
+
+        ItemStack stack = itemEntity.getItem();
+
+        if (!stack.is(DustTags.Items.MAGICAL_DUST_ITEMS)) {
+            return;
+        }
+
+        ServerLevel level = (ServerLevel) event.getLevel();
+        int amount = stack.getCount();
+
+        for (int i = 0; i < amount; i++) {
+            baseOrbEntity orb = new baseOrbEntity(DustEntityRegistry.FIRE_ORB.get(),level);
+            if(stack.is(DustItemRegistry.DUST_RED.get()))orb = new baseOrbEntity(DustEntityRegistry.FIRE_ORB.get(),level);
+            else if(stack.is(DustItemRegistry.DUST_BLUE.get()))orb = new baseOrbEntity(DustEntityRegistry.WATER_ORB.get(),level);
+            else if(stack.is(DustItemRegistry.DUST_GREEN.get()))orb = new baseOrbEntity(DustEntityRegistry.EARTH_ORB.get(),level);
+            else if(stack.is(DustItemRegistry.DUST_BLACK.get()))orb = new baseOrbEntity(DustEntityRegistry.CHAOS_ORB.get(),level);
+            else if(stack.is(DustItemRegistry.DUST_WHITE.get()))orb = new baseOrbEntity(DustEntityRegistry.ORDER_ORB.get(),level);
+
+
+            if (orb == null) {
+                continue;
             }
+
+            orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+            orb.setValue(amount);
+            level.addFreshEntity(orb);
+            event.setCanceled(true);
+            itemEntity.discard();
         }
     }
 }
