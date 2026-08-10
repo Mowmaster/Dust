@@ -5,7 +5,8 @@ import com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust.EarthOrb
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -44,27 +45,27 @@ public class EffectVoidMagnet extends MobEffect {
                 }
                 if(entity instanceof FireOrbEntity magicOrb)
                 {
-                    DustAuraPacketHelper.addAura(player,1,magicOrb.getValue());
+                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.FIRE,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof WaterOrbEntity magicOrb)
                 {
-                    DustAuraPacketHelper.addAura(player,2,magicOrb.getValue());
+                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.WATER,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof EarthOrbEntity magicOrb)
                 {
-                    DustAuraPacketHelper.addAura(player,3,magicOrb.getValue());
+                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.EARTH,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof ChaosOrbEntity magicOrb)
                 {
-                    DustAuraPacketHelper.addAura(player,4,magicOrb.getValue());
+                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.CHAOS,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof OrderOrbEntity magicOrb)
                 {
-                    DustAuraPacketHelper.addAura(player,5,magicOrb.getValue());
+                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.ORDER,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
             }

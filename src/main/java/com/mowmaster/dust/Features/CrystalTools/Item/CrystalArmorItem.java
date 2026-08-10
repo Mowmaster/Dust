@@ -2,7 +2,6 @@ package com.mowmaster.dust.Features.CrystalTools.Item;
 
 import com.google.common.collect.ImmutableMap;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -50,12 +49,12 @@ public class CrystalArmorItem extends Item {
     private void addEffectToPlayer(Player player, List<MobEffectInstance> mapEffect, int amplifier) {
         boolean hasPlayerEffect = mapEffect.stream().allMatch(effect -> player.hasEffect(effect.getEffect()));
 
-        if(!hasPlayerEffect && DustAuraPacketHelper.canRemoveAura((ServerPlayer) player,0,amplifier)) {
+        /*if(!hasPlayerEffect && DustAuraPacketHelper.canRemoveAura((ServerPlayer) player,0,amplifier)) {
             for (MobEffectInstance effect : mapEffect) {
                 player.addEffect(new MobEffectInstance(effect.getEffect(), 1600, amplifier-1, false, false));
                 DustAuraPacketHelper.removeAura((ServerPlayer) player,0,amplifier);
             }
-        }
+        }*/
     }
 
     private int getEquippedArmorPieces(Player player) {

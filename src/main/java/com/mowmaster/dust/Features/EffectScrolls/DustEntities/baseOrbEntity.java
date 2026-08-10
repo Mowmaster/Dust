@@ -1,15 +1,13 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEntities;
 
-import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
-import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -50,6 +48,22 @@ public class baseOrbEntity extends Entity {
     @Override
     public void playerTouch(Player player) {
 
+    }
+
+    public boolean hasAffinityWithElement(ServerPlayer player, ElementEnum element)
+    {
+        return DustElementAttachmentHelper.hasAnyAffinityWithElement(player, element);
+    }
+
+    public float getAffinityMultiplier(ServerPlayer player, ElementEnum element)
+    {
+        if(hasAffinityWithElement(player, element))
+        {
+            //for a single affinity 2.0 - 0.5(reduction multi) gives us 1.5 bonus multiplier
+            return 2.0f - DustElementAttachmentHelper.getAffinityCostReduction(player);
+        }
+        //returns 100% or 1.0 bonus multiplier
+        return 1.0f;
     }
 
     private void setUnderwaterMovement() {

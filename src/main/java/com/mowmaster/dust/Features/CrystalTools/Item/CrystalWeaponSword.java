@@ -1,16 +1,12 @@
 package com.mowmaster.dust.Features.CrystalTools.Item;
 
-import com.mowmaster.dust.DustDataGen.DustTags;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
-
-import static net.minecraft.world.item.enchantment.Enchantments.SHARPNESS;
 
 public class CrystalWeaponSword extends Item {
     public CrystalWeaponSword(Properties properties) {
@@ -30,10 +26,10 @@ public class CrystalWeaponSword extends Item {
         int ampAmount = 1;
         if(attacker instanceof ServerPlayer player)
         {
-            if(DustAuraPacketHelper.canRemoveAura(player,0,ampAmount))
+            if(DustMagicAttachmentHelper.canRemoveMana(player,ampAmount))
             {
                 mob.addEffect(new MobEffectInstance(MobEffects.INSTANT_DAMAGE,1,ampAmount), attacker);
-                DustAuraPacketHelper.removeAura(player,0,ampAmount);
+                DustMagicAttachmentHelper.removeMana(player,ampAmount);
             }
         }
         super.postHurtEnemy(itemStack, mob, attacker);

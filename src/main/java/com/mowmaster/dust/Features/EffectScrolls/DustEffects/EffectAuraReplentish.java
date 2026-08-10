@@ -2,7 +2,7 @@ package com.mowmaster.dust.Features.EffectScrolls.DustEffects;
 
 import com.mojang.serialization.MapCodec;
 import com.mowmaster.dust.DustRegistries.DustConsumeEffectsRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +26,7 @@ public class EffectAuraReplentish implements ConsumeEffect {
         if (!level.isClientSide() && livingEntity instanceof ServerPlayer player)
         {
             //Bypasses the canAddAuraCheck to allow over consumption without overflowing the aura value
-            DustAuraPacketHelper.addAura(player,0,8);
+            DustMagicAttachmentHelper.addMana(player,5);
         }
         return true;
     }

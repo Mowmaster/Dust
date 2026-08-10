@@ -8,12 +8,17 @@ import com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust.EarthOrb
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbRenderer;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.DustAuraPacketHelper;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.texture.SpriteContents;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -73,115 +78,104 @@ public class DustClient {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
-            if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUST_AURA)) {
-                int limiter = DustAuraPacketHelper.getAuraLimit(Minecraft.getInstance().player);
-                for (int i = 0; i < limiter; i++) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (!player.isCreative() && !player.isSpectator()
+                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
+                for (int i = 0; i < 100; i++) {
                     guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_iconh_bg"),
                             1, 4, 0, 0, x - 200 + i, y - 20, 1, 4);
                 }
 
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUST_AURA); i++) {
+                int maxMana = DustMagicAttachmentHelper.getManaMaximum(player);
+                int currentMana = DustMagicAttachmentHelper.getManaLevel(player);
+                int calcPercentManaLeft = Math.round(((float)currentMana/maxMana)*100);
+                for (int i = 0; i < calcPercentManaLeft; i++) {
                     guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_iconh"),
                             1, 4, 0, 0, x - 200 + i, y - 20, 1, 4);
                 }
+
+                //Magic meter Overlay
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "magicmeter_overlay"),
+                        116, 20, 0, 0, x - 208, y - 28, 116, 20);
             }
         });
+
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_fire_meter"), (guiGraphics, deltaTracker) -> {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
-
+            LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE)) {
-                int limiter = DustAuraPacketHelper.getMagicLimit(Minecraft.getInstance().player,1);
-                for (int i = 0; i < limiter; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_iconbg"),
-                            4, 1, 0, 0, x - 200, y - 30 - i, 4, 1);
-                }
-
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_FIRE); i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_fire_icon"),
-                            4, 1, 0, 0, x - 200, y - 30 - i, 4, 1);
-                }
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
+                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.FIRE);
+                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.FIRE);
+                int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_fire"),
+                        11, 110, 0, calcPercentManaLeft, x - 210, y - 40, 11, 10);
             }
         });
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_water_meter"), (guiGraphics, deltaTracker) -> {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
-
+            LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER)) {
-                int limiter = DustAuraPacketHelper.getMagicLimit(Minecraft.getInstance().player,1);
-                for (int i = 0; i < limiter; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_iconbg"),
-                            4, 1, 0, 0, x - 195, y - 30 - i, 4, 1);
-                }
-
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_WATER); i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_water_icon"),
-                            4, 1, 0, 0, x - 195, y - 30 - i, 4, 1);
-                }
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
+                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.WATER);
+                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.WATER);
+                int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_water"),
+                        11, 110, 0, calcPercentManaLeft, x - 198, y - 40, 11, 10);
             }
         });
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_earth_meter"), (guiGraphics, deltaTracker) -> {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
-
+            LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH)) {
-                int limiter = DustAuraPacketHelper.getMagicLimit(Minecraft.getInstance().player,1);
-                for (int i = 0; i < limiter; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_iconbg"),
-                            4, 1, 0, 0, x - 190, y - 30 - i, 4, 1);
-                }
-
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_EARTH); i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_earth_icon"),
-                            4, 1, 0, 0, x - 190, y - 30 - i, 4, 1);
-                }
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
+                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.EARTH);
+                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.EARTH);
+                int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_earth"),
+                        11, 110, 0, calcPercentManaLeft, x - 186, y - 40, 11, 10);
             }
         });
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_chaos_meter"), (guiGraphics, deltaTracker) -> {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
-
+            LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS)) {
-                int limiter = DustAuraPacketHelper.getMagicLimit(Minecraft.getInstance().player,1);
-                for (int i = 0; i < limiter; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_iconbg"),
-                            4, 1, 0, 0, x - 185, y - 30 - i, 4, 1);
-                }
-
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_CHAOS); i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_chaos_icon"),
-                            4, 1, 0, 0, x - 185, y - 30 - i, 4, 1);
-                }
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
+                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.CHAOS);
+                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.CHAOS);
+                int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_chaos"),
+                        11, 110, 0, calcPercentManaLeft, x - 174, y - 40, 11, 10);
             }
         });
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_order_meter"), (guiGraphics, deltaTracker) -> {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
-
+            LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER)) {
-                int limiter = DustAuraPacketHelper.getMagicLimit(Minecraft.getInstance().player,1);
-                for (int i = 0; i < limiter; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_iconbg"),
-                            4, 1, 0, 0, x - 180, y - 30 - i, 4, 1);
-                }
-
-                for (int i = 0; i < Minecraft.getInstance().player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ORDER); i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmagic_order_icon"),
-                            4, 1, 0, 0, x - 180, y - 30 - i, 4, 1);
-                }
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
+                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.ORDER);
+                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.ORDER);
+                int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_order"),
+                        11, 110, 0, calcPercentManaLeft, x - 162, y - 40, 11, 10);
             }
         });
+
     }
 
 
