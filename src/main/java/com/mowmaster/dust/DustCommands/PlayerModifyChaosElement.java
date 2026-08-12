@@ -3,7 +3,7 @@ package com.mowmaster.dust.DustCommands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -37,14 +37,14 @@ public class PlayerModifyChaosElement
                 {
                     if(amount >=0)
                     {
-                        DustElementAttachmentHelper.addToElement(player, ElementEnum.CHAOS, amount);
-                        source.sendSuccess(()-> Component.literal(ElementEnum.CHAOS.name() + " Element Added To: " + target.getPlainTextName()), false);
+                        int added = DustElementAttachmentHelper.addToElementChaos(player, amount, false);
+                        source.sendSuccess(()-> Component.literal(added + " count " + EnumElement.CHAOS.name() + " Element Added To: " + target.getPlainTextName()), false);
                         return 1;
                     }
                     else {
                         int removeAmount = Math.abs(amount);
-                        DustElementAttachmentHelper.removeFromElement(player, ElementEnum.CHAOS, removeAmount);
-                        source.sendSuccess(()-> Component.literal(removeAmount + " "+ ElementEnum.CHAOS.name() + " Element Removed From: " + target.getPlainTextName()), false);
+                        int removed = DustElementAttachmentHelper.removeFromElementChaos(player, removeAmount, false);
+                        source.sendSuccess(()-> Component.literal(removed + " count "+ EnumElement.CHAOS.name() + " Element Removed From: " + target.getPlainTextName()), false);
                         return 1;
                     }
 

@@ -8,18 +8,18 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
 
-public record PacketS2CUpdateDustAmount(int oldValue, int newValue) implements CustomPacketPayload
+public record S2CPacketElementEarth(int oldValue, int newValue) implements CustomPacketPayload
 {
-    public static final Type<PacketS2CUpdateDustAmount> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_packet"));
+    public static final Type<S2CPacketElementEarth> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "packet_element_earth"));
     //SIMILAR TO RECIPES IN 1.19 your coding the packet send data, bytebufcodec type first then the value second
-    public static final StreamCodec<ByteBuf, PacketS2CUpdateDustAmount> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, S2CPacketElementEarth> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
-            PacketS2CUpdateDustAmount::oldValue,
+            S2CPacketElementEarth::oldValue,
 
             ByteBufCodecs.VAR_INT,
-            PacketS2CUpdateDustAmount::newValue,
+            S2CPacketElementEarth::newValue,
 
-            PacketS2CUpdateDustAmount::new);
+            S2CPacketElementEarth::new);
 
     @Override
     public Type<? extends CustomPacketPayload> type() {

@@ -3,7 +3,7 @@ package com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,9 +36,12 @@ public class WaterOrbEntity extends baseOrbEntity {
         int orbValue = this.getValue();
         // Prevent unreasonable values
         orbValue = Math.clamp(orbValue, 1, 100);
-        int modifiedAmount = Math.round(orbValue * getAffinityMultiplier(serverPlayer,ElementEnum.WATER));
-        DustElementAttachmentHelper.addToElement(serverPlayer, ElementEnum.WATER, modifiedAmount);
-        this.level().playSound(serverPlayer,serverPlayer.getOnPos(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.05F, 0.5F + this.level().getRandom().nextFloat() * 0.2F);
-        this.discard();
+        int modifiedAmount = Math.round(orbValue);
+        boolean added = DustElementAttachmentHelper.addToElementWater(serverPlayer, modifiedAmount, false)>0;
+        if(added)
+        {
+            this.level().playSound(serverPlayer,serverPlayer.getOnPos(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.05F, 0.5F + this.level().getRandom().nextFloat() * 0.2F);
+            this.discard();
+        }
     }
 }

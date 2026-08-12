@@ -3,7 +3,7 @@ package com.mowmaster.dust.DustCommands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -37,14 +37,14 @@ public class PlayerModifyWaterElement
                 {
                     if(amount >=0)
                     {
-                        DustElementAttachmentHelper.addToElement(player, ElementEnum.WATER, amount);
-                        source.sendSuccess(()-> Component.literal(ElementEnum.WATER.name() + " Element Added To: " + target.getPlainTextName()), false);
+                        int added = DustElementAttachmentHelper.addToElementWater(player, amount, false);
+                        source.sendSuccess(()-> Component.literal(added + " count " + EnumElement.WATER.name() + " Element Added To: " + target.getPlainTextName()), false);
                         return 1;
                     }
                     else {
                         int removeAmount = Math.abs(amount);
-                        DustElementAttachmentHelper.removeFromElement(player, ElementEnum.WATER, removeAmount);
-                        source.sendSuccess(()-> Component.literal(removeAmount + " "+ ElementEnum.WATER.name() + " Element Removed From: " + target.getPlainTextName()), false);
+                        int removed = DustElementAttachmentHelper.removeFromElementWater(player, removeAmount, false);
+                        source.sendSuccess(()-> Component.literal(removed + " count "+ EnumElement.WATER.name() + " Element Removed From: " + target.getPlainTextName()), false);
                         return 1;
                     }
 

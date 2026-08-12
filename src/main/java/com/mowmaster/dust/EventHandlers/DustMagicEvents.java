@@ -10,6 +10,7 @@ import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumAffinity;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,6 +38,14 @@ public class DustMagicEvents {
 
         registrar.playToServer(PacketOfDustAuraC2S.TYPE, PacketOfDustAuraC2S.STREAM_CODEC, PacketReceiverServer::handleTestPacket);
         registrar.playToClient(PacketOfDustAuraS2C.TYPE, PacketOfDustAuraS2C.STREAM_CODEC, PacketReceiverClient::handleClientPacket);
+
+        registrar.playToClient(S2CPacketElementFire.TYPE, S2CPacketElementFire.STREAM_CODEC, PacketReceiverClient::handleCPElementFire);
+        registrar.playToClient(S2CPacketElementWater.TYPE, S2CPacketElementWater.STREAM_CODEC, PacketReceiverClient::handleCPElementWater);
+        registrar.playToClient(S2CPacketElementEarth.TYPE, S2CPacketElementEarth.STREAM_CODEC, PacketReceiverClient::handleCPElementEarth);
+        registrar.playToClient(S2CPacketElementChaos.TYPE, S2CPacketElementChaos.STREAM_CODEC, PacketReceiverClient::handleCPElementChaos);
+        registrar.playToClient(S2CPacketElementOrder.TYPE, S2CPacketElementOrder.STREAM_CODEC, PacketReceiverClient::handleCPElementOrder);
+
+
     }
 
     @SubscribeEvent
@@ -46,20 +55,83 @@ public class DustMagicEvents {
 
         //Mana Unlock State
         if(DustMagicAttachmentHelper.hasUnlockedMana(player))
-        {DustMagicAttachmentHelper.unlockMana(player);}
+            {DustMagicAttachmentHelper.unlockMana(player);}
         else {DustMagicAttachmentHelper.lockMana(player);}
         //Mana Initialization (condition based on unlock state where needed, but init everything up front)
         if(DustMagicAttachmentHelper.hasMana(player))
-        {DustMagicAttachmentHelper.setMana(player, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA));}
-        else
-        {DustMagicAttachmentHelper.setMana(player ,0);}
-        //Element Init (sets base capacity for all elements)
-        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS))
-        {DustElementAttachmentHelper.setElementBaseMaximum((ServerPlayer) player,
-                    player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS).getBaseElementCapacity());}
-        else {DustElementAttachmentHelper.setElementBaseMaximum((ServerPlayer) player,10);}
+            {DustMagicAttachmentHelper.setMana(player, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA));}
+        else {DustMagicAttachmentHelper.setMana(player ,0);}
+        //maxmana
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA,DustMagicAttachmentHelper.getManaMaximum(player));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA,20);}
+        //mana increase
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE,0);}
+        //mana increase multiplier
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER,0);}
+        //mana regen rate (per second)
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE,1);}
 
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get(), player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get()));
+        //AFFINITY
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY,"none");}
+
+        //DUSTMAGIC Capacity Increase
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE,0);}
+        //DUSTMAGIC Capacity Multiplier
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER,0);}
+
+        //DUSTMAGIC Fire Count
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE,0);}
+        //DUSTMAGIC Fire Max
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE,10);}
+        //DUSTMAGIC WATER Count
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER,0);}
+        //DUSTMAGIC WATER Max
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER,10);}
+        //DUSTMAGIC EARTH Count
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH,0);}
+        //DUSTMAGIC EARTH Max
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH,10);}
+        //DUSTMAGIC CHAOS Count
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS,0);}
+        //DUSTMAGIC CHAOS Max
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS,10);}
+        //DUSTMAGIC ORDER Count
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER,0);}
+        //DUSTMAGIC ORDER Max
+        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER))
+        {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER));}
+        else {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER,10);}
 
         //TODO: Dont forget to init researchData later
 
@@ -73,8 +145,31 @@ public class DustMagicEvents {
         if(DustMagicAttachmentHelper.hasUnlockedMana(event.getOriginal())){DustMagicAttachmentHelper.unlockMana(newPlayer);}
         else{DustMagicAttachmentHelper.lockMana(newPlayer);}
         DustMagicAttachmentHelper.setMana(newPlayer, event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE));
 
-        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get(), event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get()));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY));
+
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE));
+
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE));
+
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER));
+
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH));
+
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS));
+
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER));
+        newPlayer.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER,event.getOriginal().getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER));
+
     }
 
     @SubscribeEvent
@@ -83,8 +178,32 @@ public class DustMagicEvents {
         if(DustMagicAttachmentHelper.hasUnlockedMana(player)){DustMagicAttachmentHelper.unlockMana(player);}
         else{DustMagicAttachmentHelper.lockMana(player);}
         DustMagicAttachmentHelper.setMana(player, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE));
 
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get(), player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get()));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER));
+
+
     }
 
     @SubscribeEvent
@@ -93,9 +212,30 @@ public class DustMagicEvents {
         if(DustMagicAttachmentHelper.hasUnlockedMana(player)){DustMagicAttachmentHelper.unlockMana(player);}
         else{DustMagicAttachmentHelper.lockMana(player);}
         DustMagicAttachmentHelper.setMana( player, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYMULTIPLIER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_CAPACITYINCREASE));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA_REGENERATION_RATE));
 
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get(), player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS.get()));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_AFFINITY));
 
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYMULTIPLIER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENT_CAPACITYINCREASE));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS));
+
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER));
+        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER,player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER));
     }
 
     @SubscribeEvent
@@ -107,7 +247,6 @@ public class DustMagicEvents {
         new PlayerModifyEarthElement(event.getDispatcher());
         new PlayerModifyChaosElement(event.getDispatcher());
         new PlayerModifyOrderElement(event.getDispatcher());
-
     }
 
     @SubscribeEvent
@@ -117,7 +256,7 @@ public class DustMagicEvents {
 
 
     @SubscribeEvent
-    public static void onDustPickup(EntityJoinLevelEvent event) {
+    public static void onDustDropped(EntityJoinLevelEvent event) {
         if (!(event.getEntity() instanceof ItemEntity itemEntity)) {
             return;
         }
@@ -155,5 +294,11 @@ public class DustMagicEvents {
             event.setCanceled(true);
             itemEntity.discard();
         }
+    }
+
+    @SubscribeEvent
+    public static void onElementalOrbPickedUp()
+    {
+
     }
 }

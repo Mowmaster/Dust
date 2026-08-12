@@ -3,8 +3,7 @@ package com.mowmaster.dust.DustCommands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -38,14 +37,14 @@ public class PlayerModifyFireElement
                 {
                     if(amount >=0)
                     {
-                        DustElementAttachmentHelper.addToElement(player, ElementEnum.FIRE, amount);
-                        source.sendSuccess(()-> Component.literal(ElementEnum.FIRE.name() + " Element Added To: " + target.getPlainTextName()), false);
+                        int added = DustElementAttachmentHelper.addToElementFire(player, amount, false);
+                        source.sendSuccess(()-> Component.literal(added + " count " + EnumElement.FIRE.name() + " Element Added To: " + target.getPlainTextName()), false);
                         return 1;
                     }
                     else {
                         int removeAmount = Math.abs(amount);
-                        DustElementAttachmentHelper.removeFromElement(player, ElementEnum.FIRE, removeAmount);
-                        source.sendSuccess(()-> Component.literal(removeAmount + " "+ ElementEnum.FIRE.name() + " Element Removed From: " + target.getPlainTextName()), false);
+                        int removed = DustElementAttachmentHelper.removeFromElementFire(player, removeAmount, false);
+                        source.sendSuccess(()-> Component.literal(removed + " count "+ EnumElement.FIRE.name() + " Element Removed From: " + target.getPlainTextName()), false);
                         return 1;
                     }
 

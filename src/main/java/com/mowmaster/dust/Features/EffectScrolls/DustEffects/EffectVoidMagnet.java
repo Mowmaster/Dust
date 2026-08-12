@@ -6,7 +6,7 @@ import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbEn
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -45,27 +45,27 @@ public class EffectVoidMagnet extends MobEffect {
                 }
                 if(entity instanceof FireOrbEntity magicOrb)
                 {
-                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.FIRE,magicOrb.getValue());
+                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.FIRE,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof WaterOrbEntity magicOrb)
                 {
-                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.WATER,magicOrb.getValue());
+                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.WATER,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof EarthOrbEntity magicOrb)
                 {
-                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.EARTH,magicOrb.getValue());
+                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.EARTH,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof ChaosOrbEntity magicOrb)
                 {
-                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.CHAOS,magicOrb.getValue());
+                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.CHAOS,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
                 if(entity instanceof OrderOrbEntity magicOrb)
                 {
-                    DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, ElementEnum.ORDER,magicOrb.getValue());
+                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.ORDER,magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
             }

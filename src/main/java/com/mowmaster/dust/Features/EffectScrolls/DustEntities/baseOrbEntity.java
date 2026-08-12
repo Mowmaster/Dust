@@ -1,7 +1,7 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEntities;
 
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -50,12 +50,12 @@ public class baseOrbEntity extends Entity {
 
     }
 
-    public boolean hasAffinityWithElement(ServerPlayer player, ElementEnum element)
+    /*public boolean hasAffinityWithElement(ServerPlayer player, EnumElement element)
     {
         return DustElementAttachmentHelper.hasAnyAffinityWithElement(player, element);
     }
 
-    public float getAffinityMultiplier(ServerPlayer player, ElementEnum element)
+    public float getAffinityMultiplier(ServerPlayer player, EnumElement element)
     {
         if(hasAffinityWithElement(player, element))
         {
@@ -64,7 +64,7 @@ public class baseOrbEntity extends Entity {
         }
         //returns 100% or 1.0 bonus multiplier
         return 1.0f;
-    }
+    }*/
 
     private void setUnderwaterMovement() {
         Vec3 movement = this.getDeltaMovement();

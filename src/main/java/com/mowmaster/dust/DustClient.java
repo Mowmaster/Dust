@@ -10,15 +10,14 @@ import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrb
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.ElementEnum;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumAffinity;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.SpriteContents;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -97,6 +96,14 @@ public class DustClient {
                 //Magic meter Overlay
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "magicmeter_overlay"),
                         116, 20, 0, 0, x - 208, y - 28, 116, 20);
+
+                /*EnumAffinity affinity = DustElementAttachmentHelper.getAffinity(player);
+                if(!affinity.equals(EnumAffinity.NONE))
+                {
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "magicmeter_overlay"),
+                            16, 16, 0, 0, x - 222, y - 40, 8, 8);
+                }*/
+
             }
         });
 
@@ -106,10 +113,11 @@ public class DustClient {
 
             LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.FIRE);
-                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.FIRE);
+                DustElementAttachmentHelper.ElementFireInfo result = DustElementAttachmentHelper.getElementFireInfo(player);
+                int maxElement = result.max();
+                int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_fire"),
                         11, 110, 0, calcPercentManaLeft, x - 210, y - 40, 11, 10);
@@ -121,10 +129,11 @@ public class DustClient {
 
             LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.WATER);
-                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.WATER);
+                DustElementAttachmentHelper.ElementWaterInfo result = DustElementAttachmentHelper.getElementWaterInfo(player);
+                int maxElement = result.max();
+                int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_water"),
                         11, 110, 0, calcPercentManaLeft, x - 198, y - 40, 11, 10);
@@ -136,10 +145,11 @@ public class DustClient {
 
             LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.EARTH);
-                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.EARTH);
+                DustElementAttachmentHelper.ElementEarthInfo result = DustElementAttachmentHelper.getElementEarthInfo(player);
+                int maxElement = result.max();
+                int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_earth"),
                         11, 110, 0, calcPercentManaLeft, x - 186, y - 40, 11, 10);
@@ -151,10 +161,11 @@ public class DustClient {
 
             LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.CHAOS);
-                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.CHAOS);
+                DustElementAttachmentHelper.ElementChaosInfo result = DustElementAttachmentHelper.getElementChaosInfo(player);
+                int maxElement = result.max();
+                int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_chaos"),
                         11, 110, 0, calcPercentManaLeft, x - 174, y - 40, 11, 10);
@@ -166,10 +177,11 @@ public class DustClient {
 
             LocalPlayer player = Minecraft.getInstance().player;
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTS)
+                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                int maxElement = DustElementAttachmentHelper.getElementMaximum(player, ElementEnum.ORDER);
-                int currentElement = DustElementAttachmentHelper.getElementAmount(player, ElementEnum.ORDER);
+                DustElementAttachmentHelper.ElementOrderInfo result = DustElementAttachmentHelper.getElementOrderInfo(player);
+                int maxElement = result.max();
+                int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
                 guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "dustmeter_order"),
                         11, 110, 0, calcPercentManaLeft, x - 162, y - 40, 11, 10);
