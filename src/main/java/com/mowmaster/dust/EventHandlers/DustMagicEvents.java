@@ -8,6 +8,11 @@ import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust.EarthOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumAffinity;
@@ -262,43 +267,62 @@ public class DustMagicEvents {
         }
 
         // EntityJoinLevelEvent can run on both logical sides
-        if (event.getLevel().isClientSide()) {
-            return;
-        }
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            ItemStack stack = itemEntity.getItem();
 
-        ItemStack stack = itemEntity.getItem();
-
-        if (!stack.is(DustTags.Items.MAGICAL_DUST_ITEMS)) {
-            return;
-        }
-
-        ServerLevel level = (ServerLevel) event.getLevel();
-        int amount = stack.getCount();
-
-        for (int i = 0; i < amount; i++) {
-            baseOrbEntity orb = new baseOrbEntity(DustEntityRegistry.FIRE_ORB.get(),level);
-            if(stack.is(DustItemRegistry.DUST_RED.get()))orb = new baseOrbEntity(DustEntityRegistry.FIRE_ORB.get(),level);
-            else if(stack.is(DustItemRegistry.DUST_BLUE.get()))orb = new baseOrbEntity(DustEntityRegistry.WATER_ORB.get(),level);
-            else if(stack.is(DustItemRegistry.DUST_GREEN.get()))orb = new baseOrbEntity(DustEntityRegistry.EARTH_ORB.get(),level);
-            else if(stack.is(DustItemRegistry.DUST_BLACK.get()))orb = new baseOrbEntity(DustEntityRegistry.CHAOS_ORB.get(),level);
-            else if(stack.is(DustItemRegistry.DUST_WHITE.get()))orb = new baseOrbEntity(DustEntityRegistry.ORDER_ORB.get(),level);
-
-
-            if (orb == null) {
-                continue;
+            if (!stack.is(DustTags.Items.MAGICAL_DUST_ITEMS)) {
+                return;
             }
 
-            orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-            orb.setValue(amount);
-            level.addFreshEntity(orb);
-            event.setCanceled(true);
-            itemEntity.discard();
+            int amount = stack.getCount();
+
+            for (int i = 0; i < amount; i++) {
+                if(stack.is(DustItemRegistry.DUST_RED.get()))
+                {
+                    FireOrbEntity orb = new FireOrbEntity(DustEntityRegistry.FIRE_ORB.get(),serverLevel);
+                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+                    orb.setValue(amount);
+                    serverLevel.addFreshEntity(orb);
+                    itemEntity.discard();
+                    event.setCanceled(true);
+                }
+                else if(stack.is(DustItemRegistry.DUST_BLUE.get()))
+                {
+                    WaterOrbEntity orb = new WaterOrbEntity(DustEntityRegistry.WATER_ORB.get(),serverLevel);
+                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+                    orb.setValue(amount);
+                    serverLevel.addFreshEntity(orb);
+                    itemEntity.discard();
+                    event.setCanceled(true);
+                }
+                else if(stack.is(DustItemRegistry.DUST_GREEN.get()))
+                {
+                    EarthOrbEntity orb = new EarthOrbEntity(DustEntityRegistry.EARTH_ORB.get(),serverLevel);
+                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+                    orb.setValue(amount);
+                    serverLevel.addFreshEntity(orb);
+                    itemEntity.discard();
+                    event.setCanceled(true);
+                }
+                else if(stack.is(DustItemRegistry.DUST_BLACK.get()))
+                {
+                    ChaosOrbEntity orb = new ChaosOrbEntity(DustEntityRegistry.CHAOS_ORB.get(),serverLevel);
+                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+                    orb.setValue(amount);
+                    serverLevel.addFreshEntity(orb);
+                    itemEntity.discard();
+                    event.setCanceled(true);
+                }
+                else if(stack.is(DustItemRegistry.DUST_WHITE.get()))
+                {
+                    OrderOrbEntity orb = new OrderOrbEntity(DustEntityRegistry.ORDER_ORB.get(),serverLevel);
+                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+                    orb.setValue(amount);
+                    serverLevel.addFreshEntity(orb);
+                    itemEntity.discard();
+                    event.setCanceled(true);
+                }
+            }
         }
-    }
-
-    @SubscribeEvent
-    public static void onElementalOrbPickedUp()
-    {
-
     }
 }

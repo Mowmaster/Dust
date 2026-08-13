@@ -2,15 +2,15 @@
   "type": "dust:add_random_item_stack",
   "conditions": [
     {
-      "condition": "neoforge:loot_table_id",
-      "loot_table_id": "minecraft:entities/slime"
+      "block": "minecraft:beetroots",
+      "condition": "minecraft:block_state_property"
     },
     {
       "chance": 1.0,
       "condition": "minecraft:random_chance"
     }
   ],
-  "item": "dust:dust_blue",
+  "item": "dust:dust_red",
   "max_count": 3,
   "min_count": 1
 }

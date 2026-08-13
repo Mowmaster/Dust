@@ -135,7 +135,8 @@ public class DustElementAttachmentHelper
     private static int getElementFireMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE);}
     private static void setElementFireCount(Player player, int val) {
         player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE, val);
-        PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementFire(0, val));
+        System.out.println("Set Fire: " + val);
+        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementFire(0, val));
     }
 
     public record ElementFireInfo(int count, int max) {}
@@ -170,7 +171,8 @@ public class DustElementAttachmentHelper
     private static int getElementWaterMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER);}
     private static void setElementWaterCount(Player player, int val) {
         player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER, val);
-        PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementWater(0, val));
+        System.out.println("Set Water: " + val);
+        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementWater(0, val));
     }
 
     public record ElementWaterInfo(int count, int max) {}
@@ -203,7 +205,8 @@ public class DustElementAttachmentHelper
     private static int getElementEarthMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH);}
     private static void setElementEarthCount(Player player, int val) {
         player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH, val);
-        PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementEarth(0, val));
+        System.out.println("Set Earth: " + val);
+        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementEarth(0, val));
     }
 
     public record ElementEarthInfo(int count, int max) {}
@@ -236,7 +239,8 @@ public class DustElementAttachmentHelper
     private static int getElementChaosMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS);}
     private static void setElementChaosCount(Player player, int val) {
         player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS, val);
-        PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementChaos(0, val));
+        System.out.println("Set Chaos: " + val);
+        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementChaos(0, val));
     }
 
     public record ElementChaosInfo(int count, int max) {}
@@ -269,7 +273,8 @@ public class DustElementAttachmentHelper
     private static int getElementOrderMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER);}
     private static void setElementOrderCount(Player player, int val) {
         player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER, val);
-        PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementOrder(0, val));
+        System.out.println("Set Order: " + val);
+        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementOrder(0, val));
     }
 
     public record ElementOrderInfo(int count, int max) {}

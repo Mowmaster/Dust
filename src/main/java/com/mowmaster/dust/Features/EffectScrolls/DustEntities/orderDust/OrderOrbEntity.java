@@ -1,6 +1,8 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust;
 
+import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
@@ -13,16 +15,19 @@ import net.minecraft.world.level.Level;
 
 public class OrderOrbEntity extends baseOrbEntity {
 
-    public OrderOrbEntity(EntityType<? extends baseOrbEntity> type, Level level) {
+    public OrderOrbEntity(EntityType<OrderOrbEntity> type, Level level) {
         super(type, level);
     }
 
     @Override
     public void playerTouch(Player player) {
-        if (this.level().isClientSide()) {
+        int actuallyAdded = 0;
+        if(this.level().isClientSide()) {
+            //player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.05F, 0.5F + this.level().getRandom().nextFloat() * 0.2F);
             this.discard();
             return;
         }
+
         if (!(player instanceof ServerPlayer serverPlayer)) {
             this.discard();
             return;
@@ -37,10 +42,11 @@ public class OrderOrbEntity extends baseOrbEntity {
         // Prevent unreasonable values
         orbValue = Math.clamp(orbValue, 1, 100);
         int modifiedAmount = Math.round(orbValue);
-        boolean added = DustElementAttachmentHelper.addToElementOrder(serverPlayer, modifiedAmount, false)>0;
-        if(added)
+        int added = DustElementAttachmentHelper.addToElementOrder(serverPlayer, modifiedAmount, true);
+        if(added>0)
         {
-            this.level().playSound(serverPlayer,serverPlayer.getOnPos(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.05F, 0.5F + this.level().getRandom().nextFloat() * 0.2F);
+            actuallyAdded = DustElementAttachmentHelper.addToElementOrder(serverPlayer, modifiedAmount, false);
+            System.out.println("Added By OrderOrb: " + actuallyAdded);
             this.discard();
         }
     }

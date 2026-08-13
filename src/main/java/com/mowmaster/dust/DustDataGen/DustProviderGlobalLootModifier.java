@@ -29,11 +29,39 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
 
     @Override
     protected void start() {
-        add("earth_dust_to_dirt",
+        add("cropdustdrop_beetroot_fire",
+                new AddRandomItemStackModifier(
+                        new LootItemCondition[]{LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.BEETROOTS).build(),
+                                LootItemRandomChanceCondition.randomChance(1.0F).build()},
+                        DustItemRegistry.DUST_RED,
+                        1,
+                        3));
+        add("cropdustdrop_wheat_water",
+                new AddRandomItemStackModifier(
+                        new LootItemCondition[]{LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.WHEAT).build(),
+                                LootItemRandomChanceCondition.randomChance(1.0F).build()},
+                        DustItemRegistry.DUST_BLUE,
+                        1,
+                        3));
+        add("cropdustdrop_leattuce_earth",
                 new AddRandomItemStackModifier(
                         new LootItemCondition[]{LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.CROP_LETTUCE.get()).build(),
                                 LootItemRandomChanceCondition.randomChance(1.0F).build()},
                         DustItemRegistry.DUST_GREEN,
+                        1,
+                        3));
+        add("cropdustdrop_carrot_chaos",
+                new AddRandomItemStackModifier(
+                        new LootItemCondition[]{LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.CARROTS).build(),
+                                LootItemRandomChanceCondition.randomChance(1.0F).build()},
+                        DustItemRegistry.DUST_BLACK,
+                        1,
+                        3));
+        add("cropdustdrop_potato_order",
+                new AddRandomItemStackModifier(
+                        new LootItemCondition[]{LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.POTATOES).build(),
+                                LootItemRandomChanceCondition.randomChance(1.0F).build()},
+                        DustItemRegistry.DUST_WHITE,
                         1,
                         3));
 

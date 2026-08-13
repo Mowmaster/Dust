@@ -4,9 +4,11 @@ import com.mowmaster.dust.DustDataGen.DustTags;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -62,8 +64,20 @@ public class CrystalHalfSawItem extends Item {
                 {
                     BlockState state = slabBlock.defaultBlockState().trySetValue(SlabBlock.TYPE,SlabType.DOUBLE);
                     level.setBlockAndUpdate(context.getClickedPos(), state);
-                    context.getItemInHand().hurtAndBreak(1, ((ServerLevel) level), context.getPlayer(),
-                            item -> context.getPlayer().onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
+                    if(context.getPlayer() instanceof ServerPlayer serverPlayer)
+                    {
+                        int water = DustElementAttachmentHelper.getElementWaterInfo(serverPlayer).count();
+                        int chaos = DustElementAttachmentHelper.getElementChaosInfo(serverPlayer).count();
+                        if(water>0 && chaos>0)
+                        {
+                            DustElementAttachmentHelper.removeFromElementWater(serverPlayer,1,false);
+                            DustElementAttachmentHelper.removeFromElementChaos(serverPlayer,1,false);
+                        }
+                        else {
+                            context.getItemInHand().hurtAndBreak(1, ((ServerLevel) level), serverPlayer,
+                                    item -> serverPlayer.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
+                        }
+                    }
                 }
             } else if (clickedBlock instanceof SlabBlock slabIn) {
                 if(slabIn.defaultBlockState().is(BlockTags.WOODEN_SLABS))
