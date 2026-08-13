@@ -41,6 +41,10 @@ public class Dust {
         DustLootRegistry.register(modEventBus);
 
         DustCreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
+
+        DustParticleRegistry.PARTICLE_TYPES.register(modEventBus);
+
+
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

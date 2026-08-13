@@ -10,6 +10,7 @@ import com.mowmaster.dust.Features.CrystalTools.Item.CrystalWeaponSword;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialTools;
 import com.mowmaster.dust.Features.DustyDelights.DDFoodProperties;
+import com.mowmaster.dust.Features.EffectScrolls.Item.FireStickItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -100,6 +101,10 @@ public class DustItemRegistry
                     .useItemDescriptionPrefix()
                     .food(DDFoodProperties.LETTUCE)
             ));
+
+
+    public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
+
 
 
 

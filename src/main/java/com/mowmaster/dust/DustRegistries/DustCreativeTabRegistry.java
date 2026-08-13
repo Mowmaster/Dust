@@ -92,6 +92,8 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.CRYSTAL_LEGGINGS.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_BOOTS.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_HORSE_ARMOR.asItem());
+
+                        output.accept(DustItemRegistry.SPELL_WAND_FIRE.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",

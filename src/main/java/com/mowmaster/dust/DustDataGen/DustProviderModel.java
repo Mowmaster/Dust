@@ -27,6 +27,10 @@ public class DustProviderModel extends ModelProvider {
 
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_CHISEL_IRON.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HALFSAW_IRON.get(), ModelTemplates.FLAT_ITEM);
+
+
+        itemModels.generateFlatItem(DustItemRegistry.SPELL_WAND_FIRE.get(), ModelTemplates.FLAT_ITEM);
+
         itemModels.generateFlatItem(DustItemRegistry.CHARCOAL_WHITE.get(), ModelTemplates.FLAT_ITEM);
 
 
