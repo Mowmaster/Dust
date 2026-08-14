@@ -1,21 +1,16 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust;
 
-import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class FireOrbEntity extends baseOrbEntity {
+public class WaterOrbEntityBase extends ElementalOrbEntityBase {
 
-    public FireOrbEntity(EntityType<FireOrbEntity> type, Level level) {
+    public WaterOrbEntityBase(EntityType<WaterOrbEntityBase> type, Level level) {
         super(type, level);
     }
 
@@ -42,12 +37,11 @@ public class FireOrbEntity extends baseOrbEntity {
         // Prevent unreasonable values
         orbValue = Math.clamp(orbValue, 1, 100);
         int modifiedAmount = Math.round(orbValue);
-        int added = DustElementAttachmentHelper.addToElementFire(serverPlayer, modifiedAmount, true);
-        System.out.println("Sim-Added By FireOrb: " + added);
+        int added = DustElementAttachmentHelper.addToElementWater(serverPlayer, modifiedAmount, true);
         if(added>0)
         {
-            actuallyAdded = DustElementAttachmentHelper.addToElementFire(serverPlayer, modifiedAmount, false);
-            System.out.println("Act-Added By FireOrb: " + actuallyAdded);
+            actuallyAdded = DustElementAttachmentHelper.addToElementWater(serverPlayer, modifiedAmount, false);
+            System.out.println("Added By WaterOrb: " + actuallyAdded);
             this.discard();
         }
     }

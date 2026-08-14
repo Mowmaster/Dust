@@ -1,24 +1,16 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust;
 
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.S2CPacketElementChaos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 
-public class ChaosOrbEntity extends baseOrbEntity {
+public class FireOrbEntityBase extends ElementalOrbEntityBase {
 
-    public ChaosOrbEntity(EntityType<ChaosOrbEntity> type, Level level) {
+    public FireOrbEntityBase(EntityType<FireOrbEntityBase> type, Level level) {
         super(type, level);
     }
 
@@ -45,11 +37,12 @@ public class ChaosOrbEntity extends baseOrbEntity {
         // Prevent unreasonable values
         orbValue = Math.clamp(orbValue, 1, 100);
         int modifiedAmount = Math.round(orbValue);
-        int added = DustElementAttachmentHelper.addToElementChaos(serverPlayer, modifiedAmount, true);
+        int added = DustElementAttachmentHelper.addToElementFire(serverPlayer, modifiedAmount, true);
+        System.out.println("Sim-Added By FireOrb: " + added);
         if(added>0)
         {
-            actuallyAdded = DustElementAttachmentHelper.addToElementChaos(serverPlayer, modifiedAmount, false);
-            System.out.println("Added By ChaosOrb: " + actuallyAdded);
+            actuallyAdded = DustElementAttachmentHelper.addToElementFire(serverPlayer, modifiedAmount, false);
+            System.out.println("Act-Added By FireOrb: " + actuallyAdded);
             this.discard();
         }
     }

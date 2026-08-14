@@ -1,0 +1,4 @@
+
+Fix why when ElementalOrbs are picked up they get picked up 2-3 times before being removed
+
+Research attachment exists just not registered or anything

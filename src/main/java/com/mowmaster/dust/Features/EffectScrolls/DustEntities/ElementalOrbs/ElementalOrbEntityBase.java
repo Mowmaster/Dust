@@ -1,13 +1,10 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs;
 
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,15 +17,15 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class baseOrbEntity extends Entity {
+public class ElementalOrbEntityBase extends Entity {
 
     private @Nullable Player followingPlayer;
     private static final EntityDataAccessor<Integer> VALUE =
-            SynchedEntityData.defineId(baseOrbEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(ElementalOrbEntityBase.class, EntityDataSerializers.INT);
 
     private static final int BASE_DURATION = 600; // 30 seconds
 
-    public baseOrbEntity(EntityType<? extends baseOrbEntity> type, Level level) {
+    public ElementalOrbEntityBase(EntityType<? extends ElementalOrbEntityBase> type, Level level) {
         super(type, level);
     }
 

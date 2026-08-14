@@ -1,10 +1,10 @@
 package com.mowmaster.dust.Features.CrystalBlocks.Item;
 
-import com.mowmaster.dust.DustDataGen.DustTags;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
-import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.EffectScrolls.Item.ToolMagicHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -62,21 +62,12 @@ public class CrystalHalfSawItem extends Item {
             {
                 if(SAW_MAP.get(clickedBlock) instanceof SlabBlock slabBlock)
                 {
-                    BlockState state = slabBlock.defaultBlockState().trySetValue(SlabBlock.TYPE,SlabType.DOUBLE);
-                    level.setBlockAndUpdate(context.getClickedPos(), state);
-                    if(context.getPlayer() instanceof ServerPlayer serverPlayer)
+                    if(context.getPlayer() instanceof ServerPlayer serverPlayer
+                    && ToolMagicHelper.toolUseOn((ServerLevel)level,serverPlayer,context, EnumElement.CHAOS,1,1,1))
                     {
-                        int water = DustElementAttachmentHelper.getElementWaterInfo(serverPlayer).count();
-                        int chaos = DustElementAttachmentHelper.getElementChaosInfo(serverPlayer).count();
-                        if(water>0 && chaos>0)
-                        {
-                            DustElementAttachmentHelper.removeFromElementWater(serverPlayer,1,false);
-                            DustElementAttachmentHelper.removeFromElementChaos(serverPlayer,1,false);
-                        }
-                        else {
-                            context.getItemInHand().hurtAndBreak(1, ((ServerLevel) level), serverPlayer,
-                                    item -> serverPlayer.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
-                        }
+                        BlockState state = slabBlock.defaultBlockState().trySetValue(SlabBlock.TYPE,SlabType.DOUBLE);
+                        level.setBlockAndUpdate(context.getClickedPos(), state);
+                        return InteractionResult.SUCCESS;
                     }
                 }
             } else if (clickedBlock instanceof SlabBlock slabIn) {
@@ -84,19 +75,28 @@ public class CrystalHalfSawItem extends Item {
                 {
                     if(slabIn.withPropertiesOf(level.getBlockState(context.getClickedPos())).getValue(SlabBlock.TYPE).equals(SlabType.DOUBLE))
                     {
-                        level.addFreshEntity(new ItemEntity(level,context.getClickedPos().getX(),context.getClickedPos().getY(),context.getClickedPos().getZ(), new ItemStack(Items.STICK,4)));
-                        level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
-                    }                    else{
-                        level.addFreshEntity(new ItemEntity(level,context.getClickedPos().getX(),context.getClickedPos().getY(),context.getClickedPos().getZ(), new ItemStack(Items.STICK,2)));
-                        level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
+                        if(context.getPlayer() instanceof ServerPlayer serverPlayer
+                        && ToolMagicHelper.toolUseOn((ServerLevel)level,serverPlayer,context, EnumElement.CHAOS,1,1,1))
+                        {
+                            level.addFreshEntity(new ItemEntity(level,context.getClickedPos().getX(),context.getClickedPos().getY(),context.getClickedPos().getZ(), new ItemStack(Items.STICK,4)));
+                            level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
+                            return InteractionResult.SUCCESS;
+                        }
                     }
-
+                    else{
+                        if(context.getPlayer() instanceof ServerPlayer serverPlayer
+                                && ToolMagicHelper.toolUseOn((ServerLevel)level,serverPlayer,context, EnumElement.CHAOS,1,1,1)){
+                            level.addFreshEntity(new ItemEntity(level,context.getClickedPos().getX(),context.getClickedPos().getY(),context.getClickedPos().getZ(), new ItemStack(Items.STICK,2)));
+                            level.setBlockAndUpdate(context.getClickedPos(), Blocks.AIR.defaultBlockState());
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
                 }
             }
         }
         if(SAW_MAP.containsKey(clickedBlock))level.playSound(context.getPlayer(),context.getClickedPos(), SoundEvents.CRAFTER_CRAFT, SoundSource.BLOCKS, 2f, 1f);
 
-        return InteractionResult.SUCCESS;
+        return InteractionResult.FAIL;
     }
 
     @Override

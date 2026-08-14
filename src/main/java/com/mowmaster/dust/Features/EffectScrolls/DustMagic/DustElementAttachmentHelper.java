@@ -1,10 +1,7 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustMagic;
 
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +137,7 @@ public class DustElementAttachmentHelper
     }
 
     public record ElementFireInfo(int count, int max) {}
-    public static ElementFireInfo getElementFireInfo(Player player) {
+    public static ElementFireInfo getElementInfoFire(Player player) {
         return new ElementFireInfo(getElementFireCount(player), getElementFireMaxCount(player));
     }
 
@@ -176,7 +173,7 @@ public class DustElementAttachmentHelper
     }
 
     public record ElementWaterInfo(int count, int max) {}
-    public static ElementWaterInfo getElementWaterInfo(Player player) {
+    public static ElementWaterInfo getElementInfoWater(Player player) {
         return new ElementWaterInfo(getElementWaterCount(player), getElementWaterMaxCount(player));
     }
 
@@ -210,7 +207,7 @@ public class DustElementAttachmentHelper
     }
 
     public record ElementEarthInfo(int count, int max) {}
-    public static ElementEarthInfo getElementEarthInfo(Player player) {
+    public static ElementEarthInfo getElementInfoEarth(Player player) {
         return new ElementEarthInfo(getElementEarthCount(player), getElementEarthMaxCount(player));
     }
 
@@ -244,7 +241,7 @@ public class DustElementAttachmentHelper
     }
 
     public record ElementChaosInfo(int count, int max) {}
-    public static ElementChaosInfo getElementChaosInfo(Player player) {
+    public static ElementChaosInfo getElementInfoChaos(Player player) {
         return new ElementChaosInfo(getElementChaosCount(player), getElementChaosMaxCount(player));
     }
 
@@ -278,7 +275,7 @@ public class DustElementAttachmentHelper
     }
 
     public record ElementOrderInfo(int count, int max) {}
-    public static ElementOrderInfo getElementOrderInfo(Player player) {
+    public static ElementOrderInfo getElementInfoOrder(Player player) {
         return new ElementOrderInfo(getElementOrderCount(player), getElementOrderMaxCount(player));
     }
 

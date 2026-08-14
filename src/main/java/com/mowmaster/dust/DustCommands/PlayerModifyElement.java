@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustCommands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.commands.CommandSourceStack;
@@ -14,40 +15,51 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
 
-public class PlayerModifyOrderElement
+public class PlayerModifyElement
 {
-    public PlayerModifyOrderElement(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("modifyElementOfOrder")
+    public PlayerModifyElement(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("modifyPlayerElementCount")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.argument("targets", EntityArgument.entities())
-                        .then(Commands.argument("amount", IntegerArgumentType.integer(Integer.MIN_VALUE, Integer.MAX_VALUE))
+                        .then(Commands.argument("type", StringArgumentType.string())
+                            .then(Commands.argument("amount", IntegerArgumentType.integer(Integer.MIN_VALUE, Integer.MAX_VALUE))
                                 .executes(c->run(
                                         c.getSource(),
                                         EntityArgument.getEntities(c, "targets"),
+                                        StringArgumentType.getString(c, "type"),
                                         IntegerArgumentType.getInteger(c, "amount"))))
                         )
+                )
         );
     }
 
-    private static int run(CommandSourceStack source, Collection<? extends Entity> targets, int amount) {
+    private static int run(CommandSourceStack source, Collection<? extends Entity> targets, String type, int amount) {
 
         for (Entity entity : targets) {
             if (entity instanceof LivingEntity target) {
                 if(target instanceof ServerPlayer player)
                 {
-                    if(amount >=0)
+                    System.out.println(type);
+                    EnumElement element = EnumElement.safeValueOf(type);
+                    if(element!=null)
                     {
-                        int added = DustElementAttachmentHelper.addToElementOrder(player, amount, false);
-                        source.sendSuccess(()-> Component.literal(added + " count " + EnumElement.ORDER.name() + " Element Added To: " + target.getPlainTextName()), false);
-                        return 1;
+                        if(amount >=0)
+                        {
+                            int added = element.addElement(player, amount, false);
+                            source.sendSuccess(()-> Component.literal(added + " count " + EnumElement.CHAOS.name() + " Element Added To: " + target.getPlainTextName()), false);
+                            return 1;
+                        }
+                        else {
+                            int removeAmount = Math.abs(amount);
+                            int removed = element.removeElement(player,removeAmount,false);
+                            source.sendSuccess(()-> Component.literal(removed + " count "+ EnumElement.CHAOS.name() + " Element Removed From: " + target.getPlainTextName()), false);
+                            return 1;
+                        }
                     }
                     else {
-                        int removeAmount = Math.abs(amount);
-                        int removed = DustElementAttachmentHelper.removeFromElementOrder(player, removeAmount, false);
-                        source.sendSuccess(()-> Component.literal(removed + " count "+ EnumElement.ORDER.name() + " Element Removed From: " + target.getPlainTextName()), false);
-                        return 1;
+                        source.sendFailure(Component.literal("Unknown element"));
+                        return -1;
                     }
-
                 }
 
             }

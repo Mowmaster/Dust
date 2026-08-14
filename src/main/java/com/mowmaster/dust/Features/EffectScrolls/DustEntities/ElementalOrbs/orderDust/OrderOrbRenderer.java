@@ -1,10 +1,9 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mowmaster.dust.DustReferences;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbRenderState;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
-public class OrderOrbRenderer extends EntityRenderer<OrderOrbEntity, baseOrbRenderState> {
+public class OrderOrbRenderer extends EntityRenderer<OrderOrbEntityBase, ElementalOrbEntityRenderState> {
 
     private static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(
@@ -31,11 +30,11 @@ public class OrderOrbRenderer extends EntityRenderer<OrderOrbEntity, baseOrbRend
         this.shadowStrength = 0.75F;
     }
 
-    protected int getBlockLightLevel(OrderOrbEntity entity, BlockPos blockPos) {
+    protected int getBlockLightLevel(OrderOrbEntityBase entity, BlockPos blockPos) {
         return Mth.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
     }
 
-    public void submit(baseOrbRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+    public void submit(ElementalOrbEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         int icon = state.icon;
         float u0 = (float)(icon % 4 * 16 + 0) / 64.0F;
@@ -73,11 +72,11 @@ public class OrderOrbRenderer extends EntityRenderer<OrderOrbEntity, baseOrbRend
         buffer.addVertex(pose, x, y, 0.0F).setColor(r, g, b, 128).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lightCoords).setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
 
-    public baseOrbRenderState createRenderState() {
-        return new baseOrbRenderState();
+    public ElementalOrbEntityRenderState createRenderState() {
+        return new ElementalOrbEntityRenderState();
     }
 
-    public void extractRenderState(OrderOrbEntity entity, baseOrbRenderState state, float partialTicks) {
+    public void extractRenderState(OrderOrbEntityBase entity, ElementalOrbEntityRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.icon = entity.getIcon();
     }

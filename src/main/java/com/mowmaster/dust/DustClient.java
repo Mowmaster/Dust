@@ -4,15 +4,13 @@ import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustParticleRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust.EarthOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbRenderer;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust.ChaosOrbRenderer;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust.EarthOrbRenderer;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbRenderer;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust.OrderOrbRenderer;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust.WaterOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumAffinity;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import com.mowmaster.dust.Features.EffectScrolls.Particles.ParticleSpellFire;
@@ -117,7 +115,7 @@ public class DustClient {
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
                     && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                DustElementAttachmentHelper.ElementFireInfo result = DustElementAttachmentHelper.getElementFireInfo(player);
+                DustElementAttachmentHelper.ElementFireInfo result = DustElementAttachmentHelper.getElementInfoFire(player);
                 int maxElement = result.max();
                 int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
@@ -133,7 +131,7 @@ public class DustClient {
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
                     && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                DustElementAttachmentHelper.ElementWaterInfo result = DustElementAttachmentHelper.getElementWaterInfo(player);
+                DustElementAttachmentHelper.ElementWaterInfo result = DustElementAttachmentHelper.getElementInfoWater(player);
                 int maxElement = result.max();
                 int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
@@ -149,7 +147,7 @@ public class DustClient {
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
                     && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                DustElementAttachmentHelper.ElementEarthInfo result = DustElementAttachmentHelper.getElementEarthInfo(player);
+                DustElementAttachmentHelper.ElementEarthInfo result = DustElementAttachmentHelper.getElementInfoEarth(player);
                 int maxElement = result.max();
                 int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
@@ -165,7 +163,7 @@ public class DustClient {
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
                     && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                DustElementAttachmentHelper.ElementChaosInfo result = DustElementAttachmentHelper.getElementChaosInfo(player);
+                DustElementAttachmentHelper.ElementChaosInfo result = DustElementAttachmentHelper.getElementInfoChaos(player);
                 int maxElement = result.max();
                 int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);
@@ -181,7 +179,7 @@ public class DustClient {
             if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
                     && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                DustElementAttachmentHelper.ElementOrderInfo result = DustElementAttachmentHelper.getElementOrderInfo(player);
+                DustElementAttachmentHelper.ElementOrderInfo result = DustElementAttachmentHelper.getElementInfoOrder(player);
                 int maxElement = result.max();
                 int currentElement = result.count();
                 int calcPercentManaLeft = Math.round(((float)currentElement/maxElement)*100);

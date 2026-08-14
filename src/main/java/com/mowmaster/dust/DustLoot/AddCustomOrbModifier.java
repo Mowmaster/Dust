@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustLootRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -68,7 +68,7 @@ public class AddCustomOrbModifier extends LootModifier {
 
         //Vec3 position = context.getOrigin();
         for (int i = 0; i < amount; i++) {
-            baseOrbEntity orb = DustEntityRegistry.FIRE_ORB.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+            ElementalOrbEntityBase orb = DustEntityRegistry.FIRE_ORB.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
 
             if (orb == null) {
                 continue;

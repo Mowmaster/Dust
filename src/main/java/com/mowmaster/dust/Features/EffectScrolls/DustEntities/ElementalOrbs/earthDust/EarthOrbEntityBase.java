@@ -1,25 +1,16 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust;
 
-import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
-import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.S2CPacketElementChaos;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.S2CPacketElementEarth;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.PacketDistributor;
 
-public class EarthOrbEntity extends baseOrbEntity {
+public class EarthOrbEntityBase extends ElementalOrbEntityBase {
 
-    public EarthOrbEntity(EntityType<EarthOrbEntity> type, Level level) {
+    public EarthOrbEntityBase(EntityType<EarthOrbEntityBase> type, Level level) {
         super(type, level);
     }
 

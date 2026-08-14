@@ -7,18 +7,14 @@ import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.earthDust.EarthOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust.FireOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust.OrderOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.waterDust.WaterOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust.ChaosOrbEntityBase;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust.EarthOrbEntityBase;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbEntityBase;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust.OrderOrbEntityBase;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust.WaterOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumAffinity;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -247,11 +243,7 @@ public class DustMagicEvents {
     public static void onCommand(RegisterCommandsEvent event) {
         new PlayerManaAdd(event.getDispatcher());
         new PlayerUnlockMana(event.getDispatcher());
-        new PlayerModifyFireElement(event.getDispatcher());
-        new PlayerModifyWaterElement(event.getDispatcher());
-        new PlayerModifyEarthElement(event.getDispatcher());
-        new PlayerModifyChaosElement(event.getDispatcher());
-        new PlayerModifyOrderElement(event.getDispatcher());
+        new PlayerModifyElement(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -279,7 +271,7 @@ public class DustMagicEvents {
             for (int i = 0; i < amount; i++) {
                 if(stack.is(DustItemRegistry.DUST_RED.get()))
                 {
-                    FireOrbEntity orb = new FireOrbEntity(DustEntityRegistry.FIRE_ORB.get(),serverLevel);
+                    FireOrbEntityBase orb = new FireOrbEntityBase(DustEntityRegistry.FIRE_ORB.get(),serverLevel);
                     orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
                     orb.setValue(amount);
                     serverLevel.addFreshEntity(orb);
@@ -288,7 +280,7 @@ public class DustMagicEvents {
                 }
                 else if(stack.is(DustItemRegistry.DUST_BLUE.get()))
                 {
-                    WaterOrbEntity orb = new WaterOrbEntity(DustEntityRegistry.WATER_ORB.get(),serverLevel);
+                    WaterOrbEntityBase orb = new WaterOrbEntityBase(DustEntityRegistry.WATER_ORB.get(),serverLevel);
                     orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
                     orb.setValue(amount);
                     serverLevel.addFreshEntity(orb);
@@ -297,7 +289,7 @@ public class DustMagicEvents {
                 }
                 else if(stack.is(DustItemRegistry.DUST_GREEN.get()))
                 {
-                    EarthOrbEntity orb = new EarthOrbEntity(DustEntityRegistry.EARTH_ORB.get(),serverLevel);
+                    EarthOrbEntityBase orb = new EarthOrbEntityBase(DustEntityRegistry.EARTH_ORB.get(),serverLevel);
                     orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
                     orb.setValue(amount);
                     serverLevel.addFreshEntity(orb);
@@ -306,7 +298,7 @@ public class DustMagicEvents {
                 }
                 else if(stack.is(DustItemRegistry.DUST_BLACK.get()))
                 {
-                    ChaosOrbEntity orb = new ChaosOrbEntity(DustEntityRegistry.CHAOS_ORB.get(),serverLevel);
+                    ChaosOrbEntityBase orb = new ChaosOrbEntityBase(DustEntityRegistry.CHAOS_ORB.get(),serverLevel);
                     orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
                     orb.setValue(amount);
                     serverLevel.addFreshEntity(orb);
@@ -315,7 +307,7 @@ public class DustMagicEvents {
                 }
                 else if(stack.is(DustItemRegistry.DUST_WHITE.get()))
                 {
-                    OrderOrbEntity orb = new OrderOrbEntity(DustEntityRegistry.ORDER_ORB.get(),serverLevel);
+                    OrderOrbEntityBase orb = new OrderOrbEntityBase(DustEntityRegistry.ORDER_ORB.get(),serverLevel);
                     orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
                     orb.setValue(amount);
                     serverLevel.addFreshEntity(orb);

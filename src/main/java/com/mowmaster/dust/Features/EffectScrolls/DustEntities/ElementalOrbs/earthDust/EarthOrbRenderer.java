@@ -1,10 +1,9 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities.fireDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mowmaster.dust.DustReferences;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbRenderState;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
-public class FireOrbRenderer extends EntityRenderer<FireOrbEntity, baseOrbRenderState> {
+public class EarthOrbRenderer extends EntityRenderer<EarthOrbEntityBase, ElementalOrbEntityRenderState> {
 
     private static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(
@@ -25,25 +24,25 @@ public class FireOrbRenderer extends EntityRenderer<FireOrbEntity, baseOrbRender
             );
     private static final RenderType RENDER_TYPE;
 
-    public FireOrbRenderer(EntityRendererProvider.Context context) {
+    public EarthOrbRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.shadowRadius = 0.15F;
         this.shadowStrength = 0.75F;
     }
 
-    protected int getBlockLightLevel(FireOrbEntity entity, BlockPos blockPos) {
+    protected int getBlockLightLevel(EarthOrbEntityBase entity, BlockPos blockPos) {
         return Mth.clamp(super.getBlockLightLevel(entity, blockPos) + 7, 0, 15);
     }
 
-    public void submit(baseOrbRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+    public void submit(ElementalOrbEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         int icon = state.icon;
         float u0 = (float)(icon % 4 * 16 + 0) / 64.0F;
         float u1 = (float)(icon % 4 * 16 + 16) / 64.0F;
         float v0 = (float)(icon / 4 * 16 + 0) / 64.0F;
         float v1 = (float)(icon / 4 * 16 + 16) / 64.0F;
-        int rc = 255;
-        int gc = 0;
+        int rc = 0;
+        int gc = 255;
         int bc = 0;
         /*
         float r = 1.0F;
@@ -73,11 +72,11 @@ public class FireOrbRenderer extends EntityRenderer<FireOrbEntity, baseOrbRender
         buffer.addVertex(pose, x, y, 0.0F).setColor(r, g, b, 128).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lightCoords).setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
 
-    public baseOrbRenderState createRenderState() {
-        return new baseOrbRenderState();
+    public ElementalOrbEntityRenderState createRenderState() {
+        return new ElementalOrbEntityRenderState();
     }
 
-    public void extractRenderState(FireOrbEntity entity, baseOrbRenderState state, float partialTicks) {
+    public void extractRenderState(EarthOrbEntityBase entity, ElementalOrbEntityRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.icon = entity.getIcon();
     }

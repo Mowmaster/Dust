@@ -94,6 +94,7 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.CRYSTAL_HORSE_ARMOR.asItem());
 
                         output.accept(DustItemRegistry.SPELL_WAND_FIRE.asItem());
+                        output.accept(DustItemRegistry.SPELL_WAND_EARTH.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",

@@ -1,21 +1,16 @@
-package com.mowmaster.dust.Features.EffectScrolls.DustEntities.orderDust;
+package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust;
 
-import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.baseOrbEntity;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.chaosDust.ChaosOrbEntity;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class OrderOrbEntity extends baseOrbEntity {
+public class ChaosOrbEntityBase extends ElementalOrbEntityBase {
 
-    public OrderOrbEntity(EntityType<OrderOrbEntity> type, Level level) {
+    public ChaosOrbEntityBase(EntityType<ChaosOrbEntityBase> type, Level level) {
         super(type, level);
     }
 
@@ -42,11 +37,11 @@ public class OrderOrbEntity extends baseOrbEntity {
         // Prevent unreasonable values
         orbValue = Math.clamp(orbValue, 1, 100);
         int modifiedAmount = Math.round(orbValue);
-        int added = DustElementAttachmentHelper.addToElementOrder(serverPlayer, modifiedAmount, true);
+        int added = DustElementAttachmentHelper.addToElementChaos(serverPlayer, modifiedAmount, true);
         if(added>0)
         {
-            actuallyAdded = DustElementAttachmentHelper.addToElementOrder(serverPlayer, modifiedAmount, false);
-            System.out.println("Added By OrderOrb: " + actuallyAdded);
+            actuallyAdded = DustElementAttachmentHelper.addToElementChaos(serverPlayer, modifiedAmount, false);
+            System.out.println("Added By ChaosOrb: " + actuallyAdded);
             this.discard();
         }
     }
