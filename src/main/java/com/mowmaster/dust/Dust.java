@@ -31,7 +31,7 @@ public class Dust {
         DustBlockRegistry.register(modEventBus);
         DustEntityRegistry.register(modEventBus);
 
-        DustDataComponentTypeRegistry.register(modEventBus);
+        DustComponentDataRegistry.register(modEventBus);
         DustAttachmentTypeRegistry.register(modEventBus);
 
         DustConsumeEffectsRegistry.register(modEventBus);
@@ -43,6 +43,7 @@ public class Dust {
         DustCreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
 
         DustParticleRegistry.PARTICLE_TYPES.register(modEventBus);
+
 
 
         NeoForge.EVENT_BUS.register(this);

@@ -1,0 +1,9 @@
+{
+  "parent": "dust:item/focused_book",
+  "textures": {
+    "0": "dust:item/model/focusedbook/basebookcover",
+    "1": "dust:item/model/focusedbook/covers/cover_chest",
+    "2": "dust:item/model/focusedbook/basebookaccents",
+    "particle": "dust:item/model/focusedbook/basebookcover"
+  }
+}

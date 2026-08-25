@@ -95,6 +95,21 @@ public class DustCreativeTabRegistry {
 
                         output.accept(DustItemRegistry.SPELL_WAND_FIRE.asItem());
                         output.accept(DustItemRegistry.SPELL_WAND_EARTH.asItem());
+
+                        output.accept(DustItemRegistry.FOCUSED_BOOK_BASE.asItem());
+
+
+                    }).build());
+
+    public static final Supplier<CreativeModeTab> DUSTTAB_BOOKS = CREATIVE_MODE_TABS.register("dusttab_books",
+            () -> CreativeModeTab.builder()
+                    .icon(()-> new ItemStack(DustItemRegistry.FOCUSED_BOOK_BASE.get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_books"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(DustItemRegistry.FOCUSED_BOOK_BASE.asItem());
+                        output.accept(DustItemRegistry.FOCUSED_BOOK.asItem());
+
+
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",

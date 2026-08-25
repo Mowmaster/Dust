@@ -12,6 +12,8 @@ import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialTools;
 import com.mowmaster.dust.Features.DustyDelights.DDFoodProperties;
 import com.mowmaster.dust.Features.EffectScrolls.Item.EarthStickItem;
 import com.mowmaster.dust.Features.EffectScrolls.Item.FireStickItem;
+import com.mowmaster.dust.Features.FocusedBooks.EnchantableBookItem;
+import com.mowmaster.dust.Features.FocusedBooks.FocusedBookItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -47,6 +49,13 @@ public class DustItemRegistry
 
     public static final DeferredItem<Item> CRYSTAL_CHISEL_IRON = DUSTITEMS.registerItem("chisel_iron", properties -> new CrystalChiselBaseItem(properties.durability(100)));
     public static final DeferredItem<Item> CRYSTAL_HALFSAW_IRON = DUSTITEMS.registerItem("halfsaw_iron", properties -> new CrystalHalfSawItem(properties.durability(100)));
+
+    public static final DeferredItem<Item> FOCUSED_BOOK_BASE = DUSTITEMS.registerItem("focused_book_base", properties -> new EnchantableBookItem(properties.stacksTo(16)));
+    public static final DeferredItem<Item> FOCUSED_BOOK = DUSTITEMS.registerItem("focused_book", properties -> new FocusedBookItem(
+            properties.stacksTo(16)
+                    .component(DustComponentDataRegistry.FOCUSEDBOOK_BOOKCOVER_TYPE.get(),1)
+                    .component(DustComponentDataRegistry.FOCUSEDBOOK_BOOK_COLOR.get(),11141375)
+    ));
 
     public static final DeferredItem<Item> CORNBREAD = DUSTITEMS.registerItem("food_cornbread",
             properties -> new Item(properties.food(DDFoodProperties.CORNBREAD, DDFoodProperties.CORNBREAD_EDIBLE)) {

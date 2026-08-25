@@ -1,0 +1,165 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "component": "dust:fb_bookcover_type",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "dust:item/focused_book"
+    },
+    "on_true": {
+      "type": "minecraft:range_dispatch",
+      "entries": [
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_anchor"
+          },
+          "threshold": 1.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_animal"
+          },
+          "threshold": 2.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_armor"
+          },
+          "threshold": 3.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_bow"
+          },
+          "threshold": 4.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_breakable"
+          },
+          "threshold": 5.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_chest"
+          },
+          "threshold": 6.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_crossbow"
+          },
+          "threshold": 7.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_default"
+          },
+          "threshold": 8.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_bookdigger"
+          },
+          "threshold": 9.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_feet"
+          },
+          "threshold": 10.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_fish"
+          },
+          "threshold": 11.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_gun"
+          },
+          "threshold": 12.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_hammer"
+          },
+          "threshold": 13.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_helm"
+          },
+          "threshold": 14.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_hoe"
+          },
+          "threshold": 15.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_knife"
+          },
+          "threshold": 16.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_legs"
+          },
+          "threshold": 17.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_pedestal"
+          },
+          "threshold": 18.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_trident"
+          },
+          "threshold": 19.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_weapon"
+          },
+          "threshold": 20.0
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "dust:item/focused_book_wearable"
+          },
+          "threshold": 21.0
+        }
+      ],
+      "normalize": false,
+      "property": "minecraft:count"
+    },
+    "property": "minecraft:has_component"
+  }
+}

@@ -25,6 +25,7 @@ public class DustDataGenerator {
 
 
         generator.addProvider(true, new DustProviderModel(packOutput));
+
         generator.addProvider(true, new LootTableProvider(packOutput, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(DustProviderBlockLootTable::new, LootContextParamSets.BLOCK)), lookupProvider));
         generator.addProvider(true, new DustProviderBasicRecipe.Runner(packOutput,lookupProvider));

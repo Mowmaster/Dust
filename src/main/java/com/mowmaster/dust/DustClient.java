@@ -1,9 +1,6 @@
 package com.mowmaster.dust;
 
-import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
-import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
-import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
-import com.mowmaster.dust.DustRegistries.DustParticleRegistry;
+import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust.ChaosOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust.EarthOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbRenderer;
@@ -14,6 +11,7 @@ import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHe
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import com.mowmaster.dust.Features.EffectScrolls.Particles.ParticleSpellFire;
+import com.mowmaster.dust.Features.FocusedBooks.FocusedBookTintSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.player.LocalPlayer;
@@ -69,6 +67,31 @@ public class DustClient {
         event.registerEntityRenderer(DustEntityRegistry.WATER_ORB.get(), WaterOrbRenderer::new);
         event.registerEntityRenderer(DustEntityRegistry.CHAOS_ORB.get(), ChaosOrbRenderer::new);
         event.registerEntityRenderer(DustEntityRegistry.ORDER_ORB.get(), OrderOrbRenderer::new);
+        Dust.LOGGER.info("Registered Entity Renderers: {}", "ENTITIES");
+    }
+
+    @SubscribeEvent
+    public static void registerTintBlocks(RegisterColorHandlersEvent.BlockTintSources event)
+    {
+        event.register(List.of(BlockTintSources.constant(16711680)), DustBlockRegistry.CRYSTAL_STONE_RED.get());
+        event.register(List.of(BlockTintSources.constant(65280)), DustBlockRegistry.CRYSTAL_STONE_GREEN.get());
+        event.register(List.of(BlockTintSources.constant(255)), DustBlockRegistry.CRYSTAL_STONE_BLUE.get());
+        event.register(List.of(BlockTintSources.constant(16777215)), DustBlockRegistry.CRYSTAL_STONE_WHITE.get());
+        event.register(List.of(BlockTintSources.constant(2763306)), DustBlockRegistry.CRYSTAL_STONE_BLACK.get());
+        Dust.LOGGER.info("Registered tint source: {}", "TINT BLOCKS");
+    }
+
+    @SubscribeEvent
+    public static void registerTintItems(RegisterColorHandlersEvent.ItemTintSources event)
+    {
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "focusedbook_color"), FocusedBookTintSource.MAP_CODEC);
+        Dust.LOGGER.info("Registered tint source: {}", Identifier.fromNamespaceAndPath(DustReferences.MODID, "focusedbook_color"));
+    }
+
+    @SubscribeEvent
+    public static void registerParticleFactories(RegisterParticleProvidersEvent event)
+    {
+        event.registerSpriteSet(DustParticleRegistry.DUSTPARTICLES_SPELLS_FIRE.get(), ParticleSpellFire.Provider::new);
     }
 
     @SubscribeEvent
@@ -188,23 +211,6 @@ public class DustClient {
             }
         });
 
-    }
-
-
-    @SubscribeEvent
-    public static void registerTintBlocks(RegisterColorHandlersEvent.BlockTintSources event)
-    {
-        event.register(List.of(BlockTintSources.constant(16711680)), DustBlockRegistry.CRYSTAL_STONE_RED.get());
-        event.register(List.of(BlockTintSources.constant(65280)), DustBlockRegistry.CRYSTAL_STONE_GREEN.get());
-        event.register(List.of(BlockTintSources.constant(255)), DustBlockRegistry.CRYSTAL_STONE_BLUE.get());
-        event.register(List.of(BlockTintSources.constant(16777215)), DustBlockRegistry.CRYSTAL_STONE_WHITE.get());
-        event.register(List.of(BlockTintSources.constant(2763306)), DustBlockRegistry.CRYSTAL_STONE_BLACK.get());
-    }
-
-    @SubscribeEvent
-    public static void registerParticleFactories(RegisterParticleProvidersEvent event)
-    {
-        event.registerSpriteSet(DustParticleRegistry.DUSTPARTICLES_SPELLS_FIRE.get(), ParticleSpellFire.Provider::new);
     }
 
 }

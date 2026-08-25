@@ -1,0 +1,63 @@
+
+
+Okay so, 3 Spell Pylons, one for each Type: Utility, Defense, Offense
+On the spell pylon insert a crystal imbued with the elemental type you want.
+Place on the pedestal the action type, maybe could have custom items for this???
+Bow/Throwable item for projectile, Scroll for self and a different scroll variant for AOE???, Tool/Weapon for Touch
+
+One pedestal now covers everything needed for the spell basics
+pedestal will show ghost blocks for where to place a new pylon for crafting/upgrades, modifiers are assigned randomly,
+players can break pylons if they dont like new modifier, but it has a cost (corruption),
+accepting more and more pylons the block recommends builds the blessed guage making those have a higher chance until it happens
+
+
+Spell: Fire, Water, Earth, etc
+
+Actions: Projectile, Touch, Self, AOE???
+
+Type: Utility(modifies blocks), Defense, Offense
+
+Modifiers: Size, range, potency, cost???, etc
+
+
+Before evolutions, a spell break can occur,(when a spell break is used the next upgrade will ALWAYS be the selected evolution, as an Evo changes
+a spell completely but being able to use the previous spell would be nice)
+Fire:
+Utility - Smelting
+Defense - Fire Resist
+Offense - Scorch/Burning and Igniting at higher levels
+Evo Air,
+U - magnet like effect??? or push type effect???
+D - swap to projectile resistance/negation
+O - throw/ knockback/launch effect
+Unlocks: adds modifer to fire spell that can spread scorch on ignition kills
+Evo Metal,
+U - A stronger block breaking effect
+D - swaps to toughness resistance, maybe adds immunity to non corrosive effects???
+O - Completely changes to be a piercing damage attack
+Unlocks: adds modifer to fire spell that leaves pools of fire after mob kills pools scorch and build scorch stacks faster, but buff the player if inside???
+OrEvo Light,
+U - Completely changes spell to be a flame wisp light
+D - completely changes spell to apply glowing
+O - blinds/stuns enemies for a short time???
+Unlocks: scorch/ignition kills heal caster
+ChEvo Lava
+U - burns food items but yields chance at more yield when smelting metals??? 90% chance to return tho
+D - lava immunity???
+O -
+Unlocks: unlocks larger range on ignitions and they deal more damage???
+
+Water:
+Utility - Create Water/Hydration
+Defense - Extinguish, Water breathing, swift swim???
+Offense - Drowning,
+Evo Mud, Evo Air, OrEvo Ice, ChEvo Movement
+
+Earth:
+Utility - place/break blocks
+Defense - Resistance???
+Offense - Force Damage
+Evo Metal, Evo Mud, OrEvo Stone, ChEvo Explosion
+
+
+Evolutions can turn spell into secondary spells like Air/Metal/Mud/Ice/Movement/Stone/Explosion/Light/Lava

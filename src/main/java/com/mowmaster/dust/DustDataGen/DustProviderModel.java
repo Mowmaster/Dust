@@ -1,17 +1,27 @@
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
+import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import com.mowmaster.dust.Features.DustyDelights.Block.BushFalloldBerryBlock;
 import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
+import com.mowmaster.dust.Features.FocusedBooks.DataGenCustomItemModels;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.Item;
+
+import java.util.List;
 
 public class DustProviderModel extends ModelProvider {
     public DustProviderModel(PackOutput output) {
@@ -48,7 +58,7 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_WHITE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_BLACK.get(), ModelTemplates.FLAT_ITEM);
 
-
+        generateFocusedBookModels(itemModels.itemModelOutput, DustItemRegistry.FOCUSED_BOOK.get());
 
         blockModels.createTrivialCube(DustBlockRegistry.CRYSTAL_PATH_TIER1.get());
         blockModels.createTrivialCube(DustBlockRegistry.CRYSTAL_PATH_TIER2.get());
@@ -100,7 +110,7 @@ public class DustProviderModel extends ModelProvider {
 
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_HORSE_ARMOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-
+        itemModels.declareCustomModelItem(DustItemRegistry.FOCUSED_BOOK_BASE.get());
 
 
         blockModels.createPlantWithDefaultItem(
@@ -109,14 +119,68 @@ public class DustProviderModel extends ModelProvider {
                 BlockModelGenerators.PlantType.TINTED
         );
 
-        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_RED.get(), TexturedModel.LEAVES,16711680);
-        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_GREEN.get(), TexturedModel.LEAVES,65280);
-        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLUE.get(), TexturedModel.LEAVES,255);
-        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_WHITE.get(), TexturedModel.LEAVES,16777215);
-        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLACK.get(), TexturedModel.LEAVES,2763306);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_RED.get(), TexturedModel.LEAVES, 16711680);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_GREEN.get(), TexturedModel.LEAVES, 65280);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLUE.get(), TexturedModel.LEAVES, 255);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_WHITE.get(), TexturedModel.LEAVES, 16777215);
+        blockModels.createTintedLeaves(DustBlockRegistry.CRYSTAL_STONE_BLACK.get(), TexturedModel.LEAVES, 2763306);
 
         blockModels.createCropBlock(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), BushFalloldBerryBlock.AGE, 0, 1, 2, 3);
 
 
+    }
+
+
+    public void generateFocusedBookModels(ItemModelOutput itemModelOutput, Item item)
+    {
+        ItemModel.Unbaked focusedbookBase = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item));
+        ItemModel.Unbaked anchor = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_anchor"));
+        ItemModel.Unbaked animal = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_animal"));
+        ItemModel.Unbaked armor = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_armor"));
+        ItemModel.Unbaked bow = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_bow"));
+        ItemModel.Unbaked breakable = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_breakable"));
+        ItemModel.Unbaked chest = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_chest"));
+        ItemModel.Unbaked crossbow = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_crossbow"));
+        ItemModel.Unbaked base = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_default"));
+        ItemModel.Unbaked digger = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "digger"));
+        ItemModel.Unbaked feet = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_feet"));
+        ItemModel.Unbaked fish = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_fish"));
+        ItemModel.Unbaked gun = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_gun"));
+        ItemModel.Unbaked hammer = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_hammer"));
+        ItemModel.Unbaked helm = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_helm"));
+        ItemModel.Unbaked hoe = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_hoe"));
+        ItemModel.Unbaked knife = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_knife"));
+        ItemModel.Unbaked legs = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_legs"));
+        ItemModel.Unbaked pedestal = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_pedestal"));
+        ItemModel.Unbaked trident = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_trident"));
+        ItemModel.Unbaked weapon = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_weapon"));
+        ItemModel.Unbaked wearable = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_wearable"));
+        itemModelOutput.accept(
+                item,
+                ItemModelUtils.conditional(
+                        ItemModelUtils.hasComponent(DustComponentDataRegistry.FOCUSEDBOOK_BOOKCOVER_TYPE.get()),
+                        ItemModelUtils.rangeSelect(new Count(false),
+                                List.of(
+                                        ItemModelUtils.override(anchor, 1),
+                                        ItemModelUtils.override(animal, 2),
+                                        ItemModelUtils.override(armor, 3),
+                                        ItemModelUtils.override(bow, 4),
+                                        ItemModelUtils.override(breakable, 5),
+                                        ItemModelUtils.override(chest, 6),
+                                        ItemModelUtils.override(crossbow, 7),
+                                        ItemModelUtils.override(base, 8),
+                                        ItemModelUtils.override(digger, 9),
+                                        ItemModelUtils.override(feet, 10),
+                                        ItemModelUtils.override(fish, 11),
+                                        ItemModelUtils.override(gun, 12),
+                                        ItemModelUtils.override(hammer, 13),
+                                        ItemModelUtils.override(helm, 14),
+                                        ItemModelUtils.override(hoe, 15),
+                                        ItemModelUtils.override(knife, 16),
+                                        ItemModelUtils.override(legs, 17),
+                                        ItemModelUtils.override(pedestal, 18),
+                                        ItemModelUtils.override(trident, 19),
+                                        ItemModelUtils.override(weapon, 20),
+                                        ItemModelUtils.override(wearable, 21))), focusedbookBase));
     }
 }

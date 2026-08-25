@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DustDataGen;
 
+import com.mowmaster.dust.DustLoot.AddCustomOrbModifier;
 import com.mowmaster.dust.DustLoot.AddItemStackModifier;
 import com.mowmaster.dust.DustLoot.AddRandomItemStackModifier;
 import com.mowmaster.dust.DustReferences;
