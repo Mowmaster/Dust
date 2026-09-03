@@ -1,6 +1,9 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
+import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
+import com.mowmaster.dust.Features.Pedestals.RegistryPedestalEntity;
+import com.mowmaster.dust.Features.Pedestals.RegistryPedestalItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import org.slf4j.Logger;
@@ -30,6 +33,10 @@ public class Dust {
         DustItemRegistry.register(modEventBus);
         DustBlockRegistry.register(modEventBus);
         DustEntityRegistry.register(modEventBus);
+
+        RegistryPedestalItem.register(modEventBus);
+        RegistryPedestalBlock.register(modEventBus);
+        RegistryPedestalEntity.register(modEventBus);
 
         DustComponentDataRegistry.register(modEventBus);
         DustAttachmentTypeRegistry.register(modEventBus);

@@ -1,0 +1,7 @@
+{
+  "parent": "dust:block/pedestalbase/pedestal_base",
+  "textures": {
+    "type": "dust:block/pedestal/block_crystal_stone",
+    "typepart":"dust:block/pedestal/block_crystal_stone"
+  }
+}

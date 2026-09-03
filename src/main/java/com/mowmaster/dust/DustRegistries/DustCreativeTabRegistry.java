@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DustRegistries;
 
+import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -131,6 +132,9 @@ public class DustCreativeTabRegistry {
 
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE.asItem());
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.asItem());
+
+
+                        output.accept(RegistryPedestalBlock.PEDESTAL_BLOCK.asItem());
 
                     }).build());
 }

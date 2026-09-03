@@ -8,6 +8,7 @@ import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import com.mowmaster.dust.Features.DustyDelights.Block.BushFalloldBerryBlock;
 import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
 import com.mowmaster.dust.Features.FocusedBooks.DataGenCustomItemModels;
+import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
@@ -19,6 +20,7 @@ import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 
 import java.util.List;
@@ -128,6 +130,8 @@ public class DustProviderModel extends ModelProvider {
         blockModels.createCropBlock(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), BushFalloldBerryBlock.AGE, 0, 1, 2, 3);
 
 
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(RegistryPedestalBlock.PEDESTAL_BLOCK.get(),
+                BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/pedestal_block"))));
     }
 
 

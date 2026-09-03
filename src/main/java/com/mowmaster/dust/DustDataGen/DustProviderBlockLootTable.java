@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustDataGen;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
+import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -101,6 +102,10 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
                         )
         ));
 
+
+
+
+        dropSelf(RegistryPedestalBlock.PEDESTAL_BLOCK.get());
 
     }
 
