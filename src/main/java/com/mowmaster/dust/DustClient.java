@@ -12,6 +12,7 @@ import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import com.mowmaster.dust.Features.EffectScrolls.Particles.ParticleSpellFire;
 import com.mowmaster.dust.Features.FocusedBooks.FocusedBookTintSource;
+import com.mowmaster.dust.Features.Pedestals.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.player.LocalPlayer;
@@ -92,6 +93,12 @@ public class DustClient {
     public static void registerParticleFactories(RegisterParticleProvidersEvent event)
     {
         event.registerSpriteSet(DustParticleRegistry.DUSTPARTICLES_SPELLS_FIRE.get(), ParticleSpellFire.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event)
+    {
+        event.registerBlockEntityRenderer(RegistryPedestalEntity.PEDESTAL_BASE.get(), RenderBEPedestal::new);
     }
 
     @SubscribeEvent
@@ -211,6 +218,13 @@ public class DustClient {
             }
         });
 
+    }
+
+
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event)
+    {
+        event.register(RegistryMenuTypePedestal.PEDESTAL_MENU.get(), ScreenPedestal::new);
     }
 
 }

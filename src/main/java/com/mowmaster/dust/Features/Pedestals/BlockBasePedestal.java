@@ -1,11 +1,14 @@
 package com.mowmaster.dust.Features.Pedestals;
 
 import com.mojang.serialization.MapCodec;
+import com.mowmaster.dust.DustReferences;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -20,8 +23,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jspecify.annotations.Nullable;
+
+import java.lang.module.ModuleReference;
 
 public class BlockBasePedestal extends BaseEntityBlock {
     public static final MapCodec<BlockBasePedestal> CODEC = simpleCodec(BlockBasePedestal::new);
@@ -164,6 +168,13 @@ public class BlockBasePedestal extends BaseEntityBlock {
 
         if(level.getBlockEntity(pos) instanceof EntityBlockPedestal pedestal)
         {
+            if(player.isCrouching())
+            {
+                player.openMenu(new SimpleMenuProvider(pedestal, Component.translatable("block."+ DustReferences.MODID + ".pedestal_block")),pos);
+                return InteractionResult.SUCCESS;
+            }
+
+
             int consumedAmount = pedestal.insertStackToPedestal(itemStack);
             if(consumedAmount>0)
             {

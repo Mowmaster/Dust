@@ -1,6 +1,7 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
+import com.mowmaster.dust.Features.Pedestals.RegistryMenuTypePedestal;
 import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
 import com.mowmaster.dust.Features.Pedestals.RegistryPedestalEntity;
 import com.mowmaster.dust.Features.Pedestals.RegistryPedestalItem;
@@ -34,6 +35,7 @@ public class Dust {
         DustBlockRegistry.register(modEventBus);
         DustEntityRegistry.register(modEventBus);
 
+        RegistryMenuTypePedestal.register(modEventBus);
         RegistryPedestalItem.register(modEventBus);
         RegistryPedestalBlock.register(modEventBus);
         RegistryPedestalEntity.register(modEventBus);
