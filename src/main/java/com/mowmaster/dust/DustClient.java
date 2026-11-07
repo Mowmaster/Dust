@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
+import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
@@ -19,6 +20,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
+import java.util.List;
 
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
@@ -57,6 +60,13 @@ public class DustClient {
         event.registerEntityRenderer(DustEntityRegistry.WATER_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x0000FF));
         event.registerEntityRenderer(DustEntityRegistry.CHAOS_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x323232));
         event.registerEntityRenderer(DustEntityRegistry.ORDER_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFFFFFF));
+    }
+
+    // Glyph stone carving colour: dark, or worn blank on stones the local player has transcribed (tint index 0)
+    @SubscribeEvent
+    public static void registerBlockTints(RegisterColorHandlersEvent.BlockTintSources event)
+    {
+        event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
     }
 
     // Which screen opens for which menu type

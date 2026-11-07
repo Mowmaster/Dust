@@ -1,7 +1,8 @@
 {
-  "parent": "minecraft:block/orientable",
+  "parent": "dust:block/glyph_stone_template",
   "textures": {
-    "front": "dust:block/glyph_stone/glyph_stone_o",
+    "front": "dust:block/glyph_stone/glyph_stone_front",
+    "glyph": "dust:block/glyph_stone/glyph_stone_o",
     "side": "dust:block/glyph_stone/glyph_stone_side",
     "top": "dust:block/glyph_stone/glyph_stone_top"
   }

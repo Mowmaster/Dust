@@ -24,6 +24,14 @@ public final class AncientWords
         return WORDS.get(random.nextInt(WORDS.size()));
     }
 
+    // A random word that has this glyph (0-25) in it. Every letter appears in at least one word.
+    public static String randomContaining(int glyph, RandomSource random)
+    {
+        char letter = (char) ('a' + glyph);
+        List<String> matches = WORDS.stream().filter(word -> word.indexOf(letter) >= 0).toList();
+        return matches.isEmpty() ? random(random) : matches.get(random.nextInt(matches.size()));
+    }
+
     // Keeps only a-z (lowercased), cut to the longest word the decipher screen can show
     public static String clean(String text)
     {

@@ -5,7 +5,11 @@ import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.AncientLanguage;
 import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
+import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
+import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -19,6 +23,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.data.PackOutput;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class DustProviderModel extends ModelProvider {
     public DustProviderModel(PackOutput output) {
@@ -91,25 +96,34 @@ public class DustProviderModel extends ModelProvider {
 
     }
 
-    // One "orientable" model per glyph (front = textures/block/glyph_stone/glyph_stone_<letter>, sides and top plain),
-    // picked by the GLYPH property and turned by FACING. The item shows the 'a' glyph.
+    // The glyph stone's own model shape (models/block/glyph_stone_template.json, hand-written): a stone cube plus the
+    // glyph as an overlay on the front with tint index 0, so Client/GlyphStoneTint can colour it per player.
+    private static final TextureSlot GLYPH_SLOT = TextureSlot.create("glyph");
+    private static final ModelTemplate GLYPH_STONE_TEMPLATE = new ModelTemplate(
+            Optional.of(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone_template")), Optional.empty(),
+            TextureSlot.FRONT, TextureSlot.SIDE, TextureSlot.TOP, GLYPH_SLOT);
+
+    // One model per glyph, picked by the GLYPH property and turned by FACING. The item shows the 'a' glyph, tinted
+    // with the carved colour (item models need their own tint, the block tint isn't used for items).
     private void createGlyphStone(BlockModelGenerators blockModels)
     {
         Block block = DustBlockRegistry.GLYPH_STONE.get();
+        Material front = new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_front"));
         Material side = new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_side"));
         Material top = new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_top"));
         Identifier[] models = new Identifier[AncientLanguage.GLYPH_COUNT];
         for (int i = 0; i < models.length; i++) {
             String letter = String.valueOf((char) ('a' + i));
             TextureMapping textures = new TextureMapping()
-                    .put(TextureSlot.FRONT, new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_" + letter)))
+                    .put(TextureSlot.FRONT, front)
                     .put(TextureSlot.SIDE, side)
-                    .put(TextureSlot.TOP, top);
-            models[i] = ModelTemplates.CUBE_ORIENTABLE.createWithSuffix(block, "_" + letter, textures, blockModels.modelOutput);
+                    .put(TextureSlot.TOP, top)
+                    .put(GLYPH_SLOT, new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_" + letter)));
+            models[i] = GLYPH_STONE_TEMPLATE.createWithSuffix(block, "_" + letter, textures, blockModels.modelOutput);
         }
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
                 .with(PropertyDispatch.initial(GlyphStoneBlock.GLYPH).generate(glyph -> BlockModelGenerators.plainVariant(models[glyph])))
                 .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
-        blockModels.registerSimpleItemModel(block, models[0]);
+        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(models[0], new Constant(GlyphStoneTint.CARVED)));
     }
 }

@@ -12,8 +12,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-// A stone with one ancient glyph carved on its front face. Ruins (AncientRuinFeature) build words out of a row of
-// these; Parchment copies the row. GLYPH 0-25 = a-z.
+// A stone with one ancient glyph carved on its front face. GLYPH 0-25 = a-z. Ruins (AncientRuinFeature) carve
+// words out of rows of these. Parchment on a stone gives a Transcription of a word containing its glyph, once per
+// player; the stone then looks worn blank to that player (Client/GlyphStoneTint).
 // Creative players can change the glyph by right-clicking with an empty hand (sneak to go backwards), for building
 // your own glyph walls. Breaking one gives cobblestone (see the loot table), so glyphs can't be collected.
 public class GlyphStoneBlock extends HorizontalDirectionalBlock

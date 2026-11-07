@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.AncientLanguage.TranscribedStones;
 import com.mowmaster.dust.Features.EffectScrolls.Research.DustResearchData;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
@@ -102,6 +103,15 @@ public class DustAttachmentTypeRegistry
             () -> AttachmentType.builder(() -> 0)
                     .serialize(Codec.INT.fieldOf("ancient_glyphs"))
                     .sync((holder, to) -> holder == to, ByteBufCodecs.VAR_INT)
+                    .copyOnDeath()
+                    .build());
+
+    // Glyph stones this player has already transcribed with Parchment (one transcription per stone per player).
+    // Synced only to its player, whose client draws those stones blank (see TranscribedStones).
+    public static final Supplier<AttachmentType<TranscribedStones>> TRANSCRIBED_STONES = ATTACHMENT_TYPES.register("transcribed_stones",
+            () -> AttachmentType.builder(() -> TranscribedStones.EMPTY)
+                    .serialize(TranscribedStones.CODEC.fieldOf("transcribed_stones"))
+                    .sync(TranscribedStones.SYNC)
                     .copyOnDeath()
                     .build());
 
