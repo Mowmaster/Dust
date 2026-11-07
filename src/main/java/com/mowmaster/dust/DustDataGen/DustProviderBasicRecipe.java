@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class DustProviderBasicRecipe extends RecipeProvider {
-    public DustProviderBasicRecipe(HolderLookup.Provider registries, RecipeOutput output) {
+    public DustProviderBasicRecipe(HolderLookup.Provider registries, RecipeOutput output)
+    {
         super(registries, output);
     }
 
