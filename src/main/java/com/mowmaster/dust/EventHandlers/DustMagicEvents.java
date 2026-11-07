@@ -9,6 +9,7 @@ import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
+import com.mowmaster.dust.Features.Research.ResearchNotesPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -32,6 +33,7 @@ public class DustMagicEvents {
     {
         PayloadRegistrar registrar = event.registrar("1");
 
+        registrar.playToServer(ResearchNotesPayload.TYPE, ResearchNotesPayload.STREAM_CODEC, ResearchNotesPayload::handle);
         registrar.playToServer(PacketOfDustAuraC2S.TYPE, PacketOfDustAuraC2S.STREAM_CODEC, PacketReceiverServer::handleTestPacket);
         registrar.playToClient(PacketOfDustAuraS2C.TYPE, PacketOfDustAuraS2C.STREAM_CODEC, PacketReceiverClient::handleClientPacket);
 

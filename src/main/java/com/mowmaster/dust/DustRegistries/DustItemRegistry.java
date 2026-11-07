@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.AncientLanguage.AncientInkItem;
 import com.mowmaster.dust.Features.AncientLanguage.AncientWritingItem;
 import com.mowmaster.dust.Features.AncientLanguage.ParchmentItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
+import com.mowmaster.dust.Features.Research.ResearchBookItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalWeaponSword;
@@ -79,6 +80,12 @@ public class DustItemRegistry
     public static final DeferredItem<Item> TRANSCRIPTION = DUSTITEMS.registerItem("transcription",
             properties -> new AncientWritingItem(properties.stacksTo(1)));
     public static final DeferredItem<Item> PARCHMENT = DUSTITEMS.registerItem("parchment", ParchmentItem::new);
+
+    // Research (Features/Research): your own notes, and a read-only copy of someone's notes
+    public static final DeferredItem<Item> RESEARCH_NOTES = DUSTITEMS.registerItem("research_notes",
+            properties -> new ResearchBookItem(properties.stacksTo(1), false));
+    public static final DeferredItem<Item> SHARED_RESEARCH_GUIDE = DUSTITEMS.registerItem("shared_research_guide",
+            properties -> new ResearchBookItem(properties.stacksTo(1), true));
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));

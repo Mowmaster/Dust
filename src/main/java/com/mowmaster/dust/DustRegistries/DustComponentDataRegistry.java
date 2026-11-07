@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.Research.ResearchData;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -26,6 +27,12 @@ public class DustComponentDataRegistry
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> DECIPHER_MISTAKES = register("decipher_mistakes",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    // A Shared Research Guide's copy of its author's research, and the author's name
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResearchData>> RESEARCH_SNAPSHOT = register("research_snapshot",
+            builder -> builder.persistent(ResearchData.CODEC).networkSynchronized(ResearchData.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> RESEARCH_AUTHOR = register("research_author",
+            builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                           UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

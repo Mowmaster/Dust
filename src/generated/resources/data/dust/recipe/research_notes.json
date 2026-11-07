@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "dust:ancient_ink",
+    "minecraft:feather",
+    "minecraft:book"
+  ],
+  "result": {
+    "id": "dust:research_notes"
+  }
+}

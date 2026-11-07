@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "dust:research_notes",
+    "minecraft:writable_book",
+    "dust:ancient_ink"
+  ],
+  "result": {
+    "id": "dust:shared_research_guide"
+  }
+}

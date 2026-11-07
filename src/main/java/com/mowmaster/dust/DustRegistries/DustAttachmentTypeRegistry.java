@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.TranscribedStones;
+import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.EffectScrolls.Research.DustResearchData;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
@@ -112,6 +113,14 @@ public class DustAttachmentTypeRegistry
             () -> AttachmentType.builder(() -> TranscribedStones.EMPTY)
                     .serialize(TranscribedStones.CODEC.fieldOf("transcribed_stones"))
                     .sync(TranscribedStones.SYNC)
+                    .copyOnDeath()
+                    .build());
+
+    // Everything the player has researched (Features/Research). Survives death; synced only to its player.
+    public static final Supplier<AttachmentType<ResearchData>> RESEARCH = ATTACHMENT_TYPES.register("research",
+            () -> AttachmentType.builder(() -> ResearchData.EMPTY)
+                    .serialize(ResearchData.CODEC.fieldOf("research"))
+                    .sync((holder, to) -> holder == to, ResearchData.STREAM_CODEC)
                     .copyOnDeath()
                     .build());
 

@@ -50,6 +50,22 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .requires(DustItemRegistry.DUST_WHITE.get())
                 .unlockedBy(getHasName(Items.INK_SAC), has(Items.INK_SAC))
                 .save(output);
+        // Research Notes: Ancient Ink, a feather and a book
+        shapeless(RecipeCategory.MISC, DustItemRegistry.RESEARCH_NOTES.get())
+                .requires(DustItemRegistry.ANCIENT_INK.get())
+                .requires(Items.FEATHER)
+                .requires(Items.BOOK)
+                .unlockedBy(getHasName(DustItemRegistry.ANCIENT_INK.get()), has(DustItemRegistry.ANCIENT_INK.get()))
+                .save(output);
+        // Shared Research Guide: your Research Notes (given back, see ResearchBookItem) + a Book and Quill + Ancient Ink.
+        // The copy of your research and your name are added as it's taken out (ResearchObserver.onCrafted).
+        shapeless(RecipeCategory.MISC, DustItemRegistry.SHARED_RESEARCH_GUIDE.get())
+                .requires(DustItemRegistry.RESEARCH_NOTES.get())
+                .requires(Items.WRITABLE_BOOK)
+                .requires(DustItemRegistry.ANCIENT_INK.get())
+                .unlockedBy(getHasName(DustItemRegistry.RESEARCH_NOTES.get()), has(DustItemRegistry.RESEARCH_NOTES.get()))
+                .save(output);
+
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
         shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)
                 .requires(Items.PAPER).requires(Items.PAPER).requires(Items.PAPER)

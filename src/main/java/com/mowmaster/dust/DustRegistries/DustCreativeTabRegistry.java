@@ -33,6 +33,7 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.ANCIENT_INK.asItem());
                         output.accept(DustItemRegistry.PARCHMENT.asItem());
                         output.accept(DustItemRegistry.ANCIENT_TABLET.asItem());
+                        output.accept(DustItemRegistry.RESEARCH_NOTES.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",

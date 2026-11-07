@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_research_notes": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:research_notes"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:shared_research_guide"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_research_notes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:shared_research_guide"
+    ]
+  }
+}

@@ -20,6 +20,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.fml.config.ModConfig;
+import com.mowmaster.mowlib.client.ClientActivations;
+import com.mowmaster.dust.Features.Research.ResearchBookItem;
+import com.mowmaster.dust.Features.Research.Client.ResearchClient;
 
 import java.util.List;
 
@@ -31,6 +37,11 @@ import java.util.List;
 public class DustClient {
     public DustClient(ModContainer container) {
         DustKeyMappings.register();
+        // config/dust-client.toml, editable from Mods > Dust > Config
+        container.registerConfig(ModConfig.Type.CLIENT, DustClientConfig.SPEC);
+        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        // MowLib's activation key (default V) on a held research book opens it, like sneak + right-click
+        ClientActivations.register(stack -> stack.getItem() instanceof ResearchBookItem, (stack, hand) -> ResearchClient.openBook(stack));
     }
 
     @SubscribeEvent
