@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "dust:crystal_hoe",
+    "dust:crystal_axe",
+    "dust:crystal_shovel"
+  ],
+  "result": {
+    "id": "dust:crystal_mattock"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "dust:blockofcrystal_red",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "BBB",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "dust:crystal_hammer"
+  }
+}

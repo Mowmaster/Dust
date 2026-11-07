@@ -4,12 +4,14 @@ import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.AncientLanguage.AncientInscribeRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.data.recipes.BrewingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -40,6 +42,23 @@ public class DustProviderBasicRecipe extends RecipeProvider {
     @Override
     protected void buildRecipes() {
         buildBrewingRecipes();
+
+        // Ancient Ink: an ink sac steeped in black (chaos) and white (order) dust. Placeholder recipe.
+        shapeless(RecipeCategory.MISC, DustItemRegistry.ANCIENT_INK.get())
+                .requires(Items.INK_SAC)
+                .requires(DustItemRegistry.DUST_BLACK.get())
+                .requires(DustItemRegistry.DUST_WHITE.get())
+                .unlockedBy(getHasName(Items.INK_SAC), has(Items.INK_SAC))
+                .save(output);
+        // Parchment, for rubbing glyph walls: paper and a bit of charcoal
+        shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)
+                .requires(Items.PAPER).requires(Items.PAPER).requires(Items.PAPER)
+                .requires(Items.CHARCOAL)
+                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
+                .save(output);
+        // Ancient Ink + a written book / named item -> written in the ancient script (code-driven "special" recipe)
+        SpecialRecipeBuilder.special(() -> AncientInscribeRecipe.INSTANCE)
+                .save(output, DustReferences.MODID + ":ancient_inscribe");
 
         List<ItemLike> DUST_SMELTABLES = List.of(DustItemRegistry.CRYSTAL_RED);
 

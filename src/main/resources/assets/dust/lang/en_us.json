@@ -6,6 +6,22 @@
 
   "key.dust.dust_keyaction": "Dust Key Press",
 
+  "item.dust.ancient_ink": "Ancient Ink",
+  "message.dust.ancient.learned": "You have deciphered an ancient glyph: %s",
+  "message.dust.ancient.reads": "It reads: %s",
+  "message.dust.ancient.transcribed": "You carefully transcribe the glyphs",
+  "message.dust.ancient.crumbled": "The ancient writing crumbles to dust...",
+  "item.dust.ancient_tablet": "Ancient Tablet",
+  "item.dust.transcription": "Transcription",
+  "item.dust.parchment": "Parchment",
+  "block.dust.glyph_stone": "Glyph Stone",
+  "tooltip.dust.ancient_writing": "Right-click to decipher",
+  "tooltip.dust.parchment": "Use on a glyph wall to transcribe it",
+  "container.dust.decipher": "Decipher",
+  "container.dust.decipher.mistakes": "Mistakes: %s / %s",
+  "container.dust.decipher.won": "Deciphered!",
+  "container.dust.decipher.lost": "Lost... it read %s",
+
   "item.dust.wands_stick_fire": "Fire Wand",
   "item.dust.wands_stick_earth": "Earth Wand",
 

@@ -1,0 +1,10 @@
+{
+  "type": "dust:add_random_item_stack",
+  "condition": {
+    "type": "minecraft:match_block",
+    "blocks": "minecraft:carrots"
+  },
+  "item": "dust:dust_black",
+  "max_count": 3,
+  "min_count": 1
+}

@@ -30,6 +30,7 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.key())
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.key())
 
+                .add(DustBlockRegistry.GLYPH_STONE.key())
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE.key())
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.key());
 

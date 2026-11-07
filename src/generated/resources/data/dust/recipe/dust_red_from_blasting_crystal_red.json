@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "cookingtime": 100,
+  "experience": 0.25,
+  "group": "dust",
+  "ingredient": "dust:crystal_red",
+  "result": {
+    "id": "dust:dust_red"
+  }
+}

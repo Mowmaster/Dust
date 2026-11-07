@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "#dust:magical_crystals",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    " C ",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "dust:crystal_shovel"
+  }
+}

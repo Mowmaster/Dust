@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 // Run with the "data" run config (clientData), which writes to src/generated/resources.
 @EventBusSubscriber(modid = DustReferences.MODID)
@@ -40,6 +41,9 @@ public class DustDataGenerator {
     {
         event.add(DustProviderBasicRecipe.create())
                 .add(Registries.DAMAGE_TYPE, DustDamageTypes::bootstrap)
+                .add(Registries.FEATURE, DustWorldgen::features)
+                .add(Registries.PLACED_FEATURE, DustWorldgen::placedFeatures)
+                .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, DustWorldgen::biomeModifiers)
                 .lootTable(new LootTableProvider.SubProviderEntry(DustProviderBlockLootTable::new, LootContextParamSets.BLOCK));
     }
 }

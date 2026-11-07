@@ -95,6 +95,16 @@ public class DustAttachmentTypeRegistry
                     .build());
 
 
+    // Ancient glyphs the player has learned: bit 0 = a ... bit 25 = z (see AncientLanguage).
+    // Research knowledge, so it survives death. Synced ONLY to the player it belongs to (holder == to): other players'
+    // clients never get it, and each client reveals ancient text using its own player's mask.
+    public static final Supplier<AttachmentType<Integer>> ANCIENT_GLYPHS = ATTACHMENT_TYPES.register("ancient_glyphs",
+            () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT.fieldOf("ancient_glyphs"))
+                    .sync((holder, to) -> holder == to, ByteBufCodecs.VAR_INT)
+                    .copyOnDeath()
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

@@ -29,6 +29,10 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.CRYSTAL_BLUE.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_WHITE.asItem());
                         output.accept(DustItemRegistry.CRYSTAL_BLACK.asItem());
+
+                        output.accept(DustItemRegistry.ANCIENT_INK.asItem());
+                        output.accept(DustItemRegistry.PARCHMENT.asItem());
+                        output.accept(DustItemRegistry.ANCIENT_TABLET.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",
@@ -76,5 +80,6 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.asItem());
 
                         output.accept(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.asItem());
+                        output.accept(DustBlockRegistry.GLYPH_STONE.asItem());
                     }).build());
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -39,6 +40,9 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
 
         add(DustBlockRegistry.INERT_CRYSTAL_ORE.get(), block -> createOreDrop(block, DustItemRegistry.CRYSTAL_INERT.get()));
         add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get(), block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTAL_INERT.get(), 2, 5));
+
+        // Glyphs crumble when broken: glyph stones give cobblestone (so players can't collect glyphs from ruins)
+        add(DustBlockRegistry.GLYPH_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, Items.COBBLESTONE));
 
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
         add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));

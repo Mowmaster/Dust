@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.25,
+  "group": "dust",
+  "ingredient": "dust:crystal_red",
+  "result": {
+    "id": "dust:dust_red"
+  }
+}

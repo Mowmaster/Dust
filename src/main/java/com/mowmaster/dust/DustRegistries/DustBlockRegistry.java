@@ -1,6 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -78,6 +79,10 @@ public class DustBlockRegistry {
                             .pushReaction(PushReaction.POPPED)
             ));
 
+
+    // Ruin walls: a stone with one ancient glyph carved on its front (see Features/AncientLanguage)
+    public static final DeferredBlock<Block> GLYPH_STONE = registerBlock("glyph_stone", properties -> new GlyphStoneBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {

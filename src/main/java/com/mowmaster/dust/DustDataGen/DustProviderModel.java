@@ -3,6 +3,15 @@ package com.mowmaster.dust.DustDataGen;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.AncientLanguage.AncientLanguage;
+import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -21,6 +30,12 @@ public class DustProviderModel extends ModelProvider {
 
         itemModels.generateFlatItem(DustItemRegistry.SPELL_WAND_FIRE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.SPELL_WAND_EARTH.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.ANCIENT_INK.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.ANCIENT_TABLET.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.TRANSCRIPTION.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(DustItemRegistry.PARCHMENT.get(), ModelTemplates.FLAT_ITEM);
+
+        createGlyphStone(blockModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -76,4 +91,25 @@ public class DustProviderModel extends ModelProvider {
 
     }
 
+    // One "orientable" model per glyph (front = textures/block/glyph_stone/glyph_stone_<letter>, sides and top plain),
+    // picked by the GLYPH property and turned by FACING. The item shows the 'a' glyph.
+    private void createGlyphStone(BlockModelGenerators blockModels)
+    {
+        Block block = DustBlockRegistry.GLYPH_STONE.get();
+        Material side = new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_side"));
+        Material top = new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_top"));
+        Identifier[] models = new Identifier[AncientLanguage.GLYPH_COUNT];
+        for (int i = 0; i < models.length; i++) {
+            String letter = String.valueOf((char) ('a' + i));
+            TextureMapping textures = new TextureMapping()
+                    .put(TextureSlot.FRONT, new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/glyph_stone/glyph_stone_" + letter)))
+                    .put(TextureSlot.SIDE, side)
+                    .put(TextureSlot.TOP, top);
+            models[i] = ModelTemplates.CUBE_ORIENTABLE.createWithSuffix(block, "_" + letter, textures, blockModels.modelOutput);
+        }
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(GlyphStoneBlock.GLYPH).generate(glyph -> BlockModelGenerators.plainVariant(models[glyph])))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.registerSimpleItemModel(block, models[0]);
+    }
 }

@@ -1,13 +1,14 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
+import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import com.mowmaster.dust.Features.EffectScrolls.Particles.ParticleSpellFire;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -16,11 +17,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-import java.util.List;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = DustReferences.MODID, dist = Dist.CLIENT)
@@ -29,10 +28,6 @@ import java.util.List;
 public class DustClient {
     public DustClient(ModContainer container) {
         DustKeyMappings.register();
-    }
-
-    @SubscribeEvent
-    static void onClientSetup(FMLClientSetupEvent event) {
     }
 
     @SubscribeEvent
@@ -56,19 +51,19 @@ public class DustClient {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        Dust.LOGGER.info("Registered Entity Renderers: {}", "ENTITIES");
+        // One renderer class, tinted per element (0xRRGGBB)
+        event.registerEntityRenderer(DustEntityRegistry.FIRE_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFF0000));
+        event.registerEntityRenderer(DustEntityRegistry.EARTH_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x00FF00));
+        event.registerEntityRenderer(DustEntityRegistry.WATER_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x0000FF));
+        event.registerEntityRenderer(DustEntityRegistry.CHAOS_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x323232));
+        event.registerEntityRenderer(DustEntityRegistry.ORDER_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFFFFFF));
     }
 
+    // Which screen opens for which menu type
     @SubscribeEvent
-    public static void registerTintBlocks(RegisterColorHandlersEvent.BlockTintSources event)
+    public static void registerScreens(RegisterMenuScreensEvent event)
     {
-        Dust.LOGGER.info("Registered tint source: {}", "TINT BLOCKS");
-    }
-
-    @SubscribeEvent
-    public static void registerTintItems(RegisterColorHandlersEvent.ItemTintSources event)
-    {
-
+        event.register(DustMenuRegistry.DECIPHER.get(), DecipherScreen::new);
     }
 
     @SubscribeEvent
@@ -78,18 +73,13 @@ public class DustClient {
     }
 
     @SubscribeEvent
-    public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event)
-    {
-    }
-
-    @SubscribeEvent
     public static void registerHUD(RegisterGuiLayersEvent event) {
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_meter"), (guiGraphics, deltaTracker) -> {
             int x = guiGraphics.guiWidth() / 2;
             int y = guiGraphics.guiHeight();
 
             LocalPlayer player = Minecraft.getInstance().player;
-            if (!player.isCreative() && !player.isSpectator()
+            if (player != null && !player.isCreative() && !player.isSpectator()
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
                 for (int i = 0; i < 100; i++) {
                     guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_iconh_bg"),
@@ -123,8 +113,8 @@ public class DustClient {
             int y = guiGraphics.guiHeight();
 
             LocalPlayer player = Minecraft.getInstance().player;
-            if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE)
+            if (player != null && !player.isCreative() && !player.isSpectator()
+                    && player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
                 DustElementAttachmentHelper.ElementFireInfo result = DustElementAttachmentHelper.getElementInfoFire(player);
                 int maxElement = result.max();
@@ -139,8 +129,8 @@ public class DustClient {
             int y = guiGraphics.guiHeight();
 
             LocalPlayer player = Minecraft.getInstance().player;
-            if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER)
+            if (player != null && !player.isCreative() && !player.isSpectator()
+                    && player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
                 DustElementAttachmentHelper.ElementWaterInfo result = DustElementAttachmentHelper.getElementInfoWater(player);
                 int maxElement = result.max();
@@ -155,8 +145,8 @@ public class DustClient {
             int y = guiGraphics.guiHeight();
 
             LocalPlayer player = Minecraft.getInstance().player;
-            if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH)
+            if (player != null && !player.isCreative() && !player.isSpectator()
+                    && player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
                 DustElementAttachmentHelper.ElementEarthInfo result = DustElementAttachmentHelper.getElementInfoEarth(player);
                 int maxElement = result.max();
@@ -171,8 +161,8 @@ public class DustClient {
             int y = guiGraphics.guiHeight();
 
             LocalPlayer player = Minecraft.getInstance().player;
-            if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS)
+            if (player != null && !player.isCreative() && !player.isSpectator()
+                    && player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
                 DustElementAttachmentHelper.ElementChaosInfo result = DustElementAttachmentHelper.getElementInfoChaos(player);
                 int maxElement = result.max();
@@ -187,8 +177,8 @@ public class DustClient {
             int y = guiGraphics.guiHeight();
 
             LocalPlayer player = Minecraft.getInstance().player;
-            if (!Minecraft.getInstance().player.isCreative() && !Minecraft.getInstance().player.isSpectator()
-                    && Minecraft.getInstance().player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER)
+            if (player != null && !player.isCreative() && !player.isSpectator()
+                    && player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER)
                     && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
                 DustElementAttachmentHelper.ElementOrderInfo result = DustElementAttachmentHelper.getElementInfoOrder(player);
                 int maxElement = result.max();
@@ -201,10 +191,5 @@ public class DustClient {
 
     }
 
-
-    @SubscribeEvent
-    public static void registerScreens(RegisterMenuScreensEvent event)
-    {
-    }
 
 }

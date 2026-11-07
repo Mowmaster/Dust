@@ -1,6 +1,9 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.AncientLanguage.AncientInkItem;
+import com.mowmaster.dust.Features.AncientLanguage.AncientWritingItem;
+import com.mowmaster.dust.Features.AncientLanguage.ParchmentItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
@@ -66,6 +69,16 @@ public class DustItemRegistry
             properties -> new Item(properties.horseArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL)));
 
 
+
+    // Writes signs, books and item names in the ancient script (see Features/AncientLanguage)
+    public static final DeferredItem<Item> ANCIENT_INK = DUSTITEMS.registerItem("ancient_ink", AncientInkItem::new);
+
+    // Ancient words to decipher (hangman): found in chests and ruins, or rubbed off glyph walls with Parchment
+    public static final DeferredItem<Item> ANCIENT_TABLET = DUSTITEMS.registerItem("ancient_tablet",
+            properties -> new AncientWritingItem(properties.stacksTo(1)));
+    public static final DeferredItem<Item> TRANSCRIPTION = DUSTITEMS.registerItem("transcription",
+            properties -> new AncientWritingItem(properties.stacksTo(1)));
+    public static final DeferredItem<Item> PARCHMENT = DUSTITEMS.registerItem("parchment", ParchmentItem::new);
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));

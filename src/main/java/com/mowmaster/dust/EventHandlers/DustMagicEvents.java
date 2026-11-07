@@ -239,6 +239,7 @@ public class DustMagicEvents {
         new PlayerManaAdd(event.getDispatcher());
         new PlayerUnlockMana(event.getDispatcher());
         new PlayerModifyElement(event.getDispatcher());
+        new AncientGlyphsCommand(event.getDispatcher());
     }
 
 

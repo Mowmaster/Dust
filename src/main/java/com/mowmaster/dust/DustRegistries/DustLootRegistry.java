@@ -1,6 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mojang.serialization.MapCodec;
+import com.mowmaster.dust.DustLoot.AddAncientTabletModifier;
 import com.mowmaster.dust.DustLoot.AddCustomOrbModifier;
 import com.mowmaster.dust.DustLoot.AddItemStackModifier;
 import com.mowmaster.dust.DustLoot.AddRandomItemStackModifier;
@@ -22,6 +23,9 @@ public class DustLootRegistry
 
     public static final Supplier<MapCodec<AddRandomItemStackModifier>> ADD_RANDOM_ITEM_STACK =
             LOOT_MODIFIERS.register("add_random_item_stack", () -> AddRandomItemStackModifier.CODEC);
+
+    public static final Supplier<MapCodec<AddAncientTabletModifier>> ADD_ANCIENT_TABLET =
+            LOOT_MODIFIERS.register("add_ancient_tablet", () -> AddAncientTabletModifier.CODEC);
 
     public static final Supplier<MapCodec<AddCustomOrbModifier>> ADD_CUSTOM_ORB =
             LOOT_MODIFIERS.register("add_custom_orb", () -> AddCustomOrbModifier.CODEC);

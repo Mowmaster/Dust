@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DustDataGen;
 
+import com.mowmaster.dust.DustLoot.AddAncientTabletModifier;
 import com.mowmaster.dust.DustLoot.AddItemStackModifier;
 import com.mowmaster.dust.DustLoot.AddRandomItemStackModifier;
 import com.mowmaster.dust.DustReferences;
@@ -45,8 +46,24 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
         add("fire_dust_from_blaze",
                 new AddItemStackModifier(lootTable("entities/blaze"), new ItemStackTemplate(DustItemRegistry.DUST_RED, 1)));
 
+        // Ancient Tablets in structure chests: (loot table, chance per chest)
+        tablet("chests/simple_dungeon", 0.25F);
+        tablet("chests/abandoned_mineshaft", 0.15F);
+        tablet("chests/desert_pyramid", 0.35F);
+        tablet("chests/jungle_temple", 0.35F);
+        tablet("chests/stronghold_library", 0.6F);
+        tablet("chests/woodland_mansion", 0.4F);
+        tablet("chests/ancient_city", 0.5F);
+        tablet("chests/underwater_ruin_big", 0.3F);
+        tablet("chests/shipwreck_map", 0.2F);
+
         add("slime_dustdrop_water",
                 new AddRandomItemStackModifier(lootTable("entities/slime"), DustItemRegistry.DUST_BLUE, 1, 3));
+    }
+
+    private void tablet(String vanillaChest, float chance) {
+        add("ancient_tablet_" + vanillaChest.substring(vanillaChest.indexOf('/') + 1),
+                new AddAncientTabletModifier(lootTable(vanillaChest), chance));
     }
 
     // Matches when this block (any age/state) is broken

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "D": "dust:dust_red",
+    "I": "dust:crystal_inert"
+  },
+  "pattern": [
+    "DDD",
+    "DID",
+    "DDD"
+  ],
+  "result": {
+    "id": "dust:crystal_red"
+  }
+}
