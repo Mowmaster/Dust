@@ -6,9 +6,7 @@ import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.eart
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust.OrderOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust.WaterOrbEntityBase;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.bus.api.IEventBus;
@@ -16,40 +14,27 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class DustEntityRegistry {
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
+    public static final DeferredRegister.Entities ENTITY_TYPES =
             DeferredRegister.createEntities(DustReferences.MODID);
 
-    public static final ResourceKey<EntityType<?>> BASE_ORB_KEY = ResourceKey.create(Registries.ENTITY_TYPE,
-            Identifier.fromNamespaceAndPath(DustReferences.MODID, "base_orb_key"));
+    public static final DeferredHolder<EntityType<?>, EntityType<FireOrbEntityBase>> FIRE_ORB = registerOrb("fire_orb", FireOrbEntityBase::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<EarthOrbEntityBase>> EARTH_ORB = registerOrb("earth_orb", EarthOrbEntityBase::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<WaterOrbEntityBase>> WATER_ORB = registerOrb("water_orb", WaterOrbEntityBase::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<OrderOrbEntityBase>> ORDER_ORB = registerOrb("order_orb", OrderOrbEntityBase::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ChaosOrbEntityBase>> CHAOS_ORB = registerOrb("chaos_orb", ChaosOrbEntityBase::new);
 
-    public static final DeferredHolder<EntityType<?>, EntityType<FireOrbEntityBase>> FIRE_ORB =
-            ENTITY_TYPES.register("fire_orb", () ->
-                    EntityType.Builder.of(FireOrbEntityBase::new, MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
-                            .build(BASE_ORB_KEY));
-    public static final DeferredHolder<EntityType<?>, EntityType<EarthOrbEntityBase>> EARTH_ORB =
-            ENTITY_TYPES.register("earth_orb", () ->
-                    EntityType.Builder.of(EarthOrbEntityBase::new, MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
-                            .build(BASE_ORB_KEY));
-    public static final DeferredHolder<EntityType<?>,   EntityType<WaterOrbEntityBase>> WATER_ORB =
-            ENTITY_TYPES.register("water_orb", () ->
-                    EntityType.Builder.of(WaterOrbEntityBase::new, MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
-                            .build(BASE_ORB_KEY));
-    public static final DeferredHolder<EntityType<?>, EntityType<OrderOrbEntityBase>> ORDER_ORB =
-            ENTITY_TYPES.register("order_orb", () ->
-                    EntityType.Builder.of(OrderOrbEntityBase::new, MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
-                            .build(BASE_ORB_KEY));
-    public static final DeferredHolder<EntityType<?>, EntityType<ChaosOrbEntityBase>> CHAOS_ORB =
-            ENTITY_TYPES.register("chaos_orb", () ->
-                    EntityType.Builder.of(ChaosOrbEntityBase::new, MobCategory.MISC)
-                            .sized(0.5F, 0.5F)
-                            .build(BASE_ORB_KEY));
+    // registerEntityType builds the EntityType with its own registry key (dust:fire_orb, ...). Before, every orb was
+    // built with the same made-up key "dust:base_orb_key", so they all shared one description id / loot table id.
+    // Tracking range and update interval match vanilla's experience orb.
+    private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> registerOrb(String name, EntityType.EntityFactory<E> factory) {
+        return ENTITY_TYPES.registerEntityType(name, factory, MobCategory.MISC,
+                (entityFactory, category) -> EntityType.Builder.of(entityFactory, category)
+                        .sized(0.5F, 0.5F)
+                        .clientTrackingRange(6)
+                        .updateInterval(20));
+    }
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }
-
 }

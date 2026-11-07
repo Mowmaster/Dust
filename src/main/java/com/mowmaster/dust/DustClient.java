@@ -1,18 +1,11 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust.ChaosOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust.EarthOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust.OrderOrbRenderer;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust.WaterOrbRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.KeyMappings.DustKeyMappings;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraC2S;
 import com.mowmaster.dust.Features.EffectScrolls.Particles.ParticleSpellFire;
-import com.mowmaster.dust.Features.FocusedBooks.FocusedBookTintSource;
-import com.mowmaster.dust.Features.Pedestals.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.player.LocalPlayer;
@@ -63,30 +56,19 @@ public class DustClient {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(DustEntityRegistry.FIRE_ORB.get(), FireOrbRenderer::new);
-        event.registerEntityRenderer(DustEntityRegistry.EARTH_ORB.get(), EarthOrbRenderer::new);
-        event.registerEntityRenderer(DustEntityRegistry.WATER_ORB.get(), WaterOrbRenderer::new);
-        event.registerEntityRenderer(DustEntityRegistry.CHAOS_ORB.get(), ChaosOrbRenderer::new);
-        event.registerEntityRenderer(DustEntityRegistry.ORDER_ORB.get(), OrderOrbRenderer::new);
         Dust.LOGGER.info("Registered Entity Renderers: {}", "ENTITIES");
     }
 
     @SubscribeEvent
     public static void registerTintBlocks(RegisterColorHandlersEvent.BlockTintSources event)
     {
-        event.register(List.of(BlockTintSources.constant(16711680)), DustBlockRegistry.CRYSTAL_STONE_RED.get());
-        event.register(List.of(BlockTintSources.constant(65280)), DustBlockRegistry.CRYSTAL_STONE_GREEN.get());
-        event.register(List.of(BlockTintSources.constant(255)), DustBlockRegistry.CRYSTAL_STONE_BLUE.get());
-        event.register(List.of(BlockTintSources.constant(16777215)), DustBlockRegistry.CRYSTAL_STONE_WHITE.get());
-        event.register(List.of(BlockTintSources.constant(2763306)), DustBlockRegistry.CRYSTAL_STONE_BLACK.get());
         Dust.LOGGER.info("Registered tint source: {}", "TINT BLOCKS");
     }
 
     @SubscribeEvent
     public static void registerTintItems(RegisterColorHandlersEvent.ItemTintSources event)
     {
-        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "focusedbook_color"), FocusedBookTintSource.MAP_CODEC);
-        Dust.LOGGER.info("Registered tint source: {}", Identifier.fromNamespaceAndPath(DustReferences.MODID, "focusedbook_color"));
+
     }
 
     @SubscribeEvent
@@ -98,7 +80,6 @@ public class DustClient {
     @SubscribeEvent
     public static void registerBlockEntityRenderer(EntityRenderersEvent.RegisterRenderers event)
     {
-        event.registerBlockEntityRenderer(RegistryPedestalEntity.PEDESTAL_BASE.get(), RenderBEPedestal::new);
     }
 
     @SubscribeEvent
@@ -224,7 +205,6 @@ public class DustClient {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event)
     {
-        event.register(RegistryMenuTypePedestal.PEDESTAL_MENU.get(), ScreenPedestal::new);
     }
 
 }

@@ -2,12 +2,18 @@
   "tooltip.dust.shiftprompt": "Press §eShift§r for more Info",
   "creativetab.dust.dusttab_items": "Dust Items",
   "creativetab.dust.dusttab_blocks": "Dust Blocks",
-  "creativetab.dust.dusttab_decor": "Dust Decorations",
-  "creativetab.dust.dusttab_food": "Dusty Delights",
   "creativetab.dust.dusttab_combat": "Crystal Combat",
 
   "key.dust.dust_keyaction": "Dust Key Press",
 
+  "item.dust.wands_stick_fire": "Fire Wand",
+  "item.dust.wands_stick_earth": "Earth Wand",
+
+  "entity.dust.fire_orb": "Fire Dust Orb",
+  "entity.dust.water_orb": "Water Dust Orb",
+  "entity.dust.earth_orb": "Earth Dust Orb",
+  "entity.dust.chaos_orb": "Chaos Dust Orb",
+  "entity.dust.order_orb": "Order Dust Orb",
 
   "effect.dust.effect_scorch": "Scorched",
   "effect.dust.effect_scorch.description": "Burns entity until it reaches 100, at which point it explodes.",
@@ -23,53 +29,8 @@
   "effect.dust.effect_magnet": "Magnetized",
   "effect.dust.effect_magnet.description": "Magnetizes items, xp, and dust to the player.",
 
-
-  "item.dust.food_cornbread": "Cornbread",
-  "tooltip.dust.cornbread": "Cornbread is So Filling!",
-  "item.dust.food_lettuce": "Lettuce Leaf",
-  "item.dust.seeds_lettuce": "Lettuce Seeds",
-  "block.dust.crop_lettuce": "Lettuce Plant",
-
-
-  "item.dust.food_falloldberry": "Fallold Berry",
-  "block.dust.bush_falloldberry": "Fallold Berry Bush",
-
-
   "block.dust.flower_windwheel": "Windwheel Aster",
   "block.dust.pottedflower_windwheel": "Windwheel Aster in a Pot",
-
-
-  "block.dust.crystal_stone_red": "Fire Stone",
-  "block.dust.crystal_stone_green": "Earth Stone",
-  "block.dust.crystal_stone_blue": "Water Stone",
-  "block.dust.crystal_stone_white": "Order Stone",
-  "block.dust.crystal_stone_black": "Chaos Stone",
-
-
-
-
-
-
-  "item.dust.chisel_iron": "Crystal Chisel (Iron)",
-  "tooltip_shift.dust.chisel_iron": "Right Click on Some Blocks to Chisel Them.",
-  "item.dust.halfsaw_iron": "Crystal HalfSaw (Iron)",
-  "tooltip_shift.dust.halfsaw_iron": "Right Click on Wood Plank Blocks to Slab Them.",
-  "item.dust.fuel_charcoal_white": "Dusty Coal (White)",
-  "block.dust.crystal_path_tier1": "Crystal Path (Normal)",
-  "block.dust.crystal_path_tier2": "Crystal Path (Fast)",
-  "block.dust.crystal_path_tier3": "Crystal Path (Faster)",
-  "block.dust.crystal_path_tier4": "Crystal Path (Fastest)",
-  "block.dust.planks_green": "Crystal Planks (Green)",
-  "block.dust.stairs_green": "Crystal Stairs (Green)",
-  "block.dust.slab_green": "Crystal Slab (Green)",
-  "block.dust.button_green": "Crystal Button (Green)",
-  "block.dust.pressureplate_green": "Crystal Pressure Plate (Green)",
-  "block.dust.fence_green": "Crystal Fence (Green)",
-  "block.dust.fencegate_green": "Crystal Fence Gate (Green)",
-  "block.dust.wall_green": "Crystal Wood Wall (Green)",
-  "block.dust.door_green": "Crystal Door (Green)",
-  "block.dust.trapdoor_green": "Crystal Trapdoor (Green)",
-
 
   "item.dust.crystal_sword": "Crystal Sword",
   "item.dust.crystal_pickaxe": "Crystal Pickaxe",
@@ -78,6 +39,7 @@
   "item.dust.crystal_hoe": "Crystal Hoe",
   "item.dust.crystal_spear": "Crystal Spear",
   "item.dust.crystal_mattock": "Crystal Mattock",
+  "item.dust.crystal_hammer": "Crystal Hammer",
   "item.dust.crystal_pickadze": "Crystal Pickadze",
   "item.dust.crystal_kama": "Crystal Kama",
   "item.dust.crystal_helmet": "Crystal Helmet",
@@ -85,8 +47,6 @@
   "item.dust.crystal_leggings": "Crystal Leggings",
   "item.dust.crystal_boots": "Crystal Boots",
   "item.dust.crystal_horse_armor": "Crystal Horse Armor",
-
-
 
   "item.dust.dust_red": "Red Dust",
   "item.dust.dust_green": "Green Dust",
@@ -115,7 +75,5 @@
 
   "block.dust.block_inert_crystal_ore": "Inert Crystal Ore",
   "block.dust.block_inert_crystal_ore_deepslate": "Deepslate Inert Crystal Ore"
-
-
 
 }

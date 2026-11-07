@@ -8,74 +8,31 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Collection;
 
+// /addMana <players> <amount>
 public class PlayerManaAdd
 {
     public PlayerManaAdd(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("addMana")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-                .then(Commands.argument("targets", EntityArgument.entities())
-                        .then(Commands.argument("amount", IntegerArgumentType.integer(0, Integer.MAX_VALUE))
-                                .executes(c->run(
+                .then(Commands.argument("targets", EntityArgument.players())
+                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                .executes(c -> run(
                                         c.getSource(),
-                                        EntityArgument.getEntities(c, "targets"),
+                                        EntityArgument.getPlayers(c, "targets"),
                                         IntegerArgumentType.getInteger(c, "amount"))))
-                        )
-        );
-    }
-
-    private static int run(CommandSourceStack source, Collection<? extends Entity> targets, int amount) {
-
-        for (Entity entity : targets) {
-            if (entity instanceof LivingEntity target) {
-                if(target instanceof ServerPlayer player)
-                {
-                    int addedAmount = DustMagicAttachmentHelper.addManaWithConsumedCount(player, amount);
-                    source.sendSuccess(()-> Component.literal(addedAmount + " Mana Added To: " + target.getPlainTextName()), false);
-                    return 1;
-                }
-
-            }
-            else if (targets.size() == 1) {
-                source.sendFailure(Component.literal("Target Unknown"));
-                return -1;
-            }
-        }
-        return -1;
-    }
-
-}
-
-
-
-
-/*
-dispatcher.register(
-            Commands.literal("enchant")
-                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-                .then(
-                    Commands.argument("targets", EntityArgument.entities())
-                        .then(
-                            Commands.argument("enchantment", ResourceArgument.resource(context, Registries.ENCHANTMENT))
-                                .executes(
-                                    c -> enchant(c.getSource(), EntityArgument.getEntities(c, "targets"), ResourceArgument.getEnchantment(c, "enchantment"), 1)
-                                )
-                                .then(
-                                    Commands.argument("level", IntegerArgumentType.integer(0))
-                                        .executes(
-                                            c -> enchant(
-                                                c.getSource(),
-                                                EntityArgument.getEntities(c, "targets"),
-                                                ResourceArgument.getEnchantment(c, "enchantment"),
-                                                IntegerArgumentType.getInteger(c, "level")
-                                            )
-                                        )
-                                )
-                        )
                 )
         );
- */
+    }
+
+    // Returns how many players were changed (a command's result is its "success count")
+    private static int run(CommandSourceStack source, Collection<ServerPlayer> targets, int amount) {
+        for (ServerPlayer player : targets) {
+            int addedAmount = DustMagicAttachmentHelper.addManaWithConsumedCount(player, amount);
+            source.sendSuccess(() -> Component.literal(addedAmount + " Mana Added To: " + player.getPlainTextName()), false);
+        }
+        return targets.size();
+    }
+}

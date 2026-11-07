@@ -2,7 +2,6 @@ package com.mowmaster.dust.Features.EffectScrolls.DustMagic;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -15,7 +14,7 @@ public enum EnumElement implements StringRepresentable {
 
     private final String name;
     EnumElement(String name) { this.name = name; }
-    @Override public @NotNull String getSerializedName() { return name; }
+    @Override public String getSerializedName() { return name; }
 
     public static final com.mojang.serialization.Codec<EnumElement> CODEC =
             StringRepresentable.fromEnum(EnumElement::values);

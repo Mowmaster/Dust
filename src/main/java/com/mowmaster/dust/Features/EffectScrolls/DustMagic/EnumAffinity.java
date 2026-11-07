@@ -1,7 +1,6 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustMagic;
 
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ public enum EnumAffinity implements StringRepresentable {
     }
 
 
-    public @NotNull String getSerializedName() { return name; }
+    public String getSerializedName() { return name; }
     public int getAffinityTier() {return tier;}
     public List<String> getAffinityComposition() { return parts; }
     public float getElementDiscount() { return discount; }

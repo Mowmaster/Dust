@@ -2,32 +2,45 @@ package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
+import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.DustReferences;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
+import net.minecraft.data.recipes.BrewingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class DustProviderBasicRecipe extends RecipeProvider {
-    public DustProviderBasicRecipe(HolderLookup.Provider registries, RecipeOutput output)
+    // 26.3: recipes (and their advancements) are registry entries. The provider is built by the registry
+    // bootstrap that create() returns, which DustDataGenerator hands to GatherDataRegistryEntriesEvent.
+    protected DustProviderBasicRecipe(BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput)
     {
-        super(registries, output);
+        super(recipeOutput, advancementOutput);
+    }
+
+    public static MultiRegistryBootstrap create()
+    {
+        return RecipeProvider.asBootstrap(DustProviderBasicRecipe::new);
     }
 
 
 
     @Override
     protected void buildRecipes() {
+        buildBrewingRecipes();
+
         List<ItemLike> DUST_SMELTABLES = List.of(DustItemRegistry.CRYSTAL_RED);
 
         oreSmelting(DUST_SMELTABLES,RecipeCategory.MISC, CookingBookCategory.BLOCKS, DustItemRegistry.DUST_RED.get(), 0.25f, 200, DustReferences.MODID);
@@ -54,36 +67,6 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         shapeless(RecipeCategory.MISC, DustItemRegistry.CRYSTAL_RED.get(),9)
                 .requires(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get())
                 .unlockedBy(getHasName(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()), has(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()))
-                .save(output);
-
-        stairBuilder(DustBlockRegistry.BLOCK_STAIRS_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .group(DustReferences.MODID)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .save(output);
-        slab(RecipeCategory.BUILDING_BLOCKS, DustBlockRegistry.BLOCK_SLAB_GREEN.get(), DustBlockRegistry.BLOCK_PLANKS_GREEN.get());
-
-        buttonBuilder(DustBlockRegistry.BLOCK_BUTTON_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .group(DustReferences.MODID)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .save(output);
-        pressurePlate(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get(), DustBlockRegistry.BLOCK_PLANKS_GREEN.get());
-        fenceBuilder(DustBlockRegistry.BLOCK_FENCE_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .group(DustReferences.MODID)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .save(output);
-        fenceGateBuilder(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .group(DustReferences.MODID)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .save(output);
-        //wALL AND TRAPDOOR HAVE SAME RECIPE...
-        //wall(RecipeCategory.BUILDING_BLOCKS, DustBlockRegistry.BLOCK_WALL_GREEN.get(), DustBlockRegistry.BLOCK_PLANKS_GREEN.get());
-        doorBuilder(DustBlockRegistry.BLOCK_DOOR_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .group(DustReferences.MODID)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .save(output);
-        trapdoorBuilder(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get(), Ingredient.of(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
-                .group(DustReferences.MODID)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()), has(DustBlockRegistry.BLOCK_PLANKS_GREEN.get()))
                 .save(output);
 
         shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SWORD.get())
@@ -177,14 +160,22 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_HORSE_ARMOR)
                 .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
                 .save(output);
+    }
 
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CORNBREAD.get())
-                .pattern("CCC")
-                .pattern("CAC")
-                .pattern("CCC")
-                .define('C', DustTags.Items.MAGICAL_DUST_ITEMS).define('A', Items.BREAD)
-                .unlockedBy(getHasName(DustItemRegistry.DUST_RED.get()), has(DustItemRegistry.DUST_RED.get()))
-                .save(output);
+    // 26.3: brewing is recipe data now (RegisterBrewingRecipesEvent is gone). A brewing recipe names the exact
+    // container, so the mix needs one recipe per bottle type, and the splash/lingering conversions need their own
+    // recipes for every potion (vanilla only makes them for its own potions).
+    private void buildBrewingRecipes() {
+        // Fire Resistance + Blaze Powder -> Scorch, in all three bottles
+        for (Item container : List.of(Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION)) {
+            BrewingRecipeBuilder.brewingMix(container, Potions.FIRE_RESISTANCE, Items.BLAZE_POWDER, DustPotionRegistry.POTION_SCORCH)
+                    .save(output, DustReferences.MODID + ":brewing/" + getItemName(container) + "_potion_scorch");
+        }
+        // Scorch potion -> splash (gunpowder) -> lingering (dragon's breath)
+        BrewingRecipeBuilder.brewingContainerTransform(Items.POTION, DustPotionRegistry.POTION_SCORCH, Items.GUNPOWDER, Items.SPLASH_POTION)
+                .save(output, DustReferences.MODID + ":brewing/potion_scorch_to_splash");
+        BrewingRecipeBuilder.brewingContainerTransform(Items.SPLASH_POTION, DustPotionRegistry.POTION_SCORCH, Items.DRAGON_BREATH, Items.LINGERING_POTION)
+                .save(output, DustReferences.MODID + ":brewing/potion_scorch_to_lingering");
     }
 
     @Override
@@ -197,19 +188,4 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         }
     }
 
-    public static class Runner extends RecipeProvider.Runner {
-        protected Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-            super(packOutput, registries);
-        }
-
-        @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
-            return new DustProviderBasicRecipe(provider,recipeOutput);
-        }
-
-        @Override
-        public String getName() {
-            return DustReferences.MODNAME + " Recipes";
-        }
-    }
 }

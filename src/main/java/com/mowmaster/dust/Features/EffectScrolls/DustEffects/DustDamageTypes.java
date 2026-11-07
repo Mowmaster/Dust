@@ -15,7 +15,7 @@ public class DustDamageTypes {
     public static final ResourceKey<DamageType> SCORCH_KEY = ResourceKey.create(Registries.DAMAGE_TYPE,
             Identifier.fromNamespaceAndPath(DustReferences.MODID, "damagetype_scorch"));
     public static final ResourceKey<DamageType> IGNITION_KEY = ResourceKey.create(Registries.DAMAGE_TYPE,
-            Identifier.fromNamespaceAndPath(DustReferences.MODID, "damagetype_scorch"));
+            Identifier.fromNamespaceAndPath(DustReferences.MODID, "damagetype_ignition"));
 
     public static void bootstrap(BootstrapContext<DamageType> context)
     {

@@ -1,10 +1,6 @@
 package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
-import com.mowmaster.dust.Features.Pedestals.RegistryMenuTypePedestal;
-import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
-import com.mowmaster.dust.Features.Pedestals.RegistryPedestalEntity;
-import com.mowmaster.dust.Features.Pedestals.RegistryPedestalItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import org.slf4j.Logger;
@@ -35,12 +31,6 @@ public class Dust {
         DustBlockRegistry.register(modEventBus);
         DustEntityRegistry.register(modEventBus);
 
-        RegistryMenuTypePedestal.register(modEventBus);
-        RegistryPedestalItem.register(modEventBus);
-        RegistryPedestalBlock.register(modEventBus);
-        RegistryPedestalEntity.register(modEventBus);
-
-        DustComponentDataRegistry.register(modEventBus);
         DustAttachmentTypeRegistry.register(modEventBus);
 
         DustConsumeEffectsRegistry.register(modEventBus);
@@ -57,7 +47,6 @@ public class Dust {
 
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event)

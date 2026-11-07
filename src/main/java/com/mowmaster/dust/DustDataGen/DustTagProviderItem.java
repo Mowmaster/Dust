@@ -4,78 +4,83 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.concurrent.CompletableFuture;
 
+// 26.x tag appenders take registry keys (ResourceKey<Item>), not the Item objects. A DeferredItem's key() gives that
+// key without needing the item to exist yet. A block's item has the same id as the block, so blockItem() builds it.
 public class DustTagProviderItem extends ItemTagsProvider {
     public DustTagProviderItem(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, DustReferences.MODID);
     }
 
+    private static ResourceKey<Item> blockItem(DeferredBlock<? extends Block> block) {
+        return ResourceKey.create(Registries.ITEM, block.getId());
+    }
+
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(DustTags.Items.MAGICAL_DUST_ITEMS)
-                .add(DustItemRegistry.DUST_RED.get())
-                .add(DustItemRegistry.DUST_GREEN.get())
-                .add(DustItemRegistry.DUST_BLUE.get())
-                .add(DustItemRegistry.DUST_WHITE.get())
-                .add(DustItemRegistry.DUST_BLACK.get());
+                .add(DustItemRegistry.DUST_RED.key())
+                .add(DustItemRegistry.DUST_GREEN.key())
+                .add(DustItemRegistry.DUST_BLUE.key())
+                .add(DustItemRegistry.DUST_WHITE.key())
+                .add(DustItemRegistry.DUST_BLACK.key());
 
         tag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS)
-                .add(DustItemRegistry.CRYSTAL_RED.get())
-                .add(DustItemRegistry.CRYSTAL_GREEN.get())
-                .add(DustItemRegistry.CRYSTAL_BLUE.get())
-                .add(DustItemRegistry.CRYSTAL_WHITE.get())
-                .add(DustItemRegistry.CRYSTAL_BLACK.get());
+                .add(DustItemRegistry.CRYSTAL_RED.key())
+                .add(DustItemRegistry.CRYSTAL_GREEN.key())
+                .add(DustItemRegistry.CRYSTAL_BLUE.key())
+                .add(DustItemRegistry.CRYSTAL_WHITE.key())
+                .add(DustItemRegistry.CRYSTAL_BLACK.key());
 
         tag(DustTags.Items.CRYSTAL_REPAIRABLES)
-                .add(DustItemRegistry.CRYSTAL_RED.get())
-                .add(DustItemRegistry.CRYSTAL_GREEN.get())
-                .add(DustItemRegistry.CRYSTAL_BLUE.get())
-                .add(DustItemRegistry.CRYSTAL_WHITE.get())
-                .add(DustItemRegistry.CRYSTAL_BLACK.get());
+                .add(DustItemRegistry.CRYSTAL_RED.key())
+                .add(DustItemRegistry.CRYSTAL_GREEN.key())
+                .add(DustItemRegistry.CRYSTAL_BLUE.key())
+                .add(DustItemRegistry.CRYSTAL_WHITE.key())
+                .add(DustItemRegistry.CRYSTAL_BLACK.key());
 
         tag(DustTags.Items.CRYSTAL_BLOCK_REPAIRABLES)
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.asItem())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.asItem())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.asItem())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.asItem())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.asItem());
+                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED))
+                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN))
+                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE))
+                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE))
+                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK));
 
         //This is required for specific enchants to work
         tag(ItemTags.SWORDS)
-                .add(DustItemRegistry.CRYSTAL_SWORD.get());
+                .add(DustItemRegistry.CRYSTAL_SWORD.key());
         tag(ItemTags.PICKAXES)
-                .add(DustItemRegistry.CRYSTAL_PICKAXE.get())
-                .add(DustItemRegistry.CRYSTAL_HAMMER.get());
+                .add(DustItemRegistry.CRYSTAL_PICKAXE.key())
+                .add(DustItemRegistry.CRYSTAL_HAMMER.key());
         tag(ItemTags.AXES)
-                .add(DustItemRegistry.CRYSTAL_AXE.get())
-                .add(DustItemRegistry.CRYSTAL_MATTOCK.get());
+                .add(DustItemRegistry.CRYSTAL_AXE.key())
+                .add(DustItemRegistry.CRYSTAL_MATTOCK.key());
         tag(ItemTags.SHOVELS)
-                .add(DustItemRegistry.CRYSTAL_SHOVEL.get())
-                .add(DustItemRegistry.CRYSTAL_MATTOCK.get());
+                .add(DustItemRegistry.CRYSTAL_SHOVEL.key())
+                .add(DustItemRegistry.CRYSTAL_MATTOCK.key());
         tag(ItemTags.HOES)
-                .add(DustItemRegistry.CRYSTAL_HOE.get())
-                .add(DustItemRegistry.CRYSTAL_MATTOCK.get());
+                .add(DustItemRegistry.CRYSTAL_HOE.key())
+                .add(DustItemRegistry.CRYSTAL_MATTOCK.key());
         tag(ItemTags.SPEARS)
-                .add(DustItemRegistry.CRYSTAL_SPEAR.get());
-
+                .add(DustItemRegistry.CRYSTAL_SPEAR.key());
 
         tag(ItemTags.HEAD_ARMOR)
-                .add(DustItemRegistry.CRYSTAL_HELMET.get());
+                .add(DustItemRegistry.CRYSTAL_HELMET.key());
         tag(ItemTags.CHEST_ARMOR)
-                .add(DustItemRegistry.CRYSTAL_CHESTPLATE.get());
+                .add(DustItemRegistry.CRYSTAL_CHESTPLATE.key());
         tag(ItemTags.LEG_ARMOR)
-                .add(DustItemRegistry.CRYSTAL_LEGGINGS.get());
+                .add(DustItemRegistry.CRYSTAL_LEGGINGS.key());
         tag(ItemTags.FOOT_ARMOR)
-                .add(DustItemRegistry.CRYSTAL_BOOTS.get());
-
-
-        tag(ItemTags.VILLAGER_PLANTABLE_SEEDS)
-                .add(DustItemRegistry.SEEDS_LETTUCE.get());
-
+                .add(DustItemRegistry.CRYSTAL_BOOTS.key());
     }
 }

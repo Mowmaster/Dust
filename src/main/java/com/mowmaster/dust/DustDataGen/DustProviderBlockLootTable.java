@@ -2,53 +2,29 @@ package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import com.mowmaster.dust.Features.DustyDelights.Block.CropBlockLettuce;
-import com.mowmaster.dust.Features.Pedestals.RegistryPedestalBlock;
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SweetBerryBushBlock;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.Set;
 
+// 26.3: loot tables are registry entries. This sub provider is handed to GatherDataRegistryEntriesEvent
+// (see DustDataGenerator) and receives a Context instead of a HolderLookup.Provider.
 public class DustProviderBlockLootTable extends BlockLootSubProvider {
-    public DustProviderBlockLootTable(HolderLookup.Provider registries) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
+    public DustProviderBlockLootTable(Context context) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
     }
 
     @Override
     protected void generate() {
-        var enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-
-        dropSelf(DustBlockRegistry.CRYSTAL_PATH_TIER1.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_PATH_TIER2.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_PATH_TIER3.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_PATH_TIER4.get());
-        dropSelf(DustBlockRegistry.BLOCK_PLANKS_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_STAIRS_GREEN.get());
-        add(DustBlockRegistry.BLOCK_SLAB_GREEN.get(), this::createSlabItemTable);
-        dropSelf(DustBlockRegistry.BLOCK_BUTTON_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_PRESSUREPLATE_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_FENCEGATE_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_FENCE_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_WALL_GREEN.get());
-        add(DustBlockRegistry.BLOCK_DOOR_GREEN.get(), this::createDoorTable);
-        dropSelf(DustBlockRegistry.BLOCK_TRAPDOOR_GREEN.get());
-
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_RED.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_GREEN.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_BLUE.get());
@@ -61,61 +37,19 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.get());
 
-        add(DustBlockRegistry.INERT_CRYSTAL_ORE.get(),block -> createOreDrop(block, DustItemRegistry.CRYSTAL_INERT.get()));
-        add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get(),block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTAL_INERT.get(),2,5));
-
-
-        add(DustBlockRegistry.CROP_LETTUCE.get(),createCropDrops(
-                DustBlockRegistry.CROP_LETTUCE.get(),
-                DustItemRegistry.FOOD_LETTUCE.get(),
-                DustItemRegistry.SEEDS_LETTUCE.get(),
-                LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.CROP_LETTUCE.get())
-                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CropBlockLettuce.AGE, CropBlockLettuce.MAX_AGE))));
-
-
+        add(DustBlockRegistry.INERT_CRYSTAL_ORE.get(), block -> createOreDrop(block, DustItemRegistry.CRYSTAL_INERT.get()));
+        add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get(), block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTAL_INERT.get(), 2, 5));
 
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
-        add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(),createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));
-
-
-        dropSelf(DustBlockRegistry.CRYSTAL_STONE_RED.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_STONE_GREEN.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_STONE_BLUE.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_STONE_WHITE.get());
-        dropSelf(DustBlockRegistry.CRYSTAL_STONE_BLACK.get());
-
-        this.add(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), block -> this.applyExplosionDecay(
-                block, LootTable.lootTable()
-                        .withPool(LootPool.lootPool().when(
-                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get())
-                                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SweetBerryBushBlock.AGE, 3)))
-                            .add(LootItem.lootTableItem(DustItemRegistry.FOOD_FALLOLDBERRY))
-                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F)))
-                            .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
-                        )
-                        .withPool(LootPool.lootPool().when(
-                                LootItemBlockStatePropertyCondition.hasBlockStateProperties(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get())
-                                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SweetBerryBushBlock.AGE, 2)))
-                            .add(LootItem.lootTableItem(DustItemRegistry.FOOD_FALLOLDBERRY))
-                            .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-                            .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
-                        )
-        ));
-
-
-
-
-        dropSelf(RegistryPedestalBlock.PEDESTAL_BLOCK.get());
-
+        add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));
     }
 
-    protected LootTable.Builder createMultipleOreDrops(Block block, Item item, float minDrops, float maxDrops)
+    protected LootTable.Builder createMultipleOreDrops(Block block, Item item, int minDrops, int maxDrops)
     {
-        HolderLookup.RegistryLookup<Enchantment> registryLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-        return this.createSilkTouchDispatchTable( block,
+        return this.createSilkTouchDispatchTable(block,
                 this.applyExplosionCondition(block, LootItem.lootTableItem(item)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops,maxDrops)))
-                        .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(Enchantments.FORTUNE)))));
+                        .apply(SetItemCountFunction.setCount(ContextIntProviders.between(minDrops, maxDrops)))
+                        .apply(ApplyBonusCount.addOreBonusCount(this.enchantments.getOrThrow(Enchantments.FORTUNE)))));
     }
 
     @Override

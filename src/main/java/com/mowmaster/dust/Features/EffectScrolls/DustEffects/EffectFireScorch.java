@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.InstantenousMobEffect;
+import net.minecraft.world.effect.InstantaneousMobEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffects;
@@ -20,10 +20,9 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
 
-import javax.xml.transform.Source;
 import java.util.List;
 
-public class EffectFireScorch extends InstantenousMobEffect {
+public class EffectFireScorch extends InstantaneousMobEffect {
 
     public EffectFireScorch(MobEffectCategory category, int color) {
         super(category, color);
@@ -64,14 +63,13 @@ public class EffectFireScorch extends InstantenousMobEffect {
                 }
             }
 
-            System.out.println("apply current fire ticks: " + mob.getRemainingFireTicks());
         }
 
         return true;
     }
 
     @Override
-    public void applyInstantenousEffect(ServerLevel level, @Nullable Entity source, @Nullable Entity owner, LivingEntity mob, int amplification, double scale) {
+    public void applyInstantaneousEffect(ServerLevel level, @Nullable Entity source, @Nullable Entity owner, LivingEntity mob, int amplification, double scale) {
         if (!mob.fireImmune())
         {
             int addedFireTicks = 20 * (amplification+1);
@@ -104,7 +102,6 @@ public class EffectFireScorch extends InstantenousMobEffect {
                 }
             }
 
-            System.out.println("instant current fire ticks: " + mob.getRemainingFireTicks());
         }
     }
 }

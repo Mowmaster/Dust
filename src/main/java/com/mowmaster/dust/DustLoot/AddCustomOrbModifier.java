@@ -7,58 +7,36 @@ import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustLootRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.loot.LootModifier;
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-//DOESNT WORK
-public class AddCustomOrbModifier extends LootModifier {
 
+import java.util.Optional;
+
+// Spawns ONE fire orb worth minimum..maximum dust where the loot is dropped, instead of adding an item.
+// Not used by any loot modifier json yet. Why it "didn't work" before: the orb was spawned without a position
+// (at 0,0,0) and once per point of value, each orb worth the full amount.
+public class AddCustomOrbModifier extends LootModifier {
 
     public static final MapCodec<AddCustomOrbModifier> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     LootModifier.codecStart(instance)
-                            .and(Codec.INT.fieldOf("minimum")
-                                    .forGetter(AddCustomOrbModifier::getMinimum))
-                            .and(Codec.INT.fieldOf("maximum")
-                                    .forGetter(AddCustomOrbModifier::getMaximum))
+                            .and(Codec.INT.fieldOf("minimum").forGetter(AddCustomOrbModifier::getMinimum))
+                            .and(Codec.INT.fieldOf("maximum").forGetter(AddCustomOrbModifier::getMaximum))
                             .apply(instance, AddCustomOrbModifier::new)
             );
 
     private final int minimum;
     private final int maximum;
 
-    public AddCustomOrbModifier(
-            LootItemCondition[] conditions,
-            int priority,
-            int minimum,
-            int maximum
-    ) {
-        super(conditions, priority);
+    public AddCustomOrbModifier(Optional<Holder<LootItemCondition>> condition, int priority, int minimum, int maximum) {
+        super(condition, priority);
         this.minimum = minimum;
         this.maximum = maximum;
     }
@@ -72,32 +50,25 @@ public class AddCustomOrbModifier extends LootModifier {
     }
 
     @Override
-    protected ObjectArrayList<ItemStack> doApply(
-            ObjectArrayList<ItemStack> generatedLoot,
-            LootContext context
-    ) {
-        int min = Math.min(this.minimum, this.maximum);
-        int max = Math.max(this.minimum, this.maximum);
-
-        int amount = min + context.getLevel().getRandom().nextInt(max - min + 1);
-
-
-        // Loot generation normally happens server-side, but keep this check
-        // to prevent accidental client-side spawning.
-        if (!(context.getLevel() instanceof ServerLevel level)) {
+    protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        ServerLevel level = context.getLevel();
+        // ORIGIN is where the loot drops (the mob's or block's position). Some tables (fishing, gifts) may not have it.
+        Vec3 origin = context.getOptional(LootContextParams.ORIGIN);
+        if (origin == null) {
             return generatedLoot;
         }
 
-        //Vec3 position = context.getOrigin();
-        for (int i = 0; i < amount; i++) {
-            ElementalOrbEntityBase orb = DustEntityRegistry.FIRE_ORB.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+        int min = Math.min(this.minimum, this.maximum);
+        int max = Math.max(this.minimum, this.maximum);
+        int amount = min + context.getRandom().nextInt(max - min + 1);
+        if (amount <= 0) {
+            return generatedLoot;
+        }
 
-            if (orb == null) {
-                continue;
-            }
-
+        ElementalOrbEntityBase orb = DustEntityRegistry.FIRE_ORB.get().create(level, EntitySpawnReason.TRIGGERED);
+        if (orb != null) {
+            orb.setPos(origin);
             orb.setValue(amount);
-
             level.addFreshEntity(orb);
         }
 

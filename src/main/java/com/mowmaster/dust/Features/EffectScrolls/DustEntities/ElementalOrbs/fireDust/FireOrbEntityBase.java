@@ -1,11 +1,8 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust;
 
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import net.minecraft.server.level.ServerPlayer;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class FireOrbEntityBase extends ElementalOrbEntityBase {
@@ -15,35 +12,7 @@ public class FireOrbEntityBase extends ElementalOrbEntityBase {
     }
 
     @Override
-    public void playerTouch(Player player) {
-        int actuallyAdded = 0;
-        if(this.level().isClientSide()) {
-            //player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.05F, 0.5F + this.level().getRandom().nextFloat() * 0.2F);
-            this.discard();
-            return;
-        }
-
-        if (!(player instanceof ServerPlayer serverPlayer)) {
-            this.discard();
-            return;
-        }
-
-        if (!DustMagicAttachmentHelper.hasMana(serverPlayer)){
-            this.discard();
-            return;
-        }
-
-        int orbValue = this.getValue();
-        // Prevent unreasonable values
-        orbValue = Math.clamp(orbValue, 1, 100);
-        int modifiedAmount = Math.round(orbValue);
-        int added = DustElementAttachmentHelper.addToElementFire(serverPlayer, modifiedAmount, true);
-        System.out.println("Sim-Added By FireOrb: " + added);
-        if(added>0)
-        {
-            actuallyAdded = DustElementAttachmentHelper.addToElementFire(serverPlayer, modifiedAmount, false);
-            System.out.println("Act-Added By FireOrb: " + actuallyAdded);
-            this.discard();
-        }
+    public EnumElement getElement() {
+        return EnumElement.FIRE;
     }
 }

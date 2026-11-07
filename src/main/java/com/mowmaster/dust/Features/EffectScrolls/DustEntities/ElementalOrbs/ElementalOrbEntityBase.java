@@ -1,10 +1,13 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs;
 
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -17,17 +20,24 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class ElementalOrbEntityBase extends Entity {
+// A floating orb of one element's dust that flies to nearby players and is absorbed into their element store,
+// like an experience orb. Each element has a small subclass that only says which element it is.
+public abstract class ElementalOrbEntityBase extends Entity {
 
     private @Nullable Player followingPlayer;
     private static final EntityDataAccessor<Integer> VALUE =
             SynchedEntityData.defineId(ElementalOrbEntityBase.class, EntityDataSerializers.INT);
 
+    // Unabsorbed dust dissipates back into the aura after this long
     private static final int BASE_DURATION = 600; // 30 seconds
+    private int age;
 
     public ElementalOrbEntityBase(EntityType<? extends ElementalOrbEntityBase> type, Level level) {
         super(type, level);
     }
+
+    // Which element store this orb fills
+    public abstract EnumElement getElement();
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -44,34 +54,37 @@ public class ElementalOrbEntityBase extends Entity {
 
     @Override
     public void playerTouch(Player player) {
-
-    }
-
-    /*public boolean hasAffinityWithElement(ServerPlayer player, EnumElement element)
-    {
-        return DustElementAttachmentHelper.hasAnyAffinityWithElement(player, element);
-    }
-
-    public float getAffinityMultiplier(ServerPlayer player, EnumElement element)
-    {
-        if(hasAffinityWithElement(player, element))
-        {
-            //for a single affinity 2.0 - 0.5(reduction multi) gives us 1.5 bonus multiplier
-            return 2.0f - DustElementAttachmentHelper.getAffinityCostReduction(player);
+        // Only the server changes the player's dust. The client used to discard its copy of the orb here too, which
+        // made it vanish on screen even when the server didn't absorb it.
+        if (this.isRemoved() || !(player instanceof ServerPlayer serverPlayer)) {
+            return;
         }
-        //returns 100% or 1.0 bonus multiplier
-        return 1.0f;
-    }*/
+
+        if (!DustMagicAttachmentHelper.hasMana(serverPlayer)) {
+            return;
+        }
+
+        // Prevent unreasonable values
+        int orbValue = Math.clamp(this.getValue(), 1, 100);
+        EnumElement element = this.getElement();
+        if (element.addElement(serverPlayer, orbValue, true) > 0) {
+            element.addElement(serverPlayer, orbValue, false);
+            // Whatever didn't fit is lost (it dissipates into the aura)
+            this.discard();
+        }
+    }
 
     private void setUnderwaterMovement() {
         Vec3 movement = this.getDeltaMovement();
         this.setDeltaMovement(movement.x * (double)0.99F, Math.min(movement.y + (double)5.0E-4F, (double)0.06F), movement.z * (double)0.99F);
     }
 
+    @Override
     public final boolean hurtClient(DamageSource source) {
         return !this.isInvulnerableToBase(source);
     }
 
+    @Override
     public final boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         if (this.isInvulnerableToBase(source)) {
             return false;
@@ -82,25 +95,29 @@ public class ElementalOrbEntityBase extends Entity {
         }
     }
 
+    // ValueOutput / ValueInput (26.x) replace reading and writing CompoundTags directly.
+    // Without this the orb's value went back to 1 whenever the chunk reloaded.
     @Override
-    protected void readAdditionalSaveData(ValueInput valueInput) {
-
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putInt("Value", this.getValue());
+        output.putInt("Age", this.age);
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput valueOutput) {
-
+    protected void readAdditionalSaveData(ValueInput input) {
+        this.setValue(input.getIntOr("Value", 1));
+        this.age = input.getIntOr("Age", 0);
     }
 
+    @Override
     protected double getDefaultGravity() {
         return 0.03;
     }
 
-    // You will need to implement basic tick movement logic here
-    // to mimic the attraction/floating of a standard XP orb.
+    // Movement copied from vanilla's ExperienceOrb: float, sink slowly in water, bounce out of lava, follow players.
     @Override
     public void tick() {
-        super.tick();
+        // super.tick() used to be called twice per tick (once here and once below), doubling the entity's base tick
         if (this.firstTick && this.level().isClientSide()) {
             this.firstTick = false;
         } else {
@@ -139,7 +156,8 @@ public class ElementalOrbEntityBase extends Entity {
                 this.setDeltaMovement(new Vec3(this.getDeltaMovement().x, -fallSpeed * 0.4, this.getDeltaMovement().z));
             }
 
-            if (this.getValue() <=0) {
+            this.age++;
+            if (!this.level().isClientSide() && this.age >= BASE_DURATION) {
                 this.discard();
             }
         }
@@ -161,7 +179,6 @@ public class ElementalOrbEntityBase extends Entity {
             double power = (double)1.0F - Math.sqrt(length) / (double)8.0F;
             this.setDeltaMovement(this.getDeltaMovement().add(delta.normalize().scale(power * power * 0.1)));
         }
-
     }
 
     public int getIcon() {

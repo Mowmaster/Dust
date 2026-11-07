@@ -1,6 +1,5 @@
 package com.mowmaster.dust.Features.EffectScrolls.Item;
 
-import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustParticleRegistry;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
@@ -33,9 +32,7 @@ public class FireStickItem extends Item {
                     Map.entry(Blocks.MANGROVE_LOG, Items.CHARCOAL),
                     Map.entry(Blocks.OAK_LOG, Items.CHARCOAL),
                     Map.entry(Blocks.SPRUCE_LOG, Items.CHARCOAL),
-                    Map.entry(Blocks.BAMBOO_BLOCK, Items.CHARCOAL),
-                    Map.entry(Blocks.CRIMSON_HYPHAE, DustItemRegistry.CHARCOAL_WHITE.get()),
-                    Map.entry(Blocks.WARPED_HYPHAE, DustItemRegistry.CHARCOAL_WHITE.get())
+                    Map.entry(Blocks.BAMBOO_BLOCK, Items.CHARCOAL)
             );
 
     public FireStickItem(Properties properties) {

@@ -37,7 +37,7 @@ public class CrystalToolHammer extends Item {
             }
 
             for(BlockPos position : getBlocksToBeDestroyed(1, pos, serverPlayer)) {
-                if(pos == position || !hammerItem.isCorrectToolForDrops(itemStack, level.getBlockState(position))) {
+                if(pos.equals(position) || !hammerItem.isCorrectToolForDrops(itemStack, level.getBlockState(position))) {
                     continue;
                 }
 

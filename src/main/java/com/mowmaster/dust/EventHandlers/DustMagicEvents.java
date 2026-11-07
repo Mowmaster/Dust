@@ -6,28 +6,23 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust.ChaosOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust.EarthOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust.OrderOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust.WaterOrbEntityBase;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.jspecify.annotations.Nullable;
 
 @EventBusSubscriber(modid = DustReferences.MODID)
 public class DustMagicEvents {
@@ -246,75 +241,46 @@ public class DustMagicEvents {
         new PlayerModifyElement(event.getDispatcher());
     }
 
-    @SubscribeEvent
-    public static void onBrewingRegister(RegisterBrewingRecipesEvent event) {
-        event.getBuilder().addMix(Potions.FIRE_RESISTANCE, Items.BLAZE_POWDER, DustPotionRegistry.POTION_SCORCH);
-    }
 
-
+    // Dust items that land in the world turn into one orb of their element, worth the whole stack.
+    // This used to loop once per item in the stack and spawn an orb (worth the full stack) every time, so a stack of 3
+    // made 3 stacked orbs worth 3 each: the "orb picked up 2-3 times" bug.
     @SubscribeEvent
     public static void onDustDropped(EntityJoinLevelEvent event) {
-        if (!(event.getEntity() instanceof ItemEntity itemEntity)) {
+        // EntityJoinLevelEvent fires on both logical sides; only the server spawns orbs
+        if (!(event.getEntity() instanceof ItemEntity itemEntity) || !(event.getLevel() instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        // EntityJoinLevelEvent can run on both logical sides
-        if (event.getLevel() instanceof ServerLevel serverLevel) {
-            ItemStack stack = itemEntity.getItem();
-
-            if (!stack.is(DustTags.Items.MAGICAL_DUST_ITEMS)) {
-                return;
-            }
-
-            int amount = stack.getCount();
-
-            for (int i = 0; i < amount; i++) {
-                if(stack.is(DustItemRegistry.DUST_RED.get()))
-                {
-                    FireOrbEntityBase orb = new FireOrbEntityBase(DustEntityRegistry.FIRE_ORB.get(),serverLevel);
-                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-                    orb.setValue(amount);
-                    serverLevel.addFreshEntity(orb);
-                    itemEntity.discard();
-                    event.setCanceled(true);
-                }
-                else if(stack.is(DustItemRegistry.DUST_BLUE.get()))
-                {
-                    WaterOrbEntityBase orb = new WaterOrbEntityBase(DustEntityRegistry.WATER_ORB.get(),serverLevel);
-                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-                    orb.setValue(amount);
-                    serverLevel.addFreshEntity(orb);
-                    itemEntity.discard();
-                    event.setCanceled(true);
-                }
-                else if(stack.is(DustItemRegistry.DUST_GREEN.get()))
-                {
-                    EarthOrbEntityBase orb = new EarthOrbEntityBase(DustEntityRegistry.EARTH_ORB.get(),serverLevel);
-                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-                    orb.setValue(amount);
-                    serverLevel.addFreshEntity(orb);
-                    itemEntity.discard();
-                    event.setCanceled(true);
-                }
-                else if(stack.is(DustItemRegistry.DUST_BLACK.get()))
-                {
-                    ChaosOrbEntityBase orb = new ChaosOrbEntityBase(DustEntityRegistry.CHAOS_ORB.get(),serverLevel);
-                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-                    orb.setValue(amount);
-                    serverLevel.addFreshEntity(orb);
-                    itemEntity.discard();
-                    event.setCanceled(true);
-                }
-                else if(stack.is(DustItemRegistry.DUST_WHITE.get()))
-                {
-                    OrderOrbEntityBase orb = new OrderOrbEntityBase(DustEntityRegistry.ORDER_ORB.get(),serverLevel);
-                    orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-                    orb.setValue(amount);
-                    serverLevel.addFreshEntity(orb);
-                    itemEntity.discard();
-                    event.setCanceled(true);
-                }
-            }
+        ItemStack stack = itemEntity.getItem();
+        if (!stack.is(DustTags.Items.MAGICAL_DUST_ITEMS)) {
+            return;
         }
+
+        EntityType<? extends ElementalOrbEntityBase> orbType = orbTypeFor(stack);
+        if (orbType == null) {
+            return;
+        }
+
+        ElementalOrbEntityBase orb = orbType.create(serverLevel, EntitySpawnReason.TRIGGERED);
+        if (orb == null) {
+            return;
+        }
+        orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
+        orb.setValue(stack.getCount());
+        serverLevel.addFreshEntity(orb);
+
+        // Cancelling stops the item entity from being added to the level
+        event.setCanceled(true);
+    }
+
+    // Which orb a dust item turns into; null for dusts without an orb
+    private static @Nullable EntityType<? extends ElementalOrbEntityBase> orbTypeFor(ItemStack stack) {
+        if (stack.is(DustItemRegistry.DUST_RED.get())) return DustEntityRegistry.FIRE_ORB.get();
+        if (stack.is(DustItemRegistry.DUST_BLUE.get())) return DustEntityRegistry.WATER_ORB.get();
+        if (stack.is(DustItemRegistry.DUST_GREEN.get())) return DustEntityRegistry.EARTH_ORB.get();
+        if (stack.is(DustItemRegistry.DUST_BLACK.get())) return DustEntityRegistry.CHAOS_ORB.get();
+        if (stack.is(DustItemRegistry.DUST_WHITE.get())) return DustEntityRegistry.ORDER_ORB.get();
+        return null;
     }
 }

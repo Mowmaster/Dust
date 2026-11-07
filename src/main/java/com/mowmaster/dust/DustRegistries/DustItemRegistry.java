@@ -1,37 +1,24 @@
 package com.mowmaster.dust.DustRegistries;
 
-import com.mowmaster.dust.Features.CrystalBlocks.Item.CrystalChiselBaseItem;
 import com.mowmaster.dust.DustReferences;
-import com.mowmaster.dust.Features.CrystalBlocks.Item.CrystalHalfSawItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalWeaponSword;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialTools;
-import com.mowmaster.dust.Features.DustyDelights.DDFoodProperties;
 import com.mowmaster.dust.Features.EffectScrolls.Item.EarthStickItem;
 import com.mowmaster.dust.Features.EffectScrolls.Item.FireStickItem;
-import com.mowmaster.dust.Features.FocusedBooks.EnchantableBookItem;
-import com.mowmaster.dust.Features.FocusedBooks.FocusedBookItem;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.function.Consumer;
 
 public class DustItemRegistry
 {
     public static final DeferredRegister.Items DUSTITEMS = DeferredRegister.createItems(DustReferences.MODID);
-
-    /*
-    Crystal Blocks Features
-     */
-
 
     public static final DeferredItem<Item> DUST_RED = DUSTITEMS.registerSimpleItem("dust_red", properties -> properties);
     public static final DeferredItem<Item> DUST_GREEN = DUSTITEMS.registerSimpleItem("dust_green", properties -> properties);
@@ -47,39 +34,16 @@ public class DustItemRegistry
     public static final DeferredItem<Item> CRYSTAL_WHITE = DUSTITEMS.registerSimpleItem("crystal_white", properties -> properties);
     public static final DeferredItem<Item> CRYSTAL_BLACK = DUSTITEMS.registerSimpleItem("crystal_black", properties -> properties);
 
-    public static final DeferredItem<Item> CRYSTAL_CHISEL_IRON = DUSTITEMS.registerItem("chisel_iron", properties -> new CrystalChiselBaseItem(properties.durability(100)));
-    public static final DeferredItem<Item> CRYSTAL_HALFSAW_IRON = DUSTITEMS.registerItem("halfsaw_iron", properties -> new CrystalHalfSawItem(properties.durability(100)));
-
-    public static final DeferredItem<Item> FOCUSED_BOOK_BASE = DUSTITEMS.registerItem("focused_book_base", properties -> new EnchantableBookItem(properties.stacksTo(16)));
-    public static final DeferredItem<Item> FOCUSED_BOOK = DUSTITEMS.registerItem("focused_book", properties -> new FocusedBookItem(
-            properties.stacksTo(16)
-                    .component(DustComponentDataRegistry.FOCUSEDBOOK_BOOKCOVER_TYPE.get(),1)
-                    .component(DustComponentDataRegistry.FOCUSEDBOOK_BOOK_COLOR.get(),11141375)
-    ));
-
-    public static final DeferredItem<Item> CORNBREAD = DUSTITEMS.registerItem("food_cornbread",
-            properties -> new Item(properties.food(DDFoodProperties.CORNBREAD, DDFoodProperties.CORNBREAD_EDIBLE)) {
-                @Override
-                public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
-                    builder.accept(Component.translatable(DustReferences.TOOLTIP + "cornbread"));
-                    super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
-                }
-            });
-
-
-    public static final DeferredItem<Item> CHARCOAL_WHITE = DUSTITEMS.registerItem("fuel_charcoal_white", Item::new);
-
-
     public static final DeferredItem<Item> CRYSTAL_SWORD = DUSTITEMS.registerItem("crystal_sword",
             properties -> new CrystalWeaponSword(properties.sword(DustMaterialTools.CRYSTAL, 3.0f,-2.4f)));
     public static final DeferredItem<Item> CRYSTAL_PICKAXE = DUSTITEMS.registerItem("crystal_pickaxe",
             properties -> new Item(properties.pickaxe(DustMaterialTools.CRYSTAL, 1.0f,-2.8f)));
     public static final DeferredItem<Item> CRYSTAL_AXE = DUSTITEMS.registerItem("crystal_axe",
-            properties -> new AxeItem(DustMaterialTools.CRYSTAL, 6.0f,-3.2f,properties));
+            properties -> new Item(properties.axe(DustMaterialTools.CRYSTAL, 6.0f,-3.2f)));
     public static final DeferredItem<Item> CRYSTAL_SHOVEL = DUSTITEMS.registerItem("crystal_shovel",
-            properties -> new ShovelItem(DustMaterialTools.CRYSTAL, 1.5f,-3.0f,properties));
+            properties -> new Item(properties.shovel(DustMaterialTools.CRYSTAL, 1.5f,-3.0f)));
     public static final DeferredItem<Item> CRYSTAL_HOE = DUSTITEMS.registerItem("crystal_hoe",
-            properties -> new HoeItem(DustMaterialTools.CRYSTAL, 0.0f,-3.0f,properties));
+            properties -> new Item(properties.hoe(DustMaterialTools.CRYSTAL, 0.0f,-3.0f)));
     public static final DeferredItem<Item> CRYSTAL_SPEAR = DUSTITEMS.registerItem("crystal_spear",
             properties -> new Item(properties.spear(DustMaterialTools.CRYSTAL, 1.05F, 1.075F, 0.5F, 3.0F, 10.0F, 6.5F, 5.1F, 10.0F, 4.6F)));
 
@@ -101,16 +65,6 @@ public class DustItemRegistry
     public static final DeferredItem<Item> CRYSTAL_HORSE_ARMOR = DUSTITEMS.registerItem("crystal_horse_armor",
             properties -> new Item(properties.horseArmor(DustMaterialArmor.CRYSTAL_ARMOR_MATERIAL)));
 
-    public static final DeferredItem<Item> SEEDS_LETTUCE = DUSTITEMS.registerItem("seeds_lettuce",
-        properties -> new BlockItem(DustBlockRegistry.CROP_LETTUCE.get(), properties.useItemDescriptionPrefix()));
-
-    public static final DeferredItem<Item> FOOD_LETTUCE = DUSTITEMS.registerItem("food_lettuce",
-            properties -> new Item(properties.food(DDFoodProperties.LETTUCE)));
-    public static final DeferredItem<Item> FOOD_FALLOLDBERRY = DUSTITEMS.registerItem("food_falloldberry",
-            properties -> new BlockItem(DustBlockRegistry.BLOCK_FALLOLDBERRY_BUSH.get(), properties
-                    .useItemDescriptionPrefix()
-                    .food(DDFoodProperties.LETTUCE)
-            ));
 
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
