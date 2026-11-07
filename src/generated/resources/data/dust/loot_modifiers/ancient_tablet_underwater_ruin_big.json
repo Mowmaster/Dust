@@ -1,0 +1,8 @@
+{
+  "type": "dust:add_ancient_tablet",
+  "chance": 0.3,
+  "condition": {
+    "type": "neoforge:loot_table_id",
+    "loot_table_id": "minecraft:chests/underwater_ruin_big"
+  }
+}

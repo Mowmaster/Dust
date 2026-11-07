@@ -1,0 +1,394 @@
+{
+  "variants": {
+    "facing=east,glyph=0": {
+      "model": "dust:block/glyph_stone_a",
+      "y": 90
+    },
+    "facing=east,glyph=1": {
+      "model": "dust:block/glyph_stone_b",
+      "y": 90
+    },
+    "facing=east,glyph=10": {
+      "model": "dust:block/glyph_stone_k",
+      "y": 90
+    },
+    "facing=east,glyph=11": {
+      "model": "dust:block/glyph_stone_l",
+      "y": 90
+    },
+    "facing=east,glyph=12": {
+      "model": "dust:block/glyph_stone_m",
+      "y": 90
+    },
+    "facing=east,glyph=13": {
+      "model": "dust:block/glyph_stone_n",
+      "y": 90
+    },
+    "facing=east,glyph=14": {
+      "model": "dust:block/glyph_stone_o",
+      "y": 90
+    },
+    "facing=east,glyph=15": {
+      "model": "dust:block/glyph_stone_p",
+      "y": 90
+    },
+    "facing=east,glyph=16": {
+      "model": "dust:block/glyph_stone_q",
+      "y": 90
+    },
+    "facing=east,glyph=17": {
+      "model": "dust:block/glyph_stone_r",
+      "y": 90
+    },
+    "facing=east,glyph=18": {
+      "model": "dust:block/glyph_stone_s",
+      "y": 90
+    },
+    "facing=east,glyph=19": {
+      "model": "dust:block/glyph_stone_t",
+      "y": 90
+    },
+    "facing=east,glyph=2": {
+      "model": "dust:block/glyph_stone_c",
+      "y": 90
+    },
+    "facing=east,glyph=20": {
+      "model": "dust:block/glyph_stone_u",
+      "y": 90
+    },
+    "facing=east,glyph=21": {
+      "model": "dust:block/glyph_stone_v",
+      "y": 90
+    },
+    "facing=east,glyph=22": {
+      "model": "dust:block/glyph_stone_w",
+      "y": 90
+    },
+    "facing=east,glyph=23": {
+      "model": "dust:block/glyph_stone_x",
+      "y": 90
+    },
+    "facing=east,glyph=24": {
+      "model": "dust:block/glyph_stone_y",
+      "y": 90
+    },
+    "facing=east,glyph=25": {
+      "model": "dust:block/glyph_stone_z",
+      "y": 90
+    },
+    "facing=east,glyph=3": {
+      "model": "dust:block/glyph_stone_d",
+      "y": 90
+    },
+    "facing=east,glyph=4": {
+      "model": "dust:block/glyph_stone_e",
+      "y": 90
+    },
+    "facing=east,glyph=5": {
+      "model": "dust:block/glyph_stone_f",
+      "y": 90
+    },
+    "facing=east,glyph=6": {
+      "model": "dust:block/glyph_stone_g",
+      "y": 90
+    },
+    "facing=east,glyph=7": {
+      "model": "dust:block/glyph_stone_h",
+      "y": 90
+    },
+    "facing=east,glyph=8": {
+      "model": "dust:block/glyph_stone_i",
+      "y": 90
+    },
+    "facing=east,glyph=9": {
+      "model": "dust:block/glyph_stone_j",
+      "y": 90
+    },
+    "facing=north,glyph=0": {
+      "model": "dust:block/glyph_stone_a"
+    },
+    "facing=north,glyph=1": {
+      "model": "dust:block/glyph_stone_b"
+    },
+    "facing=north,glyph=10": {
+      "model": "dust:block/glyph_stone_k"
+    },
+    "facing=north,glyph=11": {
+      "model": "dust:block/glyph_stone_l"
+    },
+    "facing=north,glyph=12": {
+      "model": "dust:block/glyph_stone_m"
+    },
+    "facing=north,glyph=13": {
+      "model": "dust:block/glyph_stone_n"
+    },
+    "facing=north,glyph=14": {
+      "model": "dust:block/glyph_stone_o"
+    },
+    "facing=north,glyph=15": {
+      "model": "dust:block/glyph_stone_p"
+    },
+    "facing=north,glyph=16": {
+      "model": "dust:block/glyph_stone_q"
+    },
+    "facing=north,glyph=17": {
+      "model": "dust:block/glyph_stone_r"
+    },
+    "facing=north,glyph=18": {
+      "model": "dust:block/glyph_stone_s"
+    },
+    "facing=north,glyph=19": {
+      "model": "dust:block/glyph_stone_t"
+    },
+    "facing=north,glyph=2": {
+      "model": "dust:block/glyph_stone_c"
+    },
+    "facing=north,glyph=20": {
+      "model": "dust:block/glyph_stone_u"
+    },
+    "facing=north,glyph=21": {
+      "model": "dust:block/glyph_stone_v"
+    },
+    "facing=north,glyph=22": {
+      "model": "dust:block/glyph_stone_w"
+    },
+    "facing=north,glyph=23": {
+      "model": "dust:block/glyph_stone_x"
+    },
+    "facing=north,glyph=24": {
+      "model": "dust:block/glyph_stone_y"
+    },
+    "facing=north,glyph=25": {
+      "model": "dust:block/glyph_stone_z"
+    },
+    "facing=north,glyph=3": {
+      "model": "dust:block/glyph_stone_d"
+    },
+    "facing=north,glyph=4": {
+      "model": "dust:block/glyph_stone_e"
+    },
+    "facing=north,glyph=5": {
+      "model": "dust:block/glyph_stone_f"
+    },
+    "facing=north,glyph=6": {
+      "model": "dust:block/glyph_stone_g"
+    },
+    "facing=north,glyph=7": {
+      "model": "dust:block/glyph_stone_h"
+    },
+    "facing=north,glyph=8": {
+      "model": "dust:block/glyph_stone_i"
+    },
+    "facing=north,glyph=9": {
+      "model": "dust:block/glyph_stone_j"
+    },
+    "facing=south,glyph=0": {
+      "model": "dust:block/glyph_stone_a",
+      "y": 180
+    },
+    "facing=south,glyph=1": {
+      "model": "dust:block/glyph_stone_b",
+      "y": 180
+    },
+    "facing=south,glyph=10": {
+      "model": "dust:block/glyph_stone_k",
+      "y": 180
+    },
+    "facing=south,glyph=11": {
+      "model": "dust:block/glyph_stone_l",
+      "y": 180
+    },
+    "facing=south,glyph=12": {
+      "model": "dust:block/glyph_stone_m",
+      "y": 180
+    },
+    "facing=south,glyph=13": {
+      "model": "dust:block/glyph_stone_n",
+      "y": 180
+    },
+    "facing=south,glyph=14": {
+      "model": "dust:block/glyph_stone_o",
+      "y": 180
+    },
+    "facing=south,glyph=15": {
+      "model": "dust:block/glyph_stone_p",
+      "y": 180
+    },
+    "facing=south,glyph=16": {
+      "model": "dust:block/glyph_stone_q",
+      "y": 180
+    },
+    "facing=south,glyph=17": {
+      "model": "dust:block/glyph_stone_r",
+      "y": 180
+    },
+    "facing=south,glyph=18": {
+      "model": "dust:block/glyph_stone_s",
+      "y": 180
+    },
+    "facing=south,glyph=19": {
+      "model": "dust:block/glyph_stone_t",
+      "y": 180
+    },
+    "facing=south,glyph=2": {
+      "model": "dust:block/glyph_stone_c",
+      "y": 180
+    },
+    "facing=south,glyph=20": {
+      "model": "dust:block/glyph_stone_u",
+      "y": 180
+    },
+    "facing=south,glyph=21": {
+      "model": "dust:block/glyph_stone_v",
+      "y": 180
+    },
+    "facing=south,glyph=22": {
+      "model": "dust:block/glyph_stone_w",
+      "y": 180
+    },
+    "facing=south,glyph=23": {
+      "model": "dust:block/glyph_stone_x",
+      "y": 180
+    },
+    "facing=south,glyph=24": {
+      "model": "dust:block/glyph_stone_y",
+      "y": 180
+    },
+    "facing=south,glyph=25": {
+      "model": "dust:block/glyph_stone_z",
+      "y": 180
+    },
+    "facing=south,glyph=3": {
+      "model": "dust:block/glyph_stone_d",
+      "y": 180
+    },
+    "facing=south,glyph=4": {
+      "model": "dust:block/glyph_stone_e",
+      "y": 180
+    },
+    "facing=south,glyph=5": {
+      "model": "dust:block/glyph_stone_f",
+      "y": 180
+    },
+    "facing=south,glyph=6": {
+      "model": "dust:block/glyph_stone_g",
+      "y": 180
+    },
+    "facing=south,glyph=7": {
+      "model": "dust:block/glyph_stone_h",
+      "y": 180
+    },
+    "facing=south,glyph=8": {
+      "model": "dust:block/glyph_stone_i",
+      "y": 180
+    },
+    "facing=south,glyph=9": {
+      "model": "dust:block/glyph_stone_j",
+      "y": 180
+    },
+    "facing=west,glyph=0": {
+      "model": "dust:block/glyph_stone_a",
+      "y": 270
+    },
+    "facing=west,glyph=1": {
+      "model": "dust:block/glyph_stone_b",
+      "y": 270
+    },
+    "facing=west,glyph=10": {
+      "model": "dust:block/glyph_stone_k",
+      "y": 270
+    },
+    "facing=west,glyph=11": {
+      "model": "dust:block/glyph_stone_l",
+      "y": 270
+    },
+    "facing=west,glyph=12": {
+      "model": "dust:block/glyph_stone_m",
+      "y": 270
+    },
+    "facing=west,glyph=13": {
+      "model": "dust:block/glyph_stone_n",
+      "y": 270
+    },
+    "facing=west,glyph=14": {
+      "model": "dust:block/glyph_stone_o",
+      "y": 270
+    },
+    "facing=west,glyph=15": {
+      "model": "dust:block/glyph_stone_p",
+      "y": 270
+    },
+    "facing=west,glyph=16": {
+      "model": "dust:block/glyph_stone_q",
+      "y": 270
+    },
+    "facing=west,glyph=17": {
+      "model": "dust:block/glyph_stone_r",
+      "y": 270
+    },
+    "facing=west,glyph=18": {
+      "model": "dust:block/glyph_stone_s",
+      "y": 270
+    },
+    "facing=west,glyph=19": {
+      "model": "dust:block/glyph_stone_t",
+      "y": 270
+    },
+    "facing=west,glyph=2": {
+      "model": "dust:block/glyph_stone_c",
+      "y": 270
+    },
+    "facing=west,glyph=20": {
+      "model": "dust:block/glyph_stone_u",
+      "y": 270
+    },
+    "facing=west,glyph=21": {
+      "model": "dust:block/glyph_stone_v",
+      "y": 270
+    },
+    "facing=west,glyph=22": {
+      "model": "dust:block/glyph_stone_w",
+      "y": 270
+    },
+    "facing=west,glyph=23": {
+      "model": "dust:block/glyph_stone_x",
+      "y": 270
+    },
+    "facing=west,glyph=24": {
+      "model": "dust:block/glyph_stone_y",
+      "y": 270
+    },
+    "facing=west,glyph=25": {
+      "model": "dust:block/glyph_stone_z",
+      "y": 270
+    },
+    "facing=west,glyph=3": {
+      "model": "dust:block/glyph_stone_d",
+      "y": 270
+    },
+    "facing=west,glyph=4": {
+      "model": "dust:block/glyph_stone_e",
+      "y": 270
+    },
+    "facing=west,glyph=5": {
+      "model": "dust:block/glyph_stone_f",
+      "y": 270
+    },
+    "facing=west,glyph=6": {
+      "model": "dust:block/glyph_stone_g",
+      "y": 270
+    },
+    "facing=west,glyph=7": {
+      "model": "dust:block/glyph_stone_h",
+      "y": 270
+    },
+    "facing=west,glyph=8": {
+      "model": "dust:block/glyph_stone_i",
+      "y": 270
+    },
+    "facing=west,glyph=9": {
+      "model": "dust:block/glyph_stone_j",
+      "y": 270
+    }
+  }
+}

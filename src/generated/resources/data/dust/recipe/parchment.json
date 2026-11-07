@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:paper",
+    "minecraft:paper",
+    "minecraft:charcoal"
+  ],
+  "result": {
+    "count": 3,
+    "id": "dust:parchment"
+  }
+}

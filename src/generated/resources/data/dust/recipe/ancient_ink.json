@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:ink_sac",
+    "dust:dust_black",
+    "dust:dust_white"
+  ],
+  "result": {
+    "id": "dust:ancient_ink"
+  }
+}
