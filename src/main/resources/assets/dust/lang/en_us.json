@@ -20,7 +20,7 @@
   "container.dust.decipher": "Decipher",
   "container.dust.decipher.mistakes": "Mistakes: %s / %s",
   "container.dust.decipher.won": "Deciphered!",
-  "container.dust.decipher.lost": "Lost... it read %s",
+  "container.dust.decipher.lost": "You failed to decipher the glyphs",
 
   "item.dust.wands_stick_fire": "Fire Wand",
   "item.dust.wands_stick_earth": "Earth Wand",

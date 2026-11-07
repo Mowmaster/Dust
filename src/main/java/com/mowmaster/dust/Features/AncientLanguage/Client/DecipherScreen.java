@@ -101,7 +101,7 @@ public class DecipherScreen extends AbstractContainerScreen<DecipherMenu>
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY)
     {
-        graphics.centeredText(this.font, this.title, WIDTH / 2, 6, INK);
+        centered(graphics, this.title, WIDTH / 2, 6, INK);
         drawGallows(graphics, 14, 20, this.menu.getWrong());
         drawWord(graphics);
         drawStatus(graphics);
@@ -123,7 +123,7 @@ public class DecipherScreen extends AbstractContainerScreen<DecipherMenu>
                     ? Component.literal(String.valueOf(Character.toUpperCase(c)))
                     // GLYPHS is the raw glyph font, never revealed: an unsolved letter always shows its glyph here
                     : Component.literal(String.valueOf(c)).withStyle(style -> style.withFont(AncientLanguage.GLYPHS));
-            graphics.centeredText(this.font, text, cx + cell / 2, y, this.menu.isRevealed(i) ? INK : FADED);
+            centered(graphics, text, cx + cell / 2, y, this.menu.isRevealed(i) ? INK : FADED);
             graphics.fill(cx + 1, y + 10, cx + cell - 1, y + 11, INK);
         }
     }
@@ -132,10 +132,16 @@ public class DecipherScreen extends AbstractContainerScreen<DecipherMenu>
     {
         Component status = switch (this.menu.getState()) {
             case DecipherMenu.WON -> Component.translatable("container.dust.decipher.won");
-            case DecipherMenu.LOST -> Component.translatable("container.dust.decipher.lost", this.menu.getWord().toUpperCase(java.util.Locale.ROOT));
+            case DecipherMenu.LOST -> Component.translatable("container.dust.decipher.lost");
             default -> Component.translatable("container.dust.decipher.mistakes", this.menu.getWrong(), DecipherMenu.MAX_WRONG);
         };
-        graphics.centeredText(this.font, status, 70 + (WIDTH - 78) / 2, 74, INK);
+        centered(graphics, status, 70 + (WIDTH - 78) / 2, 74, INK);
+    }
+
+    // Centered text without a drop shadow (centeredText always draws one, which is hard to read on the paper)
+    private void centered(GuiGraphicsExtractor graphics, Component text, int centerX, int y, int color)
+    {
+        graphics.text(this.font, text, centerX - this.font.width(text) / 2, y, color, false);
     }
 
     // Classic hangman: gallows, then head, body, arms and legs, one part per mistake
