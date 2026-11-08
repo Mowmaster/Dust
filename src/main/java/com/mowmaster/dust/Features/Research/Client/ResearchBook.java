@@ -25,6 +25,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
+import net.minecraft.world.entity.EquipmentSlot;
+import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -459,27 +464,42 @@ public final class ResearchBook
         return hearts == (int) hearts ? String.valueOf((int) hearts) : String.valueOf(hearts);
     }
 
-    // An effect's levels that the player has had: "Speed II", then what one level does. Instant effects show the
-    // health one dose gave or took; lasting ones the attribute changes, worked out from the effect:
-    // MobEffect#createModifiers(amplifier, consumer) hands every (attribute, modifier) pair the effect applies at that
-    // level to the consumer (a BiConsumer: a function taking two values and returning nothing), and NeoForge's
-    // Attribute#toComponent turns each into the same "+40% Speed" line potion tooltips show.
+    // An effect's or enchantment's levels that the player has had: "Speed II", then what one level does.
+    //   Instant effects    the health one dose gave or took
+    //   Lasting effects    the attribute changes, worked out from the effect: MobEffect#createModifiers(amplifier,
+    //                      consumer) hands every (attribute, modifier) pair the effect applies at that level to the
+    //                      consumer (a BiConsumer: a function taking two values and returning nothing)
+    //   Enchantments       the attribute changes in the enchantment's "minecraft:attributes" effects (Efficiency,
+    //                      Swift Sneak, Depth Strider, Respiration...). Other enchantment effects (extra damage, fire,
+    //                      drops) are data with no general way to describe them, so only the level is shown for those.
+    // NeoForge's Attribute#toComponent turns each attribute change into the same "+40% Speed" line tooltips show.
     private static int drawLevels(GuiGraphicsExtractor graphics, Font font, ResearchEntry entry, List<EntryResearch.EffectLevel> levels, int y, int bottom)
     {
         if (levels.isEmpty() || entry.tab() != ResearchTabs.EFFECTS) return y;
-        Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(entry.id());
-        if (effect.isEmpty()) return y;
+        boolean enchantment = EffectResearchTab.isEnchantment(entry.id());
+        Optional<Holder.Reference<MobEffect>> effect = enchantment ? Optional.empty() : BuiltInRegistries.MOB_EFFECT.get(entry.id());
+        Optional<Holder.Reference<Enchantment>> enchant = enchantment ? EffectResearchTab.enchantment(entry.id()) : Optional.empty();
+        if (effect.isEmpty() && enchant.isEmpty()) return y;
         int step = font.lineHeight + 1;
         for (EntryResearch.EffectLevel level : levels) {
             if (y + step > bottom) break;
-            // potion.withAmplifier: "Speed II" (level I is just "Speed")
-            Paper.ink(graphics, font, PotionContents.getPotionDescription(effect.get(), level.amplifier()), RIGHT_X + 4, y, INK);
-            y += step;
-
             List<Component> lines = new ArrayList<>();
-            if (level.health() > 0) lines.add(Component.translatable("research.dust.experiment.heals", hearts(level.health())));
-            if (level.health() < 0) lines.add(Component.translatable("research.dust.experiment.harms", hearts(-level.health())));
-            effect.get().value().createModifiers(level.amplifier(), (attribute, modifier) -> lines.add(attribute.value().toComponent(modifier, TooltipFlag.NORMAL)));
+            Component heading;
+            if (enchant.isPresent()) {
+                int enchantLevel = level.amplifier() + 1;
+                heading = enchantmentName(enchant.get(), enchantLevel);
+                for (EnchantmentAttributeEffect attribute : enchant.get().value().getEffects(EnchantmentEffectComponents.ATTRIBUTES)) {
+                    lines.add(attribute.attribute().value().toComponent(attribute.getModifier(enchantLevel, EquipmentSlot.MAINHAND), TooltipFlag.NORMAL));
+                }
+            } else {
+                // potion.withAmplifier: "Speed II" (level I is just "Speed")
+                heading = PotionContents.getPotionDescription(effect.get(), level.amplifier());
+                if (level.health() > 0) lines.add(Component.translatable("research.dust.experiment.heals", hearts(level.health())));
+                if (level.health() < 0) lines.add(Component.translatable("research.dust.experiment.harms", hearts(-level.health())));
+                effect.get().value().createModifiers(level.amplifier(), (attribute, modifier) -> lines.add(attribute.value().toComponent(modifier, TooltipFlag.NORMAL)));
+            }
+            Paper.ink(graphics, font, heading, RIGHT_X + 4, y, INK);
+            y += step;
             for (Component line : lines) {
                 for (FormattedCharSequence part : font.split(line, PAGE_W - 14)) {
                     if (y + step > bottom) return y;
@@ -490,6 +510,17 @@ public final class ResearchBook
             y += 2;
         }
         return y + 1;
+    }
+
+    // "Sharpness III" in plain ink. (Enchantment.getFullname colours it grey or red for tooltips, which is hard to
+    // read on the paper.) Like vanilla, an enchantment that only has level I shows no numeral.
+    private static Component enchantmentName(Holder<Enchantment> enchantment, int level)
+    {
+        MutableComponent name = enchantment.value().description().copy();
+        if (level != 1 || enchantment.value().getMaxLevel() != 1) {
+            name.append(" ").append(Component.translatable("enchantment.level." + level));
+        }
+        return name;
     }
 
     // A heading and effects as their status effect icons (the ones beside the inventory), 6 to a row, each linking to

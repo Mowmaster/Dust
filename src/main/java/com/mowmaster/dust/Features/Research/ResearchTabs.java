@@ -4,6 +4,7 @@ import com.mowmaster.dust.Features.Research.Tabs.BlockResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.CreatureResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.ItemResearchTab;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -92,5 +93,22 @@ public final class ResearchTabs
     public static void clearCaches()
     {
         for (ResearchTab tab : TABS) tab.clearCache();
+    }
+
+    // The loaded world's registries, including the "datapack registries" that only exist once a world's data is
+    // loaded (enchantments, biomes...). Set whenever tags load (TagsUpdatedEvent, on the server and on the client
+    // when joining), so tabs can list things like enchantments. null before any world has loaded.
+    // volatile: written by one thread (server or client) and read by others; volatile makes the new value visible
+    // to them straight away.
+    private static volatile @Nullable RegistryAccess registries;
+
+    public static void setRegistries(RegistryAccess access)
+    {
+        registries = access;
+    }
+
+    public static @Nullable RegistryAccess registries()
+    {
+        return registries;
     }
 }

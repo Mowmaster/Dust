@@ -28,6 +28,13 @@ import net.minecraft.core.component.DataComponents;
 import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEnchantItemEvent;
+import net.minecraft.core.Holder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -87,10 +94,12 @@ public final class ResearchObserver
 
     private ResearchObserver() {}
 
-    // Plants and bosses come from tags, so the tab lists are rebuilt when tags (re)load
+    // Plants and bosses come from tags, and enchantments from the world's data, so the tab lists are rebuilt when
+    // tags (re)load, with the registries that just loaded
     @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
+        ResearchTabs.setRegistries(event.getRegistries());
         ResearchTabs.clearCaches();
     }
 
@@ -240,6 +249,49 @@ public final class ResearchObserver
             Research.experiment(player, entry, research -> research.withLevel(effect.getAmplifier(), health));
             return;
         }
+    }
+
+    // ---- enchantments ----
+
+    // Holding something enchanted (either hand), checked once a second: each enchantment on it is noted, with its
+    // level and the item it was found on. Enchanted books count too: their enchantments are "stored" ones, which
+    // EnchantmentHelper.getEnchantmentsForCrafting reads along with ordinary ones.
+    @SubscribeEvent
+    public static void onHoldEnchanted(PlayerTickEvent.Post event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player) || player.tickCount % 20 != 0 || !Research.carriesNotes(player)) return;
+        for (InteractionHand hand : InteractionHand.values()) {
+            ItemStack held = player.getItemInHand(hand);
+            if (held.isEmpty()) continue;
+            ItemEnchantments enchantments = EnchantmentHelper.getEnchantmentsForCrafting(held);
+            // entrySet() pairs each enchantment with its level. It's a fastutil Object2IntMap, whose entries give the
+            // level as a plain int (getIntValue) without boxing it into an Integer.
+            for (var enchantment : enchantments.entrySet()) {
+                noteEnchantment(player, enchantment.getKey(), enchantment.getIntValue(), held);
+            }
+        }
+    }
+
+    // Enchanting at an enchanting table (NeoForge posts this once the enchantments are on the item)
+    @SubscribeEvent
+    public static void onEnchanted(PlayerEnchantItemEvent event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
+        for (EnchantmentInstance enchantment : event.getEnchantments()) {
+            noteEnchantment(player, enchantment.enchantment(), enchantment.level(), event.getEnchantedItem());
+        }
+    }
+
+    // An enchantment seen: start its entry, note the level (stored like an effect's: amplifier = level - 1) and the
+    // item it was on (shown as "Found on")
+    private static void noteEnchantment(ServerPlayer player, Holder<Enchantment> enchantment, int level, ItemStack on)
+    {
+        Identifier id = EffectResearchTab.enchantmentEntry(enchantment);
+        if (id == null) return;
+        ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, id);
+        Identifier item = itemId(on.getItem());
+        Research.observe(player, entry, player.blockPosition());
+        Research.experiment(player, entry, research -> research.withLevel(level - 1, 0F).withMakes(item));
     }
 
     // ---- being hit by mobs ----
