@@ -105,8 +105,9 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
         public static final Dust NONE = new Dust(-1, Optional.empty());
         public static final MapCodec<Dust> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.INT.optionalFieldOf("fire_color", -1).forGetter(Dust::fireColor),
-                // optionalFieldOf without a default gives an Optional: empty when the field isn't there
-                DustComposition.CODEC.optionalFieldOf("composition").forGetter(Dust::composition)
+                // lenientOptionalFieldOf: an Optional, empty when the field isn't there, or can't be read (a composition
+                // saved in an older form, or naming an element that no longer exists), so a bad entry doesn't fail the save
+                DustComposition.CODEC.lenientOptionalFieldOf("composition").forGetter(Dust::composition)
         ).apply(instance, Dust::new));
 
         public boolean burned()

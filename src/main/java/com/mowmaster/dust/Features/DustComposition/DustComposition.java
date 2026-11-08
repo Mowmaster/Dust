@@ -5,50 +5,46 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.network.chat.Component;
 
-// How much of each kind of dust something is made of (see DustCompositions for who has what).
-//   fire   red      water  blue      earth  green      chaos  black      order  white
-//
-// The record's fields follow EnumElement's order. with(...) builds one up readably:
-//     DustComposition.NONE.with(EnumElement.FIRE, 2).with(EnumElement.EARTH, 2).with(EnumElement.CHAOS, 1)
-public record DustComposition(int fire, int water, int earth, int chaos, int order)
-{
-    public static final DustComposition NONE = new DustComposition(0, 0, 0, 0, 0);
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-    // Saved in research (what a player read on a Dust Testing Disk). Kinds with none are left out.
+// What something is made of: a list of elements (repeats count twice), e.g. rooted dirt = earth + trees.
+// Everything comes down to the five primal dusts (get), which give the colour it burns with (color).
+// Items get theirs from the dust:elements data map (DustDataMaps; see DustCompositions).
+public record DustComposition(List<DustElement> elements)
+{
+    public static final DustComposition NONE = new DustComposition(List.of());
+
+    // { "elements": ["dust:earth", "dust:trees"] }: the form used in the data map and saved in research
     public static final Codec<DustComposition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.INT.optionalFieldOf("fire", 0).forGetter(DustComposition::fire),
-            Codec.INT.optionalFieldOf("water", 0).forGetter(DustComposition::water),
-            Codec.INT.optionalFieldOf("earth", 0).forGetter(DustComposition::earth),
-            Codec.INT.optionalFieldOf("chaos", 0).forGetter(DustComposition::chaos),
-            Codec.INT.optionalFieldOf("order", 0).forGetter(DustComposition::order)
+            DustElements.CODEC.listOf().fieldOf("elements").forGetter(DustComposition::elements)
     ).apply(instance, DustComposition::new));
 
-    public int get(EnumElement element)
+    public DustComposition
     {
-        // A switch expression (Java 14+): each case gives a value, and the compiler checks every enum value is covered
-        return switch (element) {
-            case FIRE -> fire;
-            case WATER -> water;
-            case EARTH -> earth;
-            case CHAOS -> chaos;
-            case ORDER -> order;
-        };
+        // A compact constructor: runs before the fields are set (here, making the list unchangeable)
+        elements = List.copyOf(elements);
     }
 
-    // A copy with this element's amount added to
-    public DustComposition with(EnumElement element, int amount)
+    public static DustComposition of(DustElement... elements)
     {
-        return new DustComposition(
-                fire + (element == EnumElement.FIRE ? amount : 0),
-                water + (element == EnumElement.WATER ? amount : 0),
-                earth + (element == EnumElement.EARTH ? amount : 0),
-                chaos + (element == EnumElement.CHAOS ? amount : 0),
-                order + (element == EnumElement.ORDER ? amount : 0));
+        return new DustComposition(List.of(elements));
+    }
+
+    // How much of this primal dust, across all its elements
+    public int get(EnumElement primal)
+    {
+        int total = 0;
+        for (DustElement element : elements) total += element.primal(primal);
+        return total;
     }
 
     public int total()
     {
-        return fire + water + earth + chaos + order;
+        int total = 0;
+        for (EnumElement primal : EnumElement.values()) total += get(primal);
+        return total;
     }
 
     public boolean isEmpty()
@@ -56,51 +52,69 @@ public record DustComposition(int fire, int water, int earth, int chaos, int ord
         return total() == 0;
     }
 
-    // Exactly one kind of dust
+    // Exactly one kind of primal dust
     public boolean isPure()
     {
         int kinds = 0;
-        for (EnumElement element : EnumElement.values()) {
-            if (get(element) > 0) kinds++;
+        for (EnumElement primal : EnumElement.values()) {
+            if (get(primal) > 0) kinds++;
         }
         return kinds == 1;
     }
 
-    // The colour it burns with: each kind of dust's pure colour, weighted by its share of the whole.
-    //   1 water                     -> pure blue
-    //   1 fire + 1 water            -> 50% red + 50% blue = purple
-    //   2 fire + 2 earth + 1 chaos  -> 40% red + 40% green + 20% black (the black darkens the mix by 20%)
-    // Order (white) lightens the mix the same way chaos (black) darkens it. 0xRRGGBB; white if there's no dust.
+    // Each element once, with how many times it's listed, in order
+    public Map<DustElement, Integer> counted()
+    {
+        Map<DustElement, Integer> counts = new LinkedHashMap<>();
+        for (DustElement element : elements) counts.merge(element, 1, Integer::sum);
+        return counts;
+    }
+
+    // The colour it burns with (see colorOf)
     public int color()
     {
-        int total = total();
-        if (total == 0) return 0xFFFFFF;
-        float red = 0, green = 0, blue = 0;
-        for (EnumElement element : EnumElement.values()) {
-            float share = (float) get(element) / total;
-            int pure = pureColor(element);
-            red += share * ((pure >> 16) & 0xFF);
-            green += share * ((pure >> 8) & 0xFF);
-            blue += share * (pure & 0xFF);
+        int[] primals = new int[EnumElement.values().length];
+        for (EnumElement primal : EnumElement.values()) primals[primal.ordinal()] = get(primal);
+        return colorOf(primals);
+    }
+
+    // A colour from amounts of primal dust (indexed by EnumElement#ordinal), 0xRRGGBB. HSV colour theory:
+    //   fire, earth, water   the red, green and blue channels: the hue. C = the largest of the three.
+    //   order                saturation = C / (C + order): more order, paler (towards white)
+    //   chaos                value = C / (C + chaos): more chaos, darker (towards black)
+    // So 1 fire + 1 order is red at 50% saturation, and 1 fire + 1 water + 2 chaos is magenta at 33% value. With no
+    // fire, earth or water it's a grey: white for order, black for chaos, between for both. Nothing at all is white.
+    public static int colorOf(int[] primals)
+    {
+        int fire = primals[EnumElement.FIRE.ordinal()];
+        int water = primals[EnumElement.WATER.ordinal()];
+        int earth = primals[EnumElement.EARTH.ordinal()];
+        int order = primals[EnumElement.ORDER.ordinal()];
+        int chaos = primals[EnumElement.CHAOS.ordinal()];
+        int strongest = Math.max(fire, Math.max(water, earth));
+        if (strongest == 0) {
+            if (order + chaos == 0) return 0xFFFFFF;
+            int grey = Math.round(255F * order / (order + chaos));
+            return (grey << 16) | (grey << 8) | grey;
         }
-        return (Math.round(red) << 16) | (Math.round(green) << 8) | Math.round(blue);
+        // The hue at full strength: the strongest channel at 1
+        float red = (float) fire / strongest, green = (float) earth / strongest, blue = (float) water / strongest;
+        // java.awt.Color converts between RGB and HSV ("HSB" there: hue, saturation, brightness)
+        float[] hsv = java.awt.Color.RGBtoHSB(Math.round(red * 255), Math.round(green * 255), Math.round(blue * 255), null);
+        float saturation = hsv[1] * strongest / (strongest + order);
+        float value = (float) strongest / (strongest + chaos);
+        return java.awt.Color.HSBtoRGB(hsv[0], saturation, value) & 0xFFFFFF;
     }
 
-    // Each kind of dust's own colour
-    public static int pureColor(EnumElement element)
+    // Each primal dust's own colour
+    public static int pureColor(EnumElement primal)
     {
-        return switch (element) {
-            case FIRE -> 0xFF0000;
-            case WATER -> 0x0000FF;
-            case EARTH -> 0x00FF00;
-            case CHAOS -> 0x000000;
-            case ORDER -> 0xFFFFFF;
-        };
+        return DustElements.of(primal).color();
     }
 
-    // "Fire" (dust.element.fire), "Water"...
-    public static Component name(EnumElement element)
+    // "Fire", "Water"...
+    public static Component name(EnumElement primal)
     {
-        return Component.translatable("dust.element." + element.getSerializedName());
+        return DustElements.of(primal).name();
     }
 }

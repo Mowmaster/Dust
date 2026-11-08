@@ -2,6 +2,7 @@ package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.RecipeRecord;
@@ -563,10 +564,11 @@ public final class ResearchBook
     private static final Identifier FLAME_SPRITE = Identifier.fromNamespaceAndPath(DustReferences.MODID, "research/flame");
 
     // What's known of its dust:
-    //   burned     "Burns with this flame:" and a flame in that colour (blitSprite's last argument tints the sprite,
-    //              0xAARRGGBB, the same way a block tint colours a texture)
-    //   read       "Made of:" and each kind of dust: a swatch of its colour, "2 Fire (40%)"
+    //   burned     "Burns with:" and a flame in that colour
+    //   read       "Made of:" and each element with its icon, then the primal dust it all comes to
     //   neither    a hint at how to find out
+    // Icons are greyscale sprites; blitSprite's last argument tints them (0xAARRGGBB), the way a block tint colours a
+    // texture, so each one shows in its element's colour.
     private static void drawDust(GuiGraphicsExtractor graphics, Font font, EntryResearch.Dust dust)
     {
         int x = RIGHT_X + 4;
@@ -577,28 +579,39 @@ public final class ResearchBook
             return;
         }
         if (dust.burned()) {
-            Paper.ink(graphics, font, Component.translatable("research.dust.research.flame"), x, y, INK);
-            y += font.lineHeight + 2;
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME_SPRITE, RIGHT_X + (PAGE_W - 32) / 2, y, 32, 32, 0xFF000000 | dust.fireColor());
-            y += 36;
+            Paper.ink(graphics, font, Component.translatable("research.dust.research.flame"), x, y + 8, INK);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME_SPRITE, RIGHT_X + PAGE_W - 30, y, 24, 24, 0xFF000000 | dust.fireColor());
+            y += 27;
         }
-        if (dust.composition().isPresent()) {
-            DustComposition composition = dust.composition().get();
-            Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
-            y += font.lineHeight + 2;
-            int total = Math.max(1, composition.total());
-            for (EnumElement element : EnumElement.values()) {
-                int amount = composition.get(element);
-                if (amount == 0 || y + font.lineHeight > bottom) continue;
-                // A swatch: an ink border round the dust's own colour
-                graphics.fill(x + 2, y, x + 10, y + 8, INK);
-                graphics.fill(x + 3, y + 1, x + 9, y + 7, 0xFF000000 | DustComposition.pureColor(element));
-                Component line = Component.translatable("research.dust.research.amount", amount, DustComposition.name(element), Math.round(amount * 100F / total));
-                Paper.ink(graphics, font, line, x + 14, y, INK);
-                y += font.lineHeight + 2;
+        if (dust.composition().isEmpty()) {
+            if (y + font.lineHeight <= bottom) drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unread"), PAGE_W - 8), x, y, bottom, FADED);
+            return;
+        }
+        DustComposition composition = dust.composition().get();
+        Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
+        y += font.lineHeight + 2;
+        // Each element once ("Trees x2" for one listed twice), its icon in its colour
+        for (Map.Entry<DustElement, Integer> entry : composition.counted().entrySet()) {
+            if (y + 11 > bottom - 12) break;
+            DustElement element = entry.getKey();
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, 0xFF000000 | element.color());
+            Component name = entry.getValue() > 1
+                    ? Component.translatable("research.dust.research.times", element.name(), entry.getValue()) : element.name();
+            Paper.ink(graphics, font, name, x + 14, y, INK);
+            y += 11;
+        }
+        // The primal dust it comes to, in a row: a swatch and a number for each kind
+        if (y + font.lineHeight <= bottom) {
+            int dx = x + 1;
+            for (EnumElement primal : EnumElement.values()) {
+                int amount = composition.get(primal);
+                if (amount == 0) continue;
+                graphics.fill(dx, y, dx + 8, y + 8, INK);
+                graphics.fill(dx + 1, y + 1, dx + 7, y + 7, 0xFF000000 | DustComposition.pureColor(primal));
+                Component count = Component.literal(String.valueOf(amount));
+                Paper.ink(graphics, font, count, dx + 10, y, INK);
+                dx += 14 + font.width(count);
             }
-        } else if (y + font.lineHeight <= bottom) {
-            drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unread"), PAGE_W - 8), x, y, bottom, FADED);
         }
     }
 
