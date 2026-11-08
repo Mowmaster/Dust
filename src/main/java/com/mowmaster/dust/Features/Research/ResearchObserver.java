@@ -32,6 +32,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,10 +54,11 @@ public final class ResearchObserver
     // The look is checked every CHECK_EVERY ticks, so a player looking around doesn't cost a ray trace every tick
     private static final int CHECK_EVERY = 4;
 
-    // What each player is looking at and for how long (server memory only; nothing to save)
+    // What each player is looking at and for how long (server memory only; nothing to save).
+    // reported: the client has been sent progress for it (and so must be told when it stops)
     private static final Map<UUID, Look> LOOKS = new HashMap<>();
 
-    private record Look(ResearchEntry entry, BlockPos pos, int ticks, boolean done) {}
+    private record Look(ResearchEntry entry, BlockPos pos, int ticks, boolean done, boolean reported) {}
 
     private ResearchObserver() {}
 
@@ -73,27 +75,43 @@ public final class ResearchObserver
     public static void onPlayerTick(PlayerTickEvent.Post event)
     {
         if (!(event.getEntity() instanceof ServerPlayer player) || player.tickCount % CHECK_EVERY != 0) return;
-        if (player.isSpectator() || !Research.carriesNotes(player)) {
-            LOOKS.remove(player.getUUID());
-            return;
-        }
-
-        Target target = lookedAt(player);
         Look look = LOOKS.get(player.getUUID());
+        Target target = player.isSpectator() || !Research.carriesNotes(player) ? null : lookedAt(player);
+
         if (target == null) {
-            LOOKS.remove(player.getUUID());
+            stopLooking(player, look);
             return;
         }
         if (look == null || !look.entry().equals(target.entry())) {
-            look = new Look(target.entry(), target.pos(), 0, false);
+            stopLooking(player, look);
+            look = new Look(target.entry(), target.pos(), 0, false, false);
         }
-        look = new Look(look.entry(), target.pos(), look.ticks() + CHECK_EVERY, look.done());
-        int needed = target.entry().isEntity() ? MOB_TICKS : BLOCK_TICKS;
-        if (!look.done() && look.ticks() >= needed) {
+        look = new Look(look.entry(), target.pos(), look.ticks() + CHECK_EVERY, look.done(), look.reported());
+
+        // Nothing new to learn here: no progress shown (and no waiting)
+        if (look.done() || !Research.wouldLearn(player, look.entry(), look.pos())) {
+            if (look.reported()) PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
+            LOOKS.put(player.getUUID(), new Look(look.entry(), look.pos(), look.ticks(), true, false));
+            return;
+        }
+
+        int needed = look.entry().isEntity() ? MOB_TICKS : BLOCK_TICKS;
+        if (look.ticks() >= needed) {
+            PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
             Research.observe(player, look.entry(), look.pos());
-            look = new Look(look.entry(), look.pos(), look.ticks(), true);
+            look = new Look(look.entry(), look.pos(), look.ticks(), true, false);
+        } else {
+            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Progress(look.entry().isEntity(), look.entry().id(), (float) look.ticks() / needed));
+            look = new Look(look.entry(), look.pos(), look.ticks(), false, true);
         }
         LOOKS.put(player.getUUID(), look);
+    }
+
+    // Forgets what the player was looking at, telling their client to hide the progress bar if it was showing
+    private static void stopLooking(ServerPlayer player, Look look)
+    {
+        if (look != null && look.reported()) PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
+        LOOKS.remove(player.getUUID());
     }
 
     private record Target(ResearchEntry entry, BlockPos pos) {}

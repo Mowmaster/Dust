@@ -2,18 +2,15 @@ package com.mowmaster.dust.Features.Research;
 
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -42,20 +39,32 @@ public final class Research
     // ---- observation ----
 
     // The player has watched this entry at this position long enough. Starts the entry, or notes a new biome.
+    // Their client then plays a ding and shows a toast (Client/ObservationClient).
     public static void observe(ServerPlayer player, ResearchEntry entry, BlockPos where)
     {
         Level level = player.level();
-        Identifier biome = level.getBiome(where).unwrapKey().map(key -> key.identifier()).orElse(Biomes.PLAINS.identifier());
+        Identifier biome = biomeAt(level, where);
         EntryResearch before = get(player).get(entry);
         if (before == null) {
             long clock = level.getOverworldClockTime();
             set(player, get(player).update(entry, old -> EntryResearch.firstSeen(day(clock), timeOfDay(clock), biome)));
-            player.sendOverlayMessage(Component.translatable("message.dust.research.discovered", entry.name()).withStyle(ChatFormatting.GOLD));
-            level.playSound(null, player.blockPosition(), SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 1.0F, 1.0F);
+            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.isEntity(), entry.id(), false));
         } else if (!before.biomes().contains(biome)) {
             set(player, get(player).update(entry, old -> old.withBiome(biome)));
-            player.sendOverlayMessage(Component.translatable("message.dust.research.new_biome", entry.name()).withStyle(ChatFormatting.GOLD));
+            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.isEntity(), entry.id(), true));
         }
+    }
+
+    // Would observing this entry here teach the player anything (a new entry, or a new biome for it)?
+    public static boolean wouldLearn(Player player, ResearchEntry entry, BlockPos where)
+    {
+        EntryResearch known = get(player).get(entry);
+        return known == null || !known.biomes().contains(biomeAt(player.level(), where));
+    }
+
+    private static Identifier biomeAt(Level level, BlockPos pos)
+    {
+        return level.getBiome(pos).unwrapKey().map(key -> key.identifier()).orElse(Biomes.PLAINS.identifier());
     }
 
     // ---- experimentation (only adds to entries that are already started) ----

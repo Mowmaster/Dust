@@ -24,7 +24,10 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.fml.config.ModConfig;
 import com.mowmaster.mowlib.client.ClientActivations;
+import com.mowmaster.dust.Features.Research.ObservationPayloads;
 import com.mowmaster.dust.Features.Research.ResearchBookItem;
+import com.mowmaster.dust.Features.Research.Client.ObservationClient;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import com.mowmaster.dust.Features.Research.Client.ResearchClient;
 
 import java.util.List;
@@ -78,6 +81,15 @@ public class DustClient {
     public static void registerBlockTints(RegisterColorHandlersEvent.BlockTintSources event)
     {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
+    }
+
+    // Client-side handlers for server -> client packets that touch client-only code (the packets are registered in
+    // DustMagicEvents#registerPayloads without a handler)
+    @SubscribeEvent
+    public static void registerClientPayloadHandlers(RegisterClientPayloadHandlersEvent event)
+    {
+        event.register(ObservationPayloads.Progress.TYPE, ObservationClient::onProgress);
+        event.register(ObservationPayloads.Discovered.TYPE, ObservationClient::onDiscovered);
     }
 
     // Which screen opens for which menu type
