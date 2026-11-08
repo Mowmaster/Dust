@@ -23,6 +23,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.PotionContents;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -116,7 +118,8 @@ public final class ResearchBook
         addRecipePages(pages, Kind.CRAFTED_INTO, research.usedIn());
         if (research.maxHealth() > 0 || !research.breeding().isEmpty() || !research.madeFrom().isEmpty()
                 || !research.makes().isEmpty() || !research.modifiers().isEmpty()
-                || research.saturation() >= 0 || !research.foodEffects().isEmpty()) {
+                || research.saturation() >= 0 || !research.foodEffects().isEmpty()
+                || research.hits().known() || !research.levels().isEmpty()) {
             pages.add(new NotesPage(Kind.EXPERIMENTS, List.of()));
         }
         pages.add(new NotesPage(Kind.RESEARCH, List.of()));
@@ -413,6 +416,14 @@ public final class ResearchBook
             Paper.ink(graphics, font, Component.translatable(label(entry, "health"), Math.round(research.maxHealth()) / 2.0F), RIGHT_X + 4, y, INK);
             y += font.lineHeight + 3;
         }
+        if (research.hits().known()) {
+            EntryResearch.Hits hits = research.hits();
+            // "1.5" for a single value seen, "1.5-3" once different hits have been taken
+            String range = hits.min() == hits.max() ? hearts(hits.max()) : hearts(hits.min()) + "-" + hearts(hits.max());
+            Paper.ink(graphics, font, Component.translatable(label(entry, "hits"), range), RIGHT_X + 4, y, INK);
+            y += font.lineHeight + 3;
+        }
+        y = drawLevels(graphics, font, entry, research.levels(), y, bottom);
         if (research.saturation() >= 0) {
             // One decimal place (steak gives 12.8). Locale.ROOT so it's always a dot, whatever the system language.
             String saturation = String.format(java.util.Locale.ROOT, "%.1f", research.saturation());
@@ -439,6 +450,46 @@ public final class ResearchBook
             linkedItem(graphics, data, items.get(i), RIGHT_X + 3 + (i % COLS) * CELL, cy);
         }
         return y + ((items.size() + COLS - 1) / COLS) * CELL + 3;
+    }
+
+    // Health points as hearts, with a half if needed and no ".0": 7 -> "3.5", 6 -> "3"
+    private static String hearts(float health)
+    {
+        float hearts = Math.round(health) / 2.0F;
+        return hearts == (int) hearts ? String.valueOf((int) hearts) : String.valueOf(hearts);
+    }
+
+    // An effect's levels that the player has had: "Speed II", then what one level does. Instant effects show the
+    // health one dose gave or took; lasting ones the attribute changes, worked out from the effect:
+    // MobEffect#createModifiers(amplifier, consumer) hands every (attribute, modifier) pair the effect applies at that
+    // level to the consumer (a BiConsumer: a function taking two values and returning nothing), and NeoForge's
+    // Attribute#toComponent turns each into the same "+40% Speed" line potion tooltips show.
+    private static int drawLevels(GuiGraphicsExtractor graphics, Font font, ResearchEntry entry, List<EntryResearch.EffectLevel> levels, int y, int bottom)
+    {
+        if (levels.isEmpty() || entry.tab() != ResearchTabs.EFFECTS) return y;
+        Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(entry.id());
+        if (effect.isEmpty()) return y;
+        int step = font.lineHeight + 1;
+        for (EntryResearch.EffectLevel level : levels) {
+            if (y + step > bottom) break;
+            // potion.withAmplifier: "Speed II" (level I is just "Speed")
+            Paper.ink(graphics, font, PotionContents.getPotionDescription(effect.get(), level.amplifier()), RIGHT_X + 4, y, INK);
+            y += step;
+
+            List<Component> lines = new ArrayList<>();
+            if (level.health() > 0) lines.add(Component.translatable("research.dust.experiment.heals", hearts(level.health())));
+            if (level.health() < 0) lines.add(Component.translatable("research.dust.experiment.harms", hearts(-level.health())));
+            effect.get().value().createModifiers(level.amplifier(), (attribute, modifier) -> lines.add(attribute.value().toComponent(modifier, TooltipFlag.NORMAL)));
+            for (Component line : lines) {
+                for (FormattedCharSequence part : font.split(line, PAGE_W - 14)) {
+                    if (y + step > bottom) return y;
+                    graphics.text(font, part, RIGHT_X + 10, y, INK, false);
+                    y += step;
+                }
+            }
+            y += 2;
+        }
+        return y + 1;
     }
 
     // A heading and effects as their status effect icons (the ones beside the inventory), 6 to a row, each linking to

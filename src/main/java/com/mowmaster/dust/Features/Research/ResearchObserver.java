@@ -27,7 +27,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.component.DataComponents;
 import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.entity.Entity;
@@ -179,7 +185,11 @@ public final class ResearchObserver
     {
         if (!(event.getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
         Identifier effectId = EffectResearchTab.idOf(event.getEffectInstance().getEffect());
-        Research.observe(player, new ResearchEntry(ResearchTabs.EFFECTS, effectId), player.blockPosition());
+        ResearchEntry effectEntry = new ResearchEntry(ResearchTabs.EFFECTS, effectId);
+        Research.observe(player, effectEntry, player.blockPosition());
+        // Which level it was (the book shows what each level seen does to your attributes)
+        int amplifier = event.getEffectInstance().getAmplifier();
+        Research.experiment(player, effectEntry, research -> research.withLevel(amplifier, 0F));
 
         ResearchEntry food = foodBeingFinished(player);
         if (food != null) {
@@ -196,6 +206,58 @@ public final class ResearchObserver
         if (!player.isUsingItem() || player.getUseItemRemainingTicks() > 0) return null;
         ItemStack eating = player.getUseItem();
         return eating.has(DataComponents.FOOD) ? ResearchTabs.entryForItem(eating) : null;
+    }
+
+    // ---- instant effects (Instant Health, Instant Damage...) ----
+    // These are never "added" (they act once and are gone), so drinking one is noticed by the healing or damage it
+    // does, while the player is finishing the potion: the heal / hurt happens on the same tick as completing the drink.
+
+    @SubscribeEvent
+    public static void onHeal(LivingHealEvent event)
+    {
+        if (event.getEntity() instanceof ServerPlayer player) instantDose(player, MobEffectCategory.BENEFICIAL, event.getAmount());
+    }
+
+    // The damage before armour and the like (what the potion itself deals); the Incoming event is the earliest one
+    @SubscribeEvent
+    public static void onIncomingDamage(LivingIncomingDamageEvent event)
+    {
+        if (event.getEntity() instanceof ServerPlayer player) instantDose(player, MobEffectCategory.HARMFUL, -event.getAmount());
+    }
+
+    // If the player is finishing a potion with an instant effect of this category, that effect's level notes the
+    // health it gave (positive) or took (negative)
+    private static void instantDose(ServerPlayer player, MobEffectCategory category, float health)
+    {
+        if (health == 0 || !Research.carriesNotes(player) || !player.isUsingItem() || player.getUseItemRemainingTicks() > 0) return;
+        PotionContents potion = player.getUseItem().get(DataComponents.POTION_CONTENTS);
+        if (potion == null) return;
+        for (MobEffectInstance effect : potion.getAllEffects()) {
+            MobEffect type = effect.getEffect().value();
+            if (!type.isInstantaneous() || type.getCategory() != category) continue;
+            ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, EffectResearchTab.idOf(effect.getEffect()));
+            Research.observe(player, entry, player.blockPosition());
+            Research.experiment(player, entry, research -> research.withLevel(effect.getAmplifier(), health));
+            return;
+        }
+    }
+
+    // ---- being hit by mobs ----
+
+    // A mob hurting the player: its entry learns how hard it hits (the damage actually taken, after armour, so the
+    // range noted grows with different armour and difficulties). Being hit counts as meeting it, too.
+    // getEntity() on a damage source is who's responsible (the skeleton for its arrow); getDirectEntity() would be
+    // the arrow itself.
+    @SubscribeEvent
+    public static void onHurtByMob(LivingDamageEvent.Post event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
+        if (!(event.getSource().getEntity() instanceof LivingEntity mob) || mob instanceof Player) return;
+        float damage = event.getInflictedDamage();
+        ResearchEntry entry = ResearchTabs.entryForEntity(mob);
+        if (damage <= 0 || entry == null) return;
+        Research.observe(player, entry, mob.blockPosition());
+        Research.experiment(player, entry, research -> research.withHit(damage));
     }
 
     // Finishing eating something: it counts as finding it, and its entry learns how much saturation it gives.
