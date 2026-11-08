@@ -91,6 +91,14 @@ public abstract class ResearchTab
 
     public abstract Component name(Identifier entry);
 
+    // A GUI sprite to show for the entry in the book's list instead of its icon item, or null for the item.
+    // (A sprite is an image in the game's GUI atlas, named by its path under textures/gui/sprites/.) icon() is still
+    // used everywhere else: the entry's own page, toasts, the side view.
+    public @Nullable Identifier listSprite(Identifier entry)
+    {
+        return null;
+    }
+
     // A mob to draw large on the entry's page instead of its icon, or null for the icon (client only)
     public @Nullable EntityType<?> displayEntity(Identifier entry)
     {

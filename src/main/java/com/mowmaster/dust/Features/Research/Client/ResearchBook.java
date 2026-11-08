@@ -216,8 +216,7 @@ public final class ResearchBook
             Paper.slot(graphics, cell[0], cell[1]);
             // A group shows its first researched member, or (faded) its first member until one is found
             Identifier shown = data.firstResearched(tab, group);
-            if (shown != null) graphics.item(tab.icon(shown), cell[0] + 1, cell[1] + 1);
-            else Paper.ghost(graphics, tab.icon(group.getFirst()), cell[0], cell[1]);
+            listIcon(graphics, tab, shown != null ? shown : group.getFirst(), cell[0], cell[1], shown != null);
         }
 
         // "Discovered 12 / 340" across the bottom (counting list icons), page arrows in the corners
@@ -234,6 +233,16 @@ public final class ResearchBook
         int index = i % PER_PAGE;
         int gridLeft = pageX + (PAGE_W - COLS * CELL) / 2;
         return new int[] {gridLeft + (index % COLS) * CELL, GRID_TOP + (index / COLS) * CELL};
+    }
+
+    // One list cell's picture: the tab's list sprite if it has one (effects), otherwise the icon item; faded until found.
+    // blitSprite draws a GUI atlas sprite at the given size (effect icons are 18x18, drawn at 16x16 like an item).
+    private static void listIcon(GuiGraphicsExtractor graphics, ResearchTab tab, Identifier entry, int x, int y, boolean researched)
+    {
+        Identifier sprite = tab.listSprite(entry);
+        if (sprite == null) graphics.item(tab.icon(entry), x + 1, y + 1);
+        else graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x + 1, y + 1, 16, 16);
+        if (!researched) Paper.fade(graphics, x, y);
     }
 
     // ---- entry view ----

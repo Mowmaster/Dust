@@ -55,6 +55,15 @@ public class EffectResearchTab extends ResearchTab
         return bottle;
     }
 
+    // In the list, each effect shows its status effect icon (the one beside the inventory) rather than a bottle.
+    // Effect icons are the sprites mob_effect/<effect path> in the effect's namespace (what Hud.getMobEffectSprite
+    // works out; worked out here because Hud is client-only and tabs are loaded on the server too).
+    @Override
+    public Identifier listSprite(Identifier entry)
+    {
+        return entry.withPrefix("mob_effect/");
+    }
+
     @Override
     public Component name(Identifier entry)
     {
