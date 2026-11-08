@@ -344,19 +344,19 @@ public final class ResearchBook
         return null;
     }
 
-    // Opens the book at this entry: the entry itself if it's been discovered, otherwise its tab at the page it's on.
-    // null: back to the main page of the open tab.
+    // What the book opens to:
+    //   null                    whatever the side view is showing now (an entry, or the main page)
+    //   a discovered entry      that entry
+    //   an undiscovered entry   the main page of the open tab
     static void show(ResearchData data, @Nullable ResearchEntry entry)
     {
-        selected = null;
         if (entry == null) return;
-        tab = entry.category();
         if (data.has(entry)) {
+            tab = entry.category();
             selected = entry;
             notesPage = 0;
         } else {
-            int index = tab.entries().indexOf(entry);
-            listPage = Math.max(0, index) / PER_SPREAD;
+            selected = null;
         }
     }
 
