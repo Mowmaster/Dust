@@ -5,6 +5,11 @@ import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.AncientInscribeRecipe;
+import com.mowmaster.dust.Features.DustComposition.DustRecipe;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Research.ResearchTabs;
+import com.mowmaster.dust.Features.Research.ResearchUnlocks;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.data.recipes.BrewingRecipeBuilder;
@@ -23,6 +28,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
+import java.util.Optional;
 
 public class DustProviderBasicRecipe extends RecipeProvider {
     // 26.3: recipes (and their advancements) are registry entries. The provider is built by the registry
@@ -73,14 +79,16 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .requires(Items.AMETHYST_SHARD)
                 .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
                 .save(output);
-        // Dust Testing Disk: an amethyst shard over three smooth stone slabs
-        shaped(RecipeCategory.MISC, DustBlockRegistry.TESTING_DISK.get())
-                .pattern(" A ")
-                .pattern("SSS")
-                .define('A', Items.AMETHYST_SHARD)
-                .define('S', Items.SMOOTH_STONE_SLAB)
-                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
-                .save(output);
+        // Dust Testing Disk, the first dust recipe: any item of each pure dust (red, green, blue, white, black) and a
+        // crafting table, shapeless. Only for players who've unlocked it in the Research tab (by finding all five).
+        SpecialRecipeBuilder.special(() -> new DustRecipe(
+                        new ItemStackTemplate(DustBlockRegistry.TESTING_DISK.get().asItem()),
+                        List.of(DustRecipe.DustNeed.pure(EnumElement.FIRE), DustRecipe.DustNeed.pure(EnumElement.EARTH),
+                                DustRecipe.DustNeed.pure(EnumElement.WATER), DustRecipe.DustNeed.pure(EnumElement.ORDER),
+                                DustRecipe.DustNeed.pure(EnumElement.CHAOS)),
+                        List.of(Ingredient.of(Items.CRAFTING_TABLE)),
+                        Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.TESTING_DISK.id()))))
+                .save(output, DustReferences.MODID + ":testing_disk");
 
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
         shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)

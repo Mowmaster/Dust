@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "com.mowmaster.dust.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [],
+  "mixins": [
+    "CraftingMenuMixin"
+  ],
   "client": [
     "client.CachedFontProviderMixin"
   ],

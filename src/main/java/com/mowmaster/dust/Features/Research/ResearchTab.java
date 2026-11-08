@@ -112,6 +112,12 @@ public abstract class ResearchTab
         return Component.translatable("research." + id.getNamespace() + ".note.default." + id.getPath(), name(entry));
     }
 
+    // false: entries have no Research page about their dust (the Research tab's own discoveries)
+    public boolean showsDustPage()
+    {
+        return true;
+    }
+
     // false: an entry's left page has no drops / sources section at all (Effects)
     public boolean showsDrops()
     {

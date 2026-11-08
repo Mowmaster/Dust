@@ -1,13 +1,29 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "A": "minecraft:amethyst_shard",
-    "S": "minecraft:smooth_stone_slab"
-  },
-  "pattern": [
-    " A ",
-    "SSS"
+  "type": "dust:dust_crafting",
+  "dusts": [
+    {
+      "element": "fire"
+    },
+    {
+      "element": "earth"
+    },
+    {
+      "element": "water"
+    },
+    {
+      "element": "order"
+    },
+    {
+      "element": "chaos"
+    }
   ],
+  "ingredients": [
+    "minecraft:crafting_table"
+  ],
+  "research": {
+    "entry": "dust:testing_disk",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:testing_disk"
   }

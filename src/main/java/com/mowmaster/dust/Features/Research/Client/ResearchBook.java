@@ -130,7 +130,7 @@ public final class ResearchBook
                 || research.hits().known() || !research.levels().isEmpty()) {
             pages.add(new NotesPage(Kind.EXPERIMENTS, List.of()));
         }
-        pages.add(new NotesPage(Kind.RESEARCH, List.of()));
+        if (entry.tab().showsDustPage()) pages.add(new NotesPage(Kind.RESEARCH, List.of()));
         return pages;
     }
 
