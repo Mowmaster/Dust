@@ -18,3 +18,12 @@ NeoForge 26.3.0.94, Minecraft 26.3, Java 25. Used NeoForge-26x version of Pedest
 - If I haven't applied earlier changes yet, re-output the full changed files so I don't have to merge them.
 - For simple model fixes (a missing `tintindex`, `#`, texture key), just tell me the line to change; only send a model file when the geometry changes.
 - To check 26.3 APIs, clone the public `neoforged/neoforge` repo (branch `26.3.x`) and read the 26.3 porting primer in `neoforged/.github` (`primers/26.3/index.md`; 26.1 and 26.2 primers cover earlier changes). NeoForge's docs are in the public `neoforged/Documentation` repo (`docs/`).
+
+## Dust TODO
+- Dust Crafting Table: its own block, menu, screen and recipe type (e.g. `dust:dust_crafting_station`) for every dust
+  recipe after the Testing Disk. Gate on research in the menu (it knows the player); show ghost dust-need slots and a
+  "needs research" hint; unlocked/crafted like the Testing Disk. Reuse `DustRecipe`'s matching and `DustNeed`.
+  The Testing Disk stays on the vanilla table (bootstrap recipe, `mixin/CraftingMenuMixin`).
+- Known gaps: the Crafter ignores the research gate on dust recipes; dust recipes don't show in the recipe book;
+  instant-effect potions are only researched when drunk (not splash/lingering).
+- Testing Disk: replace the placeholder lodestone block with its own model.
