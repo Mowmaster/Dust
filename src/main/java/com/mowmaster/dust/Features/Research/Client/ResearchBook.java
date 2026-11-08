@@ -23,6 +23,8 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 // Draws the research book, and says what a click on it hits. Used by the side view (ResearchBookHud) and the clickable
 // screen (ResearchBookScreen), so they look the same. Everything is in "book pixels": (0, 0) is the book's top-left
@@ -304,10 +306,19 @@ public final class ResearchBook
 
     private static void linkedItem(GuiGraphicsExtractor graphics, ResearchData data, Identifier item, int x, int y)
     {
+        linkedItem(graphics, null, data, item, 1, x, y);
+    }
+
+    // An item icon with a stack count in the corner when count > 1 (font is only needed then)
+    private static void linkedItem(GuiGraphicsExtractor graphics, @Nullable Font font, ResearchData data, Identifier item, int count, int x, int y)
+    {
         ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.getValue(item));
         ResearchEntry entry = ResearchTabs.entryForItem(stack);
         boolean researched = entry != null && data.has(entry);
         drawIcon(graphics, stack, x, y, researched);
+        // The count is passed as text rather than set on the stack, so it works for items that don't stack (a recipe
+        // can use 3 buckets). Drawn after the ghost fade so it stays readable on unresearched items too.
+        if (count > 1 && font != null) graphics.itemDecorations(font, stack, x + 1, y + 1, String.valueOf(count));
         LINKS.add(new Link(x, y, entry, researched, stack.getHoverName(), false));
     }
 
@@ -336,26 +347,42 @@ public final class ResearchBook
 
     // ---- crafting pages ----
 
-    private static int recipeHeight(RecipeRecord recipe)
+    // Ingredients per row on a crafting page (the station column starts after this many cells)
+    private static final int INGREDIENT_COLS = 3;
+
+    // Each different ingredient once, with how many times the recipe uses it, in the order they first appear.
+    // LinkedHashMap is a HashMap that remembers insertion order; merge(key, 1, Integer::sum) puts 1 for a new key and
+    // adds 1 to an existing one. Integer::sum is a method reference: shorthand for the lambda (a, b) -> a + b.
+    private static List<Map.Entry<Identifier, Integer>> ingredients(RecipeRecord recipe)
     {
-        return Math.max(1, recipe.rows()) * CELL;
+        Map<Identifier, Integer> counts = new LinkedHashMap<>();
+        for (Identifier slot : recipe.slots()) {
+            if (!slot.equals(RecipeRecord.EMPTY)) counts.merge(slot, 1, Integer::sum);
+        }
+        return List.copyOf(counts.entrySet());
     }
 
-    // One recipe as  [ingredient grid]  [station]  ->  [result]. Returns its height.
+    private static int recipeHeight(RecipeRecord recipe)
+    {
+        int rows = (ingredients(recipe).size() + INGREDIENT_COLS - 1) / INGREDIENT_COLS;
+        return Math.max(1, rows) * CELL;
+    }
+
+    // One recipe as  [ingredients]  [station]  ->  [result]. Each ingredient is shown once, with a count when it's used
+    // more than once (4 planks -> crafting table is a single planks icon marked 4). Returns its height.
     private static int drawRecipe(GuiGraphicsExtractor graphics, Font font, ResearchData data, RecipeRecord recipe, int x, int y)
     {
-        int width = Math.max(1, recipe.width());
-        for (int i = 0; i < recipe.slots().size(); i++) {
-            int cx = x + (i % width) * CELL;
-            int cy = y + (i / width) * CELL;
-            Identifier slot = recipe.slots().get(i);
-            if (slot.equals(RecipeRecord.EMPTY)) Paper.slot(graphics, cx, cy);
-            else linkedItem(graphics, data, slot, cx, cy);
+        List<Map.Entry<Identifier, Integer>> ingredients = ingredients(recipe);
+        for (int i = 0; i < ingredients.size(); i++) {
+            int cx = x + (i % INGREDIENT_COLS) * CELL;
+            int cy = y + (i / INGREDIENT_COLS) * CELL;
+            Map.Entry<Identifier, Integer> ingredient = ingredients.get(i);
+            linkedItem(graphics, font, data, ingredient.getKey(), ingredient.getValue(), cx, cy);
         }
         int height = recipeHeight(recipe);
         int middle = y + (height - CELL) / 2;
-        // Fixed columns, so recipes of different sizes line up: grid up to 3 wide, then station, arrow, result
-        recipe.station().ifPresent(station -> linkedItem(graphics, data, station, x + 3 * CELL + 4, middle));
+        // Fixed columns, so recipes of different sizes line up: ingredients up to 3 wide, then station, arrow, result
+        recipe.station().ifPresent(station -> linkedItem(graphics, data, station, x + INGREDIENT_COLS * CELL + 4, middle));
         Paper.ink(graphics, font, Component.literal("\u2192"), x + 4 * CELL + 7, middle + 5, INK);
         linkedItem(graphics, data, recipe.output(), x + 4 * CELL + 18, middle);
         return height;
