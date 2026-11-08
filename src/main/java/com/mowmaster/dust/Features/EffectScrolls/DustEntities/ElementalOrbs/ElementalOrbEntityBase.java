@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.MoveSimulationType;
 import org.jspecify.annotations.Nullable;
 
 // A floating orb of one element's dust that flies to nearby players and is absorbed into their element store,
@@ -108,6 +109,15 @@ public abstract class ElementalOrbEntityBase extends Entity {
         this.setValue(input.getIntOr("Value", 1));
         this.age = input.getIntOr("Age", 0);
     }
+
+    // 26.3: entities say which side runs their movement. Like vanilla's experience orb, an orb moves itself on both the
+    // server and the client (the client predicts it between updates). The default only lets the authoritative side
+    // move it, and calling move() on the client then fails (checked in the development environment).
+    @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
+
 
     @Override
     protected double getDefaultGravity() {
