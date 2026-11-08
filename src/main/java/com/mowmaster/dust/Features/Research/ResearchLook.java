@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Features.Research;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -26,7 +27,8 @@ public final class ResearchLook
     public static final double RANGE = 10.0;
     public static final double SPYGLASS_RANGE = 64.0;
 
-    public record Target(ResearchEntry entry, BlockPos pos) {}
+    // entity: the mob or dropped item looked at (null for a block)
+    public record Target(ResearchEntry entry, BlockPos pos, @Nullable Entity entity) {}
 
     private ResearchLook() {}
 
@@ -55,7 +57,7 @@ public final class ResearchLook
                 eye.distanceToSqr(entityEnd));
         if (entityHit != null) {
             ResearchEntry entry = ResearchTabs.entryForEntity(entityHit.getEntity());
-            if (entry != null) return new Target(entry, entityHit.getEntity().blockPosition());
+            if (entry != null) return new Target(entry, entityHit.getEntity().blockPosition(), entityHit.getEntity());
         }
 
         if (blockHit.getType() == HitResult.Type.BLOCK) {
@@ -63,7 +65,7 @@ public final class ResearchLook
             // The fluid's own block (water, lava), even in a waterlogged block
             BlockState state = fluidFirst ? level.getFluidState(pos).createLegacyBlock() : level.getBlockState(pos);
             ResearchEntry entry = ResearchTabs.entryForBlock(state);
-            if (entry != null) return new Target(entry, pos);
+            if (entry != null) return new Target(entry, pos, null);
         }
         return null;
     }

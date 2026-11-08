@@ -202,17 +202,20 @@ public final class ResearchBook
         // Left page: the entry itself, then its drops (or, for items, its sources). Both are icons that open their entry.
         drawSubject(graphics, entry, LEFT_X + 20, PAGE_TOP + 2, LEFT_X + PAGE_W - 20, PAGE_TOP + 62);
         boolean sources = entry.tab().showsSources();
-        Paper.ink(graphics, font, Component.translatable(sources ? "research.dust.sources" : "research.dust.drops"), LEFT_X + 4, PAGE_TOP + 68, INK);
-        List<ItemStack> icons = leftIcons(data, entry).stream().map(ResearchEntry::icon).toList();
-        if (icons.isEmpty()) {
-            String key = sources ? "research.dust.sources.unknown"
-                    : entry.tab().displayEntity(entry.id()) != null ? "research.dust.drops.unknown_mob" : "research.dust.drops.unknown_block";
-            drawLines(graphics, font, font.split(Component.translatable(key), PAGE_W - 8), LEFT_X + 4, PAGE_TOP + 80, FOOTER_Y - 2, FADED);
-        } else {
-            for (int i = 0; i < icons.size() && i < LEFT_ICONS; i++) {
-                int[] cell = leftCell(i);
-                Paper.slot(graphics, cell[0], cell[1]);
-                graphics.item(icons.get(i), cell[0] + 1, cell[1] + 1);
+        boolean leftSection = sources || entry.tab().showsDrops();
+        if (leftSection) {
+            Paper.ink(graphics, font, Component.translatable(sources ? "research.dust.sources" : "research.dust.drops"), LEFT_X + 4, PAGE_TOP + 68, INK);
+            List<ItemStack> icons = leftIcons(data, entry).stream().map(ResearchEntry::icon).toList();
+            if (icons.isEmpty()) {
+                String key = sources ? "research.dust.sources.unknown"
+                        : entry.tab().displayEntity(entry.id()) != null ? "research.dust.drops.unknown_mob" : "research.dust.drops.unknown_block";
+                drawLines(graphics, font, font.split(Component.translatable(key), PAGE_W - 8), LEFT_X + 4, PAGE_TOP + 80, FOOTER_Y - 2, FADED);
+            } else {
+                for (int i = 0; i < icons.size() && i < LEFT_ICONS; i++) {
+                    int[] cell = leftCell(i);
+                    Paper.slot(graphics, cell[0], cell[1]);
+                    graphics.item(icons.get(i), cell[0] + 1, cell[1] + 1);
+                }
             }
         }
         Paper.ink(graphics, font, Component.translatable("research.dust.back"), LEFT_X + 2, FOOTER_Y + 2, INK);
@@ -250,6 +253,7 @@ public final class ResearchBook
         EntryResearch research = data.get(entry);
         if (research == null) return List.of();
         if (entry.tab().showsSources()) return data.sourcesOf(entry.id());
+        if (!entry.tab().showsDrops()) return List.of();
         List<ResearchEntry> drops = new ArrayList<>();
         for (Identifier item : research.drops()) {
             ResearchEntry drop = ResearchTabs.entryForItem(new ItemStack(BuiltInRegistries.ITEM.getValue(item)));
@@ -329,7 +333,7 @@ public final class ResearchBook
             case WHERE_FOUND -> lines(Component.translatable("research.dust.where_found.intro"),
                     research.biomes().stream().map(ResearchBook::biomeName).toList());
             case FAMILY -> Component.empty();   // drawn as icons (drawFamily)
-            case EXPERIMENTS -> experiments(research);
+            case EXPERIMENTS -> experiments(entry, research);
             case RESEARCH -> Component.translatable("research.dust.research.unknown");
         };
     }
@@ -347,16 +351,26 @@ public final class ResearchBook
         return Language.getInstance().has(key) ? Component.translatable(key) : entry.tab().defaultNote(entry.id());
     }
 
-    private static Component experiments(EntryResearch research)
+    private static Component experiments(ResearchEntry entry, EntryResearch research)
     {
         MutableComponent text = Component.empty();
         if (research.maxHealth() > 0) {
-            text.append(Component.translatable("research.dust.experiment.health", Math.round(research.maxHealth()) / 2.0F)).append("\n");
+            text.append(Component.translatable(label(entry, "health"), Math.round(research.maxHealth()) / 2.0F)).append("\n");
         }
-        appendItems(text, "research.dust.experiment.breeding", research.breeding());
-        appendItems(text, "research.dust.experiment.made_from", research.madeFrom());
-        appendItems(text, "research.dust.experiment.makes", research.makes());
+        appendItems(text, label(entry, "breeding"), research.breeding());
+        appendItems(text, label(entry, "made_from"), research.madeFrom());
+        appendItems(text, label(entry, "makes"), research.makes());
+        appendItems(text, label(entry, "modifiers"), research.modifiers());
         return text;
+    }
+
+    // An experiment line's wording: research.<tab namespace>.experiment.<tab path>.<line> if the lang file has it (so a
+    // tab can reword it: an effect is "Brewed with" rather than "Made from"), otherwise research.dust.experiment.<line>
+    private static String label(ResearchEntry entry, String line)
+    {
+        Identifier tab = entry.tab().id();
+        String own = "research." + tab.getNamespace() + ".experiment." + tab.getPath() + "." + line;
+        return Language.getInstance().has(own) ? own : "research.dust.experiment." + line;
     }
 
     private static void appendItems(MutableComponent text, String key, List<Identifier> items)

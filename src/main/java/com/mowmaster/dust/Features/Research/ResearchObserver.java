@@ -12,6 +12,17 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
+import net.minecraft.world.inventory.BrewingStandMenu;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.component.DataComponents;
+import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
@@ -57,7 +68,8 @@ public final class ResearchObserver
     // reported: the client has been sent progress for it (and so must be told when it stops)
     private static final Map<UUID, Look> LOOKS = new HashMap<>();
 
-    private record Look(ResearchEntry entry, BlockPos pos, int ticks, boolean done, boolean reported) {}
+    // effectsDone: the effects on the looked-at mob have been noted for this look
+    private record Look(ResearchEntry entry, BlockPos pos, int ticks, boolean done, boolean reported, boolean effectsDone) {}
 
     private ResearchObserver() {}
 
@@ -83,14 +95,23 @@ public final class ResearchObserver
         }
         if (look == null || !look.entry().equals(target.entry())) {
             stopLooking(player, look);
-            look = new Look(target.entry(), target.pos(), 0, false, false);
+            look = new Look(target.entry(), target.pos(), 0, false, false, false);
         }
-        look = new Look(look.entry(), target.pos(), look.ticks() + CHECK_EVERY, look.done(), look.reported());
+        look = new Look(look.entry(), target.pos(), look.ticks() + CHECK_EVERY, look.done(), look.reported(), look.effectsDone());
+
+        // Watching a mob for a moment also notes the effects it has (Effects tab)
+        if (!look.effectsDone() && look.ticks() >= ResearchTabs.EFFECTS.observeTicks() && target.entity() instanceof LivingEntity mob) {
+            for (MobEffectInstance effect : mob.getActiveEffects()) {
+                ResearchEntry effectEntry = new ResearchEntry(ResearchTabs.EFFECTS, EffectResearchTab.idOf(effect.getEffect()));
+                Research.observe(player, effectEntry, mob.blockPosition());
+            }
+            look = new Look(look.entry(), look.pos(), look.ticks(), look.done(), look.reported(), true);
+        }
 
         // Nothing new to learn here: no progress shown (and no waiting)
         if (look.done() || !Research.wouldLearn(player, look.entry(), look.pos())) {
             if (look.reported()) PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
-            LOOKS.put(player.getUUID(), new Look(look.entry(), look.pos(), look.ticks(), true, false));
+            LOOKS.put(player.getUUID(), new Look(look.entry(), look.pos(), look.ticks(), true, false, look.effectsDone()));
             return;
         }
 
@@ -98,10 +119,10 @@ public final class ResearchObserver
         if (look.ticks() >= needed) {
             PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
             Research.observe(player, look.entry(), look.pos());
-            look = new Look(look.entry(), look.pos(), look.ticks(), true, false);
+            look = new Look(look.entry(), look.pos(), look.ticks(), true, false, look.effectsDone());
         } else {
             PacketDistributor.sendToPlayer(player, new ObservationPayloads.Progress(look.entry().tab().id(), look.entry().id(), (float) look.ticks() / needed));
-            look = new Look(look.entry(), look.pos(), look.ticks(), false, true);
+            look = new Look(look.entry(), look.pos(), look.ticks(), false, true, look.effectsDone());
         }
         LOOKS.put(player.getUUID(), look);
     }
@@ -138,6 +159,102 @@ public final class ResearchObserver
                 && (before.output() == Items.AIR ? now.outputCount() > 0 : before.output() == now.output() && now.outputCount() > before.outputCount());
         if (cooked) {
             recordMaking(player, List.of(new ItemStack(before.input())), output);
+        }
+    }
+
+    // Getting an effect yourself: you know what it feels like
+    @SubscribeEvent
+    public static void onEffectAdded(MobEffectEvent.Added event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
+        ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, EffectResearchTab.idOf(event.getEffectInstance().getEffect()));
+        Research.observe(player, entry, player.blockPosition());
+    }
+
+    // Watching a brewing stand work: what each player's open brewing screen held last tick (the ingredient, and the
+    // effects in each of the three bottles). When the ingredient is used up and a bottle changes, the ingredient either
+    // brewed a new effect ("Brewed with") or lengthened / strengthened one ("Modified with").
+    private record BrewingWatch(int containerId, Item ingredient, int ingredientCount, List<Map<Identifier, MobEffectInstance>> bottles) {}
+    private static final Map<UUID, BrewingWatch> BREWING = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onWatchBrewing(PlayerTickEvent.Post event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!(player.containerMenu instanceof BrewingStandMenu menu) || !Research.carriesNotes(player)) {
+            BREWING.remove(player.getUUID());
+            return;
+        }
+        ItemStack ingredient = menu.getSlot(3).getItem();
+        List<Map<Identifier, MobEffectInstance>> bottles = new ArrayList<>();
+        for (int slot = 0; slot < 3; slot++) bottles.add(effectsIn(menu.getSlot(slot).getItem()));
+        BrewingWatch now = new BrewingWatch(menu.containerId, ingredient.getItem(), ingredient.getCount(), bottles);
+        BrewingWatch before = BREWING.put(player.getUUID(), now);
+
+        // A brew: same screen, the ingredient was used up, and a bottle changed
+        if (before == null || before.containerId() != now.containerId() || before.ingredient() == Items.AIR) return;
+        boolean used = now.ingredient() == Items.AIR ? before.ingredientCount() > 0
+                : now.ingredient() == before.ingredient() && now.ingredientCount() < before.ingredientCount();
+        if (!used) return;
+
+        Identifier ingredientId = BuiltInRegistries.ITEM.getKey(before.ingredient());
+        for (int slot = 0; slot < 3; slot++) {
+            Map<Identifier, MobEffectInstance> was = before.bottles().get(slot);
+            for (Map.Entry<Identifier, MobEffectInstance> effect : now.bottles().get(slot).entrySet()) {
+                ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, effect.getKey());
+                MobEffectInstance old = was.get(effect.getKey());
+                if (old == null) {
+                    Research.observe(player, entry, player.blockPosition());
+                    Research.experiment(player, entry, research -> research.withMadeFrom(List.of(ingredientId)));
+                } else if (effect.getValue().getAmplifier() > old.getAmplifier() || effect.getValue().getDuration() > old.getDuration()) {
+                    Research.experiment(player, entry, research -> research.withModifier(ingredientId));
+                }
+            }
+        }
+    }
+
+    // The effects a potion gives, by effect id
+    private static Map<Identifier, MobEffectInstance> effectsIn(ItemStack stack)
+    {
+        PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
+        if (contents == null) return Map.of();
+        Map<Identifier, MobEffectInstance> effects = new HashMap<>();
+        for (MobEffectInstance effect : contents.getAllEffects()) effects.put(EffectResearchTab.idOf(effect.getEffect()), effect);
+        return effects;
+    }
+
+    // Food popping off a campfire: the raw item is still on the campfire when the cooked one appears (the campfire
+    // empties its slot just after). Players carrying notes who are close by and looking at the campfire see it cook.
+    @SubscribeEvent
+    public static void onCampfireFood(EntityJoinLevelEvent event)
+    {
+        if (event.loadedFromDisk() || !(event.getEntity() instanceof ItemEntity dropped) || !(event.getLevel() instanceof ServerLevel level)) return;
+        BlockPos at = dropped.blockPosition();
+        CampfireBlockEntity campfire = level.getBlockEntity(at) instanceof CampfireBlockEntity here ? here
+                : level.getBlockEntity(at.below()) instanceof CampfireBlockEntity below ? below : null;
+        if (campfire == null) return;
+
+        ItemStack cooked = dropped.getItem();
+        ItemStack raw = ItemStack.EMPTY;
+        for (ItemStack onFire : campfire.getItems()) {
+            if (onFire.isEmpty()) continue;
+            SingleRecipeInput input = new SingleRecipeInput(onFire);
+            ItemStack result = level.recipeAccess().getRecipeFor(RecipeType.CAMPFIRE_COOKING, input, level)
+                    .map(recipe -> recipe.value().assemble(input)).orElse(ItemStack.EMPTY);
+            if (!result.isEmpty() && result.is(cooked.getItem())) {
+                raw = onFire.copyWithCount(1);
+                break;
+            }
+        }
+        if (raw.isEmpty()) return;
+
+        Vec3 centre = Vec3.atCenterOf(campfire.getBlockPos());
+        for (ServerPlayer player : level.players()) {
+            if (player.distanceToSqr(centre) > ResearchLook.RANGE * ResearchLook.RANGE || !Research.carriesNotes(player)) continue;
+            // Roughly facing it (within about 30 degrees of the view)
+            Vec3 toFire = centre.subtract(player.getEyePosition()).normalize();
+            if (player.getViewVector(1.0F).dot(toFire) < 0.85) continue;
+            recordMaking(player, List.of(raw), cooked);
         }
     }
 
@@ -253,7 +370,7 @@ public final class ResearchObserver
         guide.set(DustComponentDataRegistry.RESEARCH_SNAPSHOT.get(), Research.get(player));
         String author = player.getGameProfile().name();
         guide.set(DustComponentDataRegistry.RESEARCH_AUTHOR.get(), author);
-        guide.set(net.minecraft.core.component.DataComponents.LORE, new ItemLore(List.of(
+        guide.set(DataComponents.LORE, new ItemLore(List.of(
                 Component.translatable("item.dust.shared_research_guide.author", author))));
     }
 }

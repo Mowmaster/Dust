@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
-// What one player has learned about one research entry (a block, plant or mob).
+// What one player has learned about one research entry.
 // Immutable (a record): every change makes a new copy via the with... methods, which is what lets the attachment
 // notice the change and sync it.
 //
@@ -16,11 +16,13 @@ import java.util.List;
 //   drops         items it has been seen to drop (breaking it / defeating it)
 //   maxHealth     a mob's maximum health, once fought (-1 = not known)
 //   breeding      items it has been fed to breed
-//   madeFrom      items used to craft it
-//   makes         items crafted using it
+//   madeFrom      items it was made from: crafted, cooked, or (for an effect) brewed with
+//   makes         items made using it
+//   modifiers     items that strengthen or lengthen it (an effect: redstone, glowstone...)
 //   notes         the player's own overview notes, edited in the book (empty = the built-in notes)
 public record EntryResearch(long day, int time, List<Identifier> biomes, List<Identifier> drops, float maxHealth,
-                            List<Identifier> breeding, List<Identifier> madeFrom, List<Identifier> makes, String notes)
+                            List<Identifier> breeding, List<Identifier> madeFrom, List<Identifier> makes,
+                            List<Identifier> modifiers, String notes)
 {
     // The overview notes a player can write for one entry (the book screen counts down the last few characters)
     public static final int MAX_NOTES_LENGTH = 256;
@@ -35,53 +37,59 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
             Identifier.CODEC.listOf().optionalFieldOf("breeding", List.of()).forGetter(EntryResearch::breeding),
             Identifier.CODEC.listOf().optionalFieldOf("made_from", List.of()).forGetter(EntryResearch::madeFrom),
             Identifier.CODEC.listOf().optionalFieldOf("makes", List.of()).forGetter(EntryResearch::makes),
+            Identifier.CODEC.listOf().optionalFieldOf("modifiers", List.of()).forGetter(EntryResearch::modifiers),
             Codec.STRING.optionalFieldOf("notes", "").forGetter(EntryResearch::notes)
     ).apply(instance, EntryResearch::new));
 
     public static EntryResearch firstSeen(long day, int time, Identifier biome)
     {
-        return new EntryResearch(day, time, List.of(biome), List.of(), -1F, List.of(), List.of(), List.of(), "");
+        return new EntryResearch(day, time, List.of(biome), List.of(), -1F, List.of(), List.of(), List.of(), List.of(), "");
     }
 
     public boolean hasExperiments()
     {
-        return !drops.isEmpty() || maxHealth > 0 || !breeding.isEmpty() || !madeFrom.isEmpty() || !makes.isEmpty();
+        return !drops.isEmpty() || maxHealth > 0 || !breeding.isEmpty() || !madeFrom.isEmpty() || !makes.isEmpty() || !modifiers.isEmpty();
     }
 
     public EntryResearch withBiome(Identifier biome)
     {
-        return biomes.contains(biome) ? this : new EntryResearch(day, time, add(biomes, List.of(biome)), drops, maxHealth, breeding, madeFrom, makes, notes);
+        return biomes.contains(biome) ? this : new EntryResearch(day, time, add(biomes, List.of(biome)), drops, maxHealth, breeding, madeFrom, makes, modifiers, notes);
     }
 
     public EntryResearch withDrops(List<Identifier> items)
     {
-        return new EntryResearch(day, time, biomes, add(drops, items), maxHealth, breeding, madeFrom, makes, notes);
+        return new EntryResearch(day, time, biomes, add(drops, items), maxHealth, breeding, madeFrom, makes, modifiers, notes);
     }
 
     public EntryResearch withMaxHealth(float health)
     {
-        return new EntryResearch(day, time, biomes, drops, health, breeding, madeFrom, makes, notes);
+        return new EntryResearch(day, time, biomes, drops, health, breeding, madeFrom, makes, modifiers, notes);
     }
 
     public EntryResearch withBreeding(Identifier item)
     {
-        return new EntryResearch(day, time, biomes, drops, maxHealth, add(breeding, List.of(item)), madeFrom, makes, notes);
+        return new EntryResearch(day, time, biomes, drops, maxHealth, add(breeding, List.of(item)), madeFrom, makes, modifiers, notes);
     }
 
     public EntryResearch withMadeFrom(List<Identifier> items)
     {
-        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, add(madeFrom, items), makes, notes);
+        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, add(madeFrom, items), makes, modifiers, notes);
     }
 
     public EntryResearch withMakes(Identifier item)
     {
-        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, madeFrom, add(makes, List.of(item)), notes);
+        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, madeFrom, add(makes, List.of(item)), modifiers, notes);
+    }
+
+    public EntryResearch withModifier(Identifier item)
+    {
+        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, madeFrom, makes, add(modifiers, List.of(item)), notes);
     }
 
     public EntryResearch withNotes(String text)
     {
         String clipped = text.length() > MAX_NOTES_LENGTH ? text.substring(0, MAX_NOTES_LENGTH) : text;
-        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, madeFrom, makes, clipped);
+        return new EntryResearch(day, time, biomes, drops, maxHealth, breeding, madeFrom, makes, modifiers, clipped);
     }
 
     // A new list with the items not already in it added on the end (keeps the order things were learned in)
