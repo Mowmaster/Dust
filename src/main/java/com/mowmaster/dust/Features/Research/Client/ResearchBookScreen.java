@@ -14,8 +14,9 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jspecify.annotations.Nullable;
 
 // The research book opened for clicking (sneak + right-click the book, or MowLib's activation key while holding it).
-// While it's open the mouse works the book instead of the game: tabs, entries, page arrows, Back, and on "My notes"
-// a text box for your own notes (Research Notes only; a Shared Research Guide is read-only).
+// While it's open the mouse works the book instead of the game: tabs, entries, page arrows, Back, and on an entry's
+// Overview page a text box to rewrite its notes (Research Notes only; a Shared Research Guide is read-only). The box
+// starts with the built-in notes; the last few characters before the limit are counted down above the page footer.
 // The game keeps running behind it (isPauseScreen false).
 public class ResearchBookScreen extends Screen
 {
@@ -24,9 +25,13 @@ public class ResearchBookScreen extends Screen
     private int left;
     private int top;
     private @Nullable MultiLineEditBox notesBox;
-    // The entry the notes box is editing, and its text when it was opened (to send only real changes)
+    // Show the character count once this close to the limit
+    private static final int COUNT_FROM = 20;
+
+    // The entry the notes box is editing, its text when it was opened (to send only real changes), and its built-in notes
     private @Nullable ResearchEntry editing;
     private String editingStart = "";
+    private String editingBuiltIn = "";
 
     public ResearchBookScreen(ItemStack book, boolean readOnly)
     {
@@ -53,26 +58,31 @@ public class ResearchBookScreen extends Screen
                     .setCursorColor(ResearchBook.INK)
                     .setTextShadow(false)
                     .setShowBackground(false)
-                    .setPlaceholder(Component.translatable("research.dust.notes.my_notes.placeholder"))
-                    .build(this.font, ResearchBook.PAGE_W - 4, ResearchBook.FOOTER_Y - ResearchBook.PAGE_TOP - 40, Component.translatable("research.dust.notes.my_notes"));
+                    // No vanilla decorations: its character counter would sit on the page arrows; we draw our own
+                    .setShowDecorations(false)
+                    .setPlaceholder(Component.translatable("research.dust.notes.overview.placeholder"))
+                    // Ends one line above the footer, leaving room for the countdown
+                    .build(this.font, ResearchBook.PAGE_W - 4, ResearchBook.FOOTER_Y - ResearchBook.PAGE_TOP - 38 - 12, Component.translatable("research.dust.notes.overview"));
             notesBox.setCharacterLimit(EntryResearch.MAX_NOTES_LENGTH);
             this.addRenderableWidget(notesBox);
         }
         updateNotesBox();
     }
 
-    // Shows the notes box on an entry's "My notes" page, filled with that entry's notes; saves when leaving it
+    // Shows the notes box on an entry's Overview page, filled with the player's notes (or the built-in ones);
+    // saves when leaving it
     private void updateNotesBox()
     {
         if (notesBox == null) return;
         ResearchData data = data();
-        boolean show = ResearchBook.currentNotesPage(data) == ResearchBook.NotesPage.MY_NOTES;
+        boolean show = ResearchBook.currentNotesPage(data) == ResearchBook.NotesPage.OVERVIEW;
         ResearchEntry entry = show ? ResearchBook.selected : null;
         if (entry != editing) {
             saveNotes();
             editing = entry;
             EntryResearch research = entry == null ? null : data.get(entry);
-            editingStart = research == null ? "" : research.notes();
+            editingBuiltIn = entry == null ? "" : ResearchBook.builtInNotesText(entry);
+            editingStart = research == null || research.notes().isEmpty() ? editingBuiltIn : research.notes();
             notesBox.setValue(editingStart);
         }
         notesBox.visible = show;
@@ -85,7 +95,9 @@ public class ResearchBookScreen extends Screen
         if (notesBox == null || editing == null) return;
         String text = notesBox.getValue();
         if (!text.equals(editingStart)) {
-            ClientPacketDistributor.sendToServer(new ResearchNotesPayload(editing.isEntity(), editing.id(), text));
+            // Left as (or put back to) the built-in notes: store nothing, so they keep following the language file
+            String stored = text.equals(editingBuiltIn) ? "" : text;
+            ClientPacketDistributor.sendToServer(new ResearchNotesPayload(editing.isEntity(), editing.id(), stored));
             editingStart = text;
         }
     }
@@ -104,12 +116,27 @@ public class ResearchBookScreen extends Screen
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a)
     {
         super.extractRenderState(graphics, mouseX, mouseY, a);
+        drawCountdown(graphics);
         // Entry names on hover in the list ("???" until discovered)
         ResearchEntry hovered = ResearchBook.entryAt(mouseX - left, mouseY - top);
         if (hovered != null) {
             Component name = data().has(hovered) ? hovered.name() : Component.translatable("research.dust.undiscovered");
             graphics.setTooltipForNextFrame(this.font, name, mouseX, mouseY);
         }
+    }
+
+    // "243/256" just above the footer at the right page's right edge, clear of the arrows and page number, and only
+    // within COUNT_FROM characters of the limit
+    private void drawCountdown(GuiGraphicsExtractor graphics)
+    {
+        if (notesBox == null || !notesBox.visible) return;
+        int length = notesBox.getValue().length();
+        if (EntryResearch.MAX_NOTES_LENGTH - length > COUNT_FROM) return;
+        Component count = Component.literal(length + "/" + EntryResearch.MAX_NOTES_LENGTH);
+        int color = length >= EntryResearch.MAX_NOTES_LENGTH ? 0xFFAA2020 : ResearchBook.FADED;
+        int x = left + ResearchBook.RIGHT_X + ResearchBook.PAGE_W - 4 - this.font.width(count);
+        int y = top + ResearchBook.FOOTER_Y - 10;
+        graphics.text(this.font, count, x, y, color, false);
     }
 
     @Override

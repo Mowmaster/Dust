@@ -18,11 +18,12 @@ import java.util.List;
 //   breeding      items it has been fed to breed
 //   madeFrom      items used to craft it
 //   makes         items crafted using it
-//   notes         the player's own notes (edited in the book)
+//   notes         the player's own overview notes, edited in the book (empty = the built-in notes)
 public record EntryResearch(long day, int time, List<Identifier> biomes, List<Identifier> drops, float maxHealth,
                             List<Identifier> breeding, List<Identifier> madeFrom, List<Identifier> makes, String notes)
 {
-    public static final int MAX_NOTES_LENGTH = 1024;
+    // The overview notes a player can write for one entry (the book screen counts down the last few characters)
+    public static final int MAX_NOTES_LENGTH = 256;
 
     // optionalFieldOf(name, default): missing fields load as the default, so entries saved by older versions still load
     public static final Codec<EntryResearch> CODEC = RecordCodecBuilder.create(instance -> instance.group(

@@ -76,13 +76,13 @@ public final class ResearchBook
     private ResearchBook() {}
 
     // The notes pages an entry has, depending on how far its research has got
-    enum NotesPage { OVERVIEW, MY_NOTES, WHERE_FOUND, EXPERIMENTS, RESEARCH }
+    // OVERVIEW starts as the built-in notes and the player can rewrite it (Research Notes only)
+    enum NotesPage { OVERVIEW, WHERE_FOUND, EXPERIMENTS, RESEARCH }
 
     static List<NotesPage> notesPages(EntryResearch research)
     {
         List<NotesPage> pages = new ArrayList<>();
         pages.add(NotesPage.OVERVIEW);
-        pages.add(NotesPage.MY_NOTES);
         if (research.biomes().size() >= 2) pages.add(NotesPage.WHERE_FOUND);
         if (research.hasExperiments()) pages.add(NotesPage.EXPERIMENTS);
         pages.add(NotesPage.RESEARCH);
@@ -204,7 +204,7 @@ public final class ResearchBook
         NotesPage page = currentNotesPage(data);
         if (page != null) {
             Paper.ink(graphics, font, Component.translatable("research.dust.notes." + page.name().toLowerCase(java.util.Locale.ROOT)), RIGHT_X + 4, PAGE_TOP + 28, INK);
-            if (!(page == NotesPage.MY_NOTES && editing)) {
+            if (!(page == NotesPage.OVERVIEW && editing)) {
                 drawLines(graphics, font, font.split(notesText(entry, research, page), PAGE_W - 8), RIGHT_X + 4, PAGE_TOP + 40, FOOTER_Y - 2, INK);
             }
         }
@@ -240,15 +240,19 @@ public final class ResearchBook
     private static Component notesText(ResearchEntry entry, EntryResearch research, NotesPage page)
     {
         return switch (page) {
-            case OVERVIEW -> builtInNotes(entry);
-            case MY_NOTES -> research.notes().isEmpty()
-                    ? Component.translatable("research.dust.notes.my_notes.empty").withStyle(ChatFormatting.ITALIC)
-                    : Component.literal(research.notes());
+            // The player's version if they've written one, otherwise the built-in notes
+            case OVERVIEW -> research.notes().isEmpty() ? builtInNotes(entry) : Component.literal(research.notes());
             case WHERE_FOUND -> lines(Component.translatable("research.dust.where_found.intro"),
                     research.biomes().stream().map(ResearchBook::biomeName).toList());
             case EXPERIMENTS -> experiments(research);
             case RESEARCH -> Component.translatable("research.dust.research.unknown");
         };
+    }
+
+    // The built-in overview as plain text: what the notes box starts with
+    static String builtInNotesText(ResearchEntry entry)
+    {
+        return builtInNotes(entry).getString();
     }
 
     // research.dust.note.<namespace>.<path> if the lang file has one, otherwise the tab's general note
