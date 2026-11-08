@@ -2,6 +2,7 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
+import com.mowmaster.dust.Features.DustComposition.Client.TestingDiskRenderer;
 import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
@@ -69,6 +70,8 @@ public class DustClient {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // The Dust Testing Disk: its item turning on top, with a beam for each dust in it
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.TESTING_DISK.get(), TestingDiskRenderer::new);
         // One renderer class, tinted per element (0xRRGGBB)
         event.registerEntityRenderer(DustEntityRegistry.FIRE_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFF0000));
         event.registerEntityRenderer(DustEntityRegistry.EARTH_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x00FF00));

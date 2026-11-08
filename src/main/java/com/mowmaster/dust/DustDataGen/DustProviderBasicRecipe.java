@@ -66,6 +66,22 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .unlockedBy(getHasName(DustItemRegistry.RESEARCH_NOTES.get()), has(DustItemRegistry.RESEARCH_NOTES.get()))
                 .save(output);
 
+        // Dust composition (placeholder recipes; no dust needed, since these are how dust research starts)
+        // Magical Flint and Steel: a flint and steel and an amethyst shard
+        shapeless(RecipeCategory.TOOLS, DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get())
+                .requires(Items.FLINT_AND_STEEL)
+                .requires(Items.AMETHYST_SHARD)
+                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
+                .save(output);
+        // Dust Testing Disk: an amethyst shard over three smooth stone slabs
+        shaped(RecipeCategory.MISC, DustBlockRegistry.TESTING_DISK.get())
+                .pattern(" A ")
+                .pattern("SSS")
+                .define('A', Items.AMETHYST_SHARD)
+                .define('S', Items.SMOOTH_STONE_SLAB)
+                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
+                .save(output);
+
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
         shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)
                 .requires(Items.PAPER).requires(Items.PAPER).requires(Items.PAPER)

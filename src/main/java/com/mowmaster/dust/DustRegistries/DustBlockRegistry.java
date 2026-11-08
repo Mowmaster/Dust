@@ -2,6 +2,8 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
+import com.mowmaster.dust.Features.DustComposition.DustFireBlock;
+import com.mowmaster.dust.Features.DustComposition.TestingDiskBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -83,6 +85,16 @@ public class DustBlockRegistry {
     // Ruin walls: a stone with one ancient glyph carved on its front (see Features/AncientLanguage)
     public static final DeferredBlock<Block> GLYPH_STONE = registerBlock("glyph_stone", properties -> new GlyphStoneBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
+
+    // Dust composition (see Features/DustComposition).
+    // The fire a Magical Flint and Steel lights, in the colour of what it burned. No item, nothing drops; like soul fire
+    // it can be walked through, is put out by a punch, and pops (goes out) when a piston pushes it.
+    public static final DeferredBlock<Block> DUST_FIRE = DUSTBLOCKS.registerBlock("dust_fire", properties -> new DustFireBlock(
+            properties.mapColor(MapColor.FIRE).replaceable().noCollision().instabreak().lightLevel(state -> 12)
+                    .sound(SoundType.WOOL).pushReaction(PushReaction.POPPED).noLootTable()));
+    // Shows how much of each dust the item on top holds. A plain block until it gets its own model.
+    public static final DeferredBlock<Block> TESTING_DISK = registerBlock("testing_disk", properties -> new TestingDiskBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F)));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {

@@ -6,6 +6,7 @@ import com.mowmaster.dust.Features.AncientLanguage.AncientWritingItem;
 import com.mowmaster.dust.Features.AncientLanguage.ParchmentItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
 import com.mowmaster.dust.Features.Research.ResearchBookItem;
+import com.mowmaster.dust.Features.DustComposition.MagicalFlintAndSteelItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalWeaponSword;
@@ -86,6 +87,10 @@ public class DustItemRegistry
             properties -> new ResearchBookItem(properties.stacksTo(1), false));
     public static final DeferredItem<Item> SHARED_RESEARCH_GUIDE = DUSTITEMS.registerItem("shared_research_guide",
             properties -> new ResearchBookItem(properties.stacksTo(1), true));
+
+    // Burns an item in a fire the colour of its dust (Features/DustComposition). 64 uses, like flint and steel.
+    public static final DeferredItem<Item> MAGICAL_FLINT_AND_STEEL = DUSTITEMS.registerItem("magical_flint_and_steel",
+            properties -> new MagicalFlintAndSteelItem(properties.durability(64)));
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));

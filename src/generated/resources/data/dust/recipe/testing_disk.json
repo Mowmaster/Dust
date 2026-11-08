@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "S": "minecraft:smooth_stone_slab"
+  },
+  "pattern": [
+    " A ",
+    "SSS"
+  ],
+  "result": {
+    "id": "dust:testing_disk"
+  }
+}

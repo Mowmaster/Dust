@@ -7,7 +7,11 @@ import com.mowmaster.dust.Features.AncientLanguage.AncientLanguage;
 import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import net.minecraft.client.color.item.Constant;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
@@ -43,6 +47,11 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.SHARED_RESEARCH_GUIDE.get(), ModelTemplates.FLAT_ITEM);
 
         createGlyphStone(blockModels);
+
+        // Dust composition
+        itemModels.generateFlatItem(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get(), ModelTemplates.FLAT_ITEM);
+        createDustFire(blockModels);
+        createTestingDisk(blockModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -96,6 +105,54 @@ public class DustProviderModel extends ModelProvider {
                 BlockModelGenerators.PlantType.TINTED
         );
 
+    }
+
+    // The dust fire: shaped like soul fire (a floor fire plus four sides, each picking one of a few models at random),
+    // but from Dust's own templates (models/block/template_dust_fire_*.json, hand-written), which are vanilla's with
+    // "tintindex": 0 on every face so MowLib's tint source colours them. Textures: block/dust_fire_0 and _1 (greyscale).
+    private static final ModelTemplate DUST_FIRE_FLOOR = dustTemplate("template_dust_fire_floor", TextureSlot.FIRE);
+    private static final ModelTemplate DUST_FIRE_SIDE = dustTemplate("template_dust_fire_side", TextureSlot.FIRE);
+    private static final ModelTemplate DUST_FIRE_SIDE_ALT = dustTemplate("template_dust_fire_side_alt", TextureSlot.FIRE);
+
+    private static ModelTemplate dustTemplate(String name, TextureSlot... slots)
+    {
+        return new ModelTemplate(Optional.of(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/" + name)), Optional.empty(), slots);
+    }
+
+    private void createDustFire(BlockModelGenerators blockModels)
+    {
+        Block block = DustBlockRegistry.DUST_FIRE.get();
+        // TextureMapping.fire0 / fire1: the block's texture with "_0" / "_1" on the end
+        TextureMapping fire0 = TextureMapping.fire0(block);
+        TextureMapping fire1 = TextureMapping.fire1(block);
+        MultiVariant floor = BlockModelGenerators.variants(
+                BlockModelGenerators.plainModel(DUST_FIRE_FLOOR.create(ModelLocationUtils.getModelLocation(block, "_floor0"), fire0, blockModels.modelOutput)),
+                BlockModelGenerators.plainModel(DUST_FIRE_FLOOR.create(ModelLocationUtils.getModelLocation(block, "_floor1"), fire1, blockModels.modelOutput)));
+        MultiVariant sides = BlockModelGenerators.variants(
+                BlockModelGenerators.plainModel(DUST_FIRE_SIDE.create(ModelLocationUtils.getModelLocation(block, "_side0"), fire0, blockModels.modelOutput)),
+                BlockModelGenerators.plainModel(DUST_FIRE_SIDE.create(ModelLocationUtils.getModelLocation(block, "_side1"), fire1, blockModels.modelOutput)),
+                BlockModelGenerators.plainModel(DUST_FIRE_SIDE_ALT.create(ModelLocationUtils.getModelLocation(block, "_side_alt0"), fire0, blockModels.modelOutput)),
+                BlockModelGenerators.plainModel(DUST_FIRE_SIDE_ALT.create(ModelLocationUtils.getModelLocation(block, "_side_alt1"), fire1, blockModels.modelOutput)));
+        // A multipart blockstate: every part with no condition is always drawn
+        blockModels.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
+                .with(floor)
+                .with(sides)
+                .with(sides.with(BlockModelGenerators.Y_ROT_90))
+                .with(sides.with(BlockModelGenerators.Y_ROT_180))
+                .with(sides.with(BlockModelGenerators.Y_ROT_270)));
+    }
+
+    // The Dust Testing Disk, for now a plain block made of vanilla textures (it gets its own model later).
+    // Its item uses the block model (ModelProvider fills that in for block items without one).
+    private void createTestingDisk(BlockModelGenerators blockModels)
+    {
+        Block block = DustBlockRegistry.TESTING_DISK.get();
+        TextureMapping textures = new TextureMapping()
+                .put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/lodestone_top")))
+                .put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/lodestone_side")))
+                .put(TextureSlot.BOTTOM, new Material(Identifier.withDefaultNamespace("block/smooth_stone")));
+        Identifier model = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textures, blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.plainVariant(model)));
     }
 
     // The glyph stone's own model shape (models/block/glyph_stone_template.json, hand-written): a stone cube plus the

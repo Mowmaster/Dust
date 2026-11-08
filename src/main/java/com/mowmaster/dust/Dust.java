@@ -15,6 +15,7 @@ public class Dust {
     public Dust(IEventBus modEventBus, ModContainer modContainer) {
         DustItemRegistry.register(modEventBus);
         DustBlockRegistry.register(modEventBus);
+        DustBlockEntityRegistry.register(modEventBus);
         DustEntityRegistry.register(modEventBus);
 
         DustAttachmentTypeRegistry.register(modEventBus);

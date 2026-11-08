@@ -1,0 +1,6 @@
+{
+  "parent": "dust:block/template_dust_fire_floor",
+  "textures": {
+    "fire": "dust:block/dust_fire_1"
+  }
+}

@@ -44,6 +44,8 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         // Glyphs crumble when broken: glyph stones give cobblestone (so players can't collect glyphs from ruins)
         add(DustBlockRegistry.GLYPH_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, Items.COBBLESTONE));
 
+        dropSelf(DustBlockRegistry.TESTING_DISK.get());
+
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
         add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));
     }

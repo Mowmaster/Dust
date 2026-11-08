@@ -1,5 +1,8 @@
 package com.mowmaster.dust.Features.Research.Client;
 
+import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.DustComposition.DustComposition;
+import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.RecipeRecord;
 import com.mowmaster.dust.Features.Research.Research;
@@ -107,7 +110,7 @@ public final class ResearchBook
     //   CRAFTED_FROM  recipes seen making it: ingredients, station, result (as many pages as it takes)
     //   CRAFTED_INTO  recipes seen using it
     //   EXPERIMENTS   health, breeding food, brewing
-    //   RESEARCH      Dust composition (to come)
+    //   RESEARCH      its dust: the colour it burns with (Magical Flint and Steel), what it's made of (Testing Disk)
     enum Kind { OVERVIEW, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH }
 
     // One notes page: its kind, and for the crafting pages the recipes that fit on it
@@ -308,6 +311,7 @@ public final class ResearchBook
                     for (RecipeRecord recipe : page.recipes()) y += drawRecipe(graphics, font, data, recipe, RIGHT_X + 3, y) + RECIPE_GAP;
                 }
                 case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
+                case RESEARCH -> drawDust(graphics, font, research.dust());
                 case OVERVIEW -> {
                     if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
                 }
@@ -554,6 +558,50 @@ public final class ResearchBook
         LINKS.add(new Link(x, y, entry, researched, effect.get().value().getDisplayName(), false));
     }
 
+    // ---- research page: its dust ----
+
+    private static final Identifier FLAME_SPRITE = Identifier.fromNamespaceAndPath(DustReferences.MODID, "research/flame");
+
+    // What's known of its dust:
+    //   burned     "Burns with this flame:" and a flame in that colour (blitSprite's last argument tints the sprite,
+    //              0xAARRGGBB, the same way a block tint colours a texture)
+    //   read       "Made of:" and each kind of dust: a swatch of its colour, "2 Fire (40%)"
+    //   neither    a hint at how to find out
+    private static void drawDust(GuiGraphicsExtractor graphics, Font font, EntryResearch.Dust dust)
+    {
+        int x = RIGHT_X + 4;
+        int y = NOTES_TOP;
+        int bottom = FOOTER_Y - 2;
+        if (!dust.burned() && dust.composition().isEmpty()) {
+            drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unknown"), PAGE_W - 8), x, y, bottom, INK);
+            return;
+        }
+        if (dust.burned()) {
+            Paper.ink(graphics, font, Component.translatable("research.dust.research.flame"), x, y, INK);
+            y += font.lineHeight + 2;
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME_SPRITE, RIGHT_X + (PAGE_W - 32) / 2, y, 32, 32, 0xFF000000 | dust.fireColor());
+            y += 36;
+        }
+        if (dust.composition().isPresent()) {
+            DustComposition composition = dust.composition().get();
+            Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
+            y += font.lineHeight + 2;
+            int total = Math.max(1, composition.total());
+            for (EnumElement element : EnumElement.values()) {
+                int amount = composition.get(element);
+                if (amount == 0 || y + font.lineHeight > bottom) continue;
+                // A swatch: an ink border round the dust's own colour
+                graphics.fill(x + 2, y, x + 10, y + 8, INK);
+                graphics.fill(x + 3, y + 1, x + 9, y + 7, 0xFF000000 | DustComposition.pureColor(element));
+                Component line = Component.translatable("research.dust.research.amount", amount, DustComposition.name(element), Math.round(amount * 100F / total));
+                Paper.ink(graphics, font, line, x + 14, y, INK);
+                y += font.lineHeight + 2;
+            }
+        } else if (y + font.lineHeight <= bottom) {
+            drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unread"), PAGE_W - 8), x, y, bottom, FADED);
+        }
+    }
+
     // ---- family page ----
 
     // "4 of 11 found", then every member as an icon (unfound ones faded). Clicking a found one opens it.
@@ -601,7 +649,6 @@ public final class ResearchBook
             case OVERVIEW -> research.notes().isEmpty() ? builtInNotes(entry) : Component.literal(research.notes());
             case WHERE_FOUND -> lines(Component.translatable("research.dust.where_found.intro"),
                     research.biomes().stream().map(ResearchBook::biomeName).toList());
-            case RESEARCH -> Component.translatable("research.dust.research.unknown");
             default -> Component.empty();   // drawn as icons
         };
     }
