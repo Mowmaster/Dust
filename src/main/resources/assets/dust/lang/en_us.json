@@ -62,6 +62,8 @@
   "research.dust.notes.research": "Research",
   "research.dust.where_found.intro": "Seen in:",
   "research.dust.experiment.health": "Health: %s hearts",
+  "research.dust.experiment.saturation": "Saturation: %s",
+  "research.dust.experiment.food_effects": "Eating gives: %s",
   "research.dust.experiment.breeding": "Bred with: %s",
   "research.dust.experiment.made_from": "Made from: %s",
   "research.dust.experiment.makes": "Used to make: %s",

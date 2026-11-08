@@ -27,7 +27,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.component.DataComponents;
 import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
@@ -52,6 +54,7 @@ import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -168,13 +171,46 @@ public final class ResearchObserver
         }
     }
 
-    // Getting an effect yourself: you know what it feels like
+    // Getting an effect yourself: you know what it feels like. If it came from the food you just finished eating, the
+    // food's entry notes it too (a golden apple adds Regeneration and Absorption; raw chicken adds Hunger only when
+    // it happens to, and then it's added to the list).
     @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event)
     {
         if (!(event.getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
-        ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, EffectResearchTab.idOf(event.getEffectInstance().getEffect()));
+        Identifier effectId = EffectResearchTab.idOf(event.getEffectInstance().getEffect());
+        Research.observe(player, new ResearchEntry(ResearchTabs.EFFECTS, effectId), player.blockPosition());
+
+        ResearchEntry food = foodBeingFinished(player);
+        if (food != null) {
+            Research.observe(player, food, player.blockPosition());
+            Research.experiment(player, food, research -> research.withFoodEffect(effectId));
+        }
+    }
+
+    // The food the player is finishing eating right now, or null. A food's effects are applied while the player is
+    // still "using" it, on the tick its use time runs out (LivingEntity#completeUsingItem), so an effect added then
+    // came from that food (and not from, say, a splash potion that hit them halfway through the meal).
+    private static @Nullable ResearchEntry foodBeingFinished(ServerPlayer player)
+    {
+        if (!player.isUsingItem() || player.getUseItemRemainingTicks() > 0) return null;
+        ItemStack eating = player.getUseItem();
+        return eating.has(DataComponents.FOOD) ? ResearchTabs.entryForItem(eating) : null;
+    }
+
+    // Finishing eating something: it counts as finding it, and its entry learns how much saturation it gives.
+    // FoodProperties is the item's "minecraft:food" component: nutrition (hunger points), saturation, canAlwaysEat.
+    // Finish is posted after the food has done everything (effects included); getItem() is a copy of the food as it
+    // was before the bite.
+    @SubscribeEvent
+    public static void onAte(LivingEntityUseItemEvent.Finish event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
+        FoodProperties food = event.getItem().get(DataComponents.FOOD);
+        ResearchEntry entry = food == null ? null : ResearchTabs.entryForItem(event.getItem());
+        if (entry == null) return;
         Research.observe(player, entry, player.blockPosition());
+        Research.experiment(player, entry, research -> research.withSaturation(food.saturation()));
     }
 
     // Watching a brewing stand work: what each player's open brewing screen held last tick (the ingredient, and the

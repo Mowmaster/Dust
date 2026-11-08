@@ -10,13 +10,17 @@ import com.mowmaster.dust.Features.Research.ResearchTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 // Draws the research book, and says what a click on it hits. Used by the side view (ResearchBookHud) and the clickable
 // screen (ResearchBookScreen), so they look the same. Everything is in "book pixels": (0, 0) is the book's top-left
@@ -110,7 +115,8 @@ public final class ResearchBook
         addRecipePages(pages, Kind.CRAFTED_FROM, research.madeBy());
         addRecipePages(pages, Kind.CRAFTED_INTO, research.usedIn());
         if (research.maxHealth() > 0 || !research.breeding().isEmpty() || !research.madeFrom().isEmpty()
-                || !research.makes().isEmpty() || !research.modifiers().isEmpty()) {
+                || !research.makes().isEmpty() || !research.modifiers().isEmpty()
+                || research.saturation() >= 0 || !research.foodEffects().isEmpty()) {
             pages.add(new NotesPage(Kind.EXPERIMENTS, List.of()));
         }
         pages.add(new NotesPage(Kind.RESEARCH, List.of()));
@@ -398,6 +404,13 @@ public final class ResearchBook
             Paper.ink(graphics, font, Component.translatable(label(entry, "health"), Math.round(research.maxHealth()) / 2.0F), RIGHT_X + 4, y, INK);
             y += font.lineHeight + 3;
         }
+        if (research.saturation() >= 0) {
+            // One decimal place (steak gives 12.8). Locale.ROOT so it's always a dot, whatever the system language.
+            String saturation = String.format(java.util.Locale.ROOT, "%.1f", research.saturation());
+            Paper.ink(graphics, font, Component.translatable(label(entry, "saturation"), saturation), RIGHT_X + 4, y, INK);
+            y += font.lineHeight + 3;
+        }
+        y = effectRow(graphics, font, data, Component.translatable(label(entry, "food_effects"), ""), research.foodEffects(), y, bottom);
         y = iconRow(graphics, font, data, Component.translatable(label(entry, "breeding"), ""), research.breeding(), y, bottom);
         y = iconRow(graphics, font, data, Component.translatable(label(entry, "made_from"), ""), research.madeFrom(), y, bottom);
         y = iconRow(graphics, font, data, Component.translatable(label(entry, "makes"), ""), research.makes(), y, bottom);
@@ -417,6 +430,37 @@ public final class ResearchBook
             linkedItem(graphics, data, items.get(i), RIGHT_X + 3 + (i % COLS) * CELL, cy);
         }
         return y + ((items.size() + COLS - 1) / COLS) * CELL + 3;
+    }
+
+    // A heading and effects as their status effect icons (the ones beside the inventory), 6 to a row, each linking to
+    // its Effects entry. Returns where the next row starts.
+    private static int effectRow(GuiGraphicsExtractor graphics, Font font, ResearchData data, Component heading, List<Identifier> effects, int y, int bottom)
+    {
+        if (effects.isEmpty() || y + font.lineHeight + CELL > bottom) return y;
+        Paper.ink(graphics, font, heading, RIGHT_X + 4, y, INK);
+        y += font.lineHeight + 1;
+        for (int i = 0; i < effects.size(); i++) {
+            int cy = y + (i / COLS) * CELL;
+            if (cy + CELL > bottom) break;
+            linkedEffect(graphics, data, effects.get(i), RIGHT_X + 3 + (i % COLS) * CELL, cy);
+        }
+        return y + ((effects.size() + COLS - 1) / COLS) * CELL + 3;
+    }
+
+    // An effect's icon in a slot frame (faded if its Effects entry isn't researched yet); clicking opens the entry.
+    // Hud.getMobEffectSprite gives the sprite id of the effect's icon in the GUI atlas; blitSprite draws a sprite
+    // from the atlas at the given size (the icons are 18x18, drawn at 16x16 here to fit the slot like an item).
+    private static void linkedEffect(GuiGraphicsExtractor graphics, ResearchData data, Identifier effectId, int x, int y)
+    {
+        // registry.get(id) gives an Optional holder: empty if the effect's mod was removed since it was noted
+        Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(effectId);
+        if (effect.isEmpty()) return;
+        ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, effectId);
+        boolean researched = data.has(entry);
+        Paper.slot(graphics, x, y);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, Hud.getMobEffectSprite(effect.get()), x + 1, y + 1, 16, 16);
+        if (!researched) Paper.fade(graphics, x, y);
+        LINKS.add(new Link(x, y, entry, researched, effect.get().value().getDisplayName(), false));
     }
 
     // ---- family page ----
@@ -678,6 +722,12 @@ public final class ResearchBook
         static void ghost(GuiGraphicsExtractor graphics, ItemStack shown, int x, int y)
         {
             graphics.item(shown, x + 1, y + 1);
+            fade(graphics, x, y);
+        }
+
+        // Fades whatever is drawn in the slot at (x, y)
+        static void fade(GuiGraphicsExtractor graphics, int x, int y)
+        {
             graphics.fill(x + 1, y + 1, x + 17, y + 17, SLOT_FADE);
         }
     }
