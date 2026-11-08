@@ -91,6 +91,7 @@ public class DustClient {
     {
         event.register(ObservationPayloads.Progress.TYPE, ObservationClient::onProgress);
         event.register(ObservationPayloads.Discovered.TYPE, ObservationClient::onDiscovered);
+        event.register(ObservationPayloads.Noted.TYPE, ObservationClient::onNoted);
     }
 
     // Which screen opens for which menu type

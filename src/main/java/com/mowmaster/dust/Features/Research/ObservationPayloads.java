@@ -35,6 +35,21 @@ public final class ObservationPayloads
         }
     }
 
+    // Something new was added to an entry that was already started: a recipe (recipe = true) or other information
+    public record Noted(boolean recipe) implements CustomPacketPayload
+    {
+        public static final Type<Noted> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "research_noted"));
+        public static final StreamCodec<RegistryFriendlyByteBuf, Noted> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.BOOL, Noted::recipe,
+                Noted::new);
+
+        @Override
+        public Type<Noted> type()
+        {
+            return TYPE;
+        }
+    }
+
     // An observation finished: a new entry (newBiome false), or a known entry seen somewhere new (newBiome true)
     public record Discovered(Identifier tab, Identifier id, boolean newBiome) implements CustomPacketPayload
     {

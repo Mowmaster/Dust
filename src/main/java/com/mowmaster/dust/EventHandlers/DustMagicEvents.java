@@ -37,6 +37,7 @@ public class DustMagicEvents {
         // Handlers for these two are client-only, registered in DustClient (RegisterClientPayloadHandlersEvent)
         registrar.playToClient(ObservationPayloads.Progress.TYPE, ObservationPayloads.Progress.STREAM_CODEC);
         registrar.playToClient(ObservationPayloads.Discovered.TYPE, ObservationPayloads.Discovered.STREAM_CODEC);
+        registrar.playToClient(ObservationPayloads.Noted.TYPE, ObservationPayloads.Noted.STREAM_CODEC);
         registrar.playToServer(ResearchNotesPayload.TYPE, ResearchNotesPayload.STREAM_CODEC, ResearchNotesPayload::handle);
         registrar.playToServer(PacketOfDustAuraC2S.TYPE, PacketOfDustAuraC2S.STREAM_CODEC, PacketReceiverServer::handleTestPacket);
         registrar.playToClient(PacketOfDustAuraS2C.TYPE, PacketOfDustAuraS2C.STREAM_CODEC, PacketReceiverClient::handleClientPacket);

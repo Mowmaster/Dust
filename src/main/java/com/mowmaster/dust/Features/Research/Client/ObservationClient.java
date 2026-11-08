@@ -33,6 +33,11 @@ public final class ObservationClient
     private static final int SCRIBBLE_EVERY = 14;
     private static final int BAR_WIDTH = 34;
 
+    // One sound per burst: crafting notes the result and every ingredient at once, and a discovery's own ding covers
+    // anything noted with it. Ticks left before another "noted" sound may play.
+    private static final int SOUND_COOLDOWN = 10;
+    private static int soundCooldown;
+
     private static @Nullable ResearchEntry observing;
     private static float progress;
     private static int sinceUpdate;
@@ -63,7 +68,21 @@ public final class ObservationClient
         observing = null;
         // A ding: the note block "chime", played as a UI sound (only this player, not positioned in the world)
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_CHIME.value(), payload.newBiome() ? 1.5F : 1.8F, 0.8F));
+        soundCooldown = SOUND_COOLDOWN;
         minecraft.gui.toastManager().addToast(new ResearchToast(entry, payload.newBiome()));
+    }
+
+    // New information on a known entry: a ding for a recipe (crafted, smelted, cooked), a scribble for anything else
+    public static void onNoted(ObservationPayloads.Noted payload, IPayloadContext context)
+    {
+        if (soundCooldown > 0) return;
+        soundCooldown = SOUND_COOLDOWN;
+        Minecraft minecraft = Minecraft.getInstance();
+        if (payload.recipe()) {
+            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_CHIME.value(), 1.6F, 0.7F));
+        } else {
+            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 1.0F, 0.5F));
+        }
     }
 
     // ---- scribbling while observing ----
@@ -71,6 +90,7 @@ public final class ObservationClient
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event)
     {
+        if (soundCooldown > 0) soundCooldown--;
         if (observing == null) return;
         if (++sinceUpdate > TIMEOUT_TICKS) {
             observing = null;

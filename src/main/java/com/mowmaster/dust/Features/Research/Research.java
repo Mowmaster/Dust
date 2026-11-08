@@ -76,6 +76,11 @@ public final class Research
         EntryResearch after = change.apply(before);
         if (!after.equals(before)) {
             set(player, get(player).update(entry, old -> after));
+            // Tell the player's client something was noted: a ding for a new recipe, a scribble for anything else.
+            // (Edits to their own notes stay quiet.)
+            boolean newRecipe = after.madeBy().size() > before.madeBy().size() || after.usedIn().size() > before.usedIn().size();
+            boolean onlyNotes = after.withNotes(before.notes()).equals(before);
+            if (!onlyNotes) PacketDistributor.sendToPlayer(player, new ObservationPayloads.Noted(newRecipe));
         }
     }
 
