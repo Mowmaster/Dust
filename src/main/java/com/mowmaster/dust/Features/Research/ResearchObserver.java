@@ -9,6 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
@@ -112,6 +115,32 @@ public final class ResearchObserver
 
     // ---- experimentation ----
 
+    // Watching a furnace, smoker or blast furnace work: what each player's open furnace screen held last tick.
+    // When the output count goes up, the item that was in the input slot just before is what got cooked.
+    private record FurnaceWatch(int containerId, Item input, Item output, int outputCount) {}
+    private static final Map<UUID, FurnaceWatch> FURNACES = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onWatchFurnace(PlayerTickEvent.Post event)
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!(player.containerMenu instanceof AbstractFurnaceMenu menu) || !Research.carriesNotes(player)) {
+            FURNACES.remove(player.getUUID());
+            return;
+        }
+        ItemStack input = menu.getSlot(AbstractFurnaceMenu.INGREDIENT_SLOT).getItem();
+        ItemStack output = menu.getSlot(AbstractFurnaceMenu.RESULT_SLOT).getItem();
+        FurnaceWatch now = new FurnaceWatch(menu.containerId, input.getItem(), output.getItem(), output.getCount());
+        FurnaceWatch before = FURNACES.put(player.getUUID(), now);
+
+        boolean sameScreen = before != null && before.containerId() == now.containerId();
+        boolean cooked = sameScreen && !output.isEmpty() && before.input() != Items.AIR
+                && (before.output() == Items.AIR ? now.outputCount() > 0 : before.output() == now.output() && now.outputCount() > before.outputCount());
+        if (cooked) {
+            recordMaking(player, List.of(new ItemStack(before.input())), output);
+        }
+    }
+
     // Breaking a block: you've clearly seen it (observe), and you learn what it drops
     @SubscribeEvent
     public static void onBlockDrops(BlockDropsEvent event)
@@ -193,14 +222,17 @@ public final class ResearchObserver
         for (int slot = 0; slot < grid.getContainerSize(); slot++) {
             if (!grid.getItem(slot).isEmpty()) ingredients.add(grid.getItem(slot));
         }
-        Identifier resultId = BuiltInRegistries.ITEM.getKey(result.getItem());
+        recordMaking(player, ingredients, result);
+    }
 
-        // The result's entry (its block, or the item itself) learns what it's made from; each ingredient's entry learns
-        // what it makes
+    // Something was made (crafted, or cooked in a watched furnace): the result's entry (its block, or the item itself)
+    // learns what it's made from, and each ingredient's entry learns what it makes. Making something counts as finding it.
+    private static void recordMaking(ServerPlayer player, List<ItemStack> ingredients, ItemStack result)
+    {
+        Identifier resultId = BuiltInRegistries.ITEM.getKey(result.getItem());
         ResearchEntry resultEntry = ResearchTabs.entryForItem(result);
         List<Identifier> from = Research.itemIds(ingredients);
         if (resultEntry != null) {
-            // Making something counts as finding it
             Research.observe(player, resultEntry, player.blockPosition());
             Research.experiment(player, resultEntry, old -> old.withMadeFrom(from));
         }
@@ -209,7 +241,10 @@ public final class ResearchObserver
                 .filter(Objects::nonNull)
                 .distinct()
                 .forEach(entry -> Research.experiment(player, entry, old -> old.withMakes(resultId)));
+
     }
+
+
 
     // The guide gets a copy of the crafter's research and their name (crafting recipes can't see who's crafting, so
     // this happens here, as the result is taken out of the grid)
