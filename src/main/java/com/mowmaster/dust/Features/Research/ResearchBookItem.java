@@ -22,9 +22,8 @@ import java.util.function.Consumer;
 // Shared Research Guide (shared = true): a read-only copy of someone's research (dust:research_snapshot), made by
 // crafting Research Notes + a Book and Quill + Ancient Ink.
 //
-// Held in the main hand the book shows in the lower middle of the screen, like a map, so you can keep moving; in the
-// offhand it shows as a smaller panel at the side (Client/ResearchBookHud). Sneak + right-click (or MowLib's activation
-// key) opens it for clicking (Client/ResearchBookScreen).
+// Held in either hand the book shows at the side of the screen, so you can keep moving (Client/ResearchBookHud).
+// Sneak + right-click (or MowLib's activation key) opens it for clicking (Client/ResearchBookScreen).
 public class ResearchBookItem extends Item
 {
     private final boolean shared;

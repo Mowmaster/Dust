@@ -16,10 +16,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
-// The research book drawn on the HUD while held, so you can read it and keep moving:
-// - main hand: big, in the lower middle of the screen like a held map  (client config [research_book.main_hand])
-// - offhand:   smaller, at the side                                    (client config [research_book.offhand])
-// Positions use MowLib's HudAnchor (a screen anchor plus x/y offsets). Hidden while the book screen is open.
+// The research book drawn at the side of the screen while held in either hand (main hand first), so you can read it and
+// keep moving. Where and how big: client config [research_book] (default: the middle of the left edge, 45%), placed with
+// MowLib's HudAnchor (a screen anchor plus x/y offsets). Hidden while the book screen is open; clicking happens there.
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
 public final class ResearchBookHud
 {
@@ -39,12 +38,9 @@ public final class ResearchBookHud
         LocalPlayer player = minecraft.player;
         if (player == null || minecraft.gui.screen() instanceof ResearchBookScreen) return;
 
-        ItemStack main = player.getMainHandItem();
-        ItemStack off = player.getOffhandItem();
-        if (main.getItem() instanceof ResearchBookItem) {
-            draw(graphics, main, DustClientConfig.MAIN_ANCHOR.get(), DustClientConfig.MAIN_X.get(), DustClientConfig.MAIN_Y.get(), DustClientConfig.MAIN_SCALE.get());
-        } else if (off.getItem() instanceof ResearchBookItem) {
-            draw(graphics, off, DustClientConfig.OFF_ANCHOR.get(), DustClientConfig.OFF_X.get(), DustClientConfig.OFF_Y.get(), DustClientConfig.OFF_SCALE.get());
+        ItemStack book = player.getMainHandItem().getItem() instanceof ResearchBookItem ? player.getMainHandItem() : player.getOffhandItem();
+        if (book.getItem() instanceof ResearchBookItem) {
+            draw(graphics, book, DustClientConfig.BOOK_ANCHOR.get(), DustClientConfig.BOOK_X.get(), DustClientConfig.BOOK_Y.get(), DustClientConfig.BOOK_SCALE.get());
         }
     }
 
