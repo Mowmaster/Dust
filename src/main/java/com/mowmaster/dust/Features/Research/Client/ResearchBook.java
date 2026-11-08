@@ -37,16 +37,16 @@ import java.util.List;
 public final class ResearchBook
 {
     public static final int WIDTH = 256;
-    public static final int HEIGHT = 182;
+    public static final int HEIGHT = 188;
 
     private static final int TAB_W = 28;
-    private static final int TAB_H = 20;
     private static final int TAB_GAP = 3;
     private static final int TABS_X = 12;
-    private static final int COVER_TOP = 16;
+    // The tabs sit above the cover (icons end at y 20 at the lowest), so the cover never hides them
+    private static final int COVER_TOP = 22;
 
     static final int PAGE_W = 114;
-    static final int PAGE_TOP = 24;
+    static final int PAGE_TOP = COVER_TOP + 8;
     static final int PAGE_BOTTOM = HEIGHT - 8;
     static final int LEFT_X = 10;
     static final int RIGHT_X = WIDTH - 10 - PAGE_W;
@@ -124,7 +124,7 @@ public final class ResearchBook
         for (int i = 0; i < categories.length; i++) {
             int x = TABS_X + i * (TAB_W + TAB_GAP);
             boolean on = categories[i] == tab;
-            int top = on ? 0 : 3;
+            int top = on ? 0 : 2;
             graphics.fill(x, top, x + TAB_W, COVER_TOP + 2, COVER_EDGE);
             graphics.fill(x + 1, top + 1, x + TAB_W - 1, COVER_TOP + 2, on ? TAB_ON : TAB_OFF);
             graphics.item(categories[i].tabIcon(), x + (TAB_W - 16) / 2, top + 2);
@@ -330,6 +330,41 @@ public final class ResearchBook
             if (x >= cell[0] && x < cell[0] + CELL && y >= cell[1] && y < cell[1] + CELL) return entries.get(start + i);
         }
         return null;
+    }
+
+    // The tab under the mouse, for its name as a tooltip; null if none
+    static @Nullable ResearchCategory tabAt(int x, int y)
+    {
+        if (y < 0 || y >= COVER_TOP) return null;
+        ResearchCategory[] categories = ResearchCategory.values();
+        for (int i = 0; i < categories.length; i++) {
+            int tx = TABS_X + i * (TAB_W + TAB_GAP);
+            if (x >= tx && x < tx + TAB_W) return categories[i];
+        }
+        return null;
+    }
+
+    // Opens the book at this entry: the entry itself if it's been discovered, otherwise its tab at the page it's on.
+    // null: back to the main page of the open tab.
+    static void show(ResearchData data, @Nullable ResearchEntry entry)
+    {
+        selected = null;
+        if (entry == null) return;
+        tab = entry.category();
+        if (data.has(entry)) {
+            selected = entry;
+            notesPage = 0;
+        } else {
+            int index = tab.entries().indexOf(entry);
+            listPage = Math.max(0, index) / PER_SPREAD;
+        }
+    }
+
+    // The page keys: the list's pages on the main page, the notes pages on an entry (clamped when drawn)
+    static void turnPage(ResearchData data, int direction)
+    {
+        if (selected != null && data.has(selected)) notesPage = Math.max(0, notesPage + direction);
+        else listPage = Math.max(0, listPage + direction);
     }
 
     // A click at (x, y). Returns true if it did something.

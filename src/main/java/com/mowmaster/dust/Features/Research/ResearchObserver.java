@@ -45,9 +45,7 @@ import java.util.UUID;
 @EventBusSubscriber(modid = DustReferences.MODID)
 public final class ResearchObserver
 {
-    // How far a player can observe from: by eye, and looking through a spyglass
-    public static final double RANGE = 10.0;
-    public static final double SPYGLASS_RANGE = 64.0;
+    // How far a player can observe from: see ResearchLook (10 blocks, 64 through a spyglass)
     // How long something must be looked at before it's noted (ticks; 20 = one second)
     public static final int BLOCK_TICKS = 20;
     public static final int MOB_TICKS = 60;
@@ -76,7 +74,7 @@ public final class ResearchObserver
     {
         if (!(event.getEntity() instanceof ServerPlayer player) || player.tickCount % CHECK_EVERY != 0) return;
         Look look = LOOKS.get(player.getUUID());
-        Target target = player.isSpectator() || !Research.carriesNotes(player) ? null : lookedAt(player);
+        ResearchLook.Target target = player.isSpectator() || !Research.carriesNotes(player) ? null : ResearchLook.lookedAt(player);
 
         if (target == null) {
             stopLooking(player, look);
@@ -112,34 +110,6 @@ public final class ResearchObserver
     {
         if (look != null && look.reported()) PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
         LOOKS.remove(player.getUUID());
-    }
-
-    private record Target(ResearchEntry entry, BlockPos pos) {}
-
-    // The nearest researchable block or mob along the player's view, within range
-    private static Target lookedAt(ServerPlayer player)
-    {
-        double range = player.isScoping() ? SPYGLASS_RANGE : RANGE;
-        Vec3 eye = player.getEyePosition();
-        Vec3 view = player.getViewVector(1.0F);
-        Vec3 end = eye.add(view.scale(range));
-
-        BlockHitResult blockHit = player.level().clip(new ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
-        Vec3 entityEnd = blockHit.getType() == HitResult.Type.MISS ? end : blockHit.getLocation();
-        AABB search = player.getBoundingBox().expandTowards(view.scale(range)).inflate(1.0);
-        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(player, eye, entityEnd, search,
-                entity -> entity instanceof LivingEntity && entity.isPickable() && !entity.isSpectator() && entity != player,
-                eye.distanceToSqr(entityEnd));
-
-        if (entityHit != null) {
-            ResearchEntry entry = ResearchCategory.entryFor(entityHit.getEntity().getType());
-            if (entry != null) return new Target(entry, entityHit.getEntity().blockPosition());
-        }
-        if (blockHit.getType() == HitResult.Type.BLOCK) {
-            ResearchEntry entry = ResearchCategory.entryFor(player.level().getBlockState(blockHit.getBlockPos()).getBlock());
-            if (entry != null) return new Target(entry, blockHit.getBlockPos());
-        }
-        return null;
     }
 
     // ---- experimentation ----

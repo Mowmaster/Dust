@@ -15,6 +15,9 @@ import org.jspecify.annotations.Nullable;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.context.UseOnContext;
+import com.mowmaster.mowlib.paging.IPageable;
 
 import java.util.function.Consumer;
 
@@ -22,9 +25,12 @@ import java.util.function.Consumer;
 // Shared Research Guide (shared = true): a read-only copy of someone's research (dust:research_snapshot), made by
 // crafting Research Notes + a Book and Quill + Ancient Ink.
 //
-// Held in either hand the book shows at the side of the screen, so you can keep moving (Client/ResearchBookHud).
-// Sneak + right-click (or MowLib's activation key) opens it for clicking (Client/ResearchBookScreen).
-public class ResearchBookItem extends Item
+// Held in either hand the book shows at the side of the screen (Client/ResearchBookHud), and MowLib's page keys turn
+// its pages (IPageable#turnHeld). Opening it for clicking (Client/ResearchBookScreen):
+// - right-click (at the air, a block or a mob): the main page of the open tab
+// - sneak + right-click, or MowLib's activation key: straight to the entry of what you're looking at (within observing
+//   range, see ResearchLook); looking at nothing opens the main page
+public class ResearchBookItem extends Item implements IPageable
 {
     private final boolean shared;
 
@@ -39,17 +45,72 @@ public class ResearchBookItem extends Item
         return shared;
     }
 
+    // Right-clicking the air
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand)
     {
-        if (!player.isShiftKeyDown()) {
-            return InteractionResult.PASS;
-        }
-        if (level.isClientSide()) {
-            // The screen is client-only; this branch only ever runs on the client
-            ResearchClient.openBook(player.getItemInHand(hand));
-        }
+        open(level, player, player.getItemInHand(hand));
         return InteractionResult.SUCCESS;
+    }
+
+    // Right-clicking a block (after the block itself had its chance: chests etc. still open normally unless sneaking)
+    @Override
+    public InteractionResult useOn(UseOnContext context)
+    {
+        if (context.getPlayer() == null) return InteractionResult.PASS;
+        open(context.getLevel(), context.getPlayer(), context.getItemInHand());
+        return InteractionResult.SUCCESS;
+    }
+
+    // Right-clicking a mob
+    @Override
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand)
+    {
+        open(player.level(), player, stack);
+        return InteractionResult.SUCCESS;
+    }
+
+    // The screen is client-only; these branches only ever run on the client
+    private static void open(Level level, Player player, ItemStack stack)
+    {
+        if (level.isClientSide()) {
+            if (player.isShiftKeyDown()) ResearchClient.openAtLookedAt(stack);
+            else ResearchClient.openBook(stack, null);
+        }
+    }
+
+    // ---- MowLib page keys (IPageable) ----
+    // The book's pages are what's open on the client (Client/ResearchBook), not something stored on the stack, so the
+    // stack itself has a single "page" and the keys just turn the book on the client.
+
+    @Override
+    public int getPageCount(ItemStack stack)
+    {
+        return 1;
+    }
+
+    @Override
+    public int getPage(ItemStack stack)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setPage(ItemStack stack, int page)
+    {
+    }
+
+    @Override
+    public void turnHeld(ItemStack stack, int direction, Player player)
+    {
+        if (player.level().isClientSide()) ResearchClient.turnPage(stack, direction);
+    }
+
+    // MowLib's "Page 1/1" over the hotbar would be meaningless here
+    @Override
+    public boolean showsHeldPageMessages(ItemStack stack)
+    {
+        return false;
     }
 
     // Research Notes come back out of the crafting grid (your research is on you, not the book, so this loses nothing):

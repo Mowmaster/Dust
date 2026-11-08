@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 
 // One thing that can be researched: a block (BLOCKS / PLANTS) or an entity type (ANIMALS / MOBS / BOSSES).
 public record ResearchEntry(ResearchCategory category, Identifier id)
@@ -32,7 +33,12 @@ public record ResearchEntry(ResearchCategory category, Identifier id)
         if (isEntity()) {
             return SpawnEggItem.byId(entityType()).map(egg -> new ItemStack(egg)).orElse(ItemStack.EMPTY);
         }
-        return new ItemStack(block().asItem());
+        Block block = block();
+        if (block instanceof LiquidBlock) {
+            // Fluids have no item of their own: show their bucket
+            return new ItemStack(block.defaultBlockState().getFluidState().getType().getBucket());
+        }
+        return new ItemStack(block.asItem());
     }
 
     public Component name()

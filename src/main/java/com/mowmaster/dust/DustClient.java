@@ -43,8 +43,9 @@ public class DustClient {
         // config/dust-client.toml, editable from Mods > Dust > Config
         container.registerConfig(ModConfig.Type.CLIENT, DustClientConfig.SPEC);
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-        // MowLib's activation key (default V) on a held research book opens it, like sneak + right-click
-        ClientActivations.register(stack -> stack.getItem() instanceof ResearchBookItem, (stack, hand) -> ResearchClient.openBook(stack));
+        // MowLib's activation key (default V) on a held research book opens it at what you're looking at, like
+        // sneak + right-click
+        ClientActivations.register(stack -> stack.getItem() instanceof ResearchBookItem, (stack, hand) -> ResearchClient.openAtLookedAt(stack));
     }
 
     @SubscribeEvent

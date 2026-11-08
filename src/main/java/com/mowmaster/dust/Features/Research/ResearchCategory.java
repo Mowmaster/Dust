@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
 
@@ -76,9 +77,11 @@ public enum ResearchCategory
         return cache;
     }
 
-    // Which tab a block belongs in, or null if it can't be researched (no item: air, technical blocks)
+    // Which tab a block belongs in, or null if it can't be researched (no item: air, technical blocks).
+    // Fluids (water, lava, modded fluids) have no item but are researchable, under Blocks.
     public static @Nullable ResearchCategory forBlock(Block block)
     {
+        if (block instanceof LiquidBlock) return BLOCKS;
         if (block.asItem() == Items.AIR) return null;
         return block.defaultBlockState().is(DustTags.Blocks.RESEARCH_PLANTS) ? PLANTS : BLOCKS;
     }

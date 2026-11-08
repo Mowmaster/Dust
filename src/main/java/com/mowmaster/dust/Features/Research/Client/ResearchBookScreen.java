@@ -1,6 +1,10 @@
 package com.mowmaster.dust.Features.Research.Client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mowmaster.dust.Features.Research.EntryResearch;
+import com.mowmaster.dust.Features.Research.ResearchCategory;
+import com.mowmaster.mowlib.client.MowLibKeyMappings;
+import net.minecraft.client.input.KeyEvent;
 import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
 import com.mowmaster.dust.Features.Research.ResearchNotesPayload;
@@ -123,6 +127,8 @@ public class ResearchBookScreen extends Screen
             Component name = data().has(hovered) ? hovered.name() : Component.translatable("research.dust.undiscovered");
             graphics.setTooltipForNextFrame(this.font, name, mouseX, mouseY);
         }
+        ResearchCategory hoveredTab = ResearchBook.tabAt(mouseX - left, mouseY - top);
+        if (hoveredTab != null) graphics.setTooltipForNextFrame(this.font, hoveredTab.title(), mouseX, mouseY);
     }
 
     // "243/256" just above the footer at the right page's right edge, clear of the arrows and page number, and only
@@ -148,6 +154,23 @@ public class ResearchBookScreen extends Screen
             return true;
         }
         return false;
+    }
+
+    // MowLib's page keys turn pages here too, as they do on the side view (unless you're typing in the notes box)
+    @Override
+    public boolean keyPressed(KeyEvent event)
+    {
+        if (notesBox == null || getFocused() != notesBox) {
+            InputConstants.Key key = InputConstants.getKey(event);
+            int direction = MowLibKeyMappings.PAGE_NEXT.isActiveAndMatches(key) ? 1
+                    : MowLibKeyMappings.PAGE_PREVIOUS.isActiveAndMatches(key) ? -1 : 0;
+            if (direction != 0) {
+                ResearchBook.turnPage(data(), direction);
+                updateNotesBox();
+                return true;
+            }
+        }
+        return super.keyPressed(event);
     }
 
     @Override

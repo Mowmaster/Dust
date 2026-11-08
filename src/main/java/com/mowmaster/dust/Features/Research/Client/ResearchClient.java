@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchBookItem;
 import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
+import com.mowmaster.dust.Features.Research.ResearchLook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -21,12 +22,28 @@ public final class ResearchClient
 {
     private ResearchClient() {}
 
-    public static void openBook(ItemStack book)
+    // Opens the book screen. With an entry: straight to it if it's been discovered, otherwise to its tab at the page
+    // it's on. Without: the main page of the tab that was open last.
+    public static void openBook(ItemStack book, @Nullable ResearchEntry entry)
     {
-        if (book.getItem() instanceof ResearchBookItem item) {
-            // 26.3: screens are opened through the Gui (Minecraft.gui), no longer Minecraft.setScreen
-            Minecraft.getInstance().gui.setScreen(new ResearchBookScreen(book.copy(), item.isShared()));
-        }
+        if (!(book.getItem() instanceof ResearchBookItem item)) return;
+        ResearchBook.show(dataFor(book), entry);
+        // 26.3: screens are opened through the Gui (Minecraft.gui), no longer Minecraft.setScreen
+        Minecraft.getInstance().gui.setScreen(new ResearchBookScreen(book.copy(), item.isShared()));
+    }
+
+    // Sneak + right-click / the activation key: the entry for what the player is looking at (or the main page)
+    public static void openAtLookedAt(ItemStack book)
+    {
+        Minecraft minecraft = Minecraft.getInstance();
+        ResearchLook.Target target = minecraft.player == null ? null : ResearchLook.lookedAt(minecraft.player);
+        openBook(book, target == null ? null : target.entry());
+    }
+
+    // MowLib's page keys while the book is held (the side view)
+    public static void turnPage(ItemStack book, int direction)
+    {
+        ResearchBook.turnPage(dataFor(book), direction);
     }
 
     // What a book shows: a guide shows the copy stored on it, Research Notes show your own (synced) research
