@@ -78,7 +78,7 @@ public class ResearchBookScreen extends Screen
     {
         if (notesBox == null) return;
         ResearchData data = data();
-        boolean show = ResearchBook.currentNotesPage(data) == ResearchBook.NotesPage.OVERVIEW;
+        boolean show = ResearchBook.onOverview(data);
         ResearchEntry entry = show ? ResearchBook.selected : null;
         if (entry != editing) {
             saveNotes();

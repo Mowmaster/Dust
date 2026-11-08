@@ -55,6 +55,8 @@
   "research.dust.notes.overview.placeholder": "Write your notes...",
   "research.dust.notes.where_found": "Where found",
   "research.dust.notes.family": "Family",
+  "research.dust.notes.crafted_from": "Crafted from",
+  "research.dust.notes.crafted_into": "Crafted into",
   "research.dust.family.found": "%s of %s found",
   "research.dust.notes.experiments": "Experiments",
   "research.dust.notes.research": "Research",

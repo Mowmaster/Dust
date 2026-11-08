@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.Features.Research.EntryResearch;
+import com.mowmaster.dust.Features.Research.RecipeRecord;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
@@ -86,22 +87,50 @@ public final class ResearchBook
     }
 
     // The notes pages an entry has, depending on how far its research has got
-    //   OVERVIEW     the built-in notes, which the player can rewrite (Research Notes only)
-    //   WHERE_FOUND  the biomes it's been seen in (once there are two or more)
-    //   FAMILY       the other members of its group (block families), unfound ones faded
-    //   EXPERIMENTS  drops, health, breeding, crafting
-    //   RESEARCH     Dust composition (to come)
-    enum NotesPage { OVERVIEW, WHERE_FOUND, FAMILY, EXPERIMENTS, RESEARCH }
+    //   OVERVIEW      the built-in notes, which the player can rewrite (Research Notes only)
+    //   WHERE_FOUND   the biomes it's been seen in (once there are two or more)
+    //   FAMILY        the other members of its group (block families), unfound ones faded
+    //   CRAFTED_FROM  recipes seen making it: ingredients, station, result (as many pages as it takes)
+    //   CRAFTED_INTO  recipes seen using it
+    //   EXPERIMENTS   health, breeding food, brewing
+    //   RESEARCH      Dust composition (to come)
+    enum Kind { OVERVIEW, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH }
+
+    // One notes page: its kind, and for the crafting pages the recipes that fit on it
+    record NotesPage(Kind kind, List<RecipeRecord> recipes) {}
 
     static List<NotesPage> notesPages(ResearchEntry entry, EntryResearch research)
     {
         List<NotesPage> pages = new ArrayList<>();
-        pages.add(NotesPage.OVERVIEW);
-        if (research.biomes().size() >= 2) pages.add(NotesPage.WHERE_FOUND);
-        if (entry.group().size() > 1) pages.add(NotesPage.FAMILY);
-        if (research.hasExperiments()) pages.add(NotesPage.EXPERIMENTS);
-        pages.add(NotesPage.RESEARCH);
+        pages.add(new NotesPage(Kind.OVERVIEW, List.of()));
+        if (research.biomes().size() >= 2) pages.add(new NotesPage(Kind.WHERE_FOUND, List.of()));
+        if (entry.group().size() > 1) pages.add(new NotesPage(Kind.FAMILY, List.of()));
+        addRecipePages(pages, Kind.CRAFTED_FROM, research.madeBy());
+        addRecipePages(pages, Kind.CRAFTED_INTO, research.usedIn());
+        if (research.maxHealth() > 0 || !research.breeding().isEmpty() || !research.madeFrom().isEmpty()
+                || !research.makes().isEmpty() || !research.modifiers().isEmpty()) {
+            pages.add(new NotesPage(Kind.EXPERIMENTS, List.of()));
+        }
+        pages.add(new NotesPage(Kind.RESEARCH, List.of()));
         return pages;
+    }
+
+    // Splits recipes over as many pages as it takes: each recipe is as tall as its ingredient grid
+    private static void addRecipePages(List<NotesPage> pages, Kind kind, List<RecipeRecord> recipes)
+    {
+        List<RecipeRecord> page = new ArrayList<>();
+        int used = 0;
+        for (RecipeRecord recipe : recipes) {
+            int height = recipeHeight(recipe) + RECIPE_GAP;
+            if (!page.isEmpty() && used + height > NOTES_HEIGHT) {
+                pages.add(new NotesPage(kind, List.copyOf(page)));
+                page.clear();
+                used = 0;
+            }
+            page.add(recipe);
+            used += height;
+        }
+        if (!page.isEmpty()) pages.add(new NotesPage(kind, List.copyOf(page)));
     }
 
     static @Nullable NotesPage currentNotesPage(ResearchData data)
@@ -112,6 +141,13 @@ public final class ResearchBook
         List<NotesPage> pages = notesPages(selected, research);
         notesPage = Math.clamp(notesPage, 0, pages.size() - 1);
         return pages.get(notesPage);
+    }
+
+    // Is the open page an entry's Overview (where the screen shows its notes box)?
+    static boolean onOverview(ResearchData data)
+    {
+        NotesPage page = currentNotesPage(data);
+        return page != null && page.kind() == Kind.OVERVIEW;
     }
 
     // ================= drawing =================
@@ -194,28 +230,36 @@ public final class ResearchBook
 
     // ---- entry view ----
 
+    // Where notes pages start, and how much height they have before the footer
+    private static final int NOTES_TOP = PAGE_TOP + 40;
+    private static final int NOTES_HEIGHT = FOOTER_Y - 2 - NOTES_TOP;
+    private static final int RECIPE_GAP = 4;
+    // How many drop / source icons fit on the left page (two rows)
+    private static final int LEFT_ICONS = 12;
+
     private static void drawEntry(GuiGraphicsExtractor graphics, Font font, ResearchData data, ResearchEntry entry, boolean editing)
     {
         EntryResearch research = data.get(entry);
         if (research == null) return;
+        LINKS.clear();
 
-        // Left page: the entry itself, then its drops (or, for items, its sources). Both are icons that open their entry.
+        // Left page: the entry itself, then its drops (or, for items, its sources), as linked icons
         drawSubject(graphics, entry, LEFT_X + 20, PAGE_TOP + 2, LEFT_X + PAGE_W - 20, PAGE_TOP + 62);
         boolean sources = entry.tab().showsSources();
-        boolean leftSection = sources || entry.tab().showsDrops();
-        if (leftSection) {
+        if (sources || entry.tab().showsDrops()) {
             Paper.ink(graphics, font, Component.translatable(sources ? "research.dust.sources" : "research.dust.drops"), LEFT_X + 4, PAGE_TOP + 68, INK);
-            List<ItemStack> icons = leftIcons(data, entry).stream().map(ResearchEntry::icon).toList();
-            if (icons.isEmpty()) {
+            List<ResearchEntry> sourceEntries = sources ? data.sourcesOf(entry.id()) : List.of();
+            int count = sources ? sourceEntries.size() : research.drops().size();
+            if (count == 0) {
                 String key = sources ? "research.dust.sources.unknown"
                         : entry.tab().displayEntity(entry.id()) != null ? "research.dust.drops.unknown_mob" : "research.dust.drops.unknown_block";
                 drawLines(graphics, font, font.split(Component.translatable(key), PAGE_W - 8), LEFT_X + 4, PAGE_TOP + 80, FOOTER_Y - 2, FADED);
-            } else {
-                for (int i = 0; i < icons.size() && i < LEFT_ICONS; i++) {
-                    int[] cell = leftCell(i);
-                    Paper.slot(graphics, cell[0], cell[1]);
-                    graphics.item(icons.get(i), cell[0] + 1, cell[1] + 1);
-                }
+            }
+            for (int i = 0; i < count && i < LEFT_ICONS; i++) {
+                int x = LEFT_X + 3 + (i % 6) * CELL;
+                int y = PAGE_TOP + 79 + (i / 6) * CELL;
+                if (sources) linkedEntry(graphics, data, sourceEntries.get(i), x, y, false);
+                else linkedItem(graphics, data, research.drops().get(i), x, y);
             }
         }
         Paper.ink(graphics, font, Component.translatable("research.dust.back"), LEFT_X + 2, FOOTER_Y + 2, INK);
@@ -231,11 +275,18 @@ public final class ResearchBook
         List<NotesPage> pages = notesPages(entry, research);
         NotesPage page = currentNotesPage(data);
         if (page != null) {
-            Paper.ink(graphics, font, Component.translatable("research.dust.notes." + page.name().toLowerCase(java.util.Locale.ROOT)), RIGHT_X + 4, PAGE_TOP + 28, INK);
-            if (page == NotesPage.FAMILY) {
-                drawFamily(graphics, font, data, entry);
-            } else if (!(page == NotesPage.OVERVIEW && editing)) {
-                drawLines(graphics, font, font.split(notesText(entry, research, page), PAGE_W - 8), RIGHT_X + 4, PAGE_TOP + 40, FOOTER_Y - 2, INK);
+            Paper.ink(graphics, font, Component.translatable("research.dust.notes." + page.kind().name().toLowerCase(java.util.Locale.ROOT)), RIGHT_X + 4, PAGE_TOP + 28, INK);
+            switch (page.kind()) {
+                case FAMILY -> drawFamily(graphics, font, data, entry);
+                case CRAFTED_FROM, CRAFTED_INTO -> {
+                    int y = NOTES_TOP;
+                    for (RecipeRecord recipe : page.recipes()) y += drawRecipe(graphics, font, data, recipe, RIGHT_X + 3, y) + RECIPE_GAP;
+                }
+                case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
+                case OVERVIEW -> {
+                    if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
+                }
+                default -> drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
             }
         }
         Paper.inkCentred(graphics, font, Component.literal((notesPage + 1) + "/" + pages.size()), rightCentre, FOOTER_Y + 2, FADED);
@@ -243,43 +294,107 @@ public final class ResearchBook
         if (notesPage < pages.size() - 1) Paper.ink(graphics, font, Component.literal(">"), RIGHT_X + PAGE_W - 8, FOOTER_Y + 2, INK);
     }
 
-    // How many drop / source icons fit on the left page (two rows)
-    private static final int LEFT_ICONS = 12;
+    // ---- linked icons ----
+    // Every item shown on an entry's pages is an icon in a slot frame: normal if its entry has been researched (clicking
+    // it opens that entry), faded if not. The icons drawn this frame are remembered for clicks and tooltips.
 
-    // The left page's icons as entries: an item's Sources (researched entries seen dropping it), or an entry's drops
-    // (each drop as the entry it belongs to: its block, or the item)
-    private static List<ResearchEntry> leftIcons(ResearchData data, ResearchEntry entry)
+    // family: a member on the family page (clicking keeps the family page open; unresearched ones are "???")
+    private record Link(int x, int y, @Nullable ResearchEntry entry, boolean researched, Component name, boolean family) {}
+    private static final List<Link> LINKS = new ArrayList<>();
+
+    private static void linkedItem(GuiGraphicsExtractor graphics, ResearchData data, Identifier item, int x, int y)
     {
-        EntryResearch research = data.get(entry);
-        if (research == null) return List.of();
-        if (entry.tab().showsSources()) return data.sourcesOf(entry.id());
-        if (!entry.tab().showsDrops()) return List.of();
-        List<ResearchEntry> drops = new ArrayList<>();
-        for (Identifier item : research.drops()) {
-            ResearchEntry drop = ResearchTabs.entryForItem(new ItemStack(BuiltInRegistries.ITEM.getValue(item)));
-            if (drop != null && !drops.contains(drop)) drops.add(drop);
-        }
-        return drops;
+        ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.getValue(item));
+        ResearchEntry entry = ResearchTabs.entryForItem(stack);
+        boolean researched = entry != null && data.has(entry);
+        drawIcon(graphics, stack, x, y, researched);
+        LINKS.add(new Link(x, y, entry, researched, stack.getHoverName(), false));
     }
 
-    private static int[] leftCell(int i)
+    private static void linkedEntry(GuiGraphicsExtractor graphics, ResearchData data, ResearchEntry entry, int x, int y, boolean family)
     {
-        return new int[] {LEFT_X + 3 + (i % 6) * CELL, PAGE_TOP + 79 + (i / 6) * CELL};
+        boolean researched = data.has(entry);
+        drawIcon(graphics, entry.icon(), x, y, researched);
+        LINKS.add(new Link(x, y, entry, researched, entry.name(), family));
     }
 
-    // The drop / source icon under the mouse on an entry's left page, or null
-    private static @Nullable ResearchEntry leftIconAt(ResearchData data, int x, int y)
+    private static void drawIcon(GuiGraphicsExtractor graphics, ItemStack stack, int x, int y, boolean researched)
+    {
+        Paper.slot(graphics, x, y);
+        if (researched) graphics.item(stack, x + 1, y + 1);
+        else Paper.ghost(graphics, stack, x, y);
+    }
+
+    private static @Nullable Link linkAt(int x, int y)
     {
         if (selected == null) return null;
-        List<ResearchEntry> icons = leftIcons(data, selected);
-        for (int i = 0; i < icons.size() && i < LEFT_ICONS; i++) {
-            int[] cell = leftCell(i);
-            if (x >= cell[0] && x < cell[0] + CELL && y >= cell[1] && y < cell[1] + CELL) return icons.get(i);
+        for (Link link : LINKS) {
+            if (x >= link.x() && x < link.x() + CELL && y >= link.y() && y < link.y() + CELL) return link;
         }
         return null;
     }
 
-    // The family page: "4 of 11 found", then every member as an icon (unfound ones faded). Clicking a found one opens it.
+    // ---- crafting pages ----
+
+    private static int recipeHeight(RecipeRecord recipe)
+    {
+        return Math.max(1, recipe.rows()) * CELL;
+    }
+
+    // One recipe as  [ingredient grid]  [station]  ->  [result]. Returns its height.
+    private static int drawRecipe(GuiGraphicsExtractor graphics, Font font, ResearchData data, RecipeRecord recipe, int x, int y)
+    {
+        int width = Math.max(1, recipe.width());
+        for (int i = 0; i < recipe.slots().size(); i++) {
+            int cx = x + (i % width) * CELL;
+            int cy = y + (i / width) * CELL;
+            Identifier slot = recipe.slots().get(i);
+            if (slot.equals(RecipeRecord.EMPTY)) Paper.slot(graphics, cx, cy);
+            else linkedItem(graphics, data, slot, cx, cy);
+        }
+        int height = recipeHeight(recipe);
+        int middle = y + (height - CELL) / 2;
+        // Fixed columns, so recipes of different sizes line up: grid up to 3 wide, then station, arrow, result
+        recipe.station().ifPresent(station -> linkedItem(graphics, data, station, x + 3 * CELL + 4, middle));
+        Paper.ink(graphics, font, Component.literal("\u2192"), x + 4 * CELL + 7, middle + 5, INK);
+        linkedItem(graphics, data, recipe.output(), x + 4 * CELL + 18, middle);
+        return height;
+    }
+
+    // ---- experiments page: health as text, everything else as rows of icons ----
+
+    private static void drawExperiments(GuiGraphicsExtractor graphics, Font font, ResearchData data, ResearchEntry entry, EntryResearch research)
+    {
+        int y = NOTES_TOP;
+        int bottom = FOOTER_Y - 2;
+        if (research.maxHealth() > 0) {
+            Paper.ink(graphics, font, Component.translatable(label(entry, "health"), Math.round(research.maxHealth()) / 2.0F), RIGHT_X + 4, y, INK);
+            y += font.lineHeight + 3;
+        }
+        y = iconRow(graphics, font, data, Component.translatable(label(entry, "breeding"), ""), research.breeding(), y, bottom);
+        y = iconRow(graphics, font, data, Component.translatable(label(entry, "made_from"), ""), research.madeFrom(), y, bottom);
+        y = iconRow(graphics, font, data, Component.translatable(label(entry, "makes"), ""), research.makes(), y, bottom);
+        iconRow(graphics, font, data, Component.translatable(label(entry, "modifiers"), ""), research.modifiers(), y, bottom);
+    }
+
+    // A heading and its items as icons (6 to a row). Returns where the next one starts.
+    private static int iconRow(GuiGraphicsExtractor graphics, Font font, ResearchData data, Component heading, List<Identifier> items, int y, int bottom)
+    {
+        if (items.isEmpty() || y + font.lineHeight + CELL > bottom) return y;
+        Paper.ink(graphics, font, heading, RIGHT_X + 4, y, INK);
+        y += font.lineHeight + 1;
+        for (int i = 0; i < items.size(); i++) {
+            int row = i / COLS;
+            int cy = y + row * CELL;
+            if (cy + CELL > bottom) break;
+            linkedItem(graphics, data, items.get(i), RIGHT_X + 3 + (i % COLS) * CELL, cy);
+        }
+        return y + ((items.size() + COLS - 1) / COLS) * CELL + 3;
+    }
+
+    // ---- family page ----
+
+    // "4 of 11 found", then every member as an icon (unfound ones faded). Clicking a found one opens it.
     private static void drawFamily(GuiGraphicsExtractor graphics, Font font, ResearchData data, ResearchEntry entry)
     {
         List<Identifier> group = entry.group();
@@ -287,20 +402,12 @@ public final class ResearchBook
         for (Identifier member : group) {
             if (data.has(new ResearchEntry(entry.tab(), member))) found++;
         }
-        Paper.ink(graphics, font, Component.translatable("research.dust.family.found", found, group.size()), RIGHT_X + 4, PAGE_TOP + 40, FADED);
-        for (int i = 0; i < group.size() && i < COLS * FAMILY_ROWS; i++) {
-            int[] cell = familyCell(i);
-            ResearchEntry member = new ResearchEntry(entry.tab(), group.get(i));
-            Paper.slot(graphics, cell[0], cell[1]);
-            if (data.has(member)) graphics.item(member.icon(), cell[0] + 1, cell[1] + 1);
-            else Paper.ghost(graphics, member.icon(), cell[0], cell[1]);
-        }
-    }
-
-    private static int[] familyCell(int i)
-    {
+        Paper.ink(graphics, font, Component.translatable("research.dust.family.found", found, group.size()), RIGHT_X + 4, NOTES_TOP, FADED);
         int gridLeft = RIGHT_X + (PAGE_W - COLS * CELL) / 2;
-        return new int[] {gridLeft + (i % COLS) * CELL, FAMILY_TOP + (i / COLS) * CELL};
+        for (int i = 0; i < group.size() && i < COLS * FAMILY_ROWS; i++) {
+            linkedEntry(graphics, data, new ResearchEntry(entry.tab(), group.get(i)),
+                    gridLeft + (i % COLS) * CELL, FAMILY_TOP + (i / COLS) * CELL, true);
+        }
     }
 
     // The block as a big item, or the mob itself
@@ -324,17 +431,16 @@ public final class ResearchBook
         graphics.pose().popMatrix();
     }
 
-    // The text of a notes page
-    private static Component notesText(ResearchEntry entry, EntryResearch research, NotesPage page)
+    // The text of a text notes page
+    private static Component notesText(ResearchEntry entry, EntryResearch research, Kind kind)
     {
-        return switch (page) {
+        return switch (kind) {
             // The player's version if they've written one, otherwise the built-in notes
             case OVERVIEW -> research.notes().isEmpty() ? builtInNotes(entry) : Component.literal(research.notes());
             case WHERE_FOUND -> lines(Component.translatable("research.dust.where_found.intro"),
                     research.biomes().stream().map(ResearchBook::biomeName).toList());
-            case FAMILY -> Component.empty();   // drawn as icons (drawFamily)
-            case EXPERIMENTS -> experiments(entry, research);
             case RESEARCH -> Component.translatable("research.dust.research.unknown");
+            default -> Component.empty();   // drawn as icons
         };
     }
 
@@ -351,19 +457,6 @@ public final class ResearchBook
         return Language.getInstance().has(key) ? Component.translatable(key) : entry.tab().defaultNote(entry.id());
     }
 
-    private static Component experiments(ResearchEntry entry, EntryResearch research)
-    {
-        MutableComponent text = Component.empty();
-        if (research.maxHealth() > 0) {
-            text.append(Component.translatable(label(entry, "health"), Math.round(research.maxHealth()) / 2.0F)).append("\n");
-        }
-        appendItems(text, label(entry, "breeding"), research.breeding());
-        appendItems(text, label(entry, "made_from"), research.madeFrom());
-        appendItems(text, label(entry, "makes"), research.makes());
-        appendItems(text, label(entry, "modifiers"), research.modifiers());
-        return text;
-    }
-
     // An experiment line's wording: research.<tab namespace>.experiment.<tab path>.<line> if the lang file has it (so a
     // tab can reword it: an effect is "Brewed with" rather than "Made from"), otherwise research.dust.experiment.<line>
     private static String label(ResearchEntry entry, String line)
@@ -371,17 +464,6 @@ public final class ResearchBook
         Identifier tab = entry.tab().id();
         String own = "research." + tab.getNamespace() + ".experiment." + tab.getPath() + "." + line;
         return Language.getInstance().has(own) ? own : "research.dust.experiment." + line;
-    }
-
-    private static void appendItems(MutableComponent text, String key, List<Identifier> items)
-    {
-        if (items.isEmpty()) return;
-        MutableComponent names = Component.empty();
-        for (int i = 0; i < items.size(); i++) {
-            if (i > 0) names.append(", ");
-            names.append(new ItemStack(BuiltInRegistries.ITEM.getValue(items.get(i))).getHoverName());
-        }
-        text.append(Component.translatable(key, names)).append("\n");
     }
 
     private static Component biomeName(Identifier biome)
@@ -441,18 +523,6 @@ public final class ResearchBook
         return null;
     }
 
-    // The family member under the mouse on the family page, or null
-    private static @Nullable ResearchEntry familyMemberAt(ResearchData data, int x, int y)
-    {
-        if (selected == null || currentNotesPage(data) != NotesPage.FAMILY) return null;
-        List<Identifier> group = selected.group();
-        for (int i = 0; i < group.size() && i < COLS * FAMILY_ROWS; i++) {
-            int[] cell = familyCell(i);
-            if (x >= cell[0] && x < cell[0] + CELL && y >= cell[1] && y < cell[1] + CELL) return new ResearchEntry(selected.tab(), group.get(i));
-        }
-        return null;
-    }
-
     // Tooltip for whatever is under the mouse: a tab's name, an entry's name ("???" until researched), or null
     static @Nullable Component tooltipAt(ResearchData data, int x, int y)
     {
@@ -463,11 +533,9 @@ public final class ResearchBook
             Identifier shown = data.firstResearched(tab(), group);
             return shown == null ? Component.translatable("research.dust.undiscovered") : tab().name(shown);
         }
-        ResearchEntry member = familyMemberAt(data, x, y);
-        if (member != null) return data.has(member) ? member.name() : Component.translatable("research.dust.undiscovered");
-        // Drops and sources were seen happening, so their names are always known
-        ResearchEntry icon = leftIconAt(data, x, y);
-        if (icon != null) return icon.name();
+        // Linked icons: an item's name (things seen in recipes and drops are known by sight); unfound family members "???"
+        Link link = linkAt(x, y);
+        if (link != null) return link.family() && !link.researched() ? Component.translatable("research.dust.undiscovered") : link.name();
         return null;
     }
 
@@ -521,21 +589,20 @@ public final class ResearchBook
             return false;
         }
 
-        // A drop or source icon: open its entry (if it's been researched)
-        ResearchEntry linked = leftIconAt(data, x, y);
-        if (linked != null && data.has(linked)) {
-            tab = linked.tab();
-            selected = linked;
+        // A linked icon: open its entry if it's been researched (a family member keeps the family page open)
+        Link link = linkAt(x, y);
+        if (link != null && link.researched() && link.entry() != null) {
+            ResearchEntry target = link.entry();
+            tab = target.tab();
+            selected = target;
             notesPage = 0;
-            return true;
-        }
-
-        // A found family member: open it, staying on its family page
-        ResearchEntry member = familyMemberAt(data, x, y);
-        if (member != null && data.has(member)) {
-            selected = member;
-            EntryResearch research = data.get(member);
-            notesPage = research == null ? 0 : Math.max(0, notesPages(member, research).indexOf(NotesPage.FAMILY));
+            if (link.family()) {
+                EntryResearch research = data.get(target);
+                List<NotesPage> pages = research == null ? List.of() : notesPages(target, research);
+                for (int i = 0; i < pages.size(); i++) {
+                    if (pages.get(i).kind() == Kind.FAMILY) { notesPage = i; break; }
+                }
+            }
             return true;
         }
 

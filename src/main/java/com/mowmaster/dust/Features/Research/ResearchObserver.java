@@ -12,6 +12,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
+import net.minecraft.world.inventory.BlastFurnaceMenu;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.inventory.SmokerMenu;
+import java.util.Optional;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -158,7 +163,8 @@ public final class ResearchObserver
         boolean cooked = sameScreen && !output.isEmpty() && before.input() != Items.AIR
                 && (before.output() == Items.AIR ? now.outputCount() > 0 : before.output() == now.output() && now.outputCount() > before.outputCount());
         if (cooked) {
-            recordMaking(player, List.of(new ItemStack(before.input())), output);
+            Item furnace = menu instanceof SmokerMenu ? Items.SMOKER : menu instanceof BlastFurnaceMenu ? Items.BLAST_FURNACE : Items.FURNACE;
+            recordMaking(player, Optional.of(itemId(furnace)), 1, List.of(new ItemStack(before.input())), output);
         }
     }
 
@@ -254,7 +260,7 @@ public final class ResearchObserver
             // Roughly facing it (within about 30 degrees of the view)
             Vec3 toFire = centre.subtract(player.getEyePosition()).normalize();
             if (player.getViewVector(1.0F).dot(toFire) < 0.85) continue;
-            recordMaking(player, List.of(raw), cooked);
+            recordMaking(player, Optional.of(itemId(campfire.getBlockState().getBlock().asItem())), 1, List.of(raw), cooked);
         }
     }
 
@@ -334,34 +340,61 @@ public final class ResearchObserver
         }
         if (!Research.carriesNotes(player)) return;
 
+        // The crafting grid as it was (2x2 in the inventory, 3x3 at a table), with empty rows and columns trimmed off
         Container grid = event.getInventory();
-        List<ItemStack> ingredients = new ArrayList<>();
-        for (int slot = 0; slot < grid.getContainerSize(); slot++) {
-            if (!grid.getItem(slot).isEmpty()) ingredients.add(grid.getItem(slot));
-        }
-        recordMaking(player, ingredients, result);
+        int width = grid instanceof CraftingContainer crafting ? crafting.getWidth() : grid.getContainerSize();
+        List<ItemStack> slots = new ArrayList<>();
+        for (int slot = 0; slot < grid.getContainerSize(); slot++) slots.add(grid.getItem(slot));
+        // Which station: a crafting table's screen, or nothing for the inventory's own 2x2 grid
+        Optional<Identifier> station = player.containerMenu instanceof CraftingMenu ? Optional.of(itemId(Items.CRAFTING_TABLE)) : Optional.empty();
+        recordMaking(player, station, width, slots, result);
     }
 
-    // Something was made (crafted, or cooked in a watched furnace): the result's entry (its block, or the item itself)
-    // learns what it's made from, and each ingredient's entry learns what it makes. Making something counts as finding it.
-    private static void recordMaking(ServerPlayer player, List<ItemStack> ingredients, ItemStack result)
+    // Something was made: the result's entry learns the recipe ("Crafted from") and each ingredient's entry learns it
+    // too ("Crafted into"). Making something counts as finding it. slots: the ingredient grid, row by row.
+    private static void recordMaking(ServerPlayer player, Optional<Identifier> station, int width, List<ItemStack> slots, ItemStack result)
     {
-        Identifier resultId = BuiltInRegistries.ITEM.getKey(result.getItem());
+        RecipeRecord recipe = trimmed(station, width, slots, itemId(result.getItem()));
         ResearchEntry resultEntry = ResearchTabs.entryForItem(result);
-        List<Identifier> from = Research.itemIds(ingredients);
         if (resultEntry != null) {
             Research.observe(player, resultEntry, player.blockPosition());
-            Research.experiment(player, resultEntry, old -> old.withMadeFrom(from));
+            Research.experiment(player, resultEntry, old -> old.withMadeBy(recipe));
         }
-        ingredients.stream()
+        slots.stream()
+                .filter(stack -> !stack.isEmpty())
                 .map(ResearchTabs::entryForItem)
                 .filter(Objects::nonNull)
                 .distinct()
-                .forEach(entry -> Research.experiment(player, entry, old -> old.withMakes(resultId)));
-
+                .forEach(entry -> Research.experiment(player, entry, old -> old.withUsedIn(recipe)));
     }
 
+    private static Identifier itemId(Item item)
+    {
+        return BuiltInRegistries.ITEM.getKey(item);
+    }
 
+    // The grid with fully empty rows and columns removed (an ingot in the corner of a 3x3 grid becomes a 1x1 grid)
+    private static RecipeRecord trimmed(Optional<Identifier> station, int width, List<ItemStack> slots, Identifier output)
+    {
+        int rows = width <= 0 ? 0 : (slots.size() + width - 1) / width;
+        int minRow = rows, maxRow = -1, minCol = width, maxCol = -1;
+        for (int i = 0; i < slots.size(); i++) {
+            if (slots.get(i).isEmpty()) continue;
+            int row = i / width, col = i % width;
+            minRow = Math.min(minRow, row); maxRow = Math.max(maxRow, row);
+            minCol = Math.min(minCol, col); maxCol = Math.max(maxCol, col);
+        }
+        if (maxRow < 0) return new RecipeRecord(station, 0, List.of(), output);
+        List<Identifier> ids = new ArrayList<>();
+        for (int row = minRow; row <= maxRow; row++) {
+            for (int col = minCol; col <= maxCol; col++) {
+                int i = row * width + col;
+                ItemStack stack = i < slots.size() ? slots.get(i) : ItemStack.EMPTY;
+                ids.add(stack.isEmpty() ? RecipeRecord.EMPTY : itemId(stack.getItem()));
+            }
+        }
+        return new RecipeRecord(station, maxCol - minCol + 1, ids, output);
+    }
 
     // The guide gets a copy of the crafter's research and their name (crafting recipes can't see who's crafting, so
     // this happens here, as the result is taken out of the grid)
