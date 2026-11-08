@@ -7,7 +7,6 @@ import net.minecraft.data.BlockFamilies;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -111,7 +110,7 @@ public class BlockResearchTab extends ResearchTab
         // Same name once colours / copper ageing / wax are ignored
         Map<String, Identifier> byName = new HashMap<>();
         for (Identifier entry : entries) {
-            String stripped = stripPrefixes(entry.getPath());
+            String stripped = ColorVariants.stripPrefixes(entry.getPath(), IGNORED_PREFIXES);
             // Vanilla names the base copper block copper_block but its aged forms exposed_copper etc.
             if (stripped.equals("copper")) stripped = "copper_block";
             String key = entry.getNamespace() + ":" + stripped;
@@ -139,27 +138,10 @@ public class BlockResearchTab extends ResearchTab
         return new ArrayList<>(families.values());
     }
 
-    private static String stripPrefixes(String path)
-    {
-        boolean changed = true;
-        while (changed) {
-            changed = false;
-            for (String prefix : IGNORED_PREFIXES) {
-                if (path.startsWith(prefix) && path.length() > prefix.length()) {
-                    path = path.substring(prefix.length());
-                    changed = true;
-                }
-            }
-        }
-        return path;
-    }
-
+    // Colours, "stained_", and copper ageing / wax are ignored at the front of a block's name
     private static List<String> buildPrefixes()
     {
-        List<String> prefixes = new ArrayList<>();
-        // Longest first, so light_gray_ is removed before gray_ could half-match it
-        for (DyeColor color : DyeColor.values()) prefixes.add(color.getSerializedName() + "_");
-        prefixes.sort((a, b) -> b.length() - a.length());
+        List<String> prefixes = new ArrayList<>(ColorVariants.COLOR_PREFIXES);
         prefixes.addAll(List.of("stained_", "waxed_", "exposed_", "weathered_", "oxidized_"));
         return List.copyOf(prefixes);
     }

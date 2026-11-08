@@ -13,10 +13,15 @@ import net.minecraft.world.item.SpawnEggItem;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 // Items that aren't blocks (those are under Blocks) or spawn eggs: tools, food, ingots, dust...
 // Observed by looking at one dropped in the world (an item entity).
+// Colour variants are listed as one family, like blocks: the 16 dyes, the bundles, the harnesses, the eggs...
+// (names that are the same once a colour at the front is ignored: red_dye, blue_dye -> "dye"; bundle, red_bundle).
+// They're grouped within a namespace, so another mod's red_dye isn't mixed with vanilla's.
 public class ItemResearchTab extends ResearchTab
 {
     public ItemResearchTab()
@@ -43,6 +48,18 @@ public class ItemResearchTab extends ResearchTab
     private static boolean researchable(Item item)
     {
         return item != Items.AIR && !(item instanceof BlockItem) && !(item instanceof SpawnEggItem);
+    }
+
+    @Override
+    protected List<List<Identifier>> computeGroups(List<Identifier> entries)
+    {
+        // LinkedHashMap keeps the order families are first met in, so each is listed where its first member would be
+        Map<String, List<Identifier>> families = new LinkedHashMap<>();
+        for (Identifier entry : entries) {
+            String key = entry.getNamespace() + ":" + ColorVariants.stripColors(entry.getPath());
+            families.computeIfAbsent(key, k -> new ArrayList<>()).add(entry);
+        }
+        return new ArrayList<>(families.values());
     }
 
     @Override
