@@ -199,19 +199,20 @@ public final class ResearchBook
         EntryResearch research = data.get(entry);
         if (research == null) return;
 
-        // Left page: the entry itself, then its drops
+        // Left page: the entry itself, then its drops (or, for items, its sources). Both are icons that open their entry.
         drawSubject(graphics, entry, LEFT_X + 20, PAGE_TOP + 2, LEFT_X + PAGE_W - 20, PAGE_TOP + 62);
-        Paper.ink(graphics, font, Component.translatable("research.dust.drops"), LEFT_X + 4, PAGE_TOP + 68, INK);
-        if (research.drops().isEmpty()) {
-            boolean mob = entry.tab().displayEntity(entry.id()) != null;
-            List<FormattedCharSequence> lines = font.split(Component.translatable(mob ? "research.dust.drops.unknown_mob" : "research.dust.drops.unknown_block"), PAGE_W - 8);
-            drawLines(graphics, font, lines, LEFT_X + 4, PAGE_TOP + 80, FOOTER_Y - 2, FADED);
+        boolean sources = entry.tab().showsSources();
+        Paper.ink(graphics, font, Component.translatable(sources ? "research.dust.sources" : "research.dust.drops"), LEFT_X + 4, PAGE_TOP + 68, INK);
+        List<ItemStack> icons = leftIcons(data, entry).stream().map(ResearchEntry::icon).toList();
+        if (icons.isEmpty()) {
+            String key = sources ? "research.dust.sources.unknown"
+                    : entry.tab().displayEntity(entry.id()) != null ? "research.dust.drops.unknown_mob" : "research.dust.drops.unknown_block";
+            drawLines(graphics, font, font.split(Component.translatable(key), PAGE_W - 8), LEFT_X + 4, PAGE_TOP + 80, FOOTER_Y - 2, FADED);
         } else {
-            for (int i = 0; i < research.drops().size() && i < 12; i++) {
-                int x = LEFT_X + 3 + (i % 6) * CELL;
-                int y = PAGE_TOP + 79 + (i / 6) * CELL;
-                Paper.slot(graphics, x, y);
-                graphics.item(new ItemStack(BuiltInRegistries.ITEM.getValue(research.drops().get(i))), x + 1, y + 1);
+            for (int i = 0; i < icons.size() && i < LEFT_ICONS; i++) {
+                int[] cell = leftCell(i);
+                Paper.slot(graphics, cell[0], cell[1]);
+                graphics.item(icons.get(i), cell[0] + 1, cell[1] + 1);
             }
         }
         Paper.ink(graphics, font, Component.translatable("research.dust.back"), LEFT_X + 2, FOOTER_Y + 2, INK);
@@ -237,6 +238,41 @@ public final class ResearchBook
         Paper.inkCentred(graphics, font, Component.literal((notesPage + 1) + "/" + pages.size()), rightCentre, FOOTER_Y + 2, FADED);
         if (notesPage > 0) Paper.ink(graphics, font, Component.literal("<"), RIGHT_X + 2, FOOTER_Y + 2, INK);
         if (notesPage < pages.size() - 1) Paper.ink(graphics, font, Component.literal(">"), RIGHT_X + PAGE_W - 8, FOOTER_Y + 2, INK);
+    }
+
+    // How many drop / source icons fit on the left page (two rows)
+    private static final int LEFT_ICONS = 12;
+
+    // The left page's icons as entries: an item's Sources (researched entries seen dropping it), or an entry's drops
+    // (each drop as the entry it belongs to: its block, or the item)
+    private static List<ResearchEntry> leftIcons(ResearchData data, ResearchEntry entry)
+    {
+        EntryResearch research = data.get(entry);
+        if (research == null) return List.of();
+        if (entry.tab().showsSources()) return data.sourcesOf(entry.id());
+        List<ResearchEntry> drops = new ArrayList<>();
+        for (Identifier item : research.drops()) {
+            ResearchEntry drop = ResearchTabs.entryForItem(new ItemStack(BuiltInRegistries.ITEM.getValue(item)));
+            if (drop != null && !drops.contains(drop)) drops.add(drop);
+        }
+        return drops;
+    }
+
+    private static int[] leftCell(int i)
+    {
+        return new int[] {LEFT_X + 3 + (i % 6) * CELL, PAGE_TOP + 79 + (i / 6) * CELL};
+    }
+
+    // The drop / source icon under the mouse on an entry's left page, or null
+    private static @Nullable ResearchEntry leftIconAt(ResearchData data, int x, int y)
+    {
+        if (selected == null) return null;
+        List<ResearchEntry> icons = leftIcons(data, selected);
+        for (int i = 0; i < icons.size() && i < LEFT_ICONS; i++) {
+            int[] cell = leftCell(i);
+            if (x >= cell[0] && x < cell[0] + CELL && y >= cell[1] && y < cell[1] + CELL) return icons.get(i);
+        }
+        return null;
     }
 
     // The family page: "4 of 11 found", then every member as an icon (unfound ones faded). Clicking a found one opens it.
@@ -415,6 +451,9 @@ public final class ResearchBook
         }
         ResearchEntry member = familyMemberAt(data, x, y);
         if (member != null) return data.has(member) ? member.name() : Component.translatable("research.dust.undiscovered");
+        // Drops and sources were seen happening, so their names are always known
+        ResearchEntry icon = leftIconAt(data, x, y);
+        if (icon != null) return icon.name();
         return null;
     }
 
@@ -466,6 +505,15 @@ public final class ResearchBook
                 return true;
             }
             return false;
+        }
+
+        // A drop or source icon: open its entry (if it's been researched)
+        ResearchEntry linked = leftIconAt(data, x, y);
+        if (linked != null && data.has(linked)) {
+            tab = linked.tab();
+            selected = linked;
+            notesPage = 0;
+            return true;
         }
 
         // A found family member: open it, staying on its family page

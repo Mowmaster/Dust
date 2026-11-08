@@ -120,8 +120,10 @@ public final class ResearchObserver
         ResearchEntry entry = ResearchTabs.entryForBlock(event.getState());
         if (entry == null) return;
         Research.observe(player, entry, event.getPos());
-        List<Identifier> drops = Research.itemIds(event.getDrops().stream().map(ItemEntity::getItem).toList());
+        List<ItemStack> dropped = event.getDrops().stream().map(ItemEntity::getItem).toList();
+        List<Identifier> drops = Research.itemIds(dropped);
         if (!drops.isEmpty()) Research.experiment(player, entry, old -> old.withDrops(drops));
+        noteResults(player, entry, dropped, event.getPos());
     }
 
     // Defeating a mob: observe it, and learn its drops and health
@@ -133,8 +135,23 @@ public final class ResearchObserver
         ResearchEntry entry = ResearchTabs.entryForEntity(mob);
         if (entry == null) return;
         Research.observe(player, entry, mob.blockPosition());
-        List<Identifier> drops = Research.itemIds(event.getDrops().stream().map(ItemEntity::getItem).toList());
+        List<ItemStack> dropped = event.getDrops().stream().map(ItemEntity::getItem).toList();
+        List<Identifier> drops = Research.itemIds(dropped);
         Research.experiment(player, entry, old -> old.withDrops(drops).withMaxHealth(mob.getMaxHealth()));
+        noteResults(player, entry, dropped, mob.blockPosition());
+    }
+
+    // Whatever an experiment gives you is noted too (each drop starts its own entry, with the usual toast), so the
+    // book's drop icons can open them and the items' Sources pages can point back
+    private static void noteResults(ServerPlayer player, ResearchEntry from, List<ItemStack> results, BlockPos where)
+    {
+        results.stream()
+                .filter(stack -> !stack.isEmpty())
+                .map(ResearchTabs::entryForItem)
+                .filter(Objects::nonNull)
+                .filter(result -> !result.equals(from))
+                .distinct()
+                .forEach(result -> Research.observe(player, result, where));
     }
 
     // Fighting a mob: learn its health
@@ -182,7 +199,11 @@ public final class ResearchObserver
         // what it makes
         ResearchEntry resultEntry = ResearchTabs.entryForItem(result);
         List<Identifier> from = Research.itemIds(ingredients);
-        if (resultEntry != null) Research.experiment(player, resultEntry, old -> old.withMadeFrom(from));
+        if (resultEntry != null) {
+            // Making something counts as finding it
+            Research.observe(player, resultEntry, player.blockPosition());
+            Research.experiment(player, resultEntry, old -> old.withMadeFrom(from));
+        }
         ingredients.stream()
                 .map(ResearchTabs::entryForItem)
                 .filter(Objects::nonNull)

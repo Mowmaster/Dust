@@ -99,6 +99,18 @@ public record ResearchData(Map<Identifier, Map<Identifier, EntryResearch>> tabs)
         return found;
     }
 
+    // The researched entries (any tab) seen dropping this item, in tab order: an item entry's Sources
+    public List<ResearchEntry> sourcesOf(Identifier item)
+    {
+        List<ResearchEntry> sources = new java.util.ArrayList<>();
+        for (ResearchTab tab : ResearchTabs.all()) {
+            for (Map.Entry<Identifier, EntryResearch> entry : tabs.getOrDefault(tab.id(), Map.of()).entrySet()) {
+                if (entry.getValue().drops().contains(item)) sources.add(new ResearchEntry(tab, entry.getKey()));
+            }
+        }
+        return sources;
+    }
+
     // A copy with one entry changed (or added). The function gets null when the entry is new.
     public ResearchData update(ResearchEntry entry, UnaryOperator<@Nullable EntryResearch> change)
     {

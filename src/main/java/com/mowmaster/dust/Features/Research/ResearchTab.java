@@ -104,6 +104,13 @@ public abstract class ResearchTab
         return Component.translatable("research." + id.getNamespace() + ".note.default." + id.getPath(), name(entry));
     }
 
+    // true: an entry's left page lists its Sources (researched entries seen dropping it) instead of its own drops.
+    // For tabs whose entries are things that get dropped (items) rather than things that drop.
+    public boolean showsSources()
+    {
+        return false;
+    }
+
     // ---- what observes it ----
 
     // The entry for a block looked at (or broken), or null if this tab doesn't cover it

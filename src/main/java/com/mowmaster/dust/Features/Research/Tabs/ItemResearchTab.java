@@ -51,6 +51,13 @@ public class ItemResearchTab extends ResearchTab
         return researchable(stack.getItem()) ? BuiltInRegistries.ITEM.getKey(stack.getItem()) : null;
     }
 
+    // Items don't drop anything; their page shows what drops them
+    @Override
+    public boolean showsSources()
+    {
+        return true;
+    }
+
     @Override
     public ItemStack icon(Identifier entry)
     {

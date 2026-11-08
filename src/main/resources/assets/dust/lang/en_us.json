@@ -41,6 +41,8 @@
   "research.dust.drops": "Drops",
   "research.dust.drops.unknown_block": "Break one to learn what it drops",
   "research.dust.drops.unknown_mob": "Defeat one to learn what it drops",
+  "research.dust.sources": "Sources",
+  "research.dust.sources.unknown": "Not yet seen coming from anything",
   "research.dust.found": "Day %s, %s (%s)",
   "research.dust.time.dawn": "dawn",
   "research.dust.time.morning": "morning",
