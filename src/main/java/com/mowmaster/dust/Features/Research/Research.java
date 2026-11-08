@@ -48,10 +48,10 @@ public final class Research
         if (before == null) {
             long clock = level.getOverworldClockTime();
             set(player, get(player).update(entry, old -> EntryResearch.firstSeen(day(clock), timeOfDay(clock), biome)));
-            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.isEntity(), entry.id(), false));
+            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.tab().id(), entry.id(), false));
         } else if (!before.biomes().contains(biome)) {
             set(player, get(player).update(entry, old -> old.withBiome(biome)));
-            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.isEntity(), entry.id(), true));
+            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.tab().id(), entry.id(), true));
         }
     }
 
@@ -130,11 +130,9 @@ public final class Research
         return "night";
     }
 
-    public static @Nullable ResearchEntry byKey(boolean entity, Identifier id)
+    // An entry from a tab id and entry id (sent in packets); null if the tab doesn't exist
+    public static @Nullable ResearchEntry byKey(Identifier tab, Identifier id)
     {
-        if (entity) {
-            return BuiltInRegistries.ENTITY_TYPE.getOptional(id).map(ResearchCategory::entryFor).orElse(null);
-        }
-        return BuiltInRegistries.BLOCK.getOptional(id).map(ResearchCategory::entryFor).orElse(null);
+        return ResearchTabs.entry(tab, id);
     }
 }

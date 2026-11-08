@@ -1,54 +1,31 @@
 package com.mowmaster.dust.Features.Research;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
 
-// One thing that can be researched: a block (BLOCKS / PLANTS) or an entity type (ANIMALS / MOBS / BOSSES).
-public record ResearchEntry(ResearchCategory category, Identifier id)
+// One researchable thing: an entry id within a tab
+public record ResearchEntry(ResearchTab tab, Identifier id)
 {
-    public boolean isEntity()
-    {
-        return category.isEntityCategory();
-    }
-
-    public Block block()
-    {
-        return BuiltInRegistries.BLOCK.getValue(id);
-    }
-
-    public EntityType<?> entityType()
-    {
-        return BuiltInRegistries.ENTITY_TYPE.getValue(id);
-    }
-
-    // What the book shows for it: the block's item, or the mob's spawn egg
     public ItemStack icon()
     {
-        if (isEntity()) {
-            return SpawnEggItem.byId(entityType()).map(egg -> new ItemStack(egg)).orElse(ItemStack.EMPTY);
-        }
-        Block block = block();
-        if (block instanceof LiquidBlock) {
-            // Fluids have no item of their own: show their bucket
-            return new ItemStack(block.defaultBlockState().getFluidState().getType().getBucket());
-        }
-        return new ItemStack(block.asItem());
+        return tab.icon(id);
     }
 
     public Component name()
     {
-        return isEntity() ? entityType().getDescription() : block().getName();
+        return tab.name(id);
     }
 
-    // Translation key for this entry's built-in notes, e.g. research.dust.note.minecraft.zombie
+    // Translation key for this entry's built-in notes, e.g. research.minecraft.note.zombie
     public String noteKey()
     {
-        return "research.dust.note." + id.getNamespace() + "." + id.getPath().replace('/', '.');
+        return "research." + id.getNamespace() + ".note." + id.getPath().replace('/', '.');
+    }
+
+    // The other members of its group (block families), itself included
+    public java.util.List<Identifier> group()
+    {
+        return tab.groupOf(id);
     }
 }

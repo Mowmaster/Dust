@@ -71,7 +71,9 @@ public final class ResearchClient
             DISPLAY.clear();
             displayLevel = minecraft.level;
         }
-        EntityType<?> type = entry.entityType();
+        // Only tabs that show a mob (Creatures, Bosses) give an entity type
+        EntityType<?> type = entry.tab().displayEntity(entry.id());
+        if (type == null) return null;
         if (!DISPLAY.containsKey(type)) {
             Entity made = null;
             try {

@@ -2,7 +2,6 @@ package com.mowmaster.dust.Features.Research.Client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mowmaster.dust.Features.Research.EntryResearch;
-import com.mowmaster.dust.Features.Research.ResearchCategory;
 import com.mowmaster.mowlib.client.MowLibKeyMappings;
 import net.minecraft.client.input.KeyEvent;
 import com.mowmaster.dust.Features.Research.ResearchData;
@@ -101,7 +100,7 @@ public class ResearchBookScreen extends Screen
         if (!text.equals(editingStart)) {
             // Left as (or put back to) the built-in notes: store nothing, so they keep following the language file
             String stored = text.equals(editingBuiltIn) ? "" : text;
-            ClientPacketDistributor.sendToServer(new ResearchNotesPayload(editing.isEntity(), editing.id(), stored));
+            ClientPacketDistributor.sendToServer(new ResearchNotesPayload(editing.tab().id(), editing.id(), stored));
             editingStart = text;
         }
     }
@@ -121,14 +120,9 @@ public class ResearchBookScreen extends Screen
     {
         super.extractRenderState(graphics, mouseX, mouseY, a);
         drawCountdown(graphics);
-        // Entry names on hover in the list ("???" until discovered)
-        ResearchEntry hovered = ResearchBook.entryAt(mouseX - left, mouseY - top);
-        if (hovered != null) {
-            Component name = data().has(hovered) ? hovered.name() : Component.translatable("research.dust.undiscovered");
-            graphics.setTooltipForNextFrame(this.font, name, mouseX, mouseY);
-        }
-        ResearchCategory hoveredTab = ResearchBook.tabAt(mouseX - left, mouseY - top);
-        if (hoveredTab != null) graphics.setTooltipForNextFrame(this.font, hoveredTab.title(), mouseX, mouseY);
+        // Names on hover: tabs, list icons and family members ("???" until discovered)
+        Component tooltip = ResearchBook.tooltipAt(data(), mouseX - left, mouseY - top);
+        if (tooltip != null) graphics.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
     }
 
     // "243/256" just above the footer at the right page's right edge, clear of the arrows and page number, and only

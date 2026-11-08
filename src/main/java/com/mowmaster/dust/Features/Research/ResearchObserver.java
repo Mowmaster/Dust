@@ -46,9 +46,7 @@ import java.util.UUID;
 public final class ResearchObserver
 {
     // How far a player can observe from: see ResearchLook (10 blocks, 64 through a spyglass)
-    // How long something must be looked at before it's noted (ticks; 20 = one second)
-    public static final int BLOCK_TICKS = 20;
-    public static final int MOB_TICKS = 60;
+    // How long something must be looked at before it's noted: each tab's observeTicks() (blocks and items 1 s, mobs 3 s)
     // The look is checked every CHECK_EVERY ticks, so a player looking around doesn't cost a ray trace every tick
     private static final int CHECK_EVERY = 4;
 
@@ -64,7 +62,7 @@ public final class ResearchObserver
     @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
-        ResearchCategory.clearCache();
+        ResearchTabs.clearCaches();
     }
 
     // ---- observation ----
@@ -93,13 +91,13 @@ public final class ResearchObserver
             return;
         }
 
-        int needed = look.entry().isEntity() ? MOB_TICKS : BLOCK_TICKS;
+        int needed = look.entry().tab().observeTicks();
         if (look.ticks() >= needed) {
             PacketDistributor.sendToPlayer(player, ObservationPayloads.Progress.stop());
             Research.observe(player, look.entry(), look.pos());
             look = new Look(look.entry(), look.pos(), look.ticks(), true, false);
         } else {
-            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Progress(look.entry().isEntity(), look.entry().id(), (float) look.ticks() / needed));
+            PacketDistributor.sendToPlayer(player, new ObservationPayloads.Progress(look.entry().tab().id(), look.entry().id(), (float) look.ticks() / needed));
             look = new Look(look.entry(), look.pos(), look.ticks(), false, true);
         }
         LOOKS.put(player.getUUID(), look);
@@ -119,7 +117,7 @@ public final class ResearchObserver
     public static void onBlockDrops(BlockDropsEvent event)
     {
         if (!(event.getBreaker() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
-        ResearchEntry entry = ResearchCategory.entryFor(event.getState().getBlock());
+        ResearchEntry entry = ResearchTabs.entryForBlock(event.getState());
         if (entry == null) return;
         Research.observe(player, entry, event.getPos());
         List<Identifier> drops = Research.itemIds(event.getDrops().stream().map(ItemEntity::getItem).toList());
@@ -132,7 +130,7 @@ public final class ResearchObserver
     {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
         LivingEntity mob = event.getEntity();
-        ResearchEntry entry = ResearchCategory.entryFor(mob.getType());
+        ResearchEntry entry = ResearchTabs.entryForEntity(mob);
         if (entry == null) return;
         Research.observe(player, entry, mob.blockPosition());
         List<Identifier> drops = Research.itemIds(event.getDrops().stream().map(ItemEntity::getItem).toList());
@@ -144,7 +142,7 @@ public final class ResearchObserver
     public static void onAttack(AttackEntityEvent event)
     {
         if (!(event.getEntity() instanceof ServerPlayer player) || !(event.getTarget() instanceof LivingEntity mob) || !Research.carriesNotes(player)) return;
-        ResearchEntry entry = ResearchCategory.entryFor(mob.getType());
+        ResearchEntry entry = ResearchTabs.entryForEntity(mob);
         if (entry != null) Research.experiment(player, entry, old -> old.withMaxHealth(mob.getMaxHealth()));
     }
 
@@ -155,7 +153,7 @@ public final class ResearchObserver
         if (!(event.getEntity() instanceof ServerPlayer player) || !(event.getTarget() instanceof Animal animal) || !Research.carriesNotes(player)) return;
         ItemStack food = event.getItemStack();
         if (food.isEmpty() || !animal.isFood(food)) return;
-        ResearchEntry entry = ResearchCategory.entryFor(animal.getType());
+        ResearchEntry entry = ResearchTabs.entryForEntity(animal);
         if (entry != null) Research.experiment(player, entry, old -> old.withBreeding(BuiltInRegistries.ITEM.getKey(food.getItem())));
     }
 
@@ -180,14 +178,13 @@ public final class ResearchObserver
         }
         Identifier resultId = BuiltInRegistries.ITEM.getKey(result.getItem());
 
-        if (result.getItem() instanceof BlockItem blockItem) {
-            ResearchEntry entry = ResearchCategory.entryFor(blockItem.getBlock());
-            List<Identifier> from = Research.itemIds(ingredients);
-            if (entry != null) Research.experiment(player, entry, old -> old.withMadeFrom(from));
-        }
+        // The result's entry (its block, or the item itself) learns what it's made from; each ingredient's entry learns
+        // what it makes
+        ResearchEntry resultEntry = ResearchTabs.entryForItem(result);
+        List<Identifier> from = Research.itemIds(ingredients);
+        if (resultEntry != null) Research.experiment(player, resultEntry, old -> old.withMadeFrom(from));
         ingredients.stream()
-                .filter(stack -> stack.getItem() instanceof BlockItem)
-                .map(stack -> ResearchCategory.entryFor(((BlockItem) stack.getItem()).getBlock()))
+                .map(ResearchTabs::entryForItem)
                 .filter(Objects::nonNull)
                 .distinct()
                 .forEach(entry -> Research.experiment(player, entry, old -> old.withMakes(resultId)));

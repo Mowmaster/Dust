@@ -4,10 +4,7 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 
 import java.util.concurrent.CompletableFuture;
@@ -16,12 +13,6 @@ import java.util.concurrent.CompletableFuture;
 public class DustTagProviderBlock extends BlockTagsProvider {
     public DustTagProviderBlock(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(output, lookupProvider, DustReferences.MODID);
-    }
-
-    // A vanilla block's registry key, for tag appenders (they take keys, not blocks)
-    private static ResourceKey<Block> key(Block block)
-    {
-        return block.builtInRegistryHolder().key();
     }
 
     @Override
@@ -63,22 +54,6 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .addTags(BlockTags.MINEABLE_WITH_AXE)
                 .addTags(BlockTags.MINEABLE_WITH_SHOVEL)
                 .addTags(BlockTags.MINEABLE_WITH_HOE);
-
-        // What the Research Notes list under "Plants" (everything else with an item is under "Blocks").
-        // Other mods' plants get in through these vanilla tags, or by adding to #dust:research/plants.
-        tag(DustTags.Blocks.RESEARCH_PLANTS)
-                .addTags(BlockTags.FLOWERS, BlockTags.SMALL_FLOWERS, BlockTags.SAPLINGS, BlockTags.LEAVES, BlockTags.CROPS,
-                        BlockTags.CAVE_VINES, BlockTags.CORAL_PLANTS, BlockTags.CORALS)
-                .add(key(Blocks.SHORT_GRASS), key(Blocks.TALL_GRASS), key(Blocks.FERN), key(Blocks.LARGE_FERN), key(Blocks.DEAD_BUSH),
-                        key(Blocks.CACTUS), key(Blocks.SUGAR_CANE), key(Blocks.BAMBOO), key(Blocks.VINE), key(Blocks.LILY_PAD),
-                        key(Blocks.KELP), key(Blocks.SEAGRASS), key(Blocks.SEA_PICKLE), key(Blocks.BROWN_MUSHROOM), key(Blocks.RED_MUSHROOM),
-                        key(Blocks.CRIMSON_FUNGUS), key(Blocks.WARPED_FUNGUS), key(Blocks.CRIMSON_ROOTS), key(Blocks.WARPED_ROOTS),
-                        key(Blocks.NETHER_SPROUTS), key(Blocks.WEEPING_VINES), key(Blocks.TWISTING_VINES), key(Blocks.SWEET_BERRY_BUSH),
-                        key(Blocks.GLOW_LICHEN), key(Blocks.MOSS_BLOCK), key(Blocks.MOSS_CARPET), key(Blocks.AZALEA), key(Blocks.FLOWERING_AZALEA),
-                        key(Blocks.SPORE_BLOSSOM), key(Blocks.HANGING_ROOTS), key(Blocks.BIG_DRIPLEAF), key(Blocks.SMALL_DRIPLEAF),
-                        key(Blocks.CHORUS_PLANT), key(Blocks.CHORUS_FLOWER), key(Blocks.PUMPKIN), key(Blocks.MELON), key(Blocks.COCOA),
-                        key(Blocks.NETHER_WART), key(Blocks.PITCHER_PLANT), key(Blocks.TORCHFLOWER),
-                        DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.key());
 
         tag(BlockTags.SMALL_FLOWERS)
                 .add(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.key());

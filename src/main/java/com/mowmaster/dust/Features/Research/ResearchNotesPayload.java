@@ -10,12 +10,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 // Client -> server: the player edited their notes for an entry in the book screen
-public record ResearchNotesPayload(boolean entity, Identifier id, String notes) implements CustomPacketPayload
+public record ResearchNotesPayload(Identifier tab, Identifier id, String notes) implements CustomPacketPayload
 {
     public static final Type<ResearchNotesPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "research_notes"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ResearchNotesPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BOOL, ResearchNotesPayload::entity,
+            Identifier.STREAM_CODEC, ResearchNotesPayload::tab,
             Identifier.STREAM_CODEC, ResearchNotesPayload::id,
             ByteBufCodecs.stringUtf8(EntryResearch.MAX_NOTES_LENGTH * 4), ResearchNotesPayload::notes,
             ResearchNotesPayload::new);
@@ -30,7 +30,7 @@ public record ResearchNotesPayload(boolean entity, Identifier id, String notes) 
     public static void handle(ResearchNotesPayload payload, IPayloadContext context)
     {
         if (!(context.player() instanceof ServerPlayer player) || !Research.carriesNotes(player)) return;
-        ResearchEntry entry = Research.byKey(payload.entity(), payload.id());
+        ResearchEntry entry = Research.byKey(payload.tab(), payload.id());
         if (entry != null) Research.setNotes(player, entry, payload.notes());
     }
 }

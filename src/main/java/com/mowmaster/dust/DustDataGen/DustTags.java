@@ -28,8 +28,6 @@ public class DustTags
         public static final TagKey<Block> INCORRECT_FOR_CRYSTAL_TOOL = createTag("incorrect_for_crystal_tool");
         public static final TagKey<Block> PICKADZE_MINEABLE = createTag("mineable/pickadze");
         public static final TagKey<Block> MATTOCK_MINEABLE = createTag("mineable/mattock");
-        // Blocks listed under "Plants" in the Research Notes (everything else with an item is under "Blocks")
-        public static final TagKey<Block> RESEARCH_PLANTS = createTag("research/plants");
 
         public static TagKey<Block> createTag(String name)
         {

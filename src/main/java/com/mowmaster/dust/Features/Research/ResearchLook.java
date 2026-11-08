@@ -6,7 +6,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -14,7 +15,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-// What a player is looking at, for research: the nearest researchable mob, block or fluid along their view within
+// What a player is looking at, for research: the nearest researchable mob, dropped item, block or fluid along their view within
 // observing range (10 blocks, 64 through a spyglass). Used on the server to observe (ResearchObserver) and on the
 // client to open the book at that entry (sneak + right-click, or the activation key).
 //
@@ -49,18 +50,19 @@ public final class ResearchLook
         Vec3 entityEnd = blockHit.getType() == HitResult.Type.MISS ? end : blockHit.getLocation();
         AABB search = player.getBoundingBox().expandTowards(view.scale(range)).inflate(1.0);
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(player, eye, entityEnd, search,
-                entity -> entity instanceof LivingEntity && entity.isPickable() && !entity.isSpectator() && entity != player,
+                // Mobs, and dropped items (which can't normally be "picked" by the crosshair)
+                entity -> ((entity instanceof LivingEntity && entity.isPickable()) || entity instanceof ItemEntity) && !entity.isSpectator() && entity != player,
                 eye.distanceToSqr(entityEnd));
         if (entityHit != null) {
-            ResearchEntry entry = ResearchCategory.entryFor(entityHit.getEntity().getType());
+            ResearchEntry entry = ResearchTabs.entryForEntity(entityHit.getEntity());
             if (entry != null) return new Target(entry, entityHit.getEntity().blockPosition());
         }
 
         if (blockHit.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = blockHit.getBlockPos();
             // The fluid's own block (water, lava), even in a waterlogged block
-            Block block = fluidFirst ? level.getFluidState(pos).createLegacyBlock().getBlock() : level.getBlockState(pos).getBlock();
-            ResearchEntry entry = ResearchCategory.entryFor(block);
+            BlockState state = fluidFirst ? level.getFluidState(pos).createLegacyBlock() : level.getBlockState(pos);
+            ResearchEntry entry = ResearchTabs.entryForBlock(state);
             if (entry != null) return new Target(entry, pos);
         }
         return null;

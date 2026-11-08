@@ -44,7 +44,7 @@ public final class ObservationClient
 
     public static void onProgress(ObservationPayloads.Progress payload, IPayloadContext context)
     {
-        ResearchEntry entry = payload.progress() < 0 ? null : Research.byKey(payload.entity(), payload.id());
+        ResearchEntry entry = payload.progress() < 0 ? null : Research.byKey(payload.tab(), payload.id());
         if (entry == null) {
             observing = null;
             return;
@@ -57,7 +57,7 @@ public final class ObservationClient
 
     public static void onDiscovered(ObservationPayloads.Discovered payload, IPayloadContext context)
     {
-        ResearchEntry entry = Research.byKey(payload.entity(), payload.id());
+        ResearchEntry entry = Research.byKey(payload.tab(), payload.id());
         if (entry == null) return;
         Minecraft minecraft = Minecraft.getInstance();
         observing = null;
