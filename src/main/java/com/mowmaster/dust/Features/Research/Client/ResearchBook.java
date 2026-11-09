@@ -2,7 +2,6 @@ package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
-import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.RecipeRecord;
@@ -253,7 +252,7 @@ public final class ResearchBook
     {
         Identifier sprite = tab.listSprite(entry);
         if (sprite == null) graphics.item(tab.icon(entry), x + 1, y + 1);
-        else graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x + 1, y + 1, 16, 16);
+        else graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x + 1, y + 1, 16, 16, tab.listTint(entry));
         if (!researched) Paper.fade(graphics, x, y);
     }
 
@@ -565,10 +564,10 @@ public final class ResearchBook
 
     // What's known of its dust:
     //   burned     "Burns with:" and a flame in that colour
-    //   read       "Made of:" and each element with its icon, then the primal dust it all comes to
+    //   read       "Made of:" and each primal dust's share ("Earth 55%"), as read on a Dust Testing Disk
     //   neither    a hint at how to find out
-    // Icons are greyscale sprites; blitSprite's last argument tints them (0xAARRGGBB), the way a block tint colours a
-    // texture, so each one shows in its element's colour.
+    // The flame sprite is greyscale; blitSprite's last argument tints it (0xAARRGGBB), the way a block tint colours a
+    // texture.
     private static void drawDust(GuiGraphicsExtractor graphics, Font font, EntryResearch.Dust dust)
     {
         int x = RIGHT_X + 4;
@@ -587,31 +586,18 @@ public final class ResearchBook
             if (y + font.lineHeight <= bottom) drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unread"), PAGE_W - 8), x, y, bottom, FADED);
             return;
         }
+        // Only the primal dust, as shares of the whole: that's all a Dust Testing Disk shows (which elements those make
+        // up is for other research to find)
         DustComposition composition = dust.composition().get();
         Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
         y += font.lineHeight + 2;
-        // Each element once ("Trees x2" for one listed twice), its icon in its colour
-        for (Map.Entry<DustElement, Integer> entry : composition.counted().entrySet()) {
-            if (y + 11 > bottom - 12) break;
-            DustElement element = entry.getKey();
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, 0xFF000000 | element.color());
-            Component name = entry.getValue() > 1
-                    ? Component.translatable("research.dust.research.times", element.name(), entry.getValue()) : element.name();
-            Paper.ink(graphics, font, name, x + 14, y, INK);
-            y += 11;
-        }
-        // The primal dust it comes to, in a row: a swatch and a number for each kind
-        if (y + font.lineHeight <= bottom) {
-            int dx = x + 1;
-            for (EnumElement primal : EnumElement.values()) {
-                int amount = composition.get(primal);
-                if (amount == 0) continue;
-                graphics.fill(dx, y, dx + 8, y + 8, INK);
-                graphics.fill(dx + 1, y + 1, dx + 7, y + 7, 0xFF000000 | DustComposition.pureColor(primal));
-                Component count = Component.literal(String.valueOf(amount));
-                Paper.ink(graphics, font, count, dx + 10, y, INK);
-                dx += 14 + font.width(count);
-            }
+        for (EnumElement primal : EnumElement.values()) {
+            if (composition.get(primal) == 0 || y + font.lineHeight > bottom) continue;
+            // An ink-bordered swatch of the dust's colour, then "Earth 55%"
+            graphics.fill(x + 2, y, x + 10, y + 8, INK);
+            graphics.fill(x + 3, y + 1, x + 9, y + 7, 0xFF000000 | DustComposition.pureColor(primal));
+            Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", DustComposition.name(primal), composition.percent(primal)), x + 14, y, INK);
+            y += font.lineHeight + 2;
         }
     }
 
@@ -647,8 +633,15 @@ public final class ResearchBook
                 // Some mobs can't be drawn outside a world: fall back to the icon
             }
         }
+        // A tab's own sprite (an element's icon) if it has one, at three times size, else its item
+        Identifier sprite = entry.tab().listSprite(entry.id());
+        int left = (x0 + x1) / 2 - 24, top = (y0 + y1) / 2 - 24;
+        if (sprite != null) {
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, left, top, 48, 48, entry.tab().listTint(entry.id()));
+            return;
+        }
         graphics.pose().pushMatrix();
-        graphics.pose().translate((x0 + x1) / 2.0F - 24, (y0 + y1) / 2.0F - 24);
+        graphics.pose().translate(left, top);
         graphics.pose().scale(3.0F, 3.0F);
         graphics.item(entry.icon(), 0, 0);
         graphics.pose().popMatrix();

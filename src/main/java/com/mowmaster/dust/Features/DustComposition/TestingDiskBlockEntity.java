@@ -39,6 +39,13 @@ public class TestingDiskBlockEntity extends CBSyncedBlockEntity implements ISpin
         return DustCompositions.of(item);
     }
 
+    // Whether this disk shows how much of each dust (its beams' lengths), or only which dusts are there. Every disk is
+    // a complete one for now; broken disks (to come) will show only which dusts are there until they're repaired.
+    public boolean showsShares()
+    {
+        return true;
+    }
+
     // ---- ISpinningItemHolder ----
 
     @Override

@@ -47,6 +47,13 @@ public record DustComposition(List<DustElement> elements)
         return total;
     }
 
+    // This primal's share of all the primal dust, as a whole percent rounded down (1 of 9 is 11%)
+    public int percent(EnumElement primal)
+    {
+        int total = total();
+        return total == 0 ? 0 : get(primal) * 100 / total;
+    }
+
     public boolean isEmpty()
     {
         return total() == 0;

@@ -19,12 +19,13 @@ import org.jspecify.annotations.Nullable;
 
 // The Dust Testing Disk: its item turning on top (MowLib's SpinningItemRenderer), and a beam of each dust's colour
 // shining out of the item. Each kind of dust always points the same way (five directions around the item, a little
-// upwards), and its beam is longer the more of that dust the item holds.
+// upwards), and its beam's length is that dust's share of everything in the item (all fire: MAX_LENGTH; a third
+// fire: a third as long). A disk only ever shows the primal dusts, never which elements they make up.
+// (Broken disks, still to come, won't show the shares: just which dusts are there.)
 public class TestingDiskRenderer extends SpinningItemRenderer<TestingDiskBlockEntity>
 {
-    // Beam length per point of dust, and the most it grows to
-    private static final double LENGTH_PER_DUST = 0.4;
-    private static final double MAX_LENGTH = 4.0;
+    // The length of a beam for a dust that's all of the item
+    private static final double MAX_LENGTH = 3.0;
     private static final float HALF_WIDTH = 0.025F;
     // How far above level the beams point (radians), and the angle between neighbouring dusts (a fifth of a turn)
     private static final double TILT = Math.toRadians(15);
@@ -35,10 +36,11 @@ public class TestingDiskRenderer extends SpinningItemRenderer<TestingDiskBlockEn
         super(context);
     }
 
-    // SpinningItemRenderer's state, plus how much of each dust (indexed by EnumElement#ordinal) and the item's height
+    // SpinningItemRenderer's state, plus each dust's share of the item, 0-1 (indexed by EnumElement#ordinal), and the
+    // item's height
     public static class State extends SpinningItemRenderer.State
     {
-        final int[] amounts = new int[EnumElement.values().length];
+        final float[] shares = new float[EnumElement.values().length];
         double itemHeight;
     }
 
@@ -56,8 +58,11 @@ public class TestingDiskRenderer extends SpinningItemRenderer<TestingDiskBlockEn
         // A pattern-matching instanceof (Java 16+): checks the type and names the cast value in one go
         if (!(base instanceof State state)) return;
         DustComposition composition = disk.composition();
+        int total = composition == null ? 0 : composition.total();
         for (EnumElement element : EnumElement.values()) {
-            state.amounts[element.ordinal()] = composition == null ? 0 : composition.get(element);
+            float share = total == 0 ? 0 : (float) composition.get(element) / total;
+            // A disk that can't show shares gives every dust that's there the same short beam
+            state.shares[element.ordinal()] = share > 0 && !disk.showsShares() ? 0.25F : share;
         }
         state.itemHeight = disk.getDisplayHeight();
     }
@@ -76,9 +81,9 @@ public class TestingDiskRenderer extends SpinningItemRenderer<TestingDiskBlockEn
         poseStack.translate(-corner.x, -corner.y, -corner.z);
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.beaconBeam(BeaconRenderer.BEAM_LOCATION, true), (pose, buffer) -> {
             for (EnumElement element : EnumElement.values()) {
-                int amount = state.amounts[element.ordinal()];
-                if (amount <= 0) continue;
-                double length = Math.min(MAX_LENGTH, amount * LENGTH_PER_DUST);
+                float share = state.shares[element.ordinal()];
+                if (share <= 0) continue;
+                double length = share * MAX_LENGTH;
                 double angle = element.ordinal() * SPREAD;
                 Vec3 direction = new Vec3(Math.cos(angle) * Math.cos(TILT), Math.sin(TILT), Math.sin(angle) * Math.cos(TILT));
                 // 0xFF000000 |: fully opaque. Black dust as a very dark grey, so it still reads as a beam.

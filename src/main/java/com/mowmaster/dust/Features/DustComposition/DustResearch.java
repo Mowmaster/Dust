@@ -4,6 +4,7 @@ import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchData;
+import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.dust.Features.Research.ResearchUnlocks;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
 import net.minecraft.resources.Identifier;
@@ -23,6 +24,10 @@ public final class DustResearch
         if (entry == null || !Research.carriesNotes(player)) return;
         Research.observe(player, entry, player.blockPosition());
         Research.experiment(player, entry, research -> research.withFireColor(color));
+        // A pure flame shows that primal dust on its own
+        for (EnumElement primal : EnumElement.values()) {
+            if (color == DustComposition.pureColor(primal)) discoverElement(player, DustElements.of(primal));
+        }
         ResearchUnlocks.check(player);
     }
 
@@ -32,7 +37,18 @@ public final class DustResearch
         if (entry == null || !Research.carriesNotes(player)) return;
         Research.observe(player, entry, player.blockPosition());
         Research.experiment(player, entry, research -> research.withComposition(composition));
+        // The disk shows the primal dusts in it: each one is discovered (the mixed elements they make are not)
+        for (EnumElement primal : EnumElement.values()) {
+            if (composition.get(primal) > 0) discoverElement(player, DustElements.of(primal));
+        }
         ResearchUnlocks.check(player);
+    }
+
+    // The element's entry in the Elements tab (the usual toast the first time)
+    public static void discoverElement(ServerPlayer player, DustElement element)
+    {
+        if (!Research.carriesNotes(player)) return;
+        Research.observe(player, new ResearchEntry(ResearchTabs.ELEMENTS, element.id()), player.blockPosition());
     }
 
     // Whether the player has found something made only of this dust: burned something whose flame was that dust's

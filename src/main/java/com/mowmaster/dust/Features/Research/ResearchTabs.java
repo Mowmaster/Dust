@@ -3,6 +3,7 @@ package com.mowmaster.dust.Features.Research;
 import com.mowmaster.dust.Features.Research.Tabs.BlockResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.CreatureResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
+import com.mowmaster.dust.Features.Research.Tabs.ElementResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.ItemResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.ResearchUnlockTab;
 import net.minecraft.core.RegistryAccess;
@@ -31,6 +32,7 @@ public final class ResearchTabs
     public static final ResearchTab CREATURES = register(new CreatureResearchTab(false));
     public static final ResearchTab BOSSES = register(new CreatureResearchTab(true));
     public static final EffectResearchTab EFFECTS = register(new EffectResearchTab());
+    public static final ElementResearchTab ELEMENTS = register(new ElementResearchTab());
     public static final ResearchUnlockTab RESEARCH = register(new ResearchUnlockTab());
 
     private ResearchTabs() {}
