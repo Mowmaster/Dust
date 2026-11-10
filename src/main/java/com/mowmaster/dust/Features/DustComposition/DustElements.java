@@ -22,6 +22,17 @@ public final class DustElements
     // LinkedHashMap keeps them in the order they were registered (the order the book lists them in)
     private static final Map<Identifier, DustElement> ELEMENTS = Collections.synchronizedMap(new LinkedHashMap<>());
 
+    // Saved / sent as its id ("dust:knowledge"). comapFlatMap: reading can fail (an unknown id) and says why;
+    // writing just takes the id.
+    // It must come before the elements below: static fields are set in the order they're written, and making an
+    // element works out its colour in DustComposition, whose own CODEC uses this one. Declared after the elements, it
+    // was still null at that point.
+    public static final Codec<DustElement> CODEC = Identifier.CODEC.comapFlatMap(
+            id -> {
+                DustElement element = get(id);
+                return element != null ? DataResult.success(element) : DataResult.error(() -> "Unknown dust element: " + id);
+            },
+            DustElement::id);
 
     // ---- Primal: the five dusts ----
     public static final DustElement FIRE = primal("fire", EnumElement.FIRE);
@@ -151,13 +162,4 @@ public final class DustElements
             return new ArrayList<>(ELEMENTS.values());
         }
     }
-
-    // Saved / sent as its id ("dust:knowledge"). comapFlatMap: reading can fail (an unknown id) and says why;
-    // writing just takes the id.
-    public static final Codec<DustElement> CODEC = Identifier.CODEC.comapFlatMap(
-            id -> {
-                DustElement element = get(id);
-                return element != null ? DataResult.success(element) : DataResult.error(() -> "Unknown dust element: " + id);
-            },
-            DustElement::id);
 }

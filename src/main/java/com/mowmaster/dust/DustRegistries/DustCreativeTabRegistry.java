@@ -17,18 +17,8 @@ public class DustCreativeTabRegistry {
                     .icon(()-> new ItemStack(DustItemRegistry.DUST_RED.get()))
                     .title(Component.translatable("creativetab.dust.dusttab_items"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        output.accept(DustItemRegistry.DUST_RED.asItem());
-                        output.accept(DustItemRegistry.DUST_GREEN.asItem());
-                        output.accept(DustItemRegistry.DUST_BLUE.asItem());
-                        output.accept(DustItemRegistry.DUST_WHITE.asItem());
-                        output.accept(DustItemRegistry.DUST_BLACK.asItem());
 
                         output.accept(DustItemRegistry.CRYSTAL_INERT.asItem());
-                        output.accept(DustItemRegistry.CRYSTAL_RED.asItem());
-                        output.accept(DustItemRegistry.CRYSTAL_GREEN.asItem());
-                        output.accept(DustItemRegistry.CRYSTAL_BLUE.asItem());
-                        output.accept(DustItemRegistry.CRYSTAL_WHITE.asItem());
-                        output.accept(DustItemRegistry.CRYSTAL_BLACK.asItem());
 
                         output.accept(DustItemRegistry.ANCIENT_INK.asItem());
                         output.accept(DustItemRegistry.PARCHMENT.asItem());

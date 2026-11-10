@@ -30,11 +30,11 @@ public class DustTagProviderItem extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         // Every element's dust (the five primals' and the rest: DustItemRegistry.DUSTS)
         var dusts = tag(DustTags.Items.MAGICAL_DUST_ITEMS);
-        DustItemRegistry.DUSTS.values().forEach(item -> dusts.add(item.getKey()));
+        DustItemRegistry.DUSTS.values().forEach(item -> dusts.add(item.key()));
 
         // Every element's crystal (DustItemRegistry.CRYSTALS)
         var crystals = tag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS);
-        DustItemRegistry.CRYSTALS.values().forEach(item -> crystals.add(item.getKey()));
+        DustItemRegistry.CRYSTALS.values().forEach(item -> crystals.add(item.key()));
 
         tag(DustTags.Items.CRYSTAL_REPAIRABLES)
                 .add(DustItemRegistry.CRYSTAL_RED.key())

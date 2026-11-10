@@ -1,0 +1,30 @@
+{
+  "type": "dust:dust_crafting",
+  "dusts": [
+    {
+      "element": "fire"
+    },
+    {
+      "element": "earth"
+    },
+    {
+      "element": "water"
+    },
+    {
+      "element": "order"
+    },
+    {
+      "element": "chaos"
+    }
+  ],
+  "ingredients": [
+    "minecraft:crafting_table"
+  ],
+  "research": {
+    "entry": "dust:element_tester",
+    "tab": "dust:research"
+  },
+  "result": {
+    "id": "dust:element_tester"
+  }
+}

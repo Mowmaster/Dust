@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "crystals=0,facing=east": {
+      "model": "dust:block/station/element_tester_default",
+      "y": 90
+    },
+    "crystals=0,facing=north": {
+      "model": "dust:block/station/element_tester_default"
+    },
+    "crystals=0,facing=south": {
+      "model": "dust:block/station/element_tester_default",
+      "y": 180
+    },
+    "crystals=0,facing=west": {
+      "model": "dust:block/station/element_tester_default",
+      "y": 270
+    },
+    "crystals=1,facing=east": {
+      "model": "dust:block/station/element_tester_one",
+      "y": 90
+    },
+    "crystals=1,facing=north": {
+      "model": "dust:block/station/element_tester_one"
+    },
+    "crystals=1,facing=south": {
+      "model": "dust:block/station/element_tester_one",
+      "y": 180
+    },
+    "crystals=1,facing=west": {
+      "model": "dust:block/station/element_tester_one",
+      "y": 270
+    },
+    "crystals=2,facing=east": {
+      "model": "dust:block/station/element_tester_two",
+      "y": 90
+    },
+    "crystals=2,facing=north": {
+      "model": "dust:block/station/element_tester_two"
+    },
+    "crystals=2,facing=south": {
+      "model": "dust:block/station/element_tester_two",
+      "y": 180
+    },
+    "crystals=2,facing=west": {
+      "model": "dust:block/station/element_tester_two",
+      "y": 270
+    },
+    "crystals=3,facing=east": {
+      "model": "dust:block/station/element_tester_three",
+      "y": 90
+    },
+    "crystals=3,facing=north": {
+      "model": "dust:block/station/element_tester_three"
+    },
+    "crystals=3,facing=south": {
+      "model": "dust:block/station/element_tester_three",
+      "y": 180
+    },
+    "crystals=3,facing=west": {
+      "model": "dust:block/station/element_tester_three",
+      "y": 270
+    },
+    "crystals=4,facing=east": {
+      "model": "dust:block/station/element_tester_four",
+      "y": 90
+    },
+    "crystals=4,facing=north": {
+      "model": "dust:block/station/element_tester_four"
+    },
+    "crystals=4,facing=south": {
+      "model": "dust:block/station/element_tester_four",
+      "y": 180
+    },
+    "crystals=4,facing=west": {
+      "model": "dust:block/station/element_tester_four",
+      "y": 270
+    },
+    "crystals=5,facing=east": {
+      "model": "dust:block/station/element_tester_five",
+      "y": 90
+    },
+    "crystals=5,facing=north": {
+      "model": "dust:block/station/element_tester_five"
+    },
+    "crystals=5,facing=south": {
+      "model": "dust:block/station/element_tester_five",
+      "y": 180
+    },
+    "crystals=5,facing=west": {
+      "model": "dust:block/station/element_tester_five",
+      "y": 270
+    }
+  }
+}

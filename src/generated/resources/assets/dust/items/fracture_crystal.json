@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:item/element_crystal",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -5614336
+      }
+    ]
+  }
+}
