@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DustRegistries;
 
+
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.Research.ResearchData;

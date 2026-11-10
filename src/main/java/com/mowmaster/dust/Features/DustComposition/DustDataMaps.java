@@ -3,6 +3,7 @@ package com.mowmaster.dust.Features.DustComposition;
 import com.mowmaster.dust.DustReferences;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,8 +20,15 @@ public final class DustDataMaps
 {
     public static final DataMapType<Item, DustComposition> ELEMENTS = DataMapType.builder(
                     Identifier.fromNamespaceAndPath(DustReferences.MODID, "elements"), Registries.ITEM, DustComposition.CODEC)
-            // Sent to clients (the book and the Testing Disk read it there). false: not required, so clients without
+            // Sent to clients (the book and the Element Tester read it there). false: not required, so clients without
             // the data can still join.
+            .synced(DustComposition.CODEC, false)
+            .build();
+
+    // dust:elements for mobs, in data/<namespace>/data_maps/entity_type/elements.json: what a mob is made of, and so
+    // which orbs it drops when a player kills it (DustOrbDrops). Same form as the items'.
+    public static final DataMapType<EntityType<?>, DustComposition> ENTITY_ELEMENTS = DataMapType.builder(
+                    Identifier.fromNamespaceAndPath(DustReferences.MODID, "elements"), Registries.ENTITY_TYPE, DustComposition.CODEC)
             .synced(DustComposition.CODEC, false)
             .build();
 
@@ -30,5 +38,6 @@ public final class DustDataMaps
     public static void register(RegisterDataMapTypesEvent event)
     {
         event.register(ELEMENTS);
+        event.register(ENTITY_ELEMENTS);
     }
 }

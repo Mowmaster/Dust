@@ -3,7 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import com.mowmaster.dust.Features.DustComposition.DustFireBlock;
-import com.mowmaster.dust.Features.DustComposition.TestingDiskBlock;
+import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -92,9 +92,10 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> DUST_FIRE = DUSTBLOCKS.registerBlock("dust_fire", properties -> new DustFireBlock(
             properties.mapColor(MapColor.FIRE).replaceable().noCollision().instabreak().lightLevel(state -> 12)
                     .sound(SoundType.WOOL).pushReaction(PushReaction.POPPED).noLootTable()));
-    // Shows how much of each dust the item on top holds. A plain block until it gets its own model.
-    public static final DeferredBlock<Block> TESTING_DISK = registerBlock("testing_disk", properties -> new TestingDiskBlock(
-            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F)));
+    // The Element Tester workstation; with crystals on it, the Elemental Examiner. noOcclusion: not a full block, so
+    // the blocks around it still draw their faces behind it.
+    public static final DeferredBlock<Block> ELEMENT_TESTER = registerBlock("element_tester", properties -> new ElementTesterBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F).noOcclusion()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {

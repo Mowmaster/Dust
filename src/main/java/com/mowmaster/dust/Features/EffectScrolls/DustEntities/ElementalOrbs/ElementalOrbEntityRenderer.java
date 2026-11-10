@@ -14,27 +14,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
-// One renderer for every elemental orb: a camera-facing quad of the orb texture, tinted with the element's colour.
-// Based on vanilla's ExperienceOrbRenderer. Register it per orb type with its colour, e.g.
-// event.registerEntityRenderer(FIRE_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFF0000));
-// <T extends ElementalOrbEntityBase> lets the same class render any orb subclass.
-public class ElementalOrbEntityRenderer<T extends ElementalOrbEntityBase> extends EntityRenderer<T, ElementalOrbEntityRenderState> {
+// The renderer for element orbs: a camera-facing quad of the orb texture, tinted with the orb's element colour (read
+// from the entity each frame, so one renderer covers every element). Based on vanilla's ExperienceOrbRenderer.
+// <T extends ElementOrbEntity> lets the same class render any orb subclass.
+public class ElementalOrbEntityRenderer<T extends ElementOrbEntity> extends EntityRenderer<T, ElementalOrbEntityRenderState> {
 
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(DustReferences.MODID, "textures/entity/fire_orb.png");
     // 26.3: entityTranslucentCullItemTarget was removed; vanilla's XP orb uses entityTranslucent
     private static final RenderType RENDER_TYPE = RenderTypes.entityTranslucent(TEXTURE);
 
-    private final int red;
-    private final int green;
-    private final int blue;
-
-    public ElementalOrbEntityRenderer(EntityRendererProvider.Context context, int rgb) {
+    public ElementalOrbEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.shadowRadius = 0.15F;
         this.shadowStrength = 0.75F;
-        this.red = (rgb >> 16) & 0xFF;
-        this.green = (rgb >> 8) & 0xFF;
-        this.blue = rgb & 0xFF;
     }
 
     @Override
@@ -50,9 +42,9 @@ public class ElementalOrbEntityRenderer<T extends ElementalOrbEntityBase> extend
         float u1 = (float)(icon % 4 * 16 + 16) / 64.0F;
         float v0 = (float)(icon / 4 * 16 + 0) / 64.0F;
         float v1 = (float)(icon / 4 * 16 + 16) / 64.0F;
-        int rc = this.red;
-        int gc = this.green;
-        int bc = this.blue;
+        int rc = (state.color >> 16) & 0xFF;
+        int gc = (state.color >> 8) & 0xFF;
+        int bc = state.color & 0xFF;
         poseStack.translate(0.0F, 0.1F, 0.0F);
         // 26.3: PoseStack#mulPose(Quaternionf) was renamed to rotate
         poseStack.rotate(camera.orientation);
@@ -80,5 +72,9 @@ public class ElementalOrbEntityRenderer<T extends ElementalOrbEntityBase> extend
     public void extractRenderState(T entity, ElementalOrbEntityRenderState state, float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
         state.icon = entity.getIcon();
+        int color = entity.getElement().color();
+        // Very dark elements (chaos, void) as a dark grey, or the orb would be an invisible black square
+        boolean tooDark = ((color >> 16) & 0xFF) < 0x32 && ((color >> 8) & 0xFF) < 0x32 && (color & 0xFF) < 0x32;
+        state.color = tooDark ? 0x323232 : color;
     }
 }

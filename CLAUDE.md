@@ -29,3 +29,9 @@ NeoForge 26.3.0.94, Minecraft 26.3, Java 25. Used NeoForge-26x version of Pedest
 - Testing Disk: replace the placeholder lodestone block with its own model.
 - Broken Testing Disks: override `TestingDiskBlockEntity.showsShares()` (false = which dusts, not how much); repairing completes them.
 - Mixed elements: a way to discover them in the Elements tab (`DustResearch.discoverElement`); primals come from the disk / pure flames.
+- Primal crystal ore: drops the five primal crystals (picking one up discovers its primal; they go on the Elemental Examiner).
+- Mixing table: mix primal elements. Infuser: infuse a mix into an inert crystal -> crystal with `dust:crystal_element`
+  (`CrystalElements.stackOf`); a 100% match on the examiner discovers that element.
+- Breakdown machines: reaction products carry the item they came from (data component), so the book can track which
+  process gave what; examining products fills in the source item's research.
+- Element Tester: proper table texture (currently glyph_stone_front); other workstation upgrades besides the examiner.

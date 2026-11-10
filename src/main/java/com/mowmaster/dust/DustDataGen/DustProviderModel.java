@@ -6,6 +6,9 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.AncientLanguage;
 import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
+import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
 import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -51,7 +54,8 @@ public class DustProviderModel extends ModelProvider {
         // Dust composition
         itemModels.generateFlatItem(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get(), ModelTemplates.FLAT_ITEM);
         createDustFire(blockModels);
-        createTestingDisk(blockModels);
+        createElementTester(blockModels);
+        createElementItems(itemModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -142,17 +146,40 @@ public class DustProviderModel extends ModelProvider {
                 .with(sides.with(BlockModelGenerators.Y_ROT_270)));
     }
 
-    // The Dust Testing Disk, for now a plain block made of vanilla textures (it gets its own model later).
-    // Its item uses the block model (ModelProvider fills that in for block items without one).
-    private void createTestingDisk(BlockModelGenerators blockModels)
+    // Every element's crystal and dust (not the five primals, which have their own textures): one shared flat model
+    // per kind, from a greyscale texture (item/element_crystal, item/element_dust), tinted with the element's colour.
+    // tintedModel + Constant: an item model whose layer 0 is always drawn in that colour (0xAARRGGBB).
+    private void createElementItems(ItemModelGenerators itemModels)
     {
-        Block block = DustBlockRegistry.TESTING_DISK.get();
-        TextureMapping textures = new TextureMapping()
-                .put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/lodestone_top")))
-                .put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/lodestone_side")))
-                .put(TextureSlot.BOTTOM, new Material(Identifier.withDefaultNamespace("block/smooth_stone")));
-        Identifier model = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textures, blockModels.modelOutput);
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.plainVariant(model)));
+        Identifier crystalModel = ModelTemplates.FLAT_ITEM.create(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/element_crystal"),
+                TextureMapping.layer0(new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/element_crystal"))), itemModels.modelOutput);
+        Identifier dustModel = ModelTemplates.FLAT_ITEM.create(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/element_dust"),
+                TextureMapping.layer0(new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/element_dust"))), itemModels.modelOutput);
+        for (DustElement element : DustElements.all()) {
+            if (element.isPrimal()) continue;
+            int color = 0xFF000000 | element.color();
+            itemModels.itemModelOutput.accept(DustItemRegistry.CRYSTALS.get(element).get(), ItemModelUtils.tintedModel(crystalModel, new Constant(color)));
+            itemModels.itemModelOutput.accept(DustItemRegistry.DUSTS.get(element).get(), ItemModelUtils.tintedModel(dustModel, new Constant(color)));
+        }
+    }
+
+    // The Element Tester: one hand-made model per number of crystals (models/block/station/element_tester_<n>.json),
+    // turned to face the way it was placed (ROTATION_HORIZONTAL_FACING: the models face north). The item shows the bare
+    // workstation.
+    private static final String[] TESTER_MODELS = {"default", "one", "two", "three", "four", "five"};
+
+    private void createElementTester(BlockModelGenerators blockModels)
+    {
+        Block block = DustBlockRegistry.ELEMENT_TESTER.get();
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(ElementTesterBlock.CRYSTALS).generate(count -> BlockModelGenerators.plainVariant(testerModel(count))))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(testerModel(0)));
+    }
+
+    private static Identifier testerModel(int crystals)
+    {
+        return Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/element_tester_" + TESTER_MODELS[crystals]);
     }
 
     // The glyph stone's own model shape (models/block/glyph_stone_template.json, hand-written): a stone cube plus the

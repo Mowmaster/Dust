@@ -79,16 +79,16 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .requires(Items.AMETHYST_SHARD)
                 .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
                 .save(output);
-        // Dust Testing Disk, the first dust recipe: any item of each pure dust (red, green, blue, white, black) and a
+        // Element Tester, the first dust recipe: any item of each pure dust (red, green, blue, white, black) and a
         // crafting table, shapeless. Only for players who've unlocked it in the Research tab (by finding all five).
         SpecialRecipeBuilder.special(() -> new DustRecipe(
-                        new ItemStackTemplate(DustBlockRegistry.TESTING_DISK.get().asItem()),
+                        new ItemStackTemplate(DustBlockRegistry.ELEMENT_TESTER.get().asItem()),
                         List.of(DustRecipe.DustNeed.pure(EnumElement.FIRE), DustRecipe.DustNeed.pure(EnumElement.EARTH),
                                 DustRecipe.DustNeed.pure(EnumElement.WATER), DustRecipe.DustNeed.pure(EnumElement.ORDER),
                                 DustRecipe.DustNeed.pure(EnumElement.CHAOS)),
                         List.of(Ingredient.of(Items.CRAFTING_TABLE)),
-                        Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.TESTING_DISK.id()))))
-                .save(output, DustReferences.MODID + ":testing_disk");
+                        Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.ELEMENT_TESTER.id()))))
+                .save(output, DustReferences.MODID + ":element_tester");
 
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
         shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)

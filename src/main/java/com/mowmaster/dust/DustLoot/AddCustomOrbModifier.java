@@ -5,7 +5,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustLootRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +21,7 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 
 import java.util.Optional;
 
-// Spawns ONE fire orb worth minimum..maximum dust where the loot is dropped, instead of adding an item.
+// Spawns ONE orb of "element" (default dust:fire) worth minimum..maximum dust where the loot is dropped, instead of adding an item.
 // Not used by any loot modifier json yet. Why it "didn't work" before: the orb was spawned without a position
 // (at 0,0,0) and once per point of value, each orb worth the full amount.
 public class AddCustomOrbModifier extends LootModifier {
@@ -29,16 +31,23 @@ public class AddCustomOrbModifier extends LootModifier {
                     LootModifier.codecStart(instance)
                             .and(Codec.INT.fieldOf("minimum").forGetter(AddCustomOrbModifier::getMinimum))
                             .and(Codec.INT.fieldOf("maximum").forGetter(AddCustomOrbModifier::getMaximum))
+                            .and(DustElements.CODEC.optionalFieldOf("element", DustElements.FIRE).forGetter(AddCustomOrbModifier::getElement))
                             .apply(instance, AddCustomOrbModifier::new)
             );
 
     private final int minimum;
     private final int maximum;
+    private final DustElement element;
 
-    public AddCustomOrbModifier(Optional<Holder<LootItemCondition>> condition, int priority, int minimum, int maximum) {
+    public AddCustomOrbModifier(Optional<Holder<LootItemCondition>> condition, int priority, int minimum, int maximum, DustElement element) {
         super(condition, priority);
         this.minimum = minimum;
         this.maximum = maximum;
+        this.element = element;
+    }
+
+    public DustElement getElement() {
+        return this.element;
     }
 
     public int getMinimum() {
@@ -65,10 +74,8 @@ public class AddCustomOrbModifier extends LootModifier {
             return generatedLoot;
         }
 
-        ElementalOrbEntityBase orb = DustEntityRegistry.FIRE_ORB.get().create(level, EntitySpawnReason.TRIGGERED);
+        ElementOrbEntity orb = ElementOrbEntity.create(level, this.element, amount, origin);
         if (orb != null) {
-            orb.setPos(origin);
-            orb.setValue(amount);
             level.addFreshEntity(orb);
         }
 

@@ -1,10 +1,7 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEffects;
 
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.chaosDust.ChaosOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.earthDust.EarthOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.fireDust.FireOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.orderDust.OrderOrbEntityBase;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.waterDust.WaterOrbEntityBase;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -41,29 +38,9 @@ public class EffectVoidMagnet extends MobEffect {
                     player.giveExperiencePoints(experienceOrb.getValue());
                     experienceOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
-                if(entity instanceof FireOrbEntityBase magicOrb)
+                if(entity instanceof ElementOrbEntity magicOrb)
                 {
-                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.FIRE,magicOrb.getValue());
-                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
-                }
-                if(entity instanceof WaterOrbEntityBase magicOrb)
-                {
-                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.WATER,magicOrb.getValue());
-                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
-                }
-                if(entity instanceof EarthOrbEntityBase magicOrb)
-                {
-                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.EARTH,magicOrb.getValue());
-                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
-                }
-                if(entity instanceof ChaosOrbEntityBase magicOrb)
-                {
-                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.CHAOS,magicOrb.getValue());
-                    magicOrb.remove(Entity.RemovalReason.DISCARDED);
-                }
-                if(entity instanceof OrderOrbEntityBase magicOrb)
-                {
-                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, EnumElement.ORDER,magicOrb.getValue());
+                    //DustElementAttachmentHelper.addToElementWithAffinityMultiplier(player, magicOrb.getElement(), magicOrb.getValue());
                     magicOrb.remove(Entity.RemovalReason.DISCARDED);
                 }
             }

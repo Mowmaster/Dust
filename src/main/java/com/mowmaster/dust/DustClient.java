@@ -2,7 +2,8 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
-import com.mowmaster.dust.Features.DustComposition.Client.TestingDiskRenderer;
+import com.mowmaster.dust.Features.DustComposition.Client.ElementTesterRenderer;
+import com.mowmaster.dust.Features.DustComposition.Client.ElementTesterTint;
 import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderer;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustElementAttachmentHelper;
@@ -70,14 +71,10 @@ public class DustClient {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        // The Dust Testing Disk: its item turning on top, with a beam for each dust in it
-        event.registerBlockEntityRenderer(DustBlockEntityRegistry.TESTING_DISK.get(), TestingDiskRenderer::new);
-        // One renderer class, tinted per element (0xRRGGBB)
-        event.registerEntityRenderer(DustEntityRegistry.FIRE_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFF0000));
-        event.registerEntityRenderer(DustEntityRegistry.EARTH_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x00FF00));
-        event.registerEntityRenderer(DustEntityRegistry.WATER_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x0000FF));
-        event.registerEntityRenderer(DustEntityRegistry.CHAOS_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0x323232));
-        event.registerEntityRenderer(DustEntityRegistry.ORDER_ORB.get(), context -> new ElementalOrbEntityRenderer<>(context, 0xFFFFFF));
+        // The Element Tester: the item on its plate
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
+        // Element orbs: one renderer, tinted with each orb's element colour
+        event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
     }
 
     // Glyph stone carving colour: dark, or worn blank on stones the local player has transcribed (tint index 0)
@@ -85,6 +82,8 @@ public class DustClient {
     public static void registerBlockTints(RegisterColorHandlersEvent.BlockTintSources event)
     {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
+        // Element Tester: crystal colours and gauge lines, one tint source per tint index (see ExaminerLayout)
+        event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
     }
 
     // Client-side handlers for server -> client packets that touch client-only code (the packets are registered in

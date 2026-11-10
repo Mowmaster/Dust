@@ -1,7 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.DustReferences;
-import com.mowmaster.dust.Features.DustComposition.TestingDiskBlockEntity;
+import com.mowmaster.dust.Features.DustComposition.ElementTesterBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -17,8 +17,8 @@ public class DustBlockEntityRegistry
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, DustReferences.MODID);
 
     // new BlockEntityType<>(factory, blocks): how to make one, and the blocks allowed to have one
-    public static final Supplier<BlockEntityType<TestingDiskBlockEntity>> TESTING_DISK = BLOCK_ENTITIES.register("testing_disk",
-            () -> new BlockEntityType<>(TestingDiskBlockEntity::new, Set.of(DustBlockRegistry.TESTING_DISK.get())));
+    public static final Supplier<BlockEntityType<ElementTesterBlockEntity>> ELEMENT_TESTER = BLOCK_ENTITIES.register("element_tester",
+            () -> new BlockEntityType<>(ElementTesterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_TESTER.get())));
 
     public static void register(IEventBus eventBus)
     {

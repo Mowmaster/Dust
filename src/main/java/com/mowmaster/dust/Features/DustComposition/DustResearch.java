@@ -7,13 +7,18 @@ import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.dust.Features.Research.ResearchUnlocks;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
+import com.mowmaster.dust.DustReferences;
 import net.minecraft.resources.Identifier;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
 // What dust research adds to a player's Research Notes (only while they carry them, like all research)
+@EventBusSubscriber(modid = DustReferences.MODID)
 public final class DustResearch
 {
     private DustResearch() {}
@@ -31,17 +36,29 @@ public final class DustResearch
         ResearchUnlocks.check(player);
     }
 
-    // They read its composition on a Dust Testing Disk
-    public static void noteComposition(ServerPlayer player, @Nullable ResearchEntry entry, DustComposition composition)
+    // They measured it on the Elemental Examiner: each crystal's element and how much of the item it is. An item that's
+    // all one crystal's element discovers that element.
+    public static void noteMeasured(ServerPlayer player, @Nullable ResearchEntry entry, Map<DustElement, Integer> measured)
     {
-        if (entry == null || !Research.carriesNotes(player)) return;
-        Research.observe(player, entry, player.blockPosition());
-        Research.experiment(player, entry, research -> research.withComposition(composition));
-        // The disk shows the primal dusts in it: each one is discovered (the mixed elements they make are not)
-        for (EnumElement primal : EnumElement.values()) {
-            if (composition.get(primal) > 0) discoverElement(player, DustElements.of(primal));
+        if (!Research.carriesNotes(player)) return;
+        for (Map.Entry<DustElement, Integer> crystal : measured.entrySet()) {
+            if (crystal.getValue() >= 100) discoverElement(player, crystal.getKey());
+        }
+        if (entry != null) {
+            Research.observe(player, entry, player.blockPosition());
+            Research.experiment(player, entry, research -> research.withMeasured(measured));
         }
         ResearchUnlocks.check(player);
+    }
+
+    // Picking up a primal crystal (from its ore) discovers its primal element. Crystals of mixed elements are discovered
+    // on the Elemental Examiner instead (an item that's all that element).
+    @SubscribeEvent
+    public static void onPickUpCrystal(ItemEntityPickupEvent.Post event)
+    {
+        if (!(event.getPlayer() instanceof ServerPlayer player)) return;
+        DustElement element = CrystalElements.of(event.getOriginalStack());
+        if (element != null && element.isPrimal()) discoverElement(player, element);
     }
 
     // The element's entry in the Elements tab (the usual toast the first time)
@@ -52,15 +69,16 @@ public final class DustResearch
     }
 
     // Whether the player has found something made only of this dust: burned something whose flame was that dust's
-    // pure colour (only pure fire burns pure red, and so on), or read a pure composition on a Dust Testing Disk
+    // pure colour (only pure fire burns pure red, and so on), or measured something that's all that element
     public static boolean hasFoundPure(ResearchData data, EnumElement element)
     {
         int pure = DustComposition.pureColor(element);
+        DustElement primal = DustElements.of(element);
         for (Map<Identifier, EntryResearch> tab : data.tabs().values()) {
             for (EntryResearch research : tab.values()) {
                 EntryResearch.Dust dust = research.dust();
                 if (dust.burned() && dust.fireColor() == pure) return true;
-                if (dust.composition().map(c -> c.isPure() && c.get(element) > 0).orElse(false)) return true;
+                if (dust.measured().getOrDefault(primal, 0) >= 100) return true;
             }
         }
         return false;

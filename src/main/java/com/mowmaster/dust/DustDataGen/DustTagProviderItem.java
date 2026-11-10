@@ -28,19 +28,13 @@ public class DustTagProviderItem extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(DustTags.Items.MAGICAL_DUST_ITEMS)
-                .add(DustItemRegistry.DUST_RED.key())
-                .add(DustItemRegistry.DUST_GREEN.key())
-                .add(DustItemRegistry.DUST_BLUE.key())
-                .add(DustItemRegistry.DUST_WHITE.key())
-                .add(DustItemRegistry.DUST_BLACK.key());
+        // Every element's dust (the five primals' and the rest: DustItemRegistry.DUSTS)
+        var dusts = tag(DustTags.Items.MAGICAL_DUST_ITEMS);
+        DustItemRegistry.DUSTS.values().forEach(item -> dusts.add(item.getKey()));
 
-        tag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS)
-                .add(DustItemRegistry.CRYSTAL_RED.key())
-                .add(DustItemRegistry.CRYSTAL_GREEN.key())
-                .add(DustItemRegistry.CRYSTAL_BLUE.key())
-                .add(DustItemRegistry.CRYSTAL_WHITE.key())
-                .add(DustItemRegistry.CRYSTAL_BLACK.key());
+        // Every element's crystal (DustItemRegistry.CRYSTALS)
+        var crystals = tag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS);
+        DustItemRegistry.CRYSTALS.values().forEach(item -> crystals.add(item.getKey()));
 
         tag(DustTags.Items.CRYSTAL_REPAIRABLES)
                 .add(DustItemRegistry.CRYSTAL_RED.key())

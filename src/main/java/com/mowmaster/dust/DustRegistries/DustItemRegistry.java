@@ -14,11 +14,18 @@ import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialArmor;
 import com.mowmaster.dust.Features.CrystalTools.Materials.DustMaterialTools;
 import com.mowmaster.dust.Features.EffectScrolls.Item.EarthStickItem;
 import com.mowmaster.dust.Features.EffectScrolls.Item.FireStickItem;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
+import com.mowmaster.dust.Features.DustComposition.ElementItem;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 public class DustItemRegistry
@@ -38,6 +45,29 @@ public class DustItemRegistry
     public static final DeferredItem<Item> CRYSTAL_BLUE = DUSTITEMS.registerSimpleItem("crystal_blue", properties -> properties);
     public static final DeferredItem<Item> CRYSTAL_WHITE = DUSTITEMS.registerSimpleItem("crystal_white", properties -> properties);
     public static final DeferredItem<Item> CRYSTAL_BLACK = DUSTITEMS.registerSimpleItem("crystal_black", properties -> properties);
+
+    // A crystal and a dust for every element (Features/DustComposition/ElementItem): <element>_crystal and
+    // <element>_dust, e.g. dust:knowledge_crystal. The five primals use the items above. In element order.
+    public static final Map<DustElement, DeferredItem<? extends Item>> CRYSTALS = elementItems(ElementItem.Kind.CRYSTAL, Map.of(
+            DustElements.FIRE, CRYSTAL_RED, DustElements.WATER, CRYSTAL_BLUE, DustElements.EARTH, CRYSTAL_GREEN,
+            DustElements.ORDER, CRYSTAL_WHITE, DustElements.CHAOS, CRYSTAL_BLACK));
+    public static final Map<DustElement, DeferredItem<? extends Item>> DUSTS = elementItems(ElementItem.Kind.DUST, Map.of(
+            DustElements.FIRE, DUST_RED, DustElements.WATER, DUST_BLUE, DustElements.EARTH, DUST_GREEN,
+            DustElements.ORDER, DUST_WHITE, DustElements.CHAOS, DUST_BLACK));
+
+    // One item per element, except those already given. (DeferredItem<? extends Item>: a DeferredItem of Item or of
+    // any subclass of it, here ElementItem, since the map holds both kinds.)
+    private static Map<DustElement, DeferredItem<? extends Item>> elementItems(ElementItem.Kind kind, Map<DustElement, DeferredItem<Item>> existing)
+    {
+        Map<DustElement, DeferredItem<? extends Item>> items = new LinkedHashMap<>();
+        String suffix = kind == ElementItem.Kind.CRYSTAL ? "_crystal" : "_dust";
+        for (DustElement element : DustElements.all()) {
+            DeferredItem<? extends Item> item = existing.get(element);
+            if (item == null) item = DUSTITEMS.registerItem(element.id().getPath() + suffix, properties -> new ElementItem(properties, element, kind));
+            items.put(element, item);
+        }
+        return Collections.unmodifiableMap(items);
+    }
 
     public static final DeferredItem<Item> CRYSTAL_SWORD = DUSTITEMS.registerItem("crystal_sword",
             properties -> new CrystalWeaponSword(properties.sword(DustMaterialTools.CRYSTAL, 3.0f,-2.4f)));

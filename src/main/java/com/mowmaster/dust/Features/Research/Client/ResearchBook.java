@@ -2,6 +2,7 @@ package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.RecipeRecord;
@@ -110,7 +111,7 @@ public final class ResearchBook
     //   CRAFTED_FROM  recipes seen making it: ingredients, station, result (as many pages as it takes)
     //   CRAFTED_INTO  recipes seen using it
     //   EXPERIMENTS   health, breeding food, brewing
-    //   RESEARCH      its dust: the colour it burns with (Magical Flint and Steel), what it's made of (Testing Disk)
+    //   RESEARCH      its dust: the colour it burns with (Magical Flint and Steel), what it's made of (Elemental Examiner)
     enum Kind { OVERVIEW, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH }
 
     // One notes page: its kind, and for the crafting pages the recipes that fit on it
@@ -564,16 +565,17 @@ public final class ResearchBook
 
     // What's known of its dust:
     //   burned     "Burns with:" and a flame in that colour
-    //   read       "Made of:" and each primal dust's share ("Earth 55%"), as read on a Dust Testing Disk
+    //   measured   "Made of:" and each element the Elemental Examiner checked, with its icon and percent ("Water 33%");
+    //              elements checked and not there are listed after, faded
     //   neither    a hint at how to find out
-    // The flame sprite is greyscale; blitSprite's last argument tints it (0xAARRGGBB), the way a block tint colours a
+    // The sprites are greyscale; blitSprite's last argument tints them (0xAARRGGBB), the way a block tint colours a
     // texture.
     private static void drawDust(GuiGraphicsExtractor graphics, Font font, EntryResearch.Dust dust)
     {
         int x = RIGHT_X + 4;
         int y = NOTES_TOP;
         int bottom = FOOTER_Y - 2;
-        if (!dust.burned() && dust.composition().isEmpty()) {
+        if (!dust.burned() && !dust.anyMeasured()) {
             drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unknown"), PAGE_W - 8), x, y, bottom, INK);
             return;
         }
@@ -582,22 +584,22 @@ public final class ResearchBook
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME_SPRITE, RIGHT_X + PAGE_W - 30, y, 24, 24, 0xFF000000 | dust.fireColor());
             y += 27;
         }
-        if (dust.composition().isEmpty()) {
+        if (!dust.anyMeasured()) {
             if (y + font.lineHeight <= bottom) drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unread"), PAGE_W - 8), x, y, bottom, FADED);
             return;
         }
-        // Only the primal dust, as shares of the whole: that's all a Dust Testing Disk shows (which elements those make
-        // up is for other research to find)
-        DustComposition composition = dust.composition().get();
         Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
         y += font.lineHeight + 2;
-        for (EnumElement primal : EnumElement.values()) {
-            if (composition.get(primal) == 0 || y + font.lineHeight > bottom) continue;
-            // An ink-bordered swatch of the dust's colour, then "Earth 55%"
-            graphics.fill(x + 2, y, x + 10, y + 8, INK);
-            graphics.fill(x + 3, y + 1, x + 9, y + 7, 0xFF000000 | DustComposition.pureColor(primal));
-            Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", DustComposition.name(primal), composition.percent(primal)), x + 14, y, INK);
-            y += font.lineHeight + 2;
+        // Found elements first, then the ones checked and not there
+        for (boolean present : new boolean[] {true, false}) {
+            for (Map.Entry<DustElement, Integer> measured : dust.measured().entrySet()) {
+                if ((measured.getValue() > 0) != present || y + 10 > bottom) continue;
+                DustElement element = measured.getKey();
+                int tint = present ? 0xFF000000 | element.color() : 0x66000000 | element.color();
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, tint);
+                Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", element.name(), measured.getValue()), x + 14, y, present ? INK : FADED);
+                y += 11;
+            }
         }
     }
 

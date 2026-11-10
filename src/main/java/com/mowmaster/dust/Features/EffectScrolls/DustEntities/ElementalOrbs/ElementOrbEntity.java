@@ -1,5 +1,8 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs;
 
+import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import net.minecraft.core.BlockPos;
@@ -11,6 +14,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
@@ -21,28 +26,61 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.MoveSimulationType;
 import org.jspecify.annotations.Nullable;
 
-// A floating orb of one element's dust that flies to nearby players and is absorbed into their element store,
-// like an experience orb. Each element has a small subclass that only says which element it is.
-public abstract class ElementalOrbEntityBase extends Entity {
+// A floating orb of one element's dust that flies to nearby players and is absorbed into their element stores,
+// like an experience orb. One entity type for every element: which element is synced data, so the client can colour
+// it (ElementalOrbEntityRenderer). Mobs drop the orbs of what they're made of when killed, and so do crops when
+// harvested (DustOrbDrops); dropped dust items turn into them too.
+public class ElementOrbEntity extends Entity {
 
     private @Nullable Player followingPlayer;
     private static final EntityDataAccessor<Integer> VALUE =
-            SynchedEntityData.defineId(ElementalOrbEntityBase.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(ElementOrbEntity.class, EntityDataSerializers.INT);
+    // The element's id ("dust:knowledge"). Synced entity data: the server sets it and every client tracking the orb
+    // receives it.
+    private static final EntityDataAccessor<String> ELEMENT =
+            SynchedEntityData.defineId(ElementOrbEntity.class, EntityDataSerializers.STRING);
 
     // Unabsorbed dust dissipates back into the aura after this long
     private static final int BASE_DURATION = 600; // 30 seconds
     private int age;
 
-    public ElementalOrbEntityBase(EntityType<? extends ElementalOrbEntityBase> type, Level level) {
+    public ElementOrbEntity(EntityType<? extends ElementOrbEntity> type, Level level) {
         super(type, level);
     }
 
-    // Which element store this orb fills
-    public abstract EnumElement getElement();
+    // A new orb of this element worth value, at pos (not yet added to the level)
+    public static @Nullable ElementOrbEntity create(ServerLevel level, DustElement element, int value, Vec3 pos) {
+        ElementOrbEntity orb = DustEntityRegistry.ELEMENT_ORB.get().create(level, EntitySpawnReason.TRIGGERED);
+        if (orb == null) return null;
+        orb.setElement(element);
+        orb.setValue(value);
+        orb.setPos(pos);
+        return orb;
+    }
+
+    // Spawns an orb worth value of this element at pos, with a small random push like a dropped item
+    public static void spawn(ServerLevel level, DustElement element, int value, Vec3 pos) {
+        ElementOrbEntity orb = create(level, element, value, pos);
+        if (orb == null) return;
+        orb.setDeltaMovement((level.getRandom().nextDouble() - 0.5) * 0.2, 0.2, (level.getRandom().nextDouble() - 0.5) * 0.2);
+        level.addFreshEntity(orb);
+    }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(VALUE, 1);
+        builder.define(ELEMENT, DustElements.FIRE.id().toString());
+    }
+
+    // The orb's element (fire if its id is unknown, e.g. an element from a mod that was removed)
+    public DustElement getElement() {
+        Identifier id = Identifier.tryParse(this.entityData.get(ELEMENT));
+        DustElement element = id == null ? null : DustElements.get(id);
+        return element != null ? element : DustElements.FIRE;
+    }
+
+    public void setElement(DustElement element) {
+        this.entityData.set(ELEMENT, element.id().toString());
     }
 
     public int getValue() {
@@ -67,9 +105,19 @@ public abstract class ElementalOrbEntityBase extends Entity {
 
         // Prevent unreasonable values
         int orbValue = Math.clamp(this.getValue(), 1, 100);
-        EnumElement element = this.getElement();
-        if (element.addElement(serverPlayer, orbValue, true) > 0) {
-            element.addElement(serverPlayer, orbValue, false);
+        // The player's stores hold the five primal dusts: an element gives each primal it's made of, times the orb's
+        // value (a knowledge orb worth 1 gives 3 water, 2 earth and 1 order). It's absorbed if any of it fits.
+        DustElement element = this.getElement();
+        boolean fits = false;
+        for (EnumElement primal : EnumElement.values()) {
+            int amount = element.primal(primal) * orbValue;
+            if (amount > 0 && primal.addElement(serverPlayer, amount, true) > 0) fits = true;
+        }
+        if (fits) {
+            for (EnumElement primal : EnumElement.values()) {
+                int amount = element.primal(primal) * orbValue;
+                if (amount > 0) primal.addElement(serverPlayer, amount, false);
+            }
             // Whatever didn't fit is lost (it dissipates into the aura)
             this.discard();
         }
@@ -101,12 +149,14 @@ public abstract class ElementalOrbEntityBase extends Entity {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         output.putInt("Value", this.getValue());
+        output.putString("Element", this.getElement().id().toString());
         output.putInt("Age", this.age);
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         this.setValue(input.getIntOr("Value", 1));
+        this.entityData.set(ELEMENT, input.getStringOr("Element", DustElements.FIRE.id().toString()));
         this.age = input.getIntOr("Age", 0);
     }
 

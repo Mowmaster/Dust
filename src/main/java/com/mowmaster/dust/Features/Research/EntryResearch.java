@@ -3,13 +3,16 @@ package com.mowmaster.dust.Features.Research;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mowmaster.dust.Features.DustComposition.DustComposition;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
 import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 // What one player has learned about one research entry.
 // Immutable (a record): every change makes a new copy via the with... methods, which is what lets the attachment
@@ -27,7 +30,7 @@ import java.util.Optional;
 //   food          what eating it does (see Food)
 //   levels        an effect's levels the player has had (amplifier 0 = level I), and for instant effects how much
 //                 health a level gave or took; an enchantment's levels seen
-//   dust          what's known of its dust: the colour it burns with, and its composition once read (see Dust)
+//   dust          what's known of its dust: the colour it burns with, and the elements measured in it (see Dust)
 //   notes         the player's own overview notes, edited in the book (empty = the built-in notes)
 //
 // RecordCodecBuilder can only take 16 fields, so related fields are grouped into small records (Creature, Food, Dust).
@@ -98,21 +101,27 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
     }
 
     //   fireColor     the colour it burned with in a Magical Flint and Steel's fire, 0xRRGGBB (-1 = not burned)
-    //   composition   what a Dust Testing Disk showed it's made of (empty until read). Kept as read, so the book
-    //                 shows what the player actually saw (a water bottle's water, though every potion is one entry).
-    public record Dust(int fireColor, Optional<DustComposition> composition)
+    //   measured      what the Elemental Examiner's crystals showed: element -> percent of the item (0 = checked, not
+    //                 there). Kept as seen, so the book shows what the player actually measured (a water bottle's water,
+    //                 though every potion is one entry). A later measurement of an element replaces the earlier one.
+    public record Dust(int fireColor, Map<DustElement, Integer> measured)
     {
-        public static final Dust NONE = new Dust(-1, Optional.empty());
+        public static final Dust NONE = new Dust(-1, Map.of());
         public static final MapCodec<Dust> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.INT.optionalFieldOf("fire_color", -1).forGetter(Dust::fireColor),
-                // lenientOptionalFieldOf: an Optional, empty when the field isn't there, or can't be read (a composition
-                // saved in an older form, or naming an element that no longer exists), so a bad entry doesn't fail the save
-                DustComposition.CODEC.lenientOptionalFieldOf("composition").forGetter(Dust::composition)
+                // unboundedMap: a JSON-style object, here { "dust:water": 33 }. lenientOptionalFieldOf falls back to the
+                // default if it can't be read (an element that no longer exists), so a bad entry doesn't fail the save.
+                Codec.unboundedMap(DustElements.CODEC, Codec.INT).lenientOptionalFieldOf("measured", Map.of()).forGetter(Dust::measured)
         ).apply(instance, Dust::new));
 
         public boolean burned()
         {
             return fireColor >= 0;
+        }
+
+        public boolean anyMeasured()
+        {
+            return !measured.isEmpty();
         }
     }
 
@@ -244,13 +253,15 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
     // Burned in a Magical Flint and Steel's fire: the colour of the flames
     public EntryResearch withFireColor(int color)
     {
-        return with(new Dust(color, dust.composition()));
+        return with(new Dust(color, dust.measured()));
     }
 
-    // Read on a Dust Testing Disk
-    public EntryResearch withComposition(DustComposition composition)
+    // Measured on the Elemental Examiner: each element checked, and its percent (kept in the order first measured)
+    public EntryResearch withMeasured(Map<DustElement, Integer> percents)
     {
-        return with(new Dust(dust.fireColor(), Optional.of(composition)));
+        Map<DustElement, Integer> merged = new LinkedHashMap<>(dust.measured());
+        merged.putAll(percents);
+        return with(new Dust(dust.fireColor(), Collections.unmodifiableMap(merged)));
     }
 
     public EntryResearch withNotes(String text)

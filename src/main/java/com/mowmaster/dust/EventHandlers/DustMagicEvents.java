@@ -6,7 +6,9 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityBase;
+import com.mowmaster.dust.Features.DustComposition.CrystalElements;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import com.mowmaster.dust.Features.Research.ObservationPayloads;
@@ -250,7 +252,7 @@ public class DustMagicEvents {
     }
 
 
-    // Dust items that land in the world turn into one orb of their element, worth the whole stack.
+    // Dust items that land in the world turn into one orb of their element (every element's dust), worth the whole stack.
     // This used to loop once per item in the stack and spawn an orb (worth the full stack) every time, so a stack of 3
     // made 3 stacked orbs worth 3 each: the "orb picked up 2-3 times" bug.
     @SubscribeEvent
@@ -265,30 +267,17 @@ public class DustMagicEvents {
             return;
         }
 
-        EntityType<? extends ElementalOrbEntityBase> orbType = orbTypeFor(stack);
-        if (orbType == null) {
+        DustElement element = CrystalElements.ofDust(stack);
+        if (element == null) {
             return;
         }
-
-        ElementalOrbEntityBase orb = orbType.create(serverLevel, EntitySpawnReason.TRIGGERED);
+        ElementOrbEntity orb = ElementOrbEntity.create(serverLevel, element, stack.getCount(), itemEntity.position());
         if (orb == null) {
             return;
         }
-        orb.setPos(itemEntity.getX(), itemEntity.getY(), itemEntity.getZ());
-        orb.setValue(stack.getCount());
         serverLevel.addFreshEntity(orb);
 
         // Cancelling stops the item entity from being added to the level
         event.setCanceled(true);
-    }
-
-    // Which orb a dust item turns into; null for dusts without an orb
-    private static @Nullable EntityType<? extends ElementalOrbEntityBase> orbTypeFor(ItemStack stack) {
-        if (stack.is(DustItemRegistry.DUST_RED.get())) return DustEntityRegistry.FIRE_ORB.get();
-        if (stack.is(DustItemRegistry.DUST_BLUE.get())) return DustEntityRegistry.WATER_ORB.get();
-        if (stack.is(DustItemRegistry.DUST_GREEN.get())) return DustEntityRegistry.EARTH_ORB.get();
-        if (stack.is(DustItemRegistry.DUST_BLACK.get())) return DustEntityRegistry.CHAOS_ORB.get();
-        if (stack.is(DustItemRegistry.DUST_WHITE.get())) return DustEntityRegistry.ORDER_ORB.get();
-        return null;
     }
 }

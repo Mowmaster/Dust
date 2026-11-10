@@ -7,6 +7,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ElementalOrbEntityRenderState extends EntityRenderState {
     public int icon;
+    // The element's colour, 0xRRGGBB
+    public int color;
 
     public ElementalOrbEntityRenderState() {
     }

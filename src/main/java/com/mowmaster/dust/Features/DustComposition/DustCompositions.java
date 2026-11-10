@@ -18,10 +18,11 @@ import java.util.function.Predicate;
 
 import static com.mowmaster.dust.Features.DustComposition.DustElements.*;
 
-// What things are made of, for burning (Magical Flint and Steel), reading (Dust Testing Disk) and dust recipes.
+// What things are made of, for burning (Magical Flint and Steel), measuring (Elemental Examiner) and dust recipes.
 //   Items     the dust:elements item data map (data/<namespace>/data_maps/item/elements.json), so datapacks and other
 //             mods can add or change items. Dust's own covers every vanilla item.
 //   Rules     for items whose dust depends on their data (a water bottle is a potion item holding water); checked first
+//   Elements  an element's crystal or dust is that element alone
 //   Fluids    for fluids burned where they lie (lava)
 // "import static ...DustElements.*" lets the code below write WATER instead of DustElements.WATER.
 public final class DustCompositions
@@ -58,6 +59,10 @@ public final class DustCompositions
         for (StackRule rule : STACK_RULES) {
             if (rule.test().test(stack)) return rule.composition();
         }
+        // An element's crystal or dust is that element and nothing else
+        DustElement element = CrystalElements.of(stack);
+        if (element == null) element = CrystalElements.ofDust(stack);
+        if (element != null) return DustComposition.of(element);
         // typeHolder(): the item's registry holder, which is what data maps are attached to. getData gives null for
         // items the data map doesn't list.
         DustComposition composition = stack.typeHolder().getData(DustDataMaps.ELEMENTS);

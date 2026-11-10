@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Elements: every element of dust (DustElements), from the five primals up, shown by their icons in their colours.
-// Discovered through dust research (DustResearch): a primal once you've seen it in something, by its pure flame or on
-// a Dust Testing Disk. Mixed elements will have their own ways to be discovered.
+// Discovered through dust research (DustResearch): a primal by picking up its crystal, or seeing its pure flame; any
+// element by measuring an item that's all that element on the Elemental Examiner (with that element's crystal on).
 public class ElementResearchTab extends ResearchTab
 {
     public ElementResearchTab()

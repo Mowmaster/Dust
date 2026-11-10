@@ -36,10 +36,10 @@ import java.util.function.Predicate;
 // JSON (data/<namespace>/recipe/<name>.json):
 //   {
 //     "type": "dust:dust_crafting",
-//     "result": { "id": "dust:testing_disk" },
+//     "result": { "id": "dust:element_tester" },
 //     "dusts": [ { "element": "fire" }, { "element": "water", "min": 2, "pure": false } ],
 //     "ingredients": [ "minecraft:crafting_table" ],
-//     "research": { "tab": "dust:research", "entry": "dust:testing_disk" }
+//     "research": { "tab": "dust:research", "entry": "dust:element_tester" }
 //   }
 // A dust need is one item with at least min of that dust (default 1), and nothing else if pure (default true).
 // Leaving out "research" makes the recipe open to everyone.

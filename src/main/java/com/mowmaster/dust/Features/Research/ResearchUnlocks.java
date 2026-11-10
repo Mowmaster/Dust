@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 // The Research tab's entries: discoveries that are unlocked by what a player has learned rather than by finding
-// something in the world (the Dust Testing Disk, once you've found all five pure dusts...). Each one shows faded in
+// something in the world (the Element Tester, once you've found all five pure dusts...). Each one shows faded in
 // the book until it's unlocked, then unlocks with the usual toast. A dust recipe can require one (DustRecipe).
 //
 // Other code can add more (from a mod constructor, so they exist on both sides):
@@ -27,9 +27,9 @@ public final class ResearchUnlocks
 
     private static final List<Unlock> UNLOCKS = new CopyOnWriteArrayList<>();
 
-    // The Dust Testing Disk: found something of each pure dust (by its flame, or read on a disk)
-    public static final Unlock TESTING_DISK = register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "testing_disk"),
-            () -> new ItemStack(DustBlockRegistry.TESTING_DISK.get()),
+    // The Element Tester: found something of each pure dust (by its flame, or measured on an examiner)
+    public static final Unlock ELEMENT_TESTER = register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "element_tester"),
+            () -> new ItemStack(DustBlockRegistry.ELEMENT_TESTER.get()),
             data -> {
                 for (EnumElement element : EnumElement.values()) {
                     if (!DustResearch.hasFoundPure(data, element)) return false;
