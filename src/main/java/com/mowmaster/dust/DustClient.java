@@ -2,7 +2,10 @@ package com.mowmaster.dust;
 
 import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
+import com.mowmaster.dust.Features.DustComposition.Client.ClientElementTooltip;
 import com.mowmaster.dust.Features.DustComposition.Client.ElementTesterRenderer;
+import com.mowmaster.dust.Features.DustComposition.ElementTooltip;
+import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import com.mowmaster.dust.Features.DustComposition.Client.ElementTesterTint;
 import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementalOrbEntityRenderer;
@@ -75,6 +78,13 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
+    }
+
+    // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)
+    @SubscribeEvent
+    public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event)
+    {
+        event.register(ElementTooltip.class, ClientElementTooltip::new);
     }
 
     // Glyph stone carving colour: dark, or worn blank on stones the local player has transcribed (tint index 0)
