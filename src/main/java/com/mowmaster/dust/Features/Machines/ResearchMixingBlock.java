@@ -61,7 +61,7 @@ public class ResearchMixingBlock extends StationBlock
                 return InteractionResult.FAIL;
             }
             if (level instanceof ServerLevel serverLevel) {
-                table.start(serverLevel);
+                table.start(serverLevel, player);
                 stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
                 level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
             }

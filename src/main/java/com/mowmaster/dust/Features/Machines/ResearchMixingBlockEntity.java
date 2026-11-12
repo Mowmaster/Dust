@@ -3,7 +3,16 @@ package com.mowmaster.dust.Features.Machines;
 import com.mowmaster.dust.DustRegistries.DustBlockEntityRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
+import com.mowmaster.dust.Features.Research.ProcessRecord;
+import com.mowmaster.dust.Features.Research.Research;
+import com.mowmaster.dust.Features.Research.ResearchEntry;
+import com.mowmaster.dust.Features.Research.ResearchTabs;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 // The Mixing Table: two Alchemical Dusts, one on each side pad, at least one of them gaseous or aqueous, become
 // Alchemical Dust of the element mixed from them (ElementCombining), if there is one. Like the Evaporation Table:
@@ -39,6 +49,8 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
     private ItemStack right = ItemStack.EMPTY;
     private ItemStack output = ItemStack.EMPTY;
     private ItemStack pending = ItemStack.EMPTY;
+    // Who started it (the step goes in their research)
+    private @Nullable UUID owner;
     private ResearchEvaporationBlockEntity.Phase phase = ResearchEvaporationBlockEntity.Phase.IDLE;
     private int stirsDone;
     private int stirTicks = -1;
@@ -134,8 +146,9 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
         return null;
     }
 
-    public void start(ServerLevel level)
+    public void start(ServerLevel level, @Nullable Player player)
     {
+        owner = player == null ? null : player.getUUID();
         DustElement made = ElementCombining.combine(AlchemicalDust.of(left), AlchemicalDust.of(right));
         pending = made == null ? ItemStack.EMPTY : AlchemicalDust.create(made);
         phase = ResearchEvaporationBlockEntity.Phase.STIRRING;
@@ -208,6 +221,7 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
 
     private void finish(ServerLevel level)
     {
+        noteResearch(level, left, right, pending);
         output = pending;
         pending = ItemStack.EMPTY;
         left = ItemStack.EMPTY;
@@ -216,6 +230,20 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
         stirsDone = 0;
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         sync();
+    }
+
+    // The step goes on the made element's entry, in the research of whoever started it (if they've discovered the
+    // element: Research.noteProcess won't note it otherwise)
+    private void noteResearch(ServerLevel level, ItemStack first, ItemStack second, ItemStack made)
+    {
+        DustElement element = AlchemicalDust.of(made);
+        if (owner == null || element == null || first.isEmpty() || second.isEmpty()) return;
+        ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
+        if (player == null) return;
+        ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
+                ItemStackTemplate.fromNonEmptyStack(first, 1), List.of(ItemStackTemplate.fromNonEmptyStack(made, 1)),
+                List.of(ItemStackTemplate.fromNonEmptyStack(second, 1)));
+        Research.noteProcess(player, new ResearchEntry(ResearchTabs.ELEMENTS, element.id()), step);
     }
 
     private Vec3 turned(Vec3 pixels)
@@ -238,6 +266,7 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
         out.putInt("stir_ticks", stirTicks);
         out.putInt("settle_ticks", settleTicks);
         out.putInt("time", time);
+        if (owner != null) out.store("owner", UUIDUtil.CODEC, owner);
     }
 
     @Override
@@ -257,6 +286,7 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
         stirTicks = in.getIntOr("stir_ticks", -1);
         settleTicks = in.getIntOr("settle_ticks", 0);
         time = in.getIntOr("time", 0);
+        owner = in.read("owner", UUIDUtil.CODEC).orElse(null);
     }
 
     // Broken: everything in it drops (a mix in progress gives back its dusts)

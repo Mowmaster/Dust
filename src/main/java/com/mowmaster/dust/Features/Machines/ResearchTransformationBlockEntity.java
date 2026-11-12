@@ -7,6 +7,7 @@ import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Research.ProcessRecord;
 import com.mowmaster.dust.Features.Research.Research;
+import com.mowmaster.dust.Features.Research.ResearchEntry;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -167,8 +168,8 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
         sync();
     }
 
-    // A compound made into dust goes into the research of whoever started it, on the material it came from. (Dust
-    // doesn't remember where it came from, so dust made into a crystal isn't noted.)
+    // A compound made into dust goes into the research of whoever started it, on its element's entry (how to make the
+    // element's dust). Dust made into a crystal isn't noted.
     private void noteResearch(ServerLevel level, ItemStack transformed)
     {
         if (owner == null || output.isEmpty() || Compounds.of(transformed) == null) return;
@@ -176,7 +177,7 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
                 ItemStackTemplate.fromNonEmptyStack(transformed, 1), List.of(ItemStackTemplate.fromNonEmptyStack(output, 1)));
-        Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(transformed)), step);
+        Research.noteProcess(player, new ResearchEntry(ResearchTabs.ELEMENTS, AlchemicalDust.of(output).id()), step);
     }
 
     private Vec3 turned(Vec3 pixels)

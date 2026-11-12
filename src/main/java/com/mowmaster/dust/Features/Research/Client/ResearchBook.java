@@ -7,6 +7,7 @@ import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.Features.Machines.ElementCombining;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Machines.AlchemicalDust;
 import com.mowmaster.dust.Features.Machines.Compounds;
 import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Research.EntryResearch;
@@ -613,6 +614,11 @@ public final class ResearchBook
         int y = NOTES_TOP;
         for (ProcessRecord step : steps) {
             int x = RIGHT_X + 1;
+            if (!step.with().isEmpty()) {
+                drawTwoInputStep(graphics, font, data, step, x, y);
+                y += PROCESS_ROW;
+                continue;
+            }
             linkedStack(graphics, data, step.input().create(), x, y);
             Paper.ink(graphics, font, Component.literal("\u2192"), x + CELL, y + 5, INK);
             linkedItem(graphics, data, step.machine(), x + CELL + 6, y);
@@ -680,11 +686,38 @@ public final class ResearchBook
         LINKS.add(new Link(x, y, entry, discovered, discovered ? element.name() : Component.translatable("research.dust.undiscovered"), false));
     }
 
+    // A two-input step (the Combination and Mixing Tables):  [dust] + [dust] -> [table] -> [result]  x
+    private static void drawTwoInputStep(GuiGraphicsExtractor graphics, Font font, ResearchData data, ProcessRecord step, int x, int y)
+    {
+        linkedStack(graphics, data, step.input().create(), x, y);
+        Paper.ink(graphics, font, Component.literal("+"), x + CELL + 1, y + 5, INK);
+        linkedStack(graphics, data, step.with().getFirst().create(), x + CELL + 7, y);
+        Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 7, y + 5, INK);
+        linkedItem(graphics, data, step.machine(), x + 2 * CELL + 14, y);
+        Paper.ink(graphics, font, Component.literal("\u2192"), x + 3 * CELL + 14, y + 5, INK);
+        if (!step.outputs().isEmpty()) linkedStack(graphics, data, step.outputs().getFirst().create(), x + 3 * CELL + 21, y);
+        if (editable) {
+            int crossX = RIGHT_X + PAGE_W - 12;
+            Paper.ink(graphics, font, Component.literal("x"), crossX + 2, y + 5, FADED);
+            CROSSES.add(new Cross(crossX, y + 3, step));
+        }
+    }
+
     // An item stack (with its data: crushed stone shows as pebbles of stone) as a linked icon. Products link to, and
     // are faded by, the material they were made from. An alchemical compound's name says which elements are in it,
     // but only the ones the player has discovered: "Alchemical Compound (Fire, ???)".
     private static void linkedStack(GuiGraphicsExtractor graphics, ResearchData data, ItemStack stack, int x, int y)
     {
+        // Alchemical Dust links to its element's entry: "Alchemical Dust (Stone)", or ??? until it's discovered
+        DustElement dust = AlchemicalDust.of(stack);
+        if (dust != null) {
+            ResearchEntry element = new ResearchEntry(ResearchTabs.ELEMENTS, dust.id());
+            boolean discovered = data.has(element);
+            drawIcon(graphics, stack, x, y, true);
+            Component known = discovered ? dust.name() : Component.translatable("research.dust.undiscovered");
+            LINKS.add(new Link(x, y, element, discovered, Component.translatable("research.dust.process.compound", stack.getHoverName(), known), false));
+            return;
+        }
         ResearchEntry entry = ResearchTabs.entryForItem(ProductSource.original(stack));
         boolean researched = entry != null && data.has(entry);
         drawIcon(graphics, stack, x, y, researched);

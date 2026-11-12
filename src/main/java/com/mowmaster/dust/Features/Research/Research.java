@@ -101,9 +101,12 @@ public final class Research
 
     // A machine turned input into output for this player: the step is noted on the input's original material (crushed
     // stone's steps go on stone), once. Making the output counts as finding the material, if it wasn't already.
+    // An element is only ever discovered on the Elemental Examiner (or by its pure flame / crystal), so a step on an
+    // element the player hasn't discovered isn't noted (it would discover it).
     public static void noteProcess(ServerPlayer player, @Nullable ResearchEntry entry, ProcessRecord process)
     {
         if (entry == null || !carriesNotes(player)) return;
+        if (entry.tab() == ResearchTabs.ELEMENTS && !get(player).has(entry)) return;
         observe(player, entry, player.blockPosition());
         experiment(player, entry, old -> old.withProcess(process));
     }
