@@ -1,7 +1,10 @@
 package com.mowmaster.dust.Features.DustComposition;
 
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Machines.Compounds;
+import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Research.EntryResearch;
+import com.mowmaster.dust.Features.Research.ProcessRecord;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
@@ -13,6 +16,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -55,6 +60,28 @@ public final class DustResearch
             });
             if (!found.isEmpty()) Research.experiment(player, entry, research -> research.withMeasured(found));
         }
+        ResearchUnlocks.check(player);
+    }
+
+    // A machine broke the material down and some of what came out is compounds: each of the material's own elements
+    // found in them goes in its "Made of", with its share of the material (as the Elemental Examiner would measure
+    // it). Only the elements it's directly made of count: a compound of something deeper (the earth inside its stone)
+    // isn't one of them. Called by Research.noteProcess for steps noted on a material's entry.
+    public static void noteFoundInProcess(ServerPlayer player, ResearchEntry entry, ProcessRecord process)
+    {
+        ItemStack material = ProductSource.original(process.input().create());
+        DustComposition madeOf = DustCompositions.of(material);
+        if (madeOf == null) return;
+        Map<DustElement, Integer> found = new LinkedHashMap<>();
+        for (ItemStackTemplate output : process.outputs()) {
+            DustComposition compound = Compounds.of(output.create());
+            if (compound == null) continue;
+            for (DustElement element : compound.elements()) {
+                if (madeOf.elements().contains(element)) found.put(element, ElementTesterBlockEntity.percentOf(madeOf, element));
+            }
+        }
+        if (found.isEmpty()) return;
+        Research.experiment(player, entry, research -> research.withMeasured(found));
         ResearchUnlocks.check(player);
     }
 

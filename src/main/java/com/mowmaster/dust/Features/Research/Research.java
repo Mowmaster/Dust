@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Features.Research;
 
+import com.mowmaster.dust.Features.DustComposition.DustResearch;
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import net.minecraft.core.BlockPos;
@@ -109,6 +110,8 @@ public final class Research
         if (entry.tab() == ResearchTabs.ELEMENTS && !get(player).has(entry)) return;
         observe(player, entry, player.blockPosition());
         experiment(player, entry, old -> old.withProcess(process));
+        // Compounds that came out show which of the material's own elements are in it ("Made of")
+        if (entry.tab() != ResearchTabs.ELEMENTS) DustResearch.noteFoundInProcess(player, entry, process);
     }
 
     // The player crossed a step out in the book (quietly: no scribble for taking something out)
