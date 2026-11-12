@@ -34,8 +34,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 // Distillation Table: boils one gaseous or aqueous element out of something over into the jar; the rest stays behind.
-//   Right-click the pads at the back with glass bottles / bowls / paper   stocks them (the containers for gas, liquid
-//                                                                         and solid compounds)
+//   Right-click the pads at the back with glass bottles / bowls / paper   stocks them (the containers for gas and
+//                                                   liquid compounds; paper catches the soot any solids burn to)
 //   Right-click the flask with anything            puts one in (it shows as liquid in the colour of what can boil)
 //   Right-click with a Magical Flint and Steel     starts it: the glyph rises into the flask, the liquid boils over
 //   Left-click a pad / the flask / an output       takes from it (StationInteractions)
@@ -47,7 +47,7 @@ public class ResearchDistillationBlock extends Block implements EntityBlock
             Block.box(0, 12, 0, 16, 16, 16),
             Block.box(0, 0, 0, 4, 12, 4), Block.box(12, 0, 0, 16, 12, 4),
             Block.box(0, 0, 12, 4, 12, 16), Block.box(12, 0, 12, 16, 12, 16),
-            Block.box(5.5, 16, 5.5, 10.5, 19, 10.5));
+            Block.box(6.5, 16, 6.5, 9.5, 19, 9.5));
 
     public ResearchDistillationBlock(Properties properties)
     {

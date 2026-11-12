@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
 //     the flask, shrinking to fit and spinning, while it boils; sinks back as the results move to the outputs
 //   the liquid: a quarter of the flask in the colour of what can boil, boiling down to nothing; the jar filling a
 //     quarter with what boiled over, then emptying into its output
-//   the item in the flask, the containers on their pads and the two outputs, lying flat
+//   the item in the flask, the containers on their pads and the three outputs, lying flat
 public class ResearchDistillationRenderer implements BlockEntityRenderer<ResearchDistillationBlockEntity, ResearchDistillationRenderer.State>
 {
     private static final float ITEM_SCALE = 0.35F;
@@ -52,6 +52,7 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
         final ItemStackRenderState paper = new ItemStackRenderState();
         final ItemStackRenderState flaskOut = new ItemStackRenderState();
         final ItemStackRenderState jarOut = new ItemStackRenderState();
+        final ItemStackRenderState sootOut = new ItemStackRenderState();
         Direction facing = Direction.NORTH;
         // -1: idle, else ticks since it started
         float progress = -1;
@@ -79,7 +80,8 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
                 ItemDisplayContext.GROUND, table.getLevel(), null, 0);
         itemModelResolver.updateForTopItem(state.bottles, table.getBottles(), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
         itemModelResolver.updateForTopItem(state.bowls, table.getBowls(), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
-        itemModelResolver.updateForTopItem(state.paper, table.getPaper(), ItemDisplayContext.GROUND, table.getLevel(), null, 3);
+        itemModelResolver.updateForTopItem(state.sootOut, table.getSootOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 3);
+        itemModelResolver.updateForTopItem(state.paper, table.getPaper(), ItemDisplayContext.GROUND, table.getLevel(), null, 6);
         itemModelResolver.updateForTopItem(state.flaskOut, table.getFlaskOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 4);
         itemModelResolver.updateForTopItem(state.jarOut, table.getJarOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 5);
         state.facing = table.getBlockState().getValue(ResearchDistillationBlock.FACING);
@@ -121,6 +123,7 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
         StationRendering.flatItem(state.bottles, DistillationLayout.BOTTLE_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.bowls, DistillationLayout.BOWL_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.paper, DistillationLayout.PAPER_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
+        StationRendering.flatItem(state.sootOut, DistillationLayout.SOOT_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.flaskOut, DistillationLayout.FLASK_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.jarOut, DistillationLayout.JAR_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
     }

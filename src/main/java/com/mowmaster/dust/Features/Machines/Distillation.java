@@ -1,11 +1,13 @@
 package com.mowmaster.dust.Features.Machines;
 
+import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustCompositions;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,11 @@ import java.util.function.Predicate;
 // The rules of distillation (the Distillation Table):
 //   - Something with at least two elements, one of them gaseous or aqueous.
 //   - One gaseous or aqueous element, picked at random, boils over into the jar; everything else stays in the flask.
-//   - Each comes out as a compound of its kind (Compounds.Kind: gas if anything in it is gaseous, else liquid if
-//     anything is aqueous, else solid), if its container is on the table (a glass bottle, a bowl, paper; one used).
-//   - Without its container, the gaseous and aqueous parts escape (hiss / bubble away), and what's left of the solids
-//     remains as with no paper: crystalline as a compound, anything amorphous burned to soot; nothing if there are none.
+//   - The gaseous and aqueous parts come out as a compound of their kind (Compounds.Kind: gas if anything in it is
+//     gaseous, else liquid), if its container is on the table (a glass bottle or a bowl; one used). Without it, they
+//     escape (hiss / bubble away).
+//   - Any solid elements left in the flask always burn to alchemical soot (getting solids out whole is the Evaporation
+//     and Separation Tables' job). The soot needs paper to catch it (one used); without it, it blows away.
 public final class Distillation
 {
     private Distillation() {}
@@ -49,20 +52,25 @@ public final class Distillation
         return new Split(List.of(over), List.copyOf(rest));
     }
 
-    // What one part becomes. hasContainer: whether its kind's container is on the table (it's used if so).
-    //   lost: the gaseous / aqueous elements that escaped (for the particles)
-    public record Output(ItemStack stack, boolean usesContainer, List<DustElement> lost, boolean burned) {}
+    // What one part becomes:
+    //   compound        the gaseous / aqueous elements as a gas or liquid compound (empty: none, or no container)
+    //   usesContainer   its container gets used up
+    //   lost            the gaseous / aqueous elements that escaped for want of a container (for the particles)
+    //   soot            alchemical soot if there were any solid elements and paper to catch it (empty if not)
+    //   usesPaper       the paper gets used up (the soot was caught)
+    //   sootBlown       there were solids, but no paper: the soot blew away (for the particles)
+    public record Output(ItemStack compound, boolean usesContainer, List<DustElement> lost, ItemStack soot, boolean usesPaper, boolean sootBlown) {}
 
     public static Output output(List<DustElement> elements, ItemStack original, Predicate<Item> hasContainer)
     {
-        if (elements.isEmpty()) return new Output(ItemStack.EMPTY, false, List.of(), false);
-        Compounds.Kind kind = Compounds.Kind.of(elements);
-        if (hasContainer.test(kind.container())) return new Output(Compounds.create(elements, original, kind), true, List.of(), false);
-        List<DustElement> lost = elements.stream().filter(element -> !Separation.isSolid(element)).toList();
-        List<DustElement> solids = elements.stream().filter(Separation::isSolid).toList();
-        if (solids.isEmpty()) return new Output(ItemStack.EMPTY, false, lost, false);
-        // The solids as with no paper: crystalline remains, anything amorphous burns
-        Separation.Output remains = Separation.output(solids, original, 0);
-        return new Output(remains.stack(), false, lost, remains.burned());
+        List<DustElement> fluids = elements.stream().filter(element -> !Separation.isSolid(element)).toList();
+        boolean anySolid = elements.stream().anyMatch(Separation::isSolid);
+        boolean caught = anySolid && hasContainer.test(Items.PAPER);
+        ItemStack soot = caught ? new ItemStack(DustItemRegistry.ALCHEMICAL_SOOT.get()) : ItemStack.EMPTY;
+        boolean blown = anySolid && !caught;
+        if (fluids.isEmpty()) return new Output(ItemStack.EMPTY, false, List.of(), soot, caught, blown);
+        Compounds.Kind kind = Compounds.Kind.of(fluids);
+        if (hasContainer.test(kind.container())) return new Output(Compounds.create(fluids, original, kind), true, List.of(), soot, caught, blown);
+        return new Output(ItemStack.EMPTY, false, fluids, soot, caught, blown);
     }
 }

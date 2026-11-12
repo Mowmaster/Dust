@@ -37,13 +37,15 @@ import java.util.List;
 import java.util.UUID;
 
 // The Distillation Table (Distillation has the rules): the item in the flask, containers on three pads (glass bottles,
-// bowls, paper), and two outputs (what stayed in the flask, what boiled over into the jar).
+// bowls, paper for the soot), and three outputs (soot from the solids, the gas / liquid that stayed in the flask, what boiled over into
+// the jar).
 //   idle         the item in the flask shows as liquid, a quarter full, in the colour of what can boil
 //   boiling      started with a Magical Flint and Steel (BOIL_TICKS): the glyph rises off the scroll into the flask,
 //                spinning; the liquid boils away, and vapour fills the flask and runs down the neck into the jar
-//   transfer     (TRANSFER_TICKS) what's left in the flask streams to its output, the jar's to the other
-// The split and what each part becomes are decided at the start (containers are used then). Parts without their
-// container escape when it finishes (puffs and bubbles, or flames for soot).
+//   transfer     (TRANSFER_TICKS) what's left in the flask streams to its outputs, the jar's to its own
+// The split and what each part becomes are decided at the start (containers are used then). Gases and liquids
+// without their container escape when it finishes (puffs and bubbles); the solids burn to soot (a flame), which blows
+// away (smoke) without paper to catch it.
 public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     public static final int BOIL_TICKS = 100;
@@ -56,12 +58,15 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
     private ItemStack paper = ItemStack.EMPTY;
     private ItemStack flaskOut = ItemStack.EMPTY;
     private ItemStack jarOut = ItemStack.EMPTY;
+    private ItemStack sootOut = ItemStack.EMPTY;
     private ItemStack pendingFlask = ItemStack.EMPTY;
     private ItemStack pendingJar = ItemStack.EMPTY;
+    private ItemStack pendingSoot = ItemStack.EMPTY;
     // The element boiling over (for the jar's colour), and what escapes at the end without a container
     private @Nullable DustElement over;
     private List<DustElement> lost = List.of();
     private boolean burned;
+    private boolean sootBlown;
     private int progress = -1;
     private @Nullable UUID owner;
 
@@ -76,6 +81,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
     public ItemStack getPaper() { return paper; }
     public ItemStack getFlaskOut() { return flaskOut; }
     public ItemStack getJarOut() { return jarOut; }
+    public ItemStack getSootOut() { return sootOut; }
     public boolean isRunning() { return progress >= 0; }
 
     public float progress(float partialTick)
@@ -105,6 +111,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
                 StationSlot.ofStack(DistillationLayout.BOWL_AREA, stack -> stack.is(Items.BOWL), CONTAINER_LIMIT, () -> bowls, stack -> bowls = stack, this::sync),
                 StationSlot.ofStack(DistillationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), CONTAINER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
                 StationSlot.ofStack(DistillationLayout.FLASK_AREA, stack -> !isRunning(), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
+                StationSlot.output(DistillationLayout.SOOT_OUTPUT_AREA, () -> sootOut, stack -> sootOut = stack, this::sync),
                 StationSlot.output(DistillationLayout.FLASK_OUTPUT_AREA, () -> flaskOut, stack -> flaskOut = stack, this::sync),
                 StationSlot.output(DistillationLayout.JAR_OUTPUT_AREA, () -> jarOut, stack -> jarOut = stack, this::sync));
     }
@@ -116,7 +123,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
     {
         if (isRunning()) return "running";
         if (input.isEmpty()) return "empty";
-        if (!flaskOut.isEmpty() || !jarOut.isEmpty()) return "outputs";
+        if (!flaskOut.isEmpty() || !jarOut.isEmpty() || !sootOut.isEmpty()) return "outputs";
         if (!Distillation.canDistill(input)) return "nothing";
         return null;
     }
@@ -129,13 +136,16 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         Distillation.Output jar = Distillation.output(split.jar(), original, this::hasContainer);
         if (jar.usesContainer()) useContainer(Compounds.Kind.of(split.jar()).container());
         Distillation.Output flask = Distillation.output(split.flask(), original, this::hasContainer);
-        if (flask.usesContainer()) useContainer(Compounds.Kind.of(split.flask()).container());
-        pendingJar = jar.stack();
-        pendingFlask = flask.stack();
+        if (flask.usesContainer()) useContainer(Compounds.Kind.of(split.flask().stream().filter(element -> !Separation.isSolid(element)).toList()).container());
+        pendingJar = jar.compound();
+        pendingFlask = flask.compound();
+        if (flask.usesPaper()) useContainer(Items.PAPER);
+        pendingSoot = flask.soot();
+        burned = split.flask().stream().anyMatch(Separation::isSolid);
+        sootBlown = flask.sootBlown();
         List<DustElement> escaping = new ArrayList<>(jar.lost());
         escaping.addAll(flask.lost());
         lost = List.copyOf(escaping);
-        burned = jar.burned() || flask.burned();
         owner = player == null ? null : player.getUUID();
         progress = 0;
         level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.2F);
@@ -198,9 +208,10 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
                 stream(level, pos, to, jarTop.add(0, -0.1, 0), vapour, 0.4F);
             }
         } else {
-            // The flask's remains to their output, the jar's to the other
+            // The flask's remains to their outputs, the jar's to its own
             Vec3 flask = table.turned(DistillationLayout.FLASK.add(0, 0.5, 0)), jar = table.turned(DistillationLayout.JAR.add(0, 0.6, 0));
             stream(level, pos, flask, table.turned(DistillationLayout.FLASK_OUTPUT), colorOf(table.pendingFlask), 0.6F);
+            if (!table.pendingSoot.isEmpty()) stream(level, pos, flask, table.turned(DistillationLayout.SOOT_OUTPUT), 0x2A2A2A, 0.6F);
             stream(level, pos, jar, table.turned(DistillationLayout.JAR_OUTPUT), colorOf(table.pendingJar), 0.6F);
         }
     }
@@ -247,8 +258,10 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         ItemStack distilled = input;
         flaskOut = pendingFlask;
         jarOut = pendingJar;
+        sootOut = pendingSoot;
         pendingFlask = ItemStack.EMPTY;
         pendingJar = ItemStack.EMPTY;
+        pendingSoot = ItemStack.EMPTY;
         input = ItemStack.EMPTY;
         progress = -1;
 
@@ -260,8 +273,10 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
             if (element.phase() == ElementPhase.AQUEOUS) level.sendParticles(ParticleTypes.BUBBLE_POP, x, y, z, 6, 0.1, 0.05, 0.1, 0.01);
         }
         if (burned) level.sendParticles(ParticleTypes.FLAME, x, y, z, 8, 0.08, 0.05, 0.08, 0.02);
+        if (sootBlown) level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, 10, 0.1, 0.1, 0.1, 0.03);
         lost = List.of();
         burned = false;
+        sootBlown = false;
         over = null;
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         noteResearch(level, distilled);
@@ -275,7 +290,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         List<ItemStackTemplate> outputs = new ArrayList<>();
-        for (ItemStack out : List.of(flaskOut, jarOut)) {
+        for (ItemStack out : List.of(sootOut, flaskOut, jarOut)) {
             if (!out.isEmpty()) outputs.add(ItemStackTemplate.fromNonEmptyStack(out, 1));
         }
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
@@ -300,11 +315,14 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         store(output, "paper", paper);
         store(output, "flask_out", flaskOut);
         store(output, "jar_out", jarOut);
+        store(output, "soot_out", sootOut);
         store(output, "pending_flask", pendingFlask);
         store(output, "pending_jar", pendingJar);
+        store(output, "pending_soot", pendingSoot);
         if (over != null) output.store("over", DustElements.CODEC, over);
         if (!lost.isEmpty()) output.store("lost", DustElements.CODEC.listOf(), lost);
         output.putBoolean("burned", burned);
+        output.putBoolean("soot_blown", sootBlown);
         output.putInt("progress", progress);
         if (owner != null) output.store("owner", UUIDUtil.CODEC, owner);
     }
@@ -324,11 +342,14 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         this.paper = read(input, "paper");
         this.flaskOut = read(input, "flask_out");
         this.jarOut = read(input, "jar_out");
+        this.sootOut = read(input, "soot_out");
         this.pendingFlask = read(input, "pending_flask");
         this.pendingJar = read(input, "pending_jar");
+        this.pendingSoot = read(input, "pending_soot");
         this.over = input.read("over", DustElements.CODEC).orElse(null);
         this.lost = input.read("lost", DustElements.CODEC.listOf()).orElse(List.of());
         this.burned = input.getBooleanOr("burned", false);
+        this.sootBlown = input.getBooleanOr("soot_blown", false);
         this.progress = input.getIntOr("progress", -1);
         this.owner = input.read("owner", UUIDUtil.CODEC).orElse(null);
     }
@@ -344,7 +365,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
     {
         super.preRemoveSideEffects(pos, state);
         if (level == null) return;
-        for (ItemStack stack : List.of(input, bottles, bowls, paper, flaskOut, jarOut)) {
+        for (ItemStack stack : List.of(input, bottles, bowls, paper, flaskOut, jarOut, sootOut)) {
             if (!stack.isEmpty()) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, stack);
         }
     }
