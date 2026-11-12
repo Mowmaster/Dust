@@ -46,6 +46,13 @@ public final class StationInteractions
         return null;
     }
 
+    // Whether a click (hit) landed in this area of the block (model pixels, facing north; turned to the block's facing)
+    public static boolean inArea(Level level, BlockPos pos, BlockHitResult hit, CBPixelBox area)
+    {
+        Direction facing = level.getBlockState(pos).getOptionalValue(BlockStateProperties.HORIZONTAL_FACING).orElse(Direction.NORTH);
+        return area.rotateY(CBPixelBox.quarterTurns(facing)).contains(CBPixelBox.pixelInside(hit));
+    }
+
     // Call from a station's useItemOn. SUCCESS if the item went into the slot clicked; otherwise TRY_WITH_EMPTY_HAND
     // (so the item does its own thing, e.g. a block is placed against the station).
     public static InteractionResult rightClick(ItemStack stack, Level level, BlockPos pos, Player player, BlockHitResult hit)

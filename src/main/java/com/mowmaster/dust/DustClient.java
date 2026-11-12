@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
 import com.mowmaster.dust.Features.DustComposition.Client.ClientElementTooltip;
 import com.mowmaster.dust.Features.Machines.Client.CompoundTint;
 import com.mowmaster.dust.Features.Machines.Client.ResearchCrusherRenderer;
+import com.mowmaster.dust.Features.Machines.Client.ResearchEvaporationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.ResearchSeparationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
 import net.neoforged.neoforge.client.event.ModelEvent;
@@ -84,6 +85,8 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_CRUSHER.get(), ResearchCrusherRenderer::new);
         // The Alchemical Separation Table: its array, the item on it and the outputs
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_SEPARATION.get(), ResearchSeparationRenderer::new);
+        // The Evaporation Table: its spoon, the liquid, the glyph and the items
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_EVAPORATION.get(), ResearchEvaporationRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
@@ -95,6 +98,7 @@ public class DustClient {
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
         ResearchCrusherRenderer.registerModels(event);
+        ResearchEvaporationRenderer.registerModels(event);
     }
 
     // Item model tints: "dust:source_block", the colour of the block a product was made from (crushed blocks)

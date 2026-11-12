@@ -60,6 +60,7 @@ public class DustProviderModel extends ModelProvider {
         createElementItems(itemModels);
         createResearchCrusher(blockModels, itemModels);
         createResearchSeparation(blockModels, itemModels);
+        createResearchEvaporation(blockModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -205,6 +206,18 @@ public class DustProviderModel extends ModelProvider {
         itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_COMPOUND.get(),
                 ItemModelUtils.tintedModel(compoundModel, new Constant(-1), new CompoundTint()));
         itemModels.generateFlatItem(DustItemRegistry.ALCHEMICAL_SOOT.get(), ModelTemplates.FLAT_ITEM);
+    }
+
+    // The Evaporation Table: the block shows everything but the spoon (research_evaporation_body.json), which stirs in
+    // Client/ResearchEvaporationRenderer. Turned by FACING (the output faces the player). The item shows the whole thing.
+    private void createResearchEvaporation(BlockModelGenerators blockModels)
+    {
+        Block block = DustBlockRegistry.RESEARCH_EVAPORATION.get();
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_evaporation_body")))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(block.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_evaporation")));
     }
 
     // The Element Tester: one hand-made model per number of crystals (models/block/station/element_tester_<n>.json),

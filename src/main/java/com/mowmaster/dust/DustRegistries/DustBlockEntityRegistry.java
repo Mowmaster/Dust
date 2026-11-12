@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlockEntity;
+import com.mowmaster.dust.Features.Machines.ResearchEvaporationBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchSeparationBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +28,9 @@ public class DustBlockEntityRegistry
 
     public static final Supplier<BlockEntityType<ResearchSeparationBlockEntity>> RESEARCH_SEPARATION = BLOCK_ENTITIES.register("research_separation",
             () -> new BlockEntityType<>(ResearchSeparationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_SEPARATION.get())));
+
+    public static final Supplier<BlockEntityType<ResearchEvaporationBlockEntity>> RESEARCH_EVAPORATION = BLOCK_ENTITIES.register("research_evaporation",
+            () -> new BlockEntityType<>(ResearchEvaporationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_EVAPORATION.get())));
 
     public static void register(IEventBus eventBus)
     {
