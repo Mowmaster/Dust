@@ -97,6 +97,25 @@ public final class Research
         experiment(player, entry, old -> old.withNotes(notes));
     }
 
+    // ---- process steps (Features/Machines) ----
+
+    // A machine turned input into output for this player: the step is noted on the input's original material (crushed
+    // stone's steps go on stone), once. Making the output counts as finding the material, if it wasn't already.
+    public static void noteProcess(ServerPlayer player, @Nullable ResearchEntry entry, ProcessRecord process)
+    {
+        if (entry == null || !carriesNotes(player)) return;
+        observe(player, entry, player.blockPosition());
+        experiment(player, entry, old -> old.withProcess(process));
+    }
+
+    // The player crossed a step out in the book (quietly: no scribble for taking something out)
+    public static void removeProcess(ServerPlayer player, ResearchEntry entry, ProcessRecord process)
+    {
+        EntryResearch before = get(player).get(entry);
+        if (before == null || !before.processes().contains(process)) return;
+        set(player, get(player).update(entry, old -> old.withoutProcess(process)));
+    }
+
     private static void set(Player player, ResearchData data)
     {
         // Setting a new value is what syncs it to the player's client

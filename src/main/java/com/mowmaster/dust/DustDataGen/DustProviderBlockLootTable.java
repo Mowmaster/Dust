@@ -45,6 +45,7 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         add(DustBlockRegistry.GLYPH_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, Items.COBBLESTONE));
 
         dropSelf(DustBlockRegistry.ELEMENT_TESTER.get());
+        dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());
 
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
         add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));

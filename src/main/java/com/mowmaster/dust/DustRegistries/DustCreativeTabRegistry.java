@@ -29,6 +29,7 @@ public class DustCreativeTabRegistry {
                         DustItemRegistry.CRYSTALS.values().forEach(item -> output.accept(item.get()));
                         DustItemRegistry.DUSTS.values().forEach(item -> output.accept(item.get()));
                         output.accept(DustBlockRegistry.ELEMENT_TESTER.asItem());
+                        output.accept(DustBlockRegistry.RESEARCH_CRUSHER.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",

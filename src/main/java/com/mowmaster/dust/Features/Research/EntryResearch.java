@@ -31,6 +31,8 @@ import java.util.Map;
 //   levels        an effect's levels the player has had (amplifier 0 = level I), and for instant effects how much
 //                 health a level gave or took; an enchantment's levels seen
 //   dust          what's known of its dust: the colour it burns with, and the elements measured in it (see Dust)
+//   processes     the steps the player has taken it through (machine, input, output), each noted once; the player
+//                 can cross them out in the book
 //   notes         the player's own overview notes, edited in the book (empty = the built-in notes)
 //
 // RecordCodecBuilder can only take 16 fields, so related fields are grouped into small records (Creature, Food, Dust).
@@ -39,7 +41,7 @@ import java.util.Map;
 public record EntryResearch(long day, int time, List<Identifier> biomes, List<Identifier> drops, Creature creature,
                             List<Identifier> madeFrom, List<Identifier> makes, List<Identifier> modifiers,
                             List<RecipeRecord> madeBy, List<RecipeRecord> usedIn, Food food, List<EffectLevel> levels,
-                            Dust dust, String notes)
+                            Dust dust, List<ProcessRecord> processes, String notes)
 {
     // The overview notes a player can write for one entry (the book screen counts down the last few characters)
     public static final int MAX_NOTES_LENGTH = 256;
@@ -141,13 +143,14 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
             Food.MAP_CODEC.forGetter(EntryResearch::food),
             EffectLevel.CODEC.listOf().optionalFieldOf("levels", List.of()).forGetter(EntryResearch::levels),
             Dust.MAP_CODEC.forGetter(EntryResearch::dust),
+            ProcessRecord.CODEC.listOf().optionalFieldOf("processes", List.of()).forGetter(EntryResearch::processes),
             Codec.STRING.optionalFieldOf("notes", "").forGetter(EntryResearch::notes)
     ).apply(instance, EntryResearch::new));
 
     public static EntryResearch firstSeen(long day, int time, Identifier biome)
     {
         return new EntryResearch(day, time, List.of(biome), List.of(), Creature.NONE, List.of(), List.of(), List.of(),
-                List.of(), List.of(), Food.NONE, List.of(), Dust.NONE, "");
+                List.of(), List.of(), Food.NONE, List.of(), Dust.NONE, List.of(), "");
     }
 
     // ---- shortcuts into the groups (the names the rest of the code has always used) ----
@@ -171,12 +174,12 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
 
     public EntryResearch withBiome(Identifier biome)
     {
-        return biomes.contains(biome) ? this : new EntryResearch(day, time, add(biomes, List.of(biome)), drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, notes);
+        return biomes.contains(biome) ? this : new EntryResearch(day, time, add(biomes, List.of(biome)), drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
     public EntryResearch withDrops(List<Identifier> items)
     {
-        return new EntryResearch(day, time, biomes, add(drops, items), creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, notes);
+        return new EntryResearch(day, time, biomes, add(drops, items), creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
     public EntryResearch withMaxHealth(float health)
@@ -196,27 +199,27 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
 
     public EntryResearch withMadeFrom(List<Identifier> items)
     {
-        return new EntryResearch(day, time, biomes, drops, creature, add(madeFrom, items), makes, modifiers, madeBy, usedIn, food, levels, dust, notes);
+        return new EntryResearch(day, time, biomes, drops, creature, add(madeFrom, items), makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
     public EntryResearch withMakes(Identifier item)
     {
-        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, add(makes, List.of(item)), modifiers, madeBy, usedIn, food, levels, dust, notes);
+        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, add(makes, List.of(item)), modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
     public EntryResearch withModifier(Identifier item)
     {
-        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, add(modifiers, List.of(item)), madeBy, usedIn, food, levels, dust, notes);
+        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, add(modifiers, List.of(item)), madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
     public EntryResearch withMadeBy(RecipeRecord recipe)
     {
-        return madeBy.contains(recipe) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, append(madeBy, recipe), usedIn, food, levels, dust, notes);
+        return madeBy.contains(recipe) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, append(madeBy, recipe), usedIn, food, levels, dust, processes, notes);
     }
 
     public EntryResearch withUsedIn(RecipeRecord recipe)
     {
-        return usedIn.contains(recipe) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, append(usedIn, recipe), food, levels, dust, notes);
+        return usedIn.contains(recipe) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, append(usedIn, recipe), food, levels, dust, processes, notes);
     }
 
     public EntryResearch withSaturation(float value)
@@ -247,7 +250,7 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
         // Comparator.comparingInt makes a comparator from a "key" function: here, lowest level first
         out.sort(Comparator.comparingInt(EffectLevel::amplifier));
         List<EffectLevel> sorted = List.copyOf(out);
-        return sorted.equals(levels) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, sorted, dust, notes);
+        return sorted.equals(levels) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, sorted, dust, processes, notes);
     }
 
     // Burned in a Magical Flint and Steel's fire: the colour of the flames
@@ -264,10 +267,25 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
         return with(new Dust(dust.fireColor(), Collections.unmodifiableMap(merged)));
     }
 
+    // A step it was taken through, unless the same step (same input, machine and output) is already noted
+    public EntryResearch withProcess(ProcessRecord process)
+    {
+        return processes.contains(process) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, append(processes, process), notes);
+    }
+
+    // The player crossed this step out
+    public EntryResearch withoutProcess(ProcessRecord process)
+    {
+        if (!processes.contains(process)) return this;
+        List<ProcessRecord> out = new ArrayList<>(processes);
+        out.remove(process);
+        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, List.copyOf(out), notes);
+    }
+
     public EntryResearch withNotes(String text)
     {
         String clipped = text.length() > MAX_NOTES_LENGTH ? text.substring(0, MAX_NOTES_LENGTH) : text;
-        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, clipped);
+        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, clipped);
     }
 
     // ---- helpers ----
@@ -275,17 +293,17 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
     // A copy with one group replaced (the same entry if nothing changed: records compare by their fields)
     private EntryResearch with(Creature value)
     {
-        return value.equals(creature) ? this : new EntryResearch(day, time, biomes, drops, value, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, notes);
+        return value.equals(creature) ? this : new EntryResearch(day, time, biomes, drops, value, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
     private EntryResearch with(Food value)
     {
-        return value.equals(food) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, value, levels, dust, notes);
+        return value.equals(food) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, value, levels, dust, processes, notes);
     }
 
     private EntryResearch with(Dust value)
     {
-        return value.equals(dust) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, value, notes);
+        return value.equals(dust) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, value, processes, notes);
     }
 
     private static <T> List<T> append(List<T> list, T item)

@@ -4,6 +4,7 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import com.mowmaster.dust.Features.DustComposition.DustFireBlock;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
+import com.mowmaster.dust.Features.Machines.ResearchCrusherBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -96,6 +97,10 @@ public class DustBlockRegistry {
     // the blocks around it still draw their faces behind it.
     public static final DeferredBlock<Block> ELEMENT_TESTER = registerBlock("element_tester", properties -> new ElementTesterBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F).noOcclusion()));
+
+    // Research machines (Features/Machines): break materials down, step by step, for research
+    public static final DeferredBlock<Block> RESEARCH_CRUSHER = registerBlock("research_crusher", properties -> new ResearchCrusherBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {

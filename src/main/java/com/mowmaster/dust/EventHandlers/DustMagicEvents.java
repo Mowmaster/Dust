@@ -12,6 +12,7 @@ import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.Elem
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
 import com.mowmaster.dust.Features.EffectScrolls.Networking.*;
 import com.mowmaster.dust.Features.Research.ObservationPayloads;
+import com.mowmaster.dust.Features.Research.RemoveProcessPayload;
 import com.mowmaster.dust.Features.Research.ResearchNotesPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -41,6 +42,7 @@ public class DustMagicEvents {
         registrar.playToClient(ObservationPayloads.Discovered.TYPE, ObservationPayloads.Discovered.STREAM_CODEC);
         registrar.playToClient(ObservationPayloads.Noted.TYPE, ObservationPayloads.Noted.STREAM_CODEC);
         registrar.playToServer(ResearchNotesPayload.TYPE, ResearchNotesPayload.STREAM_CODEC, ResearchNotesPayload::handle);
+        registrar.playToServer(RemoveProcessPayload.TYPE, RemoveProcessPayload.STREAM_CODEC, RemoveProcessPayload::handle);
         registrar.playToServer(PacketOfDustAuraC2S.TYPE, PacketOfDustAuraC2S.STREAM_CODEC, PacketReceiverServer::handleTestPacket);
         registrar.playToClient(PacketOfDustAuraS2C.TYPE, PacketOfDustAuraS2C.STREAM_CODEC, PacketReceiverClient::handleClientPacket);
 

@@ -4,7 +4,11 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Research.EntryResearch;
+import com.mowmaster.dust.Features.Research.ProcessRecord;
+import com.mowmaster.dust.Features.Research.RemoveProcessPayload;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import com.mowmaster.dust.Features.Research.RecipeRecord;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchData;
@@ -112,26 +116,33 @@ public final class ResearchBook
     //   CRAFTED_INTO  recipes seen using it
     //   EXPERIMENTS   health, breeding food, brewing
     //   RESEARCH      its dust: the colour it burns with (Magical Flint and Steel), what it's made of (Elemental Examiner)
-    enum Kind { OVERVIEW, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH }
+    //   PROCESSES     the steps the player has taken it through: input -> machine -> output, each with an "x" to cross
+    //                 it out (as many pages as it takes)
+    enum Kind { OVERVIEW, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH, PROCESSES }
 
-    // One notes page: its kind, and for the crafting pages the recipes that fit on it
-    record NotesPage(Kind kind, List<RecipeRecord> recipes) {}
+    // One notes page: its kind, and for the crafting / process pages the recipes / steps that fit on it
+    record NotesPage(Kind kind, List<RecipeRecord> recipes, List<ProcessRecord> processes) {}
 
     static List<NotesPage> notesPages(ResearchEntry entry, EntryResearch research)
     {
         List<NotesPage> pages = new ArrayList<>();
-        pages.add(new NotesPage(Kind.OVERVIEW, List.of()));
-        if (research.biomes().size() >= 2) pages.add(new NotesPage(Kind.WHERE_FOUND, List.of()));
-        if (entry.group().size() > 1) pages.add(new NotesPage(Kind.FAMILY, List.of()));
+        pages.add(new NotesPage(Kind.OVERVIEW, List.of(), List.of()));
+        if (research.biomes().size() >= 2) pages.add(new NotesPage(Kind.WHERE_FOUND, List.of(), List.of()));
+        if (entry.group().size() > 1) pages.add(new NotesPage(Kind.FAMILY, List.of(), List.of()));
         addRecipePages(pages, Kind.CRAFTED_FROM, research.madeBy());
         addRecipePages(pages, Kind.CRAFTED_INTO, research.usedIn());
         if (research.maxHealth() > 0 || !research.breeding().isEmpty() || !research.madeFrom().isEmpty()
                 || !research.makes().isEmpty() || !research.modifiers().isEmpty()
                 || research.saturation() >= 0 || !research.foodEffects().isEmpty()
                 || research.hits().known() || !research.levels().isEmpty()) {
-            pages.add(new NotesPage(Kind.EXPERIMENTS, List.of()));
+            pages.add(new NotesPage(Kind.EXPERIMENTS, List.of(), List.of()));
         }
-        if (entry.tab().showsDustPage()) pages.add(new NotesPage(Kind.RESEARCH, List.of()));
+        if (entry.tab().showsDustPage()) pages.add(new NotesPage(Kind.RESEARCH, List.of(), List.of()));
+        // Steps, PROCESS_ROWS to a page
+        List<ProcessRecord> steps = research.processes();
+        for (int i = 0; i < steps.size(); i += PROCESS_ROWS) {
+            pages.add(new NotesPage(Kind.PROCESSES, List.of(), List.copyOf(steps.subList(i, Math.min(steps.size(), i + PROCESS_ROWS)))));
+        }
         return pages;
     }
 
@@ -143,14 +154,14 @@ public final class ResearchBook
         for (RecipeRecord recipe : recipes) {
             int height = recipeHeight(recipe) + RECIPE_GAP;
             if (!page.isEmpty() && used + height > NOTES_HEIGHT) {
-                pages.add(new NotesPage(kind, List.copyOf(page)));
+                pages.add(new NotesPage(kind, List.copyOf(page), List.of()));
                 page.clear();
                 used = 0;
             }
             page.add(recipe);
             used += height;
         }
-        if (!page.isEmpty()) pages.add(new NotesPage(kind, List.copyOf(page)));
+        if (!page.isEmpty()) pages.add(new NotesPage(kind, List.copyOf(page), List.of()));
     }
 
     static @Nullable NotesPage currentNotesPage(ResearchData data)
@@ -271,6 +282,7 @@ public final class ResearchBook
         EntryResearch research = data.get(entry);
         if (research == null) return;
         LINKS.clear();
+        CROSSES.clear();
 
         // Left page: the entry itself, then its drops (or, for items, its sources), as linked icons
         drawSubject(graphics, entry, LEFT_X + 20, PAGE_TOP + 2, LEFT_X + PAGE_W - 20, PAGE_TOP + 62);
@@ -312,6 +324,7 @@ public final class ResearchBook
                     for (RecipeRecord recipe : page.recipes()) y += drawRecipe(graphics, font, data, recipe, RIGHT_X + 3, y) + RECIPE_GAP;
                 }
                 case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
+                case PROCESSES -> drawProcesses(graphics, font, data, page.processes());
                 case RESEARCH -> drawDust(graphics, font, research.dust());
                 case OVERVIEW -> {
                     if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
@@ -559,6 +572,55 @@ public final class ResearchBook
         LINKS.add(new Link(x, y, entry, researched, effect.get().value().getDisplayName(), false));
     }
 
+    // ---- processes pages ----
+
+    private static final int PROCESS_ROW = 21;
+    private static final int PROCESS_ROWS = 6;
+
+    // The "x" boxes drawn on the open processes page, for clicks (filled each frame, like LINKS)
+    private record Cross(int x, int y, ProcessRecord process) {}
+    private static final List<Cross> CROSSES = new ArrayList<>();
+    // Whether crossing out works: true for your own Research Notes, false for a Shared Research Guide (set by the screen)
+    static boolean editable = true;
+
+    // Each step as  [input] -> [machine] -> [output]  x   (icons link to their entries like everywhere else)
+    private static void drawProcesses(GuiGraphicsExtractor graphics, Font font, ResearchData data, List<ProcessRecord> steps)
+    {
+        int y = NOTES_TOP;
+        for (ProcessRecord step : steps) {
+            int x = RIGHT_X + 3;
+            linkedStack(graphics, data, step.input().create(), x, y);
+            Paper.ink(graphics, font, Component.literal("\u2192"), x + CELL + 3, y + 5, INK);
+            linkedItem(graphics, data, step.machine(), x + CELL + 12, y);
+            Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 15, y + 5, INK);
+            linkedStack(graphics, data, step.output().create(), x + 2 * CELL + 24, y);
+            if (editable) {
+                int crossX = RIGHT_X + PAGE_W - 12;
+                Paper.ink(graphics, font, Component.literal("x"), crossX + 2, y + 5, FADED);
+                CROSSES.add(new Cross(crossX, y + 3, step));
+            }
+            y += PROCESS_ROW;
+        }
+    }
+
+    // An item stack (with its data: crushed stone shows as pebbles of stone) as a linked icon. Products link to, and
+    // are faded by, the material they were made from.
+    private static void linkedStack(GuiGraphicsExtractor graphics, ResearchData data, ItemStack stack, int x, int y)
+    {
+        ResearchEntry entry = ResearchTabs.entryForItem(ProductSource.original(stack));
+        boolean researched = entry != null && data.has(entry);
+        drawIcon(graphics, stack, x, y, researched);
+        LINKS.add(new Link(x, y, entry, researched, stack.getHoverName(), false));
+    }
+
+    private static @Nullable Cross crossAt(int x, int y)
+    {
+        for (Cross cross : CROSSES) {
+            if (x >= cross.x() && x < cross.x() + 10 && y >= cross.y() && y < cross.y() + 12) return cross;
+        }
+        return null;
+    }
+
     // ---- research page: its dust ----
 
     private static final Identifier FLAME_SPRITE = Identifier.fromNamespaceAndPath(DustReferences.MODID, "research/flame");
@@ -748,6 +810,7 @@ public final class ResearchBook
             return shown == null ? Component.translatable("research.dust.undiscovered") : tab().name(shown);
         }
         // Linked icons: an item's name (things seen in recipes and drops are known by sight); unfound family members "???"
+        if (crossAt(x, y) != null && editable) return Component.translatable("research.dust.process.remove");
         Link link = linkAt(x, y);
         if (link != null) return link.family() && !link.researched() ? Component.translatable("research.dust.undiscovered") : link.name();
         return null;
@@ -801,6 +864,13 @@ public final class ResearchBook
                 return true;
             }
             return false;
+        }
+
+        // An "x" on a processes page: cross that step out (the server removes it; the page updates when it syncs back)
+        Cross cross = editable ? crossAt(x, y) : null;
+        if (cross != null) {
+            ClientPacketDistributor.sendToServer(new RemoveProcessPayload(selected.tab().id(), selected.id(), cross.process()));
+            return true;
         }
 
         // A linked icon: open its entry if it's been researched (a family member keeps the family page open)

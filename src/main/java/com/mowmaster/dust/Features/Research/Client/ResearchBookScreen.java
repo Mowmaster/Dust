@@ -41,6 +41,8 @@ public class ResearchBookScreen extends Screen
         super(Component.translatable(readOnly ? "item.dust.shared_research_guide" : "item.dust.research_notes"));
         this.book = book;
         this.readOnly = readOnly;
+        // A Shared Research Guide can't cross out process steps
+        ResearchBook.editable = !readOnly;
     }
 
     private ResearchData data()

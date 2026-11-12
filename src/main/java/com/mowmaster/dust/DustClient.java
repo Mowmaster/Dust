@@ -3,6 +3,10 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
 import com.mowmaster.dust.Features.DustComposition.Client.ClientElementTooltip;
+import com.mowmaster.dust.Features.Machines.Client.ResearchCrusherRenderer;
+import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.minecraft.resources.Identifier;
 import com.mowmaster.dust.Features.DustComposition.Client.ElementTesterRenderer;
 import com.mowmaster.dust.Features.DustComposition.ElementTooltip;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
@@ -74,10 +78,26 @@ public class DustClient {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // The Research Crusher: its turning wheels, the block going in and the pebbles coming out
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_CRUSHER.get(), ResearchCrusherRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
+    }
+
+    // Models drawn by code rather than placed as blocks (the crusher's wheels)
+    @SubscribeEvent
+    public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
+    {
+        ResearchCrusherRenderer.registerModels(event);
+    }
+
+    // Item model tints: "dust:source_block", the colour of the block a product was made from (crushed blocks)
+    @SubscribeEvent
+    public static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event)
+    {
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "source_block"), SourceBlockTint.MAP_CODEC);
     }
 
     // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)

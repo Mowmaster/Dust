@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlockEntity;
+import com.mowmaster.dust.Features.Machines.ResearchCrusherBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -19,6 +20,9 @@ public class DustBlockEntityRegistry
     // new BlockEntityType<>(factory, blocks): how to make one, and the blocks allowed to have one
     public static final Supplier<BlockEntityType<ElementTesterBlockEntity>> ELEMENT_TESTER = BLOCK_ENTITIES.register("element_tester",
             () -> new BlockEntityType<>(ElementTesterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_TESTER.get())));
+
+    public static final Supplier<BlockEntityType<ResearchCrusherBlockEntity>> RESEARCH_CRUSHER = BLOCK_ENTITIES.register("research_crusher",
+            () -> new BlockEntityType<>(ResearchCrusherBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_CRUSHER.get())));
 
     public static void register(IEventBus eventBus)
     {

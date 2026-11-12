@@ -9,6 +9,7 @@ import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
+import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
 import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
@@ -56,6 +57,7 @@ public class DustProviderModel extends ModelProvider {
         createDustFire(blockModels);
         createElementTester(blockModels);
         createElementItems(itemModels);
+        createResearchCrusher(blockModels, itemModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -161,6 +163,23 @@ public class DustProviderModel extends ModelProvider {
             itemModels.itemModelOutput.accept(DustItemRegistry.CRYSTALS.get(element).get(), ItemModelUtils.tintedModel(crystalModel, new Constant(color)));
             itemModels.itemModelOutput.accept(DustItemRegistry.DUSTS.get(element).get(), ItemModelUtils.tintedModel(dustModel, new Constant(color)));
         }
+    }
+
+    // The Research Crusher: the block shows its frame and funnel (models/block/station/research_crusher_body.json); its
+    // wheels turn in Client/ResearchCrusherRenderer. Turned by FACING (the model's tray faces north). The item shows the
+    // whole thing (research_crusher.json, wheels and all).
+    // Crushed blocks: a greyscale pebbles texture tinted with their block's colour (Client/SourceBlockTint).
+    private void createResearchCrusher(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        Block block = DustBlockRegistry.RESEARCH_CRUSHER.get();
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_crusher_body")))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(block.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_crusher")));
+
+        Identifier crushedModel = ModelTemplates.FLAT_ITEM.create(DustItemRegistry.CRUSHED_BLOCK.get(), TextureMapping.layer0(DustItemRegistry.CRUSHED_BLOCK.get()), itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(DustItemRegistry.CRUSHED_BLOCK.get(), ItemModelUtils.tintedModel(crushedModel, new SourceBlockTint()));
     }
 
     // The Element Tester: one hand-made model per number of crystals (models/block/station/element_tester_<n>.json),

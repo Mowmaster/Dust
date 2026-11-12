@@ -1,5 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
+import net.minecraft.world.item.ItemStackTemplate;
+
 
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
@@ -34,6 +36,10 @@ public class DustComponentDataRegistry
             builder -> builder.persistent(ResearchData.CODEC).networkSynchronized(ResearchData.STREAM_CODEC));
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> RESEARCH_AUTHOR = register("research_author",
             builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    // What a process product was made from (crushed stone remembers the stone): see Features/Machines/ProductSource
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemStackTemplate>> SOURCE = register("source",
+            builder -> builder.persistent(ItemStackTemplate.CODEC).networkSynchronized(ItemStackTemplate.STREAM_CODEC));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                           UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

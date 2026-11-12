@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Features.DustComposition;
 
+import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.mowlib.storage.StorageInteractions;
 import net.minecraft.core.BlockPos;
@@ -168,7 +169,8 @@ public class ElementTesterBlock extends Block implements EntityBlock
         // LinkedHashMap keeps the crystals' order
         Map<DustElement, Integer> measured = new LinkedHashMap<>();
         for (DustElement crystal : tester.crystals()) measured.put(crystal, tester.percent(crystal));
-        DustResearch.noteMeasured(player, ResearchTabs.entryForItem(item), measured);
+        // A product's findings go on what it was made from (crushed stone's on stone)
+        DustResearch.noteMeasured(player, ResearchTabs.entryForItem(ProductSource.original(item)), measured);
     }
 
     // A crystal whose element is all of the item sparkles in its colour (client only; called every frame or so)
