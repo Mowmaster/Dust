@@ -122,6 +122,8 @@ public class ResearchSeparationBlock extends Block implements EntityBlock
         }
 
         // Anything else goes where it's clicked (StationInteractions: paper on its pad, the item on the scroll)
+        // Blocks go through the Research Crusher first
+        if (ResearchInput.refuseBlock(stack, level, pos, player, hit, ResearchSeparationBlockEntity.SCROLL)) return InteractionResult.FAIL;
         return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
 }

@@ -126,6 +126,8 @@ public class ResearchEvaporationBlock extends Block implements EntityBlock
             if (!level.isClientSide()) table.stir(level);
             return InteractionResult.SUCCESS;
         }
+        // Blocks go through the Research Crusher first
+        if (ResearchInput.refuseBlock(stack, level, pos, player, hit, EvaporationLayout.POT_AREA)) return InteractionResult.FAIL;
         return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
 

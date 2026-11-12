@@ -1,7 +1,5 @@
 package com.mowmaster.dust.Features.Machines;
 
-import com.mowmaster.dust.Features.DustComposition.DustComposition;
-import com.mowmaster.dust.Features.DustComposition.DustCompositions;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.ElementPhase;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
@@ -29,20 +27,16 @@ public final class Separation
         return element.phase() == ElementPhase.CRYSTALLINE || element.phase() == ElementPhase.AMORPHOUS;
     }
 
-    // The solid elements in it (repeats kept), or an empty list if it has no dust
+    // The solid elements in it (repeats kept; as ResearchInput reads it), or an empty list if it has no dust
     public static List<DustElement> solids(ItemStack stack)
     {
-        DustComposition composition = DustCompositions.of(stack);
-        if (composition == null) return List.of();
-        return composition.elements().stream().filter(Separation::isSolid).toList();
+        return ResearchInput.elements(stack).stream().filter(Separation::isSolid).toList();
     }
 
     // The elements that escape (gaseous and aqueous)
     public static List<DustElement> escaping(ItemStack stack)
     {
-        DustComposition composition = DustCompositions.of(stack);
-        if (composition == null) return List.of();
-        return composition.elements().stream().filter(element -> !isSolid(element)).toList();
+        return ResearchInput.elements(stack).stream().filter(element -> !isSolid(element)).toList();
     }
 
     public static boolean canSeparate(ItemStack stack)

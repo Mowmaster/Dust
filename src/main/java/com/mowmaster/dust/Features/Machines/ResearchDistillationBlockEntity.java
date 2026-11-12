@@ -110,7 +110,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
                 StationSlot.ofStack(DistillationLayout.BOTTLE_AREA, stack -> stack.is(Items.GLASS_BOTTLE), CONTAINER_LIMIT, () -> bottles, stack -> bottles = stack, this::sync),
                 StationSlot.ofStack(DistillationLayout.BOWL_AREA, stack -> stack.is(Items.BOWL), CONTAINER_LIMIT, () -> bowls, stack -> bowls = stack, this::sync),
                 StationSlot.ofStack(DistillationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), CONTAINER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
-                StationSlot.ofStack(DistillationLayout.FLASK_AREA, stack -> !isRunning(), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
+                StationSlot.ofStack(DistillationLayout.FLASK_AREA, stack -> !isRunning() && ResearchInput.accepts(stack), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
                 StationSlot.output(DistillationLayout.SOOT_OUTPUT_AREA, () -> sootOut, stack -> sootOut = stack, this::sync),
                 StationSlot.output(DistillationLayout.FLASK_OUTPUT_AREA, () -> flaskOut, stack -> flaskOut = stack, this::sync),
                 StationSlot.output(DistillationLayout.JAR_OUTPUT_AREA, () -> jarOut, stack -> jarOut = stack, this::sync));

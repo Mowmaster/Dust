@@ -120,6 +120,8 @@ public class ResearchDistillationBlock extends Block implements EntityBlock
             }
             return InteractionResult.SUCCESS;
         }
+        // Blocks go through the Research Crusher first
+        if (ResearchInput.refuseBlock(stack, level, pos, player, hit, DistillationLayout.FLASK_AREA)) return InteractionResult.FAIL;
         return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
 }

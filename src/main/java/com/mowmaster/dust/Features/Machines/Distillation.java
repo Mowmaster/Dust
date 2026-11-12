@@ -1,8 +1,6 @@
 package com.mowmaster.dust.Features.Machines;
 
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
-import com.mowmaster.dust.Features.DustComposition.DustComposition;
-import com.mowmaster.dust.Features.DustComposition.DustCompositions;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
@@ -25,10 +23,10 @@ public final class Distillation
 {
     private Distillation() {}
 
+    // As ResearchInput reads it (a single-element compound: the elements it's mixed from)
     public static List<DustElement> elements(ItemStack stack)
     {
-        DustComposition composition = DustCompositions.of(stack);
-        return composition == null ? List.of() : composition.elements();
+        return ResearchInput.elements(stack);
     }
 
     public static boolean canDistill(ItemStack stack)

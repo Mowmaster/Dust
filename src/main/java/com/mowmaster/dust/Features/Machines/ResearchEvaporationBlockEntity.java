@@ -101,7 +101,7 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         return List.of(
                 StationSlot.ofStack(EvaporationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
                 // Into the pot: one, and it stays while it's being worked
-                StationSlot.ofStack(EvaporationLayout.POT_AREA, stack -> phase == Phase.IDLE, 1,
+                StationSlot.ofStack(EvaporationLayout.POT_AREA, stack -> phase == Phase.IDLE && ResearchInput.accepts(stack), 1,
                         () -> phase == Phase.IDLE ? input : ItemStack.EMPTY, stack -> input = stack, this::sync),
                 StationSlot.output(EvaporationLayout.OUTPUT_AREA, () -> output, stack -> output = stack, this::sync));
     }
@@ -124,8 +124,7 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         Separation.Output result = Separation.output(Separation.solids(input), ProductSource.original(input), paper.getCount());
         if (result.usesPaper()) paper.shrink(1);
         pending = result.stack();
-        DustComposition composition = DustCompositions.of(input);
-        stirsNeeded = composition == null ? 1 : Math.max(1, composition.elements().size());
+        stirsNeeded = Math.max(1, ResearchInput.elements(input).size());
         stirsDone = 0;
         stirTicks = -1;
         settleTicks = 0;

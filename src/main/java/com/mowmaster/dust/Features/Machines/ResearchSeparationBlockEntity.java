@@ -75,7 +75,7 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
     // ---- clicking (StationInteractions) ----
     // Right-click a slot to put things in, left-click to take them out. Areas are model pixels, facing north.
     private static final CBPixelBox PAPER_PAD = new CBPixelBox(6, 15, 1, 10, 17, 5);
-    private static final CBPixelBox SCROLL = new CBPixelBox(4.5, 15, 5, 11.5, 17, 11);
+    static final CBPixelBox SCROLL = new CBPixelBox(4.5, 15, 5, 11.5, 17, 11);
     private static final CBPixelBox LEFT_PAD = new CBPixelBox(5, 15, 11, 8, 17, 14.5);
     private static final CBPixelBox RIGHT_PAD = new CBPixelBox(8, 15, 11, 11, 17, 14.5);
 
@@ -86,7 +86,7 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
                 // Paper, to catch compounds (up to a stack)
                 StationSlot.ofStack(PAPER_PAD, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
                 // The item to separate, on the scroll: one, and it stays put while separating
-                StationSlot.ofStack(SCROLL, stack -> !isRunning(), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
+                StationSlot.ofStack(SCROLL, stack -> !isRunning() && ResearchInput.accepts(stack), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
                 StationSlot.output(LEFT_PAD, () -> left, stack -> left = stack, this::sync),
                 StationSlot.output(RIGHT_PAD, () -> right, stack -> right = stack, this::sync));
     }

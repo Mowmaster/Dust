@@ -165,6 +165,7 @@
   "block.dust.research_distalation": "Distillation Table",
   "item.dust.alchemical_compound_gas": "Gaseous Compound",
   "item.dust.alchemical_compound_liquid": "Aqueous Compound",
+  "dust.research_input.block": "Blocks have to be crushed to pebbles first",
   "dust.distillation.running": "It's already boiling",
   "dust.distillation.empty": "Put something in the flask first",
   "dust.distillation.outputs": "Take the last results first",
