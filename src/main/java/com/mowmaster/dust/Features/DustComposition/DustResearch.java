@@ -43,8 +43,10 @@ public final class DustResearch
     }
 
     // They measured it on the Elemental Examiner: each crystal's element and how much of the item it is. An item that's
-    // all one crystal's element discovers that element.
-    public static void noteMeasured(ServerPlayer player, @Nullable ResearchEntry entry, Map<DustElement, Integer> measured)
+    // all one crystal's element discovers that element. forEntry: what goes in the entry's "Made of" (the readings
+    // themselves, except for a compound: see ElementTesterBlock.report).
+    public static void noteMeasured(ServerPlayer player, @Nullable ResearchEntry entry, Map<DustElement, Integer> measured,
+                                    Map<DustElement, Integer> forEntry)
     {
         if (!Research.carriesNotes(player)) return;
         for (Map.Entry<DustElement, Integer> crystal : measured.entrySet()) {
@@ -55,7 +57,7 @@ public final class DustResearch
             // Only the elements that are there go in the notes: a crystal whose gauge stays dark is plain to see, and
             // the player can write that in their own notes if they want it
             Map<DustElement, Integer> found = new LinkedHashMap<>();
-            measured.forEach((element, percent) -> {
+            forEntry.forEach((element, percent) -> {
                 if (percent > 0) found.put(element, percent);
             });
             if (!found.isEmpty()) Research.experiment(player, entry, research -> research.withMeasured(found));

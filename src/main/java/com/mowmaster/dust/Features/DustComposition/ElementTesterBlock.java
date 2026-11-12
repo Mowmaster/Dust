@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.DustComposition;
 
+import com.mowmaster.dust.Features.Machines.AlchemicalDust;
+import com.mowmaster.dust.Features.Machines.Compounds;
 import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Machines.StationInteractions;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
@@ -124,8 +126,24 @@ public class ElementTesterBlock extends Block implements EntityBlock
         // LinkedHashMap keeps the crystals' order
         Map<DustElement, Integer> measured = new LinkedHashMap<>();
         for (DustElement crystal : tester.crystals()) measured.put(crystal, tester.percent(crystal));
-        // A product's findings go on what it was made from (crushed stone's on stone)
-        DustResearch.noteMeasured(player, ResearchTabs.entryForItem(ProductSource.original(item)), measured);
+        // A product's findings go on what it was made from (crushed stone's on stone). A compound is only part of what it
+        // came from, so its reading only counts for the source's own elements in it, at their share of the source (a
+        // Plants compound from oak planks says nothing about oak planks, which is Trees); Alchemical Dust remembers no
+        // source, so it only discovers.
+        ItemStack original = ProductSource.original(item);
+        Map<DustElement, Integer> forEntry = measured;
+        if (AlchemicalDust.is(item)) {
+            forEntry = Map.of();
+        } else if (Compounds.of(item) != null) {
+            DustComposition source = DustCompositions.of(original);
+            forEntry = new LinkedHashMap<>();
+            for (Map.Entry<DustElement, Integer> reading : measured.entrySet()) {
+                if (reading.getValue() > 0 && source != null && source.elements().contains(reading.getKey())) {
+                    forEntry.put(reading.getKey(), ElementTesterBlockEntity.percentOf(source, reading.getKey()));
+                }
+            }
+        }
+        DustResearch.noteMeasured(player, ResearchTabs.entryForItem(original), measured, forEntry);
     }
 
     // A crystal whose element is all of the item sparkles in its colour (client only; called every frame or so)

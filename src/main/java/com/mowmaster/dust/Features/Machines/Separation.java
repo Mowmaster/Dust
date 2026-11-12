@@ -39,11 +39,11 @@ public final class Separation
         return ResearchInput.elements(stack).stream().filter(element -> !isSolid(element)).toList();
     }
 
-    // Two or more solids, or a single solid primal (an item of it, made into its compound: ResearchInput.isPrimal)
+    // Two or more solids, or an item of a single solid element (made into its compound: ResearchInput.isSingleElement)
     public static boolean canSeparate(ItemStack stack)
     {
         List<DustElement> solids = solids(stack);
-        return solids.size() >= 2 || (ResearchInput.isPrimal(stack) && solids.size() == 1);
+        return solids.size() >= 2 || (ResearchInput.isSingleElement(stack) && solids.size() == 1);
     }
 
     // The two sides of a split: the element picked out, and the rest
@@ -61,7 +61,7 @@ public final class Separation
 
     public static Output output(List<DustElement> elements, ItemStack original, int paper)
     {
-        // Nothing on this side (a primal made into its compound goes all to the left)
+        // Nothing on this side (an item of one element made into its compound goes all to the left)
         if (elements.isEmpty()) return new Output(ItemStack.EMPTY, false, false);
         if (paper > 0) return new Output(Compounds.create(elements, original), true, false);
         boolean amorphous = elements.stream().anyMatch(element -> element.phase() == ElementPhase.AMORPHOUS);

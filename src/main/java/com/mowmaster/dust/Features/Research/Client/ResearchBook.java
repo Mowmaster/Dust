@@ -2,6 +2,7 @@ package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
+import com.mowmaster.dust.Features.DustComposition.DustCompositions;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
@@ -350,7 +351,7 @@ public final class ResearchBook
                 case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
                 case PROCESSES -> drawProcesses(graphics, font, data, page.processes());
                 case MADE_FROM -> drawCombinations(graphics, font, data, page.path());
-                case RESEARCH -> drawDust(graphics, font, data, research.dust());
+                case RESEARCH -> drawDust(graphics, font, data, entry, research.dust());
                 case OVERVIEW -> {
                     if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
                 }
@@ -751,8 +752,10 @@ public final class ResearchBook
     // texture.
     // Only elements the player has discovered are listed: the rest stay noted but hidden, and show up once they're in
     // the Elements tab.
-    private static void drawDust(GuiGraphicsExtractor graphics, Font font, ResearchData data, EntryResearch.Dust dust)
+    // Only the material's own elements are listed (readings of anything deeper, noted by older versions, are skipped).
+    private static void drawDust(GuiGraphicsExtractor graphics, Font font, ResearchData data, ResearchEntry entry, EntryResearch.Dust dust)
     {
+        DustComposition madeOf = DustCompositions.of(entry.icon());
         int x = RIGHT_X + 4;
         int y = NOTES_TOP;
         int bottom = FOOTER_Y - 2;
@@ -760,6 +763,7 @@ public final class ResearchBook
         // that the player has discovered
         List<Map.Entry<DustElement, Integer>> shown = dust.measured().entrySet().stream()
                 .filter(measured -> measured.getValue() > 0 && data.has(new ResearchEntry(ResearchTabs.ELEMENTS, measured.getKey().id())))
+                .filter(measured -> madeOf == null || madeOf.elements().contains(measured.getKey()))
                 .toList();
         if (!dust.burned() && shown.isEmpty()) {
             drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unknown"), PAGE_W - 8), x, y, bottom, INK);

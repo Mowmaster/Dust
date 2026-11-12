@@ -114,9 +114,9 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         if (phase != Phase.IDLE) return "running";
         if (input.isEmpty()) return "empty";
         if (!output.isEmpty()) return "outputs";
-        // A single solid primal (an item of it) is just made into its compound, with nothing to boil off
-        boolean primal = ResearchInput.isPrimal(input) && !Separation.solids(input).isEmpty();
-        if (!primal && Separation.escaping(input).isEmpty()) return "nothing";
+        // An item of a single solid element is just made into its compound, with nothing to boil off
+        boolean single = ResearchInput.isSingleElement(input) && !Separation.solids(input).isEmpty();
+        if (!single && Separation.escaping(input).isEmpty()) return "nothing";
         if (Separation.solids(input).isEmpty()) return "no_solids";
         return null;
     }
