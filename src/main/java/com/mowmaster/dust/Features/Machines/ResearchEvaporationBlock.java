@@ -48,7 +48,7 @@ public class ResearchEvaporationBlock extends Block implements EntityBlock
             Block.box(0, 12, 0, 16, 16, 16),
             Block.box(0, 0, 0, 4, 12, 4), Block.box(12, 0, 0, 16, 12, 4),
             Block.box(0, 0, 12, 4, 12, 16), Block.box(12, 0, 12, 16, 12, 16),
-            Block.box(5.5, 16, 6, 10.5, 20.5, 10));
+            Block.box(6, 16, 6, 10, 21, 10));
 
     public ResearchEvaporationBlock(Properties properties)
     {

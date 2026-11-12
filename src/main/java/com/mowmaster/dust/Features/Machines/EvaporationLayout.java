@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 public final class EvaporationLayout
 {
     // The blue pad at the back (paper) and the red pad at the front (the output)
-    public static final Vec3 PAPER_PAD = new Vec3(8, 15.6, 3);
+    public static final Vec3 PAPER_PAD = new Vec3(8, 15.6, 3.35);
     public static final Vec3 OUTPUT = new Vec3(8, 15.6, 12.5);
     // The pot: the middle of its opening, its inside bottom, and its liquid's surface when half full
     public static final Vec3 POT = new Vec3(7.9, 16.6, 8.05);
@@ -20,7 +20,8 @@ public final class EvaporationLayout
 
     // Click areas (StationInteractions)
     public static final CBPixelBox PAPER_AREA = new CBPixelBox(6, 15, 1, 10, 17, 5);
-    public static final CBPixelBox POT_AREA = new CBPixelBox(5.5, 15.5, 6, 10.5, 21, 10);
+    // Only the top of the pot (its opening): clicking its sides does nothing special
+    public static final CBPixelBox POT_AREA = new CBPixelBox(6, 16, 6, 10, 21, 10);
     public static final CBPixelBox OUTPUT_AREA = new CBPixelBox(6, 15, 10.5, 10, 17, 14.5);
 
     private EvaporationLayout() {}
