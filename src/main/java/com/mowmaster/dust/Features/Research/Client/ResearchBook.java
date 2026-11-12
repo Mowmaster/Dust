@@ -350,7 +350,7 @@ public final class ResearchBook
                 case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
                 case PROCESSES -> drawProcesses(graphics, font, data, page.processes());
                 case MADE_FROM -> drawCombinations(graphics, font, data, page.path());
-                case RESEARCH -> drawDust(graphics, font, research.dust());
+                case RESEARCH -> drawDust(graphics, font, data, research.dust());
                 case OVERVIEW -> {
                     if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
                 }
@@ -749,12 +749,19 @@ public final class ResearchBook
     //   neither    a hint at how to find out
     // The sprites are greyscale; blitSprite's last argument tints them (0xAARRGGBB), the way a block tint colours a
     // texture.
-    private static void drawDust(GuiGraphicsExtractor graphics, Font font, EntryResearch.Dust dust)
+    // Only elements the player has discovered are listed: the rest stay noted but hidden, and show up once they're in
+    // the Elements tab.
+    private static void drawDust(GuiGraphicsExtractor graphics, Font font, ResearchData data, EntryResearch.Dust dust)
     {
         int x = RIGHT_X + 4;
         int y = NOTES_TOP;
         int bottom = FOOTER_Y - 2;
-        if (!dust.burned() && !dust.anyMeasured()) {
+        // Only elements that are there (0% isn't noted; older notes may still have some, so they're skipped too) and
+        // that the player has discovered
+        List<Map.Entry<DustElement, Integer>> shown = dust.measured().entrySet().stream()
+                .filter(measured -> measured.getValue() > 0 && data.has(new ResearchEntry(ResearchTabs.ELEMENTS, measured.getKey().id())))
+                .toList();
+        if (!dust.burned() && shown.isEmpty()) {
             drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unknown"), PAGE_W - 8), x, y, bottom, INK);
             return;
         }
@@ -763,15 +770,14 @@ public final class ResearchBook
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FLAME_SPRITE, RIGHT_X + PAGE_W - 30, y, 24, 24, 0xFF000000 | dust.fireColor());
             y += 27;
         }
-        if (!dust.anyMeasured()) {
+        if (shown.isEmpty()) {
             if (y + font.lineHeight <= bottom) drawLines(graphics, font, font.split(Component.translatable("research.dust.research.unread"), PAGE_W - 8), x, y, bottom, FADED);
             return;
         }
         Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
         y += font.lineHeight + 2;
-        // Only elements that are there (0% isn't noted; older notes may still have some, so they're skipped here too)
-        for (Map.Entry<DustElement, Integer> measured : dust.measured().entrySet()) {
-            if (measured.getValue() <= 0 || y + 10 > bottom) continue;
+        for (Map.Entry<DustElement, Integer> measured : shown) {
+            if (y + 10 > bottom) continue;
             DustElement element = measured.getKey();
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, 0xFF000000 | element.color());
             Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", element.name(), measured.getValue()), x + 14, y, INK);
