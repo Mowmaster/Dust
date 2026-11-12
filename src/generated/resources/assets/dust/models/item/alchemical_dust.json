@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dust:item/alchemical_dust",
+    "layer1": "dust:item/alchemical_dust_sparkle"
+  }
+}

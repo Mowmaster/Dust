@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/station/research_transformational",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/station/research_transformational"
+    },
+    "facing=south": {
+      "model": "dust:block/station/research_transformational",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dust:block/station/research_transformational",
+      "y": 270
+    }
+  }
+}
