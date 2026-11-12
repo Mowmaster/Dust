@@ -1,15 +1,12 @@
 package com.mowmaster.dust.Features.Machines;
 
-import com.mowmaster.dust.Features.DustComposition.CrystalElements;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustCompositions;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.ElementPhase;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +16,10 @@ import java.util.List;
 //     element listed twice as two). Gaseous and aqueous elements in it hiss or bubble away.
 //   - One solid element, picked at random, goes left; the rest of the solids go right, together.
 //   - Each side comes out as:
-//       an element the player has fully discovered, alone     its dust (no paper needed)
-//       anything else, with paper in the table                an alchemical compound (one paper each)
-//       anything else, no paper                               crystalline remains as a compound; with anything
-//                                                             amorphous in it, it burns away to alchemical soot
+//       with paper in the table    an alchemical compound (one paper each). Its tooltip names the elements the
+//                                  player has discovered, and the material it came from.
+//       no paper                   crystalline remains as a compound; with anything amorphous in it, it burns away
+//                                  to alchemical soot
 public final class Separation
 {
     private Separation() {}
@@ -64,14 +61,10 @@ public final class Separation
     }
 
     // What one side becomes. paper: how much paper there is (one is used if the result needs it; usesPaper says).
-    // player: whose discoveries count (null: nobody's).
     public record Output(ItemStack stack, boolean usesPaper, boolean burned) {}
 
-    public static Output output(List<DustElement> elements, ItemStack original, int paper, @Nullable Player player)
+    public static Output output(List<DustElement> elements, ItemStack original, int paper)
     {
-        if (elements.size() == 1 && player != null && Compounds.knows(player, elements.getFirst())) {
-            return new Output(CrystalElements.dustOf(elements.getFirst(), 1), false, false);
-        }
         if (paper > 0) return new Output(Compounds.create(elements, original), true, false);
         boolean amorphous = elements.stream().anyMatch(element -> element.phase() == ElementPhase.AMORPHOUS);
         if (!amorphous) return new Output(Compounds.create(elements, original), false, false);

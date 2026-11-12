@@ -122,8 +122,9 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
         poseStack.pushPose();
         poseStack.translate(at.x, at.y, at.z);
         poseStack.rotate(Axis.YP.rotationDegrees(yaw));
-        // Laid down: tipped back a quarter turn so it lies on the table (the GROUND model stands upright)
-        poseStack.rotate(Axis.XP.rotationDegrees(90));
+        // Laid down face up, its top pointing away from the player at the front (the GROUND model stands upright;
+        // tipping it -90 degrees about x lays its face upwards, where +90 laid it face down and upside down)
+        poseStack.rotate(Axis.XP.rotationDegrees(-90));
         poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
         item.submit(poseStack, submitNodeCollector, light, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();

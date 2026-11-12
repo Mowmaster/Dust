@@ -117,9 +117,10 @@ public class ResearchCrusherRenderer implements BlockEntityRenderer<ResearchCrus
             Vec3 at = CrusherLayout.turned(CrusherLayout.TRAY, state.facing);
             poseStack.pushPose();
             poseStack.translate(at.x, at.y, at.z);
-            // Lying in the tray: turned with the block, then tipped back flat (the GROUND model stands upright)
-            poseStack.rotate(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F));
-            poseStack.rotate(Axis.XP.rotationDegrees(90));
+            // Lying in the tray face up, its top away from the player at the tray side: turned with the block (and
+            // half a turn, since the tray faces the model's north), then laid down (the GROUND model stands upright)
+            poseStack.rotate(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F + 180F));
+            poseStack.rotate(Axis.XP.rotationDegrees(-90));
             poseStack.scale(TRAY_SCALE, TRAY_SCALE, TRAY_SCALE);
             state.tray.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();

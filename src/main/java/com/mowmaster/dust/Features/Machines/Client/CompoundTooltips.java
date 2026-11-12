@@ -26,14 +26,17 @@ public final class CompoundTooltips
     {
         ItemStack stack = event.getItemStack();
         Player player = Minecraft.getInstance().player;
+        // Under the name: what it holds (for a compound), then the material it came from (any product)
+        int line = Math.min(1, event.getToolTip().size());
         DustComposition compound = Compounds.of(stack);
         if (compound != null && player != null) {
             Component elements = Compounds.describe(compound, element -> Compounds.knows(player, element));
-            event.getToolTip().add(1, Component.translatable("item.dust.alchemical_compound.elements", elements).withStyle(ChatFormatting.GRAY));
+            event.getToolTip().add(line++, Component.translatable("item.dust.alchemical_compound.elements", elements).withStyle(ChatFormatting.GRAY));
         }
         ItemStack source = ProductSource.sourceOf(stack);
         if (source != null && !source.isEmpty()) {
-            event.getToolTip().add(Component.translatable("item.dust.product.from", ProductSource.original(stack).getHoverName()).withStyle(ChatFormatting.DARK_GRAY));
+            event.getToolTip().add(Math.min(line, event.getToolTip().size()),
+                    Component.translatable("item.dust.product.from", ProductSource.original(stack).getHoverName()).withStyle(ChatFormatting.GRAY));
         }
     }
 }

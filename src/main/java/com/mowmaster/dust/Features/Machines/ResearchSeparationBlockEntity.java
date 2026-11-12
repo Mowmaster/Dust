@@ -37,7 +37,7 @@ import java.util.UUID;
 // taken out by clicking where they sit (slots, StationInteractions). Started with a Magical Flint and Steel
 // (ResearchSeparationBlock): the split is decided at the start (Separation), so the client can colour the streams of
 // dust running down to each output, and the outputs arrive when it finishes. Whoever started it gets the step in
-// their research, and their discoveries decide whether an element comes out as dust.
+// their research.
 public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     public static final int SEPARATE_TICKS = 100;
@@ -106,9 +106,9 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
     {
         ItemStack original = ProductSource.original(input);
         Separation.Split split = Separation.split(input, level.getRandom());
-        Separation.Output leftOut = Separation.output(split.left(), original, paper.getCount(), player);
+        Separation.Output leftOut = Separation.output(split.left(), original, paper.getCount());
         if (leftOut.usesPaper()) paper.shrink(1);
-        Separation.Output rightOut = Separation.output(split.right(), original, paper.getCount(), player);
+        Separation.Output rightOut = Separation.output(split.right(), original, paper.getCount());
         if (rightOut.usesPaper()) paper.shrink(1);
         pendingLeft = leftOut.stack();
         pendingRight = rightOut.stack();
