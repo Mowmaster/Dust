@@ -41,7 +41,7 @@ public class ResearchCombinationBlock extends StationBlock
     @SuppressWarnings("unchecked")
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type)
     {
-        if (type != DustBlockEntityRegistry.RESEARCH_TRANSFORMATION.get()) return null;
+        if (type != DustBlockEntityRegistry.RESEARCH_COMBINATION.get()) return null;
         BlockEntityTicker<ResearchCombinationBlockEntity> ticker = level.isClientSide() ? ResearchCombinationBlockEntity::clientTick : ResearchCombinationBlockEntity::serverTick;
         return (BlockEntityTicker<T>) ticker;
     }
