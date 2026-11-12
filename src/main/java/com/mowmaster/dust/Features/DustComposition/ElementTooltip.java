@@ -4,6 +4,9 @@ import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
+import com.mowmaster.dust.Features.Machines.AlchemicalDust;
+import com.mowmaster.dust.Features.Machines.Compounds;
+import com.mowmaster.dust.Features.Machines.ProductSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +28,11 @@ public record ElementTooltip(List<Entry> entries) implements TooltipComponent
     // of those elements (an undiscovered one stays hidden)
     public static @Nullable ElementTooltip forPlayer(ItemStack stack, Player player)
     {
+        // Compounds and Alchemical Dust say what's in them in their own tooltip line
+        if (Compounds.of(stack) != null || AlchemicalDust.is(stack)) return null;
         DustComposition composition = DustCompositions.of(stack);
-        ResearchEntry entry = ResearchTabs.entryForItem(stack);
+        // A product (crushed pebbles) is researched as what it was made from, like everywhere else
+        ResearchEntry entry = ResearchTabs.entryForItem(ProductSource.original(stack));
         if (composition == null || entry == null) return null;
         EntryResearch research = Research.get(player).get(entry);
         if (research == null) return null;
