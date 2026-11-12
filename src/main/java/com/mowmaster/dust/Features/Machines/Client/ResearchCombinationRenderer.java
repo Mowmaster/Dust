@@ -20,8 +20,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 // The Combination Table's moving parts (the table and scroll are the block model): the glyph
-// (textures/block/station/scroll_combination_glyph.png) rising off the scroll and spinning; the dusts on their pads
-// and the output, lying flat.
+// (textures/block/station/scroll_combination_glyph.png) rising off the scroll and spinning; the dusts on their pads,
+// then pulled into the glyph (shrinking, spinning with it, glowing); the output, lying flat.
 public class ResearchCombinationRenderer implements BlockEntityRenderer<ResearchCombinationBlockEntity, ResearchCombinationRenderer.State>
 {
     private static final float ITEM_SCALE = 0.35F;
@@ -42,6 +42,7 @@ public class ResearchCombinationRenderer implements BlockEntityRenderer<Research
         Direction facing = Direction.NORTH;
         float progress = -1;
         float lift;
+        float pull;
         float spin;
     }
 
@@ -61,7 +62,8 @@ public class ResearchCombinationRenderer implements BlockEntityRenderer<Research
         itemModelResolver.updateForTopItem(state.output, table.getOutput(), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
         state.facing = table.getBlockState().getValue(StationBlock.FACING);
         state.progress = table.progress(partialTick);
-        state.lift = StationRendering.lift(state.progress, ResearchCombinationBlockEntity.COMBINE_TICKS);
+        state.lift = CombinationLayout.lift(state.progress);
+        state.pull = state.progress < 0 ? 0 : CombinationLayout.pull(state.progress);
         state.spin = state.progress < 0 ? 0 : (state.progress * 9F * state.lift) % 360F;
     }
 
@@ -72,8 +74,15 @@ public class ResearchCombinationRenderer implements BlockEntityRenderer<Research
             StationRendering.glyph(GLYPH, CombinationLayout.ARRAY.add(0, CombinationLayout.ARRAY_LIFT * state.lift + 0.05, 0),
                     CombinationLayout.GLYPH_WIDTH, CombinationLayout.GLYPH_DEPTH, state.spin, state.progress, state.facing, poseStack, submitNodeCollector);
         }
-        StationRendering.flatItem(state.left, CombinationLayout.LEFT_INPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
-        StationRendering.flatItem(state.right, CombinationLayout.RIGHT_INPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
+        // The dusts: on their pads, then pulled in (they vanish into the glyph when they get there: the block entity
+        // stops handing them over at DRAW_IN_TICKS)
+        float t = state.pull;
+        boolean pulling = t > 0;
+        float scale = ITEM_SCALE * (1 - 0.7F * t);
+        int light = pulling ? StationRendering.FULL_BRIGHT : state.lightCoords;
+        float spin = pulling ? state.spin : 0;
+        StationRendering.flatItem(state.left, CombinationLayout.pulled(CombinationLayout.LEFT_INPUT, t, state.lift), state.facing, spin, scale, light, poseStack, submitNodeCollector);
+        StationRendering.flatItem(state.right, CombinationLayout.pulled(CombinationLayout.RIGHT_INPUT, t, state.lift), state.facing, spin, scale, light, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.output, CombinationLayout.OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
     }
 }

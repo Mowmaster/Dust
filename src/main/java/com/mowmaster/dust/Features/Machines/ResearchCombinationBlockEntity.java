@@ -20,13 +20,15 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 // The Combination Table: two solid (crystalline / amorphous) Alchemical Dusts, one on each side pad, become Alchemical
-// Dust of the element mixed from them (ElementCombining), if there is one. Started with a Magical Flint and Steel: the
-// glyph rises off the scroll spinning, each dust streams in from its pad in its colour, then the new element streams
-// down to the output. (What an element is made from shows in its Elements entry once it's discovered.)
+// Dust of the element mixed from them (ElementCombining). Two that don't make an element won't start. Started with a
+// Magical Flint and Steel: the glyph rises off the scroll spinning, both dusts are pulled off their pads into it
+// (trailing their colours), and the new element streams from the glyph down to the output. (What an element is made from shows in its Elements entry once it's discovered.)
 public class ResearchCombinationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     public static final int COMBINE_TICKS = 100;
-    // Ticks the inputs stream in for; after that the result streams out (and the inputs are gone from their pads)
+    // The inputs are pulled into the glyph from PULL_START (once it's up) to DRAW_IN_TICKS; after that the result
+    // streams out (CombinationLayout has the animation)
+    public static final int PULL_START = 20;
     public static final int DRAW_IN_TICKS = 60;
 
     private ItemStack left = ItemStack.EMPTY;
@@ -40,7 +42,7 @@ public class ResearchCombinationBlockEntity extends CBSyncedBlockEntity implemen
         super(DustBlockEntityRegistry.RESEARCH_COMBINATION.get(), pos, state);
     }
 
-    // The inputs as drawn: gone once they've streamed into the glyph
+    // The inputs as drawn: gone once they've been pulled into the glyph
     public ItemStack getLeft() { return progress >= DRAW_IN_TICKS ? ItemStack.EMPTY : left; }
     public ItemStack getRight() { return progress >= DRAW_IN_TICKS ? ItemStack.EMPTY : right; }
     public ItemStack getOutput() { return output; }
@@ -104,19 +106,37 @@ public class ResearchCombinationBlockEntity extends CBSyncedBlockEntity implemen
         table.finish((ServerLevel) level);
     }
 
-    // Client side: count for the animation; the inputs stream into the glyph, then the result streams to the output
+    // Client side: count for the animation; a trail behind each dust as it's pulled in, a flash of the new element
+    // when they meet, then the new element streaming from the glyph to the output
     public static void clientTick(Level level, BlockPos pos, BlockState state, ResearchCombinationBlockEntity table)
     {
         if (table.progress < 0) return;
         if (table.progress < COMBINE_TICKS) table.progress++;
-        Vec3 glyph = table.turned(CombinationLayout.ARRAY).add(0, CombinationLayout.ARRAY_LIFT / 16 + 0.1, 0);
+        float lift = CombinationLayout.lift(table.progress);
+        Vec3 glyph = table.turned(CombinationLayout.glyphCentre(lift));
         if (table.progress < DRAW_IN_TICKS) {
-            if (table.progress < 15) return;
-            stream(level, pos, table.turned(CombinationLayout.LEFT_INPUT), glyph, AlchemicalDust.of(table.left));
-            stream(level, pos, table.turned(CombinationLayout.RIGHT_INPUT), glyph, AlchemicalDust.of(table.right));
-        } else {
-            stream(level, pos, glyph, table.turned(CombinationLayout.OUTPUT), AlchemicalDust.of(table.pending));
+            if (table.progress < PULL_START) return;
+            float t = CombinationLayout.pull(table.progress);
+            trail(level, pos, table.turned(CombinationLayout.pulled(CombinationLayout.LEFT_INPUT, t, lift)), AlchemicalDust.of(table.left));
+            trail(level, pos, table.turned(CombinationLayout.pulled(CombinationLayout.RIGHT_INPUT, t, lift)), AlchemicalDust.of(table.right));
+            return;
         }
+        DustElement made = AlchemicalDust.of(table.pending);
+        if (table.progress == DRAW_IN_TICKS && made != null) {
+            for (int i = 0; i < 12; i++) {
+                var random = level.getRandom();
+                level.addParticle(new DustParticleOptions(made.color(), 0.8F), pos.getX() + glyph.x, pos.getY() + glyph.y, pos.getZ() + glyph.z,
+                        (random.nextDouble() - 0.5) * 0.15, (random.nextDouble() - 0.5) * 0.1, (random.nextDouble() - 0.5) * 0.15);
+            }
+        }
+        stream(level, pos, glyph, table.turned(CombinationLayout.OUTPUT), made);
+    }
+
+    // A puff left behind where a dust is (it hangs there as the dust moves on)
+    private static void trail(Level level, BlockPos pos, Vec3 at, @Nullable DustElement element)
+    {
+        if (element == null) return;
+        level.addParticle(new DustParticleOptions(element.color(), 0.5F), pos.getX() + at.x, pos.getY() + at.y, pos.getZ() + at.z, 0, 0, 0);
     }
 
     static void stream(Level level, BlockPos pos, Vec3 from, Vec3 to, @Nullable DustElement element)
