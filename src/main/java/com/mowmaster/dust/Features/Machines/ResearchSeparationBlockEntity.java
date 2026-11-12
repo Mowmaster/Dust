@@ -8,9 +8,9 @@ import com.mowmaster.dust.Features.Research.ProcessRecord;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
+import com.mowmaster.mowlib.util.CBPixelBox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -33,11 +33,12 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-// The Alchemical Separation Table's item, paper, and the two outputs. Started with a Magical Flint and Steel
+// The Alchemical Separation Table's item (on the scroll), paper (on the pad behind it), and the two outputs; put in and
+// taken out by clicking where they sit (slots, StationInteractions). Started with a Magical Flint and Steel
 // (ResearchSeparationBlock): the split is decided at the start (Separation), so the client can colour the streams of
 // dust running down to each output, and the outputs arrive when it finishes. Whoever started it gets the step in
 // their research, and their discoveries decide whether an element comes out as dust.
-public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity
+public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     public static final int SEPARATE_TICKS = 100;
     public static final int PAPER_LIMIT = 64;
@@ -71,39 +72,23 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity
         return progress < 0 ? -1 : Math.min(SEPARATE_TICKS, progress + partialTick);
     }
 
-    // ---- what the player does (ResearchSeparationBlock) ----
+    // ---- clicking (StationInteractions) ----
+    // Right-click a slot to put things in, left-click to take them out. Areas are model pixels, facing north.
+    private static final CBPixelBox PAPER_PAD = new CBPixelBox(6, 15, 1, 10, 17, 5);
+    private static final CBPixelBox SCROLL = new CBPixelBox(4.5, 15, 5, 11.5, 17, 11);
+    private static final CBPixelBox LEFT_PAD = new CBPixelBox(5, 15, 11, 8, 17, 14.5);
+    private static final CBPixelBox RIGHT_PAD = new CBPixelBox(8, 15, 11, 11, 17, 14.5);
 
-    public boolean placeInput(ItemStack stack)
+    @Override
+    public List<StationSlot> slots()
     {
-        if (!input.isEmpty() || isRunning()) return false;
-        input = stack.copyWithCount(1);
-        sync();
-        return true;
-    }
-
-    // Adds paper from the stack; returns how much was taken
-    public int addPaper(ItemStack stack)
-    {
-        int room = PAPER_LIMIT - paper.getCount();
-        int moved = Math.min(room, stack.getCount());
-        if (moved <= 0) return 0;
-        if (paper.isEmpty()) paper = new ItemStack(Items.PAPER, moved);
-        else paper.grow(moved);
-        sync();
-        return moved;
-    }
-
-    // Takes something back out: the outputs first, then the item (if not running), then the paper
-    public ItemStack takeOne(boolean paperOnly)
-    {
-        ItemStack taken = ItemStack.EMPTY;
-        if (paperOnly) { taken = paper; paper = ItemStack.EMPTY; }
-        else if (!left.isEmpty()) { taken = left; left = ItemStack.EMPTY; }
-        else if (!right.isEmpty()) { taken = right; right = ItemStack.EMPTY; }
-        else if (!input.isEmpty() && !isRunning()) { taken = input; input = ItemStack.EMPTY; }
-        else if (!isRunning()) { taken = paper; paper = ItemStack.EMPTY; }
-        if (!taken.isEmpty()) sync();
-        return taken;
+        return List.of(
+                // Paper, to catch compounds (up to a stack)
+                StationSlot.ofStack(PAPER_PAD, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
+                // The item to separate, on the scroll: one, and it stays put while separating
+                StationSlot.ofStack(SCROLL, stack -> !isRunning(), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
+                StationSlot.output(LEFT_PAD, () -> left, stack -> left = stack, this::sync),
+                StationSlot.output(RIGHT_PAD, () -> right, stack -> right = stack, this::sync));
     }
 
     // Why it can't start now, or null if it can
@@ -131,7 +116,7 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity
         progress = 0;
 
         // The gaseous and aqueous elements hiss and bubble away straight off, in their colours
-        Vec3 at = turned(SeparationLayout.INPUT);
+        Vec3 at = turned(SeparationLayout.SCROLL);
         for (DustElement element : Separation.escaping(input)) {
             level.sendParticles(new DustParticleOptions(element.color(), 1.2F), at.x, at.y + 0.1, at.z, 12, 0.1, 0.05, 0.1, 0.02);
         }
@@ -158,11 +143,6 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity
     {
         if (table.progress < 0) return;
         if (table.progress < SEPARATE_TICKS) table.progress++;
-        // The scroll flashes as the array works
-        if (table.progress % 20 == 5) {
-            Vec3 array = table.turned(SeparationLayout.ARRAY);
-            level.addParticle(ColorParticleOption.create(ParticleTypes.FLASH, 0xFFC9A2FF), pos.getX() + array.x, pos.getY() + array.y + 0.05, pos.getZ() + array.z, 0, 0, 0);
-        }
         if (table.progress < 30) return;
         Vec3 from = table.turned(SeparationLayout.ARRAY).add(0, SeparationLayout.ARRAY_LIFT / 16 + 0.15, 0);
         stream(level, pos, from, table.turned(SeparationLayout.LEFT_OUTPUT), colorOf(table.pendingLeft));
@@ -194,15 +174,12 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity
         input = ItemStack.EMPTY;
         progress = -1;
 
-        // A flash in each output's colour; soot comes out of a burst of flame
+        // Soot comes out of a little burst of flame
         for (ItemStack out : List.of(left, right)) {
+            if (out.getItem() != com.mowmaster.dust.DustRegistries.DustItemRegistry.ALCHEMICAL_SOOT.get()) continue;
             Vec3 at = turned(out == left ? SeparationLayout.LEFT_OUTPUT : SeparationLayout.RIGHT_OUTPUT);
-            level.sendParticles(ColorParticleOption.create(ParticleTypes.FLASH, 0xFF000000 | colorOf(out)), worldPosition.getX() + at.x,
-                    worldPosition.getY() + at.y + 0.1, worldPosition.getZ() + at.z, 1, 0, 0, 0, 0);
-            if (out.getItem() == com.mowmaster.dust.DustRegistries.DustItemRegistry.ALCHEMICAL_SOOT.get()) {
-                level.sendParticles(ParticleTypes.FLAME, worldPosition.getX() + at.x, worldPosition.getY() + at.y + 0.1,
-                        worldPosition.getZ() + at.z, 10, 0.08, 0.05, 0.08, 0.02);
-            }
+            level.sendParticles(ParticleTypes.FLAME, worldPosition.getX() + at.x, worldPosition.getY() + at.y + 0.1,
+                    worldPosition.getZ() + at.z, 10, 0.08, 0.05, 0.08, 0.02);
         }
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         noteResearch(level, separated);

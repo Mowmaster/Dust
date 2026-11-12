@@ -1,8 +1,8 @@
 package com.mowmaster.dust.Features.DustComposition;
 
 import com.mowmaster.dust.Features.Machines.ProductSource;
+import com.mowmaster.dust.Features.Machines.StationInteractions;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
-import com.mowmaster.mowlib.storage.StorageInteractions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -39,12 +39,12 @@ import java.util.List;
 import java.util.Map;
 
 // Element Tester: a workstation that's upgraded by what's put on it. Its first use is the Elemental Examiner.
-//   Right-click with a crystal        sets it on the table (up to five, one of each element). The model changes with
-//                                     how many there are (CRYSTALS), and each crystal takes its element's colour.
-//   Right-click with anything else    (once it has a crystal) puts one on the plate. From the plate a gauge of lines
-//                                     runs to each crystal, lit by how much of that crystal's element the item is made
-//                                     of; at 100% the crystal sparkles.
-//   Right-click empty-handed          takes the item back; sneak-right-click empty-handed takes the last crystal off
+//   Right-click the top with a crystal    sets it on the table (up to five, one of each element). The model changes
+//                                         with how many there are (CRYSTALS), and each crystal takes its element's colour.
+//   Right-click the plate with an item    (once it has a crystal) puts one on it. From the plate a gauge of lines runs to
+//                                         each crystal, lit by how much of that crystal's element the item is made of;
+//                                         at 100% the crystal sparkles.
+//   Left-click the plate / a crystal      takes the item / that crystal back (see StationInteractions)
 // The examiner only sees the elements an item is made of directly (blue wool = creature + protection + water: 33%
 // water, nothing else, even with all five primal crystals on). Whoever puts an item on while carrying Research Notes
 // notes what the crystals show, and discovers a crystal's element when the item is all that element.
@@ -104,61 +104,16 @@ public class ElementTesterBlock extends Block implements EntityBlock
 
     // ---- using it ----
 
+    // Crystals and items go where they're clicked (the block entity's slots; StationInteractions also handles
+    // left-clicks to take things off)
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (stack.isEmpty() || !(level.getBlockEntity(pos) instanceof ElementTesterBlockEntity tester)) return InteractionResult.TRY_WITH_EMPTY_HAND;
-
-        DustElement crystal = CrystalElements.of(stack);
-        if (crystal != null && tester.crystals().size() < ExaminerLayout.MAX_CRYSTALS) {
-            if (tester.hasCrystal(crystal)) return InteractionResult.FAIL;
-            if (!level.isClientSide()) {
-                tester.addCrystal(crystal);
-                stack.consume(1, player);
-                level.setBlock(pos, state.setValue(CRYSTALS, tester.crystals().size()), UPDATE_ALL);
-                level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        // Something to examine: needs a crystal, and an empty plate (otherwise this click takes the item back)
-        if (tester.crystals().isEmpty() || !tester.getItem().isEmpty()) return InteractionResult.TRY_WITH_EMPTY_HAND;
-        if (!level.isClientSide()) {
-            ItemStack placed = stack.copyWithCount(1);
-            tester.setItem(placed);
-            stack.consume(1, player);
-            level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
-            if (player instanceof ServerPlayer serverPlayer) report(serverPlayer, tester, placed);
-        }
-        return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
-    {
-        if (!(level.getBlockEntity(pos) instanceof ElementTesterBlockEntity tester)) return InteractionResult.PASS;
-        if (!tester.getItem().isEmpty()) {
-            if (!level.isClientSide()) {
-                StorageInteractions.giveToPlayer(player, tester.getItem());
-                tester.setItem(ItemStack.EMPTY);
-                level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-            return InteractionResult.SUCCESS;
-        }
-        if (player.isSecondaryUseActive() && !tester.crystals().isEmpty()) {
-            if (!level.isClientSide()) {
-                DustElement removed = tester.removeLastCrystal();
-                if (removed != null) StorageInteractions.giveToPlayer(player, CrystalElements.stackOf(removed));
-                level.setBlock(pos, state.setValue(CRYSTALS, tester.crystals().size()), UPDATE_ALL);
-                level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
+        return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
 
     // What the crystals show goes into the player's research (DustResearch.noteMeasured)
-    private static void report(ServerPlayer player, ElementTesterBlockEntity tester, ItemStack item)
+    public static void report(ServerPlayer player, ElementTesterBlockEntity tester, ItemStack item)
     {
         DustComposition composition = DustCompositions.of(item);
         if (composition == null) {

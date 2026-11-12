@@ -184,15 +184,15 @@ public class DustProviderModel extends ModelProvider {
         itemModels.itemModelOutput.accept(DustItemRegistry.CRUSHED_BLOCK.get(), ItemModelUtils.tintedModel(crushedModel, new SourceBlockTint()));
     }
 
-    // The Alchemical Separation Table: the block shows the table and scroll (research_separation_body.json); the array
-    // lifts and spins in Client/ResearchSeparationRenderer. Turned by FACING (the outputs face the player). The item
-    // shows the whole thing (research_separation.json).
+    // The Alchemical Separation Table: research_separation.json for both the block and the item (the glyph that rises
+    // off the scroll while separating is drawn by Client/ResearchSeparationRenderer). Turned by FACING (the outputs
+    // face the player).
     // Alchemical compounds: paper (layer 0, as it is) with a dust pile (layer 1) tinted the compound's colour.
     private void createResearchSeparation(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
     {
         Block block = DustBlockRegistry.RESEARCH_SEPARATION.get();
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
-                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_separation_body")))
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_separation")))
                 .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
         blockModels.itemModelOutput.accept(block.asItem(),
                 ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_separation")));

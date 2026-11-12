@@ -1,7 +1,14 @@
 package com.mowmaster.dust.Features.DustComposition;
 
 import com.mowmaster.dust.DustRegistries.DustBlockEntityRegistry;
+import com.mowmaster.dust.Features.Machines.IStationSlots;
+import com.mowmaster.dust.Features.Machines.StationSlot;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
+import com.mowmaster.mowlib.util.CBPixelBox;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +23,7 @@ import java.util.List;
 
 // The Element Tester's crystals (up to five, in the order they were put in) and the item on its plate.
 // What's saved is also what clients get (CBSyncedBlockEntity), so the tint and renderer can read it there.
-public class ElementTesterBlockEntity extends CBSyncedBlockEntity
+public class ElementTesterBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     private final List<DustElement> crystals = new ArrayList<>();
     private ItemStack item = ItemStack.EMPTY;
@@ -39,16 +46,68 @@ public class ElementTesterBlockEntity extends CBSyncedBlockEntity
     public void addCrystal(DustElement element)
     {
         crystals.add(element);
-        sync();
+        crystalsChanged();
     }
 
-    // Takes the last crystal out (null if there are none)
-    public @Nullable DustElement removeLastCrystal()
+    // ---- clicking (StationInteractions) ----
+    //   the plate              right-click with an item to examine it (once there's a crystal); left-click takes it
+    //   each crystal           left-click takes that crystal off
+    //   anywhere on the top    right-click with a crystal to set it on (up to five, one of each element)
+    private static final CBPixelBox TABLE_TOP = new CBPixelBox(0, 10.5, 0, 16, 16.5, 16);
+
+    @Override
+    public List<StationSlot> slots()
     {
-        if (crystals.isEmpty()) return null;
-        DustElement removed = crystals.removeLast();
+        List<StationSlot> slots = new ArrayList<>();
+        ExaminerLayout layout = ExaminerLayout.of(crystals.size());
+        if (layout != null) {
+            Vec3 plate = layout.plate();
+            StationSlot.Inserter examine = (stack, player) -> {
+                if (!item.isEmpty()) return 0;
+                setItem(stack.copyWithCount(1));
+                if (player instanceof ServerPlayer serverPlayer) ElementTesterBlock.report(serverPlayer, this, item);
+                return 1;
+            };
+            slots.add(new StationSlot(new CBPixelBox(plate.x - 2.5, 10.5, plate.z - 2.5, plate.x + 2.5, 13.5, plate.z + 2.5),
+                    stack -> item.isEmpty(), examine, () -> item, max -> {
+                        ItemStack taken = item;
+                        setItem(ItemStack.EMPTY);
+                        return taken;
+                    }));
+            for (int i = 0; i < crystals.size(); i++) {
+                final int index = i;
+                Vec3 at = layout.crystals()[i];
+                slots.add(new StationSlot(new CBPixelBox(at.x - 1.75, 10.5, at.z - 1.75, at.x + 1.75, 15.5, at.z + 1.75),
+                        stack -> false, (stack, player) -> 0, () -> CrystalElements.stackOf(crystals.get(index)), max -> removeCrystal(index)));
+            }
+        }
+        StationSlot.Inserter install = (stack, player) -> {
+            DustElement crystal = CrystalElements.of(stack);
+            if (crystal == null || crystals.size() >= ExaminerLayout.MAX_CRYSTALS || crystals.contains(crystal)) return 0;
+            addCrystal(crystal);
+            return 1;
+        };
+        slots.add(new StationSlot(TABLE_TOP, stack -> CrystalElements.of(stack) != null, install, () -> ItemStack.EMPTY, max -> ItemStack.EMPTY));
+        return slots;
+    }
+
+    // Takes a crystal off (the ones after it move up); returns it as an item
+    public ItemStack removeCrystal(int index)
+    {
+        if (index < 0 || index >= crystals.size()) return ItemStack.EMPTY;
+        DustElement removed = crystals.remove(index);
+        crystalsChanged();
+        return CrystalElements.stackOf(removed);
+    }
+
+    // The block's model follows how many crystals there are (ElementTesterBlock.CRYSTALS)
+    private void crystalsChanged()
+    {
         sync();
-        return removed;
+        if (level != null && !level.isClientSide()) {
+            level.setBlock(worldPosition, getBlockState().setValue(ElementTesterBlock.CRYSTALS, crystals.size()), Block.UPDATE_ALL);
+            level.playSound(null, worldPosition, SoundEvents.AMETHYST_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        }
     }
 
     public ItemStack getItem()

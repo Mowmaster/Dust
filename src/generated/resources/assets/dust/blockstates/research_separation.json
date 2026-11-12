@@ -1,18 +1,18 @@
 {
   "variants": {
     "facing=east": {
-      "model": "dust:block/station/research_separation_body",
+      "model": "dust:block/station/research_separation",
       "y": 90
     },
     "facing=north": {
-      "model": "dust:block/station/research_separation_body"
+      "model": "dust:block/station/research_separation"
     },
     "facing=south": {
-      "model": "dust:block/station/research_separation_body",
+      "model": "dust:block/station/research_separation",
       "y": 180
     },
     "facing=west": {
-      "model": "dust:block/station/research_separation_body",
+      "model": "dust:block/station/research_separation",
       "y": 270
     }
   }

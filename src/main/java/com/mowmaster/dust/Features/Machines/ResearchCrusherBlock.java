@@ -1,13 +1,10 @@
 package com.mowmaster.dust.Features.Machines;
 
 import com.mowmaster.dust.DustRegistries.DustBlockEntityRegistry;
-import com.mowmaster.mowlib.storage.StorageInteractions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,9 +32,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 // Research Crusher: crushes any block into pebbles of it ("Crushed Stone"), one block at a time, 100 ticks each.
-//   Right-click with a block      drops one into the funnel (if it's empty). It sinks into the turning wheels, throwing
-//                                 off bits of itself, and comes out as pebbles in the tray below.
-//   Right-click empty-handed      takes the pebbles from the tray (or the block back, if the tray's empty)
+//   Right-click the funnel with a block   drops one in (if it's empty). It sinks into the turning wheels, throwing off
+//                                         bits of itself, and comes out as pebbles in the tray below.
+//   Left-click the tray / the funnel      takes the pebbles (1, or a stack sneaking) / the block back
 // The step (block -> crusher -> pebbles) goes into the research notes of whoever put the block in.
 public class ResearchCrusherBlock extends Block implements EntityBlock
 {
@@ -98,31 +95,11 @@ public class ResearchCrusherBlock extends Block implements EntityBlock
         return (BlockEntityTicker<T>) ticker;
     }
 
+    // Blocks go into the funnel; everything else as usual (StationInteractions also handles left-clicks to take out)
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!(stack.getItem() instanceof BlockItem) || !(level.getBlockEntity(pos) instanceof ResearchCrusherBlockEntity crusher) || !crusher.canInsert()) {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
-        }
-        if (!level.isClientSide()) {
-            crusher.insert(stack, player.getUUID());
-            stack.consume(1, player);
-            level.playSound(null, pos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.8F, 0.8F);
-        }
-        return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
-    {
-        if (!(level.getBlockEntity(pos) instanceof ResearchCrusherBlockEntity crusher)) return InteractionResult.PASS;
-        if (crusher.getOutput().isEmpty() && crusher.getInput().isEmpty()) return InteractionResult.PASS;
-        if (!level.isClientSide()) {
-            ItemStack taken = !crusher.getOutput().isEmpty() ? crusher.takeOutput() : crusher.takeInput();
-            StorageInteractions.giveToPlayer(player, taken);
-            level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.4F, 1.0F);
-        }
-        return InteractionResult.SUCCESS;
+        return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
 
     // While crushing: bits of the block fly off where the wheels bite (its own break particles)

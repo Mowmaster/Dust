@@ -95,7 +95,6 @@ public class DustClient {
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
         ResearchCrusherRenderer.registerModels(event);
-        ResearchSeparationRenderer.registerModels(event);
     }
 
     // Item model tints: "dust:source_block", the colour of the block a product was made from (crushed blocks)

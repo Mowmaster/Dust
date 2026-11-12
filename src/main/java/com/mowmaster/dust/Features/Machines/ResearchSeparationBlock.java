@@ -2,7 +2,6 @@ package com.mowmaster.dust.Features.Machines;
 
 import com.mowmaster.dust.DustRegistries.DustBlockEntityRegistry;
 import com.mowmaster.dust.Features.DustComposition.MagicalFlintAndSteelItem;
-import com.mowmaster.mowlib.storage.StorageInteractions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -36,12 +35,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 // Alchemical Separation Table: splits one solid element out of something (Separation has the rules).
-//   Right-click with paper                     stocks the table with paper (to catch compounds)
-//   Right-click with anything else             sets one on the scroll's input pad
-//   Right-click with a Magical Flint and Steel starts it: the array lifts and spins with the item, the scroll glows,
-//                                              and dust streams down to the two outputs
-//   Right-click empty-handed                   takes the outputs (left, then right), else the item, else the paper;
-//                                              sneak to take just the paper
+//   Right-click the pad behind the scroll with paper    stocks it with paper (to catch compounds)
+//   Right-click the scroll with anything                sets one on it to separate
+//   Right-click with a Magical Flint and Steel          starts it: the glyph rises off the scroll and spins with the
+//                                                       item, glowing, and dust streams down to the two outputs
+//   Left-click any of them                              takes from it (1, or a stack sneaking); see StationInteractions
 public class ResearchSeparationBlock extends Block implements EntityBlock
 {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -123,31 +121,7 @@ public class ResearchSeparationBlock extends Block implements EntityBlock
             return InteractionResult.SUCCESS;
         }
 
-        if (stack.is(Items.PAPER)) {
-            if (!level.isClientSide()) {
-                int moved = table.addPaper(stack);
-                if (moved > 0 && !player.hasInfiniteMaterials()) stack.shrink(moved);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        if (!table.getInput().isEmpty() || table.isRunning()) return InteractionResult.TRY_WITH_EMPTY_HAND;
-        if (!level.isClientSide() && table.placeInput(stack)) {
-            stack.consume(1, player);
-            level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
-        }
-        return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
-    {
-        if (!(level.getBlockEntity(pos) instanceof ResearchSeparationBlockEntity table)) return InteractionResult.PASS;
-        if (level.isClientSide()) return InteractionResult.SUCCESS;
-        ItemStack taken = table.takeOne(player.isSecondaryUseActive());
-        if (taken.isEmpty()) return InteractionResult.PASS;
-        StorageInteractions.giveToPlayer(player, taken);
-        level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
-        return InteractionResult.SUCCESS;
+        // Anything else goes where it's clicked (StationInteractions: paper on its pad, the item on the scroll)
+        return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
 }

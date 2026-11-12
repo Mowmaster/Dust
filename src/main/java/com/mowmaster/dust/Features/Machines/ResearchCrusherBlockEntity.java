@@ -6,6 +6,7 @@ import com.mowmaster.dust.Features.Research.ProcessRecord;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
+import com.mowmaster.mowlib.util.CBPixelBox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
@@ -29,7 +31,7 @@ import java.util.UUID;
 // (their research notes the step). One block at a time, CRUSH_TICKS each.
 // The client keeps its own count while a block is in (for the descent and the wheels), restarted whenever the server's
 // copy arrives, so the server only syncs when the block or the tray changes, not every tick.
-public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity
+public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     public static final int CRUSH_TICKS = 100;
     public static final int TRAY_LIMIT = 64;
@@ -54,37 +56,33 @@ public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity
         return input.isEmpty() ? 0 : Math.min(1F, (progress + partialTick) / CRUSH_TICKS);
     }
 
-    public boolean canInsert()
-    {
-        return input.isEmpty();
-    }
+    // ---- clicking (StationInteractions) ----
+    // Right-click the funnel with a block to drop one in; left-click the funnel to take it back, the tray for the
+    // pebbles. Areas are model pixels, facing north (the tray side).
+    private static final CBPixelBox FUNNEL = new CBPixelBox(0, 7, 6, 16, 16.5, 16.5);
+    private static final CBPixelBox TRAY = new CBPixelBox(4, 0, -0.5, 12, 5, 7);
 
-    // A block to crush (one), and whose research the step goes into
-    public void insert(ItemStack block, @Nullable UUID player)
+    @Override
+    public List<StationSlot> slots()
     {
-        input = block.copyWithCount(1);
-        owner = player;
-        progress = 0;
-        sync();
-    }
-
-    // Everything in the tray
-    public ItemStack takeOutput()
-    {
-        ItemStack taken = output;
-        output = ItemStack.EMPTY;
-        sync();
-        return taken;
-    }
-
-    // The block back out, before it's crushed
-    public ItemStack takeInput()
-    {
-        ItemStack taken = input;
-        input = ItemStack.EMPTY;
-        progress = 0;
-        sync();
-        return taken;
+        StationSlot.Inserter dropIn = (stack, player) -> {
+            if (!input.isEmpty()) return 0;
+            input = stack.copyWithCount(1);
+            owner = player == null ? null : player.getUUID();
+            progress = 0;
+            sync();
+            return 1;
+        };
+        StationSlot.Extractor takeBack = max -> {
+            ItemStack taken = input;
+            input = ItemStack.EMPTY;
+            progress = 0;
+            sync();
+            return taken;
+        };
+        return List.of(
+                StationSlot.output(TRAY, () -> output, stack -> output = stack, this::sync),
+                new StationSlot(FUNNEL, stack -> stack.getItem() instanceof BlockItem && input.isEmpty(), dropIn, () -> input, takeBack));
     }
 
     // Crushed <block>: pebbles that remember their block

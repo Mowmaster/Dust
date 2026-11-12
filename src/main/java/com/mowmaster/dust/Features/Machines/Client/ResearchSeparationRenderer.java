@@ -1,23 +1,22 @@
 package com.mowmaster.dust.Features.Machines.Client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.Machines.CrusherLayout;
 import com.mowmaster.dust.Features.Machines.ResearchSeparationBlock;
 import com.mowmaster.dust.Features.Machines.ResearchSeparationBlockEntity;
 import com.mowmaster.dust.Features.Machines.SeparationLayout;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockModelRenderState;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -25,33 +24,26 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
-import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import org.jspecify.annotations.Nullable;
 
-import java.util.List;
-
 // The Alchemical Separation Table's moving parts (the table and scroll are the block model):
-//   the magical array (models/block/station/research_separation_array.json, a standalone model): flat on the scroll
-//     when idle; while separating it lifts, spins, and glows (drawn at full brightness, pulsing)
-//   the item: on its pad, or riding above the spinning array while it's separated
-//   the two outputs on their pads, and the paper the table holds
+//   the glyph: while separating, a glowing copy of the scroll's glyph rises off it, spinning, and pulses
+//     (textures/block/station/scroll_glyph.png: just the glyph's lines, white, drawn tinted and at full brightness)
+//   the item: lying on the scroll, or riding above the glyph while it's separated
+//   the paper on its pad and the two outputs, lying flat
 public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchSeparationBlockEntity, ResearchSeparationRenderer.State>
 {
     private static final int FULL_BRIGHT = 0xF000F0;
     private static final float ITEM_SCALE = 0.35F;
-    // Ticks to lift the array at the start, and to set it down at the end
     private static final float LIFT_TICKS = 20F;
     private static final float SETTLE_TICKS = 10F;
+    // The glyph's glow, between these two colours (0xAARRGGBB), and how fast it pulses
+    private static final int GLOW_BRIGHT = 0xFFF0E0FF;
+    private static final int GLOW_DIM = 0x80A070FF;
 
-    public static final StandaloneModelKey<BlockStateModelPart> ARRAY = new StandaloneModelKey<>(() -> "dust:research_separation_array");
-
-    // Called from DustClient's ModelEvent.RegisterStandalone handler
-    public static void registerModels(ModelEvent.RegisterStandalone event)
-    {
-        event.register(ARRAY, SimpleUnbakedStandaloneModel.simpleModelWrapper(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_separation_array")));
-    }
+    private static final Identifier GLYPH = Identifier.fromNamespaceAndPath(DustReferences.MODID, "textures/block/station/scroll_glyph.png");
+    // entityTranslucent: a texture drawn with see-through pixels blended, the way entities with transparency are
+    private static final RenderType GLYPH_TYPE = RenderTypes.entityTranslucent(GLYPH);
 
     private final ItemModelResolver itemModelResolver;
 
@@ -68,7 +60,7 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
         final ItemStackRenderState paper = new ItemStackRenderState();
         Direction facing = Direction.NORTH;
         float progress = -1;
-        // 0-1: how far the array is lifted
+        // 0-1: how far the glyph has risen
         float lift;
         float spin;
     }
@@ -99,7 +91,6 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
             float down = Mth.clamp((ResearchSeparationBlockEntity.SEPARATE_TICKS - p) / SETTLE_TICKS, 0, 1);
             state.lift = Math.min(up, down);
         }
-        // Spins faster as it lifts
         state.spin = p < 0 ? 0 : (p * 9F * state.lift) % 360F;
     }
 
@@ -107,61 +98,90 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
     public void submit(State state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera)
     {
         boolean running = state.progress >= 0;
-        Vec3 arrayPx = SeparationLayout.ARRAY;
         double liftPx = SeparationLayout.ARRAY_LIFT * state.lift;
+        float yaw = -CrusherLayoutTurns.of(state.facing) * 90F;
 
-        // The array: in the model's own (north-facing) space, turned to the facing about the block's centre
-        BlockStateModelPart array = Minecraft.getInstance().getModelManager().getStandaloneModel(ARRAY);
-        if (array != null) {
-            poseStack.pushPose();
-            poseStack.translate(0.5, 0, 0.5);
-            poseStack.rotate(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F));
-            poseStack.translate(-0.5, 0, -0.5);
-            poseStack.translate(arrayPx.x / 16, (arrayPx.y + liftPx) / 16, arrayPx.z / 16);
-            poseStack.rotate(Axis.YP.rotationDegrees(state.spin));
-            poseStack.translate(-arrayPx.x / 16, -arrayPx.y / 16, -arrayPx.z / 16);
-            // Glowing while it works: full brightness, flickering off for a moment every few ticks
-            boolean glow = running && ((int) state.progress / 3) % 5 != 0;
-            submitNodeCollector.submitBlockModel(poseStack, Sheets.cutoutBlockItemSheet(), List.of(array), BlockModelRenderState.EMPTY_TINTS,
-                    glow ? FULL_BRIGHT : state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
-            poseStack.popPose();
-        }
+        if (running) submitGlyph(state, liftPx, poseStack, submitNodeCollector);
 
-        // The item: on its pad, or riding above the array while separating
+        // The item: lying on the scroll, or riding above the glyph while separating
         if (!state.input.isEmpty()) {
-            Vec3 at = running
-                    ? CrusherLayout.turned(new Vec3(arrayPx.x, arrayPx.y + liftPx + 3, arrayPx.z), state.facing)
-                    : CrusherLayout.turned(SeparationLayout.INPUT, state.facing);
-            poseStack.pushPose();
-            poseStack.translate(at.x, at.y, at.z);
-            if (running) poseStack.rotate(Axis.YP.rotationDegrees(state.spin));
-            poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
-            state.input.submit(poseStack, submitNodeCollector, running ? FULL_BRIGHT : state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
-            poseStack.popPose();
+            Vec3 px = running ? SeparationLayout.ARRAY.add(0, liftPx + 1.5, 0) : SeparationLayout.SCROLL;
+            submitFlat(state.input, px, running ? yaw + state.spin : yaw, running ? FULL_BRIGHT : state.lightCoords, state, poseStack, submitNodeCollector);
         }
-        submitItem(state.left, SeparationLayout.LEFT_OUTPUT, state, poseStack, submitNodeCollector);
-        submitItem(state.right, SeparationLayout.RIGHT_OUTPUT, state, poseStack, submitNodeCollector);
-        submitItem(state.paper, SeparationLayout.PAPER, state, poseStack, submitNodeCollector);
+        submitFlat(state.paper, SeparationLayout.PAPER_PAD, yaw, state.lightCoords, state, poseStack, submitNodeCollector);
+        submitFlat(state.left, SeparationLayout.LEFT_OUTPUT, yaw, state.lightCoords, state, poseStack, submitNodeCollector);
+        submitFlat(state.right, SeparationLayout.RIGHT_OUTPUT, yaw, state.lightCoords, state, poseStack, submitNodeCollector);
     }
 
-    private static void submitItem(ItemStackRenderState item, Vec3 pixels, State state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector)
+    // An item lying flat at a point of the model (pixels, facing north), turned yaw degrees about up
+    private static void submitFlat(ItemStackRenderState item, Vec3 pixels, float yaw, int light, State state,
+                                   PoseStack poseStack, SubmitNodeCollector submitNodeCollector)
     {
         if (item.isEmpty()) return;
         Vec3 at = CrusherLayout.turned(pixels, state.facing);
         poseStack.pushPose();
         poseStack.translate(at.x, at.y, at.z);
+        poseStack.rotate(Axis.YP.rotationDegrees(yaw));
+        // Laid down: tipped back a quarter turn so it lies on the table (the GROUND model stands upright)
+        poseStack.rotate(Axis.XP.rotationDegrees(90));
         poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
-        item.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        item.submit(poseStack, submitNodeCollector, light, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 
-    private static int quarterTurns(Direction facing)
+    // The glyph: a flat square the size of the scroll's top, risen and spinning, drawn at full brightness in a colour
+    // that pulses between GLOW_DIM and GLOW_BRIGHT
+    private static void submitGlyph(State state, double liftPx, PoseStack poseStack, SubmitNodeCollector submitNodeCollector)
     {
-        return switch (facing) {
-            case EAST -> 1;
-            case SOUTH -> 2;
-            case WEST -> 3;
-            default -> 0;
-        };
+        Vec3 centre = CrusherLayout.turned(SeparationLayout.ARRAY.add(0, liftPx + 0.05, 0), state.facing);
+        float pulse = 0.5F + 0.5F * Mth.sin(state.progress * 0.6F);
+        int color = lerpColor(GLOW_DIM, GLOW_BRIGHT, pulse);
+        float halfX = (float) (SeparationLayout.GLYPH_WIDTH / 32);
+        float halfZ = (float) (SeparationLayout.GLYPH_DEPTH / 32);
+        poseStack.pushPose();
+        poseStack.translate(centre.x, centre.y, centre.z);
+        poseStack.rotate(Axis.YP.rotationDegrees(-CrusherLayoutTurns.of(state.facing) * 90F + state.spin));
+        submitNodeCollector.submitCustomGeometry(poseStack, GLYPH_TYPE, (pose, buffer) -> {
+            // Facing up, and a copy facing down so it shows from below while it hangs in the air
+            vertex(buffer, pose, -halfX, -halfZ, 0, 0, color, 1);
+            vertex(buffer, pose, -halfX, halfZ, 0, 1, color, 1);
+            vertex(buffer, pose, halfX, halfZ, 1, 1, color, 1);
+            vertex(buffer, pose, halfX, -halfZ, 1, 0, color, 1);
+            vertex(buffer, pose, halfX, -halfZ, 1, 0, color, -1);
+            vertex(buffer, pose, halfX, halfZ, 1, 1, color, -1);
+            vertex(buffer, pose, -halfX, halfZ, 0, 1, color, -1);
+            vertex(buffer, pose, -halfX, -halfZ, 0, 0, color, -1);
+        });
+        poseStack.popPose();
+    }
+
+    private static void vertex(VertexConsumer buffer, PoseStack.Pose pose, float x, float z, float u, float v, int color, float normalY)
+    {
+        buffer.addVertex(pose, x, 0, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(FULL_BRIGHT).setNormal(pose, 0, normalY, 0);
+    }
+
+    // Between two 0xAARRGGBB colours, t 0-1
+    private static int lerpColor(int from, int to, float t)
+    {
+        int out = 0;
+        for (int shift = 0; shift <= 24; shift += 8) {
+            int a = (from >>> shift) & 0xFF, b = (to >>> shift) & 0xFF;
+            out |= (Math.round(a + (b - a) * t) & 0xFF) << shift;
+        }
+        return out;
+    }
+
+    // Clockwise quarter turns the blockstate gives each facing (the models face north)
+    private static final class CrusherLayoutTurns
+    {
+        static int of(Direction facing)
+        {
+            return switch (facing) {
+                case EAST -> 1;
+                case SOUTH -> 2;
+                case WEST -> 3;
+                default -> 0;
+            };
+        }
     }
 }
