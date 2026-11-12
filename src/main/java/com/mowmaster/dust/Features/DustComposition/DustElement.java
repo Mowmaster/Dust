@@ -95,6 +95,22 @@ public final class DustElement
         return id.toString();
     }
 
+
+    // Two elements are the same if they have the same id (there's only ever one of each, but data components must say
+    // how they're compared: NeoForge refuses a component class that doesn't override equals and hashCode).
+    // instanceof with a name (other instanceof DustElement element) checks the type and casts in one go.
+    @Override
+    public boolean equals(Object other)
+    {
+        return this == other || (other instanceof DustElement element && id.equals(element.id));
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
+
     static Identifier dustId(String path)
     {
         return Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
