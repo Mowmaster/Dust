@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
 import com.mowmaster.dust.Features.DustComposition.Client.ClientElementTooltip;
 import com.mowmaster.dust.Features.Machines.Client.CompoundTint;
 import com.mowmaster.dust.Features.Machines.Client.ResearchCrusherRenderer;
+import com.mowmaster.dust.Features.Machines.Client.ResearchDistillationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.ResearchEvaporationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.ResearchSeparationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
@@ -87,6 +88,8 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_SEPARATION.get(), ResearchSeparationRenderer::new);
         // The Evaporation Table: its spoon, the liquid, the glyph and the items
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_EVAPORATION.get(), ResearchEvaporationRenderer::new);
+        // The Distillation Table: the glyph, the liquid in the flask and jar, and the items
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_DISTILLATION.get(), ResearchDistillationRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour

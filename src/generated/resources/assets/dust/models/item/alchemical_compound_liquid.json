@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/bowl",
+    "layer1": "dust:item/alchemical_compound_bowl_contents"
+  }
+}

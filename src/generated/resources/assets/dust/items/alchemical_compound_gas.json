@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:item/alchemical_compound_gas",
+    "tints": [
+      {
+        "type": "dust:compound"
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
+  }
+}

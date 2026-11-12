@@ -4,6 +4,9 @@ import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.ElementPhase;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
@@ -15,17 +18,62 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-// Alchemical compounds: elements separated out of something together, kept on a scrap of paper (the dust:compound
-// component), and remembering the material they came from (dust:source). Made by the Alchemical Separation Table.
+// Alchemical compounds: elements taken out of something together (the dust:compound component), remembering the
+// material they came from (dust:source). A solid one is kept on paper, a liquid in a bowl, a gas in a glass bottle
+// (Kind). Made by the Separation, Evaporation and Distillation Tables.
 public final class Compounds
 {
     private Compounds() {}
 
-    // A compound of these elements, from this material
+    // What a compound is caught in, by the most volatile element in it: anything gaseous makes it a gas (in a glass
+    // bottle), else anything aqueous a liquid (in a bowl), else it's a solid (on paper)
+    public enum Kind
+    {
+        SOLID(() -> Items.PAPER), AQUEOUS(() -> Items.BOWL), GASEOUS(() -> Items.GLASS_BOTTLE);
+
+        private final Supplier<Item> container;
+
+        Kind(Supplier<Item> container)
+        {
+            this.container = container;
+        }
+
+        // What it needs to be caught in
+        public Item container()
+        {
+            return container.get();
+        }
+
+        // The compound item for this kind
+        public Item item()
+        {
+            return switch (this) {
+                case SOLID -> DustItemRegistry.ALCHEMICAL_COMPOUND.get();
+                case AQUEOUS -> DustItemRegistry.ALCHEMICAL_LIQUID.get();
+                case GASEOUS -> DustItemRegistry.ALCHEMICAL_GAS.get();
+            };
+        }
+
+        public static Kind of(List<DustElement> elements)
+        {
+            if (elements.stream().anyMatch(element -> element.phase() == ElementPhase.GASEOUS)) return GASEOUS;
+            if (elements.stream().anyMatch(element -> element.phase() == ElementPhase.AQUEOUS)) return AQUEOUS;
+            return SOLID;
+        }
+    }
+
+    // A solid compound of these elements, from this material
     public static ItemStack create(List<DustElement> elements, ItemStack original)
     {
-        ItemStack compound = new ItemStack(DustItemRegistry.ALCHEMICAL_COMPOUND.get());
+        return create(elements, original, Kind.SOLID);
+    }
+
+    // A compound of these elements, from this material, of this kind (which item it is)
+    public static ItemStack create(List<DustElement> elements, ItemStack original, Kind kind)
+    {
+        ItemStack compound = new ItemStack(kind.item());
         compound.set(DustComponentDataRegistry.COMPOUND.get(), new DustComposition(elements));
         return ProductSource.madeFrom(compound, original);
     }

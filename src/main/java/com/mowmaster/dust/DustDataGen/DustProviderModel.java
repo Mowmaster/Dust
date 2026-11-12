@@ -61,6 +61,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchCrusher(blockModels, itemModels);
         createResearchSeparation(blockModels, itemModels);
         createResearchEvaporation(blockModels);
+        createResearchDistillation(blockModels, itemModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -218,6 +219,33 @@ public class DustProviderModel extends ModelProvider {
                 .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
         blockModels.itemModelOutput.accept(block.asItem(),
                 ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_evaporation")));
+    }
+
+    // The Distillation Table: nothing in the model moves (the glyph, liquid and items are drawn by
+    // Client/ResearchDistillationRenderer), so the block and the item both use the whole model. Turned by FACING.
+    // Its compounds: a gas in a bottle (vanilla's potion: the liquid overlay, layer 0, tinted the compound's colour; the
+    // bottle, layer 1, as it is) and a liquid in a bowl (the bowl as it is, layer 0; its contents tinted, layer 1).
+    private void createResearchDistillation(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        Block block = DustBlockRegistry.RESEARCH_DISTILLATION.get();
+        Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_distalation");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+
+        Identifier gasModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_GAS.get(),
+                TextureMapping.layered(new Material(Identifier.withDefaultNamespace("item/potion_overlay")),
+                        new Material(Identifier.withDefaultNamespace("item/potion"))),
+                itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_GAS.get(),
+                ItemModelUtils.tintedModel(gasModel, new CompoundTint(), new Constant(-1)));
+
+        Identifier liquidModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_LIQUID.get(),
+                TextureMapping.layered(new Material(Identifier.withDefaultNamespace("item/bowl")),
+                        new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/alchemical_compound_bowl_contents"))),
+                itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_LIQUID.get(),
+                ItemModelUtils.tintedModel(liquidModel, new Constant(-1), new CompoundTint()));
     }
 
     // The Element Tester: one hand-made model per number of crystals (models/block/station/element_tester_<n>.json),

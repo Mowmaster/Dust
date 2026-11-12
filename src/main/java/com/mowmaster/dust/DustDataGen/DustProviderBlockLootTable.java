@@ -48,6 +48,7 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());
         dropSelf(DustBlockRegistry.RESEARCH_SEPARATION.get());
         dropSelf(DustBlockRegistry.RESEARCH_EVAPORATION.get());
+        dropSelf(DustBlockRegistry.RESEARCH_DISTILLATION.get());
 
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
         add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));

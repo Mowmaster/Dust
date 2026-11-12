@@ -130,6 +130,9 @@ public class DustItemRegistry
     // Alchemical Separation Table outputs: separated elements on paper, and what's left when amorphous ones burn away
     public static final DeferredItem<Item> ALCHEMICAL_COMPOUND = DUSTITEMS.registerItem("alchemical_compound", AlchemicalCompoundItem::new);
     public static final DeferredItem<Item> ALCHEMICAL_SOOT = DUSTITEMS.registerSimpleItem("alchemical_soot", properties -> properties);
+    // Distillation outputs with something aqueous in them (in a bowl) or something gaseous (in a glass bottle)
+    public static final DeferredItem<Item> ALCHEMICAL_LIQUID = DUSTITEMS.registerItem("alchemical_compound_liquid", AlchemicalCompoundItem::new);
+    public static final DeferredItem<Item> ALCHEMICAL_GAS = DUSTITEMS.registerItem("alchemical_compound_gas", AlchemicalCompoundItem::new);
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));
