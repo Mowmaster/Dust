@@ -1,6 +1,8 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
 
 import net.minecraft.world.item.ItemStackTemplate;
 
@@ -46,6 +48,11 @@ public class DustComponentDataRegistry
     // What an alchemical compound is made of (the elements separated out together): see Features/Machines/Compounds
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<DustComposition>> COMPOUND = register("compound",
             builder -> builder.persistent(DustComposition.CODEC).networkSynchronized(ByteBufCodecs.fromCodec(DustComposition.CODEC)));
+
+    // Alchemical Dust's element (stable dust of one element, made on the Transformation Table): see
+    // Features/Machines/AlchemicalDust
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<DustElement>> ALCHEMICAL_ELEMENT = register("alchemical_element",
+            builder -> builder.persistent(DustElements.CODEC).networkSynchronized(ByteBufCodecs.fromCodec(DustElements.CODEC)));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                           UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

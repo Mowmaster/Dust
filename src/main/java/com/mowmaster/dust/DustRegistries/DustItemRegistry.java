@@ -8,6 +8,7 @@ import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
 import com.mowmaster.dust.Features.Research.ResearchBookItem;
 import com.mowmaster.dust.Features.DustComposition.MagicalFlintAndSteelItem;
 import com.mowmaster.dust.Features.Machines.AlchemicalCompoundItem;
+import com.mowmaster.dust.Features.Machines.AlchemicalDustItem;
 import com.mowmaster.dust.Features.Machines.CrushedItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
@@ -133,6 +134,8 @@ public class DustItemRegistry
     // Distillation outputs with something aqueous in them (in a bowl) or something gaseous (in a glass bottle)
     public static final DeferredItem<Item> ALCHEMICAL_LIQUID = DUSTITEMS.registerItem("alchemical_compound_liquid", AlchemicalCompoundItem::new);
     public static final DeferredItem<Item> ALCHEMICAL_GAS = DUSTITEMS.registerItem("alchemical_compound_gas", AlchemicalCompoundItem::new);
+    // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)
+    public static final DeferredItem<Item> ALCHEMICAL_DUST = DUSTITEMS.registerItem("alchemical_dust", AlchemicalDustItem::new);
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));

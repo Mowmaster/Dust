@@ -5,7 +5,13 @@ import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
 import com.mowmaster.dust.Features.DustComposition.Client.ClientElementTooltip;
 import com.mowmaster.dust.Features.Machines.Client.CompoundTint;
 import com.mowmaster.dust.Features.Machines.Client.ResearchCrusherRenderer;
+import com.mowmaster.dust.Features.Machines.Client.AlchemicalDustTint;
+import com.mowmaster.dust.Features.Machines.Client.ClientAlchemicalDustTooltip;
+import com.mowmaster.dust.Features.Machines.Client.ResearchCombinationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.ResearchDistillationRenderer;
+import com.mowmaster.dust.Features.Machines.Client.ResearchMixingRenderer;
+import com.mowmaster.dust.Features.Machines.Client.ResearchTransformationRenderer;
+import com.mowmaster.dust.Features.Machines.AlchemicalDustTooltip;
 import com.mowmaster.dust.Features.Machines.Client.ResearchEvaporationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.ResearchSeparationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
@@ -90,6 +96,10 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_EVAPORATION.get(), ResearchEvaporationRenderer::new);
         // The Distillation Table: the glyph, the liquid in the flask and jar, and the items
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_DISTILLATION.get(), ResearchDistillationRenderer::new);
+        // The Transformation, Combination and Mixing Tables: their glyphs, the Mixing Table's spoon and liquid, the items
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_TRANSFORMATION.get(), ResearchTransformationRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_COMBINATION.get(), ResearchCombinationRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_MIXING.get(), ResearchMixingRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
@@ -111,6 +121,7 @@ public class DustClient {
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "source_block"), SourceBlockTint.MAP_CODEC);
         // "dust:compound": an alchemical compound's colour, for its dust pile
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "compound"), CompoundTint.MAP_CODEC);
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "alchemical_dust"), AlchemicalDustTint.MAP_CODEC);
     }
 
     // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)
@@ -118,6 +129,7 @@ public class DustClient {
     public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent event)
     {
         event.register(ElementTooltip.class, ClientElementTooltip::new);
+        event.register(AlchemicalDustTooltip.class, ClientAlchemicalDustTooltip::new);
     }
 
     // Glyph stone carving colour: dark, or worn blank on stones the local player has transcribed (tint index 0)

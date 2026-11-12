@@ -33,6 +33,9 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.RESEARCH_SEPARATION.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_EVAPORATION.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_DISTILLATION.asItem());
+                        output.accept(DustBlockRegistry.RESEARCH_TRANSFORMATION.asItem());
+                        output.accept(DustBlockRegistry.RESEARCH_COMBINATION.asItem());
+                        output.accept(DustBlockRegistry.RESEARCH_MIXING.asItem());
                         output.accept(DustItemRegistry.ALCHEMICAL_SOOT.asItem());
                     }).build());
 

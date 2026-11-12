@@ -3,6 +3,9 @@ package com.mowmaster.dust.Features.Research.Client;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
+import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
+import com.mowmaster.dust.Features.Machines.ElementCombining;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Machines.Compounds;
 import com.mowmaster.dust.Features.Machines.ProductSource;
@@ -111,6 +114,8 @@ public final class ResearchBook
 
     // The notes pages an entry has, depending on how far its research has got
     //   OVERVIEW      the built-in notes, which the player can rewrite (Research Notes only)
+    //   MADE_FROM     an element's combination path: each mix it takes, from the primals up, with the table that puts
+    //                 the two together (discovered mixed elements only; as many pages as it takes)
     //   WHERE_FOUND   the biomes it's been seen in (once there are two or more)
     //   FAMILY        the other members of its group (block families), unfound ones faded
     //   CRAFTED_FROM  recipes seen making it: ingredients, station, result (as many pages as it takes)
@@ -119,15 +124,32 @@ public final class ResearchBook
     //   RESEARCH      its dust: the colour it burns with (Magical Flint and Steel), what it's made of (Elemental Examiner)
     //   PROCESSES     the steps the player has taken it through: input -> machine -> output, each with an "x" to cross
     //                 it out (as many pages as it takes)
-    enum Kind { OVERVIEW, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH, PROCESSES }
+    enum Kind { OVERVIEW, MADE_FROM, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH, PROCESSES }
 
     // One notes page: its kind, and for the crafting / process pages the recipes / steps that fit on it
-    record NotesPage(Kind kind, List<RecipeRecord> recipes, List<ProcessRecord> processes) {}
+    //   path: the elements whose mix is shown on a MADE_FROM page
+    // A record can have extra constructors as long as they call the main one (this(...)): the three-argument one is
+    // for every page but MADE_FROM.
+    record NotesPage(Kind kind, List<RecipeRecord> recipes, List<ProcessRecord> processes, List<DustElement> path)
+    {
+        NotesPage(Kind kind, List<RecipeRecord> recipes, List<ProcessRecord> processes)
+        {
+            this(kind, recipes, processes, List.of());
+        }
+    }
 
     static List<NotesPage> notesPages(ResearchEntry entry, EntryResearch research)
     {
         List<NotesPage> pages = new ArrayList<>();
         pages.add(new NotesPage(Kind.OVERVIEW, List.of(), List.of()));
+        // An element's combination path, PROCESS_ROWS mixes to a page
+        DustElement element = entry.tab() == ResearchTabs.ELEMENTS ? DustElements.get(entry.id()) : null;
+        if (element != null && !element.isPrimal()) {
+            List<DustElement> path = combinationPath(element);
+            for (int i = 0; i < path.size(); i += PROCESS_ROWS) {
+                pages.add(new NotesPage(Kind.MADE_FROM, List.of(), List.of(), List.copyOf(path.subList(i, Math.min(path.size(), i + PROCESS_ROWS)))));
+            }
+        }
         if (research.biomes().size() >= 2) pages.add(new NotesPage(Kind.WHERE_FOUND, List.of(), List.of()));
         if (entry.group().size() > 1) pages.add(new NotesPage(Kind.FAMILY, List.of(), List.of()));
         addRecipePages(pages, Kind.CRAFTED_FROM, research.madeBy());
@@ -326,6 +348,7 @@ public final class ResearchBook
                 }
                 case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
                 case PROCESSES -> drawProcesses(graphics, font, data, page.processes());
+                case MADE_FROM -> drawCombinations(graphics, font, data, page.path());
                 case RESEARCH -> drawDust(graphics, font, research.dust());
                 case OVERVIEW -> {
                     if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
@@ -576,7 +599,7 @@ public final class ResearchBook
     // ---- processes pages ----
 
     private static final int PROCESS_ROW = 21;
-    private static final int PROCESS_ROWS = 6;
+    private static final int PROCESS_ROWS = 5;
 
     // The "x" boxes drawn on the open processes page, for clicks (filled each frame, like LINKS)
     private record Cross(int x, int y, ProcessRecord process) {}
@@ -589,14 +612,14 @@ public final class ResearchBook
     {
         int y = NOTES_TOP;
         for (ProcessRecord step : steps) {
-            int x = RIGHT_X + 3;
+            int x = RIGHT_X + 1;
             linkedStack(graphics, data, step.input().create(), x, y);
-            Paper.ink(graphics, font, Component.literal("\u2192"), x + CELL + 3, y + 5, INK);
-            linkedItem(graphics, data, step.machine(), x + CELL + 12, y);
-            Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 15, y + 5, INK);
-            // Up to two outputs side by side (the separation table makes two)
-            for (int i = 0; i < step.outputs().size() && i < 2; i++) {
-                linkedStack(graphics, data, step.outputs().get(i).create(), x + 2 * CELL + 24 + i * CELL, y);
+            Paper.ink(graphics, font, Component.literal("\u2192"), x + CELL, y + 5, INK);
+            linkedItem(graphics, data, step.machine(), x + CELL + 6, y);
+            Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 6, y + 5, INK);
+            // Up to three outputs side by side, touching (the distillation table makes three), clear of the "x"
+            for (int i = 0; i < step.outputs().size() && i < 3; i++) {
+                linkedStack(graphics, data, step.outputs().get(i).create(), x + 2 * CELL + 12 + i * (CELL - 1), y);
             }
             if (editable) {
                 int crossX = RIGHT_X + PAGE_W - 12;
@@ -605,6 +628,56 @@ public final class ResearchBook
             }
             y += PROCESS_ROW;
         }
+    }
+
+    // ---- made-from pages: an element's combination path ----
+
+    // Every mix it takes to make this element, the primals' first: a post-order walk of its parts (each part's own
+    // mixes before the mix that uses it), each element once
+    static List<DustElement> combinationPath(DustElement element)
+    {
+        List<DustElement> path = new ArrayList<>();
+        addMixes(element, path);
+        return path;
+    }
+
+    private static void addMixes(DustElement element, List<DustElement> path)
+    {
+        if (element.isPrimal() || path.contains(element)) return;
+        for (DustElement part : element.parts()) addMixes(part, path);
+        path.add(element);
+    }
+
+    // Each mix as  [part] + [part] -> [table] -> [element]  (the Combination Table for two solids, the Mixing Table
+    // otherwise); the element icons link to their Elements entries, faded and named ??? until discovered
+    private static void drawCombinations(GuiGraphicsExtractor graphics, Font font, ResearchData data, List<DustElement> path)
+    {
+        Identifier combination = BuiltInRegistries.ITEM.getKey(DustBlockRegistry.RESEARCH_COMBINATION.get().asItem());
+        Identifier mixing = BuiltInRegistries.ITEM.getKey(DustBlockRegistry.RESEARCH_MIXING.get().asItem());
+        int y = NOTES_TOP;
+        for (DustElement element : path) {
+            int x = RIGHT_X + 3;
+            DustElement a = element.parts().get(0), b = element.parts().get(1);
+            linkedElement(graphics, data, a, x, y);
+            Paper.ink(graphics, font, Component.literal("+"), x + CELL + 1, y + 5, INK);
+            linkedElement(graphics, data, b, x + CELL + 7, y);
+            Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 7, y + 5, INK);
+            linkedItem(graphics, data, ElementCombining.combinedBySolids(a, b) ? combination : mixing, x + 2 * CELL + 14, y);
+            Paper.ink(graphics, font, Component.literal("\u2192"), x + 3 * CELL + 14, y + 5, INK);
+            linkedElement(graphics, data, element, x + 3 * CELL + 21, y);
+            y += PROCESS_ROW;
+        }
+    }
+
+    // An element's icon (its greyscale sprite tinted its colour) in a slot, linking to its Elements entry
+    private static void linkedElement(GuiGraphicsExtractor graphics, ResearchData data, DustElement element, int x, int y)
+    {
+        ResearchEntry entry = new ResearchEntry(ResearchTabs.ELEMENTS, element.id());
+        boolean discovered = data.has(entry);
+        Paper.slot(graphics, x, y);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y + 1, 16, 16, 0xFF000000 | element.color());
+        if (!discovered) Paper.fade(graphics, x, y);
+        LINKS.add(new Link(x, y, entry, discovered, discovered ? element.name() : Component.translatable("research.dust.undiscovered"), false));
     }
 
     // An item stack (with its data: crushed stone shows as pebbles of stone) as a linked icon. Products link to, and

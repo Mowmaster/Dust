@@ -100,6 +100,16 @@ public final class StationRendering
         buffer.addVertex(pose, x, 0, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0, normalY, 0);
     }
 
+    // How far a rising glyph is up, 0-1: up over its first 20 ticks, back down over its last 10 (total: how long the
+    // whole run is; progress -1: idle). Mth.clamp keeps a value between two bounds.
+    public static float lift(float progress, int total)
+    {
+        if (progress < 0) return 0;
+        float up = Mth.clamp(progress / 20F, 0, 1);
+        float down = Mth.clamp((total - progress) / 10F, 0, 1);
+        return Math.min(up, down);
+    }
+
     // Between two 0xAARRGGBB colours, t 0-1
     public static int lerpColor(int from, int to, float t)
     {

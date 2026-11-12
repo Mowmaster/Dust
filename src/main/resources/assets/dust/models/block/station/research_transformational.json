@@ -5,7 +5,7 @@
 	"textures": {
 		"0": "dust:block/glyph_stone/glyph_stone_front",
 		"1": "dust:block/station/scroll",
-		"3": "dust:block/blockofcrystal_blue",
+		"4": "dust:block/blockofcrystal_red",
 		"5": "dust:block/station/scroll_transformation",
 		"6": "dust:block/blockofcrystal_white",
 		"particle": "dust:block/glyph_stone/glyph_stone_front"
@@ -441,12 +441,12 @@
 			"to": [9, 15.25, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [7, 15, 2]},
 			"faces": {
-				"north": {"uv": [7, 1.75, 9, 2], "texture": "#3"},
-				"east": {"uv": [0, 1.75, 2, 2], "texture": "#3"},
-				"south": {"uv": [0, 1.75, 2, 2], "texture": "#3"},
-				"west": {"uv": [0, 1.75, 2, 2], "texture": "#3"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"down": {"uv": [0, 0, 2, 2], "texture": "#3"}
+				"north": {"uv": [7, 1.75, 9, 2], "texture": "#6"},
+				"east": {"uv": [0, 1.75, 2, 2], "texture": "#6"},
+				"south": {"uv": [0, 1.75, 2, 2], "texture": "#6"},
+				"west": {"uv": [0, 1.75, 2, 2], "texture": "#6"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#6"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#6"}
 			}
 		},
 		{
@@ -454,12 +454,12 @@
 			"to": [9, 15.25, 14],
 			"rotation": {"angle": 0, "axis": "y", "origin": [7, 15, 12]},
 			"faces": {
-				"north": {"uv": [7, 1.75, 9, 2], "texture": "#6"},
-				"east": {"uv": [0, 1.75, 2, 2], "texture": "#6"},
-				"south": {"uv": [0, 1.75, 2, 2], "texture": "#6"},
-				"west": {"uv": [0, 1.75, 2, 2], "texture": "#6"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#6"},
-				"down": {"uv": [0, 0, 2, 2], "texture": "#6"}
+				"north": {"uv": [7, 1.75, 9, 2], "texture": "#4"},
+				"east": {"uv": [0, 1.75, 2, 2], "texture": "#4"},
+				"south": {"uv": [0, 1.75, 2, 2], "texture": "#4"},
+				"west": {"uv": [0, 1.75, 2, 2], "texture": "#4"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#4"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#4"}
 			}
 		}
 	],

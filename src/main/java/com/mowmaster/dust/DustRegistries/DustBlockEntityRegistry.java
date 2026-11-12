@@ -3,7 +3,10 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlockEntity;
+import com.mowmaster.dust.Features.Machines.ResearchCombinationBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlockEntity;
+import com.mowmaster.dust.Features.Machines.ResearchMixingBlockEntity;
+import com.mowmaster.dust.Features.Machines.ResearchTransformationBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchEvaporationBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchSeparationBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -34,6 +37,12 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(ResearchEvaporationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_EVAPORATION.get())));
     public static final Supplier<BlockEntityType<ResearchDistillationBlockEntity>> RESEARCH_DISTILLATION = BLOCK_ENTITIES.register("research_distalation",
             () -> new BlockEntityType<>(ResearchDistillationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_DISTILLATION.get())));
+    public static final Supplier<BlockEntityType<ResearchTransformationBlockEntity>> RESEARCH_TRANSFORMATION = BLOCK_ENTITIES.register("research_transformational",
+            () -> new BlockEntityType<>(ResearchTransformationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.get())));
+    public static final Supplier<BlockEntityType<ResearchCombinationBlockEntity>> RESEARCH_COMBINATION = BLOCK_ENTITIES.register("research_combination",
+            () -> new BlockEntityType<>(ResearchCombinationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_COMBINATION.get())));
+    public static final Supplier<BlockEntityType<ResearchMixingBlockEntity>> RESEARCH_MIXING = BLOCK_ENTITIES.register("research_mixing",
+            () -> new BlockEntityType<>(ResearchMixingBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_MIXING.get())));
 
     public static void register(IEventBus eventBus)
     {

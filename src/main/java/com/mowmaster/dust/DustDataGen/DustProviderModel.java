@@ -9,6 +9,7 @@ import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
+import com.mowmaster.dust.Features.Machines.Client.AlchemicalDustTint;
 import com.mowmaster.dust.Features.Machines.Client.CompoundTint;
 import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
 import net.minecraft.client.color.item.Constant;
@@ -62,6 +63,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchSeparation(blockModels, itemModels);
         createResearchEvaporation(blockModels);
         createResearchDistillation(blockModels, itemModels);
+        createElementStations(blockModels, itemModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -246,6 +248,34 @@ public class DustProviderModel extends ModelProvider {
                 itemModels.modelOutput);
         itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_LIQUID.get(),
                 ItemModelUtils.tintedModel(liquidModel, new Constant(-1), new CompoundTint()));
+    }
+
+    // The Transformation and Combination Tables: nothing in the model moves (the glyphs and items are drawn by their
+    // renderers), so block and item use the whole model. The Mixing Table's block leaves out the spoon
+    // (research_mixing_body.json), which stirs in Client/ResearchMixingRenderer; its item shows the whole thing.
+    // Alchemical Dust: the heap (layer 0) tinted the element's colour, its sparkles (layer 1) as they are.
+    private void createElementStations(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        station(blockModels, DustBlockRegistry.RESEARCH_TRANSFORMATION.get(), "research_transformational", "research_transformational");
+        station(blockModels, DustBlockRegistry.RESEARCH_COMBINATION.get(), "research_combination", "research_combination");
+        station(blockModels, DustBlockRegistry.RESEARCH_MIXING.get(), "research_mixing_body", "research_mixing");
+
+        Identifier dustModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_DUST.get(),
+                TextureMapping.layered(new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/alchemical_dust")),
+                        new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/alchemical_dust_sparkle"))),
+                itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_DUST.get(),
+                ItemModelUtils.tintedModel(dustModel, new AlchemicalDustTint(), new Constant(-1)));
+    }
+
+    // A station turned by FACING (the models face north), with its block and item models
+    private void station(BlockModelGenerators blockModels, Block block, String blockModel, String itemModel)
+    {
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/" + blockModel)))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(block.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/" + itemModel)));
     }
 
     // The Element Tester: one hand-made model per number of crystals (models/block/station/element_tester_<n>.json),

@@ -63,6 +63,9 @@ public final class DustCompositions
         for (StackRule rule : STACK_RULES) {
             if (rule.test().test(stack)) return rule.composition();
         }
+        // Alchemical Dust is its one element
+        DustElement alchemical = stack.get(DustComponentDataRegistry.ALCHEMICAL_ELEMENT.get());
+        if (alchemical != null) return DustComposition.of(alchemical);
         // An alchemical compound is exactly the elements separated into it
         DustComposition compound = stack.get(DustComponentDataRegistry.COMPOUND.get());
         if (compound != null) return compound.isEmpty() ? null : compound;

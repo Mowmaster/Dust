@@ -5,7 +5,10 @@ import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import com.mowmaster.dust.Features.DustComposition.DustFireBlock;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlock;
+import com.mowmaster.dust.Features.Machines.ResearchCombinationBlock;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlock;
+import com.mowmaster.dust.Features.Machines.ResearchMixingBlock;
+import com.mowmaster.dust.Features.Machines.ResearchTransformationBlock;
 import com.mowmaster.dust.Features.Machines.ResearchEvaporationBlock;
 import com.mowmaster.dust.Features.Machines.ResearchSeparationBlock;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -109,6 +112,13 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> RESEARCH_EVAPORATION = registerBlock("research_evaporation", properties -> new ResearchEvaporationBlock(
             properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
     public static final DeferredBlock<Block> RESEARCH_DISTILLATION = registerBlock("research_distalation", properties -> new ResearchDistillationBlock(
+            properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
+    // Learning the elements: compounds into Alchemical Dust (and dust into crystals), then dusts put together
+    public static final DeferredBlock<Block> RESEARCH_TRANSFORMATION = registerBlock("research_transformational", properties -> new ResearchTransformationBlock(
+            properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
+    public static final DeferredBlock<Block> RESEARCH_COMBINATION = registerBlock("research_combination", properties -> new ResearchCombinationBlock(
+            properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
+    public static final DeferredBlock<Block> RESEARCH_MIXING = registerBlock("research_mixing", properties -> new ResearchMixingBlock(
             properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
