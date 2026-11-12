@@ -29,10 +29,13 @@ public final class Distillation
         return ResearchInput.elements(stack);
     }
 
+    // Two or more elements with one gaseous or aqueous, or a single gaseous / aqueous primal (an item of it, which
+    // all boils over into the jar and comes out as its compound: ResearchInput.isPrimal)
     public static boolean canDistill(ItemStack stack)
     {
         List<DustElement> elements = elements(stack);
-        return elements.size() >= 2 && elements.stream().anyMatch(element -> !Separation.isSolid(element));
+        boolean anyFluid = elements.stream().anyMatch(element -> !Separation.isSolid(element));
+        return anyFluid && (elements.size() >= 2 || ResearchInput.isPrimal(stack));
     }
 
     // The two parts: what boils over (one element) and what stays in the flask

@@ -31,6 +31,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.UUID;
 
 // The Alchemical Separation Table's item (on the scroll), paper (on the pad behind it), and the two outputs; put in and
@@ -194,7 +195,7 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
                 ItemStackTemplate.fromNonEmptyStack(separated, 1),
-                List.of(ItemStackTemplate.fromNonEmptyStack(left, 1), ItemStackTemplate.fromNonEmptyStack(right, 1)));
+                Stream.of(left, right).filter(out -> !out.isEmpty()).map(out -> ItemStackTemplate.fromNonEmptyStack(out, 1)).toList());
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(separated)), step);
     }
 
