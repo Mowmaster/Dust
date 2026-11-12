@@ -4,6 +4,7 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Machines.Compounds;
 import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Research.EntryResearch;
 import com.mowmaster.dust.Features.Research.ProcessRecord;
@@ -583,7 +584,7 @@ public final class ResearchBook
     // Whether crossing out works: true for your own Research Notes, false for a Shared Research Guide (set by the screen)
     static boolean editable = true;
 
-    // Each step as  [input] -> [machine] -> [output]  x   (icons link to their entries like everywhere else)
+    // Each step as  [input] -> [machine] -> [outputs]  x   (icons link to their entries like everywhere else)
     private static void drawProcesses(GuiGraphicsExtractor graphics, Font font, ResearchData data, List<ProcessRecord> steps)
     {
         int y = NOTES_TOP;
@@ -593,7 +594,10 @@ public final class ResearchBook
             Paper.ink(graphics, font, Component.literal("\u2192"), x + CELL + 3, y + 5, INK);
             linkedItem(graphics, data, step.machine(), x + CELL + 12, y);
             Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 15, y + 5, INK);
-            linkedStack(graphics, data, step.output().create(), x + 2 * CELL + 24, y);
+            // Up to two outputs side by side (the separation table makes two)
+            for (int i = 0; i < step.outputs().size() && i < 2; i++) {
+                linkedStack(graphics, data, step.outputs().get(i).create(), x + 2 * CELL + 24 + i * CELL, y);
+            }
             if (editable) {
                 int crossX = RIGHT_X + PAGE_W - 12;
                 Paper.ink(graphics, font, Component.literal("x"), crossX + 2, y + 5, FADED);
@@ -604,13 +608,20 @@ public final class ResearchBook
     }
 
     // An item stack (with its data: crushed stone shows as pebbles of stone) as a linked icon. Products link to, and
-    // are faded by, the material they were made from.
+    // are faded by, the material they were made from. An alchemical compound's name says which elements are in it,
+    // but only the ones the player has discovered: "Alchemical Compound (Fire, ???)".
     private static void linkedStack(GuiGraphicsExtractor graphics, ResearchData data, ItemStack stack, int x, int y)
     {
         ResearchEntry entry = ResearchTabs.entryForItem(ProductSource.original(stack));
         boolean researched = entry != null && data.has(entry);
         drawIcon(graphics, stack, x, y, researched);
-        LINKS.add(new Link(x, y, entry, researched, stack.getHoverName(), false));
+        Component name = stack.getHoverName();
+        DustComposition compound = Compounds.of(stack);
+        if (compound != null) {
+            Component elements = Compounds.describe(compound, element -> data.has(new ResearchEntry(ResearchTabs.ELEMENTS, element.id())));
+            name = Component.translatable("research.dust.process.compound", name, elements);
+        }
+        LINKS.add(new Link(x, y, entry, researched, name, false));
     }
 
     private static @Nullable Cross crossAt(int x, int y)

@@ -9,6 +9,7 @@ import com.mowmaster.dust.Features.AncientLanguage.Client.GlyphStoneTint;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
+import com.mowmaster.dust.Features.Machines.Client.CompoundTint;
 import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
 import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.MultiVariant;
@@ -58,6 +59,7 @@ public class DustProviderModel extends ModelProvider {
         createElementTester(blockModels);
         createElementItems(itemModels);
         createResearchCrusher(blockModels, itemModels);
+        createResearchSeparation(blockModels, itemModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -180,6 +182,29 @@ public class DustProviderModel extends ModelProvider {
 
         Identifier crushedModel = ModelTemplates.FLAT_ITEM.create(DustItemRegistry.CRUSHED_BLOCK.get(), TextureMapping.layer0(DustItemRegistry.CRUSHED_BLOCK.get()), itemModels.modelOutput);
         itemModels.itemModelOutput.accept(DustItemRegistry.CRUSHED_BLOCK.get(), ItemModelUtils.tintedModel(crushedModel, new SourceBlockTint()));
+    }
+
+    // The Alchemical Separation Table: the block shows the table and scroll (research_separation_body.json); the array
+    // lifts and spins in Client/ResearchSeparationRenderer. Turned by FACING (the outputs face the player). The item
+    // shows the whole thing (research_separation.json).
+    // Alchemical compounds: paper (layer 0, as it is) with a dust pile (layer 1) tinted the compound's colour.
+    private void createResearchSeparation(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        Block block = DustBlockRegistry.RESEARCH_SEPARATION.get();
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_separation_body")))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(block.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/research_separation")));
+
+        Identifier compoundModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_COMPOUND.get(),
+                TextureMapping.layered(new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/alchemical_compound_paper")),
+                        new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/alchemical_compound_dust"))),
+                itemModels.modelOutput);
+        // One tint per layer: the paper as it is (constant white), the pile in the compound's colour
+        itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_COMPOUND.get(),
+                ItemModelUtils.tintedModel(compoundModel, new Constant(-1), new CompoundTint()));
+        itemModels.generateFlatItem(DustItemRegistry.ALCHEMICAL_SOOT.get(), ModelTemplates.FLAT_ITEM);
     }
 
     // The Element Tester: one hand-made model per number of crystals (models/block/station/element_tester_<n>.json),

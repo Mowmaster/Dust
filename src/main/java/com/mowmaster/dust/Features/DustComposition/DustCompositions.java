@@ -8,6 +8,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
 import com.mowmaster.dust.Features.Machines.ProductSource;
 import org.jspecify.annotations.Nullable;
 
@@ -24,7 +25,8 @@ import static com.mowmaster.dust.Features.DustComposition.DustElements.*;
 //             mods can add or change items. Dust's own covers every vanilla item.
 //   Rules     for items whose dust depends on their data (a water bottle is a potion item holding water); checked first
 //   Elements  an element's crystal or dust is that element alone
-//   Products  a process product (crushed stone) is made of what it came from (for now: later processes will split it)
+//   Compounds an alchemical compound is the elements separated into it
+//   Products  a process product (crushed stone) is made of what it came from
 //   Fluids    for fluids burned where they lie (lava)
 // "import static ...DustElements.*" lets the code below write WATER instead of DustElements.WATER.
 public final class DustCompositions
@@ -61,6 +63,9 @@ public final class DustCompositions
         for (StackRule rule : STACK_RULES) {
             if (rule.test().test(stack)) return rule.composition();
         }
+        // An alchemical compound is exactly the elements separated into it
+        DustComposition compound = stack.get(DustComponentDataRegistry.COMPOUND.get());
+        if (compound != null) return compound.isEmpty() ? null : compound;
         // A process product (crushed stone) is still what it was made from
         ItemStack original = ProductSource.original(stack);
         if (original != stack) return of(original);

@@ -22,6 +22,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 
 // The Research Crusher's block being crushed, the pebbles in its tray, how far along it is, and who put the block in
@@ -133,7 +134,7 @@ public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity
         ServerPlayer player = serverLevel.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(block, 1), ItemStackTemplate.fromNonEmptyStack(result, 1));
+                ItemStackTemplate.fromNonEmptyStack(block, 1), List.of(ItemStackTemplate.fromNonEmptyStack(result, 1)));
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(block)), step);
     }
 

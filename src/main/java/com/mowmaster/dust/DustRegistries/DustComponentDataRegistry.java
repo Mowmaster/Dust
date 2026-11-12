@@ -1,5 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
+import com.mowmaster.dust.Features.DustComposition.DustComposition;
+
 import net.minecraft.world.item.ItemStackTemplate;
 
 
@@ -40,6 +42,10 @@ public class DustComponentDataRegistry
     // What a process product was made from (crushed stone remembers the stone): see Features/Machines/ProductSource
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemStackTemplate>> SOURCE = register("source",
             builder -> builder.persistent(ItemStackTemplate.CODEC).networkSynchronized(ItemStackTemplate.STREAM_CODEC));
+
+    // What an alchemical compound is made of (the elements separated out together): see Features/Machines/Compounds
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<DustComposition>> COMPOUND = register("compound",
+            builder -> builder.persistent(DustComposition.CODEC).networkSynchronized(ByteBufCodecs.fromCodec(DustComposition.CODEC)));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                           UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

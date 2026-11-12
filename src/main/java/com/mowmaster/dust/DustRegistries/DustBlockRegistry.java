@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.AncientLanguage.GlyphStoneBlock;
 import com.mowmaster.dust.Features.DustComposition.DustFireBlock;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlock;
+import com.mowmaster.dust.Features.Machines.ResearchSeparationBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -101,6 +102,8 @@ public class DustBlockRegistry {
     // Research machines (Features/Machines): break materials down, step by step, for research
     public static final DeferredBlock<Block> RESEARCH_CRUSHER = registerBlock("research_crusher", properties -> new ResearchCrusherBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
+    public static final DeferredBlock<Block> RESEARCH_SEPARATION = registerBlock("research_separation", properties -> new ResearchSeparationBlock(
+            properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {

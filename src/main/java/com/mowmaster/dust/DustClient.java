@@ -3,7 +3,9 @@ package com.mowmaster.dust;
 import com.mowmaster.dust.DustRegistries.*;
 import com.mowmaster.dust.Features.AncientLanguage.Client.DecipherScreen;
 import com.mowmaster.dust.Features.DustComposition.Client.ClientElementTooltip;
+import com.mowmaster.dust.Features.Machines.Client.CompoundTint;
 import com.mowmaster.dust.Features.Machines.Client.ResearchCrusherRenderer;
+import com.mowmaster.dust.Features.Machines.Client.ResearchSeparationRenderer;
 import com.mowmaster.dust.Features.Machines.Client.SourceBlockTint;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.minecraft.resources.Identifier;
@@ -80,6 +82,8 @@ public class DustClient {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // The Research Crusher: its turning wheels, the block going in and the pebbles coming out
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_CRUSHER.get(), ResearchCrusherRenderer::new);
+        // The Alchemical Separation Table: its array, the item on it and the outputs
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_SEPARATION.get(), ResearchSeparationRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
@@ -91,6 +95,7 @@ public class DustClient {
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
         ResearchCrusherRenderer.registerModels(event);
+        ResearchSeparationRenderer.registerModels(event);
     }
 
     // Item model tints: "dust:source_block", the colour of the block a product was made from (crushed blocks)
@@ -98,6 +103,8 @@ public class DustClient {
     public static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event)
     {
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "source_block"), SourceBlockTint.MAP_CODEC);
+        // "dust:compound": an alchemical compound's colour, for its dust pile
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "compound"), CompoundTint.MAP_CODEC);
     }
 
     // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)

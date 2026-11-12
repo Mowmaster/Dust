@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/station/research_separation_body",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/station/research_separation_body"
+    },
+    "facing=south": {
+      "model": "dust:block/station/research_separation_body",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dust:block/station/research_separation_body",
+      "y": 270
+    }
+  }
+}

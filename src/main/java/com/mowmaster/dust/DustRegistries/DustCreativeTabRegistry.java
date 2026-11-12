@@ -30,6 +30,8 @@ public class DustCreativeTabRegistry {
                         DustItemRegistry.DUSTS.values().forEach(item -> output.accept(item.get()));
                         output.accept(DustBlockRegistry.ELEMENT_TESTER.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_CRUSHER.asItem());
+                        output.accept(DustBlockRegistry.RESEARCH_SEPARATION.asItem());
+                        output.accept(DustItemRegistry.ALCHEMICAL_SOOT.asItem());
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",

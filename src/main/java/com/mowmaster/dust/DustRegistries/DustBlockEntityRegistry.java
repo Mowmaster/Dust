@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlockEntity;
+import com.mowmaster.dust.Features.Machines.ResearchSeparationBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -23,6 +24,9 @@ public class DustBlockEntityRegistry
 
     public static final Supplier<BlockEntityType<ResearchCrusherBlockEntity>> RESEARCH_CRUSHER = BLOCK_ENTITIES.register("research_crusher",
             () -> new BlockEntityType<>(ResearchCrusherBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_CRUSHER.get())));
+
+    public static final Supplier<BlockEntityType<ResearchSeparationBlockEntity>> RESEARCH_SEPARATION = BLOCK_ENTITIES.register("research_separation",
+            () -> new BlockEntityType<>(ResearchSeparationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_SEPARATION.get())));
 
     public static void register(IEventBus eventBus)
     {

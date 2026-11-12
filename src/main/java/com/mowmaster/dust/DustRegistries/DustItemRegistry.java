@@ -7,6 +7,7 @@ import com.mowmaster.dust.Features.AncientLanguage.ParchmentItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalArmorItem;
 import com.mowmaster.dust.Features.Research.ResearchBookItem;
 import com.mowmaster.dust.Features.DustComposition.MagicalFlintAndSteelItem;
+import com.mowmaster.dust.Features.Machines.AlchemicalCompoundItem;
 import com.mowmaster.dust.Features.Machines.CrushedItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
@@ -125,6 +126,10 @@ public class DustItemRegistry
 
     // Research Crusher output: pebbles of a block, which remember the block (Features/Machines)
     public static final DeferredItem<Item> CRUSHED_BLOCK = DUSTITEMS.registerItem("crushed_block", CrushedItem::new);
+
+    // Alchemical Separation Table outputs: separated elements on paper, and what's left when amorphous ones burn away
+    public static final DeferredItem<Item> ALCHEMICAL_COMPOUND = DUSTITEMS.registerItem("alchemical_compound", AlchemicalCompoundItem::new);
+    public static final DeferredItem<Item> ALCHEMICAL_SOOT = DUSTITEMS.registerSimpleItem("alchemical_soot", properties -> properties);
 
     public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));

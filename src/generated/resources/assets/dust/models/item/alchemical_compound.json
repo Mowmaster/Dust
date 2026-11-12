@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dust:item/alchemical_compound_paper",
+    "layer1": "dust:item/alchemical_compound_dust"
+  }
+}
