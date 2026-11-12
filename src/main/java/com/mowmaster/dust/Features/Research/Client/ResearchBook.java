@@ -565,8 +565,8 @@ public final class ResearchBook
 
     // What's known of its dust:
     //   burned     "Burns with:" and a flame in that colour
-    //   measured   "Made of:" and each element the Elemental Examiner checked, with its icon and percent ("Water 33%");
-    //              elements checked and not there are listed after, faded
+    //   measured   "Made of:" and each element the Elemental Examiner found in it, with its icon and percent
+    //              ("Water 33%")
     //   neither    a hint at how to find out
     // The sprites are greyscale; blitSprite's last argument tints them (0xAARRGGBB), the way a block tint colours a
     // texture.
@@ -590,16 +590,13 @@ public final class ResearchBook
         }
         Paper.ink(graphics, font, Component.translatable("research.dust.research.made_of"), x, y, INK);
         y += font.lineHeight + 2;
-        // Found elements first, then the ones checked and not there
-        for (boolean present : new boolean[] {true, false}) {
-            for (Map.Entry<DustElement, Integer> measured : dust.measured().entrySet()) {
-                if ((measured.getValue() > 0) != present || y + 10 > bottom) continue;
-                DustElement element = measured.getKey();
-                int tint = present ? 0xFF000000 | element.color() : 0x66000000 | element.color();
-                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, tint);
-                Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", element.name(), measured.getValue()), x + 14, y, present ? INK : FADED);
-                y += 11;
-            }
+        // Only elements that are there (0% isn't noted; older notes may still have some, so they're skipped here too)
+        for (Map.Entry<DustElement, Integer> measured : dust.measured().entrySet()) {
+            if (measured.getValue() <= 0 || y + 10 > bottom) continue;
+            DustElement element = measured.getKey();
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, 0xFF000000 | element.color());
+            Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", element.name(), measured.getValue()), x + 14, y, INK);
+            y += 11;
         }
     }
 

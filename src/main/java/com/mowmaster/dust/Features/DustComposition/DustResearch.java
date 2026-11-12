@@ -15,6 +15,7 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 // What dust research adds to a player's Research Notes (only while they carry them, like all research)
@@ -46,7 +47,13 @@ public final class DustResearch
         }
         if (entry != null) {
             Research.observe(player, entry, player.blockPosition());
-            Research.experiment(player, entry, research -> research.withMeasured(measured));
+            // Only the elements that are there go in the notes: a crystal whose gauge stays dark is plain to see, and
+            // the player can write that in their own notes if they want it
+            Map<DustElement, Integer> found = new LinkedHashMap<>();
+            measured.forEach((element, percent) -> {
+                if (percent > 0) found.put(element, percent);
+            });
+            if (!found.isEmpty()) Research.experiment(player, entry, research -> research.withMeasured(found));
         }
         ResearchUnlocks.check(player);
     }

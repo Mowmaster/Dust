@@ -9,6 +9,7 @@ import java.util.List;
 
 // One element of dust: a primal (fire, water, earth, order, chaos) or a mix of other elements (air = fire + water,
 // void = vacuum + chaos...). All of them come down to some amount of the five primal dusts, which gives their colour.
+// Each also has a phase (ElementPhase), which says what it needs to be caught when something is broken down.
 // The elements themselves are listed in DustElements.
 public final class DustElement
 {
@@ -17,20 +18,23 @@ public final class DustElement
     // How much of each primal dust it holds, indexed by EnumElement#ordinal
     private final int[] primals = new int[EnumElement.values().length];
     private final int color;
+    private final ElementPhase phase;
 
     // A primal element: one dust of its kind
-    DustElement(Identifier id, EnumElement primal)
+    DustElement(Identifier id, EnumElement primal, ElementPhase phase)
     {
         this.id = id;
+        this.phase = phase;
         this.parts = List.of();
         this.primals[primal.ordinal()] = 1;
         this.color = DustComposition.colorOf(primals);
     }
 
     // A mixed element: everything in its parts added together
-    DustElement(Identifier id, List<DustElement> parts)
+    DustElement(Identifier id, List<DustElement> parts, ElementPhase phase)
     {
         this.id = id;
+        this.phase = phase;
         this.parts = List.copyOf(parts);
         for (DustElement part : parts) {
             for (int i = 0; i < primals.length; i++) primals[i] += part.primals[i];
@@ -52,6 +56,12 @@ public final class DustElement
     public boolean isPrimal()
     {
         return parts.isEmpty();
+    }
+
+    // Gaseous, aqueous, amorphous or crystalline: what it needs to be caught when it's broken out of something
+    public ElementPhase phase()
+    {
+        return phase;
     }
 
     // How much of this primal dust it holds

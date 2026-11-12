@@ -101,8 +101,8 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
     }
 
     //   fireColor     the colour it burned with in a Magical Flint and Steel's fire, 0xRRGGBB (-1 = not burned)
-    //   measured      what the Elemental Examiner's crystals showed: element -> percent of the item (0 = checked, not
-    //                 there). Kept as seen, so the book shows what the player actually measured (a water bottle's water,
+    //   measured      what the Elemental Examiner's crystals found: element -> percent of the item (only elements that
+    //                 are there; a 0% reading isn't noted). Kept as seen, so the book shows what the player actually measured (a water bottle's water,
     //                 though every potion is one entry). A later measurement of an element replaces the earlier one.
     public record Dust(int fireColor, Map<DustElement, Integer> measured)
     {

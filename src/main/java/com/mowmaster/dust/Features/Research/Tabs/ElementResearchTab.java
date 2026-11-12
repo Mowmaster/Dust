@@ -80,16 +80,24 @@ public class ElementResearchTab extends ResearchTab
         return element == null ? Component.literal(entry.toString()) : element.name();
     }
 
-    // "One of the five primal dusts." / "A mix of Fire and Order."
+    // "Fire: one of the five primal dusts..." / "Energy: a mix of Fire and Order.", then its phase on a new line:
+    // "Gaseous: caught in a glass bottle, or it hisses away..."
     @Override
     public Component defaultNote(Identifier entry)
     {
         DustElement element = DustElements.get(entry);
-        if (element == null || element.isPrimal()) return Component.translatable("research.dust.note.default.elements.primal", name(entry));
-        List<DustElement> parts = element.parts();
-        Component first = parts.get(0).name();
-        Component second = parts.size() > 1 ? parts.get(1).name() : first;
-        return Component.translatable("research.dust.note.default.elements.mix", name(entry), first, second);
+        if (element == null) return Component.translatable("research.dust.note.default.elements.primal", name(entry));
+        Component made;
+        if (element.isPrimal()) {
+            made = Component.translatable("research.dust.note.default.elements.primal", name(entry));
+        } else {
+            List<DustElement> parts = element.parts();
+            Component first = parts.get(0).name();
+            Component second = parts.size() > 1 ? parts.get(1).name() : first;
+            made = Component.translatable("research.dust.note.default.elements.mix", name(entry), first, second);
+        }
+        // Component.empty().append(...): a component built from pieces, the way chat messages join coloured parts
+        return Component.empty().append(made).append("\n\n").append(element.phase().displayName()).append(": ").append(element.phase().note());
     }
 
     // Elements are found by research, never dropped, and are dust themselves
