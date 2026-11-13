@@ -165,6 +165,11 @@ public class DustEffectsRegistry
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, id("effect.rooted"), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.JUMP_STRENGTH, id("effect.rooted_jump"), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, id("effect.rooted_knockback"), 1.0, AttributeModifier.Operation.ADD_VALUE));
+    // Crystal on yourself: holds half again as much mana and dust a level (Features/Magic/PlayerMagicHelper.manaCap)
+    public static final Holder<MobEffect> CRYSTALLIZED = MOB_EFFECTS.register("crystallized", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xB58CFF));
+    // Seeds on yourself: mana stored as a seed (its level is how much, less 1), that bursts into healing when you drop
+    // under 30% health (Features/Spells/effects/StoreParts)
+    public static final Holder<MobEffect> SEED_OF_LIFE = MOB_EFFECTS.register("seed_of_life", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x7FBF3F));
 
     private static Identifier id(String path)
     {

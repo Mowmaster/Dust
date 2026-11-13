@@ -16,6 +16,7 @@ public final class BlockMarks
     public static final String WISE = "wise";
     public static final String LOWER_TIER = "lower_tier";
     public static final String CONDUCTIVE = "conductive";
+    public static final String METAL_BONUS = "metal_bonus";
 
     private record Key(ResourceKey<Level> dimension, BlockPos pos, String mark) {}
 
@@ -45,6 +46,12 @@ public final class BlockMarks
             }
         }
         return best;
+    }
+
+    // Takes a mark off (used up)
+    public static void remove(Level level, BlockPos pos, String mark)
+    {
+        MARKS.remove(new Key(level.dimension(), pos, mark));
     }
 
     public static boolean has(Level level, BlockPos pos, String mark)

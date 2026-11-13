@@ -13,6 +13,8 @@ public class Dust {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public Dust(IEventBus modEventBus, ModContainer modContainer) {
+        // config/dust-synced.toml: game settings the server reads (and sends to clients)
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.SYNCED, DustConfig.SPEC);
         DustItemRegistry.register(modEventBus);
         DustBlockRegistry.register(modEventBus);
         DustBlockEntityRegistry.register(modEventBus);

@@ -44,11 +44,29 @@ public final class PlayerMagicHelper
     public static int mana(Player player) { return get(player).mana(); }
     public static int maxMana(Player player) { return get(player).maxMana(); }
 
-    // Mana back, up to the max. Returns how much was actually added.
+    // Crystallized (Crystal on yourself): mana and dust hold half again as much a level, for as long as it lasts. These
+    // are the caps for filling up; what's over the normal cap when it ends stays, it just can't be topped up.
+    public static int manaCap(Player player)
+    {
+        return boosted(player, get(player).maxMana());
+    }
+
+    public static int dustCap(Player player)
+    {
+        return boosted(player, get(player).dustCapacity());
+    }
+
+    private static int boosted(Player player, int base)
+    {
+        MobEffectInstance crystal = player.getEffect(DustEffectsRegistry.CRYSTALLIZED);
+        return crystal == null ? base : base + base * (crystal.getAmplifier() + 1) / 2;
+    }
+
+    // Mana back, up to the cap (manaCap). Returns how much was actually added.
     public static int addMana(Player player, int amount)
     {
         PlayerMagic magic = get(player);
-        int added = Math.max(0, Math.min(amount, magic.maxMana() - magic.mana()));
+        int added = Math.max(0, Math.min(amount, manaCap(player) - magic.mana()));
         if (added > 0) set(player, magic.withMana(magic.mana() + added, magic.maxMana()));
         return added;
     }
@@ -88,14 +106,14 @@ public final class PlayerMagicHelper
     }
 
     // Puts dust in: as much as fits (the element needs a free type slot if it isn't carried yet, and each element is
-    // capped at dustCapacity). Returns how much went in; simulate only works it out.
+    // capped at dustCap: dustCapacity, more while Crystallized). Returns how much went in; simulate only works it out.
     public static int addDust(Player player, DustElement element, int amount, boolean simulate)
     {
         if (amount <= 0) return 0;
         PlayerMagic magic = get(player);
         int have = magic.dustOf(element);
         if (have == 0 && magic.dust().size() >= magic.dustTypes()) return 0;
-        int added = Math.min(amount, magic.dustCapacity() - have);
+        int added = Math.min(amount, dustCap(player) - have);
         if (added <= 0) return 0;
         if (!simulate) set(player, magic.withDust(element, have + added));
         return added;
@@ -194,7 +212,8 @@ public final class PlayerMagicHelper
         int step = surge == null ? 1 : 2 + surge.getAmplifier();
         int regen = timers.regen() + step, low = timers.low(), high = timers.high();
 
-        if (mana < max) {
+        // Regenerates up to the cap (higher while Crystallized)
+        if (mana < manaCap(player)) {
             if (regen >= MagicConfig.REGEN_TICKS) {
                 mana++;
                 regen = 0;

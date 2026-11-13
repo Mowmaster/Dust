@@ -14,6 +14,9 @@ import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.MagicParts;
 import com.mowmaster.dust.Features.Spells.effects.PetGhosts;
+import com.mowmaster.dust.Features.Spells.effects.MetalParts;
+import com.mowmaster.dust.Features.Spells.effects.FractureParts;
+import com.mowmaster.dust.Features.Spells.effects.StoreParts;
 import com.mowmaster.dust.Features.Spells.effects.RootParts;
 import com.mowmaster.dust.Features.Spells.radiance.Radiance;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
@@ -178,7 +181,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> ICE_EFFECT = element(DustElements.ICE,
             () -> new BasicEffect().block(SpellConversions::convert).self(SimpleParts::cool).entity(BasicEffect.inflict(DustEffectsRegistry.CHILLED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> METAL_EFFECT = element(DustElements.METAL,
-            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.IRON_SKIN)).entity(SimpleParts::bleed));
+            () -> new BasicEffect().block(MetalParts::markBonus).self(BasicEffect.give(DustEffectsRegistry.IRON_SKIN)).entity(SimpleParts::bleed));
     public static final DeferredHolder<ElementEffect, ElementEffect> ABYSS_EFFECT = element(DustElements.ABYSS,
             () -> new BasicEffect().block(SpellBlocks::corruptBlock).self(BasicEffect.give(DustEffectsRegistry.LIFE_LEECH)).entity(BasicEffect.inflict(DustEffectsRegistry.SILENCED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> ENERGY_EFFECT = element(DustElements.ENERGY,
@@ -196,17 +199,17 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> GEM_EFFECT = element(DustElements.GEM,
             () -> new BasicEffect().entity(MobParts::encase).block(SpellConversions::convert).self(BasicEffect.give(DustEffectsRegistry.REFLECTING)));
     public static final DeferredHolder<ElementEffect, ElementEffect> FRACTURE_EFFECT = element(DustElements.FRACTURE,
-            () -> new BasicEffect().block(SpellConversions::convert).entity(BasicEffect.inflict(DustEffectsRegistry.FRACTURED)));
+            () -> new BasicEffect().self(FractureParts::crushHeld).block(SpellConversions::convert).entity(BasicEffect.inflict(DustEffectsRegistry.FRACTURED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> LIGHTNING_EFFECT = element(DustElements.LIGHTNING,
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.DASHING)).block(MovementParts::conductiveBlock).entity(BasicEffect.inflict(DustEffectsRegistry.CONDUCTIVE)));
 
     // Elements whose only part so far is their block conversions (Features/Spells/conversions)
     public static final DeferredHolder<ElementEffect, ElementEffect> CRYSTAL_EFFECT = element(DustElements.CRYSTAL,
-            () -> new BasicEffect().entity(MobParts::shatter).block(SpellConversions::convert));
+            () -> new BasicEffect().self(StoreParts::crystallize).entity(MobParts::shatter).block(SpellConversions::convert));
     public static final DeferredHolder<ElementEffect, ElementEffect> RADIANCE_EFFECT = element(DustElements.RADIANCE,
             () -> new BasicEffect().self(Radiance::shareSelf).block(SpellConversions::convert).entity(Radiance::shareMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> SEEDS_EFFECT = element(DustElements.SEEDS,
-            () -> new BasicEffect().entity(MobParts::toBreedingItem).block(SpellConversions::convert));
+            () -> new BasicEffect().self(StoreParts::plantSeed).entity(MobParts::toBreedingItem).block(SpellConversions::convert));
 
     public static final DeferredHolder<ElementEffect, ElementEffect> VACUUM_EFFECT = element(DustElements.VACUUM,
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.VACUUM)).block(MobParts::vacuumBlock).entity(MobParts::vacuumMob));
