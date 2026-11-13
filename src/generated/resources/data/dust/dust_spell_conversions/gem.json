@@ -1,0 +1,36 @@
+{
+  "conversions": [
+    {
+      "chance": 0.1,
+      "drops": [
+        {
+          "item": "minecraft:diamond"
+        }
+      ],
+      "fail": "minecraft:air",
+      "from": "minecraft:coal_block"
+    },
+    {
+      "chance": 0.1,
+      "fail": "minecraft:air",
+      "from": "minecraft:raw_iron_block",
+      "to": "minecraft:iron_ore",
+      "to_deep": "minecraft:deepslate_iron_ore"
+    },
+    {
+      "chance": 0.1,
+      "fail": "minecraft:air",
+      "from": "minecraft:raw_copper_block",
+      "to": "minecraft:copper_ore",
+      "to_deep": "minecraft:deepslate_copper_ore"
+    },
+    {
+      "chance": 0.1,
+      "fail": "minecraft:air",
+      "from": "minecraft:raw_gold_block",
+      "to": "minecraft:gold_ore",
+      "to_deep": "minecraft:deepslate_gold_ore"
+    }
+  ],
+  "element": "dust:gem"
+}

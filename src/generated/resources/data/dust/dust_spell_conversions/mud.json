@@ -1,0 +1,29 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:dirt",
+      "to": "minecraft:mud"
+    },
+    {
+      "from": "minecraft:coarse_dirt",
+      "to": "minecraft:mud"
+    },
+    {
+      "from": "minecraft:grass_block",
+      "to": "minecraft:mud"
+    },
+    {
+      "from": "minecraft:podzol",
+      "to": "minecraft:mud"
+    },
+    {
+      "from": "minecraft:mycelium",
+      "to": "minecraft:mud"
+    },
+    {
+      "from": "minecraft:rooted_dirt",
+      "to": "minecraft:muddy_mangrove_roots"
+    }
+  ],
+  "element": "dust:mud"
+}

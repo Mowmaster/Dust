@@ -1,0 +1,23 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:dirt",
+      "to": "minecraft:mycelium"
+    },
+    {
+      "from": "minecraft:grass_block",
+      "to": "minecraft:mycelium"
+    },
+    {
+      "from": "minecraft:netherrack",
+      "near_fluid": "minecraft:lava",
+      "to": "minecraft:crimson_nylium"
+    },
+    {
+      "from": "minecraft:netherrack",
+      "near_fluid": "minecraft:water",
+      "to": "minecraft:warped_nylium"
+    }
+  ],
+  "element": "dust:fungus"
+}

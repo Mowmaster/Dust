@@ -1,0 +1,101 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:tube_coral_block",
+      "to": "minecraft:dead_tube_coral_block"
+    },
+    {
+      "from": "minecraft:tube_coral",
+      "to": "minecraft:dead_tube_coral"
+    },
+    {
+      "from": "minecraft:tube_coral_fan",
+      "to": "minecraft:dead_tube_coral_fan"
+    },
+    {
+      "from": "minecraft:tube_coral_wall_fan",
+      "to": "minecraft:dead_tube_coral_wall_fan"
+    },
+    {
+      "from": "minecraft:brain_coral_block",
+      "to": "minecraft:dead_brain_coral_block"
+    },
+    {
+      "from": "minecraft:brain_coral",
+      "to": "minecraft:dead_brain_coral"
+    },
+    {
+      "from": "minecraft:brain_coral_fan",
+      "to": "minecraft:dead_brain_coral_fan"
+    },
+    {
+      "from": "minecraft:brain_coral_wall_fan",
+      "to": "minecraft:dead_brain_coral_wall_fan"
+    },
+    {
+      "from": "minecraft:bubble_coral_block",
+      "to": "minecraft:dead_bubble_coral_block"
+    },
+    {
+      "from": "minecraft:bubble_coral",
+      "to": "minecraft:dead_bubble_coral"
+    },
+    {
+      "from": "minecraft:bubble_coral_fan",
+      "to": "minecraft:dead_bubble_coral_fan"
+    },
+    {
+      "from": "minecraft:bubble_coral_wall_fan",
+      "to": "minecraft:dead_bubble_coral_wall_fan"
+    },
+    {
+      "from": "minecraft:fire_coral_block",
+      "to": "minecraft:dead_fire_coral_block"
+    },
+    {
+      "from": "minecraft:fire_coral",
+      "to": "minecraft:dead_fire_coral"
+    },
+    {
+      "from": "minecraft:fire_coral_fan",
+      "to": "minecraft:dead_fire_coral_fan"
+    },
+    {
+      "from": "minecraft:fire_coral_wall_fan",
+      "to": "minecraft:dead_fire_coral_wall_fan"
+    },
+    {
+      "from": "minecraft:horn_coral_block",
+      "to": "minecraft:dead_horn_coral_block"
+    },
+    {
+      "from": "minecraft:horn_coral",
+      "to": "minecraft:dead_horn_coral"
+    },
+    {
+      "from": "minecraft:horn_coral_fan",
+      "to": "minecraft:dead_horn_coral_fan"
+    },
+    {
+      "from": "minecraft:horn_coral_wall_fan",
+      "to": "minecraft:dead_horn_coral_wall_fan"
+    },
+    {
+      "from": "#minecraft:saplings",
+      "to": "minecraft:dead_bush"
+    },
+    {
+      "from": "minecraft:short_grass",
+      "to": "minecraft:dead_bush"
+    },
+    {
+      "from": "minecraft:moss_block",
+      "to": "minecraft:coarse_dirt"
+    },
+    {
+      "from": "minecraft:grass_block",
+      "to": "minecraft:dirt"
+    }
+  ],
+  "element": "dust:death"
+}

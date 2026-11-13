@@ -1,0 +1,25 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:sand",
+      "to": "minecraft:glass"
+    },
+    {
+      "from": "minecraft:red_sand",
+      "to": "minecraft:glass"
+    },
+    {
+      "from": "minecraft:quartz_block",
+      "to": "minecraft:tinted_glass"
+    },
+    {
+      "from": "minecraft:amethyst_cluster",
+      "to": "minecraft:tinted_glass"
+    },
+    {
+      "from": "minecraft:budding_amethyst",
+      "to": "minecraft:tinted_glass"
+    }
+  ],
+  "element": "dust:crystal"
+}

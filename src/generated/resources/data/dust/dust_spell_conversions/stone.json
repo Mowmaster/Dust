@@ -1,0 +1,85 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:gravel",
+      "to": "minecraft:stone"
+    },
+    {
+      "from": "minecraft:sand",
+      "to": "minecraft:sandstone"
+    },
+    {
+      "from": "minecraft:red_sand",
+      "to": "minecraft:red_sandstone"
+    },
+    {
+      "from": "minecraft:mud",
+      "to": "minecraft:packed_mud"
+    },
+    {
+      "from": "minecraft:white_concrete_powder",
+      "to": "minecraft:white_concrete"
+    },
+    {
+      "from": "minecraft:orange_concrete_powder",
+      "to": "minecraft:orange_concrete"
+    },
+    {
+      "from": "minecraft:magenta_concrete_powder",
+      "to": "minecraft:magenta_concrete"
+    },
+    {
+      "from": "minecraft:light_blue_concrete_powder",
+      "to": "minecraft:light_blue_concrete"
+    },
+    {
+      "from": "minecraft:yellow_concrete_powder",
+      "to": "minecraft:yellow_concrete"
+    },
+    {
+      "from": "minecraft:lime_concrete_powder",
+      "to": "minecraft:lime_concrete"
+    },
+    {
+      "from": "minecraft:pink_concrete_powder",
+      "to": "minecraft:pink_concrete"
+    },
+    {
+      "from": "minecraft:gray_concrete_powder",
+      "to": "minecraft:gray_concrete"
+    },
+    {
+      "from": "minecraft:light_gray_concrete_powder",
+      "to": "minecraft:light_gray_concrete"
+    },
+    {
+      "from": "minecraft:cyan_concrete_powder",
+      "to": "minecraft:cyan_concrete"
+    },
+    {
+      "from": "minecraft:purple_concrete_powder",
+      "to": "minecraft:purple_concrete"
+    },
+    {
+      "from": "minecraft:blue_concrete_powder",
+      "to": "minecraft:blue_concrete"
+    },
+    {
+      "from": "minecraft:brown_concrete_powder",
+      "to": "minecraft:brown_concrete"
+    },
+    {
+      "from": "minecraft:green_concrete_powder",
+      "to": "minecraft:green_concrete"
+    },
+    {
+      "from": "minecraft:red_concrete_powder",
+      "to": "minecraft:red_concrete"
+    },
+    {
+      "from": "minecraft:black_concrete_powder",
+      "to": "minecraft:black_concrete"
+    }
+  ],
+  "element": "dust:stone"
+}

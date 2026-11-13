@@ -1,0 +1,15 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:water",
+      "source_only": true,
+      "to": "minecraft:ice"
+    },
+    {
+      "from": "minecraft:lava",
+      "source_only": true,
+      "to": "minecraft:obsidian"
+    }
+  ],
+  "element": "dust:ice"
+}

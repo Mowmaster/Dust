@@ -1,0 +1,45 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:grass_block",
+      "spread": [
+        "minecraft:dirt"
+      ]
+    },
+    {
+      "from": "minecraft:podzol",
+      "spread": [
+        "minecraft:dirt",
+        "minecraft:grass_block"
+      ]
+    },
+    {
+      "from": "minecraft:mycelium",
+      "spread": [
+        "minecraft:dirt",
+        "minecraft:grass_block"
+      ]
+    },
+    {
+      "from": "minecraft:crimson_nylium",
+      "spread": [
+        "minecraft:netherrack"
+      ]
+    },
+    {
+      "from": "minecraft:warped_nylium",
+      "spread": [
+        "minecraft:netherrack"
+      ]
+    },
+    {
+      "from": "minecraft:moss_block",
+      "spread": [
+        "minecraft:stone",
+        "minecraft:deepslate",
+        "minecraft:dirt"
+      ]
+    }
+  ],
+  "element": "dust:radiance"
+}

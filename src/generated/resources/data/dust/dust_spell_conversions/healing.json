@@ -1,0 +1,37 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:cracked_stone_bricks",
+      "to": "minecraft:stone_bricks"
+    },
+    {
+      "from": "minecraft:cracked_deepslate_bricks",
+      "to": "minecraft:deepslate_bricks"
+    },
+    {
+      "from": "minecraft:cracked_deepslate_tiles",
+      "to": "minecraft:deepslate_tiles"
+    },
+    {
+      "from": "minecraft:cracked_nether_bricks",
+      "to": "minecraft:nether_bricks"
+    },
+    {
+      "from": "minecraft:cracked_polished_blackstone_bricks",
+      "to": "minecraft:polished_blackstone_bricks"
+    },
+    {
+      "from": "minecraft:infested_cracked_stone_bricks",
+      "to": "minecraft:infested_stone_bricks"
+    },
+    {
+      "from": "minecraft:damaged_anvil",
+      "to": "minecraft:chipped_anvil"
+    },
+    {
+      "from": "minecraft:chipped_anvil",
+      "to": "minecraft:anvil"
+    }
+  ],
+  "element": "dust:healing"
+}

@@ -1,0 +1,141 @@
+{
+  "conversions": [
+    {
+      "drops": [
+        {
+          "item": "minecraft:wheat_seeds"
+        }
+      ],
+      "from": "minecraft:wheat"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:carrot"
+        }
+      ],
+      "from": "minecraft:carrots"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:potato"
+        }
+      ],
+      "from": "minecraft:potatoes"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:beetroot_seeds"
+        }
+      ],
+      "from": "minecraft:beetroots"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:melon_seeds"
+        }
+      ],
+      "from": "minecraft:melon_stem"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:melon_seeds"
+        }
+      ],
+      "from": "minecraft:attached_melon_stem"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:pumpkin_seeds"
+        }
+      ],
+      "from": "minecraft:pumpkin_stem"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:pumpkin_seeds"
+        }
+      ],
+      "from": "minecraft:attached_pumpkin_stem"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:torchflower_seeds"
+        }
+      ],
+      "from": "minecraft:torchflower_crop"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:torchflower_seeds"
+        }
+      ],
+      "from": "minecraft:torchflower"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:pitcher_pod"
+        }
+      ],
+      "from": "minecraft:pitcher_crop"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:pitcher_pod"
+        }
+      ],
+      "from": "minecraft:pitcher_plant"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:sweet_berries"
+        }
+      ],
+      "from": "minecraft:sweet_berry_bush"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:cocoa_beans"
+        }
+      ],
+      "from": "minecraft:cocoa"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:nether_wart"
+        }
+      ],
+      "from": "minecraft:nether_wart"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:wheat_seeds"
+        }
+      ],
+      "from": "minecraft:short_grass"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:wheat_seeds"
+        }
+      ],
+      "from": "minecraft:tall_grass"
+    }
+  ],
+  "element": "dust:seeds"
+}

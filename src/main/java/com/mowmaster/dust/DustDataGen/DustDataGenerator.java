@@ -32,6 +32,7 @@ public class DustDataGenerator {
         generator.addProvider(true, new DustTagProviderBlock(packOutput, lookupProvider));
 
         generator.addProvider(true, new DustProviderGlobalLootModifier(packOutput, lookupProvider));
+        generator.addProvider(true, new DustProviderSpellConversions(packOutput, lookupProvider));
     }
 
     // 26.3: recipes, loot tables and other datapack registry entries (damage types) are no longer DataProviders.

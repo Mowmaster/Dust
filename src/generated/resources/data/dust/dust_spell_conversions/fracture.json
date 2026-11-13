@@ -1,0 +1,65 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:stone",
+      "to": "minecraft:gravel"
+    },
+    {
+      "from": "minecraft:cobblestone",
+      "to": "minecraft:gravel"
+    },
+    {
+      "from": "minecraft:deepslate",
+      "to": "minecraft:cobbled_deepslate"
+    },
+    {
+      "from": "minecraft:cobbled_deepslate",
+      "to": "minecraft:gravel"
+    },
+    {
+      "from": "minecraft:stone_bricks",
+      "to": "minecraft:cracked_stone_bricks"
+    },
+    {
+      "drops": [
+        {
+          "item": "minecraft:flint"
+        }
+      ],
+      "from": "minecraft:gravel"
+    },
+    {
+      "from": "minecraft:sandstone",
+      "to": "minecraft:sand"
+    },
+    {
+      "from": "minecraft:cut_sandstone",
+      "to": "minecraft:sand"
+    },
+    {
+      "from": "minecraft:smooth_sandstone",
+      "to": "minecraft:sand"
+    },
+    {
+      "from": "minecraft:chiseled_sandstone",
+      "to": "minecraft:sand"
+    },
+    {
+      "from": "minecraft:red_sandstone",
+      "to": "minecraft:red_sand"
+    },
+    {
+      "from": "minecraft:cut_red_sandstone",
+      "to": "minecraft:red_sand"
+    },
+    {
+      "from": "minecraft:smooth_red_sandstone",
+      "to": "minecraft:red_sand"
+    },
+    {
+      "from": "minecraft:chiseled_red_sandstone",
+      "to": "minecraft:red_sand"
+    }
+  ],
+  "element": "dust:fracture"
+}

@@ -1,0 +1,29 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:dirt",
+      "to": "minecraft:dirt_path"
+    },
+    {
+      "from": "minecraft:grass_block",
+      "to": "minecraft:dirt_path"
+    },
+    {
+      "from": "minecraft:coarse_dirt",
+      "to": "minecraft:dirt_path"
+    },
+    {
+      "from": "minecraft:podzol",
+      "to": "minecraft:dirt_path"
+    },
+    {
+      "from": "minecraft:mycelium",
+      "to": "minecraft:dirt_path"
+    },
+    {
+      "from": "minecraft:rooted_dirt",
+      "to": "minecraft:dirt_path"
+    }
+  ],
+  "element": "dust:motion"
+}
