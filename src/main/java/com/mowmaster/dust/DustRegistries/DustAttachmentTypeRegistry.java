@@ -181,10 +181,12 @@ public class DustAttachmentTypeRegistry
                     .serialize(com.mowmaster.dust.Features.Magic.AuraAmplifiers.CODEC.fieldOf("amplifiers"))
                     .build());
 
-    // Life: a pet's ghost (Features/Spells/effects/PetGhosts), the game time it fades for good. Saved with the pet.
+    // Life: a pet's ghost (Features/Spells/effects/PetGhosts), the game time it fades for good. Saved with the pet, and
+    // synced to everyone who can see it, so their clients draw it see-through (Client/GhostRendering)
     public static final Supplier<AttachmentType<Long>> PET_GHOST = ATTACHMENT_TYPES.register("pet_ghost",
             () -> AttachmentType.builder(() -> 0L)
                     .serialize(Codec.LONG.fieldOf("until"))
+                    .sync(ByteBufCodecs.VAR_LONG)
                     .build());
 
     public static void register(IEventBus eventBus) {

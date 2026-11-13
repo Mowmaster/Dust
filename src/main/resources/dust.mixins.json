@@ -11,7 +11,8 @@
     "MannequinAccessor"
   ],
   "client": [
-    "client.CachedFontProviderMixin"
+    "client.CachedFontProviderMixin",
+    "client.LivingEntityRendererGhostMixin"
   ],
   "injectors": {
     "defaultRequire": 1
