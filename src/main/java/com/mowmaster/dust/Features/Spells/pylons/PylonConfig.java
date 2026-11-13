@@ -7,6 +7,9 @@ public final class PylonConfig
     // pylon placed after takes DECAY off each category's boost, back down to nothing
     public static final float CATEGORY_BOOST = 2.0F;
     public static final float BOOST_DECAY = 0.5F;
+    // A pylon starting a branch (placed against one that already has a pylon after it) also favours the category of
+    // the pylon it branches from, by this much, for its own roll
+    public static final float BRANCH_BOOST = 0.5F;
     // Blessed / corrupted modifiers can only be rolled with at least this much blessing / corruption; rolling one uses
     // up TIER_USE of it. Their weight grows with how much there is (x the counter / TIER_MIN).
     public static final int TIER_MIN = 3;

@@ -41,18 +41,23 @@ import java.util.UUID;
 // The Spell Pylon: the heart of a spell tree. It holds:
 //   element      set by right-clicking it with an element crystal
 //   tree         the tree's id: casts of its spells give it experience (SpellTreeData); its level is the spell's level
-//   chain        its pylons in order: first the Shape Pylon (on any side of it, no level needed), then one modifier
-//                pylon per level, each on one of the three free sides of the one before (never back the way it came)
-//   excluded     for each place in the chain, the modifiers rolled there and broken (they won't be rolled there again)
+//   chain        its pylons in the order placed, each with its parent (parents: the index of the pylon it was placed
+//                against, -1 for the Spell Pylon itself). First the Shape Pylon (on any side of the Spell Pylon, no
+//                level needed); after that one modifier pylon per level, on any open side of any pylon in the tree
+//                (the Spell Pylon included). Placing against a pylon that already has one after it starts a branch,
+//                which slightly favours the category of the pylon branched from (PylonConfig.BRANCH_BOOST).
+//   excluded     for each spot, the modifiers rolled there and broken (they won't be rolled there again)
 //   blessed, corruption   built up by keeping rolls / rerolling them; they let blessed / corrupted modifiers be rolled
 //   boosts       how much each modifier category is currently favoured (category pylons add, every placement decays)
-// Right-click it with a Spell Scroll to record the spell as it stands (spell breaks without redstone end it there).
+// Right-click it with a Spell Scroll to record the spell as it stands: every pylon in the tree, except those beyond a
+// spell break without redstone power (that whole branch is off).
 public class SpellPylonBlockEntity extends CBSyncedBlockEntity
 {
     private @Nullable DustElement element;
     private UUID tree = UUID.randomUUID();
     private final List<BlockPos> chain = new ArrayList<>();
-    private final Map<Integer, List<Identifier>> excluded = new HashMap<>();
+    private final List<Integer> parents = new ArrayList<>();
+    private final Map<BlockPos, List<Identifier>> excluded = new HashMap<>();
     private int blessed;
     private int corruption;
     private final Map<ModifierCategory, Float> boosts = new EnumMap<>(ModifierCategory.class);
@@ -90,10 +95,21 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return !chain.isEmpty() && level != null && level.getBlockEntity(chain.getFirst()) instanceof PylonBlockEntity shapePylon ? shapePylon.shape() : null;
     }
 
+    // The pylon's position in the tree (-1 for the Spell Pylon)
+    private BlockPos positionOf(int index)
+    {
+        return index < 0 ? worldPosition : chain.get(index);
+    }
+
+    private boolean hasChildren(int index)
+    {
+        return parents.contains(index);
+    }
+
     // ---- where the next pylon can go (shown as ghosts) ----
 
-    // The Shape Pylon's places (any side of this, once it has an element), or the next modifier pylon's (the free
-    // sides of the last pylon, except back the way the line came, while a level is available)
+    // The Shape Pylon's places (any side of the Spell Pylon, once it has an element), or the next modifier pylon's (any
+    // open side of any pylon in the tree, while a level is available)
     public List<BlockPos> ghostPositions()
     {
         List<BlockPos> places = new ArrayList<>();
@@ -103,42 +119,48 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             return places;
         }
         if (availableLevels() <= 0) return places;
-        BlockPos tip = chain.getLast();
-        BlockPos before = chain.size() >= 2 ? chain.get(chain.size() - 2) : worldPosition;
-        for (Direction side : Direction.Plane.HORIZONTAL) {
-            BlockPos next = tip.relative(side);
-            if (!next.equals(before)) addIfFree(places, next);
+        for (int index = -1; index < chain.size(); index++) {
+            for (Direction side : Direction.Plane.HORIZONTAL) addIfFree(places, positionOf(index).relative(side));
         }
         return places;
     }
 
     private void addIfFree(List<BlockPos> places, BlockPos pos)
     {
-        if (level != null && level.getBlockState(pos).canBeReplaced() && !chain.contains(pos)) places.add(pos);
+        if (level != null && !places.contains(pos) && !pos.equals(worldPosition) && !chain.contains(pos) && level.getBlockState(pos).canBeReplaced()) {
+            places.add(pos);
+        }
     }
 
     // Whether a pylon of this type just placed at pos joins the tree
     public boolean accepts(BlockPos pos, PylonType type)
     {
-        if (!acceptsPlaced(pos)) return false;
-        return chain.isEmpty() ? type == PylonType.SHAPE : type != PylonType.SHAPE;
+        if (level == null || element == null || chain.contains(pos)) return false;
+        if (chain.isEmpty()) return type == PylonType.SHAPE && isBeside(pos, worldPosition);
+        return type != PylonType.SHAPE && availableLevels() > 0 && parentFor(pos) != NO_PARENT;
     }
 
-    // The same places as ghostPositions, but checked with the pylon already standing there
-    private boolean acceptsPlaced(BlockPos pos)
+    private static final int NO_PARENT = -2;
+
+    // The pylon a new one at pos is placed against: the most recently placed beside it, else the Spell Pylon (-1)
+    private int parentFor(BlockPos pos)
     {
-        if (level == null || element == null || chain.contains(pos)) return false;
-        if (chain.isEmpty()) return pos.distManhattan(worldPosition) == 1 && pos.getY() == worldPosition.getY();
-        if (availableLevels() <= 0) return false;
-        BlockPos tip = chain.getLast();
-        BlockPos before = chain.size() >= 2 ? chain.get(chain.size() - 2) : worldPosition;
-        return pos.distManhattan(tip) == 1 && pos.getY() == tip.getY() && !pos.equals(before);
+        for (int index = chain.size() - 1; index >= 0; index--) {
+            if (isBeside(pos, chain.get(index))) return index;
+        }
+        return isBeside(pos, worldPosition) ? -1 : NO_PARENT;
+    }
+
+    private static boolean isBeside(BlockPos a, BlockPos b)
+    {
+        return a.getY() == b.getY() && a.distManhattan(b) == 1;
     }
 
     // ---- joining a pylon ----
 
     // A pylon placed in one of the ghost places: the Shape Pylon takes the placer's first known shape; a modifier
-    // pylon keeps the last roll (blessing), shifts the category boosts, and rolls
+    // pylon keeps its parent's roll (blessing, the first time something follows it), shifts the category boosts, and
+    // rolls (a branch slightly favouring its parent's category)
     public void attach(PylonBlockEntity pylon, @Nullable ServerPlayer placer)
     {
         if (!(level instanceof ServerLevel server)) return;
@@ -146,19 +168,24 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (chain.isEmpty()) {
             pylon.link(worldPosition, null, ModifierTier.NORMAL, false, defaultShape(placer));
             chain.add(pylon.getBlockPos());
+            parents.add(-1);
             server.playSound(null, pylon.getBlockPos(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 1.0F);
             sync();
             return;
         }
-        // Placing on after a modifier pylon means its roll was kept
-        if (chain.size() >= 2) blessed += PylonConfig.KEEP_BLESSING;
+        int parent = parentFor(pylon.getBlockPos());
+        PylonBlockEntity parentPylon = parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity p ? p : null;
+        boolean branch = hasChildren(parent);
+        // Placing on after a modifier pylon for the first time means its roll was kept
+        if (parentPylon != null && !branch) blessed += PylonConfig.KEEP_BLESSING;
         boosts.replaceAll((category, boost) -> Math.max(0, boost - PylonConfig.BOOST_DECAY));
         if (type.category() != null) boosts.merge(type.category(), PylonConfig.CATEGORY_BOOST, Float::sum);
+        ModifierCategory branchedFrom = branch && parentPylon != null ? parentPylon.type().category() : null;
 
-        int index = chain.size();
-        Roll roll = roll(index, placer);
+        Roll roll = roll(pylon.getBlockPos(), parent, branchedFrom, placer);
         pylon.link(worldPosition, roll.modifier(), roll.tier(), roll.spellBreak(), null);
         chain.add(pylon.getBlockPos());
+        parents.add(parent);
         if (placer != null && roll.modifier() != null && element != null) SpellKnowledge.unlockModifier(placer, element, roll.modifier());
         server.playSound(null, pylon.getBlockPos(), roll.spellBreak() ? SoundEvents.RESPAWN_ANCHOR_DEPLETE.value() : SoundEvents.AMETHYST_BLOCK_CHIME,
                 SoundSource.BLOCKS, 1.0F, roll.tier() == ModifierTier.CORRUPTED ? 0.6F : roll.tier() == ModifierTier.BLESSED ? 1.6F : 1.1F);
@@ -179,17 +206,18 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     // What a roll gave: a modifier (with its tier), a spell break, or nothing (nothing left that could be rolled here)
     private record Roll(@Nullable Identifier modifier, ModifierTier tier, boolean spellBreak) {}
 
-    // A weighted random pick for the pylon at this place in the chain
-    private Roll roll(int index, @Nullable ServerPlayer placer)
+    // A weighted random pick for a new pylon at pos, placed against parent. branchedFrom: the category of the pylon a
+    // branch grows from (slightly favoured), or null.
+    private Roll roll(BlockPos pos, int parent, @Nullable ModifierCategory branchedFrom, @Nullable ServerPlayer placer)
     {
-        List<Identifier> before = modifiersBefore(index);
+        List<Identifier> before = modifiersUpTo(parent);
         var random = level.getRandom();
-        boolean afterBreak = index >= 2 && level.getBlockEntity(chain.get(index - 1)) instanceof PylonBlockEntity last && last.isSpellBreak();
+        boolean afterBreak = parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity last && last.isSpellBreak();
         if (before.size() >= PylonConfig.BREAK_MIN_MODIFIERS && !afterBreak && random.nextFloat() < PylonConfig.BREAK_CHANCE) {
             return new Roll(null, ModifierTier.NORMAL, true);
         }
         ModifierContext context = new ModifierContext(element, shape() == null ? SpellRegistries.SELF.getId() : shape(), before);
-        List<Identifier> skip = excluded.getOrDefault(index, List.of());
+        List<Identifier> skip = excluded.getOrDefault(pos, List.of());
         SpellKnowledge knowledge = placer == null ? SpellKnowledge.EMPTY : SpellKnowledge.get(placer);
 
         Map<Identifier, Float> weights = new LinkedHashMap<>();
@@ -203,7 +231,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
                 case BLESSED -> blessed >= PylonConfig.TIER_MIN ? blessed / (float) PylonConfig.TIER_MIN : 0;
                 case CORRUPTED -> corruption >= PylonConfig.TIER_MIN ? corruption / (float) PylonConfig.TIER_MIN : 0;
             };
-            float weight = modifier.weight() * (1 + boosts.getOrDefault(modifier.category(), 0F)) * tierFactor;
+            float boost = boosts.getOrDefault(modifier.category(), 0F) + (modifier.category() == branchedFrom ? PylonConfig.BRANCH_BOOST : 0);
+            float weight = modifier.weight() * (1 + boost) * tierFactor;
             if (weight > 0) weights.put(id, weight);
         }
         if (weights.isEmpty()) return new Roll(null, ModifierTier.NORMAL, false);
@@ -222,12 +251,12 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return new Roll(chosen, tier, false);
     }
 
-    // The modifiers in the line before this place (ignoring spell breaks' power: preconditions look at the whole line)
-    private List<Identifier> modifiersBefore(int index)
+    // The modifiers on the way from the Spell Pylon to this pylon, inclusive (preconditions look at its own branch)
+    private List<Identifier> modifiersUpTo(int index)
     {
         List<Identifier> modifiers = new ArrayList<>();
-        for (int i = 1; i < index && i < chain.size(); i++) {
-            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.modifier() != null) modifiers.add(pylon.modifier());
+        for (int i = index; i >= 1; i = parents.get(i)) {
+            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.modifier() != null) modifiers.addFirst(pylon.modifier());
         }
         return modifiers;
     }
@@ -253,8 +282,9 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
 
     // ---- a pylon broken ----
 
-    // The last pylon broken: a reroll (its modifier won't come up there again; corruption). Any other: the line is cut
-    // there, and the pylons after it fall dark. The Shape Pylon broken: the whole line is cut.
+    // A modifier pylon broken: a reroll (its modifier won't come up at that spot again; corruption), and everything
+    // grown from it is cut off (those pylons fall dark until broken and placed again). The Shape Pylon broken: the
+    // whole tree is cut off.
     void pylonRemoved(PylonBlockEntity pylon)
     {
         if (breaking) return;
@@ -264,16 +294,36 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             corruption += PylonConfig.RESET_CORRUPTION;
             if (pylon.tier() == ModifierTier.BLESSED) blessed = Math.max(0, blessed - PylonConfig.BLESSED_LOSS);
             if (pylon.tier() == ModifierTier.CORRUPTED) corruption += PylonConfig.CORRUPTED_GAIN;
-            if (pylon.modifier() != null) excluded.computeIfAbsent(index, i -> new ArrayList<>()).add(pylon.modifier());
+            if (pylon.modifier() != null) excluded.computeIfAbsent(pylon.getBlockPos(), p -> new ArrayList<>()).add(pylon.modifier());
+        } else {
+            excluded.clear();
         }
-        // Everything after it is cut off
-        for (int i = chain.size() - 1; i > index; i--) {
-            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity after) after.unlink();
-            excluded.remove(i);
-            chain.remove(i);
+        // It and everything grown from it (a pylon is in the subtree if its parent is)
+        boolean[] removed = new boolean[chain.size()];
+        removed[index] = true;
+        // The Shape Pylon takes the whole tree with it (even branches placed against the Spell Pylon itself)
+        if (index == 0) java.util.Arrays.fill(removed, true);
+        for (int i = index + 1; i < chain.size(); i++) {
+            if (parents.get(i) >= 0 && removed[parents.get(i)]) removed[i] = true;
         }
-        chain.remove(index);
-        if (index == 0) excluded.clear();
+        // Rebuild the lists without them, renumbering the parents
+        int[] newIndex = new int[chain.size()];
+        List<BlockPos> keptChain = new ArrayList<>();
+        List<Integer> keptParents = new ArrayList<>();
+        for (int i = 0; i < chain.size(); i++) {
+            if (removed[i]) {
+                newIndex[i] = NO_PARENT;
+                if (i != index && level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity cut) cut.unlink();
+                continue;
+            }
+            newIndex[i] = keptChain.size();
+            keptChain.add(chain.get(i));
+            keptParents.add(parents.get(i) < 0 ? -1 : newIndex[parents.get(i)]);
+        }
+        chain.clear();
+        chain.addAll(keptChain);
+        parents.clear();
+        parents.addAll(keptParents);
         sync();
     }
 
@@ -300,17 +350,30 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         setChanged();
     }
 
-    // The spell as it stands: its element and shape, then each modifier along the line until a spell break without
-    // redstone power. Null without an element or shape. pylonsOut gets how many pylons the spell uses.
+    // The spell as it stands: its element and shape, then the modifier of every pylon in the tree in the order placed,
+    // except a spell break without redstone power and everything grown from it. Null without an element or shape.
+    // pylonsOut gets how many pylons the spell uses.
     public @Nullable Spell compile(int[] pylonsOut)
     {
         Identifier shape = shape();
         if (element == null || shape == null || level == null) return null;
+        boolean[] off = new boolean[chain.size()];
         List<Identifier> modifiers = new ArrayList<>();
         int pylons = 2;
         for (int i = 1; i < chain.size(); i++) {
-            if (!(level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon)) break;
-            if (pylon.isSpellBreak() && !level.hasNeighborSignal(pylon.getBlockPos())) break;
+            int parent = parents.get(i);
+            if (parent >= 1 && off[parent]) {
+                off[i] = true;
+                continue;
+            }
+            if (!(level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon)) {
+                off[i] = true;
+                continue;
+            }
+            if (pylon.isSpellBreak() && !level.hasNeighborSignal(pylon.getBlockPos())) {
+                off[i] = true;
+                continue;
+            }
             pylons++;
             if (pylon.modifier() != null) modifiers.add(pylon.modifier());
         }
@@ -396,8 +459,14 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
 
     // ---- saving (and the client's copy) ----
 
-    private static final Codec<Map<Integer, List<Identifier>>> EXCLUDED_CODEC =
-            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, String::valueOf), Identifier.CODEC.listOf());
+    // The exclusions are saved as a list of (spot, modifiers): a map's keys have to be text, and a BlockPos isn't
+    private record Exclusion(BlockPos pos, List<Identifier> modifiers)
+    {
+        static final Codec<Exclusion> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.create(instance -> instance.group(
+                BlockPos.CODEC.fieldOf("pos").forGetter(Exclusion::pos),
+                Identifier.CODEC.listOf().fieldOf("modifiers").forGetter(Exclusion::modifiers)
+        ).apply(instance, Exclusion::new));
+    }
     private static final Codec<Map<ModifierCategory, Float>> BOOSTS_CODEC = Codec.unboundedMap(ModifierCategory.CODEC, Codec.FLOAT);
 
     @Override
@@ -407,7 +476,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (element != null) output.store("element", DustElements.CODEC, element);
         output.store("tree", UUIDUtil.CODEC, tree);
         output.store("chain", BlockPos.CODEC.listOf(), List.copyOf(chain));
-        if (!excluded.isEmpty()) output.store("excluded", EXCLUDED_CODEC, excluded);
+        output.store("parents", Codec.INT.listOf(), List.copyOf(parents));
+        if (!excluded.isEmpty()) {
+            output.store("excluded", Exclusion.CODEC.listOf(), excluded.entrySet().stream().map(e -> new Exclusion(e.getKey(), e.getValue())).toList());
+        }
         output.putInt("blessed", blessed);
         output.putInt("corruption", corruption);
         if (!boosts.isEmpty()) output.store("boosts", BOOSTS_CODEC, boosts);
@@ -423,8 +495,12 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         tree = input.read("tree", UUIDUtil.CODEC).orElse(tree);
         chain.clear();
         chain.addAll(input.read("chain", BlockPos.CODEC.listOf()).orElse(List.of()));
+        parents.clear();
+        parents.addAll(input.read("parents", Codec.INT.listOf()).orElse(List.of()));
+        // Trees saved before branching were one line: each pylon's parent is the one before it
+        while (parents.size() < chain.size()) parents.add(parents.size() - 1);
         excluded.clear();
-        input.read("excluded", EXCLUDED_CODEC).ifPresent(map -> map.forEach((index, ids) -> excluded.put(index, new ArrayList<>(ids))));
+        input.read("excluded", Exclusion.CODEC.listOf()).ifPresent(list -> list.forEach(e -> excluded.put(e.pos(), new ArrayList<>(e.modifiers()))));
         blessed = input.getIntOr("blessed", 0);
         corruption = input.getIntOr("corruption", 0);
         boosts.clear();

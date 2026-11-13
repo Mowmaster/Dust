@@ -70,15 +70,14 @@ public class PylonBlock extends Block implements EntityBlock
         }
     }
 
-    // The tree whose Spell Pylon or last pylon is beside pos
+    // The tree whose Spell Pylon, or any of whose pylons, is beside pos
     private static @Nullable SpellPylonBlockEntity treeNextTo(Level level, BlockPos pos)
     {
         for (Direction side : Direction.Plane.HORIZONTAL) {
             BlockEntity beside = level.getBlockEntity(pos.relative(side));
             if (beside instanceof SpellPylonBlockEntity spellPylon) return spellPylon;
             if (beside instanceof PylonBlockEntity pylon && pylon.main() != null
-                    && level.getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon
-                    && !spellPylon.chain().isEmpty() && spellPylon.chain().getLast().equals(pylon.getBlockPos())) {
+                    && level.getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon) {
                 return spellPylon;
             }
         }
