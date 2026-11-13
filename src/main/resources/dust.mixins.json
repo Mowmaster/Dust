@@ -8,7 +8,8 @@
     "AbstractFurnaceAccessor",
     "LivingEntityMovementMixin",
     "PlayerSpiritMixin",
-    "MannequinAccessor"
+    "MannequinAccessor",
+    "FallingBlockStickyMixin"
   ],
   "client": [
     "client.CachedFontProviderMixin",

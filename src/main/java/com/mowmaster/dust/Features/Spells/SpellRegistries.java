@@ -218,7 +218,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> WARP_EFFECT = element(DustElements.WARP,
             () -> new BasicEffect().self(UtilityParts::warpSelf).block(UtilityParts::warpBlock).entity(UtilityParts::warpMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> SLIME_EFFECT = element(DustElements.SLIME,
-            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.SLIPPERY)).entity(BasicEffect.inflict(DustEffectsRegistry.SLIPPERY)).block(SpellConversions::convert));
+            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.SLIPPERY)).entity(BasicEffect.inflict(DustEffectsRegistry.SLIPPERY)).block(com.mowmaster.dust.Features.Spells.blocks.Sticking::stick));
 
     public static final DeferredHolder<ElementEffect, ElementEffect> SPIRIT_EFFECT = element(DustElements.SPIRIT,
             () -> new BasicEffect().block(SpecialBlockParts::phase).self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
