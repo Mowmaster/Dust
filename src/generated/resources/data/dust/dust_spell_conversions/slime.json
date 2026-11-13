@@ -1,0 +1,9 @@
+{
+  "conversions": [
+    {
+      "from": "minecraft:piston",
+      "to": "minecraft:sticky_piston"
+    }
+  ],
+  "element": "dust:slime"
+}

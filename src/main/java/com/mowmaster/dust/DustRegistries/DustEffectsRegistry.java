@@ -128,6 +128,9 @@ public class DustEffectsRegistry
     // After breaking out of Encased: kinetic damage does 50% more a level
     public static final Holder<MobEffect> BRITTLE = MOB_EFFECTS.register("brittle", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x9FE0D8));
 
+    // Tool on yourself: the right tool comes to hand, and a broken one is replaced (ToolSense)
+    public static final Holder<MobEffect> TOOL_SENSE = MOB_EFFECTS.register("tool_sense", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xC0C0C0));
+
     private static Identifier id(String path)
     {
         return Identifier.fromNamespaceAndPath(DustReferences.MODID, path);

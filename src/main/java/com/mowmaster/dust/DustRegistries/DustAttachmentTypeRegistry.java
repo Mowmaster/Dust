@@ -150,6 +150,13 @@ public class DustAttachmentTypeRegistry
                     .copyOnDeath()
                     .build());
 
+    // Where a player's Warp spells send things (Features/Spells/effects/UtilityParts): a place in some dimension, or none
+    public static final Supplier<AttachmentType<java.util.Optional<net.minecraft.core.GlobalPos>>> WARP_MARK = ATTACHMENT_TYPES.register("warp_mark",
+            () -> AttachmentType.builder(() -> java.util.Optional.<net.minecraft.core.GlobalPos>empty())
+                    .serialize(net.minecraft.core.GlobalPos.CODEC.optionalFieldOf("pos"))
+                    .copyOnDeath()
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

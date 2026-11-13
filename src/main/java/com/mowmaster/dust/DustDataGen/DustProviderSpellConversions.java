@@ -130,6 +130,9 @@ public class DustProviderSpellConversions extends JsonCodecProvider<ConversionTa
         // Ice: still water freezes, still lava sets to obsidian
         table(DustElements.ICE, List.of(convert("water", "ice").onlySources(), convert("lava", "obsidian").onlySources()));
 
+        // Slime: sticky (pistons become sticky pistons; sticking falling blocks in place comes later)
+        table(DustElements.SLIME, List.of(convert("piston", "sticky_piston")));
+
         // Seeds: plants go back to their seeds
         table(DustElements.SEEDS, List.of(seeds("wheat", Items.WHEAT_SEEDS), seeds("carrots", Items.CARROT), seeds("potatoes", Items.POTATO),
                 seeds("beetroots", Items.BEETROOT_SEEDS), seeds("melon_stem", Items.MELON_SEEDS), seeds("attached_melon_stem", Items.MELON_SEEDS),

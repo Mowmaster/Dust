@@ -14,6 +14,7 @@ public final class BlockMarks
 {
     public static final String QUICK_BREAK = "quick_break";
     public static final String WISE = "wise";
+    public static final String LOWER_TIER = "lower_tier";
 
     private record Key(ResourceKey<Level> dimension, BlockPos pos, String mark) {}
 

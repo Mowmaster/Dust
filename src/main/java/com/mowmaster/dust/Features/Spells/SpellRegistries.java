@@ -14,6 +14,7 @@ import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
 import com.mowmaster.dust.Features.Spells.effects.MobParts;
+import com.mowmaster.dust.Features.Spells.effects.UtilityParts;
 import com.mowmaster.dust.Features.Spells.conversions.SpellConversions;
 import com.mowmaster.dust.Features.Spells.effects.EnergyCharge;
 import com.mowmaster.dust.DustRegistries.DustEffectsRegistry;
@@ -170,13 +171,13 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> ABYSS_EFFECT = element(DustElements.ABYSS,
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.LIFE_LEECH)).entity(BasicEffect.inflict(DustEffectsRegistry.SILENCED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> ENERGY_EFFECT = element(DustElements.ENERGY,
-            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.ENERGY_DRAIN)).entity(EnergyCharge::charge));
+            () -> new BasicEffect().block(UtilityParts::fuelFurnaces).self(BasicEffect.give(DustEffectsRegistry.ENERGY_DRAIN)).entity(EnergyCharge::charge));
     public static final DeferredHolder<ElementEffect, ElementEffect> CREATURE_EFFECT = element(DustElements.CREATURE,
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.PACK_TACTICS)).entity(SimpleParts::mark));
     public static final DeferredHolder<ElementEffect, ElementEffect> PLANTS_EFFECT = element(DustElements.PLANTS,
-            () -> new BasicEffect().entity(BasicEffect.inflict(DustEffectsRegistry.TANGLED)));
+            () -> new BasicEffect().self(UtilityParts::plantHeld).block(UtilityParts::plantFlower).entity(BasicEffect.inflict(DustEffectsRegistry.TANGLED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> TREES_EFFECT = element(DustElements.TREES,
-            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.THORNS)));
+            () -> new BasicEffect().block(UtilityParts::fellTree).self(BasicEffect.give(DustEffectsRegistry.THORNS)));
     public static final DeferredHolder<ElementEffect, ElementEffect> KNOWLEDGE_EFFECT = element(DustElements.KNOWLEDGE,
             () -> new BasicEffect().block(MobParts::markWise).self(BasicEffect.give(DustEffectsRegistry.INSIGHT)).entity(BasicEffect.inflict(DustEffectsRegistry.ENLIGHTENED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> FUNGUS_EFFECT = element(DustElements.FUNGUS,
@@ -199,9 +200,14 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> VACUUM_EFFECT = element(DustElements.VACUUM,
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.VACUUM)).block(MobParts::vacuumBlock).entity(MobParts::vacuumMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> TOOL_EFFECT = element(DustElements.TOOL,
-            () -> new BasicEffect().entity(MobParts::pickUpLoot));
+            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.TOOL_SENSE)).block(UtilityParts::markLowerTier).entity(MobParts::pickUpLoot));
     public static final DeferredHolder<ElementEffect, ElementEffect> GROWTH_EFFECT = element(DustElements.GROWTH,
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.GROWN)).block(MobParts::bonemeal).entity(MobParts::grow));
+
+    public static final DeferredHolder<ElementEffect, ElementEffect> WARP_EFFECT = element(DustElements.WARP,
+            () -> new BasicEffect().self(UtilityParts::warpSelf).block(UtilityParts::warpBlock).entity(UtilityParts::warpMob));
+    public static final DeferredHolder<ElementEffect, ElementEffect> SLIME_EFFECT = element(DustElements.SLIME,
+            () -> new BasicEffect().block(SpellConversions::convert));
 
     private static DeferredHolder<ElementEffect, ElementEffect> element(com.mowmaster.dust.Features.DustComposition.DustElement element,
                                                                         java.util.function.Supplier<ElementEffect> effect)
