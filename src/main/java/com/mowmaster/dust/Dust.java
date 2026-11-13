@@ -22,6 +22,7 @@ public class Dust {
 
         DustConsumeEffectsRegistry.register(modEventBus);
         DustEffectsRegistry.register(modEventBus);
+        com.mowmaster.dust.Features.Spells.SpellRegistries.register(modEventBus);
         DustPotionRegistry.register(modEventBus);
 
         DustLootRegistry.register(modEventBus);

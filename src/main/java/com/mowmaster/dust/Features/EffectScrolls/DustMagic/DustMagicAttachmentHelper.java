@@ -10,27 +10,21 @@ public class DustMagicAttachmentHelper
     // sword, the tool spells, the commands) working on it
     public static int getManaMaximum(Player player) {return PlayerMagicHelper.maxMana(player);}
 
+    // Awakened to their magic (Features/Magic/Awakening): the HUD shows and mana regenerates
     public static boolean hasUnlockedMana(Player player)
     {
-        if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_UNLOCKED)) return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_UNLOCKED.get());
-        else return false;
+        return PlayerMagicHelper.isAwakened(player);
     }
 
     public static void unlockMana(Player player)
     {
-        if (!hasUnlockedMana(player)) {
-            {
-                player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_UNLOCKED,Boolean.TRUE);
-            }
-        }
+        PlayerMagicHelper.set(player, PlayerMagicHelper.get(player).withAwakening(false, true));
     }
 
     //Only used for initializations
     public static void lockMana(Player player)
     {
-        if (hasUnlockedMana(player)) {
-            player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_UNLOCKED,Boolean.FALSE);
-        }
+        if (hasUnlockedMana(player)) PlayerMagicHelper.set(player, PlayerMagicHelper.get(player).withAwakening(false, false));
     }
 
     public static boolean hasMana(Player player)

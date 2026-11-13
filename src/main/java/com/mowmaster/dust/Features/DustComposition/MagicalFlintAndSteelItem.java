@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.DustComposition;
 
+import com.mowmaster.dust.Features.Machines.AlchemicalDust;
+import com.mowmaster.dust.Features.Magic.Awakening;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
@@ -81,6 +83,9 @@ public class MagicalFlintAndSteelItem extends Item
         struck(level, player, firePos, context.getItemInHand(), context.getHand());
         if (player instanceof ServerPlayer serverPlayer) {
             DustResearch.noteBurned(serverPlayer, ResearchTabs.entryForItem(burned), composition.color());
+            // Alchemical Dust lets out one of its element's effects as it burns (Features/Magic/Awakening)
+            DustElement alchemical = AlchemicalDust.of(burned);
+            if (alchemical != null) Awakening.burnedDust(serverPlayer, firePos, alchemical);
         }
         return InteractionResult.SUCCESS;
     }

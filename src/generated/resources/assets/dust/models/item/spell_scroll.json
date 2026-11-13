@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dust:item/spell_scroll",
+    "layer1": "dust:item/spell_scroll_seal"
+  }
+}

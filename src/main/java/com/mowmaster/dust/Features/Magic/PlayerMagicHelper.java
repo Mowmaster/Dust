@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // The rules for a player's magic (PlayerMagic): mana, the dust store and attunement.
-//   Mana        starts at 10 and regenerates 1 a minute. Kept under 30% for 10 minutes straight, max mana goes up 1;
+//   Mana        starts at 10. It only regenerates (1 a minute) once the player has awakened to their magic (Awakening). Kept under 30% for 10 minutes straight, max mana goes up 1;
 //               kept at 90% or more for an hour straight, it goes down 1. A spell needing more mana than the player has
 //               takes what's there and hurts half a heart per missing point.
 //   Dust store  whole elements, a limited number of different ones (dustTypes) and of each (dustCapacity). An element
@@ -172,13 +172,19 @@ public final class PlayerMagicHelper
         return 1 + attunementBonus(player, element)[2];
     }
 
-    // ---- ticking: regeneration, and max mana creeping up or down ----
+    public static boolean isAwakened(Player player)
+    {
+        return get(player).awakened();
+    }
+
+    // ---- ticking: regeneration, and max mana creeping up or down (only once awakened) ----
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event)
     {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         PlayerMagic magic = get(player);
+        if (!magic.awakened()) return;
         ManaTimers timers = player.getData(DustAttachmentTypeRegistry.MANA_TIMERS);
         int mana = magic.mana(), max = magic.maxMana();
         int regen = timers.regen() + 1, low = timers.low(), high = timers.high();

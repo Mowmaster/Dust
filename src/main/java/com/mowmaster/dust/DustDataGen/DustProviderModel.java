@@ -64,6 +64,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchEvaporation(blockModels);
         createResearchDistillation(blockModels, itemModels);
         createElementStations(blockModels, itemModels);
+        createSpellScroll(itemModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -266,6 +267,17 @@ public class DustProviderModel extends ModelProvider {
                 itemModels.modelOutput);
         itemModels.itemModelOutput.accept(DustItemRegistry.ALCHEMICAL_DUST.get(),
                 ItemModelUtils.tintedModel(dustModel, new AlchemicalDustTint(), new Constant(-1)));
+    }
+
+    // A Spell Scroll: the parchment (layer 0) as it is, its seal (layer 1) in the spell's element colour
+    private void createSpellScroll(ItemModelGenerators itemModels)
+    {
+        Identifier model = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.SPELL_SCROLL.get(),
+                TextureMapping.layered(new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/spell_scroll")),
+                        new Material(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/spell_scroll_seal"))),
+                itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(DustItemRegistry.SPELL_SCROLL.get(),
+                ItemModelUtils.tintedModel(model, new Constant(-1), new com.mowmaster.dust.Features.Spells.Client.SpellTint()));
     }
 
     // A station turned by FACING (the models face north), with its block and item models

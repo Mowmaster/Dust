@@ -1,5 +1,6 @@
 package com.mowmaster.dust.DustRegistries;
 
+import com.mowmaster.dust.Features.Spells.shapes.SpellProjectileEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 
 import com.mowmaster.dust.DustReferences;
@@ -16,6 +17,12 @@ public class DustEntityRegistry {
 
     // One orb type for every element: the element is the orb's synced data (ElementOrbEntity)
     public static final DeferredHolder<EntityType<?>, EntityType<ElementOrbEntity>> ELEMENT_ORB = registerOrb("element_orb", ElementOrbEntity::new);
+    // A spell in flight (Features/Spells/shapes): small, tracked from a distance like an arrow
+    public static final DeferredHolder<EntityType<?>, EntityType<SpellProjectileEntity>> SPELL_PROJECTILE = ENTITY_TYPES.registerEntityType("spell_projectile",
+            SpellProjectileEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
 
     // registerEntityType builds the EntityType with its own registry key (dust:element_orb). Before, every orb was
     // built with the same made-up key "dust:base_orb_key", so they all shared one description id / loot table id.

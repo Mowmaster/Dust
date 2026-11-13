@@ -9,6 +9,8 @@ import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.Features.Machines.ElementCombining;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Machines.AlchemicalDust;
+import com.mowmaster.dust.Features.Spells.SpellKnowledge;
+import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import com.mowmaster.dust.Features.Machines.Compounds;
 import com.mowmaster.dust.Features.Machines.ProductSource;
 import com.mowmaster.dust.Features.Research.EntryResearch;
@@ -116,6 +118,8 @@ public final class ResearchBook
 
     // The notes pages an entry has, depending on how far its research has got
     //   OVERVIEW      the built-in notes, which the player can rewrite (Research Notes only)
+    //   SPELL_EFFECTS an element's three spell effects (self / block / entity): the ones the player has seen described,
+    //                 the rest ??? (once they've seen at least one: Features/Spells/SpellKnowledge)
     //   MADE_FROM     an element's combination path: each mix it takes, from the primals up, with the table that puts
     //                 the two together (discovered mixed elements only; as many pages as it takes)
     //   WHERE_FOUND   the biomes it's been seen in (once there are two or more)
@@ -126,7 +130,7 @@ public final class ResearchBook
     //   RESEARCH      its dust: the colour it burns with (Magical Flint and Steel), what it's made of (Elemental Examiner)
     //   PROCESSES     the steps the player has taken it through: input -> machine -> output, each with an "x" to cross
     //                 it out (as many pages as it takes)
-    enum Kind { OVERVIEW, MADE_FROM, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH, PROCESSES }
+    enum Kind { OVERVIEW, SPELL_EFFECTS, MADE_FROM, WHERE_FOUND, FAMILY, CRAFTED_FROM, CRAFTED_INTO, EXPERIMENTS, RESEARCH, PROCESSES }
 
     // One notes page: its kind, and for the crafting / process pages the recipes / steps that fit on it
     //   path: the elements whose mix is shown on a MADE_FROM page
@@ -144,8 +148,13 @@ public final class ResearchBook
     {
         List<NotesPage> pages = new ArrayList<>();
         pages.add(new NotesPage(Kind.OVERVIEW, List.of(), List.of()));
-        // An element's combination path, PROCESS_ROWS mixes to a page
+        // An element's spell effects, once any has been seen
         DustElement element = entry.tab() == ResearchTabs.ELEMENTS ? DustElements.get(entry.id()) : null;
+        net.minecraft.world.entity.player.Player reader = net.minecraft.client.Minecraft.getInstance().player;
+        if (element != null && reader != null && !SpellKnowledge.get(reader).effectsOf(element).isEmpty()) {
+            pages.add(new NotesPage(Kind.SPELL_EFFECTS, List.of(), List.of()));
+        }
+        // An element's combination path, PROCESS_ROWS mixes to a page
         if (element != null && !element.isPrimal()) {
             List<DustElement> path = combinationPath(element);
             for (int i = 0; i < path.size(); i += PROCESS_ROWS) {
@@ -351,6 +360,7 @@ public final class ResearchBook
                 case EXPERIMENTS -> drawExperiments(graphics, font, data, entry, research);
                 case PROCESSES -> drawProcesses(graphics, font, data, page.processes());
                 case MADE_FROM -> drawCombinations(graphics, font, data, page.path());
+                case SPELL_EFFECTS -> drawSpellEffects(graphics, font, entry);
                 case RESEARCH -> drawDust(graphics, font, data, entry, research.dust());
                 case OVERVIEW -> {
                     if (!editing) drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
@@ -634,6 +644,29 @@ public final class ResearchBook
                 CROSSES.add(new Cross(crossX, y + 3, step));
             }
             y += PROCESS_ROW;
+        }
+    }
+
+    // ---- spell effects page ----
+
+    // Each of the element's three effects: "Self:" and what it does if they've seen it, ??? if not
+    private static void drawSpellEffects(GuiGraphicsExtractor graphics, Font font, ResearchEntry entry)
+    {
+        DustElement element = DustElements.get(entry.id());
+        net.minecraft.world.entity.player.Player reader = net.minecraft.client.Minecraft.getInstance().player;
+        if (element == null || reader == null) return;
+        List<SpellTarget> seen = SpellKnowledge.get(reader).effectsOf(element);
+        int x = RIGHT_X + 4, y = NOTES_TOP, bottom = FOOTER_Y - 2;
+        for (SpellTarget target : SpellTarget.values()) {
+            if (y + font.lineHeight > bottom) break;
+            Paper.ink(graphics, font, Component.translatable("research.dust.spell_effects." + target.getSerializedName()).withStyle(ChatFormatting.BOLD), x, y, INK);
+            y += font.lineHeight + 1;
+            Component text = seen.contains(target)
+                    ? Component.translatable("spell.dust.effect." + element.id().getPath() + "." + target.getSerializedName())
+                    : Component.translatable("research.dust.undiscovered");
+            List<FormattedCharSequence> lines = font.split(text, PAGE_W - 10);
+            drawLines(graphics, font, lines, x + 4, y, bottom, seen.contains(target) ? INK : FADED);
+            y += lines.size() * font.lineHeight + 4;
         }
     }
 

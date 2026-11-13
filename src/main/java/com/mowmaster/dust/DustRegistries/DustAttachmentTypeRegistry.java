@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.Features.Magic.ManaTimers;
 import com.mowmaster.dust.Features.Magic.PlayerMagic;
+import com.mowmaster.dust.Features.Spells.SpellKnowledge;
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.TranscribedStones;
@@ -137,6 +138,15 @@ public class DustAttachmentTypeRegistry
     public static final Supplier<AttachmentType<ManaTimers>> MANA_TIMERS = ATTACHMENT_TYPES.register("mana_timers",
             () -> AttachmentType.builder(() -> ManaTimers.ZERO)
                     .serialize(ManaTimers.CODEC.fieldOf("timers"))
+                    .copyOnDeath()
+                    .build());
+
+    // What the player has learned about spells: each element's effects seen, and the shapes they can use
+    // (Features/Spells/SpellKnowledge). Survives death; synced to its player (the book reads it).
+    public static final Supplier<AttachmentType<SpellKnowledge>> SPELL_KNOWLEDGE = ATTACHMENT_TYPES.register("spell_knowledge",
+            () -> AttachmentType.builder(() -> SpellKnowledge.EMPTY)
+                    .serialize(SpellKnowledge.CODEC.fieldOf("knowledge"))
+                    .sync((holder, to) -> holder == to, SpellKnowledge.STREAM_CODEC)
                     .copyOnDeath()
                     .build());
 

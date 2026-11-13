@@ -2,6 +2,16 @@ package com.mowmaster.dust.DustCommands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
+import com.mowmaster.dust.DustRegistries.DustItemRegistry;
+import com.mowmaster.dust.Features.Spells.SpellRegistries;
+import com.mowmaster.dust.Features.Spells.api.Spell;
+import net.minecraft.world.item.ItemStack;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -30,6 +40,8 @@ import java.util.function.BiConsumer;
 //   /dustmagic mana <players> <amount>                  set mana (up to max)
 //   /dustmagic maxmana <players> <amount>
 //   /dustmagic attune <players> <element>   /dustmagic unattune <players> <element>
+//   /dustmagic spell <element> <shape> [attributes]   a Spell Scroll for you, e.g.
+//                                                     /dustmagic spell dust:fire dust:projectile potency=1 size=2
 // Elements are ids, with suggestions: dust:fire, dust:knowledge...
 public class MagicCommand
 {
@@ -37,10 +49,19 @@ public class MagicCommand
     private static final SuggestionProvider<CommandSourceStack> ELEMENTS =
             (context, builder) -> SharedSuggestionProvider.suggestResource(DustElements.all().stream().map(DustElement::id), builder);
 
+    private static final SuggestionProvider<CommandSourceStack> SHAPES =
+            (context, builder) -> SharedSuggestionProvider.suggestResource(SpellRegistries.SHAPE_REGISTRY.keySet(), builder);
+
     public MagicCommand(CommandDispatcher<CommandSourceStack> dispatcher)
     {
         dispatcher.register(Commands.literal("dustmagic")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.literal("spell")
+                        .then(Commands.argument("element", IdentifierArgument.id()).suggests(ELEMENTS)
+                                .then(Commands.argument("shape", IdentifierArgument.id()).suggests(SHAPES)
+                                        .executes(c -> giveScroll(c, ""))
+                                        .then(Commands.argument("attributes", StringArgumentType.greedyString())
+                                                .executes(c -> giveScroll(c, StringArgumentType.getString(c, "attributes")))))))
                 .then(Commands.literal("show")
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .executes(c -> show(c.getSource(), EntityArgument.getPlayers(c, "targets")))))
@@ -100,6 +121,34 @@ public class MagicCommand
                                             DustElement element = element(c);
                                             return each(c, (source, player) -> PlayerMagicHelper.unattune(player, element));
                                         })))));
+    }
+
+    // A scroll with the spell; attributes as "name=level" separated by spaces (names without a namespace are dust's)
+    private static int giveScroll(CommandContext<CommandSourceStack> context, String attributeText) throws CommandSyntaxException
+    {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        DustElement element = element(context);
+        Identifier shape = IdentifierArgument.getId(context, "shape");
+        if (!SpellRegistries.SHAPE_REGISTRY.containsKey(shape)) throw new SimpleCommandExceptionType(Component.literal("Unknown shape: " + shape)).create();
+        Map<Identifier, Integer> attributes = new LinkedHashMap<>();
+        for (String part : attributeText.trim().split("\\s+")) {
+            if (part.isEmpty()) continue;
+            String[] pair = part.split("=");
+            Identifier id = pair[0].contains(":") ? Identifier.parse(pair[0]) : Identifier.fromNamespaceAndPath(DustReferences.MODID, pair[0]);
+            if (!SpellRegistries.ATTRIBUTE_REGISTRY.containsKey(id)) throw new SimpleCommandExceptionType(Component.literal("Unknown attribute: " + id)).create();
+            int level;
+            try {
+                level = pair.length > 1 ? Integer.parseInt(pair[1]) : 1;
+            } catch (NumberFormatException notANumber) {
+                throw new SimpleCommandExceptionType(Component.literal("Not a level: " + part)).create();
+            }
+            attributes.put(id, level);
+        }
+        ItemStack scroll = new ItemStack(DustItemRegistry.SPELL_SCROLL.get());
+        scroll.set(DustComponentDataRegistry.SPELL.get(), new Spell(element, shape, attributes, List.of()));
+        if (!player.getInventory().add(scroll)) player.spawnAtLocation(player.level(), scroll);
+        context.getSource().sendSuccess(() -> Component.literal("Spell Scroll: " + element.id().getPath() + " " + shape.getPath() + " " + attributes), false);
+        return 1;
     }
 
     private static DustElement element(CommandContext<CommandSourceStack> context) throws CommandSyntaxException

@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
+import com.mowmaster.dust.Features.Spells.api.Spell;
 
 import net.minecraft.world.item.ItemStackTemplate;
 
@@ -53,6 +54,10 @@ public class DustComponentDataRegistry
     // Features/Machines/AlchemicalDust
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<DustElement>> ALCHEMICAL_ELEMENT = register("alchemical_element",
             builder -> builder.persistent(DustElements.CODEC).networkSynchronized(ByteBufCodecs.fromCodec(DustElements.CODEC)));
+
+    // The spell on a Spell Scroll: see Features/Spells/api/Spell
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Spell>> SPELL = register("spell",
+            builder -> builder.persistent(Spell.CODEC).networkSynchronized(Spell.STREAM_CODEC));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                           UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

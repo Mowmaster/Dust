@@ -104,6 +104,8 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
+        // A spell in flight draws nothing itself: its trail is particles (SpellProjectileEntity.tick)
+        event.registerEntityRenderer(DustEntityRegistry.SPELL_PROJECTILE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
     // Models drawn by code rather than placed as blocks (the crusher's wheels)
@@ -122,6 +124,7 @@ public class DustClient {
         // "dust:compound": an alchemical compound's colour, for its dust pile
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "compound"), CompoundTint.MAP_CODEC);
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "alchemical_dust"), AlchemicalDustTint.MAP_CODEC);
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "spell"), com.mowmaster.dust.Features.Spells.Client.SpellTint.MAP_CODEC);
     }
 
     // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)
@@ -197,6 +200,23 @@ public class DustClient {
                             16, 16, 0, 0, x - 222, y - 40, 8, 8);
                 }*/
 
+            }
+        });
+
+        // The dust carried (Features/Magic/PlayerMagic): each element's icon in its colour and how much, in a row above
+        // the mana bar, once the player's magic has awakened
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_store"), (guiGraphics, deltaTracker) -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player == null || player.isSpectator() || !com.mowmaster.dust.Features.Magic.PlayerMagicHelper.isAwakened(player)) return;
+            var magic = com.mowmaster.dust.Features.Magic.PlayerMagicHelper.get(player);
+            var font = Minecraft.getInstance().font;
+            int x = guiGraphics.guiWidth() / 2 - 208;
+            int y = guiGraphics.guiHeight() - 40;
+            for (var carried : magic.dust().entrySet()) {
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, carried.getKey().icon(), x, y, 9, 9, 0xFF000000 | carried.getKey().color());
+                String amount = String.valueOf(carried.getValue());
+                guiGraphics.text(font, amount, x + 10, y + 1, 0xFFFFFFFF, true);
+                x += 10 + font.width(amount) + 4;
             }
         });
 

@@ -10,6 +10,7 @@ import com.mowmaster.dust.Features.DustComposition.MagicalFlintAndSteelItem;
 import com.mowmaster.dust.Features.Machines.AlchemicalCompoundItem;
 import com.mowmaster.dust.Features.Machines.AlchemicalDustItem;
 import com.mowmaster.dust.Features.Machines.CrushedItem;
+import com.mowmaster.dust.Features.Spells.SpellScrollItem;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolHammer;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalToolMattock;
 import com.mowmaster.dust.Features.CrystalTools.Item.CrystalWeaponSword;
@@ -134,6 +135,8 @@ public class DustItemRegistry
     // Distillation outputs with something aqueous in them (in a bowl) or something gaseous (in a glass bottle)
     public static final DeferredItem<Item> ALCHEMICAL_LIQUID = DUSTITEMS.registerItem("alchemical_compound_liquid", AlchemicalCompoundItem::new);
     public static final DeferredItem<Item> ALCHEMICAL_GAS = DUSTITEMS.registerItem("alchemical_compound_gas", AlchemicalCompoundItem::new);
+    // Holds one spell, cast with right-click (Features/Spells)
+    public static final DeferredItem<Item> SPELL_SCROLL = DUSTITEMS.registerItem("spell_scroll", SpellScrollItem::new, properties -> properties.stacksTo(1));
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)
     public static final DeferredItem<Item> ALCHEMICAL_DUST = DUSTITEMS.registerItem("alchemical_dust", AlchemicalDustItem::new);
 
