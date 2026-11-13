@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jspecify.annotations.Nullable;
 
 // Draws the void chest as an ender chest item with two feathers for wings, flapping (slowly while it's open).
 // Placeholder art made of vanilla items; swap for a proper model later.
@@ -23,9 +24,10 @@ import net.minecraft.world.item.Items;
 // the ItemModelResolver fills in.
 public class VoidChestRenderer extends EntityRenderer<VoidChestEntity, VoidChestRenderer.State>
 {
-    private static final ItemStack CHEST = new ItemStack(Items.ENDER_CHEST);
-    private static final ItemStack FEATHER = new ItemStack(Items.FEATHER);
-
+    // Made the first time it's drawn, not when the class loads: renderers are built before items' data components are
+    // bound, and making an ItemStack that early throws (which shows up as "Could not initialize class")
+    private @Nullable ItemStack chest;
+    private @Nullable ItemStack feather;
     private final ItemModelResolver itemModelResolver;
 
     public VoidChestRenderer(EntityRendererProvider.Context context)
@@ -53,8 +55,12 @@ public class VoidChestRenderer extends EntityRenderer<VoidChestEntity, VoidChest
     public void extractRenderState(VoidChestEntity entity, State state, float partialTick)
     {
         super.extractRenderState(entity, state, partialTick);
-        itemModelResolver.updateForNonLiving(state.chest, CHEST, ItemDisplayContext.FIXED, entity);
-        itemModelResolver.updateForNonLiving(state.wing, FEATHER, ItemDisplayContext.FIXED, entity);
+        if (chest == null) {
+            chest = new ItemStack(Items.ENDER_CHEST);
+            feather = new ItemStack(Items.FEATHER);
+        }
+        itemModelResolver.updateForNonLiving(state.chest, chest, ItemDisplayContext.FIXED, entity);
+        itemModelResolver.updateForNonLiving(state.wing, feather, ItemDisplayContext.FIXED, entity);
         state.yaw = entity.getYRot(partialTick);
         state.open = entity.isOpen();
     }
