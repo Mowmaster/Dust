@@ -17,6 +17,7 @@ import com.mowmaster.dust.Features.Spells.effects.PetGhosts;
 import com.mowmaster.dust.Features.Spells.effects.MetalParts;
 import com.mowmaster.dust.Features.Spells.effects.FractureParts;
 import com.mowmaster.dust.Features.Spells.effects.StoreParts;
+import com.mowmaster.dust.Features.Spells.effects.RustParts;
 import com.mowmaster.dust.Features.Spells.effects.RootParts;
 import com.mowmaster.dust.Features.Spells.radiance.Radiance;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
@@ -204,6 +205,8 @@ public final class SpellRegistries
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.DASHING)).block(MovementParts::conductiveBlock).entity(BasicEffect.inflict(DustEffectsRegistry.CONDUCTIVE)));
 
     // Elements whose only part so far is their block conversions (Features/Spells/conversions)
+    public static final DeferredHolder<ElementEffect, ElementEffect> RUST_EFFECT = element(DustElements.RUST,
+            () -> new BasicEffect().self(RustParts::corrosiveAura).block(RustParts::oxidise).entity(RustParts::corrode));
     public static final DeferredHolder<ElementEffect, ElementEffect> CRYSTAL_EFFECT = element(DustElements.CRYSTAL,
             () -> new BasicEffect().self(StoreParts::crystallize).entity(MobParts::shatter).block(SpellConversions::convert));
     public static final DeferredHolder<ElementEffect, ElementEffect> RADIANCE_EFFECT = element(DustElements.RADIANCE,

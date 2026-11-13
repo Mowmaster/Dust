@@ -11,7 +11,8 @@
     "MannequinAccessor",
     "FallingBlockStickyMixin",
     "PistonStructureResolverMixin",
-    "PistonBaseBlockStickyMixin"
+    "PistonBaseBlockStickyMixin",
+    "ItemStackCorrodingMixin"
   ],
   "client": [
     "client.CachedFontProviderMixin",

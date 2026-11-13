@@ -170,6 +170,10 @@ public class DustEffectsRegistry
     // Seeds on yourself: mana stored as a seed (its level is how much, less 1), that bursts into healing when you drop
     // under 30% health (Features/Spells/effects/StoreParts)
     public static final Holder<MobEffect> SEED_OF_LIFE = MOB_EFFECTS.register("seed_of_life", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x7FBF3F));
+    // Rust on yourself: attacks on you are 15% weaker a level, up to 60% (Features/Spells/effects/RustParts)
+    public static final Holder<MobEffect> CORROSIVE_AURA = MOB_EFFECTS.register("corrosive_aura", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xB7591F));
+    // Rust on a mob: its armour, tools and weapons wear twice as fast, once more a level (mixin/ItemStackCorrodingMixin)
+    public static final Holder<MobEffect> CORRODING = MOB_EFFECTS.register("corroding", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x8A4A1C));
 
     private static Identifier id(String path)
     {
