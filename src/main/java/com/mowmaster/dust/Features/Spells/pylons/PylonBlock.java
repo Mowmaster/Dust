@@ -24,7 +24,8 @@ import org.jspecify.annotations.Nullable;
 
 // A modifier pylon (Shape, Change, Cost, Count, Damage: PylonType). Placed where a Spell Pylon shows a ghost, it joins
 // that tree and gets its roll (SpellPylonBlockEntity.attach); anywhere else it stays inert. Right-click: what it holds
-// (the Shape Pylon: the next shape you know). Break it to reroll it (it won't roll the same there again).
+// (the Shape Pylon: the next shape you know). Sneak-right-click: fill one of its upgrade nodes, for a level. Break it to
+// reroll it (it won't roll the same there again).
 // A spell break needs redstone power for the line to carry on past it.
 public class PylonBlock extends Block implements EntityBlock
 {
@@ -89,7 +90,11 @@ public class PylonBlock extends Block implements EntityBlock
     {
         if (!(level.getBlockEntity(pos) instanceof PylonBlockEntity pylon)) return InteractionResult.PASS;
         if (player instanceof ServerPlayer serverPlayer) {
-            if (type == PylonType.SHAPE && pylon.main() != null && level.getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity tree) {
+            SpellPylonBlockEntity tree = pylon.main() != null && level.getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon ? spellPylon : null;
+            // isSecondaryUseActive: sneaking (the "use the other way" key)
+            if (tree != null && player.isSecondaryUseActive() && type != PylonType.SHAPE) {
+                tree.upgrade(pylon, serverPlayer);
+            } else if (tree != null && type == PylonType.SHAPE) {
                 tree.cycleShape(pylon, serverPlayer);
             } else {
                 serverPlayer.sendOverlayMessage(SpellPylonBlockEntity.describe(pylon));

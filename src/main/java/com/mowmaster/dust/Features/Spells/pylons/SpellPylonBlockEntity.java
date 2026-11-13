@@ -49,6 +49,8 @@ import java.util.UUID;
 //   excluded     for each spot, the modifiers rolled there and broken (they won't be rolled there again)
 //   blessed, corruption   built up by keeping rolls / rerolling them; they let blessed / corrupted modifiers be rolled
 //   boosts       how much each modifier category is currently favoured (category pylons add, every placement decays)
+// Each level can go on a new pylon or on an upgrade node of a pylon already there (sneak-right-click the pylon): a
+// node adds potency to the spell (PylonConfig.nodePoints), and 1 dust per point to its cost.
 // Right-click it with a Spell Scroll to record the spell as it stands: every pylon in the tree, except those beyond a
 // spell break without redstone power (that whole branch is off).
 public class SpellPylonBlockEntity extends CBSyncedBlockEntity
@@ -84,10 +86,34 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return SpellLevels.levelForXp(experience);
     }
 
-    // Levels not yet spent on a modifier pylon (the Shape Pylon is free)
+    // Levels not yet spent on a modifier pylon or an upgrade node (the Shape Pylon is free)
     public int availableLevels()
     {
-        return chain.isEmpty() ? 0 : level() - (chain.size() - 1);
+        if (chain.isEmpty()) return 0;
+        int spent = chain.size() - 1;
+        if (level != null) {
+            for (int i = 1; i < chain.size(); i++) {
+                if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon) spent += pylon.nodes();
+            }
+        }
+        return level() - spent;
+    }
+
+    // A pylon of this tree sneak-right-clicked: one of its upgrade nodes filled, for a level
+    public void upgrade(PylonBlockEntity pylon, ServerPlayer player)
+    {
+        if (!pylon.canUpgrade()) {
+            player.sendOverlayMessage(Component.translatable(pylon.maxNodes() > 0 ? "dust.pylon.upgrade_full" : "dust.pylon.upgrade_none"));
+            return;
+        }
+        if (availableLevels() <= 0) {
+            player.sendOverlayMessage(Component.translatable("dust.pylon.upgrade_no_level"));
+            return;
+        }
+        pylon.upgrade(PylonConfig.nodePoints(level()));
+        level.playSound(null, pylon.getBlockPos(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 1.8F);
+        player.sendOverlayMessage(describe(pylon));
+        sync();
     }
 
     public @Nullable Identifier shape()
@@ -166,7 +192,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (!(level instanceof ServerLevel server)) return;
         PylonType type = pylon.type();
         if (chain.isEmpty()) {
-            pylon.link(worldPosition, null, ModifierTier.NORMAL, false, defaultShape(placer));
+            pylon.link(worldPosition, null, ModifierTier.NORMAL, false, defaultShape(placer), 0);
             chain.add(pylon.getBlockPos());
             parents.add(-1);
             server.playSound(null, pylon.getBlockPos(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -183,7 +209,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         ModifierCategory branchedFrom = branch && parentPylon != null ? parentPylon.type().category() : null;
 
         Roll roll = roll(pylon.getBlockPos(), parent, branchedFrom, placer);
-        pylon.link(worldPosition, roll.modifier(), roll.tier(), roll.spellBreak(), null);
+        int nodes = roll.modifier() == null ? 0 : PylonConfig.MIN_NODES + level.getRandom().nextInt(PylonConfig.MAX_NODES - PylonConfig.MIN_NODES + 1);
+        pylon.link(worldPosition, roll.modifier(), roll.tier(), roll.spellBreak(), null, nodes);
         chain.add(pylon.getBlockPos());
         parents.add(parent);
         if (placer != null && roll.modifier() != null && element != null) SpellKnowledge.unlockModifier(placer, element, roll.modifier());
@@ -359,6 +386,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (element == null || shape == null || level == null) return null;
         boolean[] off = new boolean[chain.size()];
         List<Identifier> modifiers = new ArrayList<>();
+        int points = 0;
         int pylons = 2;
         for (int i = 1; i < chain.size(); i++) {
             int parent = parents.get(i);
@@ -376,9 +404,12 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             }
             pylons++;
             if (pylon.modifier() != null) modifiers.add(pylon.modifier());
+            points += pylon.points();
         }
         if (pylonsOut != null && pylonsOut.length > 0) pylonsOut[0] = pylons;
-        return new Spell(element, shape, Map.of(), modifiers);
+        // The upgrade nodes' points are potency levels: +1 potency and +1 dust each (Spell.stats / dustCost)
+        Map<Identifier, Integer> attributes = points > 0 ? Map.of(SpellRegistries.POTENCY.getId(), points) : Map.of();
+        return new Spell(element, shape, attributes, modifiers);
     }
 
     // A Spell Scroll used on it: the spell as it stands is written onto the scroll, linked to this tree
@@ -415,8 +446,9 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
                 ? "dust.pylon.break_on" : "dust.pylon.break_off");
         Identifier modifier = pylon.modifier();
         if (modifier == null) return Component.translatable("dust.pylon.nothing");
-        return Component.translatable("dust.pylon.modifier." + pylon.tier().getSerializedName(),
+        Component name = Component.translatable("dust.pylon.modifier." + pylon.tier().getSerializedName(),
                 Component.translatable("spell_modifier." + modifier.getNamespace() + "." + modifier.getPath()));
+        return Component.translatable("dust.pylon.with_nodes", name, pylon.nodes(), pylon.maxNodes(), pylon.points());
     }
 
     // ---- ticking: the tree's experience, from wherever its spells were cast ----

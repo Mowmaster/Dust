@@ -23,6 +23,17 @@ public final class PylonConfig
     // A spell break can turn up once the line has this many modifiers, with this chance per pylon
     public static final int BREAK_MIN_MODIFIERS = 5;
     public static final float BREAK_CHANCE = 0.12F;
+    // Upgrade nodes: each modifier pylon gets a random number of them (MIN_NODES to MAX_NODES) when it joins a tree. Each
+    // costs a level to fill and adds potency (and 1 dust per point of it) to the spell: 1 point while the spell is
+    // below level 20, then 2 at 20-29, 3 at 30-39...
+    public static final int MIN_NODES = 3;
+    public static final int MAX_NODES = 10;
+
+    public static int nodePoints(int spellLevel)
+    {
+        return spellLevel < 20 ? 1 : spellLevel / 10;
+    }
+
     // A broken main pylon keeps this share of its levels (for the same element)
     public static final float KEPT_LEVELS = 0.1F;
 

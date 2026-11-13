@@ -13,6 +13,8 @@ import org.jspecify.annotations.Nullable;
 // A modifier pylon's part in a spell tree: which Spell Pylon it belongs to, and what was rolled onto it (a modifier
 // and its tier, or a spell break), or for the Shape Pylon, the shape. The Spell Pylon does the rolling and keeps the
 // order (SpellPylonBlockEntity); this just holds the result.
+// A pylon with a modifier also gets upgrade nodes (maxNodes, PylonConfig): each filled one (nodes) cost a level and
+// added potency points (points) to the spell.
 public class PylonBlockEntity extends CBSyncedBlockEntity
 {
     private @Nullable BlockPos main;
@@ -20,6 +22,9 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     private ModifierTier tier = ModifierTier.NORMAL;
     private boolean spellBreak;
     private @Nullable Identifier shape;
+    private int maxNodes;
+    private int nodes;
+    private int points;
 
     public PylonBlockEntity(BlockPos pos, BlockState state)
     {
@@ -31,6 +36,22 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     public ModifierTier tier() { return tier; }
     public boolean isSpellBreak() { return spellBreak; }
     public @Nullable Identifier shape() { return shape; }
+    public int maxNodes() { return maxNodes; }
+    public int nodes() { return nodes; }
+    public int points() { return points; }
+
+    public boolean canUpgrade()
+    {
+        return main != null && modifier != null && nodes < maxNodes;
+    }
+
+    // One more node filled, worth this many potency points
+    void upgrade(int worth)
+    {
+        nodes++;
+        points += worth;
+        sync();
+    }
 
     public PylonType type()
     {
@@ -38,8 +59,11 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     }
 
     // Joined to a tree with this result (modifier null and spellBreak false: nothing could be rolled)
-    void link(BlockPos main, @Nullable Identifier modifier, ModifierTier tier, boolean spellBreak, @Nullable Identifier shape)
+    void link(BlockPos main, @Nullable Identifier modifier, ModifierTier tier, boolean spellBreak, @Nullable Identifier shape, int maxNodes)
     {
+        this.maxNodes = maxNodes;
+        this.nodes = 0;
+        this.points = 0;
         this.main = main;
         this.modifier = modifier;
         this.tier = tier;
@@ -63,6 +87,9 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         tier = ModifierTier.NORMAL;
         spellBreak = false;
         shape = null;
+        maxNodes = 0;
+        nodes = 0;
+        points = 0;
         updateState();
         sync();
     }
@@ -99,6 +126,9 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         output.store("tier", ModifierTier.CODEC, tier);
         output.putBoolean("spell_break", spellBreak);
         if (shape != null) output.store("shape", Identifier.CODEC, shape);
+        output.putInt("max_nodes", maxNodes);
+        output.putInt("nodes", nodes);
+        output.putInt("points", points);
     }
 
     @Override
@@ -110,5 +140,8 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         tier = input.read("tier", ModifierTier.CODEC).orElse(ModifierTier.NORMAL);
         spellBreak = input.getBooleanOr("spell_break", false);
         shape = input.read("shape", Identifier.CODEC).orElse(null);
+        maxNodes = input.getIntOr("max_nodes", 0);
+        nodes = input.getIntOr("nodes", 0);
+        points = input.getIntOr("points", 0);
     }
 }
