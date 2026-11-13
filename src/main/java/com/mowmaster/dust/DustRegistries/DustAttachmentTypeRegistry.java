@@ -157,6 +157,12 @@ public class DustAttachmentTypeRegistry
                     .copyOnDeath()
                     .build());
 
+    // A chunk's warded blocks (Armor's block effect: Features/Spells/blocks/Warding)
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.blocks.Warding.Wards>> WARDS = ATTACHMENT_TYPES.register("wards",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.blocks.Warding.Wards.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.blocks.Warding.Wards.CODEC.fieldOf("wards"))
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

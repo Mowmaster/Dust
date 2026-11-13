@@ -108,6 +108,9 @@ public class DustClient {
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
         // A spell in flight draws nothing itself: its trail is particles (SpellProjectileEntity.tick)
         event.registerEntityRenderer(DustEntityRegistry.SPELL_PROJECTILE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        // Blocks brought to life by spells, drawn as their blocks (the animated one hops as it scurries)
+        event.registerEntityRenderer(DustEntityRegistry.FLOATING_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0));
+        event.registerEntityRenderer(DustEntityRegistry.ANIMATED_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0.15F));
     }
 
     // Models drawn by code rather than placed as blocks (the crusher's wheels)

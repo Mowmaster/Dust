@@ -16,6 +16,7 @@ import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
 import com.mowmaster.dust.Features.Spells.effects.MobParts;
 import com.mowmaster.dust.Features.Spells.effects.MovementParts;
 import com.mowmaster.dust.Features.Spells.blocks.SpellBlocks;
+import com.mowmaster.dust.Features.Spells.blocks.SpecialBlockParts;
 import com.mowmaster.dust.Features.Spells.effects.UtilityParts;
 import com.mowmaster.dust.Features.Spells.conversions.SpellConversions;
 import com.mowmaster.dust.Features.Spells.effects.EnergyCharge;
@@ -133,19 +134,19 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> HEALING_EFFECT = element(DustElements.HEALING,
             () -> new BasicEffect().block(SpellBlocks::purifyOrMend).self(SimpleParts::healSelf).entity(SimpleParts::heal));
     public static final DeferredHolder<ElementEffect, ElementEffect> LIGHT_EFFECT = element(DustElements.LIGHT,
-            () -> new BasicEffect().self(BasicEffect.give(MobEffects.NIGHT_VISION)).entity(BasicEffect.inflict(MobEffects.GLOWING)));
+            () -> new BasicEffect().block(SpecialBlockParts::light).self(BasicEffect.give(MobEffects.NIGHT_VISION)).entity(BasicEffect.inflict(MobEffects.GLOWING)));
     public static final DeferredHolder<ElementEffect, ElementEffect> DARKNESS_EFFECT = element(DustElements.DARKNESS,
-            () -> new BasicEffect().self(BasicEffect.give(MobEffects.INVISIBILITY)).entity(BasicEffect.inflict(MobEffects.BLINDNESS)));
+            () -> new BasicEffect().block(SpecialBlockParts::veil).self(BasicEffect.give(MobEffects.INVISIBILITY)).entity(BasicEffect.inflict(MobEffects.BLINDNESS)));
     public static final DeferredHolder<ElementEffect, ElementEffect> FLIGHT_EFFECT = element(DustElements.FLIGHT,
-            () -> new BasicEffect().self(MovementParts::flight).entity(BasicEffect.inflict(MobEffects.SLOW_FALLING)));
+            () -> new BasicEffect().block(SpecialBlockParts::floatBlock).self(MovementParts::flight).entity(BasicEffect.inflict(MobEffects.SLOW_FALLING)));
     public static final DeferredHolder<ElementEffect, ElementEffect> AIR_EFFECT = element(DustElements.AIR,
             () -> new BasicEffect().block(MobParts::topple).self(BasicEffect.give(MobEffects.JUMP_BOOST)).entity(SimpleParts::pushAway));
     public static final DeferredHolder<ElementEffect, ElementEffect> POISON_EFFECT = element(DustElements.POISON,
             () -> new BasicEffect().block(SpellBlocks::poisonPool).self(SimpleParts::cleanse).entity(BasicEffect.inflict(MobEffects.POISON)));
     public static final DeferredHolder<ElementEffect, ElementEffect> ARMOR_EFFECT = element(DustElements.ARMOR,
-            () -> new BasicEffect().self(BasicEffect.give(MobEffects.ABSORPTION)).entity(BasicEffect.inflict(MobEffects.ABSORPTION)));
+            () -> new BasicEffect().block(SpecialBlockParts::ward).self(BasicEffect.give(MobEffects.ABSORPTION)).entity(BasicEffect.inflict(MobEffects.ABSORPTION)));
     public static final DeferredHolder<ElementEffect, ElementEffect> PROTECTION_EFFECT = element(DustElements.PROTECTION,
-            () -> new BasicEffect().self(BasicEffect.give(MobEffects.RESISTANCE)).entity(BasicEffect.inflict(DustEffectsRegistry.PIERCED)));
+            () -> new BasicEffect().block(SpecialBlockParts::wardedGlass).self(BasicEffect.give(MobEffects.RESISTANCE)).entity(BasicEffect.inflict(DustEffectsRegistry.PIERCED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> FLESH_EFFECT = element(DustElements.FLESH,
             () -> new BasicEffect().block(SpellBlocks::blight).entity(BasicEffect.inflict(DustEffectsRegistry.BUTCHERED)).self(BasicEffect.give(MobEffects.STRENGTH)));
     public static final DeferredHolder<ElementEffect, ElementEffect> DAMAGE_EFFECT = element(DustElements.DAMAGE,
@@ -175,7 +176,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> ENERGY_EFFECT = element(DustElements.ENERGY,
             () -> new BasicEffect().block(UtilityParts::fuelFurnaces).self(BasicEffect.give(DustEffectsRegistry.ENERGY_DRAIN)).entity(EnergyCharge::charge));
     public static final DeferredHolder<ElementEffect, ElementEffect> CREATURE_EFFECT = element(DustElements.CREATURE,
-            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.PACK_TACTICS)).entity(SimpleParts::mark));
+            () -> new BasicEffect().block(SpecialBlockParts::animate).self(BasicEffect.give(DustEffectsRegistry.PACK_TACTICS)).entity(SimpleParts::mark));
     public static final DeferredHolder<ElementEffect, ElementEffect> PLANTS_EFFECT = element(DustElements.PLANTS,
             () -> new BasicEffect().self(UtilityParts::plantHeld).block(UtilityParts::plantFlower).entity(BasicEffect.inflict(DustEffectsRegistry.TANGLED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> TREES_EFFECT = element(DustElements.TREES,
@@ -212,7 +213,7 @@ public final class SpellRegistries
             () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.SLIPPERY)).entity(BasicEffect.inflict(DustEffectsRegistry.SLIPPERY)).block(SpellConversions::convert));
 
     public static final DeferredHolder<ElementEffect, ElementEffect> SPIRIT_EFFECT = element(DustElements.SPIRIT,
-            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
+            () -> new BasicEffect().block(SpecialBlockParts::phase).self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
 
     private static DeferredHolder<ElementEffect, ElementEffect> element(com.mowmaster.dust.Features.DustComposition.DustElement element,
                                                                         java.util.function.Supplier<ElementEffect> effect)

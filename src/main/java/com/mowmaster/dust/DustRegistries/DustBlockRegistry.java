@@ -10,6 +10,9 @@ import com.mowmaster.dust.Features.Spells.pylons.PylonBlock;
 import com.mowmaster.dust.Features.Spells.blocks.BlightBlock;
 import com.mowmaster.dust.Features.Spells.blocks.CorruptedBlock;
 import com.mowmaster.dust.Features.Spells.blocks.PoisonPoolBlock;
+import com.mowmaster.dust.Features.Spells.blocks.PhantomBlock;
+import com.mowmaster.dust.Features.Spells.blocks.SpellLightBlock;
+import com.mowmaster.dust.Features.Spells.blocks.WardedGlassBlock;
 import com.mowmaster.dust.Features.Spells.pylons.PylonType;
 import com.mowmaster.dust.Features.Spells.pylons.SpellPylonBlock;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlock;
@@ -143,6 +146,17 @@ public class DustBlockRegistry {
             properties.mapColor(MapColor.COLOR_RED).noCollision().instabreak().sound(SoundType.SCULK).noLootTable()));
     public static final DeferredBlock<Block> CORRUPTED = DUSTBLOCKS.registerBlock("corrupted_block", properties -> new CorruptedBlock(
             properties.mapColor(MapColor.COLOR_PURPLE).strength(1.5F, 3.0F).sound(SoundType.SCULK).noLootTable()));
+
+    public static final DeferredBlock<Block> SPELL_LIGHT = DUSTBLOCKS.registerBlock("spell_light", properties -> new SpellLightBlock(
+            properties.mapColor(MapColor.NONE).noCollision().instabreak().lightLevel(state -> 15).noOcclusion().sound(SoundType.AMETHYST).noLootTable()));
+    public static final DeferredBlock<Block> VEILED = DUSTBLOCKS.registerBlock("veiled_block", properties -> new PhantomBlock(
+            properties.mapColor(MapColor.NONE).strength(-1.0F, 3600000.0F).noOcclusion().sound(SoundType.GLASS).noLootTable(), true));
+    public static final DeferredBlock<Block> PHASED = DUSTBLOCKS.registerBlock("phased_block", properties -> new PhantomBlock(
+            properties.mapColor(MapColor.NONE).strength(-1.0F, 3600000.0F).noCollision().noOcclusion().sound(SoundType.GLASS).noLootTable(), false));
+    public static final DeferredBlock<Block> WARDED_GLASS = DUSTBLOCKS.registerBlock("warded_glass", properties -> new WardedGlassBlock(
+            properties.mapColor(MapColor.COLOR_LIGHT_BLUE).strength(0.5F, 6.0F).noOcclusion().sound(SoundType.GLASS).noLootTable()
+                    .isValidSpawn((state, level, pos, type) -> false).isRedstoneConductor((state, level, pos) -> false)
+                    .isSuffocating((state, level, pos) -> false)));
 
     private static DeferredBlock<Block> pylon(String name, PylonType type)
     {

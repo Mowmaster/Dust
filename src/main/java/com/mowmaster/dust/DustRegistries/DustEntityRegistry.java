@@ -1,6 +1,8 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.Features.Spells.shapes.SpellProjectileEntity;
+import com.mowmaster.dust.Features.Spells.entities.AnimatedBlockEntity;
+import com.mowmaster.dust.Features.Spells.entities.FloatingBlockEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 
 import com.mowmaster.dust.DustReferences;
@@ -23,6 +25,14 @@ public class DustEntityRegistry {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
                     .updateInterval(10));
+
+    // Blocks brought to life by spells (Features/Spells/entities): floating (Flight) and scurrying (Creature)
+    public static final DeferredHolder<EntityType<?>, EntityType<FloatingBlockEntity>> FLOATING_BLOCK = ENTITY_TYPES.registerEntityType("floating_block",
+            FloatingBlockEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+                    .sized(0.98F, 0.98F).clientTrackingRange(8).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<AnimatedBlockEntity>> ANIMATED_BLOCK = ENTITY_TYPES.registerEntityType("animated_block",
+            AnimatedBlockEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+                    .sized(0.9F, 0.9F).clientTrackingRange(8));
 
     // registerEntityType builds the EntityType with its own registry key (dust:element_orb). Before, every orb was
     // built with the same made-up key "dust:base_orb_key", so they all shared one description id / loot table id.

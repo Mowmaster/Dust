@@ -6,6 +6,7 @@ import com.mowmaster.dust.Features.Machines.ResearchCrusherBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchCombinationBlockEntity;
 import com.mowmaster.dust.Features.Spells.pylons.PylonBlockEntity;
 import com.mowmaster.dust.Features.Spells.blocks.CorruptedBlockEntity;
+import com.mowmaster.dust.Features.Spells.blocks.PhantomBlockEntity;
 import com.mowmaster.dust.Features.Spells.pylons.SpellPylonBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchMixingBlockEntity;
@@ -42,6 +43,8 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(ResearchDistillationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_DISTILLATION.get())));
     public static final Supplier<BlockEntityType<CorruptedBlockEntity>> CORRUPTED = BLOCK_ENTITIES.register("corrupted_block",
             () -> new BlockEntityType<>(CorruptedBlockEntity::new, Set.of(DustBlockRegistry.CORRUPTED.get())));
+    public static final Supplier<BlockEntityType<PhantomBlockEntity>> PHANTOM = BLOCK_ENTITIES.register("phantom_block",
+            () -> new BlockEntityType<>(PhantomBlockEntity::new, Set.of(DustBlockRegistry.VEILED.get(), DustBlockRegistry.PHASED.get())));
     public static final Supplier<BlockEntityType<SpellPylonBlockEntity>> SPELL_PYLON = BLOCK_ENTITIES.register("spell_pylon",
             () -> new BlockEntityType<>(SpellPylonBlockEntity::new, Set.of(DustBlockRegistry.SPELL_PYLON.get())));
     public static final Supplier<BlockEntityType<PylonBlockEntity>> PYLON = BLOCK_ENTITIES.register("pylon",
