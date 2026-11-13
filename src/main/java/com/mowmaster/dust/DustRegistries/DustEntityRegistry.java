@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.Features.Spells.shapes.SpellProjectileEntity;
 import com.mowmaster.dust.Features.Spells.entities.AnimatedBlockEntity;
 import com.mowmaster.dust.Features.Spells.entities.FloatingBlockEntity;
+import com.mowmaster.dust.Features.Spells.soul.SoulWispEntity;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidChestEntity;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidRiftEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
@@ -44,6 +45,10 @@ public class DustEntityRegistry {
     public static final DeferredHolder<EntityType<?>, EntityType<VoidRiftEntity>> VOID_RIFT = ENTITY_TYPES.registerEntityType("void_rift",
             VoidRiftEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
                     .sized(1.0F, 1.0F).clientTrackingRange(8).updateInterval(20).fireImmune());
+    // Soul (Features/Spells/soul): a mob's soul looking for its body. Updated often, as it wanders.
+    public static final DeferredHolder<EntityType<?>, EntityType<SoulWispEntity>> SOUL_WISP = ENTITY_TYPES.registerEntityType("soul_wisp",
+            SoulWispEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+                    .sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(2).fireImmune());
 
     // registerEntityType builds the EntityType with its own registry key (dust:element_orb). Before, every orb was
     // built with the same made-up key "dust:base_orb_key", so they all shared one description id / loot table id.

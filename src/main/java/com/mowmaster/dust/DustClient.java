@@ -114,6 +114,8 @@ public class DustClient {
         // Void: the winged chest; the rift is only particles (spawned by the entity itself)
         event.registerEntityRenderer(DustEntityRegistry.VOID_CHEST.get(), com.mowmaster.dust.Features.Spells.Client.VoidChestRenderer::new);
         event.registerEntityRenderer(DustEntityRegistry.VOID_RIFT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        // Soul: the wisp is only particles (spawned by the entity itself)
+        event.registerEntityRenderer(DustEntityRegistry.SOUL_WISP.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
     // Models drawn by code rather than placed as blocks (the crusher's wheels)

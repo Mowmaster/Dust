@@ -163,6 +163,18 @@ public class DustAttachmentTypeRegistry
                     .serialize(com.mowmaster.dust.Features.Spells.blocks.Warding.Wards.CODEC.fieldOf("wards"))
                     .build());
 
+    // Soul (Features/Spells/soul). A player's soul anchor: saved, and copied on death (that's when it's used)
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.soul.SoulAnchor>> SOUL_ANCHOR = ATTACHMENT_TYPES.register("soul_anchor",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.soul.SoulAnchor.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.soul.SoulAnchor.CODEC.fieldOf("anchor"))
+                    .copyOnDeath()
+                    .build());
+    // What ties a ghost or a soulless body to its soul: saved, so it holds across a reload
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.soul.SoulTether>> SOUL_TETHER = ATTACHMENT_TYPES.register("soul_tether",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.soul.SoulTether.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.soul.SoulTether.CODEC.fieldOf("tether"))
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

@@ -13,6 +13,7 @@ import com.mowmaster.dust.Features.Spells.modifiers.StatModifier;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
+import com.mowmaster.dust.Features.Spells.soul.SoulParts;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
 import com.mowmaster.dust.Features.Spells.effects.MobParts;
 import com.mowmaster.dust.Features.Spells.effects.MovementParts;
@@ -156,6 +157,8 @@ public final class SpellRegistries
             () -> new BasicEffect().entity(SimpleParts::magicDamage));
     public static final DeferredHolder<ElementEffect, ElementEffect> VOID_EFFECT = element(DustElements.VOID,
             () -> new BasicEffect().self(VoidParts::chest).block(VoidParts::rift).entity(SimpleParts::voidDamage));
+    public static final DeferredHolder<ElementEffect, ElementEffect> SOUL_EFFECT = element(DustElements.SOUL,
+            () -> new BasicEffect().self(SoulParts::anchor).block(SoulParts::bind).entity(SoulParts::pull));
     public static final DeferredHolder<ElementEffect, ElementEffect> STONE_EFFECT = element(DustElements.STONE,
             () -> new BasicEffect().block(SpellConversions::convert).self(BasicEffect.give(DustEffectsRegistry.STONE_SKIN)).entity(SimpleParts::kineticDamage));
     public static final DeferredHolder<ElementEffect, ElementEffect> EXPLOSION_EFFECT = element(DustElements.EXPLOSION,

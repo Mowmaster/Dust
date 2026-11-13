@@ -452,6 +452,8 @@
   "entity.dust.animated_block": "Animated Block",
   "entity.dust.void_chest": "Void Chest",
   "entity.dust.void_rift": "Void Rift",
+  "entity.dust.soul_wisp": "Soul Wisp",
+  "effect.dust.soul_severed": "Severed Soul",
   "item.dust.magical_flint_and_steel": "Magical Flint and Steel",
   "block.dust.element_tester": "Element Tester",
   "block.dust.dust_fire": "Dust Fire",
