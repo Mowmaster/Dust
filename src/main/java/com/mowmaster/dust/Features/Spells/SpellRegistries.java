@@ -14,6 +14,7 @@ import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.MagicParts;
 import com.mowmaster.dust.Features.Spells.effects.PetGhosts;
+import com.mowmaster.dust.Features.Spells.radiance.Radiance;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
 import com.mowmaster.dust.Features.Spells.soul.SoulParts;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
@@ -202,7 +203,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> CRYSTAL_EFFECT = element(DustElements.CRYSTAL,
             () -> new BasicEffect().entity(MobParts::shatter).block(SpellConversions::convert));
     public static final DeferredHolder<ElementEffect, ElementEffect> RADIANCE_EFFECT = element(DustElements.RADIANCE,
-            () -> new BasicEffect().block(SpellConversions::convert));
+            () -> new BasicEffect().self(Radiance::shareSelf).block(SpellConversions::convert).entity(Radiance::shareMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> SEEDS_EFFECT = element(DustElements.SEEDS,
             () -> new BasicEffect().entity(MobParts::toBreedingItem).block(SpellConversions::convert));
 

@@ -456,6 +456,8 @@
   "entity.dust.soul_wisp": "Soul Wisp",
   "effect.dust.soul_severed": "Severed Soul",
   "effect.dust.mana_surge": "Mana Surge",
+  "effect.dust.hostile": "Hostile",
+  "effect.dust.friendly": "Friendly",
   "item.dust.magical_flint_and_steel": "Magical Flint and Steel",
   "block.dust.element_tester": "Element Tester",
   "block.dust.dust_fire": "Dust Fire",

@@ -151,6 +151,10 @@ public class DustEffectsRegistry
     public static final Holder<MobEffect> SOUL_SEVERED = MOB_EFFECTS.register("soul_severed", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x5FD9D9));
     // Magic on yourself: mana regenerates twice as fast (Features/Magic/PlayerMagicHelper.onPlayerTick)
     public static final Holder<MobEffect> MANA_SURGE = MOB_EFFECTS.register("mana_surge", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x9F5FFF));
+    // Radiance: fought another player in the last 5 minutes (can't be removed; Features/Spells/radiance/Radiance)
+    public static final Holder<MobEffect> HOSTILE = MOB_EFFECTS.register("hostile", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xD03030));
+    // Radiance: marked friendly by another player
+    public static final Holder<MobEffect> FRIENDLY = MOB_EFFECTS.register("friendly", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x40C040));
 
     private static Identifier id(String path)
     {

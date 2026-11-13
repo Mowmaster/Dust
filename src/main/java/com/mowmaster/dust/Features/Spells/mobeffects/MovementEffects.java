@@ -42,21 +42,21 @@ public final class MovementEffects
 
     private static boolean grantsFlight(@Nullable Holder<MobEffect> effect)
     {
-        return effect != null && (effect.equals(DustEffectsRegistry.SOARING) || effect.equals(DustEffectsRegistry.SPIRIT_FORM));
+        return effect != null && (effect.is(DustEffectsRegistry.SOARING) || effect.is(DustEffectsRegistry.SPIRIT_FORM));
     }
 
     // Flight ends with the effect (unless something else still gives it)
     private static void effectGone(LivingEntity entity, @Nullable Holder<MobEffect> effect)
     {
         if (grantsFlight(effect) && entity instanceof ServerPlayer player && !player.isCreative() && !player.isSpectator()) {
-            boolean other = effect.equals(DustEffectsRegistry.SOARING) ? player.hasEffect(DustEffectsRegistry.SPIRIT_FORM) : player.hasEffect(DustEffectsRegistry.SOARING);
+            boolean other = effect.is(DustEffectsRegistry.SOARING) ? player.hasEffect(DustEffectsRegistry.SPIRIT_FORM) : player.hasEffect(DustEffectsRegistry.SOARING);
             if (!other) {
                 player.getAbilities().mayfly = false;
                 player.getAbilities().flying = false;
                 player.onUpdateAbilities();
             }
         }
-        if (effect != null && effect.equals(DustEffectsRegistry.GHOSTLY) && entity instanceof Mob mob) {
+        if (effect != null && effect.is(DustEffectsRegistry.GHOSTLY) && entity instanceof Mob mob) {
             mob.setNoAi(mob.getPersistentData().getBooleanOr(GHOST_HAD_NO_AI, false));
             mob.getPersistentData().remove(GHOST_HAD_NO_AI);
         }
@@ -67,7 +67,7 @@ public final class MovementEffects
     {
         MobEffectInstance added = event.getEffectInstance();
         if (added == null) return;
-        if (added.getEffect().equals(DustEffectsRegistry.GHOSTLY) && event.getEntity() instanceof Mob mob && !mob.getPersistentData().contains(GHOST_HAD_NO_AI)) {
+        if (added.getEffect().is(DustEffectsRegistry.GHOSTLY) && event.getEntity() instanceof Mob mob && !mob.getPersistentData().contains(GHOST_HAD_NO_AI)) {
             mob.getPersistentData().putBoolean(GHOST_HAD_NO_AI, mob.isNoAi());
             mob.setNoAi(true);
             if (mob.level() instanceof ServerLevel level) {

@@ -189,6 +189,15 @@ public class DustAttachmentTypeRegistry
                     .sync(ByteBufCodecs.VAR_LONG)
                     .build());
 
+    // Radiance: who a player has fought and befriended (Features/Spells/radiance/RadianceRelations). Kept on death, and
+    // synced to that player only (their client draws the red and green arrows)
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.radiance.RadianceRelations>> RADIANCE_RELATIONS = ATTACHMENT_TYPES.register("radiance_relations",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.radiance.RadianceRelations.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.radiance.RadianceRelations.CODEC.fieldOf("relations"))
+                    .sync((holder, to) -> holder == to, com.mowmaster.dust.Features.Spells.radiance.RadianceRelations.STREAM_CODEC)
+                    .copyOnDeath()
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

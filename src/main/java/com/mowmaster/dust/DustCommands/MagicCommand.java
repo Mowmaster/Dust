@@ -44,6 +44,7 @@ import java.util.function.BiConsumer;
 //   /dustmagic spell <element> <shape> [attributes]   a Spell Scroll for you, e.g.
 //                                                     /dustmagic spell dust:fire dust:projectile potency=1 size=2
 //   /dustmagic void                                   what void rifts have swallowed so far (VoidStorage)
+//   /dustmagic friend <players> [seconds]             mark players as your friends (Radiance; default 5 minutes)
 // Elements are ids, with suggestions: dust:fire, dust:knowledge...
 public class MagicCommand
 {
@@ -59,6 +60,11 @@ public class MagicCommand
         dispatcher.register(Commands.literal("dustmagic")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("void").executes(c -> showVoid(c.getSource())))
+                .then(Commands.literal("friend")
+                        .then(Commands.argument("targets", EntityArgument.players())
+                                .executes(c -> befriend(c.getSource(), EntityArgument.getPlayers(c, "targets"), 300))
+                                .then(Commands.argument("seconds", IntegerArgumentType.integer(1))
+                                        .executes(c -> befriend(c.getSource(), EntityArgument.getPlayers(c, "targets"), IntegerArgumentType.getInteger(c, "seconds"))))))
                 .then(Commands.literal("spell")
                         .then(Commands.argument("element", IdentifierArgument.id()).suggests(ELEMENTS)
                                 .then(Commands.argument("shape", IdentifierArgument.id()).suggests(SHAPES)
@@ -127,6 +133,17 @@ public class MagicCommand
     }
 
     // A scroll with the spell; attributes as "name=level" separated by spaces (names without a namespace are dust's)
+    // You (the command's player) mark them as friends: they get Friendly, you see green arrows at them
+    private static int befriend(CommandSourceStack source, Collection<ServerPlayer> targets, int seconds) throws CommandSyntaxException
+    {
+        ServerPlayer caster = source.getPlayerOrException();
+        for (ServerPlayer friend : targets) {
+            if (friend != caster) com.mowmaster.dust.Features.Spells.radiance.Radiance.befriend(caster, friend, seconds * 20);
+        }
+        source.sendSuccess(() -> Component.literal("Marked " + targets.size() + " player(s) friendly for " + seconds + "s"), false);
+        return targets.size();
+    }
+
     // Totals, then the ten kinds of item there's most of
     private static int showVoid(CommandSourceStack source)
     {

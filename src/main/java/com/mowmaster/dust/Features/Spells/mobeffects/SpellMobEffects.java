@@ -207,7 +207,7 @@ public final class SpellMobEffects
         Holder<MobEffect> effect = incoming.getEffect();
         if ((entity.hasEffect(DustEffectsRegistry.FUNGAL) && FUNGAL_IMMUNE.contains(effect))
                 || (entity.hasEffect(DustEffectsRegistry.DEATHLESS) && DEATHLESS_IMMUNE.contains(effect))
-                || (entity.hasEffect(DustEffectsRegistry.ADAPTIVE) && effect.equals(DustEffectsRegistry.FRACTURED))) {
+                || (entity.hasEffect(DustEffectsRegistry.ADAPTIVE) && effect.is(DustEffectsRegistry.FRACTURED))) {
             event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             return;
         }
@@ -326,7 +326,7 @@ public final class SpellMobEffects
     public static void onEffectExpired(MobEffectEvent.Expired event)
     {
         MobEffectInstance instance = event.getEffectInstance();
-        if (instance != null && instance.getEffect().equals(DustEffectsRegistry.ENCASED) && event.getEntity().level() instanceof ServerLevel level) {
+        if (instance != null && instance.getEffect().is(DustEffectsRegistry.ENCASED) && event.getEntity().level() instanceof ServerLevel level) {
             com.mowmaster.dust.Features.Spells.effects.MobParts.breakOut(level, event.getEntity(), instance.getAmplifier());
         }
     }
