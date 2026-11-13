@@ -1,11 +1,15 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustMagic;
 
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
+import com.mowmaster.dust.Features.Magic.PlayerMagicHelper;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+// The five primal dusts are now the primal elements in the player's dust store (Features/Magic/PlayerMagicHelper);
+// the per-primal methods below are kept for the older callers (the HUD meters, the tool spells, the commands).
 public class DustElementAttachmentHelper
 {
     //ELEMENT HANDLER
@@ -127,13 +131,8 @@ public class DustElementAttachmentHelper
     */
 
     //FIRE
-    private static boolean hasElementFire(Player player) {return player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE);}
-    private static int getElementFireCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE);}
-    private static int getElementFireMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_FIRE);}
-    private static void setElementFireCount(Player player, int val) {
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_FIRE, val);
-        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementFire(0, val));
-    }
+    private static int getElementFireCount(Player player) {return PlayerMagicHelper.dust(player, DustElements.FIRE);}
+    private static int getElementFireMaxCount(Player player) {return PlayerMagicHelper.get(player).dustCapacity();}
 
     public record ElementFireInfo(int count, int max) {}
     public static ElementFireInfo getElementInfoFire(Player player) {
@@ -142,33 +141,15 @@ public class DustElementAttachmentHelper
 
     public static int addToElementFire(Player player, int val, boolean simulate)
     {
-        if(!hasElementFire(player))return 0;
-        int currentCount = getElementFireCount(player);
-        int newValue = currentCount + val;
-        int max = getElementFireMaxCount(player);
-        if(newValue > max) newValue = max;
-        if(!simulate)setElementFireCount(player, newValue);
-        //Return Count Added
-        return newValue - currentCount;
+        return PlayerMagicHelper.addDust(player, DustElements.FIRE, val, simulate);
     }
     public static int removeFromElementFire(Player player, int val, boolean simulate)
     {
-        if(!hasElementFire(player))return 0;
-        int currentCount = getElementFireCount(player);
-        int newValue = currentCount - val;
-        if(val > currentCount) newValue = 0;
-        if(!simulate)setElementFireCount(player, newValue);
-        //Return Count removed
-        return currentCount - newValue;
+        return PlayerMagicHelper.removeDust(player, DustElements.FIRE, val, simulate);
     }
     //WATER
-    private static boolean hasElementWater(Player player) {return player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER);}
-    private static int getElementWaterCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER);}
-    private static int getElementWaterMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_WATER);}
-    private static void setElementWaterCount(Player player, int val) {
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_WATER, val);
-        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementWater(0, val));
-    }
+    private static int getElementWaterCount(Player player) {return PlayerMagicHelper.dust(player, DustElements.WATER);}
+    private static int getElementWaterMaxCount(Player player) {return PlayerMagicHelper.get(player).dustCapacity();}
 
     public record ElementWaterInfo(int count, int max) {}
     public static ElementWaterInfo getElementInfoWater(Player player) {
@@ -177,31 +158,15 @@ public class DustElementAttachmentHelper
 
     public static int addToElementWater(Player player, int val, boolean simulate)
     {
-        if(!hasElementWater(player))return 0;
-        int currentCount = getElementWaterCount(player);
-        int newValue = currentCount + val;
-        int max = getElementWaterMaxCount(player);
-        if(newValue > max) newValue = max;
-        if(!simulate)setElementWaterCount(player, newValue);
-        return newValue - currentCount;
+        return PlayerMagicHelper.addDust(player, DustElements.WATER, val, simulate);
     }
     public static int removeFromElementWater(Player player, int val, boolean simulate)
     {
-        if(!hasElementWater(player))return 0;
-        int currentCount = getElementWaterCount(player);
-        int newValue = currentCount - val;
-        if(val > currentCount) newValue = 0;
-        if(!simulate)setElementWaterCount(player, newValue);
-        return currentCount - newValue;
+        return PlayerMagicHelper.removeDust(player, DustElements.WATER, val, simulate);
     }
     //EARTH
-    private static boolean hasElementEarth(Player player) {return player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH);}
-    private static int getElementEarthCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH);}
-    private static int getElementEarthMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_EARTH);}
-    private static void setElementEarthCount(Player player, int val) {
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_EARTH, val);
-        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementEarth(0, val));
-    }
+    private static int getElementEarthCount(Player player) {return PlayerMagicHelper.dust(player, DustElements.EARTH);}
+    private static int getElementEarthMaxCount(Player player) {return PlayerMagicHelper.get(player).dustCapacity();}
 
     public record ElementEarthInfo(int count, int max) {}
     public static ElementEarthInfo getElementInfoEarth(Player player) {
@@ -210,31 +175,15 @@ public class DustElementAttachmentHelper
 
     public static int addToElementEarth(Player player, int val, boolean simulate)
     {
-        if(!hasElementEarth(player))return 0;
-        int currentCount = getElementEarthCount(player);
-        int newValue = currentCount + val;
-        int max = getElementEarthMaxCount(player);
-        if(newValue > max) newValue = max;
-        if(!simulate)setElementEarthCount(player, newValue);
-        return newValue - currentCount;
+        return PlayerMagicHelper.addDust(player, DustElements.EARTH, val, simulate);
     }
     public static int removeFromElementEarth(Player player, int val, boolean simulate)
     {
-        if(!hasElementEarth(player))return 0;
-        int currentCount = getElementEarthCount(player);
-        int newValue = currentCount - val;
-        if(val > currentCount) newValue = 0;
-        if(!simulate)setElementEarthCount(player, newValue);
-        return currentCount - newValue;
+        return PlayerMagicHelper.removeDust(player, DustElements.EARTH, val, simulate);
     }
     //CHAOS
-    private static boolean hasElementChaos(Player player) {return player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS);}
-    private static int getElementChaosCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS);}
-    private static int getElementChaosMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_CHAOS);}
-    private static void setElementChaosCount(Player player, int val) {
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_CHAOS, val);
-        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementChaos(0, val));
-    }
+    private static int getElementChaosCount(Player player) {return PlayerMagicHelper.dust(player, DustElements.CHAOS);}
+    private static int getElementChaosMaxCount(Player player) {return PlayerMagicHelper.get(player).dustCapacity();}
 
     public record ElementChaosInfo(int count, int max) {}
     public static ElementChaosInfo getElementInfoChaos(Player player) {
@@ -243,31 +192,15 @@ public class DustElementAttachmentHelper
 
     public static int addToElementChaos(Player player, int val, boolean simulate)
     {
-        if(!hasElementChaos(player))return 0;
-        int currentCount = getElementChaosCount(player);
-        int newValue = currentCount + val;
-        int max = getElementChaosMaxCount(player);
-        if(newValue > max) newValue = max;
-        if(!simulate)setElementChaosCount(player, newValue);
-        return newValue - currentCount;
+        return PlayerMagicHelper.addDust(player, DustElements.CHAOS, val, simulate);
     }
     public static int removeFromElementChaos(Player player, int val, boolean simulate)
     {
-        if(!hasElementChaos(player))return 0;
-        int currentCount = getElementChaosCount(player);
-        int newValue = currentCount - val;
-        if(val > currentCount) newValue = 0;
-        if(!simulate)setElementChaosCount(player, newValue);
-        return currentCount - newValue;
+        return PlayerMagicHelper.removeDust(player, DustElements.CHAOS, val, simulate);
     }
     //ORDER
-    private static boolean hasElementOrder(Player player) {return player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER);}
-    private static int getElementOrderCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER);}
-    private static int getElementOrderMaxCount(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTMAX_ORDER);}
-    private static void setElementOrderCount(Player player, int val) {
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_ELEMENTCOUNT_ORDER, val);
-        //PacketDistributor.sendToPlayer((ServerPlayer)player, new S2CPacketElementOrder(0, val));
-    }
+    private static int getElementOrderCount(Player player) {return PlayerMagicHelper.dust(player, DustElements.ORDER);}
+    private static int getElementOrderMaxCount(Player player) {return PlayerMagicHelper.get(player).dustCapacity();}
 
     public record ElementOrderInfo(int count, int max) {}
     public static ElementOrderInfo getElementInfoOrder(Player player) {
@@ -276,21 +209,10 @@ public class DustElementAttachmentHelper
 
     public static int addToElementOrder(Player player, int val, boolean simulate)
     {
-        if(!hasElementOrder(player))return 0;
-        int currentCount = getElementOrderCount(player);
-        int newValue = currentCount + val;
-        int max = getElementOrderMaxCount(player);
-        if(newValue > max) newValue = max;
-        if(!simulate)setElementOrderCount(player, newValue);
-        return newValue - currentCount;
+        return PlayerMagicHelper.addDust(player, DustElements.ORDER, val, simulate);
     }
     public static int removeFromElementOrder(Player player, int val, boolean simulate)
     {
-        if(!hasElementOrder(player))return 0;
-        int currentCount = getElementOrderCount(player);
-        int newValue = currentCount - val;
-        if(val > currentCount) newValue = 0;
-        if(!simulate)setElementOrderCount(player, newValue);
-        return currentCount - newValue;
+        return PlayerMagicHelper.removeDust(player, DustElements.ORDER, val, simulate);
     }
 }

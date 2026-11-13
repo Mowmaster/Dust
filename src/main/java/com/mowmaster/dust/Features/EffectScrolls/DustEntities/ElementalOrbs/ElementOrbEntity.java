@@ -3,8 +3,8 @@ package com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs;
 import com.mowmaster.dust.DustRegistries.DustEntityRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.DustMagicAttachmentHelper;
-import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Magic.ChunkAura;
+import com.mowmaster.dust.Features.Magic.PlayerMagicHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -99,26 +99,16 @@ public class ElementOrbEntity extends Entity {
             return;
         }
 
-        if (!DustMagicAttachmentHelper.hasMana(serverPlayer)) {
-            return;
-        }
-
         // Prevent unreasonable values
         int orbValue = Math.clamp(this.getValue(), 1, 100);
-        // The player's stores hold the five primal dusts: an element gives each primal it's made of, times the orb's
-        // value (a knowledge orb worth 1 gives 3 water, 2 earth and 1 order). It's absorbed if any of it fits.
+        // Absorbed whole, as its own element, into the player's dust store (more if they're attuned to it). It needs
+        // room: a free type slot for an element they aren't carrying yet, and space under its cap. Whatever doesn't fit
+        // goes into the chunk's aura; an orb with nothing that fits is left alone.
         DustElement element = this.getElement();
-        boolean fits = false;
-        for (EnumElement primal : EnumElement.values()) {
-            int amount = element.primal(primal) * orbValue;
-            if (amount > 0 && primal.addElement(serverPlayer, amount, true) > 0) fits = true;
-        }
-        if (fits) {
-            for (EnumElement primal : EnumElement.values()) {
-                int amount = element.primal(primal) * orbValue;
-                if (amount > 0) primal.addElement(serverPlayer, amount, false);
-            }
-            // Whatever didn't fit is lost (it dissipates into the aura)
+        int amount = PlayerMagicHelper.orbGain(serverPlayer, element, orbValue);
+        int added = PlayerMagicHelper.addDust(serverPlayer, element, amount, false);
+        if (added > 0) {
+            ChunkAura.release(serverPlayer.level(), this.blockPosition(), element, amount - added);
             this.discard();
         }
     }

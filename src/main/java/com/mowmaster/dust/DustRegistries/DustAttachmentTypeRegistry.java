@@ -1,5 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
+import com.mowmaster.dust.Features.Magic.ManaTimers;
+import com.mowmaster.dust.Features.Magic.PlayerMagic;
 import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.TranscribedStones;
@@ -121,6 +123,20 @@ public class DustAttachmentTypeRegistry
             () -> AttachmentType.builder(() -> ResearchData.EMPTY)
                     .serialize(ResearchData.CODEC.fieldOf("research"))
                     .sync((holder, to) -> holder == to, ResearchData.STREAM_CODEC)
+                    .copyOnDeath()
+                    .build());
+
+    // A player's mana, dust store and attunements (Features/Magic/PlayerMagic). Survives death; synced to its player.
+    public static final Supplier<AttachmentType<PlayerMagic>> PLAYER_MAGIC = ATTACHMENT_TYPES.register("player_magic",
+            () -> AttachmentType.builder(() -> PlayerMagic.DEFAULT)
+                    .serialize(PlayerMagic.CODEC.fieldOf("magic"))
+                    .sync((holder, to) -> holder == to, PlayerMagic.STREAM_CODEC)
+                    .copyOnDeath()
+                    .build());
+    // Its mana timers (Features/Magic/ManaTimers): saved, not synced
+    public static final Supplier<AttachmentType<ManaTimers>> MANA_TIMERS = ATTACHMENT_TYPES.register("mana_timers",
+            () -> AttachmentType.builder(() -> ManaTimers.ZERO)
+                    .serialize(ManaTimers.CODEC.fieldOf("timers"))
                     .copyOnDeath()
                     .build());
 

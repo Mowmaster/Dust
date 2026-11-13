@@ -1,14 +1,14 @@
 package com.mowmaster.dust.Features.EffectScrolls.DustMagic;
 
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
-import com.mowmaster.dust.Features.EffectScrolls.Networking.PacketOfDustAuraS2C;
-import net.minecraft.server.level.ServerPlayer;
+import com.mowmaster.dust.Features.Magic.PlayerMagicHelper;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DustMagicAttachmentHelper
 {
-    public static int getManaMaximum(Player player) {return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA);}
+    // Mana now lives in the player's PlayerMagic (Features/Magic); these keep the older callers (the HUD, the crystal
+    // sword, the tool spells, the commands) working on it
+    public static int getManaMaximum(Player player) {return PlayerMagicHelper.maxMana(player);}
 
     public static boolean hasUnlockedMana(Player player)
     {
@@ -35,71 +35,41 @@ public class DustMagicAttachmentHelper
 
     public static boolean hasMana(Player player)
     {
-        return player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA);
+        return true;
     }
 
     public static int getManaLevel(Player player)
     {
-        if(!hasMana(player))return 0;
-        return player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA);
+        return PlayerMagicHelper.mana(player);
     }
 
     public static void setMana(Player player, int val)
     {
-        player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA, val);
-        //THIS ISNT NEEDED IF WE USE THE .sync Call in the Attachment Types Class
-        PacketDistributor.sendToPlayer((ServerPlayer)player, new PacketOfDustAuraS2C(0, val));
+        PlayerMagicHelper.setMana(player, val);
     }
 
     public static void addMana(Player player, int val)
     {
-        int newValue = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA) + val;
-        int max = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA);
-        if(newValue > max) newValue = max;
-        setMana(player, newValue);
+        PlayerMagicHelper.addMana(player, val);
     }
 
     public static int addManaWithConsumedCount(Player player, int val)
     {
-        int currentValue = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA);
-        int newValue = currentValue + val;
-        int max = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA);
-
-        int consumedCount = 0;
-        if(newValue > max)
-        {
-            newValue = max;
-            consumedCount = max - getManaLevel(player);
-        }
-        else consumedCount = val;
-
-        if(consumedCount>0)setMana(player, newValue);
-        return consumedCount;
+        return PlayerMagicHelper.addMana(player, val);
     }
 
     public static boolean canAddMana(Player player, int val)
     {
-        if(!hasMana(player))return false;
-        int currentValue = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA);
-        int newValue = currentValue + val;
-        int max = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA);
-
-        return newValue <= max;
+        return getManaLevel(player) + val <= getManaMaximum(player);
     }
 
     public static void removeMana(Player player, int val)
     {
-        int currentValue = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA);
-        int newValue = currentValue - val;
-        setMana(player, newValue);
+        PlayerMagicHelper.setMana(player, getManaLevel(player) - val);
     }
 
     public static boolean canRemoveMana(Player player, int val)
     {
-        if(!hasMana(player))return false;
-        int currentValue = player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA);
-        int newValue = currentValue - val;
-
-        return newValue >= 0;
+        return getManaLevel(player) - val >= 0;
     }
 }

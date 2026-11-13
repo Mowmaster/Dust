@@ -64,10 +64,8 @@ public class DustMagicEvents {
         if(DustMagicAttachmentHelper.hasUnlockedMana(player))
             {DustMagicAttachmentHelper.unlockMana(player);}
         else {DustMagicAttachmentHelper.lockMana(player);}
-        //Mana Initialization (condition based on unlock state where needed, but init everything up front)
-        if(DustMagicAttachmentHelper.hasMana(player))
-            {DustMagicAttachmentHelper.setMana(player, player.getData(DustAttachmentTypeRegistry.DUSTMAGIC_MANA));}
-        else {DustMagicAttachmentHelper.setMana(player ,0);}
+        // Mana and the dust store live in PlayerMagic now (Features/Magic): its attachment starts itself with the
+        // defaults, so there's nothing to set up here for them. The old attachments below are left as they were.
         //maxmana
         if(player.hasData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA))
         {player.setData(DustAttachmentTypeRegistry.DUSTMAGIC_MAXMANA,DustMagicAttachmentHelper.getManaMaximum(player));}
@@ -251,6 +249,7 @@ public class DustMagicEvents {
         new PlayerUnlockMana(event.getDispatcher());
         new PlayerModifyElement(event.getDispatcher());
         new AncientGlyphsCommand(event.getDispatcher());
+        new MagicCommand(event.getDispatcher());
     }
 
 
