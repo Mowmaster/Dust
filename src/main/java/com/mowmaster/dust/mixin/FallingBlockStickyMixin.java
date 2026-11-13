@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-// Sticky falling blocks (Slime: Features/Spells/blocks/Sticking) don't fall. A falling block checks whether to fall in
-// its scheduled tick; this skips that tick for a sticky one. None of vanilla's falling blocks (sand, gravel, concrete
-// powder, anvils, the dragon egg) override tick, so this covers them all.
+// A falling block stuck to something by a slime patch (Slime: Features/Spells/blocks/Sticking) doesn't fall. A falling
+// block checks whether to fall in its scheduled tick; this skips that tick while it's stuck. None of vanilla's falling
+// blocks (sand, gravel, concrete powder, anvils, the dragon egg) override tick, so this covers them all.
 @Mixin(FallingBlock.class)
 public abstract class FallingBlockStickyMixin
 {

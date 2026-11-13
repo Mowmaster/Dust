@@ -198,11 +198,12 @@ public class DustAttachmentTypeRegistry
                     .copyOnDeath()
                     .build());
 
-    // Slime's block effect: a chunk's sticky falling blocks (Features/Spells/blocks/Sticking). The same shape of data as
-    // wards (spot -> the block there), so it reuses Warding.Wards
-    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.blocks.Warding.Wards>> STICKY = ATTACHMENT_TYPES.register("sticky",
-            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.blocks.Warding.Wards.NONE)
-                    .serialize(com.mowmaster.dust.Features.Spells.blocks.Warding.Wards.CODEC.fieldOf("sticky"))
+    // Slime's block effect: a chunk's slime patches (Features/Spells/blocks/StickyFaces), saved with the chunk and
+    // synced to clients, who draw them (Client/StickyPatchRenderer)
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.blocks.StickyFaces>> STICKY_FACES = ATTACHMENT_TYPES.register("sticky_faces",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.blocks.StickyFaces.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.blocks.StickyFaces.CODEC.fieldOf("faces"))
+                    .sync(com.mowmaster.dust.Features.Spells.blocks.StickyFaces.STREAM_CODEC)
                     .build());
 
     public static void register(IEventBus eventBus) {

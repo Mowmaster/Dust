@@ -9,7 +9,9 @@
     "LivingEntityMovementMixin",
     "PlayerSpiritMixin",
     "MannequinAccessor",
-    "FallingBlockStickyMixin"
+    "FallingBlockStickyMixin",
+    "PistonStructureResolverMixin",
+    "PistonBaseBlockStickyMixin"
   ],
   "client": [
     "client.CachedFontProviderMixin",

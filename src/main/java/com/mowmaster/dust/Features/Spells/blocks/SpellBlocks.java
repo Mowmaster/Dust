@@ -63,7 +63,8 @@ public final class SpellBlocks
         if (!purify(cast.level(), pos)) SpellConversions.convert(cast, pos, face);
     }
 
-    // A corrupted block back to what it was; blight or a poison pool on it (or at it) cleared. True if anything was.
+    // A corrupted block back to what it was; slime patches, blight or a poison pool on it (or at it) cleared. True if
+    // anything was.
     public static boolean purify(ServerLevel level, BlockPos pos)
     {
         boolean purified = false;
@@ -72,6 +73,8 @@ public final class SpellBlocks
             level.setBlockAndUpdate(pos, original);
             purified = true;
         }
+        // Slime patches washed off
+        if (Sticking.clear(level, pos)) purified = true;
         for (BlockPos at : new BlockPos[] {pos, pos.above()}) {
             BlockState state = level.getBlockState(at);
             if (state.is(DustBlockRegistry.BLIGHT.get()) || state.is(DustBlockRegistry.POISON_POOL.get())) {
