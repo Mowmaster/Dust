@@ -59,11 +59,60 @@ public final class SpellMobEffects
         return instance == null ? 0 : instance.getAmplifier() + 1;
     }
 
-    // LivingChangeTargetEvent: fired when a mob picks a new target; cancelling it keeps the old (none, once calmed)
+    // LivingChangeTargetEvent: fired when a mob picks a new target; cancelling it keeps the old (none, once calmed).
+    // A thrall won't pick its owner, or anything its owner owns.
     @SubscribeEvent
     public static void onChangeTarget(LivingChangeTargetEvent event)
     {
-        if (event.getNewAboutToBeSetTarget() != null && event.getEntity().hasEffect(DustEffectsRegistry.CALMED)) event.setCanceled(true);
+        LivingEntity mob = event.getEntity();
+        LivingEntity target = event.getNewAboutToBeSetTarget();
+        if (target == null) return;
+        if (mob.hasEffect(DustEffectsRegistry.CALMED)) event.setCanceled(true);
+        else if (mob.hasEffect(DustEffectsRegistry.ENTHRALLED) && isOwnersSide(mob, target)) event.setCanceled(true);
+    }
+
+    // ---- Vacuum and thralls (their ticks) ----
+
+    // Vacuum: everything loose near the entity drifts in towards it
+    public static void vacuumTick(ServerLevel level, LivingEntity entity, int amplifier)
+    {
+        double radius = 5 + amplifier;
+        net.minecraft.world.phys.Vec3 centre = entity.position().add(0, entity.getBbHeight() / 2, 0);
+        for (Entity loose : level.getEntities(entity, entity.getBoundingBox().inflate(radius),
+                other -> other instanceof net.minecraft.world.entity.item.ItemEntity || other instanceof net.minecraft.world.entity.ExperienceOrb
+                        || (other instanceof LivingEntity && !(other instanceof net.minecraft.world.entity.player.Player)))) {
+            net.minecraft.world.phys.Vec3 pull = centre.subtract(loose.position());
+            if (pull.lengthSqr() < 1) continue;
+            net.minecraft.world.phys.Vec3 step = pull.normalize().scale(0.08);
+            loose.push(step.x, step.y, step.z);
+            loose.needsSync = true;
+        }
+    }
+
+    // A thrall without a proper target looks for the nearest monster within 10 blocks that isn't on its owner's side
+    public static void thrallTick(ServerLevel level, LivingEntity entity, int amplifier)
+    {
+        if (!(entity instanceof net.minecraft.world.entity.Mob mob)) return;
+        LivingEntity current = mob.getTarget();
+        if (current != null && current.isAlive() && !isOwnersSide(mob, current)) return;
+        LivingEntity prey = level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(10),
+                        other -> other != mob && other.isAlive() && other instanceof net.minecraft.world.entity.monster.Enemy && !isOwnersSide(mob, other))
+                .stream().min(java.util.Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
+        mob.setTarget(prey);
+    }
+
+    // Whether target is the thrall's owner, or a pet of theirs, or another of their thralls
+    private static boolean isOwnersSide(LivingEntity thrall, LivingEntity target)
+    {
+        String owner = thrall.getPersistentData().getStringOr(com.mowmaster.dust.Features.Spells.effects.MobParts.THRALL_OWNER, "");
+        if (owner.isEmpty()) return false;
+        if (target.getStringUUID().equals(owner)) return true;
+        if (target instanceof net.minecraft.world.entity.TamableAnimal pet && pet.getOwnerReference() != null
+                && pet.getOwnerReference().getUUID().toString().equals(owner)) {
+            return true;
+        }
+        return target.hasEffect(DustEffectsRegistry.ENTHRALLED)
+                && owner.equals(target.getPersistentData().getStringOr(com.mowmaster.dust.Features.Spells.effects.MobParts.THRALL_OWNER, ""));
     }
 
     // ---- damage taken (before armour): cut, raised or stopped ----
@@ -94,6 +143,8 @@ public final class SpellMobEffects
         if (victim.hasEffect(DustEffectsRegistry.MARKED)) amount *= 2;
         int pierced = level(victim, DustEffectsRegistry.PIERCED);
         if (pierced > 0 && source.is(DamageTypeTags.IS_PROJECTILE)) amount *= 1 + 0.5F * pierced;
+        int brittle = level(victim, DustEffectsRegistry.BRITTLE);
+        if (brittle > 0 && source.is(DustDamageTypes.KINETIC_KEY)) amount *= 1 + 0.5F * brittle;
         int conductive = level(victim, DustEffectsRegistry.CONDUCTIVE);
         if (conductive > 0 && source.is(DamageTypeTags.IS_LIGHTNING)) amount *= 1 + 0.5F * conductive;
         // Pack tactics: something other than the attacker hurt the victim in the last 5 seconds
@@ -225,11 +276,58 @@ public final class SpellMobEffects
         if (enlightened > 0) event.setDroppedExperience(Math.round(event.getDroppedExperience() * (1 + 0.5F * enlightened)));
     }
 
-    // ---- Sure Footing: mining off the ground at full speed (water and slowing ground are its attribute modifiers) ----
+    // ---- breaking blocks: Sure Footing mines off the ground at full speed (water and slowing ground are its attribute
+    // modifiers); a block marked by a Damage spell breaks 10% faster ----
 
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
-        if (event.getEntity().hasEffect(DustEffectsRegistry.SURE_FOOTING) && !event.getEntity().onGround()) event.setNewSpeed(event.getNewSpeed() * 5);
+        float speed = event.getNewSpeed();
+        if (event.getEntity().hasEffect(DustEffectsRegistry.SURE_FOOTING) && !event.getEntity().onGround()) speed *= 5;
+        if (event.getPosition().isPresent()
+                && com.mowmaster.dust.Features.Spells.effects.BlockMarks.has(event.getEntity().level(), event.getPosition().get(),
+                com.mowmaster.dust.Features.Spells.effects.BlockMarks.QUICK_BREAK)) {
+            speed *= 1.1F;
+        }
+        event.setNewSpeed(speed);
+    }
+
+    // A block marked by a Knowledge spell gives 10% more experience (at least 1 more, if it gives any)
+    @SubscribeEvent
+    public static void onBlockDrops(net.neoforged.neoforge.event.level.BlockDropsEvent event)
+    {
+        if (event.getDroppedExperience() <= 0
+                || !com.mowmaster.dust.Features.Spells.effects.BlockMarks.has(event.getLevel(), event.getPos(), com.mowmaster.dust.Features.Spells.effects.BlockMarks.WISE)) {
+            return;
+        }
+        event.setDroppedExperience(Math.max(event.getDroppedExperience() + 1, Math.round(event.getDroppedExperience() * 1.1F)));
+    }
+
+    // ---- Butchered: twice the meat and hides ----
+
+    @SubscribeEvent
+    public static void onLivingDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event)
+    {
+        if (!event.getEntity().hasEffect(DustEffectsRegistry.BUTCHERED)) return;
+        java.util.List<net.minecraft.world.entity.item.ItemEntity> extra = new java.util.ArrayList<>();
+        for (net.minecraft.world.entity.item.ItemEntity drop : event.getDrops()) {
+            ItemStack stack = drop.getItem();
+            if (stack.has(DataComponents.FOOD) || stack.is(net.minecraft.world.item.Items.LEATHER) || stack.is(net.minecraft.world.item.Items.RABBIT_HIDE)
+                    || stack.is(net.minecraft.world.item.Items.FEATHER) || stack.is(net.minecraft.world.item.Items.ROTTEN_FLESH)) {
+                extra.add(new net.minecraft.world.entity.item.ItemEntity(drop.level(), drop.getX(), drop.getY(), drop.getZ(), stack.copy()));
+            }
+        }
+        event.getDrops().addAll(extra);
+    }
+
+    // ---- Encased: breaking out ----
+
+    @SubscribeEvent
+    public static void onEffectExpired(MobEffectEvent.Expired event)
+    {
+        MobEffectInstance instance = event.getEffectInstance();
+        if (instance != null && instance.getEffect().equals(DustEffectsRegistry.ENCASED) && event.getEntity().level() instanceof ServerLevel level) {
+            com.mowmaster.dust.Features.Spells.effects.MobParts.breakOut(level, event.getEntity(), instance.getAmplifier());
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.Features.Spells.mobeffects.SpellMobEffect;
 import com.mowmaster.dust.Features.Spells.mobeffects.TickingMobEffect;
+import com.mowmaster.dust.Features.Spells.mobeffects.SpellMobEffects;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -108,6 +109,24 @@ public class DustEffectsRegistry
                     amplifier -> -Math.min(0.8, 0.2 * (amplifier + 1))));
     // Lightning on a mob: lightning does 50% more a level to it (lightning spells homing on it come later)
     public static final Holder<MobEffect> CONDUCTIVE = MOB_EFFECTS.register("conductive", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x9FD8FF));
+
+    // Vacuum on yourself: items, experience and creatures within 5 blocks (more with level) are drawn in to you
+    public static final Holder<MobEffect> VACUUM = MOB_EFFECTS.register("vacuum", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0x6A5ACD, 1,
+            SpellMobEffects::vacuumTick));
+    // Growth on yourself: bigger (a quarter more a level)
+    public static final Holder<MobEffect> GROWN = MOB_EFFECTS.register("grown", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x7FD650)
+            .addAttributeModifier(Attributes.SCALE, id("effect.grown"), AttributeModifier.Operation.ADD_VALUE, amplifier -> 0.25 * (amplifier + 1)));
+    // Fungus on a mob: it hunts the monsters around it, and won't turn on whoever cast it or theirs
+    public static final Holder<MobEffect> ENTHRALLED = MOB_EFFECTS.register("enthralled", () -> new TickingMobEffect(MobEffectCategory.NEUTRAL, 0xB07A50, 20,
+            SpellMobEffects::thrallTick));
+    // Flesh on a mob: it drops twice the meat, leather and the like when killed
+    public static final Holder<MobEffect> BUTCHERED = MOB_EFFECTS.register("butchered", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xC05050));
+    // Gem on a mob: held fast in crystal; when it breaks out it's hurt and left Brittle
+    public static final Holder<MobEffect> ENCASED = MOB_EFFECTS.register("encased", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x4FE0D0)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id("effect.encased.move"), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.JUMP_STRENGTH, id("effect.encased.jump"), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    // After breaking out of Encased: kinetic damage does 50% more a level
+    public static final Holder<MobEffect> BRITTLE = MOB_EFFECTS.register("brittle", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x9FE0D8));
 
     private static Identifier id(String path)
     {
