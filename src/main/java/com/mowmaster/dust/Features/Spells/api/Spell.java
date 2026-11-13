@@ -55,7 +55,16 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         cost.merge(element, SpellConfig.BASE_DUST_COST, Integer::sum);
         int levels = attributes.values().stream().mapToInt(Integer::intValue).sum();
         if (levels > 0) cost.merge(element, levels, Integer::sum);
-        for (SpellModifier modifier : modifierList()) modifier.cost(element).forEach((type, amount) -> cost.merge(type, amount, Integer::sum));
+        int percent = 0;
+        for (SpellModifier modifier : modifierList()) {
+            modifier.cost(element).forEach((type, amount) -> cost.merge(type, amount, Integer::sum));
+            percent += modifier.costPercent();
+        }
+        // The percentages together, then nothing below 1 of the spell's own element (other elements can drop to 0)
+        int finalPercent = percent;
+        cost.replaceAll((type, amount) -> Math.round(amount * Math.max(0, 100 + finalPercent) / 100F));
+        cost.replaceAll((type, amount) -> type == element ? Math.max(1, amount) : Math.max(0, amount));
+        cost.values().removeIf(amount -> amount <= 0);
         return cost;
     }
 

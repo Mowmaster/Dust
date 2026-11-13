@@ -4,6 +4,8 @@ import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.Spells.api.Spell;
+import com.mowmaster.dust.Features.Spells.pylons.PylonMemory;
+import com.mowmaster.dust.Features.Spells.pylons.SpellTreeLink;
 
 import net.minecraft.world.item.ItemStackTemplate;
 
@@ -58,6 +60,13 @@ public class DustComponentDataRegistry
     // The spell on a Spell Scroll: see Features/Spells/api/Spell
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Spell>> SPELL = register("spell",
             builder -> builder.persistent(Spell.CODEC).networkSynchronized(Spell.STREAM_CODEC));
+
+    // Which spell tree a scroll's spell came from (casting it gives the tree experience): Features/Spells/pylons
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SpellTreeLink>> SPELL_TREE = register("spell_tree",
+            builder -> builder.persistent(SpellTreeLink.CODEC).networkSynchronized(SpellTreeLink.STREAM_CODEC));
+    // What a broken Spell Pylon keeps (its element and some experience): Features/Spells/pylons/PylonMemory
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<PylonMemory>> PYLON_MEMORY = register("pylon_memory",
+            builder -> builder.persistent(PylonMemory.CODEC).networkSynchronized(PylonMemory.STREAM_CODEC));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                           UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

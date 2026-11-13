@@ -36,6 +36,13 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.RESEARCH_TRANSFORMATION.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_COMBINATION.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_MIXING.asItem());
+                        output.accept(DustBlockRegistry.SPELL_PYLON.asItem());
+                        output.accept(DustBlockRegistry.SHAPE_PYLON.asItem());
+                        output.accept(DustBlockRegistry.CHANGE_PYLON.asItem());
+                        output.accept(DustBlockRegistry.COST_PYLON.asItem());
+                        output.accept(DustBlockRegistry.COUNT_PYLON.asItem());
+                        output.accept(DustBlockRegistry.DAMAGE_PYLON.asItem());
+                        output.accept(DustItemRegistry.SPELL_SCROLL.get());
                         output.accept(DustItemRegistry.ALCHEMICAL_SOOT.asItem());
                     }).build());
 

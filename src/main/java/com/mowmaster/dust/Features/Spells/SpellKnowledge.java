@@ -25,9 +25,11 @@ import java.util.Map;
 //             Alchemical Dust with a Magical Flint and Steel, or casting it. Shown on the element's research entry.
 //   shapes    the spell shapes they can use when making spells: learned by being hit by a spell of that shape, or
 //             experiencing it themselves (any element: a shape learned once works for every element)
-public record SpellKnowledge(Map<DustElement, List<SpellTarget>> effects, List<Identifier> shapes)
+//   modifiers for each element, the modifiers that have been on their spells of it: unlocked for that element (a
+//             modifier that doesn't start unlocked can then be rolled for them)
+public record SpellKnowledge(Map<DustElement, List<SpellTarget>> effects, List<Identifier> shapes, Map<DustElement, List<Identifier>> modifiers)
 {
-    public static final SpellKnowledge EMPTY = new SpellKnowledge(Map.of(), List.of());
+    public static final SpellKnowledge EMPTY = new SpellKnowledge(Map.of(), List.of(), Map.of());
 
     public SpellKnowledge
     {
@@ -35,14 +37,35 @@ public record SpellKnowledge(Map<DustElement, List<SpellTarget>> effects, List<I
         effects.forEach((element, targets) -> copy.put(element, List.copyOf(targets)));
         effects = java.util.Collections.unmodifiableMap(copy);
         shapes = List.copyOf(shapes);
+        Map<DustElement, List<Identifier>> unlocked = new LinkedHashMap<>();
+        modifiers.forEach((element, ids) -> unlocked.put(element, List.copyOf(ids)));
+        modifiers = java.util.Collections.unmodifiableMap(unlocked);
     }
 
     public static final Codec<SpellKnowledge> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.unboundedMap(DustElements.CODEC, SpellTarget.CODEC.listOf()).optionalFieldOf("effects", Map.of()).forGetter(SpellKnowledge::effects),
-            Identifier.CODEC.listOf().optionalFieldOf("shapes", List.of()).forGetter(SpellKnowledge::shapes)
+            Identifier.CODEC.listOf().optionalFieldOf("shapes", List.of()).forGetter(SpellKnowledge::shapes),
+            Codec.unboundedMap(DustElements.CODEC, Identifier.CODEC.listOf()).optionalFieldOf("modifiers", Map.of()).forGetter(SpellKnowledge::modifiers)
     ).apply(instance, SpellKnowledge::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SpellKnowledge> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
+
+    public boolean hasUnlocked(DustElement element, Identifier modifier)
+    {
+        return modifiers.getOrDefault(element, List.of()).contains(modifier);
+    }
+
+    // This modifier has been on one of their spells of this element: unlocked for it from now on
+    public static void unlockModifier(ServerPlayer player, DustElement element, Identifier modifier)
+    {
+        SpellKnowledge knowledge = get(player);
+        if (knowledge.hasUnlocked(element, modifier)) return;
+        Map<DustElement, List<Identifier>> unlocked = new LinkedHashMap<>(knowledge.modifiers());
+        List<Identifier> ids = new ArrayList<>(unlocked.getOrDefault(element, List.of()));
+        ids.add(modifier);
+        unlocked.put(element, ids);
+        player.setData(DustAttachmentTypeRegistry.SPELL_KNOWLEDGE, new SpellKnowledge(knowledge.effects(), knowledge.shapes(), unlocked));
+    }
 
     public List<SpellTarget> effectsOf(DustElement element)
     {
@@ -72,7 +95,7 @@ public record SpellKnowledge(Map<DustElement, List<SpellTarget>> effects, List<I
         more.add(target);
         Map<DustElement, List<SpellTarget>> effects = new LinkedHashMap<>(knowledge.effects());
         effects.put(element, more);
-        player.setData(DustAttachmentTypeRegistry.SPELL_KNOWLEDGE, new SpellKnowledge(effects, knowledge.shapes()));
+        player.setData(DustAttachmentTypeRegistry.SPELL_KNOWLEDGE, new SpellKnowledge(effects, knowledge.shapes(), knowledge.modifiers()));
         PacketDistributor.sendToPlayer(player, new ObservationPayloads.Noted(false));
         return true;
     }
@@ -84,7 +107,7 @@ public record SpellKnowledge(Map<DustElement, List<SpellTarget>> effects, List<I
         if (knowledge.shapes().contains(shape)) return false;
         List<Identifier> shapes = new ArrayList<>(knowledge.shapes());
         shapes.add(shape);
-        player.setData(DustAttachmentTypeRegistry.SPELL_KNOWLEDGE, new SpellKnowledge(knowledge.effects(), shapes));
+        player.setData(DustAttachmentTypeRegistry.SPELL_KNOWLEDGE, new SpellKnowledge(knowledge.effects(), shapes, knowledge.modifiers()));
         return true;
     }
 }

@@ -65,6 +65,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchDistillation(blockModels, itemModels);
         createElementStations(blockModels, itemModels);
         createSpellScroll(itemModels);
+        createPylons(blockModels);
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);
@@ -278,6 +279,26 @@ public class DustProviderModel extends ModelProvider {
                 itemModels.modelOutput);
         itemModels.itemModelOutput.accept(DustItemRegistry.SPELL_SCROLL.get(),
                 ItemModelUtils.tintedModel(model, new Constant(-1), new com.mowmaster.dust.Features.Spells.Client.SpellTint()));
+    }
+
+    // The spell pylons: placeholder models (models/block/pylon/<name>.json) until the real ones are made. Every state
+    // uses the same model for now; the blockstate already lists them so each can get its own model later (the
+    // Spell Pylon's active=true/false, the modifier pylons' state=inert/linked/blessed/corrupted/break_on/break_off).
+    private void createPylons(BlockModelGenerators blockModels)
+    {
+        pylonModel(blockModels, DustBlockRegistry.SPELL_PYLON.get(), "spell_pylon");
+        pylonModel(blockModels, DustBlockRegistry.SHAPE_PYLON.get(), "shape_pylon");
+        pylonModel(blockModels, DustBlockRegistry.CHANGE_PYLON.get(), "change_pylon");
+        pylonModel(blockModels, DustBlockRegistry.COST_PYLON.get(), "cost_pylon");
+        pylonModel(blockModels, DustBlockRegistry.COUNT_PYLON.get(), "count_pylon");
+        pylonModel(blockModels, DustBlockRegistry.DAMAGE_PYLON.get(), "damage_pylon");
+    }
+
+    private void pylonModel(BlockModelGenerators blockModels, Block block, String name)
+    {
+        Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/pylon/" + name);
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model)));
+        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
     }
 
     // A station turned by FACING (the models face north), with its block and item models

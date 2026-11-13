@@ -4,6 +4,8 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchCombinationBlockEntity;
+import com.mowmaster.dust.Features.Spells.pylons.PylonBlockEntity;
+import com.mowmaster.dust.Features.Spells.pylons.SpellPylonBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchMixingBlockEntity;
 import com.mowmaster.dust.Features.Machines.ResearchTransformationBlockEntity;
@@ -37,6 +39,11 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(ResearchEvaporationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_EVAPORATION.get())));
     public static final Supplier<BlockEntityType<ResearchDistillationBlockEntity>> RESEARCH_DISTILLATION = BLOCK_ENTITIES.register("research_distalation",
             () -> new BlockEntityType<>(ResearchDistillationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_DISTILLATION.get())));
+    public static final Supplier<BlockEntityType<SpellPylonBlockEntity>> SPELL_PYLON = BLOCK_ENTITIES.register("spell_pylon",
+            () -> new BlockEntityType<>(SpellPylonBlockEntity::new, Set.of(DustBlockRegistry.SPELL_PYLON.get())));
+    public static final Supplier<BlockEntityType<PylonBlockEntity>> PYLON = BLOCK_ENTITIES.register("pylon",
+            () -> new BlockEntityType<>(PylonBlockEntity::new, Set.of(DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.CHANGE_PYLON.get(),
+                    DustBlockRegistry.COST_PYLON.get(), DustBlockRegistry.COUNT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get())));
     public static final Supplier<BlockEntityType<ResearchTransformationBlockEntity>> RESEARCH_TRANSFORMATION = BLOCK_ENTITIES.register("research_transformational",
             () -> new BlockEntityType<>(ResearchTransformationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.get())));
     public static final Supplier<BlockEntityType<ResearchCombinationBlockEntity>> RESEARCH_COMBINATION = BLOCK_ENTITIES.register("research_combination",

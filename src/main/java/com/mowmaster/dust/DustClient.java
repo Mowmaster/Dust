@@ -100,6 +100,8 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_TRANSFORMATION.get(), ResearchTransformationRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_COMBINATION.get(), ResearchCombinationRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_MIXING.get(), ResearchMixingRenderer::new);
+        // The Spell Pylon's ghosts (where the next pylon can go)
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.SPELL_PYLON.get(), com.mowmaster.dust.Features.Spells.Client.SpellPylonRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour

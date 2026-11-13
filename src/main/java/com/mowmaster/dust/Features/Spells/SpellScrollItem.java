@@ -2,6 +2,8 @@ package com.mowmaster.dust.Features.Spells;
 
 import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
 import com.mowmaster.dust.Features.Spells.api.Spell;
+import com.mowmaster.dust.Features.Spells.pylons.SpellTreeData;
+import com.mowmaster.dust.Features.Spells.pylons.SpellTreeLink;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -35,6 +37,9 @@ public class SpellScrollItem extends Item
         }
         if (player instanceof ServerPlayer serverPlayer && SpellCasting.cast(serverPlayer, spell)) {
             player.getCooldowns().addCooldown(stack, COOLDOWN);
+            // The spell's tree gains experience: one per pylon the spell used, wherever the tree is
+            SpellTreeLink link = stack.get(DustComponentDataRegistry.SPELL_TREE.get());
+            if (link != null) SpellTreeData.get(serverPlayer.level().getServer()).addExperience(link.tree(), link.pylons());
         }
         return InteractionResult.SUCCESS;
     }

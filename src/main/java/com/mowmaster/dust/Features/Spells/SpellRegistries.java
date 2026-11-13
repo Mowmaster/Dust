@@ -6,6 +6,10 @@ import com.mowmaster.dust.Features.Spells.api.ElementEffect;
 import com.mowmaster.dust.Features.Spells.api.SpellAttribute;
 import com.mowmaster.dust.Features.Spells.api.SpellModifier;
 import com.mowmaster.dust.Features.Spells.api.SpellShape;
+import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
+import com.mowmaster.dust.Features.Spells.api.ModifierTier;
+import com.mowmaster.dust.Features.Spells.modifiers.MultishotModifier;
+import com.mowmaster.dust.Features.Spells.modifiers.StatModifier;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
 import com.mowmaster.dust.Features.Spells.effects.EarthEffect;
@@ -63,6 +67,45 @@ public final class SpellRegistries
             () -> new StatAttribute((stats, level) -> stats.withRange(stats.range() + 8 * level)));
     public static final DeferredHolder<SpellAttribute, SpellAttribute> SPEED = ATTRIBUTES.register("speed",
             () -> new StatAttribute((stats, level) -> stats.withSpeed(stats.speed() + 0.4F * level)));
+
+    // ---- modifiers (rolled onto pylons; a Change / Cost / Count / Damage pylon favours its category) ----
+    // Count
+    public static final DeferredHolder<SpellModifier, SpellModifier> WIDER = MODIFIERS.register("wider",
+            () -> StatModifier.of(ModifierCategory.COUNT, 10, stats -> stats.withSize(stats.size() + 1)));
+    public static final DeferredHolder<SpellModifier, SpellModifier> LONGER = MODIFIERS.register("longer",
+            () -> StatModifier.of(ModifierCategory.COUNT, 10, stats -> stats.withDuration(Math.round(stats.duration() * 1.5F))));
+    public static final DeferredHolder<SpellModifier, SpellModifier> FARTHER = MODIFIERS.register("farther",
+            () -> StatModifier.of(ModifierCategory.COUNT, 10, stats -> stats.withRange(stats.range() + 8)));
+    public static final DeferredHolder<SpellModifier, SpellModifier> FASTER = MODIFIERS.register("faster",
+            () -> StatModifier.of(ModifierCategory.COUNT, 8, stats -> stats.withSpeed(stats.speed() + 0.4F)));
+    // corrupted: much wider, but it doesn't last
+    public static final DeferredHolder<SpellModifier, SpellModifier> SPRAWLING = MODIFIERS.register("sprawling",
+            () -> new StatModifier(ModifierCategory.COUNT, ModifierTier.CORRUPTED, 6,
+                    stats -> stats.withSize(stats.size() + 2).withDuration(stats.duration() / 2), 1, 0));
+    // blessed: twice as long
+    public static final DeferredHolder<SpellModifier, SpellModifier> ENDURING = MODIFIERS.register("enduring",
+            () -> new StatModifier(ModifierCategory.COUNT, ModifierTier.BLESSED, 6, stats -> stats.withDuration(stats.duration() * 2), 1, 0));
+    // Damage
+    public static final DeferredHolder<SpellModifier, SpellModifier> STRONGER = MODIFIERS.register("stronger",
+            () -> StatModifier.of(ModifierCategory.DAMAGE, 10, stats -> stats.withPotency(stats.potency() + 1)));
+    // blessed: half as strong again
+    public static final DeferredHolder<SpellModifier, SpellModifier> SURGING = MODIFIERS.register("surging",
+            () -> new StatModifier(ModifierCategory.DAMAGE, ModifierTier.BLESSED, 6, stats -> stats.withPotency(stats.potency() * 1.5F), 1, 0));
+    // corrupted: much stronger, but it falls short
+    public static final DeferredHolder<SpellModifier, SpellModifier> BRUTAL = MODIFIERS.register("brutal",
+            () -> new StatModifier(ModifierCategory.DAMAGE, ModifierTier.CORRUPTED, 6,
+                    stats -> stats.withPotency(stats.potency() + 2).withRange(Math.max(4, stats.range() / 2)), 1, 0));
+    // Cost
+    public static final DeferredHolder<SpellModifier, SpellModifier> THRIFTY = MODIFIERS.register("thrifty",
+            () -> new StatModifier(ModifierCategory.COST, ModifierTier.NORMAL, 8, stats -> stats, -1, 0));
+    // blessed: a quarter cheaper, a little shorter
+    public static final DeferredHolder<SpellModifier, SpellModifier> FRUGAL = MODIFIERS.register("frugal",
+            () -> new StatModifier(ModifierCategory.COST, ModifierTier.BLESSED, 6, stats -> stats.withDuration(Math.round(stats.duration() * 0.9F)), 0, -25));
+    // corrupted: much dearer, but stronger
+    public static final DeferredHolder<SpellModifier, SpellModifier> OVERCHARGED = MODIFIERS.register("overcharged",
+            () -> new StatModifier(ModifierCategory.COST, ModifierTier.CORRUPTED, 6, stats -> stats.withPotency(stats.potency() + 2), 3, 0));
+    // Change
+    public static final DeferredHolder<SpellModifier, SpellModifier> MULTISHOT = MODIFIERS.register("multishot", MultishotModifier::new);
 
     // ---- the elements' effects (the rest come in later steps; until then an element does nothing) ----
     public static final DeferredHolder<ElementEffect, ElementEffect> FIRE = ELEMENT_EFFECTS.register(DustElements.FIRE.id().getPath(), FireEffect::new);

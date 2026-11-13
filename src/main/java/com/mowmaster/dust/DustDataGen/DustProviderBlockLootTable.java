@@ -52,6 +52,14 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         dropSelf(DustBlockRegistry.RESEARCH_TRANSFORMATION.get());
         dropSelf(DustBlockRegistry.RESEARCH_COMBINATION.get());
         dropSelf(DustBlockRegistry.RESEARCH_MIXING.get());
+        // The Spell Pylon drops itself in code, remembering its element and levels (SpellPylonBlockEntity), so it has
+        // an empty loot table here
+        add(DustBlockRegistry.SPELL_PYLON.get(), noDrop());
+        dropSelf(DustBlockRegistry.SHAPE_PYLON.get());
+        dropSelf(DustBlockRegistry.CHANGE_PYLON.get());
+        dropSelf(DustBlockRegistry.COST_PYLON.get());
+        dropSelf(DustBlockRegistry.COUNT_PYLON.get());
+        dropSelf(DustBlockRegistry.DAMAGE_PYLON.get());
 
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
         add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));

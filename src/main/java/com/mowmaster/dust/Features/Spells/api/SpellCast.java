@@ -27,6 +27,8 @@ public final class SpellCast
     private final SpellStats stats;
     private final Vec3 origin;
     private final Vec3 direction;
+    // Set by a modifier that delivered the spell itself (SpellModifier.beforeDelivery), so others don't again
+    private boolean delivered;
 
     // caster: null for a block casting it (then origin and direction say where from and which way)
     public SpellCast(ServerLevel level, @Nullable LivingEntity caster, Spell spell, SpellStats stats, Vec3 origin, Vec3 direction)
@@ -52,6 +54,8 @@ public final class SpellCast
     public Vec3 origin() { return origin; }
     public Vec3 direction() { return direction; }
     public DustElement element() { return spell.element(); }
+    public boolean delivered() { return delivered; }
+    public void markDelivered() { delivered = true; }
 
     public ElementEffect effect()
     {

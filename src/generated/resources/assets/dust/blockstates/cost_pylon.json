@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dust:block/pylon/cost_pylon"
+    }
+  }
+}

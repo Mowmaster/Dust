@@ -6,6 +6,9 @@ import com.mowmaster.dust.Features.DustComposition.DustFireBlock;
 import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlock;
 import com.mowmaster.dust.Features.Machines.ResearchCombinationBlock;
+import com.mowmaster.dust.Features.Spells.pylons.PylonBlock;
+import com.mowmaster.dust.Features.Spells.pylons.PylonType;
+import com.mowmaster.dust.Features.Spells.pylons.SpellPylonBlock;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlock;
 import com.mowmaster.dust.Features.Machines.ResearchMixingBlock;
 import com.mowmaster.dust.Features.Machines.ResearchTransformationBlock;
@@ -120,6 +123,21 @@ public class DustBlockRegistry {
             properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
     public static final DeferredBlock<Block> RESEARCH_MIXING = registerBlock("research_mixing", properties -> new ResearchMixingBlock(
             properties.mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(2.0F, 3.0F).noOcclusion()));
+
+    // Spell crafting (Features/Spells/pylons): the Spell Pylon, and the pylons that grow its tree
+    public static final DeferredBlock<Block> SPELL_PYLON = registerBlock("spell_pylon", properties -> new SpellPylonBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.AMETHYST).strength(2.0F, 6.0F).noOcclusion()));
+    public static final DeferredBlock<Block> SHAPE_PYLON = pylon("shape_pylon", PylonType.SHAPE);
+    public static final DeferredBlock<Block> CHANGE_PYLON = pylon("change_pylon", PylonType.CHANGE);
+    public static final DeferredBlock<Block> COST_PYLON = pylon("cost_pylon", PylonType.COST);
+    public static final DeferredBlock<Block> COUNT_PYLON = pylon("count_pylon", PylonType.COUNT);
+    public static final DeferredBlock<Block> DAMAGE_PYLON = pylon("damage_pylon", PylonType.DAMAGE);
+
+    private static DeferredBlock<Block> pylon(String name, PylonType type)
+    {
+        return registerBlock(name, properties -> new PylonBlock(properties.mapColor(MapColor.STONE).sound(SoundType.AMETHYST)
+                .strength(1.5F, 6.0F).noOcclusion(), type));
+    }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function)
     {
