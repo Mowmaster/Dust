@@ -148,6 +148,8 @@ public final class UtilityParts
 
     // ---- Warp ----
 
+    // ---- Warp ----
+
     // The caster's warp mark (null if they haven't set one)
     private static @Nullable GlobalPos mark(@Nullable LivingEntity caster)
     {
@@ -167,17 +169,34 @@ public final class UtilityParts
         GlobalPos mark = mark(player);
         if (mark != null) {
             ServerLevel level = cast.level().getServer().getLevel(mark.dimension());
-            if (level != null) return new TeleportTransition(level, Vec3.atBottomCenterOf(mark.pos()), Vec3.ZERO, player.getYRot(), player.getXRot(),
+            if (level != null) return new TeleportTransition(level, Vec3.atBottomCenterOf(safeSpot(level, mark.pos())), Vec3.ZERO, player.getYRot(), player.getXRot(),
                     TeleportTransition.DO_NOTHING);
         }
         // Their bed / anchor / world spawn, without using up an anchor charge
         return player.findRespawnPositionAndUseSpawnBlock(false, TeleportTransition.DO_NOTHING);
     }
 
+    // The mark may have been built over since it was set: the first spot at or above it (up to 8 blocks) with two
+    // blocks of room to stand in. If there's none, the mark itself.
+    private static BlockPos safeSpot(ServerLevel level, BlockPos mark)
+    {
+        for (int up = 0; up <= 8; up++) {
+            BlockPos feet = mark.above(up);
+            if (level.getBlockState(feet).getCollisionShape(level, feet).isEmpty()
+                    && level.getBlockState(feet.above()).getCollisionShape(level, feet.above()).isEmpty()) {
+                return feet;
+            }
+        }
+        return mark;
+    }
+
     private static void warp(SpellCast cast, Entity entity, TeleportTransition to)
     {
         cast.level().sendParticles(ParticleTypes.PORTAL, entity.getX(), entity.getY() + 1, entity.getZ(), 30, 0.4, 0.8, 0.4, 0.2);
         entity.teleport(new TeleportTransition(to.newLevel(), to.position(), Vec3.ZERO, entity.getYRot(), entity.getXRot(), TeleportTransition.DO_NOTHING));
+        // Arrives standing still: no fall damage carried over from before the warp
+        entity.resetFallDistance();
+        to.newLevel().sendParticles(ParticleTypes.REVERSE_PORTAL, to.position().x, to.position().y + 1, to.position().z, 20, 0.4, 0.8, 0.4, 0.05);
         to.newLevel().playSound(null, BlockPos.containing(to.position()), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
@@ -193,33 +212,42 @@ public final class UtilityParts
         if (to != null) warp(cast, player, to);
     }
 
-    // Block: with no mark yet, it marks the spot above the block. Otherwise the items lying there, and the block itself
-    // (not one holding things, not an unbreakable one), go to the mark (or the caster's respawn point).
+    // Block: with no mark yet (or sneaking), it marks the spot above the block. Otherwise the items lying there, and the
+    // block itself (not one holding things, not an unbreakable one, and only if it can stay where it lands), go to the
+    // mark (or the caster's respawn point).
     public static void warpBlock(SpellCast cast, BlockPos pos, Direction face)
     {
         if (!(cast.caster() instanceof ServerPlayer player)) return;
-        if (mark(player) == null) {
+        if (mark(player) == null || player.isShiftKeyDown()) {
             setMark(player, GlobalPos.of(cast.level().dimension(), pos.above()));
             return;
         }
         TeleportTransition to = destination(cast);
         if (to == null) return;
-        for (ItemEntity item : cast.level().getEntitiesOfClass(ItemEntity.class, new AABB(pos.relative(face)).inflate(1))) warp(cast, item, to);
         ServerLevel level = cast.level();
-        BlockState state = level.getBlockState(pos);
+        ServerLevel there = to.newLevel();
         BlockPos landing = BlockPos.containing(to.position());
-        if (state.isAir() || state.getDestroySpeed(level, pos) < 0 || level.getBlockEntity(pos) != null || !to.newLevel().getBlockState(landing).canBeReplaced()) return;
-        level.removeBlock(pos, false);
-        to.newLevel().setBlockAndUpdate(landing, state);
-        level.sendParticles(ParticleTypes.PORTAL, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 30, 0.4, 0.4, 0.4, 0.2);
+        BlockState state = level.getBlockState(pos);
+        boolean movable = !state.isAir() && state.getDestroySpeed(level, pos) >= 0 && level.getBlockEntity(pos) == null
+                && there.getBlockState(landing).canBeReplaced() && state.canSurvive(there, landing);
+        if (movable) {
+            level.removeBlock(pos, false);
+            there.setBlockAndUpdate(landing, state);
+            level.sendParticles(ParticleTypes.PORTAL, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 30, 0.4, 0.4, 0.4, 0.2);
+        }
+        // Items land on top of the block if it went too, so they aren't stuck inside it
+        TeleportTransition itemsTo = movable ? to.withPosition(to.position().add(0, 1, 0)) : to;
+        for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, new AABB(pos.relative(face)).inflate(1))) warp(cast, item, itemsTo);
     }
 
-    // Mob: it goes to the caster's mark (or their respawn point)
+    // Mob: it goes to the caster's mark (or their respawn point). Bosses hold their ground.
     public static void warpMob(SpellCast cast, Entity target)
     {
+        if (target instanceof LivingEntity living && living.is(net.neoforged.neoforge.common.Tags.EntityTypes.BOSSES)) return;
         TeleportTransition to = destination(cast);
         if (to != null) warp(cast, target, to);
     }
+
 
     // ---- Tool: one tier lower ----
 
