@@ -69,7 +69,8 @@ public class DustProviderModel extends ModelProvider {
         createSpellScroll(itemModels);
         createPylons(blockModels);
         // Blocks spells leave behind: their models are in models/block/spell (no items)
-        for (Block block : List.of(DustBlockRegistry.POISON_POOL.get(), DustBlockRegistry.BLIGHT.get(), DustBlockRegistry.CORRUPTED.get())) {
+        for (Block block : List.of(DustBlockRegistry.POISON_POOL.get(), DustBlockRegistry.BLIGHT.get(), DustBlockRegistry.CORRUPTED.get(),
+                DustBlockRegistry.SPELL_LIGHT.get(), DustBlockRegistry.VEILED.get(), DustBlockRegistry.PHASED.get(), DustBlockRegistry.WARDED_GLASS.get())) {
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(
                     Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/spell/" + BuiltInRegistries.BLOCK.getKey(block).getPath()))));
         }
