@@ -1,6 +1,7 @@
 package com.mowmaster.dust.DustRegistries;
 
 import com.mowmaster.dust.Features.Spells.mobeffects.SpellMobEffect;
+import com.mowmaster.dust.Features.Spells.mobeffects.TickingMobEffect;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -43,6 +44,75 @@ public class DustEffectsRegistry
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x5A0A2A)
             .addAttributeModifier(Attributes.STEP_HEIGHT, Identifier.fromNamespaceAndPath(DustReferences.MODID, "effect.rage"), 0.5,
                     AttributeModifier.Operation.ADD_VALUE));
+
+    // Ice on yourself: puts out fire and keeps it out while it lasts
+    public static final Holder<MobEffect> COOLING = MOB_EFFECTS.register("cooling", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0xA8E4FF, 1,
+            (level, entity, amplifier) -> entity.clearFire()));
+    // Ice on a mob: slowed (15% a level) and frosted over (the powder snow overlay, without its damage)
+    public static final Holder<MobEffect> CHILLED = MOB_EFFECTS.register("chilled", () -> new TickingMobEffect(MobEffectCategory.HARMFUL, 0x7FCFFF, 1,
+            (level, entity, amplifier) -> entity.setTicksFrozen(Math.max(entity.getTicksFrozen(), entity.getTicksRequiredToFreeze() - 1)))
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id("effect.chilled"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
+                    amplifier -> -Math.min(0.9, 0.15 * (amplifier + 1))));
+    // Stone on yourself: physical damage (anything armour can stop, and kinetic) is cut 20% a level, up to 80%
+    public static final Holder<MobEffect> STONE_SKIN = MOB_EFFECTS.register("stone_skin", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x8C8C8C));
+    // Metal on yourself: projectiles do nothing (unless they pierce)
+    public static final Holder<MobEffect> IRON_SKIN = MOB_EFFECTS.register("iron_skin", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xD8D8D8));
+    // Metal on a mob: half a heart every 2 seconds (faster with level), on any difficulty, until cured (milk, healing)
+    public static final Holder<MobEffect> BLEEDING = MOB_EFFECTS.register("bleeding", () -> new TickingMobEffect(MobEffectCategory.HARMFUL, 0x8A0303, 40,
+            (level, entity, amplifier) -> entity.hurtServer(level, level.damageSources().generic(), 1.0F)));
+    // Abyss on yourself: heals you for 20% a level of the damage you deal
+    public static final Holder<MobEffect> LIFE_LEECH = MOB_EFFECTS.register("life_leech", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x3B0A4F));
+    // Abyss on a mob: no spells, shields, drinking potions, or teleporting
+    public static final Holder<MobEffect> SILENCED = MOB_EFFECTS.register("silenced", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x1E0A2E));
+    // Damage on yourself: magic damage is cut 25% a level, up to 80%
+    public static final Holder<MobEffect> MAGIC_WARD = MOB_EFFECTS.register("magic_ward", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xB04BFF));
+    // Energy on yourself: each hit you land gives you a point of mana back
+    public static final Holder<MobEffect> ENERGY_DRAIN = MOB_EFFECTS.register("energy_drain", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xFFE45C));
+    // Energy on a mob: charge building up; the level is the stacks (EnergyCharge); at 100 it bursts
+    public static final Holder<MobEffect> CHARGED = MOB_EFFECTS.register("charged", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xFFF27A));
+    // Creature on yourself: double damage to what something else has just been fighting
+    public static final Holder<MobEffect> PACK_TACTICS = MOB_EFFECTS.register("pack_tactics", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xC47A3C));
+    // Creature on a mob: it takes double damage from everything
+    public static final Holder<MobEffect> MARKED = MOB_EFFECTS.register("marked", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xFF3030));
+    // Plants on a mob: slowed 30% a level, and thorns prick it each second it keeps moving
+    public static final Holder<MobEffect> TANGLED = MOB_EFFECTS.register("tangled", () -> new TickingMobEffect(MobEffectCategory.HARMFUL, 0x3C8A2E, 20,
+            (level, entity, amplifier) -> {
+                if (entity.position().distanceToSqr(entity.xo, entity.yo, entity.zo) > 1.0E-4) entity.hurtServer(level, level.damageSources().sweetBerryBush(), 1.0F);
+            })
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id("effect.tangled"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
+                    amplifier -> -Math.min(0.9, 0.3 * (amplifier + 1))));
+    // Trees on yourself: whatever hits you takes half a heart a level back
+    public static final Holder<MobEffect> THORNS = MOB_EFFECTS.register("thorns", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x5A7A2A));
+    // Knowledge on yourself: 50% more experience a level from orbs
+    public static final Holder<MobEffect> INSIGHT = MOB_EFFECTS.register("insight", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x7FFF7F));
+    // Knowledge on a mob: it drops 50% more experience a level when killed
+    public static final Holder<MobEffect> ENLIGHTENED = MOB_EFFECTS.register("enlightened", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0xB8FFB8));
+    // Fungus on yourself: poison, mining fatigue and slowness can't take hold
+    public static final Holder<MobEffect> FUNGAL = MOB_EFFECTS.register("fungal", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x9C6B4E));
+    // Death on yourself: withering, drowning and hunger can't touch you
+    public static final Holder<MobEffect> DEATHLESS = MOB_EFFECTS.register("deathless", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x2B2B2B));
+    // Change on yourself: harmful effects take hold at half strength, and Fractured can't take hold
+    public static final Holder<MobEffect> ADAPTIVE = MOB_EFFECTS.register("adaptive", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xD45CFF));
+    // Mud on yourself: slowing ground (soul sand, honey), water and being off the ground don't slow you
+    public static final Holder<MobEffect> SURE_FOOTING = MOB_EFFECTS.register("sure_footing", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x6B4A2B)
+            .addAttributeModifier(Attributes.MOVEMENT_EFFICIENCY, id("effect.sure_footing.ground"), 1.0, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(Attributes.WATER_MOVEMENT_EFFICIENCY, id("effect.sure_footing.water"), 1.0, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(Attributes.SUBMERGED_MINING_SPEED, id("effect.sure_footing.mining"), 0.8, AttributeModifier.Operation.ADD_VALUE));
+    // Gem on yourself: projectiles bounce back at whoever shot them
+    public static final Holder<MobEffect> REFLECTING = MOB_EFFECTS.register("reflecting", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x4FE0D0));
+    // Protection on a mob: projectiles do 50% more a level to it
+    public static final Holder<MobEffect> PIERCED = MOB_EFFECTS.register("pierced", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xA0A0C0));
+    // Fracture on a mob: its max health is lowered 20% a level (up to 80%)
+    public static final Holder<MobEffect> FRACTURED = MOB_EFFECTS.register("fractured", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x9C7A5A)
+            .addAttributeModifier(Attributes.MAX_HEALTH, id("effect.fractured"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
+                    amplifier -> -Math.min(0.8, 0.2 * (amplifier + 1))));
+    // Lightning on a mob: lightning does 50% more a level to it (lightning spells homing on it come later)
+    public static final Holder<MobEffect> CONDUCTIVE = MOB_EFFECTS.register("conductive", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x9FD8FF));
+
+    private static Identifier id(String path)
+    {
+        return Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+    }
 
     public static void register(IEventBus eventBus)
     {

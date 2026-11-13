@@ -69,13 +69,44 @@ public final class SimpleParts
 
     // ---- healing ----
 
-    // Heals it directly (2 hearts x potency): unlike Instant Health, this doesn't hurt the undead
+    // Heals it directly (2 hearts x potency), and stops bleeding: unlike Instant Health, this doesn't hurt the undead
     public static void heal(SpellCast cast, Entity target)
     {
         if (target instanceof LivingEntity living) {
             living.heal(4 * cast.stats().potency());
+            living.removeEffect(com.mowmaster.dust.DustRegistries.DustEffectsRegistry.BLEEDING);
             cast.level().sendParticles(ParticleTypes.HEART, living.getX(), living.getY() + living.getBbHeight(), living.getZ(), 3, 0.3, 0.2, 0.3, 0);
         }
+    }
+
+    // Instant Health, and it stops bleeding
+    public static void healSelf(SpellCast cast, LivingEntity target)
+    {
+        EffectHelper.give(cast, target, MobEffects.INSTANT_HEALTH);
+        target.removeEffect(com.mowmaster.dust.DustRegistries.DustEffectsRegistry.BLEEDING);
+    }
+
+    // Bleeding until cured (milk, a healing spell), however long the spell lasts
+    public static void bleed(SpellCast cast, Entity target)
+    {
+        if (target instanceof LivingEntity living) {
+            living.addEffect(new net.minecraft.world.effect.MobEffectInstance(com.mowmaster.dust.DustRegistries.DustEffectsRegistry.BLEEDING,
+                    net.minecraft.world.effect.MobEffectInstance.INFINITE_DURATION, cast.stats().amplifier()), cast.caster());
+        }
+    }
+
+    // Ice on yourself: the fire goes out now, and Cooling keeps it out
+    public static void cool(SpellCast cast, LivingEntity target)
+    {
+        target.clearFire();
+        EffectHelper.give(cast, target, com.mowmaster.dust.DustRegistries.DustEffectsRegistry.COOLING);
+    }
+
+    // Creature on a mob: Marked, and it glows so everyone can see it
+    public static void mark(SpellCast cast, Entity target)
+    {
+        EffectHelper.give(cast, target, com.mowmaster.dust.DustRegistries.DustEffectsRegistry.MARKED);
+        EffectHelper.give(cast, target, MobEffects.GLOWING);
     }
 
     // Clears every effect, like drinking milk

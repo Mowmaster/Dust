@@ -30,6 +30,10 @@ public final class SpellCasting
             player.sendOverlayMessage(Component.translatable("dust.spell.unknown_shape", spell.shape().toString()));
             return false;
         }
+        if (com.mowmaster.dust.Features.Spells.mobeffects.SpellMobEffects.isSilenced(player)) {
+            player.sendOverlayMessage(Component.translatable("dust.spell.silenced"));
+            return false;
+        }
         boolean free = player.hasInfiniteMaterials();
 
         // What it costs this player
