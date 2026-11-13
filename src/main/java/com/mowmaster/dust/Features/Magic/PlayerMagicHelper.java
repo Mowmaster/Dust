@@ -9,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.minecraft.world.effect.MobEffectInstance;
+import com.mowmaster.dust.DustRegistries.DustEffectsRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +189,10 @@ public final class PlayerMagicHelper
         if (!magic.awakened()) return;
         ManaTimers timers = player.getData(DustAttachmentTypeRegistry.MANA_TIMERS);
         int mana = magic.mana(), max = magic.maxMana();
-        int regen = timers.regen() + 1, low = timers.low(), high = timers.high();
+        // Mana Surge (Magic on yourself): regeneration runs twice as fast, faster still at higher levels
+        MobEffectInstance surge = player.getEffect(DustEffectsRegistry.MANA_SURGE);
+        int step = surge == null ? 1 : 2 + surge.getAmplifier();
+        int regen = timers.regen() + step, low = timers.low(), high = timers.high();
 
         if (mana < max) {
             if (regen >= MagicConfig.REGEN_TICKS) {

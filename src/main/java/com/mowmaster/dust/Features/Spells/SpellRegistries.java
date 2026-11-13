@@ -12,6 +12,7 @@ import com.mowmaster.dust.Features.Spells.modifiers.MultishotModifier;
 import com.mowmaster.dust.Features.Spells.modifiers.StatModifier;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
+import com.mowmaster.dust.Features.Spells.effects.MagicParts;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
 import com.mowmaster.dust.Features.Spells.soul.SoulParts;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
@@ -154,7 +155,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> DAMAGE_EFFECT = element(DustElements.DAMAGE,
             () -> new BasicEffect().block(MobParts::markQuickBreak).self(BasicEffect.give(DustEffectsRegistry.MAGIC_WARD)).entity(SimpleParts::magicDamage));
     public static final DeferredHolder<ElementEffect, ElementEffect> MAGIC_EFFECT = element(DustElements.MAGIC,
-            () -> new BasicEffect().entity(SimpleParts::magicDamage));
+            () -> new BasicEffect().self(MagicParts::surge).block(MagicParts::amplify).entity(SimpleParts::magicDamage));
     public static final DeferredHolder<ElementEffect, ElementEffect> VOID_EFFECT = element(DustElements.VOID,
             () -> new BasicEffect().self(VoidParts::chest).block(VoidParts::rift).entity(SimpleParts::voidDamage));
     public static final DeferredHolder<ElementEffect, ElementEffect> SOUL_EFFECT = element(DustElements.SOUL,

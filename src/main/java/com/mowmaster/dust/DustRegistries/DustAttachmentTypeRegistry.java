@@ -175,6 +175,12 @@ public class DustAttachmentTypeRegistry
                     .serialize(com.mowmaster.dust.Features.Spells.soul.SoulTether.CODEC.fieldOf("tether"))
                     .build());
 
+    // Magic's block effect: amplified blocks in a chunk (Features/Magic/AuraAmplifiers), saved with the chunk
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Magic.AuraAmplifiers>> AURA_AMPLIFIERS = ATTACHMENT_TYPES.register("aura_amplifiers",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Magic.AuraAmplifiers.NONE)
+                    .serialize(com.mowmaster.dust.Features.Magic.AuraAmplifiers.CODEC.fieldOf("amplifiers"))
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

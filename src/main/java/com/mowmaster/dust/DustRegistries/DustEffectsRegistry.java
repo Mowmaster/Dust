@@ -149,6 +149,8 @@ public class DustEffectsRegistry
     public static final Holder<MobEffect> GHOSTLY = MOB_EFFECTS.register("ghostly", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0xA0E0FF));
     // Soul on a player: their soul is out of their body (Features/Spells/soul/SoulEvents); it must get back before this ends
     public static final Holder<MobEffect> SOUL_SEVERED = MOB_EFFECTS.register("soul_severed", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x5FD9D9));
+    // Magic on yourself: mana regenerates twice as fast (Features/Magic/PlayerMagicHelper.onPlayerTick)
+    public static final Holder<MobEffect> MANA_SURGE = MOB_EFFECTS.register("mana_surge", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x9F5FFF));
 
     private static Identifier id(String path)
     {
