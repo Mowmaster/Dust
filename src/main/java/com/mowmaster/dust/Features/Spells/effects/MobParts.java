@@ -87,8 +87,8 @@ public final class MobParts
             EntityTypes.ZOMBIE_HORSE, EntityTypes.HORSE,
             EntityTypes.SKELETON_HORSE, EntityTypes.HORSE);
 
-    // A zombified creature turns back into what it was (a cured villager forgets its trade). Reviving pets' ghosts
-    // comes with the ghosts themselves.
+    // A zombified creature turns back into what it was (a cured villager forgets its trade). Life's entity part is
+    // PetGhosts.reviveOrCure: this, unless the target is a pet's ghost.
     public static void cure(SpellCast cast, Entity target)
     {
         EntityType<? extends Mob> cured = CURES.get(target.getType());

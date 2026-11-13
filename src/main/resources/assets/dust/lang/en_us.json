@@ -435,6 +435,7 @@
   "effect.dust.brittle": "Brittle",
   "effect.dust.tool_sense": "Tool Sense",
   "dust.warp.marked": "Warp marked at %s, %s, %s",
+  "dust.pet_ghost.ghosted": "%s has become a ghost. Life magic can bring it back within 5 minutes.",
   "block.dust.poison_pool": "Poison Pool",
   "block.dust.blight": "Blight",
   "block.dust.corrupted_block": "Corrupted Block",

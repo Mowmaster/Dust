@@ -13,6 +13,7 @@ import com.mowmaster.dust.Features.Spells.modifiers.StatModifier;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.MagicParts;
+import com.mowmaster.dust.Features.Spells.effects.PetGhosts;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
 import com.mowmaster.dust.Features.Spells.soul.SoulParts;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
@@ -133,7 +134,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> MOTION_EFFECT = element(DustElements.MOTION,
             () -> new BasicEffect().block(SpellConversions::convert).self(SimpleParts::speedSelfWithMount).entity(SimpleParts::speedWithMount));
     public static final DeferredHolder<ElementEffect, ElementEffect> LIFE_EFFECT = element(DustElements.LIFE,
-            () -> new BasicEffect().entity(MobParts::cure).block(SpellConversions::convert).self(BasicEffect.give(MobEffects.REGENERATION)));
+            () -> new BasicEffect().entity(PetGhosts::reviveOrCure).block(SpellConversions::convert).self(BasicEffect.give(MobEffects.REGENERATION)));
     public static final DeferredHolder<ElementEffect, ElementEffect> HEALING_EFFECT = element(DustElements.HEALING,
             () -> new BasicEffect().block(SpellBlocks::purifyOrMend).self(SimpleParts::healSelf).entity(SimpleParts::heal));
     public static final DeferredHolder<ElementEffect, ElementEffect> LIGHT_EFFECT = element(DustElements.LIGHT,
