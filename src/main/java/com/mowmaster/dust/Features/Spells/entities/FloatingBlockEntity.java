@@ -71,12 +71,13 @@ public class FloatingBlockEntity extends Entity implements CarriesBlock
     public void tick()
     {
         super.tick();
+        // 26.3: only the side simulating an entity may move it (Entity.move throws otherwise). For this that's the
+        // server; clients just show where the server says it is.
+        if (!(level() instanceof ServerLevel level)) return;
         Vec3 motion = getDeltaMovement();
         move(MoverType.SELF, motion);
         double drag = isInWater() ? 0.8 : 0.9;
         setDeltaMovement(motion.scale(drag));
-        if (!(level() instanceof ServerLevel level)) return;
-        // Ramming: what it hits at speed takes kinetic damage (more the faster), and it slows
         double speed = motion.length();
         if (speed > 0.25) {
             for (LivingEntity hit : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.1), living -> living != lastPuncher && living.isAlive())) {
