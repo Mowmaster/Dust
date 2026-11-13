@@ -428,6 +428,8 @@
   "item.minecraft.potion.effect.potion_scorch": "Scorch Potion (20)",
   "item.minecraft.splash_potion.effect.potion_scorch": "Scorch Potion (20)",
   "item.minecraft.lingering_potion.effect.potion_scorch": "Scorch Potion (20)",
+  "death.attack.kinetic": "%s was struck down by a magical blow",
+  "death.attack.kinetic.player": "%s was struck down by %s's magic",
   "death.attack.scorch": "%s was scorched to death!",
   "death.attack.scorch.player": "%s was scorched to death trying to out run %s",
 
