@@ -14,6 +14,7 @@ import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.ChaosEffect;
 import com.mowmaster.dust.Features.Spells.effects.MobParts;
+import com.mowmaster.dust.Features.Spells.effects.MovementParts;
 import com.mowmaster.dust.Features.Spells.blocks.SpellBlocks;
 import com.mowmaster.dust.Features.Spells.effects.UtilityParts;
 import com.mowmaster.dust.Features.Spells.conversions.SpellConversions;
@@ -136,7 +137,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> DARKNESS_EFFECT = element(DustElements.DARKNESS,
             () -> new BasicEffect().self(BasicEffect.give(MobEffects.INVISIBILITY)).entity(BasicEffect.inflict(MobEffects.BLINDNESS)));
     public static final DeferredHolder<ElementEffect, ElementEffect> FLIGHT_EFFECT = element(DustElements.FLIGHT,
-            () -> new BasicEffect().self(BasicEffect.give(MobEffects.SLOW_FALLING)).entity(BasicEffect.inflict(MobEffects.SLOW_FALLING)));
+            () -> new BasicEffect().self(MovementParts::flight).entity(BasicEffect.inflict(MobEffects.SLOW_FALLING)));
     public static final DeferredHolder<ElementEffect, ElementEffect> AIR_EFFECT = element(DustElements.AIR,
             () -> new BasicEffect().block(MobParts::topple).self(BasicEffect.give(MobEffects.JUMP_BOOST)).entity(SimpleParts::pushAway));
     public static final DeferredHolder<ElementEffect, ElementEffect> POISON_EFFECT = element(DustElements.POISON,
@@ -188,7 +189,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> FRACTURE_EFFECT = element(DustElements.FRACTURE,
             () -> new BasicEffect().block(SpellConversions::convert).entity(BasicEffect.inflict(DustEffectsRegistry.FRACTURED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> LIGHTNING_EFFECT = element(DustElements.LIGHTNING,
-            () -> new BasicEffect().entity(BasicEffect.inflict(DustEffectsRegistry.CONDUCTIVE)));
+            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.DASHING)).block(MovementParts::conductiveBlock).entity(BasicEffect.inflict(DustEffectsRegistry.CONDUCTIVE)));
 
     // Elements whose only part so far is their block conversions (Features/Spells/conversions)
     public static final DeferredHolder<ElementEffect, ElementEffect> CRYSTAL_EFFECT = element(DustElements.CRYSTAL,
@@ -208,7 +209,10 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> WARP_EFFECT = element(DustElements.WARP,
             () -> new BasicEffect().self(UtilityParts::warpSelf).block(UtilityParts::warpBlock).entity(UtilityParts::warpMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> SLIME_EFFECT = element(DustElements.SLIME,
-            () -> new BasicEffect().block(SpellConversions::convert));
+            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.SLIPPERY)).entity(BasicEffect.inflict(DustEffectsRegistry.SLIPPERY)).block(SpellConversions::convert));
+
+    public static final DeferredHolder<ElementEffect, ElementEffect> SPIRIT_EFFECT = element(DustElements.SPIRIT,
+            () -> new BasicEffect().self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
 
     private static DeferredHolder<ElementEffect, ElementEffect> element(com.mowmaster.dust.Features.DustComposition.DustElement element,
                                                                         java.util.function.Supplier<ElementEffect> effect)

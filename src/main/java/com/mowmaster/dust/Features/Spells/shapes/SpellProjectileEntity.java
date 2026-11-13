@@ -97,8 +97,37 @@ public class SpellProjectileEntity extends ThrowableProjectile
             }
             return;
         }
+        // A lightning bolt bends towards the nearest conductive thing (a Conductive creature, a block a Lightning spell
+        // marked) within HOMING_RANGE
+        if (element() == DustElements.LIGHTNING) homeIn();
         // Gone too far, or too slow to matter: it fades out
         if (position().distanceTo(start) > stats.range() || getDeltaMovement().lengthSqr() < 0.0004 || tickCount > 20 * 30) dissipate();
+    }
+
+    private static final double HOMING_RANGE = 8;
+
+    private void homeIn()
+    {
+        Vec3 here = position();
+        Vec3 target = null;
+        double best = HOMING_RANGE * HOMING_RANGE;
+        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class,
+                getBoundingBox().inflate(HOMING_RANGE), other -> other != getOwner() && other.hasEffect(com.mowmaster.dust.DustRegistries.DustEffectsRegistry.CONDUCTIVE))) {
+            Vec3 at = living.position().add(0, living.getBbHeight() / 2, 0);
+            if (at.distanceToSqr(here) < best) {
+                best = at.distanceToSqr(here);
+                target = at;
+            }
+        }
+        net.minecraft.core.BlockPos marked = com.mowmaster.dust.Features.Spells.effects.BlockMarks.nearest(level(), here, Math.sqrt(best),
+                com.mowmaster.dust.Features.Spells.effects.BlockMarks.CONDUCTIVE);
+        if (marked != null) target = Vec3.atCenterOf(marked);
+        if (target == null) return;
+        Vec3 velocity = getDeltaMovement();
+        double speed = velocity.length();
+        // Turn a fifth of the way towards it each tick, keeping the speed
+        Vec3 turned = velocity.normalize().lerp(target.subtract(here).normalize(), 0.2).normalize().scale(speed);
+        setDeltaMovement(turned);
     }
 
     private void dissipate()

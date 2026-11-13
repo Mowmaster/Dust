@@ -15,6 +15,7 @@ public final class BlockMarks
     public static final String QUICK_BREAK = "quick_break";
     public static final String WISE = "wise";
     public static final String LOWER_TIER = "lower_tier";
+    public static final String CONDUCTIVE = "conductive";
 
     private record Key(ResourceKey<Level> dimension, BlockPos pos, String mark) {}
 
@@ -27,6 +28,23 @@ public final class BlockMarks
         // Tidy away the expired ones now and then, so the map doesn't grow forever
         if (MARKS.size() > 256) MARKS.values().removeIf(until -> until < level.getGameTime());
         MARKS.put(new Key(level.dimension(), pos.immutable(), mark), level.getGameTime() + ticks);
+    }
+
+    // The nearest block within radius of centre with this mark (null if none)
+    public static @org.jspecify.annotations.Nullable BlockPos nearest(Level level, net.minecraft.world.phys.Vec3 centre, double radius, String mark)
+    {
+        BlockPos best = null;
+        double bestDistance = radius * radius;
+        for (Map.Entry<Key, Long> entry : MARKS.entrySet()) {
+            Key key = entry.getKey();
+            if (!key.mark().equals(mark) || !key.dimension().equals(level.dimension()) || entry.getValue() < level.getGameTime()) continue;
+            double distance = net.minecraft.world.phys.Vec3.atCenterOf(key.pos()).distanceToSqr(centre);
+            if (distance <= bestDistance) {
+                best = key.pos();
+                bestDistance = distance;
+            }
+        }
+        return best;
     }
 
     public static boolean has(Level level, BlockPos pos, String mark)

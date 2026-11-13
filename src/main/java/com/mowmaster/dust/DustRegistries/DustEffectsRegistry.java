@@ -3,6 +3,7 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.Features.Spells.mobeffects.SpellMobEffect;
 import com.mowmaster.dust.Features.Spells.mobeffects.TickingMobEffect;
 import com.mowmaster.dust.Features.Spells.mobeffects.SpellMobEffects;
+import com.mowmaster.dust.Features.Spells.mobeffects.MovementEffects;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -130,6 +131,22 @@ public class DustEffectsRegistry
 
     // Tool on yourself: the right tool comes to hand, and a broken one is replaced (ToolSense)
     public static final Holder<MobEffect> TOOL_SENSE = MOB_EFFECTS.register("tool_sense", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xC0C0C0));
+
+    // ---- movement (Features/Spells/mobeffects/MovementEffects, the mixins) ----
+    // Slime: the ground is as slick as ice
+    public static final Holder<MobEffect> SLIPPERY = MOB_EFFECTS.register("slippery", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x7FD67F));
+    // Lightning on yourself: double-tap a movement key to dash a couple of blocks that way (client: DashHandler)
+    public static final Holder<MobEffect> DASHING = MOB_EFFECTS.register("dashing", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xBFE8FF));
+    // Flight (stronger): glide like with an elytra, without one
+    public static final Holder<MobEffect> GLIDING = MOB_EFFECTS.register("gliding", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xE0F0FF));
+    // Flight (strongest): fly as in creative while it lasts
+    public static final Holder<MobEffect> SOARING = MOB_EFFECTS.register("soaring", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFFFF, 10,
+            MovementEffects::keepFlight));
+    // Spirit on yourself: fly through blocks like a spectator
+    public static final Holder<MobEffect> SPIRIT_FORM = MOB_EFFECTS.register("spirit_form", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0xC8F0FF, 10,
+            MovementEffects::keepFlight));
+    // Spirit on a mob: a ghost for a while: it can't act or be hurt
+    public static final Holder<MobEffect> GHOSTLY = MOB_EFFECTS.register("ghostly", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0xA0E0FF));
 
     private static Identifier id(String path)
     {
