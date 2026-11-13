@@ -7,6 +7,9 @@ import com.mowmaster.dust.Features.DustComposition.ElementTesterBlock;
 import com.mowmaster.dust.Features.Machines.ResearchCrusherBlock;
 import com.mowmaster.dust.Features.Machines.ResearchCombinationBlock;
 import com.mowmaster.dust.Features.Spells.pylons.PylonBlock;
+import com.mowmaster.dust.Features.Spells.blocks.BlightBlock;
+import com.mowmaster.dust.Features.Spells.blocks.CorruptedBlock;
+import com.mowmaster.dust.Features.Spells.blocks.PoisonPoolBlock;
 import com.mowmaster.dust.Features.Spells.pylons.PylonType;
 import com.mowmaster.dust.Features.Spells.pylons.SpellPylonBlock;
 import com.mowmaster.dust.Features.Machines.ResearchDistillationBlock;
@@ -132,6 +135,14 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> COST_PYLON = pylon("cost_pylon", PylonType.COST);
     public static final DeferredBlock<Block> COUNT_PYLON = pylon("count_pylon", PylonType.COUNT);
     public static final DeferredBlock<Block> DAMAGE_PYLON = pylon("damage_pylon", PylonType.DAMAGE);
+
+    // Blocks spells leave behind (Features/Spells/blocks). No items: they only come from spells.
+    public static final DeferredBlock<Block> POISON_POOL = DUSTBLOCKS.registerBlock("poison_pool", properties -> new PoisonPoolBlock(
+            properties.mapColor(MapColor.COLOR_GREEN).noCollision().instabreak().sound(SoundType.SLIME_BLOCK).noLootTable()));
+    public static final DeferredBlock<Block> BLIGHT = DUSTBLOCKS.registerBlock("blight", properties -> new BlightBlock(
+            properties.mapColor(MapColor.COLOR_RED).noCollision().instabreak().sound(SoundType.SCULK).noLootTable()));
+    public static final DeferredBlock<Block> CORRUPTED = DUSTBLOCKS.registerBlock("corrupted_block", properties -> new CorruptedBlock(
+            properties.mapColor(MapColor.COLOR_PURPLE).strength(1.5F, 3.0F).sound(SoundType.SCULK).noLootTable()));
 
     private static DeferredBlock<Block> pylon(String name, PylonType type)
     {

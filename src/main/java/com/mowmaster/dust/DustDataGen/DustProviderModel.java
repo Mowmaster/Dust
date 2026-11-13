@@ -1,5 +1,7 @@
 package com.mowmaster.dust.DustDataGen;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.List;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustReferences;
@@ -66,6 +68,11 @@ public class DustProviderModel extends ModelProvider {
         createElementStations(blockModels, itemModels);
         createSpellScroll(itemModels);
         createPylons(blockModels);
+        // Blocks spells leave behind: their models are in models/block/spell (no items)
+        for (Block block : List.of(DustBlockRegistry.POISON_POOL.get(), DustBlockRegistry.BLIGHT.get(), DustBlockRegistry.CORRUPTED.get())) {
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(
+                    Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/spell/" + BuiltInRegistries.BLOCK.getKey(block).getPath()))));
+        }
 
         itemModels.generateFlatItem(DustItemRegistry.DUST_RED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.DUST_GREEN.get(), ModelTemplates.FLAT_ITEM);

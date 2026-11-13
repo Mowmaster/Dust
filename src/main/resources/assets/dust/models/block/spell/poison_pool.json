@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/carpet",
+  "textures": {
+    "wool": "dust:block/spell/poison_pool",
+    "particle": "dust:block/spell/poison_pool"
+  },
+  "render_type": "minecraft:translucent"
+}
