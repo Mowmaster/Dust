@@ -458,6 +458,8 @@
   "effect.dust.mana_surge": "Mana Surge",
   "effect.dust.hostile": "Hostile",
   "effect.dust.friendly": "Friendly",
+  "effect.dust.rooting": "Rooting",
+  "effect.dust.rooted": "Rooted",
   "dust.social.accept": "[Accept]",
   "dust.social.deny": "[Deny]",
   "dust.social.self": "You can't do that with yourself.",

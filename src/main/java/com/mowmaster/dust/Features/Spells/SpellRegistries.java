@@ -14,6 +14,7 @@ import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.MagicParts;
 import com.mowmaster.dust.Features.Spells.effects.PetGhosts;
+import com.mowmaster.dust.Features.Spells.effects.RootParts;
 import com.mowmaster.dust.Features.Spells.radiance.Radiance;
 import com.mowmaster.dust.Features.Spells.voidrift.VoidParts;
 import com.mowmaster.dust.Features.Spells.soul.SoulParts;
@@ -187,7 +188,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> PLANTS_EFFECT = element(DustElements.PLANTS,
             () -> new BasicEffect().self(UtilityParts::plantHeld).block(UtilityParts::plantFlower).entity(BasicEffect.inflict(DustEffectsRegistry.TANGLED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> TREES_EFFECT = element(DustElements.TREES,
-            () -> new BasicEffect().block(UtilityParts::fellTree).self(BasicEffect.give(DustEffectsRegistry.THORNS)));
+            () -> new BasicEffect().block(UtilityParts::fellTree).self(BasicEffect.give(DustEffectsRegistry.THORNS)).entity(RootParts::roots));
     public static final DeferredHolder<ElementEffect, ElementEffect> KNOWLEDGE_EFFECT = element(DustElements.KNOWLEDGE,
             () -> new BasicEffect().block(MobParts::markWise).self(BasicEffect.give(DustEffectsRegistry.INSIGHT)).entity(BasicEffect.inflict(DustEffectsRegistry.ENLIGHTENED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> FUNGUS_EFFECT = element(DustElements.FUNGUS,

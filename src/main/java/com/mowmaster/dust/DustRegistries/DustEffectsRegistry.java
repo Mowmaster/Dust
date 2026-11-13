@@ -155,6 +155,16 @@ public class DustEffectsRegistry
     public static final Holder<MobEffect> HOSTILE = MOB_EFFECTS.register("hostile", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xD03030));
     // Radiance: marked friendly by another player
     public static final Holder<MobEffect> FRIENDLY = MOB_EFFECTS.register("friendly", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x40C040));
+    // Trees on a mob: roots building up, a stack a level (Features/Spells/effects/RootParts). Each stack slows it
+    // 0.8% (80% at 100); at 100 stacks a tree grows where it stands
+    public static final Holder<MobEffect> ROOTING = MOB_EFFECTS.register("rooting", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x6B4F2A)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id("effect.rooting"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
+                    amplifier -> -Math.min(0.8, 0.008 * (amplifier + 1))));
+    // Trees: held fast by the tree that grew around it: it can't move, jump or be knocked back
+    public static final Holder<MobEffect> ROOTED = MOB_EFFECTS.register("rooted", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0x3E6B2A)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id("effect.rooted"), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.JUMP_STRENGTH, id("effect.rooted_jump"), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, id("effect.rooted_knockback"), 1.0, AttributeModifier.Operation.ADD_VALUE));
 
     private static Identifier id(String path)
     {
