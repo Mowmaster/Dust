@@ -8,65 +8,95 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-// A player's standing with other players (attachment RADIANCE_RELATIONS), each until a game time:
-//   hostile  players they fought (either way round) in the last 5 minutes: both have each other here
-//   friends  players they've marked friendly (the other player gets the Friendly effect)
-// Synced to its own player only: their client draws the red and green arrows from it (Client/RelationArrows).
-public record RadianceRelations(Map<UUID, Long> hostile, Map<UUID, Long> friends)
+// A player's standing with other players (attachment RADIANCE_RELATIONS), synced to that player only: their client
+// draws the red and green arrows from it (Client/RelationArrows), and Radiance reads it on the server.
+//   hostile  players they fought (either way round) recently, until a game time: both have each other here
+//   marked   players they've marked friendly with magic (the other gets the Friendly effect), until a game time
+//   friends  permanent friends (/friend), both ways
+//   allies   allies for this session (/ally), both ways, gone when either leaves
+//   enemies  players they've declared enemies (/enemy), permanent, one way
+// friends, allies and enemies are a copy of the server's SocialData / Social, refreshed whenever they change and on
+// login (Social.refresh); hostile and marked live only here.
+public record RadianceRelations(Map<UUID, Long> hostile, Map<UUID, Long> marked, Set<UUID> friends, Set<UUID> allies, Set<UUID> enemies)
 {
-    private static final Codec<Map<UUID, Long>> MAP_CODEC = Codec.unboundedMap(UUIDUtil.STRING_CODEC, Codec.LONG);
+    private static final Codec<Map<UUID, Long>> TIMED_CODEC = Codec.unboundedMap(UUIDUtil.STRING_CODEC, Codec.LONG);
+    // A set saved as a list: Codec.xmap turns a List<UUID> codec into a Set<UUID> one
+    private static final Codec<Set<UUID>> SET_CODEC = UUIDUtil.CODEC.listOf().xmap(HashSet::new, java.util.List::copyOf);
 
     public static final Codec<RadianceRelations> CODEC = RecordCodecBuilder.create(i -> i.group(
-            MAP_CODEC.optionalFieldOf("hostile", Map.of()).forGetter(RadianceRelations::hostile),
-            MAP_CODEC.optionalFieldOf("friends", Map.of()).forGetter(RadianceRelations::friends)
+            TIMED_CODEC.optionalFieldOf("hostile", Map.of()).forGetter(RadianceRelations::hostile),
+            TIMED_CODEC.optionalFieldOf("marked", Map.of()).forGetter(RadianceRelations::marked),
+            SET_CODEC.optionalFieldOf("friends", Set.of()).forGetter(RadianceRelations::friends),
+            SET_CODEC.optionalFieldOf("allies", Set.of()).forGetter(RadianceRelations::allies),
+            SET_CODEC.optionalFieldOf("enemies", Set.of()).forGetter(RadianceRelations::enemies)
     ).apply(i, RadianceRelations::new));
 
-    // ByteBufCodecs.map: a map over the network, given how to make the map and how to send keys and values
-    private static final StreamCodec<RegistryFriendlyByteBuf, Map<UUID, Long>> MAP_STREAM_CODEC =
+    // ByteBufCodecs.map / .collection: maps and sets over the network, given how to make them and send their parts
+    private static final StreamCodec<RegistryFriendlyByteBuf, Map<UUID, Long>> TIMED_STREAM =
             ByteBufCodecs.map(HashMap::new, UUIDUtil.STREAM_CODEC, ByteBufCodecs.VAR_LONG);
+    private static final StreamCodec<RegistryFriendlyByteBuf, Set<UUID>> SET_STREAM =
+            ByteBufCodecs.collection(HashSet::new, UUIDUtil.STREAM_CODEC);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, RadianceRelations> STREAM_CODEC = StreamCodec.composite(
-            MAP_STREAM_CODEC, RadianceRelations::hostile,
-            MAP_STREAM_CODEC, RadianceRelations::friends,
+            TIMED_STREAM, RadianceRelations::hostile,
+            TIMED_STREAM, RadianceRelations::marked,
+            SET_STREAM, RadianceRelations::friends,
+            SET_STREAM, RadianceRelations::allies,
+            SET_STREAM, RadianceRelations::enemies,
             RadianceRelations::new);
 
-    public static final RadianceRelations NONE = new RadianceRelations(Map.of(), Map.of());
+    public static final RadianceRelations NONE = new RadianceRelations(Map.of(), Map.of(), Set.of(), Set.of(), Set.of());
 
+    // Red: declared an enemy, or fought recently
     public boolean isHostile(UUID other, long now)
     {
         Long until = hostile.get(other);
-        return until != null && until > now;
+        return enemies.contains(other) || (until != null && until > now);
     }
 
-    public boolean isFriend(UUID other, long now)
+    // Green: a friend, an ally, or marked friendly (and not hostile: hostility wins)
+    public boolean isFriendly(UUID other, long now)
     {
-        Long until = friends.get(other);
-        return until != null && until > now;
+        if (isHostile(other, now)) return false;
+        Long until = marked.get(other);
+        return friends.contains(other) || allies.contains(other) || (until != null && until > now);
     }
 
-    // The latest time any hostility runs out (0 if none)
+    // Friends or allies: the pair can't hurt each other (Social)
+    public boolean isProtected(UUID other)
+    {
+        return friends.contains(other) || allies.contains(other);
+    }
+
+    // The latest time a fight's hostility runs out (0 if none)
     public long hostileUntil()
     {
         return hostile.values().stream().mapToLong(Long::longValue).max().orElse(0);
     }
 
-    // Copies with one change, dropping anything that has run out. Fighting someone ends a friendship with them.
+    // Copies with one change (records can't be changed), dropping timed entries that have run out
     public RadianceRelations withHostile(UUID other, long until, long now)
     {
-        Map<UUID, Long> h = live(hostile, now), f = live(friends, now);
+        Map<UUID, Long> h = live(hostile, now);
         h.put(other, until);
-        f.remove(other);
-        return new RadianceRelations(h, f);
+        return new RadianceRelations(h, live(marked, now), friends, allies, enemies);
     }
 
-    public RadianceRelations withFriend(UUID other, long until, long now)
+    public RadianceRelations withMarked(UUID other, long until, long now)
     {
-        Map<UUID, Long> f = live(friends, now);
-        f.put(other, until);
-        return new RadianceRelations(live(hostile, now), f);
+        Map<UUID, Long> m = live(marked, now);
+        m.put(other, until);
+        return new RadianceRelations(live(hostile, now), m, friends, allies, enemies);
+    }
+
+    public RadianceRelations withSocial(Set<UUID> friends, Set<UUID> allies, Set<UUID> enemies)
+    {
+        return new RadianceRelations(hostile, marked, Set.copyOf(friends), Set.copyOf(allies), Set.copyOf(enemies));
     }
 
     private static Map<UUID, Long> live(Map<UUID, Long> map, long now)

@@ -29,13 +29,14 @@ import java.util.function.Predicate;
 
 // Radiance's self and entity parts (its block part spreads grass, mycelium, nylium... through the conversion table),
 // and the player relations behind them:
-//   Self    every effect the caster has is shared with the friendly creatures around them: players who aren't
-//           hostile to them, and mobs that aren't monsters or after the caster
+//   Self    every effect the caster has is shared with the friendly creatures around them: their friends, allies and
+//           players marked friendly (Social), and mobs that aren't monsters or after the caster
 //   Entity  every effect the target has is shared with the mobs around it
 //   Hostile players who hurt each other are both marked Hostile for 5 minutes (milk and cleansing can't remove it),
 //           and each sees a red arrow pointing at the other (Client/RelationArrows)
-//   Friendly  befriend(): the friend gets the Friendly effect, and the caster sees a green arrow pointing at them.
-//           How it's given in play comes later; for now /dustmagic friend
+//   Friendly  befriend(): marks a player friendly for a while (magic; how it's given in play comes later, for now
+//           /dustmagic markfriendly). They get the Friendly effect; the caster sees a green arrow at them.
+//   Friends, allies and enemies by command: Social
 @EventBusSubscriber(modid = DustReferences.MODID)
 public final class Radiance
 {
@@ -64,7 +65,8 @@ public final class Radiance
         RadianceRelations relations = caster instanceof Player ? caster.getData(DustAttachmentTypeRegistry.RADIANCE_RELATIONS) : RadianceRelations.NONE;
         Predicate<LivingEntity> friendly = other -> {
             if (other == caster || !other.isAlive()) return false;
-            if (other instanceof Player player) return !player.isSpectator() && !relations.isHostile(player.getUUID(), now);
+            // Players: only friends, allies and those marked friendly
+            if (other instanceof Player player) return !player.isSpectator() && relations.isFriendly(player.getUUID(), now);
             if (other instanceof Enemy) return false;
             return !(other instanceof Mob mob && mob.getTarget() == caster);
         };
@@ -103,7 +105,7 @@ public final class Radiance
     {
         long now = caster.level().getGameTime();
         caster.setData(DustAttachmentTypeRegistry.RADIANCE_RELATIONS,
-                caster.getData(DustAttachmentTypeRegistry.RADIANCE_RELATIONS).withFriend(friend.getUUID(), now + ticks, now));
+                caster.getData(DustAttachmentTypeRegistry.RADIANCE_RELATIONS).withMarked(friend.getUUID(), now + ticks, now));
         friend.addEffect(new MobEffectInstance(DustEffectsRegistry.FRIENDLY, ticks, 0), caster);
     }
 

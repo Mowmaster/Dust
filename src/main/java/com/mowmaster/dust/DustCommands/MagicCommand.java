@@ -44,7 +44,7 @@ import java.util.function.BiConsumer;
 //   /dustmagic spell <element> <shape> [attributes]   a Spell Scroll for you, e.g.
 //                                                     /dustmagic spell dust:fire dust:projectile potency=1 size=2
 //   /dustmagic void                                   what void rifts have swallowed so far (VoidStorage)
-//   /dustmagic friend <players> [seconds]             mark players as your friends (Radiance; default 5 minutes)
+//   /dustmagic markfriendly <players> [seconds]       mark players friendly by magic (Radiance; default 5 minutes)
 // Elements are ids, with suggestions: dust:fire, dust:knowledge...
 public class MagicCommand
 {
@@ -60,7 +60,7 @@ public class MagicCommand
         dispatcher.register(Commands.literal("dustmagic")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("void").executes(c -> showVoid(c.getSource())))
-                .then(Commands.literal("friend")
+                .then(Commands.literal("markfriendly")
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .executes(c -> befriend(c.getSource(), EntityArgument.getPlayers(c, "targets"), 300))
                                 .then(Commands.argument("seconds", IntegerArgumentType.integer(1))

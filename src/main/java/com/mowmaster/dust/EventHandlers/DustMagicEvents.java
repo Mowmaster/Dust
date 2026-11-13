@@ -250,6 +250,7 @@ public class DustMagicEvents {
         new PlayerModifyElement(event.getDispatcher());
         new AncientGlyphsCommand(event.getDispatcher());
         new MagicCommand(event.getDispatcher());
+        new SocialCommands(event.getDispatcher());
     }
 
 
