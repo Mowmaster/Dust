@@ -8,6 +8,7 @@ import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.Spells.SpellRegistries;
 import com.mowmaster.dust.Features.Spells.api.Spell;
+import com.mowmaster.dust.Features.Spells.voidrift.VoidStorage;
 import net.minecraft.world.item.ItemStack;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ import java.util.function.BiConsumer;
 //   /dustmagic attune <players> <element>   /dustmagic unattune <players> <element>
 //   /dustmagic spell <element> <shape> [attributes]   a Spell Scroll for you, e.g.
 //                                                     /dustmagic spell dust:fire dust:projectile potency=1 size=2
+//   /dustmagic void                                   what void rifts have swallowed so far (VoidStorage)
 // Elements are ids, with suggestions: dust:fire, dust:knowledge...
 public class MagicCommand
 {
@@ -56,6 +58,7 @@ public class MagicCommand
     {
         dispatcher.register(Commands.literal("dustmagic")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.literal("void").executes(c -> showVoid(c.getSource())))
                 .then(Commands.literal("spell")
                         .then(Commands.argument("element", IdentifierArgument.id()).suggests(ELEMENTS)
                                 .then(Commands.argument("shape", IdentifierArgument.id()).suggests(SHAPES)
@@ -124,6 +127,21 @@ public class MagicCommand
     }
 
     // A scroll with the spell; attributes as "name=level" separated by spaces (names without a namespace are dust's)
+    // Totals, then the ten kinds of item there's most of
+    private static int showVoid(CommandSourceStack source)
+    {
+        VoidStorage storage = VoidStorage.get(source.getServer());
+        int creatures = storage.creatures().values().stream().mapToInt(Integer::intValue).sum();
+        source.sendSuccess(() -> Component.literal("The void holds " + storage.totalItems() + " items (" + storage.items().size()
+                + " kinds), " + storage.experience() + " experience and " + creatures + " creatures"), false);
+        storage.items().stream()
+                // Comparator.comparingLong(...).reversed(): biggest count first
+                .sorted(java.util.Comparator.comparingLong(VoidStorage.Entry::count).reversed())
+                .limit(10)
+                .forEach(entry -> source.sendSuccess(() -> Component.literal("  " + entry.count() + " x ").append(entry.item().getHoverName()), false));
+        return 1;
+    }
+
     private static int giveScroll(CommandContext<CommandSourceStack> context, String attributeText) throws CommandSyntaxException
     {
         ServerPlayer player = context.getSource().getPlayerOrException();

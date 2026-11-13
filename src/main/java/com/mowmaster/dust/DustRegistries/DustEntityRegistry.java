@@ -3,6 +3,8 @@ package com.mowmaster.dust.DustRegistries;
 import com.mowmaster.dust.Features.Spells.shapes.SpellProjectileEntity;
 import com.mowmaster.dust.Features.Spells.entities.AnimatedBlockEntity;
 import com.mowmaster.dust.Features.Spells.entities.FloatingBlockEntity;
+import com.mowmaster.dust.Features.Spells.voidrift.VoidChestEntity;
+import com.mowmaster.dust.Features.Spells.voidrift.VoidRiftEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 
 import com.mowmaster.dust.DustReferences;
@@ -33,6 +35,15 @@ public class DustEntityRegistry {
     public static final DeferredHolder<EntityType<?>, EntityType<AnimatedBlockEntity>> ANIMATED_BLOCK = ENTITY_TYPES.registerEntityType("animated_block",
             AnimatedBlockEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
                     .sized(0.9F, 0.9F).clientTrackingRange(8));
+
+    // Void (Features/Spells/voidrift): the winged ender chest at your shoulder, updated every tick so it keeps up
+    // smoothly; and the rift that swallows things (fireImmune: lava and fire can't end it early)
+    public static final DeferredHolder<EntityType<?>, EntityType<VoidChestEntity>> VOID_CHEST = ENTITY_TYPES.registerEntityType("void_chest",
+            VoidChestEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+                    .sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<VoidRiftEntity>> VOID_RIFT = ENTITY_TYPES.registerEntityType("void_rift",
+            VoidRiftEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+                    .sized(1.0F, 1.0F).clientTrackingRange(8).updateInterval(20).fireImmune());
 
     // registerEntityType builds the EntityType with its own registry key (dust:element_orb). Before, every orb was
     // built with the same made-up key "dust:base_orb_key", so they all shared one description id / loot table id.

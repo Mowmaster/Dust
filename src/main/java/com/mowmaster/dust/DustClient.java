@@ -111,6 +111,9 @@ public class DustClient {
         // Blocks brought to life by spells, drawn as their blocks (the animated one hops as it scurries)
         event.registerEntityRenderer(DustEntityRegistry.FLOATING_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0));
         event.registerEntityRenderer(DustEntityRegistry.ANIMATED_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0.15F));
+        // Void: the winged chest; the rift is only particles (spawned by the entity itself)
+        event.registerEntityRenderer(DustEntityRegistry.VOID_CHEST.get(), com.mowmaster.dust.Features.Spells.Client.VoidChestRenderer::new);
+        event.registerEntityRenderer(DustEntityRegistry.VOID_RIFT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
     // Models drawn by code rather than placed as blocks (the crusher's wheels)
