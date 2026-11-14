@@ -275,6 +275,7 @@ public class DustProviderModel extends ModelProvider {
     {
         station(blockModels, DustBlockRegistry.RESEARCH_TRANSFORMATION.get(), "research_transformational", "research_transformational");
         station(blockModels, DustBlockRegistry.RESEARCH_COMBINATION.get(), "research_combination", "research_combination");
+        station(blockModels, DustBlockRegistry.ELEMENT_CRAFTER.get(), "element_crafter", "element_crafter");
         station(blockModels, DustBlockRegistry.RESEARCH_MIXING.get(), "research_mixing_body", "research_mixing");
 
         Identifier dustModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_DUST.get(),

@@ -125,6 +125,13 @@ public class DustRecipe extends CustomRecipe
         for (int slot = 0; slot < input.size(); slot++) {
             if (!input.getItem(slot).isEmpty()) items.add(input.getItem(slot));
         }
+        return matchesItems(items, dusts, ingredients);
+    }
+
+    // The shared matching (the vanilla table here, the Element Crafter's recipes too): every item fills exactly one
+    // need (a dust need or an ingredient), and every need is filled
+    public static boolean matchesItems(List<ItemStack> items, List<DustNeed> dusts, List<Ingredient> ingredients)
+    {
         List<Predicate<ItemStack>> needs = new ArrayList<>(dusts);
         // Ingredient::test as a Predicate: a method reference standing in for "stack -> ingredient.test(stack)"
         for (Ingredient ingredient : ingredients) needs.add(ingredient::test);

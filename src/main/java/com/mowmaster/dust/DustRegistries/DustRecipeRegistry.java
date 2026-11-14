@@ -25,8 +25,19 @@ public class DustRecipeRegistry
     public static final Supplier<RecipeSerializer<DustRecipe>> DUST_CRAFTING = RECIPE_SERIALIZERS.register("dust_crafting",
             () -> new RecipeSerializer<>(DustRecipe.MAP_CODEC, DustRecipe.STREAM_CODEC));
 
+    // The Element Crafter's recipes (Features/Crafting): their own recipe type, so the vanilla table never uses them
+    public static final Supplier<RecipeSerializer<com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe>> ELEMENT_CRAFTING = RECIPE_SERIALIZERS.register("element_crafting",
+            () -> new RecipeSerializer<>(com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.MAP_CODEC, com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.STREAM_CODEC));
+
+    // Recipe types: what a recipe is for. RecipeType.simple names one by its id.
+    public static final DeferredRegister<net.minecraft.world.item.crafting.RecipeType<?>> RECIPE_TYPES =
+            DeferredRegister.create(Registries.RECIPE_TYPE, DustReferences.MODID);
+    public static final Supplier<net.minecraft.world.item.crafting.RecipeType<com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe>> ELEMENT_CRAFTING_TYPE =
+            RECIPE_TYPES.register("element_crafting", id -> net.minecraft.world.item.crafting.RecipeType.simple(id));
+
     public static void register(IEventBus eventBus)
     {
         RECIPE_SERIALIZERS.register(eventBus);
+        RECIPE_TYPES.register(eventBus);
     }
 }

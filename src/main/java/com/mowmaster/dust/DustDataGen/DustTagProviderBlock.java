@@ -19,6 +19,7 @@ public class DustTagProviderBlock extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(DustBlockRegistry.SPELL_CASTER.key())
+                .add(DustBlockRegistry.ELEMENT_CRAFTER.key())
                 .add(DustBlockRegistry.BLOCK_OF_DUST_RED.key())
                 .add(DustBlockRegistry.BLOCK_OF_DUST_GREEN.key())
                 .add(DustBlockRegistry.BLOCK_OF_DUST_BLUE.key())

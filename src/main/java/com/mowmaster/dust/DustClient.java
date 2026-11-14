@@ -104,6 +104,7 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.SPELL_PYLON.get(), com.mowmaster.dust.Features.Spells.Client.SpellPylonRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
         // A spell in flight draws nothing itself: its trail is particles (SpellProjectileEntity.tick)
@@ -152,6 +153,7 @@ public class DustClient {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
         // Element Tester: crystal colours and gauge lines, one tint source per tint index (see ExaminerLayout)
         event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
+        event.register(com.mowmaster.dust.Features.Crafting.Client.ElementCrafterTint.all(), DustBlockRegistry.ELEMENT_CRAFTER.get());
     }
 
     // Client-side handlers for server -> client packets that touch client-only code (the packets are registered in

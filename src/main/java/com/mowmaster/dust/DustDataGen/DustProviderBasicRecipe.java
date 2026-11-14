@@ -104,6 +104,31 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                         Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.ELEMENT_TESTER.id()))))
                 .save(output, DustReferences.MODID + ":element_tester");
 
+        // Element Crafter: a dust recipe on the vanilla table (after the Element Tester's research), any item of pure
+        // red and blue dust, a crafting table and four glass bottles (the jars)
+        SpecialRecipeBuilder.special(() -> new DustRecipe(
+                        new ItemStackTemplate(DustBlockRegistry.ELEMENT_CRAFTER.get().asItem()),
+                        List.of(DustRecipe.DustNeed.pure(EnumElement.FIRE), DustRecipe.DustNeed.pure(EnumElement.WATER)),
+                        List.of(Ingredient.of(Items.CRAFTING_TABLE), Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.GLASS_BOTTLE),
+                                Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.GLASS_BOTTLE)),
+                        Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.ELEMENT_TESTER.id()))))
+                .save(output, DustReferences.MODID + ":element_crafter");
+
+        // Element crafting (the Element Crafter), examples: grid items plus dust from the jars
+        SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
+                        new ItemStackTemplate(Items.BLAZE_POWDER),
+                        List.of(), List.of(Ingredient.of(Items.GUNPOWDER)),
+                        List.of(new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.FIRE, 20)),
+                        Optional.empty()))
+                .save(output, DustReferences.MODID + ":element_crafting/blaze_powder");
+        SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
+                        new ItemStackTemplate(Items.GLOWSTONE_DUST, 2),
+                        List.of(), List.of(Ingredient.of(Items.REDSTONE)),
+                        List.of(new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.LIGHT, 10),
+                                new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.FIRE, 5)),
+                        Optional.empty()))
+                .save(output, DustReferences.MODID + ":element_crafting/glowstone_dust");
+
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
         shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)
                 .requires(Items.PAPER).requires(Items.PAPER).requires(Items.PAPER)

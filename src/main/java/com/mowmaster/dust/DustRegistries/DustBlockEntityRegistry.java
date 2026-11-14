@@ -30,6 +30,9 @@ public class DustBlockEntityRegistry
     // new BlockEntityType<>(factory, blocks): how to make one, and the blocks allowed to have one
     public static final Supplier<BlockEntityType<ElementTesterBlockEntity>> ELEMENT_TESTER = BLOCK_ENTITIES.register("element_tester",
             () -> new BlockEntityType<>(ElementTesterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_TESTER.get())));
+    // The Element Crafter (Features/Crafting): the grid, the jars and the result
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Crafting.ElementCrafterBlockEntity>> ELEMENT_CRAFTER = BLOCK_ENTITIES.register("element_crafter",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Crafting.ElementCrafterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_CRAFTER.get())));
 
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity>> SPELL_CASTER = BLOCK_ENTITIES.register("spell_caster",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity::new, Set.of(DustBlockRegistry.SPELL_CASTER.get())));

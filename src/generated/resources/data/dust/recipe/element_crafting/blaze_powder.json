@@ -1,0 +1,15 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:fire"
+    }
+  ],
+  "ingredients": [
+    "minecraft:gunpowder"
+  ],
+  "result": {
+    "id": "minecraft:blaze_powder"
+  }
+}
