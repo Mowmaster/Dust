@@ -8,6 +8,13 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:copy_components",
+            "include": [
+              "minecraft:dyed_color"
+            ],
+            "source": "block_entity"
+          },
           "name": "dust:element_crafter"
         }
       ],

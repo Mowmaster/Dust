@@ -275,7 +275,14 @@ public class DustProviderModel extends ModelProvider {
     {
         station(blockModels, DustBlockRegistry.RESEARCH_TRANSFORMATION.get(), "research_transformational", "research_transformational");
         station(blockModels, DustBlockRegistry.RESEARCH_COMBINATION.get(), "research_combination", "research_combination");
-        station(blockModels, DustBlockRegistry.ELEMENT_CRAFTER.get(), "element_crafter", "element_crafter");
+        // The Element Crafter: as a station, but the item shows its dye colour on the slabs and posts (tint indices 0 and 1;
+        // "minecraft:dye" reads the item's dyed_color, -1 = white undyed)
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.ELEMENT_CRAFTER.get(),
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/element_crafter")))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.ELEMENT_CRAFTER.asItem(),
+                ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/element_crafter"),
+                        new net.minecraft.client.color.item.Dye(-1), new net.minecraft.client.color.item.Dye(-1)));
         station(blockModels, DustBlockRegistry.RESEARCH_MIXING.get(), "research_mixing_body", "research_mixing");
 
         Identifier dustModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_DUST.get(),

@@ -153,7 +153,6 @@ public class DustClient {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
         // Element Tester: crystal colours and gauge lines, one tint source per tint index (see ExaminerLayout)
         event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
-        event.register(com.mowmaster.dust.Features.Crafting.Client.ElementCrafterTint.all(), DustBlockRegistry.ELEMENT_CRAFTER.get());
     }
 
     // Client-side handlers for server -> client packets that touch client-only code (the packets are registered in

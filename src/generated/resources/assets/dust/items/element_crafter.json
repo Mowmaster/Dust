@@ -1,6 +1,16 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dust:block/station/element_crafter"
+    "model": "dust:block/station/element_crafter",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -1
+      },
+      {
+        "type": "minecraft:dye",
+        "default": -1
+      }
+    ]
   }
 }

@@ -28,6 +28,9 @@ public class DustTagProviderItem extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        // Dyeable in a crafting grid with MowLib's dyes (ColorableItemDyeRecipe): the crafter keeps the colour when placed
+        tag(com.mowmaster.mowlib.recipes.ColorableItemDyeRecipe.DYEABLE_IN_CRAFTING).add(blockItem(DustBlockRegistry.ELEMENT_CRAFTER));
+
         // Every element's dust (the five primals' and the rest: DustItemRegistry.DUSTS)
         var dusts = tag(DustTags.Items.MAGICAL_DUST_ITEMS);
         DustItemRegistry.DUSTS.values().forEach(item -> dusts.add(item.key()));

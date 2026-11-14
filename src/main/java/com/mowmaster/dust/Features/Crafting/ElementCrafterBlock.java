@@ -6,6 +6,7 @@ import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Machines.StationBlock;
 import com.mowmaster.dust.Features.Machines.StationInteractions;
 import com.mowmaster.dust.Features.Machines.StationSlot;
+import com.mowmaster.mowlib.tint.IColorableBlock;
 import com.mowmaster.mowlib.util.CBPixelBox;
 import com.mowmaster.mowlib.util.LeftClickCooldown;
 import net.minecraft.core.BlockPos;
@@ -35,9 +36,17 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 //   right-click a jar with an empty hand          says what's in it; sneaking, clears an empty jar's element
 //   left-click a filled grid cell                 takes from it (StationInteractions)
 //   left-click anywhere else, with a result       crafts it (sneak: a stack); with no result, it's mined as normal
+//   right-click with a dye (not on a grid cell)   dyes it (MowLib's IColorableBlock): the slabs and posts together
+// Tint indices (the model): 0 the slabs and 1 the posts (one dye colour for both), 2-5 the jar lids (their element's
+// colour). The block entity answers all six (ElementCrafterBlockEntity.getTint); MowLib registers the tint sources.
 @EventBusSubscriber(modid = DustReferences.MODID)
-public class ElementCrafterBlock extends StationBlock
+public class ElementCrafterBlock extends StationBlock implements IColorableBlock
 {
+    // One dyeable region: the slabs and posts (tint indices 0 and 1)
+    public static final int DYE_REGIONS = 1;
+    // The lids' tint indices come after the slabs' and posts'
+    public static final int FIRST_LID = 2;
+
     // The slab-shaped table with its middle columns, and the jars round it
     private static final VoxelShape SHAPE = Shapes.or(
             Block.box(0, 12, 0, 16, 16, 16),
@@ -54,6 +63,23 @@ public class ElementCrafterBlock extends StationBlock
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return new ElementCrafterBlockEntity(pos, state);
+    }
+
+    // ---- dyeing (IColorableBlock) ----
+
+    // One tint source per model tint index: MowLib registers this many for the block (MowLibClient), each reading the
+    // block entity's getTint. Only region 0 is dyed (IColorableBlock's getTintRegion is 0 wherever you click).
+    @Override
+    public int getTintRegionCount()
+    {
+        return FIRST_LID + ElementCrafterLayout.JARS;
+    }
+
+    // It has its own block entity (the grid and jars), not MowLib's plain tint block entity
+    @Override
+    public boolean usesTintBlockEntity()
+    {
+        return false;
     }
 
     // The jar under the click, or -1
@@ -81,7 +107,11 @@ public class ElementCrafterBlock extends StationBlock
             }
             return InteractionResult.FAIL;
         }
-        return StationInteractions.rightClick(stack, level, pos, player, hit);
+        // Into the clicked grid cell or jar if it takes it (a dye on a grid cell is an ingredient); otherwise a dye
+        // dyes the crafter
+        InteractionResult result = StationInteractions.rightClick(stack, level, pos, player, hit);
+        if (result != InteractionResult.TRY_WITH_EMPTY_HAND) return result;
+        return tryDyeBlock(stack, state, level, pos, player, hit);
     }
 
     @Override

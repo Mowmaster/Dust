@@ -11,8 +11,12 @@ import com.mowmaster.dust.Features.Machines.StationSlot;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
 import com.mowmaster.mowlib.ghost.GhostItem;
 import com.mowmaster.mowlib.storage.StorageInteractions;
+import com.mowmaster.mowlib.tint.CBTintData;
+import com.mowmaster.mowlib.tint.ITintHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -44,9 +48,17 @@ import java.util.Optional;
 //              server has the recipes, clients don't) and sent to clients as a ghost item over the grid, with what it
 //              takes from the jars underneath (red if the jars are short)
 //   crafting   left-click the crafter (not a filled cell): crafts once; sneaking, as many as make a stack
-// What's saved is also what clients get (CBSyncedBlockEntity): the jars for the lid colours, the grid and the ghost.
-public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+//   colours    dyed with MowLib's dyes (ElementCrafterBlock is an IColorableBlock), kept in a CBTintData: one colour
+//              for the slabs and posts. Also the lids: getTint hands the model every tint index's colour (Client: MowLib's
+//              CBBlockEntityTintSource asks this for each one).
+// What's saved is also what clients get (CBSyncedBlockEntity): the jars for the lid colours, the grid, the ghost and
+// the dye colours.
+public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IStationSlots, ITintHolder
 {
+    private static final int WHITE = 0xFFFFFF;
+
+    // The dye colours (MowLib keeps per-region colours, saving and the item's dyed_color in this)
+    private final CBTintData tints = new CBTintData(this, ElementCrafterBlock.DYE_REGIONS);
     // One jar: its element (null: none set yet / cleared) and how much dust is in it
     private final @Nullable DustElement[] jarElements = new DustElement[ElementCrafterLayout.JARS];
     private final int[] jarAmounts = new int[ElementCrafterLayout.JARS];
@@ -93,6 +105,31 @@ public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IS
     public boolean hasResult()
     {
         return !ghosts.isEmpty();
+    }
+
+    // ---- colours (ITintHolder) ----
+
+    @Override
+    public int getColor(int region)
+    {
+        return tints.getColor(region);
+    }
+
+    @Override
+    public void setColor(int region, int color)
+    {
+        tints.setColor(region, color);
+    }
+
+    // The colour (0xRRGGBB) for a model tint index: the dye colour for the slabs and posts (both region 0; white
+    // undyed), the jar's element colour for a lid (white with none set)
+    @Override
+    public int getTint(int tintIndex)
+    {
+        if (tintIndex < ElementCrafterBlock.FIRST_LID) return tints.getTint(0);
+        int jar = tintIndex - ElementCrafterBlock.FIRST_LID;
+        if (jar >= ElementCrafterLayout.JARS || jarElements[jar] == null) return WHITE;
+        return jarElements[jar].color() & 0xFFFFFF;
     }
 
     // ---- jars ----
@@ -294,6 +331,7 @@ public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IS
         output.store("jars", Jar.CODEC.listOf(), jars);
         output.store("grid", ItemStack.OPTIONAL_CODEC.listOf(), Arrays.asList(grid));
         if (!ghosts.isEmpty()) output.store("ghosts", GhostItem.CODEC.listOf(), ghosts);
+        tints.save(output);
     }
 
     @Override
@@ -308,8 +346,24 @@ public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IS
         List<ItemStack> cells = input.read("grid", ItemStack.OPTIONAL_CODEC.listOf()).orElse(List.of());
         for (int cell = 0; cell < ElementCrafterLayout.CELLS; cell++) grid[cell] = cell < cells.size() ? cells.get(cell) : ItemStack.EMPTY;
         ghosts = input.read("ghosts", GhostItem.CODEC.listOf()).orElse(List.of());
-        // The lid colours come from here (Client/ElementCrafterTint): ask for the block to be drawn again
-        if (level != null && level.isClientSide()) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        // The colours: on the client this also asks for the block to be drawn again, so the lids and dyes follow
+        tints.load(input);
+    }
+
+    // Placed from an item that was dyed (crafted with dyes, or broken while dyed): it takes that colour
+    @Override
+    protected void applyImplicitComponents(DataComponentGetter components)
+    {
+        super.applyImplicitComponents(components);
+        tints.applyItemColor(components, 0);
+    }
+
+    // Turned into an item (broken: the loot table copies it; creative pick-block): its colour goes on it
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components)
+    {
+        super.collectImplicitComponents(components);
+        tints.collectItemColor(components);
     }
 
     // Recipes may have changed since this was saved (a datapack reload, an update): work the result out again
