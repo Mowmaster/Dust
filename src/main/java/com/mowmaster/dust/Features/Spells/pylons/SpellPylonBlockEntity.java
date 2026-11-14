@@ -82,6 +82,12 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     private boolean near;
     private int appear;
     private int lastAppear;
+    // The ghosts (where the next pylon can go) work the same way from further off: they spin up out of the ground
+    // while a player is within GHOST_DISTANCE, and poof away when they leave
+    public static final double GHOST_DISTANCE = NEAR_DISTANCE * 4;
+    public static final int GHOST_APPEAR_TICKS = 20;
+    private int ghostAppear;
+    private int lastGhostAppear;
 
     public SpellPylonBlockEntity(BlockPos pos, BlockState state)
     {
@@ -577,10 +583,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
 
     // ---- client: the icons, near a player ----
 
-    // Whether the player is within NEAR_DISTANCE of any block of the tree (this pylon or any of its pylons)
-    private boolean isNear(net.minecraft.world.entity.player.Player player)
+    // Whether the player is within this distance of any block of the tree (this pylon or any of its pylons)
+    private boolean isNear(net.minecraft.world.entity.player.Player player, double distance)
     {
-        double max = NEAR_DISTANCE * NEAR_DISTANCE;
+        double max = distance * distance;
         if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(worldPosition)) <= max) return true;
         for (BlockPos pos : chain) {
             if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos)) <= max) return true;
@@ -594,13 +600,25 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     public static void clientTick(Level level, BlockPos pos, BlockState state, SpellPylonBlockEntity pylon)
     {
         pylon.lastAppear = pylon.appear;
+        pylon.lastGhostAppear = pylon.ghostAppear;
         if (pylon.element == null) {
             pylon.appear = 0;
+            pylon.ghostAppear = 0;
             return;
         }
-        boolean nowNear = false;
+        boolean nowNear = false, ghostsNear = false;
         for (net.minecraft.world.entity.player.Player player : level.players()) {
-            if (player.isLocalPlayer() && !player.isSpectator() && pylon.isNear(player)) nowNear = true;
+            if (!player.isLocalPlayer() || player.isSpectator()) continue;
+            if (pylon.isNear(player, NEAR_DISTANCE)) nowNear = true;
+            if (pylon.isNear(player, GHOST_DISTANCE)) ghostsNear = true;
+        }
+        // The ghosts: up while near (only while there's somewhere to put a pylon), a puff at each when they go
+        if (ghostsNear) {
+            if (pylon.ghostAppear < GHOST_APPEAR_TICKS) pylon.ghostAppear++;
+        } else if (pylon.ghostAppear > 0) {
+            pylon.ghostPoof(level);
+            pylon.ghostAppear = 0;
+            pylon.lastGhostAppear = 0;
         }
         pylon.near = nowNear;
         if (nowNear) {
@@ -647,6 +665,24 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
                         (random.nextDouble() - 0.5) * 0.08, (random.nextDouble() - 0.5) * 0.08, (random.nextDouble() - 0.5) * 0.08);
             }
         }
+    }
+
+    // The puff each ghost vanishes in
+    private void ghostPoof(Level level)
+    {
+        var random = level.getRandom();
+        for (BlockPos ghost : ghostPositions()) {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(net.minecraft.core.particles.ParticleTypes.POOF, ghost.getX() + 0.5, ghost.getY() + 0.6, ghost.getZ() + 0.5,
+                        (random.nextDouble() - 0.5) * 0.1, random.nextDouble() * 0.06, (random.nextDouble() - 0.5) * 0.1);
+            }
+        }
+    }
+
+    // How far up the ghosts are, 0 (gone) to 1 (up), smoothed between ticks
+    public float ghostAppear(float partialTick)
+    {
+        return net.minecraft.util.Mth.lerp(partialTick, lastGhostAppear, ghostAppear) / GHOST_APPEAR_TICKS;
     }
 
     // How far the icon rises above the dark square once it's all the way out (blocks)

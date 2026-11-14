@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 // The Spell Pylon's ghosts: where the next pylon can go, a pylon floats there, turning and bobbing, glowing. The Shape
-// Pylon's place shows a Shape Pylon; a modifier pylon's place shows the four kinds in turn.
+// Pylon's place shows a Shape Pylon; a modifier pylon's place shows the four kinds in turn. They only show while a
+// player is within SpellPylonBlockEntity.GHOST_DISTANCE: coming into range they spin up out of the ground (rising,
+// growing, spinning fast and slowing to their usual turn), and leaving it they poof away.
 // And its icons: the element's over the Spell Pylon, the shape's over the Shape Pylon, coming out of the little dark
 // square on top like a genie from a lamp (swirling up, stretched thin, then popping to size) while a player is near
 // (SpellPylonBlockEntity.clientTick), always facing the camera.
@@ -52,6 +54,8 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         // Each ghost place, relative to the Spell Pylon
         final List<Vec3> places = new ArrayList<>();
         float time;
+        // How far up the ghosts are, 0-1
+        float ghostAppear;
         // The icons: how far out (0-1), their textures and colour, and where the Shape Pylon is (relative)
         float appear;
         @Nullable Identifier elementIcon;
@@ -75,7 +79,8 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         List<BlockPos> ghosts = pylon.ghostPositions();
         state.time = pylon.getLevel() == null ? 0 : (pylon.getLevel().getGameTime() % 24000) + partialTick;
         extractIcons(pylon, state, partialTick);
-        if (ghosts.isEmpty()) {
+        state.ghostAppear = pylon.ghostAppear(partialTick);
+        if (ghosts.isEmpty() || state.ghostAppear <= 0) {
             state.ghost.clear();
             return;
         }
@@ -117,12 +122,23 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         if (state.elementIcon != null) genie(state.elementIcon, Vec3.ZERO, state, poseStack, submitNodeCollector, camera);
         if (state.shapeIcon != null && state.shapeAt != null) genie(state.shapeIcon, state.shapeAt, state, poseStack, submitNodeCollector, camera);
         if (state.ghost.isEmpty()) return;
-        float bob = Mth.sin(state.time * 0.1F) * 0.06F;
+        // Spinning up out of the ground, t = how far (0-1):
+        //   rise   from just under the ground to its hover height, fast then slowing (ease out)
+        //   size   popping a little past full size, then back (ease out "back")
+        //   spin   a few extra fast turns that wind down to its usual slow turn as it arrives
+        float t = Mth.clamp(state.ghostAppear, 0F, 1F);
+        float rise = 1 - (1 - t) * (1 - t) * (1 - t);
+        float overshoot = 1.7F;
+        float pop = 1 + (overshoot + 1) * (float) Math.pow(t - 1, 3) + overshoot * (float) Math.pow(t - 1, 2);
+        float scale = GHOST_SCALE * Math.max(0.02F, pop);
+        float spin = (state.time * 3 + 1080F * (1 - t) * (1 - t)) % 360;
+        float bob = t >= 1 ? Mth.sin(state.time * 0.1F) * 0.06F : 0;
+        float height = Mth.lerp(rise, -0.25F, 0.3F) + bob;
         for (Vec3 place : state.places) {
             poseStack.pushPose();
-            poseStack.translate(place.x + 0.5, place.y + 0.3 + bob, place.z + 0.5);
-            poseStack.rotate(Axis.YP.rotationDegrees((state.time * 3) % 360));
-            poseStack.scale(GHOST_SCALE, GHOST_SCALE, GHOST_SCALE);
+            poseStack.translate(place.x + 0.5, place.y + height, place.z + 0.5);
+            poseStack.rotate(Axis.YP.rotationDegrees(spin));
+            poseStack.scale(scale, scale, scale);
             state.ghost.submit(poseStack, submitNodeCollector, FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
