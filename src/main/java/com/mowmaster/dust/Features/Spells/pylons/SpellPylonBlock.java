@@ -103,6 +103,18 @@ public class SpellPylonBlock extends Block implements EntityBlock
             }
             return InteractionResult.SUCCESS;
         }
+        // A spell tool (a crystal weapon or tool) takes a Touch spell
+        if (com.mowmaster.dust.Features.Spells.SpellTools.isSpellTool(stack)) {
+            if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+            String problem = pylon.recordTool(stack);
+            if (problem == null) {
+                level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.2F);
+                serverPlayer.sendOverlayMessage(Component.translatable("dust.pylon.tool_recorded"));
+            } else {
+                serverPlayer.sendOverlayMessage(Component.translatable(problem));
+            }
+            return InteractionResult.SUCCESS;
+        }
         if (stack.getItem() instanceof SpellScrollItem) {
             if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
             if (pylon.record(stack)) {

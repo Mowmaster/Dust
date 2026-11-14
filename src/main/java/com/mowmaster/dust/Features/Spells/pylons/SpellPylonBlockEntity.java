@@ -689,6 +689,19 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     }
 
     // A Spell Scroll used on it: the spell as it stands is written onto the scroll, linked to this tree
+    // A spell tool used on it (SpellTools): it takes the spell as it stands, like a scroll, if it's a Touch spell.
+    // Returns null if it took it, otherwise why not (a translation key).
+    public @Nullable String recordTool(ItemStack tool)
+    {
+        int[] pylons = new int[1];
+        Spell spell = compile(pylons);
+        if (spell == null) return "dust.pylon.cant_record";
+        if (!spell.shape().equals(SpellRegistries.TOUCH.getId())) return "dust.pylon.tool_needs_touch";
+        tool.set(DustComponentDataRegistry.SPELL.get(), spell);
+        tool.set(DustComponentDataRegistry.SPELL_TREE.get(), new SpellTreeLink(tree, pylons[0]));
+        return null;
+    }
+
     public boolean record(ItemStack scroll)
     {
         int[] pylons = new int[1];

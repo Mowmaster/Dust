@@ -96,8 +96,14 @@ public class SpellScrollItem extends Item
     {
         Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
         if (spell == null || !SpellCasting.cast(player, spell, costReduction)) return false;
-        // The spell's tree gains experience: one per pylon the spell used, wherever the tree is
-        SpellTreeLink link = scroll.get(DustComponentDataRegistry.SPELL_TREE.get());
+        giveExperience(player, spell, scroll.get(DustComponentDataRegistry.SPELL_TREE.get()));
+        return true;
+    }
+
+    // A cast's experience to its spell's tree (scrolls, Grimoires, spell tools): one per pylon the spell used, wherever
+    // the tree is, plus Spell XP Gain
+    public static void giveExperience(ServerPlayer player, Spell spell, @org.jspecify.annotations.Nullable SpellTreeLink link)
+    {
         if (link != null) {
             SpellTreeData trees = SpellTreeData.get(player.level().getServer());
             // Spell XP Gain: percent more (rounded down)
@@ -107,7 +113,6 @@ public class SpellScrollItem extends Item
             int treeLevel = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
             SpellMastery.note(player, spell.element(), treeLevel);
         }
-        return true;
     }
 
     public static final int CAST_COOLDOWN = COOLDOWN;

@@ -10,6 +10,10 @@ import com.mowmaster.dust.Features.Spells.api.SpellStats;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
+import java.util.function.Predicate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,8 +35,21 @@ public final class SpellCasting
     // costReduction: percent off the dust and mana (a channelled beam's Efficiency)
     public static boolean cast(ServerPlayer player, Spell spell, int costReduction)
     {
+        return perform(player, spell, costReduction, null, null, null);
+    }
+
+    // A spell tool's cast (SpellTools): it lands where the tool struck (landing: on the creature or block hit; true if it
+    // did), and the tool pays the mana in durability (one point per mana, at least 1). The dust is paid as usual.
+    public static boolean castWithTool(ServerPlayer player, Spell spell, ItemStack tool, EquipmentSlot slot, Predicate<SpellCast> landing)
+    {
+        return perform(player, spell, 0, tool, slot, landing);
+    }
+
+    private static boolean perform(ServerPlayer player, Spell spell, int costReduction, @Nullable ItemStack tool, @Nullable EquipmentSlot slot,
+                                   @Nullable Predicate<SpellCast> landing)
+    {
         SpellShape shape = spell.shapeType();
-        if (shape == null) {
+        if (shape == null && landing == null) {
             player.sendOverlayMessage(Component.translatable("dust.spell.unknown_shape", spell.shape().toString()));
             return false;
         }
@@ -79,7 +96,14 @@ public final class SpellCasting
             player.level().playSound(null, player.blockPosition(), net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_CRIT, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.2F);
         }
         SpellCast cast = SpellCast.by(player, spell, stats);
-        boolean delivered = deliver(cast, shape);
+        boolean delivered;
+        if (landing != null) {
+            // The modifiers' cast-time parts (Overshield...), then where the tool struck
+            for (SpellModifier modifier : spell.modifierList()) modifier.beforeDelivery(cast);
+            delivered = landing.test(cast);
+        } else {
+            delivered = deliver(cast, shape);
+        }
         if (!delivered) {
             player.sendOverlayMessage(Component.translatable("dust.spell.no_target"));
             return false;
@@ -96,7 +120,10 @@ public final class SpellCasting
             // Permanent (a rune that pays its own way after): 4x the mana to cast
             if (spell.modifiers().contains(SpellRegistries.PERMANENT.getId())) mana *= com.mowmaster.dust.Features.Spells.api.SpellConfig.PERMANENT_MANA;
             mana = mana * (100 - costReduction) / 100;
-            PlayerMagicHelper.spendMana(player, Math.max(0, mana + mana * stats.manaPercent() / 100));
+            mana = Math.max(0, mana + mana * stats.manaPercent() / 100);
+            // A spell tool pays in durability instead
+            if (tool != null && slot != null) tool.hurtAndBreak(Math.max(1, mana), player, slot);
+            else PlayerMagicHelper.spendMana(player, mana);
         }
         return true;
     }

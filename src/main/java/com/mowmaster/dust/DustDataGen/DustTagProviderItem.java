@@ -31,6 +31,12 @@ public class DustTagProviderItem extends ItemTagsProvider {
         // Dyeable in a crafting grid with MowLib's dyes (ColorableItemDyeRecipe): the crafter keeps the colour when placed
         tag(com.mowmaster.mowlib.recipes.ColorableItemDyeRecipe.DYEABLE_IN_CRAFTING).add(blockItem(DustBlockRegistry.ELEMENT_CRAFTER));
 
+        // Spell tools: the crystal weapons cast on a hit, the crystal tools on striking a block (SpellTools)
+        tag(DustTags.Items.SPELL_WEAPONS).add(DustItemRegistry.CRYSTAL_SWORD.key()).add(DustItemRegistry.CRYSTAL_SPEAR.key());
+        tag(DustTags.Items.SPELL_TOOLS).add(DustItemRegistry.CRYSTAL_PICKAXE.key()).add(DustItemRegistry.CRYSTAL_AXE.key())
+                .add(DustItemRegistry.CRYSTAL_SHOVEL.key()).add(DustItemRegistry.CRYSTAL_HOE.key())
+                .add(DustItemRegistry.CRYSTAL_MATTOCK.key()).add(DustItemRegistry.CRYSTAL_HAMMER.key());
+
         // Every element's dust (the five primals' and the rest: DustItemRegistry.DUSTS)
         var dusts = tag(DustTags.Items.MAGICAL_DUST_ITEMS);
         DustItemRegistry.DUSTS.values().forEach(item -> dusts.add(item.key()));

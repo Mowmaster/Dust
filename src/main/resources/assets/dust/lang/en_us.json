@@ -379,6 +379,8 @@
   "dust.pylon.has_element": "This Spell Pylon already has its element",
   "dust.pylon.info": "%s spell: level %s (%s/%s), %s level(s) to spend; blessing %s, corruption %s",
   "dust.pylon.recorded": "The spell is written onto the scroll",
+  "dust.pylon.tool_recorded": "The spell is bound to the tool: it casts as you strike",
+  "dust.pylon.tool_needs_touch": "Only a Touch spell can be bound to a tool",
   "dust.pylon.cant_record": "The spell needs an element and a Shape Pylon first",
   "dust.pylon.not_connected": "This pylon isn't part of a spell: place it where a Spell Pylon shows a ghost",
   "dust.pylon.inert": "Not part of a spell",

@@ -12,6 +12,10 @@ public class DustTags
 {
     public static class Items {
         public static final TagKey<Item> MAGICAL_DUST_ITEMS = createTag("magical_dusts");
+        // Spell tools (Features/Spells/SpellTools): weapons cast their Touch spell on what they hit, tools on the block
+        // they strike
+        public static final TagKey<Item> SPELL_WEAPONS = createTag("spell_weapons");
+        public static final TagKey<Item> SPELL_TOOLS = createTag("spell_tools");
         public static final TagKey<Item> MAGICAL_CRYSTAL_ITEMS = createTag("magical_crystals");
         public static final TagKey<Item> CRYSTAL_REPAIRABLES = createTag("crystal_repairables");
         public static final TagKey<Item> CRYSTAL_BLOCK_REPAIRABLES = createTag("crystal_block_repairables");
