@@ -3,6 +3,7 @@ package com.mowmaster.dust.Features.Spells.caster;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -30,7 +31,8 @@ import org.jspecify.annotations.Nullable;
 
 // The Spell Caster: casts the spell on the Spell Scroll inside it, out of its face, each time it gets a redstone pulse
 // (like a dispenser). It needs no mana: it runs on dust and energy crystals (SpellCasterBlockEntity).
-//   right-click with a Spell Scroll        put it in (swapping out any scroll already there)
+//   right-click with a Spell Scroll        put it in (swapping out any scroll already there). Not a Self spell:
+//                                          a block has no self to cast it on.
 //   right-click with element dust          feed it the dust (the whole stack)
 //   right-click with energy crystals       feed it the crystals (the whole stack)
 //   sneak-right-click with an empty hand   take the scroll out
@@ -119,6 +121,11 @@ public class SpellCasterBlock extends Block implements EntityBlock
         boolean scroll = stack.is(DustItemRegistry.SPELL_SCROLL.get());
         if (!scroll && !caster.accepts(stack)) return InteractionResult.TRY_WITH_EMPTY_HAND;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (scroll && SpellCasterBlockEntity.isSelfSpell(stack)) {
+            // A Self spell has nobody to land on when a block casts it
+            player.sendOverlayMessage(Component.translatable("dust.caster.no_self"));
+            return InteractionResult.FAIL;
+        }
         if (scroll) {
             // In goes the held scroll; out comes any that was there
             ItemStack old = caster.swapScroll(stack.copyWithCount(1));

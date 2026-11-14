@@ -11,6 +11,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 // Touch: whatever the caster is looking at within reach: an entity gets the entity effect, a block the block effect.
@@ -24,6 +25,20 @@ public class TouchShape implements SpellShape
     {
         Vec3 from = cast.origin();
         Entity caster = cast.caster();
+        // Cast by a block (a Spell Caster): exactly the block space in front of its face (the cast starts just inside
+        // it). A creature standing there, or else the block there; empty air: nothing to touch.
+        if (caster == null) {
+            BlockPos front = BlockPos.containing(from);
+            var standing = cast.level().getEntitiesOfClass(LivingEntity.class, new AABB(front), entity -> entity.isAlive() && !entity.isSpectator());
+            if (!standing.isEmpty()) {
+                cast.applyEntity(standing.getFirst());
+                return true;
+            }
+            if (cast.level().getBlockState(front).isAir()) return false;
+            // The face of that block that looks back at the caster
+            cast.applyBlock(front, net.minecraft.core.Direction.getApproximateNearest(cast.direction()).getOpposite());
+            return true;
+        }
         double blockReach = caster instanceof Player player ? player.blockInteractionRange() : DEFAULT_REACH;
         double entityReach = caster instanceof Player player ? player.entityInteractionRange() : DEFAULT_REACH;
 
@@ -41,23 +56,6 @@ public class TouchShape implements SpellShape
         if (entity != null && entity.getLocation().distanceTo(from) < blockDistance) {
             cast.applyEntity(entity.getEntity());
             return true;
-        }
-        // Cast by a block (a Spell Caster): there's no caster to look from, so the ray is tested against each creature
-        // in the sweep (AABB.clip: where a line enters a box, if it does)
-        if (caster == null) {
-            LivingEntity nearest = null;
-            double nearestDistance = blockDistance;
-            for (LivingEntity target : cast.level().getEntitiesOfClass(LivingEntity.class, sweep, e -> e.isAlive() && !e.isSpectator())) {
-                var hit = target.getBoundingBox().inflate(0.3).clip(from, entityEnd);
-                if (hit.isPresent() && hit.get().distanceTo(from) < nearestDistance) {
-                    nearest = target;
-                    nearestDistance = hit.get().distanceTo(from);
-                }
-            }
-            if (nearest != null) {
-                cast.applyEntity(nearest);
-                return true;
-            }
         }
         if (block.getType() == HitResult.Type.BLOCK) {
             cast.applyBlock(block.getBlockPos(), block.getDirection());

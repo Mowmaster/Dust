@@ -138,6 +138,13 @@ public class SpellCasterBlockEntity extends CBSyncedBlockEntity
         }
     }
 
+    // A scroll whose spell is Self-shaped: a block can't cast those (it has no self)
+    public static boolean isSelfSpell(ItemStack scroll)
+    {
+        Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
+        return spell != null && spell.shape().equals(com.mowmaster.dust.Features.Spells.SpellRegistries.SELF.getId());
+    }
+
     // Puts a scroll in (or takes it out, with EMPTY), handing back the one that was there
     public ItemStack swapScroll(ItemStack newScroll)
     {
@@ -154,7 +161,8 @@ public class SpellCasterBlockEntity extends CBSyncedBlockEntity
     {
         Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
         SpellShape shape = spell == null ? null : spell.shapeType();
-        if (spell == null || shape == null) return;
+        // (A Self scroll can't be put in, but one might already be in from before that rule)
+        if (spell == null || shape == null || isSelfSpell(scroll)) return;
         Map<DustElement, Integer> cost = spell.dustCost();
         int total = 0;
         for (Map.Entry<DustElement, Integer> need : cost.entrySet()) {

@@ -527,6 +527,7 @@
   "block.dust.element_tester": "Element Tester",
   "block.dust.spell_caster": "Spell Caster",
   "dust.caster.no_scroll": "no scroll",
+  "dust.caster.no_self": "A Spell Caster can't cast Self spells",
   "dust.caster.report": "Spell Caster: %s | Dust: %s | Energy: %s",
   "block.dust.dust_fire": "Dust Fire",
   "research.dust.note.default.blocks": "%s. Its nature may be revealed by further study.",
