@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "dust:block/spell_caster_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "dust:block/spell_caster",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/spell_caster"
+    },
+    "facing=south": {
+      "model": "dust:block/spell_caster",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "dust:block/spell_caster_vertical"
+    },
+    "facing=west": {
+      "model": "dust:block/spell_caster",
+      "y": 270
+    }
+  }
+}

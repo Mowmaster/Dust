@@ -74,6 +74,13 @@ public class DustProviderBasicRecipe extends RecipeProvider {
 
         // Dust composition (placeholder recipes; no dust needed, since these are how dust research starts)
         // Magical Flint and Steel: a flint and steel and an amethyst shard
+        // Spell Caster: a dispenser, an energy crystal and an amethyst shard (a placeholder recipe, like the Grimoire's)
+        shapeless(RecipeCategory.REDSTONE, DustBlockRegistry.SPELL_CASTER.get())
+                .requires(Items.DISPENSER)
+                .requires(DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.ENERGY).get())
+                .requires(Items.AMETHYST_SHARD)
+                .unlockedBy(getHasName(DustItemRegistry.SPELL_SCROLL.get()), has(DustItemRegistry.SPELL_SCROLL.get()))
+                .save(output);
         // Grimoire: a book, leather and an amethyst shard (a placeholder recipe until it has a proper place in the tech)
         shapeless(RecipeCategory.TOOLS, DustItemRegistry.GRIMOIRE.get())
                 .requires(Items.BOOK)

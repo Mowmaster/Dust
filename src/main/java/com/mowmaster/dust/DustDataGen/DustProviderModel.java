@@ -61,6 +61,9 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get(), ModelTemplates.FLAT_ITEM);
         createDustFire(blockModels);
         createElementTester(blockModels);
+        // Spell Caster: vanilla's dispenser model (furnace sides and top, its own front: spell_caster_front and
+        // spell_caster_front_vertical), turned by FACING
+        blockModels.createDispenserBlock(DustBlockRegistry.SPELL_CASTER.get());
         createElementItems(itemModels);
         createResearchCrusher(blockModels, itemModels);
         createResearchSeparation(blockModels, itemModels);

@@ -31,6 +31,9 @@ public class DustBlockEntityRegistry
     public static final Supplier<BlockEntityType<ElementTesterBlockEntity>> ELEMENT_TESTER = BLOCK_ENTITIES.register("element_tester",
             () -> new BlockEntityType<>(ElementTesterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_TESTER.get())));
 
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity>> SPELL_CASTER = BLOCK_ENTITIES.register("spell_caster",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity::new, Set.of(DustBlockRegistry.SPELL_CASTER.get())));
+
     public static final Supplier<BlockEntityType<ResearchCrusherBlockEntity>> RESEARCH_CRUSHER = BLOCK_ENTITIES.register("research_crusher",
             () -> new BlockEntityType<>(ResearchCrusherBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_CRUSHER.get())));
 

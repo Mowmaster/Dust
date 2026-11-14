@@ -26,6 +26,7 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        dropSelf(DustBlockRegistry.SPELL_CASTER.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_RED.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_GREEN.get());
         dropSelf(DustBlockRegistry.BLOCK_OF_DUST_BLUE.get());

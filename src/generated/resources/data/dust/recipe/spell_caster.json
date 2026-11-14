@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "minecraft:dispenser",
+    "dust:energy_crystal",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "dust:spell_caster"
+  }
+}

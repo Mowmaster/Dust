@@ -113,6 +113,10 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> ELEMENT_TESTER = registerBlock("element_tester", properties -> new ElementTesterBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F).noOcclusion()));
 
+    // The Spell Caster (Features/Spells/caster): casts a scroll's spell on a redstone pulse, on dust and energy crystals
+    public static final DeferredBlock<Block> SPELL_CASTER = registerBlock("spell_caster", properties -> new com.mowmaster.dust.Features.Spells.caster.SpellCasterBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(3.5F).requiresCorrectToolForDrops()));
+
     // Research machines (Features/Machines): break materials down, step by step, for research
     public static final DeferredBlock<Block> RESEARCH_CRUSHER = registerBlock("research_crusher", properties -> new ResearchCrusherBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));

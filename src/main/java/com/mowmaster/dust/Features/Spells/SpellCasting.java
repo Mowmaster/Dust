@@ -17,7 +17,7 @@ import java.util.Map;
 //   1. The dust it costs (Spell.dustCost, less for elements they're attuned to) must all be in their dust store.
 //   2. The shape delivers it (a modifier can deliver it instead). Nothing to cast at (Touch at thin air): nothing spent.
 //   3. The dust is used, and mana: 1 per 10 dust, rounded up. Mana they don't have costs half a heart a point.
-// Creative players cast for free. Casting by blocks (dust and energy crystals, no mana) comes later.
+// Creative players cast for free. Blocks cast too, on dust and energy crystals with no mana (caster/SpellCasterBlockEntity).
 public final class SpellCasting
 {
     private SpellCasting() {}
@@ -50,15 +50,7 @@ public final class SpellCasting
 
         SpellStats stats = spell.stats(PlayerMagicHelper.spellPower(player, spell.element()));
         SpellCast cast = SpellCast.by(player, spell, stats);
-        boolean delivered = false;
-        boolean shapeDelivers = true;
-        for (SpellModifier modifier : spell.modifierList()) {
-            if (!modifier.beforeDelivery(cast)) {
-                shapeDelivers = false;
-                delivered = true;
-            }
-        }
-        if (shapeDelivers) delivered = shape.cast(cast);
+        boolean delivered = deliver(cast, shape);
         if (!delivered) {
             player.sendOverlayMessage(Component.translatable("dust.spell.no_target"));
             return false;
@@ -73,5 +65,21 @@ public final class SpellCasting
             PlayerMagicHelper.spendMana(player, PlayerMagicHelper.manaForDust(total));
         }
         return true;
+    }
+
+    // Delivers a cast: each modifier first (one may deliver it itself, e.g. Multishot's spread), then the shape unless a
+    // modifier already did. True if it landed on something. Shared by players and Spell Casters (blocks).
+    public static boolean deliver(SpellCast cast, SpellShape shape)
+    {
+        boolean delivered = false;
+        boolean shapeDelivers = true;
+        for (SpellModifier modifier : cast.spell().modifierList()) {
+            if (!modifier.beforeDelivery(cast)) {
+                shapeDelivers = false;
+                delivered = true;
+            }
+        }
+        if (shapeDelivers) delivered = shape.cast(cast);
+        return delivered;
     }
 }

@@ -42,6 +42,23 @@ public class TouchShape implements SpellShape
             cast.applyEntity(entity.getEntity());
             return true;
         }
+        // Cast by a block (a Spell Caster): there's no caster to look from, so the ray is tested against each creature
+        // in the sweep (AABB.clip: where a line enters a box, if it does)
+        if (caster == null) {
+            LivingEntity nearest = null;
+            double nearestDistance = blockDistance;
+            for (LivingEntity target : cast.level().getEntitiesOfClass(LivingEntity.class, sweep, e -> e.isAlive() && !e.isSpectator())) {
+                var hit = target.getBoundingBox().inflate(0.3).clip(from, entityEnd);
+                if (hit.isPresent() && hit.get().distanceTo(from) < nearestDistance) {
+                    nearest = target;
+                    nearestDistance = hit.get().distanceTo(from);
+                }
+            }
+            if (nearest != null) {
+                cast.applyEntity(nearest);
+                return true;
+            }
+        }
         if (block.getType() == HitResult.Type.BLOCK) {
             cast.applyBlock(block.getBlockPos(), block.getDirection());
             return true;
