@@ -95,6 +95,58 @@ public final class StationRendering
         poseStack.popPose();
     }
 
+    // A solid-looking box of texture, tinted color (0xAARRGGBB): its four sides and top (no bottom: it sits on
+    // something), between two corners in model pixels (facing north), turned with the block. The texture is laid on at
+    // one texture pixel per model pixel, so a small box shows part of it rather than the whole thing squashed.
+    // Used for the Element Crafter's jars of dust.
+    public static void box(RenderType type, double x0, double y0, double z0, double x1, double y1, double z1, int color, int light,
+                           Direction facing, PoseStack poseStack, SubmitNodeCollector submitNodeCollector)
+    {
+        float ax = (float) (x0 / 16), ay = (float) (y0 / 16), az = (float) (z0 / 16);
+        float bx = (float) (x1 / 16), by = (float) (y1 / 16), bz = (float) (z1 / 16);
+        // Texture spans: width and depth for the top, height for the sides (UVs 0-1 cover the texture's 16 pixels)
+        float w = bx - ax, h = by - ay, d = bz - az;
+        poseStack.pushPose();
+        // Turn about the block's middle, as the blockstate turns the model
+        poseStack.translate(0.5F, 0F, 0.5F);
+        poseStack.rotate(Axis.YP.rotationDegrees(yaw(facing)));
+        poseStack.translate(-0.5F, 0F, -0.5F);
+        submitNodeCollector.submitCustomGeometry(poseStack, type, (pose, buffer) -> {
+            // top (up)
+            corner(buffer, pose, ax, by, az, 0, 0, color, light, 0, 1, 0);
+            corner(buffer, pose, ax, by, bz, 0, d, color, light, 0, 1, 0);
+            corner(buffer, pose, bx, by, bz, w, d, color, light, 0, 1, 0);
+            corner(buffer, pose, bx, by, az, w, 0, color, light, 0, 1, 0);
+            // north (-z)
+            corner(buffer, pose, bx, by, az, 0, 0, color, light, 0, 0, -1);
+            corner(buffer, pose, bx, ay, az, 0, h, color, light, 0, 0, -1);
+            corner(buffer, pose, ax, ay, az, w, h, color, light, 0, 0, -1);
+            corner(buffer, pose, ax, by, az, w, 0, color, light, 0, 0, -1);
+            // south (+z)
+            corner(buffer, pose, ax, by, bz, 0, 0, color, light, 0, 0, 1);
+            corner(buffer, pose, ax, ay, bz, 0, h, color, light, 0, 0, 1);
+            corner(buffer, pose, bx, ay, bz, w, h, color, light, 0, 0, 1);
+            corner(buffer, pose, bx, by, bz, w, 0, color, light, 0, 0, 1);
+            // west (-x)
+            corner(buffer, pose, ax, by, az, 0, 0, color, light, -1, 0, 0);
+            corner(buffer, pose, ax, ay, az, 0, h, color, light, -1, 0, 0);
+            corner(buffer, pose, ax, ay, bz, d, h, color, light, -1, 0, 0);
+            corner(buffer, pose, ax, by, bz, d, 0, color, light, -1, 0, 0);
+            // east (+x)
+            corner(buffer, pose, bx, by, bz, 0, 0, color, light, 1, 0, 0);
+            corner(buffer, pose, bx, ay, bz, 0, h, color, light, 1, 0, 0);
+            corner(buffer, pose, bx, ay, az, d, h, color, light, 1, 0, 0);
+            corner(buffer, pose, bx, by, az, d, 0, color, light, 1, 0, 0);
+        });
+        poseStack.popPose();
+    }
+
+    private static void corner(VertexConsumer buffer, PoseStack.Pose pose, float x, float y, float z, float u, float v, int color, int light,
+                               float normalX, float normalY, float normalZ)
+    {
+        buffer.addVertex(pose, x, y, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, normalX, normalY, normalZ);
+    }
+
     private static void vertex(VertexConsumer buffer, PoseStack.Pose pose, float x, float z, float u, float v, int color, int light, float normalY)
     {
         buffer.addVertex(pose, x, 0, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0, normalY, 0);

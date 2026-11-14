@@ -26,7 +26,31 @@ public final class ElementCrafterLayout
             new CBPixelBox(-0.5, 4, 5.5, 4.5, 11.5, 10.5)
     };
 
+    // Inside each jar (inside the glass, between the jar's bottom and its lid), as {x0, z0, x1, z1}: the dust fills
+    // this from FILL_BOTTOM up to FILL_TOP when the jar is full
+    private static final double[][] JAR_INSIDES = {
+            {6, 0, 10, 4},
+            {12, 6, 16, 10},
+            {6, 12, 10, 16},
+            {0, 6, 4, 10}
+    };
+    public static final double FILL_BOTTOM = 4.5;
+    public static final double FILL_TOP = 9.5;
+
     private ElementCrafterLayout() {}
+
+    public static double[] jarInside(int jar)
+    {
+        return JAR_INSIDES[jar];
+    }
+
+    // How high the dust stands in a jar holding this much (a thin layer at least, so a few dust still show)
+    public static double fillHeight(int amount)
+    {
+        if (amount <= 0) return FILL_BOTTOM;
+        double share = Math.min(1.0, amount / (double) JAR_CAPACITY);
+        return FILL_BOTTOM + Math.max(0.15, (FILL_TOP - FILL_BOTTOM) * share);
+    }
 
     // The click area of grid cell i (a little above the floor too, so clicking an item lying there counts)
     public static CBPixelBox cell(int i)
