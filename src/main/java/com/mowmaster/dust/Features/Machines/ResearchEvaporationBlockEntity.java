@@ -38,7 +38,7 @@ import java.util.UUID;
 //              one full turn per element in the item (each click is one turn; the liquid bubbles and goes down)
 //   settling   the glyph sinks into the pot, and the solids stream across to the output pad
 // What's left is decided at the start (paper is used then); whoever started it gets the step in their research.
-// What boils off goes into the air (into the chunk's aura, once there is one).
+// What boils off goes into the air (into the chunk's aura: Features/Magic/ChunkAura).
 public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
     public static final int STIR_TICKS = 20;
@@ -226,7 +226,8 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         phase = Phase.IDLE;
         stirsDone = 0;
         stirsNeeded = 0;
-        // The gaseous and aqueous elements are gone into the air. (They'll go into the chunk's aura once there is one.)
+        // The gaseous and aqueous elements are gone into the air: into the chunk's aura
+        for (DustElement escaped : Separation.escaping(evaporated)) com.mowmaster.dust.Features.Magic.ChunkAura.release(level, worldPosition, escaped, 1);
         Vec3 at = turned(EvaporationLayout.OUTPUT);
         if (output.getItem() == com.mowmaster.dust.DustRegistries.DustItemRegistry.ALCHEMICAL_SOOT.get()) {
             level.sendParticles(ParticleTypes.FLAME, worldPosition.getX() + at.x, worldPosition.getY() + at.y + 0.1, worldPosition.getZ() + at.z, 10, 0.08, 0.05, 0.08, 0.02);

@@ -206,6 +206,13 @@ public class DustAttachmentTypeRegistry
                     .sync(com.mowmaster.dust.Features.Spells.blocks.StickyFaces.STREAM_CODEC)
                     .build());
 
+    // A chunk's aura (Features/Magic/ChunkAura): the five primals it holds. Saved with the chunk; untouched chunks have
+    // none and count as normal
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Magic.ChunkAuraData>> CHUNK_AURA = ATTACHMENT_TYPES.register("chunk_aura",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Magic.ChunkAuraData.baseline(0))
+                    .serialize(com.mowmaster.dust.Features.Magic.ChunkAuraData.CODEC.fieldOf("aura"))
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }

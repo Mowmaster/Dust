@@ -26,6 +26,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.IdentifierArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,6 +46,9 @@ import java.util.function.BiConsumer;
 //                                                     /dustmagic spell dust:fire dust:projectile potency=1 size=2
 //   /dustmagic void                                   what void rifts have swallowed so far (VoidStorage)
 //   /dustmagic markfriendly <players> [seconds]       mark players friendly by magic (Radiance; default 5 minutes)
+//   /dustmagic aura                                   the aura of the chunk you're in (ChunkAura)
+//   /dustmagic aura add <primal> <amount>             add (or with a negative amount, take) one primal
+//   /dustmagic aura set <amount>                      set every primal (100 is normal)
 // Elements are ids, with suggestions: dust:fire, dust:knowledge...
 public class MagicCommand
 {
@@ -60,6 +64,31 @@ public class MagicCommand
         dispatcher.register(Commands.literal("dustmagic")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("void").executes(c -> showVoid(c.getSource())))
+                .then(Commands.literal("aura")
+                        .executes(c -> showAura(c.getSource()))
+                        .then(Commands.literal("add")
+                                .then(Commands.argument("primal", StringArgumentType.word())
+                                        .suggests((c, b) -> SharedSuggestionProvider.suggest(java.util.Arrays.stream(com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement.values()).map(e -> e.getSerializedName()), b))
+                                        .then(Commands.argument("amount", com.mojang.brigadier.arguments.FloatArgumentType.floatArg())
+                                                .executes(c -> {
+                                                    String name = StringArgumentType.getString(c, "primal");
+                                                    var primal = java.util.Arrays.stream(com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement.values())
+                                                            .filter(e -> e.getSerializedName().equals(name)).findFirst().orElse(null);
+                                                    if (primal == null) {
+                                                        c.getSource().sendFailure(Component.literal("Unknown primal: " + name));
+                                                        return 0;
+                                                    }
+                                                    com.mowmaster.dust.Features.Magic.ChunkAura.add(c.getSource().getLevel(), BlockPos.containing(c.getSource().getPosition()),
+                                                            primal, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "amount"));
+                                                    return showAura(c.getSource());
+                                                }))))
+                        .then(Commands.literal("set")
+                                .then(Commands.argument("amount", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0))
+                                        .executes(c -> {
+                                            com.mowmaster.dust.Features.Magic.ChunkAura.setAll(c.getSource().getLevel(), BlockPos.containing(c.getSource().getPosition()),
+                                                    com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "amount"));
+                                            return showAura(c.getSource());
+                                        }))))
                 .then(Commands.literal("markfriendly")
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .executes(c -> befriend(c.getSource(), EntityArgument.getPlayers(c, "targets"), 300))
@@ -142,6 +171,23 @@ public class MagicCommand
         }
         source.sendSuccess(() -> Component.literal("Marked " + targets.size() + " player(s) friendly for " + seconds + "s"), false);
         return targets.size();
+    }
+
+    // The aura of the chunk the command runs in: each primal, the richness and what that means
+    private static int showAura(CommandSourceStack source)
+    {
+        BlockPos pos = BlockPos.containing(source.getPosition());
+        var data = com.mowmaster.dust.Features.Magic.ChunkAura.of(source.getLevel(), pos);
+        StringBuilder primals = new StringBuilder();
+        for (var primal : com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement.values()) {
+            primals.append(primal.getSerializedName()).append(' ').append(String.format("%.1f", data.get(primal))).append("  ");
+        }
+        float richness = com.mowmaster.dust.Features.Magic.ChunkAura.richness(source.getLevel(), pos);
+        String state = com.mowmaster.dust.Features.Magic.ChunkAura.describe(richness);
+        source.sendSuccess(() -> Component.literal("Chunk aura: " + primals.toString().trim()), false);
+        source.sendSuccess(() -> Component.literal(String.format("Richness %.2f (%s), felt here %.2f", richness, state == null ? "normal" : state,
+                com.mowmaster.dust.Features.Magic.ChunkAura.richnessAt(source.getLevel(), pos))), false);
+        return 1;
     }
 
     // Totals, then the ten kinds of item there's most of

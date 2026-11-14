@@ -210,6 +210,8 @@ public final class PlayerMagicHelper
         // Mana Surge (Magic on yourself): regeneration runs twice as fast, faster still at higher levels
         MobEffectInstance surge = player.getEffect(DustEffectsRegistry.MANA_SURGE);
         int step = surge == null ? 1 : 2 + surge.getAmplifier();
+        // A rich chunk's aura (ChunkAura) speeds it up too
+        step += AuraEffects.regenBonus(player.level(), player.blockPosition());
         int regen = timers.regen() + step, low = timers.low(), high = timers.high();
 
         // Regenerates up to the cap (higher while Crystallized)

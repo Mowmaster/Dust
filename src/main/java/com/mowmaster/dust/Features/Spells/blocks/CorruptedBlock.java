@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 // Abyss's block effect: corruption. A corrupted block remembers what it was (CorruptedBlockEntity) and slowly corrupts
-// the blocks around it (random ticks; slower where the chunk's aura is low, once aura exists). Purifying it (a
+// the blocks around it (random ticks; slower where the chunk's aura is thin: ChunkAura.spreadFactor). Purifying it (a
 // Healing spell) brings back what it was. Broken, it drops nothing.
 public class CorruptedBlock extends Block implements EntityBlock
 {
