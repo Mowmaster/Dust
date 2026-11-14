@@ -23,7 +23,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.Direction;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
@@ -32,21 +36,29 @@ import org.jspecify.annotations.Nullable;
 //   Right-click with a Spell Scroll        records the spell as it stands onto the scroll
 //   Right-click empty-handed               its element, level, experience, levels to spend, blessing and corruption
 // Broken, it takes its whole tree with it and drops remembering its element and a tenth of its levels.
-// active: has an element (for the model)
+// active: has an element. facing: the side its connection arm points to, where the Shape Pylon goes (the way the
+// player looked when placing it, so the tree grows away from them). The model's arm points north.
 public class SpellPylonBlock extends Block implements EntityBlock
 {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SpellPylonBlock(Properties properties)
     {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
+        registerDefaultState(stateDefinition.any().setValue(ACTIVE, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(ACTIVE);
+        builder.add(ACTIVE, FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override
@@ -59,8 +71,9 @@ public class SpellPylonBlock extends Block implements EntityBlock
     @SuppressWarnings("unchecked")
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type)
     {
-        if (level.isClientSide() || type != DustBlockEntityRegistry.SPELL_PYLON.get()) return null;
-        BlockEntityTicker<SpellPylonBlockEntity> ticker = SpellPylonBlockEntity::serverTick;
+        if (type != DustBlockEntityRegistry.SPELL_PYLON.get()) return null;
+        // The client ticks too: the icons appearing as a player comes near (SpellPylonBlockEntity.clientTick)
+        BlockEntityTicker<SpellPylonBlockEntity> ticker = level.isClientSide() ? SpellPylonBlockEntity::clientTick : SpellPylonBlockEntity::serverTick;
         return (BlockEntityTicker<T>) ticker;
     }
 

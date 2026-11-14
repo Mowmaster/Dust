@@ -22,3 +22,5 @@ NeoForge 26.3.0.94, Minecraft 26.3, Java 25. Used NeoForge-26x version of Pedest
 ## Dust TODO
 - Known gaps: the Crafter ignores the research gate on dust recipes; dust recipes don't show in the recipe book;
 instant-effect potions are only researched when drunk (not splash/lingering).
+- Pylon categories: rework with the modifier rework. Add a Neutral pylon (white, rolls from the whole pool, no category
+  boost) and decide what the Change pylon becomes (it uses the new model, plain white, for now).

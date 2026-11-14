@@ -1,5 +1,9 @@
 package com.mowmaster.dust.DustDataGen;
 
+import com.mowmaster.dust.Features.Spells.pylons.PylonBlock;
+import com.mowmaster.dust.Features.Spells.Client.PylonTint;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import java.util.List;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
@@ -304,24 +308,52 @@ public class DustProviderModel extends ModelProvider {
                 ItemModelUtils.tintedModel(model, new Constant(-1), new com.mowmaster.dust.Features.Spells.Client.SpellTint()));
     }
 
-    // The spell pylons: placeholder models (models/block/pylon/<name>.json) until the real ones are made. Every state
-    // uses the same model for now; the blockstate already lists them so each can get its own model later (the
-    // Spell Pylon's active=true/false, the modifier pylons' state=inert/linked/blessed/corrupted/break_on/break_off).
+    // The spell pylons (models/block/pylon):
+    //   Spell Pylon     spell_pylon, turned by facing (its connection arm points north in the model)
+    //   Shape Pylon     shape_pylon / _1 / _2 / _3 by links (PylonLinks.shapeModel), turned by parent
+    //   the others      blank_pylon_<links>_level_<nodes> (PylonLinks.blankModel), turned by parent; all four kinds
+    //                   share the models and differ by tint (Client/PylonTint)
+    // The pylon models have their parent's arm to the south, so parent=south needs no turn, west a quarter turn...
+    // Items: the plain models, the blank pylons' with the body in their kind's colour.
     private void createPylons(BlockModelGenerators blockModels)
     {
-        pylonModel(blockModels, DustBlockRegistry.SPELL_PYLON.get(), "spell_pylon");
-        pylonModel(blockModels, DustBlockRegistry.SHAPE_PYLON.get(), "shape_pylon");
-        pylonModel(blockModels, DustBlockRegistry.CHANGE_PYLON.get(), "change_pylon");
-        pylonModel(blockModels, DustBlockRegistry.COST_PYLON.get(), "cost_pylon");
-        pylonModel(blockModels, DustBlockRegistry.COUNT_PYLON.get(), "count_pylon");
-        pylonModel(blockModels, DustBlockRegistry.DAMAGE_PYLON.get(), "damage_pylon");
+        Block spellPylon = DustBlockRegistry.SPELL_PYLON.get();
+        Identifier spellModel = pylonModel("spell_pylon");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(spellPylon, BlockModelGenerators.plainVariant(spellModel))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(spellPylon.asItem(), ItemModelUtils.plainModel(spellModel));
+
+        Block shapePylon = DustBlockRegistry.SHAPE_PYLON.get();
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(shapePylon).with(
+                PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES).generate((parent, links, nodes) ->
+                        BlockModelGenerators.plainVariant(pylonModel("shape_pylon" + links.shapeModel())).with(parentTurn(parent)))));
+        blockModels.itemModelOutput.accept(shapePylon.asItem(), ItemModelUtils.plainModel(pylonModel("shape_pylon")));
+
+        for (Block block : List.of(DustBlockRegistry.CHANGE_PYLON.get(), DustBlockRegistry.COST_PYLON.get(),
+                DustBlockRegistry.COUNT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get())) {
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+                    PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES).generate((parent, links, nodes) ->
+                            BlockModelGenerators.plainVariant(pylonModel("blank_pylon_" + links.blankModel() + "_level_" + nodes)).with(parentTurn(parent)))));
+            // Tint 0 (the body) in the kind's colour; the rest have no tint source, so they stay plain
+            blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(pylonModel("blank_pylon_base_level_3"),
+                    ItemModelUtils.constantTint(PylonTint.kindColor(((PylonBlock) block).type()))));
+        }
     }
 
-    private void pylonModel(BlockModelGenerators blockModels, Block block, String name)
+    private static Identifier pylonModel(String name)
     {
-        Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/pylon/" + name);
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model)));
-        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+        return Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/pylon/" + name);
+    }
+
+    // The turn for a pylon whose parent is on this side (its model's back arm points south)
+    private static VariantMutator parentTurn(Direction parent)
+    {
+        return switch (parent) {
+            case WEST -> BlockModelGenerators.Y_ROT_90;
+            case NORTH -> BlockModelGenerators.Y_ROT_180;
+            case EAST -> BlockModelGenerators.Y_ROT_270;
+            default -> BlockModelGenerators.NOP;
+        };
     }
 
     // A station turned by FACING (the models face north), with its block and item models

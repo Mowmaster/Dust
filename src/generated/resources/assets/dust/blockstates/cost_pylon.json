@@ -1,7 +1,1204 @@
 {
   "variants": {
-    "": {
-      "model": "dust:block/pylon/cost_pylon"
+    "links=all,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_1",
+      "y": 270
+    },
+    "links=all,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_1",
+      "y": 180
+    },
+    "links=all,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_1"
+    },
+    "links=all,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_1",
+      "y": 90
+    },
+    "links=all,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_10",
+      "y": 270
+    },
+    "links=all,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_10",
+      "y": 180
+    },
+    "links=all,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_10"
+    },
+    "links=all,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_10",
+      "y": 90
+    },
+    "links=all,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_2",
+      "y": 270
+    },
+    "links=all,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_2",
+      "y": 180
+    },
+    "links=all,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_2"
+    },
+    "links=all,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_2",
+      "y": 90
+    },
+    "links=all,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_3",
+      "y": 270
+    },
+    "links=all,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_3",
+      "y": 180
+    },
+    "links=all,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_3"
+    },
+    "links=all,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_3",
+      "y": 90
+    },
+    "links=all,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_4",
+      "y": 270
+    },
+    "links=all,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_4",
+      "y": 180
+    },
+    "links=all,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_4"
+    },
+    "links=all,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_4",
+      "y": 90
+    },
+    "links=all,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_5",
+      "y": 270
+    },
+    "links=all,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_5",
+      "y": 180
+    },
+    "links=all,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_5"
+    },
+    "links=all,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_5",
+      "y": 90
+    },
+    "links=all,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_6",
+      "y": 270
+    },
+    "links=all,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_6",
+      "y": 180
+    },
+    "links=all,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_6"
+    },
+    "links=all,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_6",
+      "y": 90
+    },
+    "links=all,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_7",
+      "y": 270
+    },
+    "links=all,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_7",
+      "y": 180
+    },
+    "links=all,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_7"
+    },
+    "links=all,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_7",
+      "y": 90
+    },
+    "links=all,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_8",
+      "y": 270
+    },
+    "links=all,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_8",
+      "y": 180
+    },
+    "links=all,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_8"
+    },
+    "links=all,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_8",
+      "y": 90
+    },
+    "links=all,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_9",
+      "y": 270
+    },
+    "links=all,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_9",
+      "y": 180
+    },
+    "links=all,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_9"
+    },
+    "links=all,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_9",
+      "y": 90
+    },
+    "links=left,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_1",
+      "y": 270
+    },
+    "links=left,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_1",
+      "y": 180
+    },
+    "links=left,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_1"
+    },
+    "links=left,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_1",
+      "y": 90
+    },
+    "links=left,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_10",
+      "y": 270
+    },
+    "links=left,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_10",
+      "y": 180
+    },
+    "links=left,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_10"
+    },
+    "links=left,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_10",
+      "y": 90
+    },
+    "links=left,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_2",
+      "y": 270
+    },
+    "links=left,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_2",
+      "y": 180
+    },
+    "links=left,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_2"
+    },
+    "links=left,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_2",
+      "y": 90
+    },
+    "links=left,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_3",
+      "y": 270
+    },
+    "links=left,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_3",
+      "y": 180
+    },
+    "links=left,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_3"
+    },
+    "links=left,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_3",
+      "y": 90
+    },
+    "links=left,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_4",
+      "y": 270
+    },
+    "links=left,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_4",
+      "y": 180
+    },
+    "links=left,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_4"
+    },
+    "links=left,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_4",
+      "y": 90
+    },
+    "links=left,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_5",
+      "y": 270
+    },
+    "links=left,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_5",
+      "y": 180
+    },
+    "links=left,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_5"
+    },
+    "links=left,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_5",
+      "y": 90
+    },
+    "links=left,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_6",
+      "y": 270
+    },
+    "links=left,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_6",
+      "y": 180
+    },
+    "links=left,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_6"
+    },
+    "links=left,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_6",
+      "y": 90
+    },
+    "links=left,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_7",
+      "y": 270
+    },
+    "links=left,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_7",
+      "y": 180
+    },
+    "links=left,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_7"
+    },
+    "links=left,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_7",
+      "y": 90
+    },
+    "links=left,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_8",
+      "y": 270
+    },
+    "links=left,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_8",
+      "y": 180
+    },
+    "links=left,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_8"
+    },
+    "links=left,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_8",
+      "y": 90
+    },
+    "links=left,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_9",
+      "y": 270
+    },
+    "links=left,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_9",
+      "y": 180
+    },
+    "links=left,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_9"
+    },
+    "links=left,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_9",
+      "y": 90
+    },
+    "links=left_right,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_1",
+      "y": 270
+    },
+    "links=left_right,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_1",
+      "y": 180
+    },
+    "links=left_right,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_1"
+    },
+    "links=left_right,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_1",
+      "y": 90
+    },
+    "links=left_right,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_10",
+      "y": 270
+    },
+    "links=left_right,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_10",
+      "y": 180
+    },
+    "links=left_right,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_10"
+    },
+    "links=left_right,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_10",
+      "y": 90
+    },
+    "links=left_right,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_2",
+      "y": 270
+    },
+    "links=left_right,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_2",
+      "y": 180
+    },
+    "links=left_right,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_2"
+    },
+    "links=left_right,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_2",
+      "y": 90
+    },
+    "links=left_right,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_3",
+      "y": 270
+    },
+    "links=left_right,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_3",
+      "y": 180
+    },
+    "links=left_right,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_3"
+    },
+    "links=left_right,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_3",
+      "y": 90
+    },
+    "links=left_right,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_4",
+      "y": 270
+    },
+    "links=left_right,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_4",
+      "y": 180
+    },
+    "links=left_right,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_4"
+    },
+    "links=left_right,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_4",
+      "y": 90
+    },
+    "links=left_right,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_5",
+      "y": 270
+    },
+    "links=left_right,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_5",
+      "y": 180
+    },
+    "links=left_right,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_5"
+    },
+    "links=left_right,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_5",
+      "y": 90
+    },
+    "links=left_right,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_6",
+      "y": 270
+    },
+    "links=left_right,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_6",
+      "y": 180
+    },
+    "links=left_right,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_6"
+    },
+    "links=left_right,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_6",
+      "y": 90
+    },
+    "links=left_right,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_7",
+      "y": 270
+    },
+    "links=left_right,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_7",
+      "y": 180
+    },
+    "links=left_right,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_7"
+    },
+    "links=left_right,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_7",
+      "y": 90
+    },
+    "links=left_right,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_8",
+      "y": 270
+    },
+    "links=left_right,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_8",
+      "y": 180
+    },
+    "links=left_right,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_8"
+    },
+    "links=left_right,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_8",
+      "y": 90
+    },
+    "links=left_right,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_9",
+      "y": 270
+    },
+    "links=left_right,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_9",
+      "y": 180
+    },
+    "links=left_right,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_9"
+    },
+    "links=left_right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_9",
+      "y": 90
+    },
+    "links=none,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_1",
+      "y": 270
+    },
+    "links=none,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_1",
+      "y": 180
+    },
+    "links=none,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_1"
+    },
+    "links=none,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_1",
+      "y": 90
+    },
+    "links=none,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_10",
+      "y": 270
+    },
+    "links=none,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_10",
+      "y": 180
+    },
+    "links=none,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_10"
+    },
+    "links=none,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_10",
+      "y": 90
+    },
+    "links=none,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_2",
+      "y": 270
+    },
+    "links=none,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_2",
+      "y": 180
+    },
+    "links=none,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_2"
+    },
+    "links=none,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_2",
+      "y": 90
+    },
+    "links=none,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_3",
+      "y": 270
+    },
+    "links=none,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_3",
+      "y": 180
+    },
+    "links=none,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_3"
+    },
+    "links=none,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_3",
+      "y": 90
+    },
+    "links=none,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_4",
+      "y": 270
+    },
+    "links=none,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_4",
+      "y": 180
+    },
+    "links=none,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_4"
+    },
+    "links=none,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_4",
+      "y": 90
+    },
+    "links=none,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_5",
+      "y": 270
+    },
+    "links=none,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_5",
+      "y": 180
+    },
+    "links=none,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_5"
+    },
+    "links=none,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_5",
+      "y": 90
+    },
+    "links=none,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_6",
+      "y": 270
+    },
+    "links=none,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_6",
+      "y": 180
+    },
+    "links=none,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_6"
+    },
+    "links=none,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_6",
+      "y": 90
+    },
+    "links=none,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_7",
+      "y": 270
+    },
+    "links=none,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_7",
+      "y": 180
+    },
+    "links=none,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_7"
+    },
+    "links=none,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_7",
+      "y": 90
+    },
+    "links=none,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_8",
+      "y": 270
+    },
+    "links=none,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_8",
+      "y": 180
+    },
+    "links=none,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_8"
+    },
+    "links=none,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_8",
+      "y": 90
+    },
+    "links=none,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_9",
+      "y": 270
+    },
+    "links=none,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_9",
+      "y": 180
+    },
+    "links=none,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_9"
+    },
+    "links=none,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_9",
+      "y": 90
+    },
+    "links=right,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_1",
+      "y": 270
+    },
+    "links=right,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_1",
+      "y": 180
+    },
+    "links=right,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_1"
+    },
+    "links=right,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_1",
+      "y": 90
+    },
+    "links=right,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_10",
+      "y": 270
+    },
+    "links=right,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_10",
+      "y": 180
+    },
+    "links=right,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_10"
+    },
+    "links=right,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_10",
+      "y": 90
+    },
+    "links=right,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_2",
+      "y": 270
+    },
+    "links=right,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_2",
+      "y": 180
+    },
+    "links=right,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_2"
+    },
+    "links=right,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_2",
+      "y": 90
+    },
+    "links=right,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_3",
+      "y": 270
+    },
+    "links=right,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_3",
+      "y": 180
+    },
+    "links=right,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_3"
+    },
+    "links=right,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_3",
+      "y": 90
+    },
+    "links=right,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_4",
+      "y": 270
+    },
+    "links=right,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_4",
+      "y": 180
+    },
+    "links=right,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_4"
+    },
+    "links=right,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_4",
+      "y": 90
+    },
+    "links=right,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_5",
+      "y": 270
+    },
+    "links=right,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_5",
+      "y": 180
+    },
+    "links=right,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_5"
+    },
+    "links=right,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_5",
+      "y": 90
+    },
+    "links=right,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_6",
+      "y": 270
+    },
+    "links=right,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_6",
+      "y": 180
+    },
+    "links=right,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_6"
+    },
+    "links=right,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_6",
+      "y": 90
+    },
+    "links=right,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_7",
+      "y": 270
+    },
+    "links=right,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_7",
+      "y": 180
+    },
+    "links=right,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_7"
+    },
+    "links=right,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_7",
+      "y": 90
+    },
+    "links=right,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_8",
+      "y": 270
+    },
+    "links=right,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_8",
+      "y": 180
+    },
+    "links=right,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_8"
+    },
+    "links=right,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_8",
+      "y": 90
+    },
+    "links=right,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_9",
+      "y": 270
+    },
+    "links=right,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_9",
+      "y": 180
+    },
+    "links=right,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_9"
+    },
+    "links=right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_9",
+      "y": 90
+    },
+    "links=straight,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_1",
+      "y": 270
+    },
+    "links=straight,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_1",
+      "y": 180
+    },
+    "links=straight,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_1"
+    },
+    "links=straight,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_1",
+      "y": 90
+    },
+    "links=straight,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_10",
+      "y": 270
+    },
+    "links=straight,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_10",
+      "y": 180
+    },
+    "links=straight,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_10"
+    },
+    "links=straight,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_10",
+      "y": 90
+    },
+    "links=straight,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_2",
+      "y": 270
+    },
+    "links=straight,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_2",
+      "y": 180
+    },
+    "links=straight,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_2"
+    },
+    "links=straight,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_2",
+      "y": 90
+    },
+    "links=straight,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_3",
+      "y": 270
+    },
+    "links=straight,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_3",
+      "y": 180
+    },
+    "links=straight,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_3"
+    },
+    "links=straight,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_3",
+      "y": 90
+    },
+    "links=straight,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_4",
+      "y": 270
+    },
+    "links=straight,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_4",
+      "y": 180
+    },
+    "links=straight,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_4"
+    },
+    "links=straight,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_4",
+      "y": 90
+    },
+    "links=straight,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_5",
+      "y": 270
+    },
+    "links=straight,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_5",
+      "y": 180
+    },
+    "links=straight,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_5"
+    },
+    "links=straight,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_5",
+      "y": 90
+    },
+    "links=straight,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_6",
+      "y": 270
+    },
+    "links=straight,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_6",
+      "y": 180
+    },
+    "links=straight,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_6"
+    },
+    "links=straight,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_6",
+      "y": 90
+    },
+    "links=straight,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_7",
+      "y": 270
+    },
+    "links=straight,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_7",
+      "y": 180
+    },
+    "links=straight,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_7"
+    },
+    "links=straight,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_7",
+      "y": 90
+    },
+    "links=straight,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_8",
+      "y": 270
+    },
+    "links=straight,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_8",
+      "y": 180
+    },
+    "links=straight,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_8"
+    },
+    "links=straight,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_8",
+      "y": 90
+    },
+    "links=straight,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_9",
+      "y": 270
+    },
+    "links=straight,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_9",
+      "y": 180
+    },
+    "links=straight,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_9"
+    },
+    "links=straight,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_9",
+      "y": 90
+    },
+    "links=straight_left,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_1",
+      "y": 270
+    },
+    "links=straight_left,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_1",
+      "y": 180
+    },
+    "links=straight_left,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_1"
+    },
+    "links=straight_left,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_1",
+      "y": 90
+    },
+    "links=straight_left,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_10",
+      "y": 270
+    },
+    "links=straight_left,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_10",
+      "y": 180
+    },
+    "links=straight_left,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_10"
+    },
+    "links=straight_left,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_10",
+      "y": 90
+    },
+    "links=straight_left,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_2",
+      "y": 270
+    },
+    "links=straight_left,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_2",
+      "y": 180
+    },
+    "links=straight_left,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_2"
+    },
+    "links=straight_left,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_2",
+      "y": 90
+    },
+    "links=straight_left,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_3",
+      "y": 270
+    },
+    "links=straight_left,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_3",
+      "y": 180
+    },
+    "links=straight_left,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_3"
+    },
+    "links=straight_left,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_3",
+      "y": 90
+    },
+    "links=straight_left,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_4",
+      "y": 270
+    },
+    "links=straight_left,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_4",
+      "y": 180
+    },
+    "links=straight_left,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_4"
+    },
+    "links=straight_left,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_4",
+      "y": 90
+    },
+    "links=straight_left,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_5",
+      "y": 270
+    },
+    "links=straight_left,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_5",
+      "y": 180
+    },
+    "links=straight_left,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_5"
+    },
+    "links=straight_left,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_5",
+      "y": 90
+    },
+    "links=straight_left,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_6",
+      "y": 270
+    },
+    "links=straight_left,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_6",
+      "y": 180
+    },
+    "links=straight_left,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_6"
+    },
+    "links=straight_left,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_6",
+      "y": 90
+    },
+    "links=straight_left,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_7",
+      "y": 270
+    },
+    "links=straight_left,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_7",
+      "y": 180
+    },
+    "links=straight_left,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_7"
+    },
+    "links=straight_left,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_7",
+      "y": 90
+    },
+    "links=straight_left,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_8",
+      "y": 270
+    },
+    "links=straight_left,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_8",
+      "y": 180
+    },
+    "links=straight_left,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_8"
+    },
+    "links=straight_left,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_8",
+      "y": 90
+    },
+    "links=straight_left,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_9",
+      "y": 270
+    },
+    "links=straight_left,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_9",
+      "y": 180
+    },
+    "links=straight_left,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_9"
+    },
+    "links=straight_left,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_9",
+      "y": 90
+    },
+    "links=straight_right,nodes=1,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_1",
+      "y": 270
+    },
+    "links=straight_right,nodes=1,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_1",
+      "y": 180
+    },
+    "links=straight_right,nodes=1,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_1"
+    },
+    "links=straight_right,nodes=1,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_1",
+      "y": 90
+    },
+    "links=straight_right,nodes=10,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_10",
+      "y": 270
+    },
+    "links=straight_right,nodes=10,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_10",
+      "y": 180
+    },
+    "links=straight_right,nodes=10,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_10"
+    },
+    "links=straight_right,nodes=10,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_10",
+      "y": 90
+    },
+    "links=straight_right,nodes=2,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_2",
+      "y": 270
+    },
+    "links=straight_right,nodes=2,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_2",
+      "y": 180
+    },
+    "links=straight_right,nodes=2,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_2"
+    },
+    "links=straight_right,nodes=2,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_2",
+      "y": 90
+    },
+    "links=straight_right,nodes=3,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_3",
+      "y": 270
+    },
+    "links=straight_right,nodes=3,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_3",
+      "y": 180
+    },
+    "links=straight_right,nodes=3,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_3"
+    },
+    "links=straight_right,nodes=3,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_3",
+      "y": 90
+    },
+    "links=straight_right,nodes=4,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_4",
+      "y": 270
+    },
+    "links=straight_right,nodes=4,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_4",
+      "y": 180
+    },
+    "links=straight_right,nodes=4,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_4"
+    },
+    "links=straight_right,nodes=4,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_4",
+      "y": 90
+    },
+    "links=straight_right,nodes=5,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_5",
+      "y": 270
+    },
+    "links=straight_right,nodes=5,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_5",
+      "y": 180
+    },
+    "links=straight_right,nodes=5,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_5"
+    },
+    "links=straight_right,nodes=5,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_5",
+      "y": 90
+    },
+    "links=straight_right,nodes=6,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_6",
+      "y": 270
+    },
+    "links=straight_right,nodes=6,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_6",
+      "y": 180
+    },
+    "links=straight_right,nodes=6,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_6"
+    },
+    "links=straight_right,nodes=6,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_6",
+      "y": 90
+    },
+    "links=straight_right,nodes=7,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_7",
+      "y": 270
+    },
+    "links=straight_right,nodes=7,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_7",
+      "y": 180
+    },
+    "links=straight_right,nodes=7,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_7"
+    },
+    "links=straight_right,nodes=7,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_7",
+      "y": 90
+    },
+    "links=straight_right,nodes=8,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_8",
+      "y": 270
+    },
+    "links=straight_right,nodes=8,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_8",
+      "y": 180
+    },
+    "links=straight_right,nodes=8,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_8"
+    },
+    "links=straight_right,nodes=8,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_8",
+      "y": 90
+    },
+    "links=straight_right,nodes=9,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_9",
+      "y": 270
+    },
+    "links=straight_right,nodes=9,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_9",
+      "y": 180
+    },
+    "links=straight_right,nodes=9,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_9"
+    },
+    "links=straight_right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_9",
+      "y": 90
     }
   }
 }

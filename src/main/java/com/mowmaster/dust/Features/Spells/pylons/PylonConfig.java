@@ -34,6 +34,14 @@ public final class PylonConfig
         return spellLevel < 20 ? 1 : spellLevel / 10;
     }
 
+    // Blessed / corrupted modifiers don't get upgrade nodes: their pylon rolls a strength in this range (percent)
+    // instead (SpellModifier.usesStrength), and locks straight away
+    public static final int MIN_STRENGTH = 10;
+    public static final int MAX_STRENGTH = 50;
+
+    // A spell tree reaching this level unlocks the Beam shape for whoever cast it (for every element)
+    public static final int BEAM_LEVEL = 50;
+
     // A broken main pylon keeps this share of its levels (for the same element)
     public static final float KEPT_LEVELS = 0.1F;
 

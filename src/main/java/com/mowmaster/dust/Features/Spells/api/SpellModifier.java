@@ -56,6 +56,24 @@ public interface SpellModifier
         return stats;
     }
 
+    // ---- strength: a percent rolled onto the pylon (blessed / corrupted modifiers) ----
+
+    // True for a modifier whose pylon rolls a strength (PylonConfig.MIN_STRENGTH-MAX_STRENGTH percent) instead of
+    // getting upgrade nodes. The spell carries it (Spell.strengths) and hands it to the two methods below.
+    default boolean usesStrength() { return tier() != ModifierTier.NORMAL; }
+
+    // As modifyStats / costPercent, with the strength rolled for it (0 for modifiers that don't use one). By default
+    // the strength is ignored, so ordinary modifiers only override the plain versions.
+    default SpellStats modifyStats(SpellStats stats, int strength)
+    {
+        return modifyStats(stats);
+    }
+
+    default int costPercent(int strength)
+    {
+        return costPercent();
+    }
+
     // Runs as the spell is cast, before the shape delivers it. Returning false stops the shape: the modifier delivered
     // the spell itself (e.g. several projectiles instead of one) and calls cast.markDelivered().
     default boolean beforeDelivery(SpellCast cast)

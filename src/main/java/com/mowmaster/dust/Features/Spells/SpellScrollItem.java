@@ -52,7 +52,13 @@ public class SpellScrollItem extends Item
             SpellTreeData trees = SpellTreeData.get(player.level().getServer());
             trees.addExperience(link.tree(), link.pylons());
             // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
-            SpellMastery.note(player, spell.element(), com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree())));
+            int treeLevel = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
+            SpellMastery.note(player, spell.element(), treeLevel);
+            // The first tree of theirs to reach the Beam level unlocks Beam for them, for every element
+            if (treeLevel >= com.mowmaster.dust.Features.Spells.pylons.PylonConfig.BEAM_LEVEL
+                    && SpellKnowledge.unlockShape(player, SpellRegistries.BEAM.getId())) {
+                player.sendSystemMessage(Component.translatable("dust.pylon.beam_unlocked"));
+            }
         }
         return true;
     }

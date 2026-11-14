@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dust:block/pylon/change_pylon"
+    "model": "dust:block/pylon/blank_pylon_base_level_3",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
   }
 }

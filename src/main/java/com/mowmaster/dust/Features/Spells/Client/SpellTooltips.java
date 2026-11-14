@@ -33,8 +33,11 @@ public final class SpellTooltips
             lines.add(at++, Component.translatable("dust.spell.tooltip.attribute", name("spell_attribute", attribute.getKey()), attribute.getValue())
                     .withStyle(ChatFormatting.DARK_GRAY));
         }
-        for (Identifier modifier : spell.modifiers()) {
-            lines.add(at++, Component.literal(" ").append(name("spell_modifier", modifier)).withStyle(ChatFormatting.DARK_PURPLE));
+        for (int i = 0; i < spell.modifiers().size(); i++) {
+            Component line = Component.literal(" ").append(name("spell_modifier", spell.modifiers().get(i)));
+            // A blessed / corrupted modifier's rolled strength: " Surging 34%"
+            if (spell.strength(i) > 0) line = line.copy().append(" " + spell.strength(i) + "%");
+            lines.add(at++, line.copy().withStyle(ChatFormatting.DARK_PURPLE));
         }
         StringBuilder cost = new StringBuilder();
         spell.dustCost().forEach((element, amount) -> cost.append(cost.isEmpty() ? "" : ", ").append(amount).append(' ').append(element.name().getString()));

@@ -18,19 +18,36 @@ import java.util.Map;
 // worked out by the pylons in step 2; for now set by command). Saved on a Spell Scroll as the dust:spell data
 // component. Shapes, attributes and modifiers are registry ids, so other mods' entries save the same way; an id whose
 // mod was removed is skipped when the spell is cast.
-public record Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers)
+// strengths: for each modifier (same order), the percent rolled onto its pylon (10-50), for the modifiers that use one
+// (blessed / corrupted: SpellModifier.usesStrength); 0 for the rest. Missing entries count as 0.
+public record Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers, List<Integer> strengths)
 {
     public Spell
     {
         attributes = java.util.Collections.unmodifiableMap(new LinkedHashMap<>(attributes));
         modifiers = List.copyOf(modifiers);
+        strengths = List.copyOf(strengths);
+    }
+
+    // A spell with no rolled strengths (by command, an awakening...). A record can have more constructors as long as
+    // they hand over to the main one with this(...).
+    public Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers)
+    {
+        this(element, shape, attributes, modifiers, List.of());
+    }
+
+    // The strength rolled for the modifier at this place in the list (0 if none)
+    public int strength(int index)
+    {
+        return index < strengths.size() ? strengths.get(index) : 0;
     }
 
     public static final Codec<Spell> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             DustElements.CODEC.fieldOf("element").forGetter(Spell::element),
             Identifier.CODEC.fieldOf("shape").forGetter(Spell::shape),
             Codec.unboundedMap(Identifier.CODEC, Codec.INT).optionalFieldOf("attributes", Map.of()).forGetter(Spell::attributes),
-            Identifier.CODEC.listOf().optionalFieldOf("modifiers", List.of()).forGetter(Spell::modifiers)
+            Identifier.CODEC.listOf().optionalFieldOf("modifiers", List.of()).forGetter(Spell::modifiers),
+            Codec.INT.listOf().optionalFieldOf("strengths", List.of()).forGetter(Spell::strengths)
     ).apply(instance, Spell::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Spell> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
@@ -43,7 +60,10 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
             SpellAttribute type = SpellRegistries.ATTRIBUTE_REGISTRY.getValue(attribute.getKey());
             if (type != null) stats = type.apply(stats, attribute.getValue());
         }
-        for (SpellModifier modifier : modifierList()) stats = modifier.modifyStats(stats);
+        for (int i = 0; i < modifiers.size(); i++) {
+            SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(modifiers.get(i));
+            if (modifier != null) stats = modifier.modifyStats(stats, strength(i));
+        }
         return stats.withPotency(stats.potency() * power);
     }
 
@@ -56,9 +76,11 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         int levels = attributes.values().stream().mapToInt(Integer::intValue).sum();
         if (levels > 0) cost.merge(element, levels, Integer::sum);
         int percent = 0;
-        for (SpellModifier modifier : modifierList()) {
+        for (int i = 0; i < modifiers.size(); i++) {
+            SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(modifiers.get(i));
+            if (modifier == null) continue;
             modifier.cost(element).forEach((type, amount) -> cost.merge(type, amount, Integer::sum));
-            percent += modifier.costPercent();
+            percent += modifier.costPercent(strength(i));
         }
         // The percentages together, then nothing below 1 of the spell's own element (other elements can drop to 0)
         int finalPercent = percent;
