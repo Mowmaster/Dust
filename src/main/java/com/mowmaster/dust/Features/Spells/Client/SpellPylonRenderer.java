@@ -90,8 +90,8 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         if (pylon.chain().isEmpty()) {
             shown = DustBlockRegistry.SHAPE_PYLON.get();
         } else {
-            Block[] kinds = {DustBlockRegistry.CHANGE_PYLON.get(), DustBlockRegistry.COST_PYLON.get(), DustBlockRegistry.COUNT_PYLON.get(),
-                    DustBlockRegistry.DAMAGE_PYLON.get()};
+            Block[] kinds = {DustBlockRegistry.NEUTRAL_PYLON.get(), DustBlockRegistry.THRIFTY_PYLON.get(), DustBlockRegistry.GIANT_PYLON.get(),
+                    DustBlockRegistry.DAMAGE_PYLON.get(), DustBlockRegistry.EXPERIENCED_PYLON.get()};
             shown = kinds[(int) (state.time / 30) % kinds.length];
         }
         itemModelResolver.updateForTopItem(state.ghost, new ItemStack(shown), ItemDisplayContext.GROUND, pylon.getLevel(), null, 0);

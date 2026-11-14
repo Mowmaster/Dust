@@ -155,8 +155,8 @@ public class DustClient {
         event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
         // The spell pylons: the Spell Pylon in its element's colour; the others by kind, lockout and upgrade nodes
         event.register(List.of(new com.mowmaster.dust.Features.Spells.Client.SpellPylonTint()), DustBlockRegistry.SPELL_PYLON.get());
-        event.register(com.mowmaster.dust.Features.Spells.Client.PylonTint.all(), DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.CHANGE_PYLON.get(),
-                DustBlockRegistry.COST_PYLON.get(), DustBlockRegistry.COUNT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get());
+        event.register(com.mowmaster.dust.Features.Spells.Client.PylonTint.all(), DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.NEUTRAL_PYLON.get(),
+                DustBlockRegistry.THRIFTY_PYLON.get(), DustBlockRegistry.GIANT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get(), DustBlockRegistry.EXPERIENCED_PYLON.get());
     }
 
     // Client-side handlers for server -> client packets that touch client-only code (the packets are registered in

@@ -9,13 +9,13 @@ import com.mowmaster.dust.Features.Spells.api.SpellModifier;
 import com.mowmaster.dust.Features.Spells.api.SpellShape;
 import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierTier;
-import com.mowmaster.dust.Features.Spells.modifiers.MultishotModifier;
 import com.mowmaster.dust.Features.Spells.modifiers.FusionModifier;
 import com.mowmaster.dust.Features.Spells.modifiers.BasicAspect;
 import com.mowmaster.dust.Features.Spells.modifiers.EchoFragment;
 import com.mowmaster.dust.Features.Spells.modifiers.FragmentSlotModifier;
-import com.mowmaster.dust.Features.Spells.modifiers.PercentModifier;
-import com.mowmaster.dust.Features.Spells.modifiers.StatModifier;
+import com.mowmaster.dust.Features.Spells.modifiers.LeveledModifier;
+import com.mowmaster.dust.Features.Spells.api.ModifierFit;
+import com.mowmaster.dust.Features.Spells.api.SpellFragment;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.MagicParts;
@@ -97,44 +97,71 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellAttribute, SpellAttribute> SPEED = ATTRIBUTES.register("speed",
             () -> new StatAttribute((stats, level) -> stats.withSpeed(stats.speed() + 0.4F * level)));
 
-    // ---- modifiers (rolled onto pylons; a Change / Cost / Count / Damage pylon favours its category) ----
-    // Count
-    public static final DeferredHolder<SpellModifier, SpellModifier> WIDER = MODIFIERS.register("wider",
-            () -> StatModifier.of(ModifierCategory.COUNT, 10, stats -> stats.withSize(stats.size() + 1)));
-    public static final DeferredHolder<SpellModifier, SpellModifier> LONGER = MODIFIERS.register("longer",
-            () -> StatModifier.of(ModifierCategory.COUNT, 10, stats -> stats.withDuration(Math.round(stats.duration() * 1.5F))));
-    public static final DeferredHolder<SpellModifier, SpellModifier> FARTHER = MODIFIERS.register("farther",
-            () -> StatModifier.of(ModifierCategory.COUNT, 10, stats -> stats.withRange(stats.range() + 8)));
-    public static final DeferredHolder<SpellModifier, SpellModifier> FASTER = MODIFIERS.register("faster",
-            () -> StatModifier.of(ModifierCategory.COUNT, 8, stats -> stats.withSpeed(stats.speed() + 0.4F)));
-    // corrupted: wider (1-3 more), but it lasts strength% less
-    public static final DeferredHolder<SpellModifier, SpellModifier> SPRAWLING = MODIFIERS.register("sprawling",
-            () -> new PercentModifier(ModifierCategory.COUNT, ModifierTier.CORRUPTED, 6,
-                    (stats, p) -> stats.withSize(stats.size() + Math.max(1, Math.round(p * 6))).withDuration(Math.round(stats.duration() * (1 - p))), 1, 0));
-    // blessed: lasts strength% longer
-    public static final DeferredHolder<SpellModifier, SpellModifier> ENDURING = MODIFIERS.register("enduring",
-            () -> new PercentModifier(ModifierCategory.COUNT, ModifierTier.BLESSED, 6, (stats, p) -> stats.withDuration(Math.round(stats.duration() * (1 + p))), 1, 0));
-    // Damage
-    public static final DeferredHolder<SpellModifier, SpellModifier> STRONGER = MODIFIERS.register("stronger",
-            () -> StatModifier.of(ModifierCategory.DAMAGE, 10, stats -> stats.withPotency(stats.potency() + 1)));
-    // blessed: strength% stronger
-    public static final DeferredHolder<SpellModifier, SpellModifier> SURGING = MODIFIERS.register("surging",
-            () -> new PercentModifier(ModifierCategory.DAMAGE, ModifierTier.BLESSED, 6, (stats, p) -> stats.withPotency(stats.potency() * (1 + p)), 1, 0));
-    // corrupted: twice strength% stronger, but reaches strength% less
-    public static final DeferredHolder<SpellModifier, SpellModifier> BRUTAL = MODIFIERS.register("brutal",
-            () -> new PercentModifier(ModifierCategory.DAMAGE, ModifierTier.CORRUPTED, 6,
-                    (stats, p) -> stats.withPotency(stats.potency() * (1 + 2 * p)).withRange(Math.max(4, stats.range() * (1 - p))), 1, 0));
-    // Cost
-    public static final DeferredHolder<SpellModifier, SpellModifier> THRIFTY = MODIFIERS.register("thrifty",
-            () -> new StatModifier(ModifierCategory.COST, ModifierTier.NORMAL, 8, stats -> stats, -1, 0));
-    // blessed: strength% cheaper
-    public static final DeferredHolder<SpellModifier, SpellModifier> FRUGAL = MODIFIERS.register("frugal",
-            () -> new PercentModifier(ModifierCategory.COST, ModifierTier.BLESSED, 6, (stats, p) -> stats, 0, -1));
-    // corrupted: twice strength% stronger, but strength% dearer
-    public static final DeferredHolder<SpellModifier, SpellModifier> OVERCHARGED = MODIFIERS.register("overcharged",
-            () -> new PercentModifier(ModifierCategory.COST, ModifierTier.CORRUPTED, 6, (stats, p) -> stats.withPotency(stats.potency() * (1 + 2 * p)), 1, 1));
-    // Change
-    public static final DeferredHolder<SpellModifier, SpellModifier> MULTISHOT = MODIFIERS.register("multishot", MultishotModifier::new);
+    // ---- modifiers (drawn from the tree's pool into its deck, and from the deck onto pylons: SpellPylonBlockEntity) ----
+    // Each is a LeveledModifier: what its levels do, which pylon categories it's in, which spells it suits, and its
+    // draw rules. modifier(name, ...) registers it and tells it its own id.
+
+    // General (any spell; a Neutral pylon only)
+    // Cast Speed: 1 tick sooner to cast again per level
+    public static final DeferredHolder<SpellModifier, SpellModifier> CAST_SPEED = modifier("cast_speed",
+            () -> new LeveledModifier((stats, levels) -> stats.withCooldown(stats.cooldown() - levels)));
+
+    // Thrifty
+    // Mana Reduction / Dust Reduction: 1% less a level (rounded down)
+    public static final DeferredHolder<SpellModifier, SpellModifier> MANA_REDUCTION = modifier("mana_reduction",
+            () -> new LeveledModifier((stats, levels) -> stats.withManaPercent(stats.manaPercent() - levels)).categories(ModifierCategory.THRIFTY));
+    public static final DeferredHolder<SpellModifier, SpellModifier> DUST_REDUCTION = modifier("dust_reduction",
+            () -> new LeveledModifier((stats, levels) -> stats).categories(ModifierCategory.THRIFTY).costPerLevel(-1));
+    // Transmutation (one use): short of the element's dust, its parent elements' pay instead, at double the amount
+    // (SpellCasting)
+    public static final DeferredHolder<SpellModifier, SpellModifier> TRANSMUTATION = modifier("transmutation",
+            () -> LeveledModifier.marker().categories(ModifierCategory.THRIFTY).uses(1).oncePerBranch());
+
+    // Experienced
+    // Spell XP Gain: 1% more experience to the tree a level (rounded down)
+    public static final DeferredHolder<SpellModifier, SpellModifier> SPELL_XP = modifier("spell_xp",
+            () -> new LeveledModifier((stats, levels) -> stats.withXpPercent(stats.xpPercent() + levels)).categories(ModifierCategory.EXPERIENCED));
+    // Fragment Progress: the next fragment slot comes a level sooner per level. Only once the line has a fragment and
+    // there are more fragments for the element to come.
+    public static final DeferredHolder<SpellModifier, SpellModifier> FRAGMENT_PROGRESS = modifier("fragment_progress",
+            () -> LeveledModifier.marker().categories(ModifierCategory.EXPERIENCED)
+                    .requires(context -> context.countOf(SpellFragment.class) > 0 && FragmentSlotModifier.moreToCome(context)));
+    // Reduced Requirements (one use, from level 20, rare): every modifier unlocks PylonConfig.REDUCED_REQUIREMENT levels sooner
+    public static final DeferredHolder<SpellModifier, SpellModifier> REDUCED_REQUIREMENTS = modifier("reduced_requirements",
+            () -> LeveledModifier.marker().categories(ModifierCategory.EXPERIENCED).uses(1).unlock(20).weight(5));
+
+    // Instant effects
+    // Damage: half a heart more a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> DAMAGE = modifier("damage",
+            () -> new LeveledModifier((stats, levels) -> stats.withBonusDamage(stats.bonusDamage() + 0.5F * levels))
+                    .categories(ModifierCategory.DAMAGE).fit(ModifierFit.INSTANT));
+    // Crit Chance: 1% a level to deal double damage
+    public static final DeferredHolder<SpellModifier, SpellModifier> CRIT_CHANCE = modifier("crit_chance",
+            () -> new LeveledModifier((stats, levels) -> stats.withCritChance(stats.critChance() + 0.01F * levels)).fit(ModifierFit.INSTANT));
+    // Luck: 1% a level on the chance of an effect's chance-based results
+    public static final DeferredHolder<SpellModifier, SpellModifier> LUCK = modifier("luck",
+            () -> new LeveledModifier((stats, levels) -> stats.withLuck(stats.luck() + 0.01F * levels)).fit(ModifierFit.INSTANT));
+
+    // Lingering (DOT) effects
+    // Duration: a second longer a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> DURATION_MODIFIER = modifier("duration",
+            () -> new LeveledModifier((stats, levels) -> stats.withDuration(stats.duration() + 20 * levels)).fit(ModifierFit.DOT));
+    // Potency: a quarter level stronger a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> POTENCY_MODIFIER = modifier("potency",
+            () -> new LeveledModifier((stats, levels) -> stats.withPotency(stats.potency() + 0.25F * levels))
+                    .categories(ModifierCategory.DAMAGE).fit(ModifierFit.DOT));
+
+    // The deck and pool (read by the tree, not the cast: SpellPylonBlockEntity)
+    // Category Weight: a category pylon's category is drawn into the deck more often, +1 weight a level (category pylons only)
+    public static final DeferredHolder<SpellModifier, SpellModifier> CATEGORY_WEIGHT = modifier("category_weight",
+            () -> LeveledModifier.marker().extraCost(0)
+                    .categories(ModifierCategory.DAMAGE, ModifierCategory.GIANT, ModifierCategory.THRIFTY, ModifierCategory.EXPERIENCED));
+    // Double Blessed Progress (one use): each locked pylon counts twice towards a blessing
+    public static final DeferredHolder<SpellModifier, SpellModifier> DOUBLE_BLESSED = modifier("double_blessed",
+            () -> LeveledModifier.marker().extraCost(0).uses(1));
+    // Double Draw: 5% a level that a modifier drawn into the deck comes twice
+    public static final DeferredHolder<SpellModifier, SpellModifier> DOUBLE_DRAW = modifier("double_draw",
+            () -> LeveledModifier.marker().extraCost(0));
 
     // ---- fragments, aspects and fusions (the bigger changes, after spell breaks) ----
     // The Fragment slot: rolled at level milestones, becomes a random fragment for the element (FragmentSlotModifier)
@@ -142,9 +169,9 @@ public final class SpellRegistries
     // Echo (any element): the spell casts again by itself; its aspects add echoes and quicken them
     public static final DeferredHolder<SpellModifier, SpellModifier> ECHO = MODIFIERS.register("echo", EchoFragment::new);
     public static final DeferredHolder<SpellModifier, SpellModifier> ECHO_RESONANCE = MODIFIERS.register("echo_resonance",
-            () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), ModifierCategory.COUNT, 10));
+            () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), 10));
     public static final DeferredHolder<SpellModifier, SpellModifier> ECHO_QUICKENING = MODIFIERS.register("echo_quickening",
-            () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), ModifierCategory.CHANGE, 8));
+            () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), 8));
     // Fusions: one per pair of elements, each with its own effects (parts it leaves out fall back to the spell's element)
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FLIGHT_MOTION = MODIFIERS.register("fusion_flight_motion",
             () -> new FusionModifier(DustElements.FLIGHT, DustElements.MOTION).self(MovementParts::glide)
@@ -251,6 +278,12 @@ public final class SpellRegistries
 
     public static final DeferredHolder<ElementEffect, ElementEffect> SPIRIT_EFFECT = element(DustElements.SPIRIT,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpecialBlockParts::phase).self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
+
+    // Registers a LeveledModifier and gives it its own id (for its "once per branch" / "every N levels" counts)
+    private static DeferredHolder<SpellModifier, SpellModifier> modifier(String name, java.util.function.Supplier<LeveledModifier> modifier)
+    {
+        return MODIFIERS.register(name, () -> modifier.get().named(Identifier.fromNamespaceAndPath(DustReferences.MODID, name)));
+    }
 
     private static DeferredHolder<ElementEffect, ElementEffect> element(com.mowmaster.dust.Features.DustComposition.DustElement element,
                                                                         java.util.function.Supplier<ElementEffect> effect)

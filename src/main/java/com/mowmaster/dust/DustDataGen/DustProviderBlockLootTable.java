@@ -71,10 +71,11 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         // an empty loot table here
         add(DustBlockRegistry.SPELL_PYLON.get(), noDrop());
         dropSelf(DustBlockRegistry.SHAPE_PYLON.get());
-        dropSelf(DustBlockRegistry.CHANGE_PYLON.get());
-        dropSelf(DustBlockRegistry.COST_PYLON.get());
-        dropSelf(DustBlockRegistry.COUNT_PYLON.get());
+        dropSelf(DustBlockRegistry.NEUTRAL_PYLON.get());
+        dropSelf(DustBlockRegistry.THRIFTY_PYLON.get());
+        dropSelf(DustBlockRegistry.GIANT_PYLON.get());
         dropSelf(DustBlockRegistry.DAMAGE_PYLON.get());
+        dropSelf(DustBlockRegistry.EXPERIENCED_PYLON.get());
 
         dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
         add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));

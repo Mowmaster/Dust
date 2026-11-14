@@ -8,21 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-// What a modifier can look at when deciding whether it can be rolled on a pylon (its preconditions):
-//   element, shape  the spell's
-//   modifiers       those already in the tree's line up to this pylon, in order
-//   level           the spell tree's level
-//   breaks          how many spell breaks come before this pylon in its line
-//   mastery         the placing player's highest spell level for each element (SpellMastery; empty without a player)
-public record ModifierContext(DustElement element, Identifier shape, List<Identifier> modifiers, int level, int breaks,
-                              Map<DustElement, Integer> mastery)
+// What a modifier can look at when deciding whether it can go on a pylon (its preconditions):
+//   element, shape     the spell's
+//   modifiers          those already in the line up to this pylon, in order (for "once per branch")
+//   tree               every modifier in the whole tree (for "once every 10 levels")
+//   level              the spell tree's level
+//   breaks             how many spell breaks come before this pylon in its line
+//   mastery            the placing player's highest spell level for each element (SpellMastery; empty without a player)
+//   instant, dot       whether the spell's effect (on what its shape lands on) hits once / lingers (EffectType)
+//   unlockReduction    levels taken off every modifier's unlock level (Reduced Requirements)
+//   fragmentProgress   levels of Fragment Progress in the tree (the next fragment comes that much sooner)
+public record ModifierContext(DustElement element, Identifier shape, List<Identifier> modifiers, List<Identifier> tree, int level, int breaks,
+                              Map<DustElement, Integer> mastery, boolean instant, boolean dot, int unlockReduction, int fragmentProgress)
 {
-    // The old form, for code that only knows the first three: level 0, no breaks, no mastery
-    public ModifierContext(DustElement element, Identifier shape, List<Identifier> modifiers)
-    {
-        this(element, shape, modifiers, 0, 0, Map.of());
-    }
-
     public boolean has(Identifier modifier)
     {
         return modifiers.contains(modifier);
@@ -31,6 +29,12 @@ public record ModifierContext(DustElement element, Identifier shape, List<Identi
     public long count(Identifier modifier)
     {
         return modifiers.stream().filter(modifier::equals).count();
+    }
+
+    // How many of this modifier the whole tree has
+    public long countInTree(Identifier modifier)
+    {
+        return tree.stream().filter(modifier::equals).count();
     }
 
     // How many of the line's modifiers are of a kind (SpellFragment, FusionModifier...)
@@ -42,5 +46,16 @@ public record ModifierContext(DustElement element, Identifier shape, List<Identi
     public int masteryOf(DustElement element)
     {
         return mastery.getOrDefault(element, 0);
+    }
+
+    // Whether the tree has reached a modifier's unlock level (less any Reduced Requirements)
+    public boolean reached(int unlockLevel)
+    {
+        return level >= unlockLevel - unlockReduction;
+    }
+
+    public boolean isShape(Identifier id)
+    {
+        return shape.equals(id);
     }
 }

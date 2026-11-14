@@ -40,15 +40,38 @@ public final class SpellCasting
         Map<DustElement, Integer> cost = new LinkedHashMap<>();
         spell.dustCost().forEach((element, amount) -> cost.put(element, PlayerMagicHelper.dustCost(player, element, amount)));
         if (!free) {
+            // Short of an element: with Transmutation, its parent elements make up the difference at double the amount
+            // (fire + water for air); otherwise it can't be cast
+            boolean transmute = spell.modifiers().contains(SpellRegistries.TRANSMUTATION.getId());
+            Map<DustElement, Integer> pay = new LinkedHashMap<>();
             for (Map.Entry<DustElement, Integer> need : cost.entrySet()) {
-                if (PlayerMagicHelper.dust(player, need.getKey()) < need.getValue()) {
+                int have = PlayerMagicHelper.dust(player, need.getKey()) - pay.getOrDefault(need.getKey(), 0);
+                int shortBy = need.getValue() - Math.max(0, have);
+                pay.merge(need.getKey(), Math.min(need.getValue(), Math.max(0, have)), Integer::sum);
+                if (shortBy <= 0) continue;
+                if (transmute && !need.getKey().parts().isEmpty()) {
+                    for (DustElement parent : need.getKey().parts()) pay.merge(parent, shortBy * 2, Integer::sum);
+                } else {
                     player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", need.getKey().name(), need.getValue()));
                     return false;
                 }
             }
+            for (Map.Entry<DustElement, Integer> part : pay.entrySet()) {
+                if (PlayerMagicHelper.dust(player, part.getKey()) < part.getValue()) {
+                    player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", part.getKey().name(), part.getValue()));
+                    return false;
+                }
+            }
+            cost.clear();
+            cost.putAll(pay);
         }
 
         SpellStats stats = spell.stats(PlayerMagicHelper.spellPower(player, spell.element()));
+        // A critical hit (Crit Chance): double damage this cast
+        if (stats.critChance() > 0 && player.getRandom().nextFloat() < stats.critChance()) {
+            stats = stats.withDamageMultiplier(stats.damageMultiplier() * 2);
+            player.level().playSound(null, player.blockPosition(), net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_CRIT, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.2F);
+        }
         SpellCast cast = SpellCast.by(player, spell, stats);
         boolean delivered = deliver(cast, shape);
         if (!delivered) {
@@ -62,7 +85,9 @@ public final class SpellCasting
                 PlayerMagicHelper.removeDust(player, need.getKey(), need.getValue(), false);
                 total += need.getValue();
             }
-            PlayerMagicHelper.spendMana(player, PlayerMagicHelper.manaForDust(total));
+            // Mana Reduction: percent off (int division rounds the saving down)
+            int mana = PlayerMagicHelper.manaForDust(total);
+            PlayerMagicHelper.spendMana(player, Math.max(0, mana + mana * stats.manaPercent() / 100));
         }
         return true;
     }

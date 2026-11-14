@@ -45,8 +45,8 @@ public final class SpellTooltips
         }
         for (int i = 0; i < spell.modifiers().size(); i++) {
             Component line = Component.literal(" ").append(name("spell_modifier", spell.modifiers().get(i)));
-            // A blessed / corrupted modifier's rolled strength: " Surging 34%"
-            if (spell.strength(i) > 0) line = line.copy().append(" " + spell.strength(i) + "%");
+            // Its levels: " Damage 4"
+            if (spell.level(i) > 1) line = line.copy().append(" " + spell.level(i));
             lines.add(at++, line.copy().withStyle(ChatFormatting.DARK_PURPLE));
         }
         StringBuilder cost = new StringBuilder();

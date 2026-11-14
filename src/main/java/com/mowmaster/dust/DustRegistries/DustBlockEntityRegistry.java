@@ -54,8 +54,8 @@ public class DustBlockEntityRegistry
     public static final Supplier<BlockEntityType<SpellPylonBlockEntity>> SPELL_PYLON = BLOCK_ENTITIES.register("spell_pylon",
             () -> new BlockEntityType<>(SpellPylonBlockEntity::new, Set.of(DustBlockRegistry.SPELL_PYLON.get())));
     public static final Supplier<BlockEntityType<PylonBlockEntity>> PYLON = BLOCK_ENTITIES.register("pylon",
-            () -> new BlockEntityType<>(PylonBlockEntity::new, Set.of(DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.CHANGE_PYLON.get(),
-                    DustBlockRegistry.COST_PYLON.get(), DustBlockRegistry.COUNT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get())));
+            () -> new BlockEntityType<>(PylonBlockEntity::new, Set.of(DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.NEUTRAL_PYLON.get(),
+                    DustBlockRegistry.THRIFTY_PYLON.get(), DustBlockRegistry.GIANT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get(), DustBlockRegistry.EXPERIENCED_PYLON.get())));
     public static final Supplier<BlockEntityType<ResearchTransformationBlockEntity>> RESEARCH_TRANSFORMATION = BLOCK_ENTITIES.register("research_transformational",
             () -> new BlockEntityType<>(ResearchTransformationBlockEntity::new, Set.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.get())));
     public static final Supplier<BlockEntityType<ResearchCombinationBlockEntity>> RESEARCH_COMBINATION = BLOCK_ENTITIES.register("research_combination",

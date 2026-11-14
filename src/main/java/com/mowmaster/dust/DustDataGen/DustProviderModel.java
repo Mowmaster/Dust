@@ -330,8 +330,8 @@ public class DustProviderModel extends ModelProvider {
                         BlockModelGenerators.plainVariant(pylonModel("shape_pylon" + links.shapeModel())).with(parentTurn(parent)))));
         blockModels.itemModelOutput.accept(shapePylon.asItem(), ItemModelUtils.plainModel(pylonModel("shape_pylon")));
 
-        for (Block block : List.of(DustBlockRegistry.CHANGE_PYLON.get(), DustBlockRegistry.COST_PYLON.get(),
-                DustBlockRegistry.COUNT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get())) {
+        for (Block block : List.of(DustBlockRegistry.NEUTRAL_PYLON.get(), DustBlockRegistry.THRIFTY_PYLON.get(),
+                DustBlockRegistry.GIANT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get(), DustBlockRegistry.EXPERIENCED_PYLON.get())) {
             // A spell break has its own two models (unpowered: broken, powered: connected) whatever its links and nodes
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
                     PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES, PylonBlock.BREAK).generate((parent, links, nodes, spellBreak) ->

@@ -1,7 +1,6 @@
 package com.mowmaster.dust.Features.Spells.modifiers;
 
 import com.mowmaster.dust.Features.Spells.SpellRegistries;
-import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierContext;
 import com.mowmaster.dust.Features.Spells.api.SpellFragment;
 import com.mowmaster.dust.Features.Spells.api.SpellModifier;
@@ -21,16 +20,13 @@ import java.util.List;
 public class FragmentSlotModifier implements SpellModifier
 {
     @Override
-    public ModifierCategory category() { return ModifierCategory.CHANGE; }
-
-    @Override
     public int weight() { return 8; }
 
     @Override
     public boolean canRoll(ModifierContext context)
     {
         long fragments = context.countOf(SpellFragment.class);
-        return fragments < PylonConfig.fragmentSlots(context.level()) && fragments < context.breaks() && !candidates(context).isEmpty();
+        return fragments < PylonConfig.fragmentSlots(context.level() + context.fragmentProgress()) && fragments < context.breaks() && !candidates(context).isEmpty();
     }
 
     @Override
@@ -38,6 +34,12 @@ public class FragmentSlotModifier implements SpellModifier
     {
         List<Identifier> candidates = candidates(context);
         return candidates.isEmpty() ? null : candidates.get(random.nextInt(candidates.size()));
+    }
+
+    // Whether a fragment for the element is still to come (one the line doesn't have)
+    public static boolean moreToCome(ModifierContext context)
+    {
+        return !candidates(context).isEmpty();
     }
 
     // Fragments for this element (or any element) not in the line yet

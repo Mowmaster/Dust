@@ -22,6 +22,4 @@ public interface SpellFragment extends SpellModifier
     @Override
     default boolean canRoll(ModifierContext context) { return false; }
 
-    @Override
-    default ModifierCategory category() { return ModifierCategory.CHANGE; }
 }

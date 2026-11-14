@@ -13,14 +13,16 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-// A modifier pylon's part in a spell tree: which Spell Pylon it belongs to, and what was rolled onto it (a modifier
-// and its tier, or a spell break), or for the Shape Pylon, the shape. The Spell Pylon does the rolling and keeps the
-// order (SpellPylonBlockEntity); this just holds the result.
-//   nodes      a normal modifier gets upgrade nodes (maxNodes, PylonConfig): each filled one (nodes) cost a level and
-//              added potency points (points) to the spell
-//   strength   a blessed / corrupted modifier gets a strength instead (PylonConfig.MIN_STRENGTH-MAX_STRENGTH percent)
-//   locked     can't be broken or changed: set once a node is filled, straight away for blessed / corrupted
-//              modifiers, and for the Shape Pylon once a pylon follows it
+// A modifier pylon's part in a spell tree: which Spell Pylon it belongs to, and what it drew from the deck (a
+// modifier and its tier, or a spell break), or for the Shape Pylon, the shape. The Spell Pylon does the drawing and
+// keeps the order (SpellPylonBlockEntity); this just holds the result.
+//   card       the deck card it took (back in the deck if it's broken before it locks; for a Fragment slot, the slot)
+//   levels     how many levels of its modifier it gives the spell: 1 to start, more for each upgrade node filled
+//              (nodes of maxNodes; each costs a spell level and adds the modifier's levels per node)
+//   legendary  a Legendary pylon: its levels count double
+//   stop       a null corruption: nothing more can follow it in its branch
+//   locked     can't be broken or changed: set once a node is filled, straight away for blessed / corrupted /
+//              legendary / stop pylons, and for the Shape Pylon once a pylon follows it
 //   powered    a spell break with redstone power (the line carries on)
 // All of it is synced: the client tints the pylon from it (Client/PylonTint).
 public class PylonBlockEntity extends CBSyncedBlockEntity
@@ -30,10 +32,12 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     private ModifierTier tier = ModifierTier.NORMAL;
     private boolean spellBreak;
     private @Nullable Identifier shape;
+    private @Nullable Identifier card;
     private int maxNodes;
     private int nodes;
-    private int points;
-    private int strength;
+    private int levels;
+    private boolean legendary;
+    private boolean stop;
     private boolean locked;
     private boolean powered;
 
@@ -47,10 +51,12 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     public ModifierTier tier() { return tier; }
     public boolean isSpellBreak() { return spellBreak; }
     public @Nullable Identifier shape() { return shape; }
+    public @Nullable Identifier card() { return card; }
     public int maxNodes() { return maxNodes; }
     public int nodes() { return nodes; }
-    public int points() { return points; }
-    public int strength() { return strength; }
+    public int levels() { return levels; }
+    public boolean legendary() { return legendary; }
+    public boolean stop() { return stop; }
     public boolean locked() { return locked; }
     public boolean powered() { return powered; }
 
@@ -59,11 +65,11 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         return main != null && modifier != null && nodes < maxNodes;
     }
 
-    // One more node filled, worth this many potency points (a levelled pylon is locked)
-    void upgrade(int worth)
+    // One more node filled, adding this many levels of its modifier (a levelled pylon is locked)
+    void upgrade(int addedLevels)
     {
         nodes++;
-        points += worth;
+        levels += addedLevels;
         locked = true;
         sync();
     }
@@ -80,20 +86,23 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         return getBlockState().getBlock() instanceof PylonBlock pylon ? pylon.type() : PylonType.SHAPE;
     }
 
-    // Joined to a tree with this result (modifier null and spellBreak false: nothing could be rolled)
-    void link(BlockPos main, @Nullable Identifier modifier, ModifierTier tier, boolean spellBreak, @Nullable Identifier shape, int maxNodes, int strength)
+    // Joined to a tree with what it drew (modifier null, spellBreak and stop false: there was nothing to draw)
+    void link(BlockPos main, @Nullable Identifier card, @Nullable Identifier modifier, ModifierTier tier, boolean spellBreak,
+              @Nullable Identifier shape, int maxNodes, boolean legendary, boolean stop)
     {
+        this.card = card;
         this.maxNodes = maxNodes;
         this.nodes = 0;
-        this.points = 0;
-        this.strength = strength;
+        this.levels = modifier == null ? 0 : 1;
+        this.legendary = legendary;
+        this.stop = stop;
         this.main = main;
         this.modifier = modifier;
         this.tier = tier;
         this.spellBreak = spellBreak;
         this.shape = shape;
-        // Blessed / corrupted modifiers are locked as soon as they're rolled
-        this.locked = tier != ModifierTier.NORMAL;
+        // Blessed / corrupted / legendary / stop pylons are locked as soon as they're placed
+        this.locked = tier != ModifierTier.NORMAL || legendary || stop;
         this.powered = spellBreak && level != null && level.hasNeighborSignal(worldPosition);
         sync();
     }
@@ -112,10 +121,12 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         tier = ModifierTier.NORMAL;
         spellBreak = false;
         shape = null;
+        card = null;
         maxNodes = 0;
         nodes = 0;
-        points = 0;
-        strength = 0;
+        levels = 0;
+        legendary = false;
+        stop = false;
         locked = false;
         powered = false;
         updateLook(null, PylonLinks.NONE);
@@ -166,8 +177,10 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         if (shape != null) output.store("shape", Identifier.CODEC, shape);
         output.putInt("max_nodes", maxNodes);
         output.putInt("nodes", nodes);
-        output.putInt("points", points);
-        output.putInt("strength", strength);
+        if (card != null) output.store("card", Identifier.CODEC, card);
+        output.putInt("levels", levels);
+        output.putBoolean("legendary", legendary);
+        output.putBoolean("stop", stop);
         output.putBoolean("locked", locked);
         output.putBoolean("powered", powered);
     }
@@ -183,8 +196,10 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         shape = input.read("shape", Identifier.CODEC).orElse(null);
         maxNodes = input.getIntOr("max_nodes", 0);
         nodes = input.getIntOr("nodes", 0);
-        points = input.getIntOr("points", 0);
-        strength = input.getIntOr("strength", 0);
+        card = input.read("card", Identifier.CODEC).orElse(null);
+        levels = input.getIntOr("levels", 0);
+        legendary = input.getBooleanOr("legendary", false);
+        stop = input.getBooleanOr("stop", false);
         locked = input.getBooleanOr("locked", false);
         powered = input.getBooleanOr("powered", false);
         // On the client: the tints (body, lockout, nodes) come from here, so ask for the block to be drawn again

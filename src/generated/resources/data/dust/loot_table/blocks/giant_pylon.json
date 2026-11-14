@@ -8,11 +8,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:count_pylon"
+          "name": "dust:giant_pylon"
         }
       ],
       "rolls": 1
     }
   ],
-  "random_sequence": "dust:blocks/count_pylon"
+  "random_sequence": "dust:blocks/giant_pylon"
 }

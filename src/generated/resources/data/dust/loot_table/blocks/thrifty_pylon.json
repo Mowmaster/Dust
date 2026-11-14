@@ -8,11 +8,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:cost_pylon"
+          "name": "dust:thrifty_pylon"
         }
       ],
       "rolls": 1
     }
   ],
-  "random_sequence": "dust:blocks/cost_pylon"
+  "random_sequence": "dust:blocks/thrifty_pylon"
 }

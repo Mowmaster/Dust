@@ -120,7 +120,8 @@ public class GrimoireItem extends Item implements IPagedStorageItem
             return false;
         }
         if (!SpellScrollItem.castFrom(player, scroll)) return false;
-        player.getCooldowns().addCooldown(grimoire, SpellScrollItem.CAST_COOLDOWN);
+        Spell cast = scroll.get(DustComponentDataRegistry.SPELL.get());
+        player.getCooldowns().addCooldown(grimoire, cast == null ? SpellScrollItem.CAST_COOLDOWN : SpellScrollItem.cooldownFor(cast));
         return true;
     }
 

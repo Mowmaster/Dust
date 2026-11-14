@@ -2,7 +2,6 @@ package com.mowmaster.dust.Features.Spells.modifiers;
 
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Spells.api.ElementEffect;
-import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierContext;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
 import com.mowmaster.dust.Features.Spells.api.SpellModifier;
@@ -58,16 +57,14 @@ public class FusionModifier implements SpellModifier
     public DustElement second() { return second; }
 
     @Override
-    public ModifierCategory category() { return ModifierCategory.CHANGE; }
-
-    @Override
     public int weight() { return 4; }
 
     @Override
     public boolean canRoll(ModifierContext context)
     {
         boolean ours = context.element().equals(first) || context.element().equals(second);
-        return ours && context.breaks() >= 1 && context.countOf(FusionModifier.class) == 0
+        // Over the fusion level, once per branch (any fusion), and after a spell break
+        return ours && context.level() >= PylonConfig.FUSION_TREE_LEVEL && context.breaks() >= 1 && context.countOf(FusionModifier.class) == 0
                 && context.masteryOf(first) >= PylonConfig.FUSION_LEVEL && context.masteryOf(second) >= PylonConfig.FUSION_LEVEL;
     }
 

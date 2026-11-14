@@ -47,13 +47,11 @@ import java.util.UUID;
 //                (SpellPylonBlock.FACING; no level needed); it leads on to one modifier pylon, straight on or to
 //                either side. After that one modifier pylon per level, on any of a modifier pylon's three free sides
 //                (straight on, left, right: its back is its parent). Placing against a pylon that already has one
-//                after it starts a branch, which slightly favours the category of the pylon branched from
-//                (PylonConfig.BRANCH_BOOST). The pylons' models show the links (PylonLinks).
-//   excluded     for each spot, the modifiers rolled there and broken (they won't be rolled there again)
-//   blessed, corruption   built up by keeping rolls / rerolling them; they let blessed / corrupted modifiers be rolled
-//   boosts       how much each modifier category is currently favoured (category pylons add, every placement decays)
+//                after it starts a branch. The pylons' models show the links (PylonLinks).
+//   deck         the tree's pool and deck of modifiers, its blessing and corruption (SpellDeck): every modifier pylon
+//                draws its modifier from the deck (drawFor)
 // Each level can go on a new pylon or on an upgrade node of a pylon already there (sneak-right-click the pylon): a
-// node adds potency to the spell (PylonConfig.nodePoints), and 1 dust per point to its cost.
+// node adds levels of the pylon's modifier (its levels per node), and locks the pylon.
 // Right-click it with a Spell Scroll to record the spell as it stands: every pylon in the tree, except those beyond a
 // spell break without redstone power (that whole branch is off).
 public class SpellPylonBlockEntity extends CBSyncedBlockEntity
@@ -62,10 +60,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     private UUID tree = UUID.randomUUID();
     private final List<BlockPos> chain = new ArrayList<>();
     private final List<Integer> parents = new ArrayList<>();
-    private final Map<BlockPos, List<Identifier>> excluded = new HashMap<>();
-    private int blessed;
-    private int corruption;
-    private final Map<ModifierCategory, Float> boosts = new EnumMap<>(ModifierCategory.class);
+    private final SpellDeck deck = new SpellDeck();
     // The tree's experience, copied from SpellTreeData every second (so the client knows the level, for the ghosts)
     private int experience;
     // From a broken pylon's item: its element and kept experience, until an element is chosen
@@ -97,8 +92,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     public @Nullable DustElement element() { return element; }
     public List<BlockPos> chain() { return chain; }
     public int experience() { return experience; }
-    public int blessed() { return blessed; }
-    public int corruption() { return corruption; }
+    public int blessed() { return deck.blessed(); }
+    public int corruption() { return deck.corruption(); }
 
     public int level()
     {
@@ -118,7 +113,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return level() - spent;
     }
 
-    // A pylon of this tree sneak-right-clicked: one of its upgrade nodes filled, for a level
+    // A pylon of this tree sneak-right-clicked: one of its upgrade nodes filled, for a level. It adds the modifier's
+    // levels per node (a random number in its range) and locks the pylon (the first time: a lock, so blessing, and a
+    // category pylon adds one of its category to the deck). The last node of a Neutral or Legendary pylon puts its
+    // modifier back in the deck.
     public void upgrade(PylonBlockEntity pylon, ServerPlayer player)
     {
         if (!pylon.canUpgrade()) {
@@ -129,10 +127,31 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             player.sendOverlayMessage(Component.translatable("dust.pylon.upgrade_no_level"));
             return;
         }
-        pylon.upgrade(PylonConfig.nodePoints(level()));
+        var random = level.getRandom();
+        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(pylon.modifier());
+        int min = modifier == null ? 1 : modifier.minLevelsPerNode(), max = modifier == null ? 1 : Math.max(min, modifier.maxLevelsPerNode());
+        boolean wasLocked = pylon.locked();
+        pylon.upgrade(min + random.nextInt(max - min + 1));
+        if (!wasLocked) locked(pylon);
+        if (pylon.nodes() >= pylon.maxNodes() && pylon.card() != null && (pylon.type() == PylonType.NEUTRAL || pylon.legendary())) {
+            deck.addCard(pylon.card());
+        }
+        deck.topUp(treeContext(null), random, categoryBonus(), doubleDraw());
         level.playSound(null, pylon.getBlockPos(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 1.8F);
         player.sendOverlayMessage(describe(pylon));
         sync();
+    }
+
+    // A pylon just locked: a step of blessing (two with Double Blessed Progress); a category pylon also puts another
+    // modifier of its category from the pool into the deck
+    private void locked(PylonBlockEntity pylon)
+    {
+        var random = level.getRandom();
+        deck.bless(treeLevels().containsKey(SpellRegistries.DOUBLE_BLESSED.getId()) ? 2 : 1, random);
+        ModifierCategory category = pylon.type().category();
+        if (category != null && pylon.modifier() != null && pylon.tier() == ModifierTier.NORMAL) {
+            deck.drawNormal(treeContext(null), random, categoryBonus(), doubleDraw(), modifier -> modifier.categories().contains(category));
+        }
     }
 
     public @Nullable Identifier shape()
@@ -198,6 +217,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     // Whether another pylon can be placed after this one: the Shape Pylon and a spell break lead on to just one
     private boolean canLeadOn(int index)
     {
+        // A null corruption's stop ends its branch
+        if (index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity pylon && pylon.stop()) return false;
         return (index > 0 && !isBreak(index)) || !hasChildren(index);
     }
 
@@ -264,14 +285,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     // ---- joining a pylon ----
 
     // A pylon placed in one of the ghost places: the Shape Pylon takes the placer's first known shape; a modifier
-    // pylon keeps its parent's roll (blessing, the first time something follows it), shifts the category boosts, and
-    // rolls (a branch slightly favouring its parent's category)
+    // pylon draws from the deck (drawFor). The first modifier pylon fixes the shape, which fills the pool and deck.
     public void attach(PylonBlockEntity pylon, @Nullable ServerPlayer placer)
     {
         if (!(level instanceof ServerLevel server)) return;
         PylonType type = pylon.type();
         if (chain.isEmpty()) {
-            pylon.link(worldPosition, null, ModifierTier.NORMAL, false, defaultShape(placer), 0, 0);
+            pylon.link(worldPosition, null, null, ModifierTier.NORMAL, false, defaultShape(placer), 0, false, false);
             chain.add(pylon.getBlockPos());
             parents.add(-1);
             refreshLook(0);
@@ -279,32 +299,29 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             sync();
             return;
         }
+        var random = level.getRandom();
         int parent = parentFor(pylon.getBlockPos());
-        PylonBlockEntity parentPylon = parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity p ? p : null;
-        boolean branch = hasChildren(parent);
-        // Placing on after a modifier pylon for the first time means its roll was kept
-        if (parentPylon != null && !branch) blessed += PylonConfig.KEEP_BLESSING;
-        boosts.replaceAll((category, boost) -> Math.max(0, boost - PylonConfig.BOOST_DECAY));
-        if (type.category() != null) boosts.merge(type.category(), PylonConfig.CATEGORY_BOOST, Float::sum);
-        ModifierCategory branchedFrom = branch && parentPylon != null ? parentPylon.type().category() : null;
-
         if (placer != null && element != null) SpellMastery.note(placer, element, level());
-        Roll roll = roll(pylon.getBlockPos(), parent, branchedFrom, placer, type);
-        // A normal modifier gets upgrade nodes; a blessed / corrupted one a strength instead (and is locked by link)
-        SpellModifier rolled = roll.modifier() == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(roll.modifier());
-        boolean usesStrength = rolled != null && rolled.usesStrength();
-        int nodes = rolled == null || usesStrength ? 0 : PylonConfig.MIN_NODES + level.getRandom().nextInt(PylonConfig.MAX_NODES - PylonConfig.MIN_NODES + 1);
-        int strength = usesStrength ? PylonConfig.MIN_STRENGTH + level.getRandom().nextInt(PylonConfig.MAX_STRENGTH - PylonConfig.MIN_STRENGTH + 1) : 0;
-        pylon.link(worldPosition, roll.modifier(), roll.tier(), roll.spellBreak(), null, nodes, strength);
+        // The shape is fixed from now on: the Shape Pylon locks, and the pool and deck fill
+        if (!deck.started()) deck.start(treeContext(placer), random, categoryBonus(), doubleDraw());
+        if (parent == 0 && level.getBlockEntity(chain.getFirst()) instanceof PylonBlockEntity shapePylon) shapePylon.lock();
+        deck.addDueBreaks(level());
+
+        Draw draw = drawFor(type, pylon.getBlockPos(), context(parent, placer), placer);
+        pylon.link(worldPosition, draw.card(), draw.modifier(), draw.tier(), draw.spellBreak(), null, draw.nodes(), draw.legendary(), draw.stop());
         chain.add(pylon.getBlockPos());
         parents.add(parent);
         refreshLook(chain.size() - 1);
         refreshLook(parent);
-        // The Shape Pylon is fixed once a pylon follows it
-        if (parent == 0 && level.getBlockEntity(chain.getFirst()) instanceof PylonBlockEntity shapePylon) shapePylon.lock();
-        if (placer != null && roll.modifier() != null && element != null) SpellKnowledge.unlockModifier(placer, element, roll.modifier());
-        server.playSound(null, pylon.getBlockPos(), roll.spellBreak() ? SoundEvents.RESPAWN_ANCHOR_DEPLETE.value() : SoundEvents.AMETHYST_BLOCK_CHIME,
-                SoundSource.BLOCKS, 1.0F, roll.tier() == ModifierTier.CORRUPTED ? 0.6F : roll.tier() == ModifierTier.BLESSED ? 1.6F : 1.1F);
+        if (pylon.locked()) locked(pylon);
+        // A shape modifier brings its own modifiers into the pool
+        SpellModifier modifier = draw.modifier() == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(draw.modifier());
+        if (modifier != null) deck.bringIn(modifier, random);
+        deck.topUp(treeContext(placer), random, categoryBonus(), doubleDraw());
+
+        if (placer != null && draw.modifier() != null && element != null) SpellKnowledge.unlockModifier(placer, element, draw.modifier());
+        server.playSound(null, pylon.getBlockPos(), draw.spellBreak() ? SoundEvents.RESPAWN_ANCHOR_DEPLETE.value() : SoundEvents.AMETHYST_BLOCK_CHIME,
+                SoundSource.BLOCKS, 1.0F, draw.tier() == ModifierTier.CORRUPTED || draw.stop() ? 0.6F : draw.tier() == ModifierTier.BLESSED || draw.legendary() ? 1.6F : 1.1F);
         if (placer != null) placer.sendOverlayMessage(describe(pylon));
         sync();
     }
@@ -319,60 +336,197 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return SpellRegistries.SELF.getId();
     }
 
-    // What a roll gave: a modifier (with its tier), a spell break, or nothing (nothing left that could be rolled here)
-    private record Roll(@Nullable Identifier modifier, ModifierTier tier, boolean spellBreak) {}
-
-    // A weighted random pick for a new pylon at pos, placed against parent. branchedFrom: the category of the pylon a
-    // branch grows from (slightly favoured), or null.
-    private Roll roll(BlockPos pos, int parent, @Nullable ModifierCategory branchedFrom, @Nullable ServerPlayer placer, PylonType type)
+    // What a new pylon drew: the card it took, its modifier (and tier), or a spell break, or a stop; how many upgrade
+    // nodes it gets; whether it's Legendary. All empty: there was nothing it could draw.
+    private record Draw(@Nullable Identifier card, @Nullable Identifier modifier, ModifierTier tier, boolean spellBreak,
+                        boolean legendary, boolean stop, int nodes)
     {
-        List<Identifier> before = modifiersUpTo(parent);
+        static final Draw NOTHING = new Draw(null, null, ModifierTier.NORMAL, false, false, false, 0);
+    }
+
+    // What a pylon of this kind at pos draws from the deck:
+    //   a corrupted card in the deck is taken first, whatever the pylon (a NULL_CORRUPTION: a stop)
+    //   a Neutral pylon takes any card that fits here: a blessed card makes it Blessed (or now and then Legendary), a
+    //     BLESSING card may make it Legendary (otherwise it draws again), a spell break card makes it a spell break
+    //   a category pylon takes a normal modifier of its category, or any normal modifier if the deck has none
+    // The card leaves the deck (it goes back if the pylon is broken before it locks).
+    private Draw drawFor(PylonType type, BlockPos pos, ModifierContext line, @Nullable ServerPlayer placer)
+    {
         var random = level.getRandom();
-        boolean afterBreak = parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity last && last.isSpellBreak();
-        // A spell break: from the spell's BREAK_MIN_LEVEL, only on a kind that can break, never right after another
-        if (type.canBreak() && level() >= PylonConfig.BREAK_MIN_LEVEL && !afterBreak && random.nextFloat() < PylonConfig.BREAK_CHANCE) {
-            return new Roll(null, ModifierTier.NORMAL, true);
+        List<Identifier> cards = deck.cards();
+        for (Identifier card : List.copyOf(cards)) {
+            if (card.equals(SpellDeck.NULL_CORRUPTION)) {
+                deck.removeCard(card);
+                return new Draw(card, null, ModifierTier.CORRUPTED, false, false, true, 0);
+            }
+            SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+            if (modifier != null && modifier.tier() == ModifierTier.CORRUPTED) {
+                deck.removeCard(card);
+                return new Draw(card, card, ModifierTier.CORRUPTED, false, false, false, 0);
+            }
         }
-        ModifierContext context = new ModifierContext(element, shape() == null ? SpellRegistries.SELF.getId() : shape(), before, level(),
-                breaksUpTo(parent), placer == null ? Map.of() : SpellMastery.get(placer).levels());
-        List<Identifier> skip = excluded.getOrDefault(pos, List.of());
         SpellKnowledge knowledge = placer == null ? SpellKnowledge.EMPTY : SpellKnowledge.get(placer);
+        boolean afterBreak = lastParentIsBreak;
+        List<Identifier> fits = new ArrayList<>();
+        for (Identifier card : cards) {
+            if (fitsHere(card, type, line, knowledge, afterBreak)) fits.add(card);
+        }
+        if (type.category() != null) {
+            List<Identifier> ours = fits.stream().filter(card -> {
+                SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+                return modifier != null && modifier.categories().contains(type.category());
+            }).toList();
+            if (!ours.isEmpty()) fits = ours;
+        }
+        if (fits.isEmpty()) return Draw.NOTHING;
+        Identifier card = fits.get(random.nextInt(fits.size()));
+        deck.removeCard(card);
 
-        Map<Identifier, Float> weights = new LinkedHashMap<>();
-        for (var entry : SpellRegistries.MODIFIER_REGISTRY.entrySet()) {
-            Identifier id = entry.getKey().identifier();
-            SpellModifier modifier = entry.getValue();
-            if (skip.contains(id) || !modifier.canRoll(context)) continue;
-            if (!modifier.startsUnlocked() && !knowledge.hasUnlocked(element, id)) continue;
-            float tierFactor = switch (modifier.tier()) {
-                case NORMAL -> 1;
-                case BLESSED -> blessed >= PylonConfig.TIER_MIN ? blessed / (float) PylonConfig.TIER_MIN : 0;
-                case CORRUPTED -> corruption >= PylonConfig.TIER_MIN ? corruption / (float) PylonConfig.TIER_MIN : 0;
-            };
-            float boost = boosts.getOrDefault(modifier.category(), 0F) + (modifier.category() == branchedFrom ? PylonConfig.BRANCH_BOOST : 0);
-            float weight = modifier.weight() * (1 + boost) * tierFactor;
-            if (weight > 0) weights.put(id, weight);
+        if (card.equals(SpellDeck.SPELL_BREAK)) return new Draw(card, null, ModifierTier.NORMAL, true, false, false, 0);
+        float legendaryChance = PylonConfig.LEGENDARY_CHANCE * (deck.blessingsLeft() ? 1 : 2);
+        SpellModifier drawn = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+        boolean blessedCard = card.equals(SpellDeck.BLESSING) || (drawn != null && drawn.tier() == ModifierTier.BLESSED);
+        if (blessedCard && random.nextFloat() < legendaryChance) {
+            Identifier legendary = deck.randomFor(line, random);
+            if (legendary != null) {
+                int nodes = PylonConfig.LEGENDARY_MIN_NODES + random.nextInt(PylonConfig.LEGENDARY_MAX_NODES - PylonConfig.LEGENDARY_MIN_NODES + 1);
+                return new Draw(legendary, resolve(legendary, line), ModifierTier.NORMAL, false, true, false, nodes);
+            }
         }
-        if (weights.isEmpty()) return new Roll(null, ModifierTier.NORMAL, false);
+        if (card.equals(SpellDeck.BLESSING)) {
+            // No Legendary: an ordinary draw instead, from what's left
+            List<Identifier> normal = fits.stream().filter(c -> !c.equals(card) && !SpellDeck.isSpecial(c) && tierOf(c) == ModifierTier.NORMAL
+                    && deck.cards().contains(c)).toList();
+            if (normal.isEmpty()) return Draw.NOTHING;
+            Identifier other = normal.get(random.nextInt(normal.size()));
+            deck.removeCard(other);
+            return normalDraw(other, type, pos, line);
+        }
+        if (blessedCard) return new Draw(card, card, ModifierTier.BLESSED, false, false, false, 0);
+        return normalDraw(card, type, pos, line);
+    }
 
-        float pick = random.nextFloat() * weights.values().stream().reduce(0F, Float::sum);
-        Identifier chosen = null;
-        for (Map.Entry<Identifier, Float> weight : weights.entrySet()) {
-            chosen = weight.getKey();
-            pick -= weight.getValue();
-            if (pick <= 0) break;
+    // A normal modifier card on a pylon of this kind: its nodes (fewer for each reroll at the spot), and a stand-in
+    // (the Fragment slot) resolved into what it becomes
+    private Draw normalDraw(Identifier card, PylonType type, BlockPos pos, ModifierContext line)
+    {
+        int[] range = type.nodeRange(deck.rerolls(pos));
+        int nodes = Math.min(PylonConfig.MAX_NODES, range[0] + level.getRandom().nextInt(range[1] - range[0] + 1));
+        Identifier modifier = resolve(card, line);
+        return modifier == null ? Draw.NOTHING : new Draw(card, modifier, ModifierTier.NORMAL, false, false, false, nodes);
+    }
+
+    private @Nullable Identifier resolve(Identifier card, ModifierContext line)
+    {
+        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+        if (modifier == null) return null;
+        Identifier resolved = modifier.resolveRoll(line, level.getRandom());
+        return resolved != null && SpellRegistries.MODIFIER_REGISTRY.containsKey(resolved) ? resolved : card;
+    }
+
+    // Whether a card can go on a pylon of this kind here: a spell break or blessing only on a Neutral pylon (a spell
+    // break never straight after another); a modifier if it suits the line and the placer has it unlocked (a blessed
+    // one only on a Neutral pylon)
+    private boolean fitsHere(Identifier card, PylonType type, ModifierContext line, SpellKnowledge knowledge, boolean afterBreak)
+    {
+        if (card.equals(SpellDeck.SPELL_BREAK)) return type == PylonType.NEUTRAL && !afterBreak;
+        if (card.equals(SpellDeck.BLESSING)) return type == PylonType.NEUTRAL;
+        if (card.equals(SpellDeck.NULL_CORRUPTION)) return false;
+        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+        if (modifier == null || !modifier.canRoll(line)) return false;
+        if (!modifier.startsUnlocked() && !knowledge.hasUnlocked(element, card)) return false;
+        return modifier.tier() == ModifierTier.NORMAL || (modifier.tier() == ModifierTier.BLESSED && type == PylonType.NEUTRAL);
+    }
+
+    private static @Nullable ModifierTier tierOf(Identifier id)
+    {
+        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(id);
+        return modifier == null ? null : modifier.tier();
+    }
+
+    // Set by context(): whether that pylon's parent is a spell break
+    private boolean lastParentIsBreak;
+
+    // ---- what the modifiers see ----
+
+    // The context for a pylon placed against parent: its line, the whole tree, the counts
+    private ModifierContext context(int parent, @Nullable ServerPlayer placer)
+    {
+        lastParentIsBreak = parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity last && last.isSpellBreak();
+        return buildContext(modifiersUpTo(parent), breaksUpTo(parent), placer);
+    }
+
+    // The context for drawing into the deck, which isn't for any one line: the whole tree as the line, any number of
+    // breaks
+    private ModifierContext treeContext(@Nullable ServerPlayer placer)
+    {
+        return buildContext(treeModifiers(), 99, placer);
+    }
+
+    private ModifierContext buildContext(List<Identifier> line, int breaks, @Nullable ServerPlayer placer)
+    {
+        Identifier shape = shape() == null ? SpellRegistries.SELF.getId() : shape();
+        Map<Identifier, Integer> levels = treeLevels();
+        boolean[] types = effectTypes(shape);
+        int reduction = levels.containsKey(SpellRegistries.REDUCED_REQUIREMENTS.getId()) ? PylonConfig.REDUCED_REQUIREMENT : 0;
+        return new ModifierContext(element, shape, line, treeModifiers(), level(), breaks,
+                placer == null ? Map.of() : SpellMastery.get(placer).levels(), types[0], types[1], reduction,
+                levels.getOrDefault(SpellRegistries.FRAGMENT_PROGRESS.getId(), 0));
+    }
+
+    // Whether the spell's effect, on what its shape lands on, is instant / lingering: {instant, dot}. Self lands on
+    // the caster; the other shapes on a creature or a block.
+    private boolean[] effectTypes(Identifier shape)
+    {
+        var effect = element == null ? null : SpellRegistries.ELEMENT_EFFECT_REGISTRY.getValue(element.id());
+        if (effect == null) return new boolean[] {true, true};
+        List<com.mowmaster.dust.Features.Spells.api.EffectType> types = shape.equals(SpellRegistries.SELF.getId())
+                ? List.of(effect.type(com.mowmaster.dust.Features.Spells.api.SpellTarget.SELF))
+                : List.of(effect.type(com.mowmaster.dust.Features.Spells.api.SpellTarget.ENTITY), effect.type(com.mowmaster.dust.Features.Spells.api.SpellTarget.BLOCK));
+        return new boolean[] {types.contains(com.mowmaster.dust.Features.Spells.api.EffectType.INSTANT), types.contains(com.mowmaster.dust.Features.Spells.api.EffectType.DOT)};
+    }
+
+    // Every modifier in the tree, and how many levels of each (a Legendary pylon's count double)
+    private List<Identifier> treeModifiers()
+    {
+        List<Identifier> modifiers = new ArrayList<>();
+        if (level == null) return modifiers;
+        for (int i = 1; i < chain.size(); i++) {
+            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.modifier() != null) modifiers.add(pylon.modifier());
         }
-        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(chosen);
-        // A stand-in (the Fragment slot) becomes the modifier it picks
-        Identifier resolved = modifier == null ? null : modifier.resolveRoll(context, random);
-        if (resolved != null && SpellRegistries.MODIFIER_REGISTRY.containsKey(resolved)) {
-            chosen = resolved;
-            modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(chosen);
+        return modifiers;
+    }
+
+    private Map<Identifier, Integer> treeLevels()
+    {
+        Map<Identifier, Integer> levels = new HashMap<>();
+        if (level == null) return levels;
+        for (int i = 1; i < chain.size(); i++) {
+            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.modifier() != null) {
+                levels.merge(pylon.modifier(), pylon.levels() * (pylon.legendary() ? 2 : 1), Integer::sum);
+            }
         }
-        ModifierTier tier = modifier == null ? ModifierTier.NORMAL : modifier.tier();
-        if (tier == ModifierTier.BLESSED) blessed = Math.max(0, blessed - PylonConfig.TIER_USE);
-        if (tier == ModifierTier.CORRUPTED) corruption = Math.max(0, corruption - PylonConfig.TIER_USE);
-        return new Roll(chosen, tier, false);
+        return levels;
+    }
+
+    // Category Weight: for each category, the levels of it on that category's pylons
+    private Map<ModifierCategory, Integer> categoryBonus()
+    {
+        Map<ModifierCategory, Integer> bonus = new EnumMap<>(ModifierCategory.class);
+        if (level == null) return bonus;
+        Identifier weight = SpellRegistries.CATEGORY_WEIGHT.getId();
+        for (int i = 1; i < chain.size(); i++) {
+            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && weight.equals(pylon.modifier()) && pylon.type().category() != null) {
+                bonus.merge(pylon.type().category(), pylon.levels(), Integer::sum);
+            }
+        }
+        return bonus;
+    }
+
+    // Double Draw: 5% a level
+    private float doubleDraw()
+    {
+        return 0.05F * treeLevels().getOrDefault(SpellRegistries.DOUBLE_DRAW.getId(), 0);
     }
 
     // How many spell breaks are on the way from the Spell Pylon to this pylon, inclusive
@@ -425,13 +579,15 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         int index = chain.indexOf(pylon.getBlockPos());
         if (index < 0) return;
         BlockPos parentPos = parents.get(index) >= 0 ? chain.get(parents.get(index)) : null;
+        var random = level.getRandom();
         if (index >= 1) {
-            corruption += PylonConfig.RESET_CORRUPTION;
-            if (pylon.tier() == ModifierTier.BLESSED) blessed = Math.max(0, blessed - PylonConfig.BLESSED_LOSS);
-            if (pylon.tier() == ModifierTier.CORRUPTED) corruption += PylonConfig.CORRUPTED_GAIN;
-            if (pylon.modifier() != null) excluded.computeIfAbsent(pylon.getBlockPos(), p -> new ArrayList<>()).add(pylon.modifier());
+            // A reroll: corruption, its card back in the deck (a spell break's isn't), fewer nodes at this spot next time
+            deck.corrupt(random);
+            returnCard(pylon);
+            deck.rerolled(pylon.getBlockPos());
         } else {
-            excluded.clear();
+            // The Shape Pylon (only while nothing follows it): the next shape starts the pool afresh
+            deck.reset();
         }
         // It and everything grown from it (a pylon is in the subtree if its parent is)
         boolean[] removed = new boolean[chain.size()];
@@ -448,7 +604,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         for (int i = 0; i < chain.size(); i++) {
             if (removed[i]) {
                 newIndex[i] = NO_PARENT;
-                if (i != index && level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity cut) cut.unlink();
+                if (i != index && level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity cut) {
+                    returnCard(cut);
+                    cut.unlink();
+                }
                 continue;
             }
             newIndex[i] = keptChain.size();
@@ -461,7 +620,14 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         parents.addAll(keptParents);
         // Its parent loses that arm
         if (parentPos != null) refreshLook(chain.indexOf(parentPos));
+        deck.topUp(treeContext(null), random, categoryBonus(), doubleDraw());
         sync();
+    }
+
+    // An unlocked pylon leaving the tree: its card goes back in the deck (not a spell break's)
+    private void returnCard(PylonBlockEntity pylon)
+    {
+        if (!pylon.locked() && pylon.card() != null && !pylon.card().equals(SpellDeck.SPELL_BREAK)) deck.addCard(pylon.card());
     }
 
     // ---- element, recording, info ----
@@ -496,8 +662,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (element == null || shape == null || level == null) return null;
         boolean[] off = new boolean[chain.size()];
         List<Identifier> modifiers = new ArrayList<>();
-        List<Integer> strengths = new ArrayList<>();
-        int points = 0;
+        List<Integer> levels = new ArrayList<>();
         int pylons = 2;
         for (int i = 1; i < chain.size(); i++) {
             int parent = parents.get(i);
@@ -516,14 +681,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             pylons++;
             if (pylon.modifier() != null) {
                 modifiers.add(pylon.modifier());
-                strengths.add(pylon.strength());
+                levels.add(pylon.levels() * (pylon.legendary() ? 2 : 1));
             }
-            points += pylon.points();
         }
         if (pylonsOut != null && pylonsOut.length > 0) pylonsOut[0] = pylons;
-        // The upgrade nodes' points are potency levels: +1 potency and +1 dust each (Spell.stats / dustCost)
-        Map<Identifier, Integer> attributes = points > 0 ? Map.of(SpellRegistries.POTENCY.getId(), points) : Map.of();
-        return new Spell(element, shape, attributes, modifiers, strengths);
+        return new Spell(element, shape, Map.of(), modifiers, levels);
     }
 
     // A Spell Scroll used on it: the spell as it stands is written onto the scroll, linked to this tree
@@ -544,7 +706,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         int lvl = level();
         int into = experience - SpellLevels.xpForLevel(lvl);
         return Component.translatable("dust.pylon.info", element.name(), lvl, into, SpellLevels.xpForNextLevel(lvl), Math.max(0, availableLevels()),
-                blessed, corruption);
+                deck.blessed(), deck.corruption());
     }
 
     // What a modifier pylon holds, for its overlay message
@@ -558,12 +720,14 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         }
         if (pylon.isSpellBreak()) return Component.translatable(pylon.getLevel() != null && pylon.getLevel().hasNeighborSignal(pylon.getBlockPos())
                 ? "dust.pylon.break_on" : "dust.pylon.break_off");
+        if (pylon.stop()) return Component.translatable("dust.pylon.stop");
         Identifier modifier = pylon.modifier();
         if (modifier == null) return Component.translatable("dust.pylon.nothing");
         Component name = Component.translatable("dust.pylon.modifier." + pylon.tier().getSerializedName(),
                 Component.translatable("spell_modifier." + modifier.getNamespace() + "." + modifier.getPath()));
-        Component line = pylon.strength() > 0 ? Component.translatable("dust.pylon.with_strength", name, pylon.strength())
-                : Component.translatable("dust.pylon.with_nodes", name, pylon.nodes(), pylon.maxNodes(), pylon.points());
+        if (pylon.legendary()) name = Component.translatable("dust.pylon.legendary", name);
+        Component line = pylon.maxNodes() == 0 ? name
+                : Component.translatable("dust.pylon.with_nodes", name, pylon.nodes(), pylon.maxNodes(), pylon.levels() * (pylon.legendary() ? 2 : 1));
         return pylon.locked() ? Component.translatable("dust.pylon.locked_suffix", line) : line;
     }
 
@@ -720,16 +884,6 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
 
     // ---- saving (and the client's copy) ----
 
-    // The exclusions are saved as a list of (spot, modifiers): a map's keys have to be text, and a BlockPos isn't
-    private record Exclusion(BlockPos pos, List<Identifier> modifiers)
-    {
-        static final Codec<Exclusion> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.create(instance -> instance.group(
-                BlockPos.CODEC.fieldOf("pos").forGetter(Exclusion::pos),
-                Identifier.CODEC.listOf().fieldOf("modifiers").forGetter(Exclusion::modifiers)
-        ).apply(instance, Exclusion::new));
-    }
-    private static final Codec<Map<ModifierCategory, Float>> BOOSTS_CODEC = Codec.unboundedMap(ModifierCategory.CODEC, Codec.FLOAT);
-
     @Override
     protected void saveAdditional(ValueOutput output)
     {
@@ -738,12 +892,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         output.store("tree", UUIDUtil.CODEC, tree);
         output.store("chain", BlockPos.CODEC.listOf(), List.copyOf(chain));
         output.store("parents", Codec.INT.listOf(), List.copyOf(parents));
-        if (!excluded.isEmpty()) {
-            output.store("excluded", Exclusion.CODEC.listOf(), excluded.entrySet().stream().map(e -> new Exclusion(e.getKey(), e.getValue())).toList());
-        }
-        output.putInt("blessed", blessed);
-        output.putInt("corruption", corruption);
-        if (!boosts.isEmpty()) output.store("boosts", BOOSTS_CODEC, boosts);
+        output.store("deck", SpellDeck.Saved.CODEC, deck.save());
         output.putInt("experience", experience);
         if (memory != null) output.store("memory", PylonMemory.CODEC, memory);
     }
@@ -760,12 +909,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         parents.addAll(input.read("parents", Codec.INT.listOf()).orElse(List.of()));
         // Trees saved before branching were one line: each pylon's parent is the one before it
         while (parents.size() < chain.size()) parents.add(parents.size() - 1);
-        excluded.clear();
-        input.read("excluded", Exclusion.CODEC.listOf()).ifPresent(list -> list.forEach(e -> excluded.put(e.pos(), new ArrayList<>(e.modifiers()))));
-        blessed = input.getIntOr("blessed", 0);
-        corruption = input.getIntOr("corruption", 0);
-        boosts.clear();
-        input.read("boosts", BOOSTS_CODEC).ifPresent(boosts::putAll);
+        input.read("deck", SpellDeck.Saved.CODEC).ifPresent(deck::load);
         experience = input.getIntOr("experience", 0);
         memory = input.read("memory", PylonMemory.CODEC).orElse(null);
         // On the client: the body's colour comes from the element (Client/SpellPylonTint), so draw it again

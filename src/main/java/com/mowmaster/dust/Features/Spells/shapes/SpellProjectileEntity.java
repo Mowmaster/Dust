@@ -175,12 +175,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
     {
         super.addAdditionalSaveData(output);
         if (spell != null) output.store("spell", Spell.CODEC, spell);
-        output.putInt("duration", stats.duration());
-        output.putFloat("potency", stats.potency());
-        output.putInt("size", stats.size());
-        output.putDouble("range", stats.range());
-        output.putFloat("speed", stats.speed());
-        output.putFloat("gravity", stats.gravity());
+        output.store("stats", SpellStats.CODEC, stats);
         output.store("start", Vec3.CODEC, start);
     }
 
@@ -189,10 +184,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
     {
         super.readAdditionalSaveData(input);
         spell = input.read("spell", Spell.CODEC).orElse(null);
-        SpellStats defaults = SpellStats.defaults();
-        stats = new SpellStats(input.getIntOr("duration", defaults.duration()), input.getFloatOr("potency", defaults.potency()),
-                input.getIntOr("size", 0), input.getDoubleOr("range", defaults.range()), input.getFloatOr("speed", defaults.speed()),
-                input.getFloatOr("gravity", defaults.gravity()));
+        stats = input.read("stats", SpellStats.CODEC).orElse(SpellStats.defaults());
         start = input.read("start", Vec3.CODEC).orElse(position());
         if (spell != null) entityData.set(ELEMENT, spell.element().id().toString());
     }

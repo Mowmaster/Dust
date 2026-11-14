@@ -18,28 +18,36 @@ import java.util.Map;
 // worked out by the pylons in step 2; for now set by command). Saved on a Spell Scroll as the dust:spell data
 // component. Shapes, attributes and modifiers are registry ids, so other mods' entries save the same way; an id whose
 // mod was removed is skipped when the spell is cast.
-// strengths: for each modifier (same order), the percent rolled onto its pylon (10-50), for the modifiers that use one
-// (blessed / corrupted: SpellModifier.usesStrength); 0 for the rest. Missing entries count as 0.
-public record Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers, List<Integer> strengths)
+// levels: for each modifier (same order), how many levels of it the spell has (its pylon's levels, doubled on a
+// Legendary pylon). Missing entries count as 1.
+public record Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers, List<Integer> levels)
 {
     public Spell
     {
         attributes = java.util.Collections.unmodifiableMap(new LinkedHashMap<>(attributes));
         modifiers = List.copyOf(modifiers);
-        strengths = List.copyOf(strengths);
+        levels = List.copyOf(levels);
     }
 
-    // A spell with no rolled strengths (by command, an awakening...). A record can have more constructors as long as
-    // they hand over to the main one with this(...).
+    // A spell with one level of each modifier (by command, an awakening...). A record can have more constructors as
+    // long as they hand over to the main one with this(...).
     public Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers)
     {
         this(element, shape, attributes, modifiers, List.of());
     }
 
-    // The strength rolled for the modifier at this place in the list (0 if none)
-    public int strength(int index)
+    // The levels of the modifier at this place in the list
+    public int level(int index)
     {
-        return index < strengths.size() ? strengths.get(index) : 0;
+        return index < levels.size() ? levels.get(index) : 1;
+    }
+
+    // All the levels of one modifier the spell has (it can be on several pylons)
+    public int levelsOf(Identifier modifier)
+    {
+        int total = 0;
+        for (int i = 0; i < modifiers.size(); i++) if (modifiers.get(i).equals(modifier)) total += level(i);
+        return total;
     }
 
     public static final Codec<Spell> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -47,7 +55,7 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
             Identifier.CODEC.fieldOf("shape").forGetter(Spell::shape),
             Codec.unboundedMap(Identifier.CODEC, Codec.INT).optionalFieldOf("attributes", Map.of()).forGetter(Spell::attributes),
             Identifier.CODEC.listOf().optionalFieldOf("modifiers", List.of()).forGetter(Spell::modifiers),
-            Codec.INT.listOf().optionalFieldOf("strengths", List.of()).forGetter(Spell::strengths)
+            Codec.INT.listOf().optionalFieldOf("levels", List.of()).forGetter(Spell::levels)
     ).apply(instance, Spell::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Spell> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
@@ -62,7 +70,7 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         }
         for (int i = 0; i < modifiers.size(); i++) {
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(modifiers.get(i));
-            if (modifier != null) stats = modifier.modifyStats(stats, strength(i));
+            if (modifier != null) stats = modifier.modifyStats(stats, level(i));
         }
         return stats.withPotency(stats.potency() * power);
     }
@@ -80,7 +88,7 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(modifiers.get(i));
             if (modifier == null) continue;
             modifier.cost(element).forEach((type, amount) -> cost.merge(type, amount, Integer::sum));
-            percent += modifier.costPercent(strength(i));
+            percent += modifier.costPercent(level(i));
         }
         // The percentages together, then nothing below 1 of the spell's own element (other elements can drop to 0)
         int finalPercent = percent;

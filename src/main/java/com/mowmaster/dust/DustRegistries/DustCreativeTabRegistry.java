@@ -41,10 +41,11 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.RESEARCH_MIXING.asItem());
                         output.accept(DustBlockRegistry.SPELL_PYLON.asItem());
                         output.accept(DustBlockRegistry.SHAPE_PYLON.asItem());
-                        output.accept(DustBlockRegistry.CHANGE_PYLON.asItem());
-                        output.accept(DustBlockRegistry.COST_PYLON.asItem());
-                        output.accept(DustBlockRegistry.COUNT_PYLON.asItem());
+                        output.accept(DustBlockRegistry.NEUTRAL_PYLON.asItem());
+                        output.accept(DustBlockRegistry.THRIFTY_PYLON.asItem());
+                        output.accept(DustBlockRegistry.GIANT_PYLON.asItem());
                         output.accept(DustBlockRegistry.DAMAGE_PYLON.asItem());
+                        output.accept(DustBlockRegistry.EXPERIENCED_PYLON.asItem());
                         output.accept(DustItemRegistry.SPELL_SCROLL.get());
                         output.accept(DustItemRegistry.ALCHEMICAL_SOOT.asItem());
                     }).build());

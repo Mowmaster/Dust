@@ -159,9 +159,10 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> SPELL_PYLON = registerBlock("spell_pylon", properties -> new SpellPylonBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.AMETHYST).strength(2.0F, 6.0F).noOcclusion()));
     public static final DeferredBlock<Block> SHAPE_PYLON = pylon("shape_pylon", PylonType.SHAPE);
-    public static final DeferredBlock<Block> CHANGE_PYLON = pylon("change_pylon", PylonType.CHANGE);
-    public static final DeferredBlock<Block> COST_PYLON = pylon("cost_pylon", PylonType.COST);
-    public static final DeferredBlock<Block> COUNT_PYLON = pylon("count_pylon", PylonType.COUNT);
+    public static final DeferredBlock<Block> NEUTRAL_PYLON = pylon("neutral_pylon", PylonType.NEUTRAL);
+    public static final DeferredBlock<Block> THRIFTY_PYLON = pylon("thrifty_pylon", PylonType.THRIFTY);
+    public static final DeferredBlock<Block> GIANT_PYLON = pylon("giant_pylon", PylonType.GIANT);
+    public static final DeferredBlock<Block> EXPERIENCED_PYLON = pylon("experienced_pylon", PylonType.EXPERIENCED);
     public static final DeferredBlock<Block> DAMAGE_PYLON = pylon("damage_pylon", PylonType.DAMAGE);
 
     // Blocks spells leave behind (Features/Spells/blocks). No items: they only come from spells.

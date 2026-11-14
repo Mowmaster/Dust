@@ -15,8 +15,8 @@ import java.util.List;
 
 // The modifier pylons' colours, one tint source per model tint index (models/block/pylon/blank_pylon_* and
 // shape_pylon*):
-//   0          the body: the pylon's kind (Damage red, Count blue, Cost green, Change and Shape plain); a blessed
-//              modifier purple, a corrupted one black; a spell break dark red, bright red while powered
+//   0          the body: the pylon's kind (Damage red, Giant blue, Thrifty yellow, Experienced green, Neutral and Shape
+//              plain); Legendary gold, Blessed purple, Corrupted (and a null corruption's stop) black
 //   1          the lockout ring: gold once locked
 //   2 + n      upgrade node n: black once filled, plain while empty. A pylon with fewer nodes than its model shows
 //              (blessed / corrupted / spell break / inert ones use the 1-node model) colours the extra ones like its body.
@@ -31,6 +31,7 @@ public class PylonTint implements BlockTintSource
     private static final int GOLD = 0xFFFFC23C;
     private static final int FILLED = 0xFF1E1E1E;
     private static final int BLESSED = 0xFFA04CFF;
+    private static final int LEGENDARY = 0xFFFFC23C;
     private static final int CORRUPTED = 0xFF2A2A2A;
     private static final int BREAK_OFF = 0xFF6A2A2A;
     private static final int BREAK_ON = 0xFFFF4040;
@@ -55,9 +56,10 @@ public class PylonTint implements BlockTintSource
     {
         return switch (type) {
             case DAMAGE -> 0xFFE04040;
-            case COUNT -> 0xFF4080E8;
-            case COST -> 0xFF40B858;
-            case CHANGE, SHAPE -> WHITE;
+            case GIANT -> 0xFF4080E8;
+            case THRIFTY -> 0xFFE8D040;
+            case EXPERIENCED -> 0xFF40B858;
+            case NEUTRAL, SHAPE -> WHITE;
         };
     }
 
@@ -83,8 +85,9 @@ public class PylonTint implements BlockTintSource
     private static int body(PylonBlockEntity pylon)
     {
         if (pylon.main() != null && pylon.isSpellBreak()) return pylon.powered() ? BREAK_ON : BREAK_OFF;
+        if (pylon.legendary()) return LEGENDARY;
         if (pylon.tier() == ModifierTier.BLESSED) return BLESSED;
-        if (pylon.tier() == ModifierTier.CORRUPTED) return CORRUPTED;
+        if (pylon.tier() == ModifierTier.CORRUPTED || pylon.stop()) return CORRUPTED;
         return kindColor(pylon.type());
     }
 }

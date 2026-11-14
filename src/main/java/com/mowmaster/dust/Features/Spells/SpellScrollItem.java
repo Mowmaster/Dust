@@ -36,7 +36,7 @@ public class SpellScrollItem extends Item
             return InteractionResult.FAIL;
         }
         if (player instanceof ServerPlayer serverPlayer && castFrom(serverPlayer, stack)) {
-            player.getCooldowns().addCooldown(stack, COOLDOWN);
+            player.getCooldowns().addCooldown(stack, cooldownFor(spell));
         }
         return InteractionResult.SUCCESS;
     }
@@ -50,7 +50,9 @@ public class SpellScrollItem extends Item
         SpellTreeLink link = scroll.get(DustComponentDataRegistry.SPELL_TREE.get());
         if (link != null) {
             SpellTreeData trees = SpellTreeData.get(player.level().getServer());
-            trees.addExperience(link.tree(), link.pylons());
+            // Spell XP Gain: percent more (rounded down)
+            int xp = link.pylons();
+            trees.addExperience(link.tree(), xp + xp * spell.stats(1F).xpPercent() / 100);
             // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
             int treeLevel = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
             SpellMastery.note(player, spell.element(), treeLevel);
@@ -64,4 +66,10 @@ public class SpellScrollItem extends Item
     }
 
     public static final int CAST_COOLDOWN = COOLDOWN;
+
+    // The wait before this spell can be cast again: the usual, less Cast Speed (at least 1 tick)
+    public static int cooldownFor(Spell spell)
+    {
+        return Math.max(1, COOLDOWN + spell.stats(1F).cooldown());
+    }
 }

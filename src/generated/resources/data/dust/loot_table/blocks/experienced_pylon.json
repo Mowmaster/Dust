@@ -8,11 +8,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:change_pylon"
+          "name": "dust:experienced_pylon"
         }
       ],
       "rolls": 1
     }
   ],
-  "random_sequence": "dust:blocks/change_pylon"
+  "random_sequence": "dust:blocks/experienced_pylon"
 }
