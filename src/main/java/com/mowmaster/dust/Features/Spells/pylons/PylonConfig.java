@@ -38,4 +38,17 @@ public final class PylonConfig
     public static final float KEPT_LEVELS = 0.1F;
 
     private PylonConfig() {}
+
+    // Fusions join the pool once the placer has two elements' spells at this level (SpellMastery)
+    public static final int FUSION_LEVEL = 30;
+    // At each of these spell levels a Fragment slot joins the pool (one fragment per milestone, each after its own
+    // spell break)
+    public static final int[] FRAGMENT_LEVELS = {25, 50, 75, 100};
+
+    public static int fragmentSlots(int level)
+    {
+        int slots = 0;
+        for (int milestone : FRAGMENT_LEVELS) if (level >= milestone) slots++;
+        return slots;
+    }
 }

@@ -1,5 +1,9 @@
 package com.mowmaster.dust.Features.Spells.api;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import org.jspecify.annotations.Nullable;
+
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 
 import java.util.Map;
@@ -26,6 +30,13 @@ public interface SpellModifier
     // False for modifiers that have to be unlocked another way (research, exploring...) before they can be rolled.
     // Once a modifier has been on one of a player's spells, it's unlocked for them for that element.
     default boolean startsUnlocked() { return true; }
+
+    // Chosen by the roll: the modifier the pylon actually gets. Normally itself (null); a stand-in can hand back another,
+    // e.g. the Fragment slot picks a random fragment for the spell's element.
+    default @Nullable Identifier resolveRoll(ModifierContext context, RandomSource random)
+    {
+        return null;
+    }
 
     // ---- casting ----
 

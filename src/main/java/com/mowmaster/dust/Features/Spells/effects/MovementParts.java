@@ -14,19 +14,22 @@ import net.neoforged.neoforge.common.Tags;
 // Step 7c's effect parts: flight by strength, spirit forms, lightning marks
 public final class MovementParts
 {
-    // Flight's potency thresholds: from GLIDE_POTENCY it glides like an elytra, from SOAR_POTENCY it flies freely.
-    // (Gliding is meant to come from Flight fused with Motion once fusion exists; until then, potency stands in.)
-    public static final float GLIDE_POTENCY = 3;
+    // Flight on yourself: slow falling; from SOAR_POTENCY (the highest tier) it flies freely like creative. Elytra-like
+    // gliding comes from Flight fused with Motion (glide, the Flight + Motion fusion: SpellRegistries.FUSION_FLIGHT_MOTION).
     public static final float SOAR_POTENCY = 5;
 
     private MovementParts() {}
 
-    // Flight on yourself: slow falling; gliding when stronger; creative-style flight at its strongest
     public static void flight(SpellCast cast, LivingEntity target)
     {
-        float potency = cast.stats().potency();
-        if (potency >= SOAR_POTENCY) EffectHelper.give(cast, target, DustEffectsRegistry.SOARING);
-        else if (potency >= GLIDE_POTENCY) EffectHelper.give(cast, target, DustEffectsRegistry.GLIDING);
+        if (cast.stats().potency() >= SOAR_POTENCY) EffectHelper.give(cast, target, DustEffectsRegistry.SOARING);
+        EffectHelper.give(cast, target, MobEffects.SLOW_FALLING);
+    }
+
+    // Flight + Motion (a fusion) on yourself: glide like an elytra, without one (and slow falling, to land safely)
+    public static void glide(SpellCast cast, LivingEntity target)
+    {
+        EffectHelper.give(cast, target, DustEffectsRegistry.GLIDING);
         EffectHelper.give(cast, target, MobEffects.SLOW_FALLING);
     }
 

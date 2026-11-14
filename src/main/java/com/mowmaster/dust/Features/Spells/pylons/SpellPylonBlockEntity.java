@@ -9,6 +9,7 @@ import com.mowmaster.dust.Features.Spells.SpellKnowledge;
 import com.mowmaster.dust.Features.Spells.SpellRegistries;
 import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierContext;
+import com.mowmaster.dust.Features.Spells.SpellMastery;
 import com.mowmaster.dust.Features.Spells.api.ModifierTier;
 import com.mowmaster.dust.Features.Spells.api.Spell;
 import com.mowmaster.dust.Features.Spells.api.SpellModifier;
@@ -208,6 +209,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (type.category() != null) boosts.merge(type.category(), PylonConfig.CATEGORY_BOOST, Float::sum);
         ModifierCategory branchedFrom = branch && parentPylon != null ? parentPylon.type().category() : null;
 
+        if (placer != null && element != null) SpellMastery.note(placer, element, level());
         Roll roll = roll(pylon.getBlockPos(), parent, branchedFrom, placer);
         int nodes = roll.modifier() == null ? 0 : PylonConfig.MIN_NODES + level.getRandom().nextInt(PylonConfig.MAX_NODES - PylonConfig.MIN_NODES + 1);
         pylon.link(worldPosition, roll.modifier(), roll.tier(), roll.spellBreak(), null, nodes);
@@ -243,7 +245,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (before.size() >= PylonConfig.BREAK_MIN_MODIFIERS && !afterBreak && random.nextFloat() < PylonConfig.BREAK_CHANCE) {
             return new Roll(null, ModifierTier.NORMAL, true);
         }
-        ModifierContext context = new ModifierContext(element, shape() == null ? SpellRegistries.SELF.getId() : shape(), before);
+        ModifierContext context = new ModifierContext(element, shape() == null ? SpellRegistries.SELF.getId() : shape(), before, level(),
+                breaksUpTo(parent), placer == null ? Map.of() : SpellMastery.get(placer).levels());
         List<Identifier> skip = excluded.getOrDefault(pos, List.of());
         SpellKnowledge knowledge = placer == null ? SpellKnowledge.EMPTY : SpellKnowledge.get(placer);
 
@@ -272,10 +275,26 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             if (pick <= 0) break;
         }
         SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(chosen);
+        // A stand-in (the Fragment slot) becomes the modifier it picks
+        Identifier resolved = modifier == null ? null : modifier.resolveRoll(context, random);
+        if (resolved != null && SpellRegistries.MODIFIER_REGISTRY.containsKey(resolved)) {
+            chosen = resolved;
+            modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(chosen);
+        }
         ModifierTier tier = modifier == null ? ModifierTier.NORMAL : modifier.tier();
         if (tier == ModifierTier.BLESSED) blessed = Math.max(0, blessed - PylonConfig.TIER_USE);
         if (tier == ModifierTier.CORRUPTED) corruption = Math.max(0, corruption - PylonConfig.TIER_USE);
         return new Roll(chosen, tier, false);
+    }
+
+    // How many spell breaks are on the way from the Spell Pylon to this pylon, inclusive
+    private int breaksUpTo(int index)
+    {
+        int breaks = 0;
+        for (int i = index; i >= 1; i = parents.get(i)) {
+            if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.isSpellBreak()) breaks++;
+        }
+        return breaks;
     }
 
     // The modifiers on the way from the Spell Pylon to this pylon, inclusive (preconditions look at its own branch)

@@ -39,7 +39,12 @@ public class SpellScrollItem extends Item
             player.getCooldowns().addCooldown(stack, COOLDOWN);
             // The spell's tree gains experience: one per pylon the spell used, wherever the tree is
             SpellTreeLink link = stack.get(DustComponentDataRegistry.SPELL_TREE.get());
-            if (link != null) SpellTreeData.get(serverPlayer.level().getServer()).addExperience(link.tree(), link.pylons());
+            if (link != null) {
+                SpellTreeData trees = SpellTreeData.get(serverPlayer.level().getServer());
+                trees.addExperience(link.tree(), link.pylons());
+                // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
+                SpellMastery.note(serverPlayer, spell.element(), com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree())));
+            }
         }
         return InteractionResult.SUCCESS;
     }

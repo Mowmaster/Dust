@@ -57,10 +57,16 @@ public final class SpellCast
     public boolean delivered() { return delivered; }
     public void markDelivered() { delivered = true; }
 
+    // The element's effect, or with a fusion in the spell, the fusion's (falling back to the element's for parts the
+    // fusion doesn't have)
     public ElementEffect effect()
     {
         ElementEffect effect = SpellRegistries.ELEMENT_EFFECT_REGISTRY.getValue(spell.element().id());
-        return effect == null ? ElementEffect.NONE : effect;
+        ElementEffect base = effect == null ? ElementEffect.NONE : effect;
+        for (SpellModifier modifier : spell.modifierList()) {
+            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier fusion) return fusion.fuse(base);
+        }
+        return base;
     }
 
     // ---- delivering ----

@@ -9,6 +9,10 @@ import com.mowmaster.dust.Features.Spells.api.SpellShape;
 import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierTier;
 import com.mowmaster.dust.Features.Spells.modifiers.MultishotModifier;
+import com.mowmaster.dust.Features.Spells.modifiers.FusionModifier;
+import com.mowmaster.dust.Features.Spells.modifiers.BasicAspect;
+import com.mowmaster.dust.Features.Spells.modifiers.EchoFragment;
+import com.mowmaster.dust.Features.Spells.modifiers.FragmentSlotModifier;
 import com.mowmaster.dust.Features.Spells.modifiers.StatModifier;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
@@ -127,6 +131,19 @@ public final class SpellRegistries
             () -> new StatModifier(ModifierCategory.COST, ModifierTier.CORRUPTED, 6, stats -> stats.withPotency(stats.potency() + 2), 3, 0));
     // Change
     public static final DeferredHolder<SpellModifier, SpellModifier> MULTISHOT = MODIFIERS.register("multishot", MultishotModifier::new);
+
+    // ---- fragments, aspects and fusions (the bigger changes, after spell breaks) ----
+    // The Fragment slot: rolled at level milestones, becomes a random fragment for the element (FragmentSlotModifier)
+    public static final DeferredHolder<SpellModifier, SpellModifier> FRAGMENT = MODIFIERS.register("fragment", FragmentSlotModifier::new);
+    // Echo (any element): the spell casts again by itself; its aspects add echoes and quicken them
+    public static final DeferredHolder<SpellModifier, SpellModifier> ECHO = MODIFIERS.register("echo", EchoFragment::new);
+    public static final DeferredHolder<SpellModifier, SpellModifier> ECHO_RESONANCE = MODIFIERS.register("echo_resonance",
+            () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), ModifierCategory.COUNT, 10));
+    public static final DeferredHolder<SpellModifier, SpellModifier> ECHO_QUICKENING = MODIFIERS.register("echo_quickening",
+            () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), ModifierCategory.CHANGE, 8));
+    // Fusions: one per pair of elements, each with its own effects (parts it leaves out fall back to the spell's element)
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FLIGHT_MOTION = MODIFIERS.register("fusion_flight_motion",
+            () -> new FusionModifier(DustElements.FLIGHT, DustElements.MOTION).self(MovementParts::glide));
 
     // ---- the elements' effects (the rest come in later steps; until then an element does nothing) ----
     public static final DeferredHolder<ElementEffect, ElementEffect> FIRE = ELEMENT_EFFECTS.register(DustElements.FIRE.id().getPath(), FireEffect::new);

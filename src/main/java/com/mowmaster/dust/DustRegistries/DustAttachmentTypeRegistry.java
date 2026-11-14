@@ -213,6 +213,14 @@ public class DustAttachmentTypeRegistry
                     .serialize(com.mowmaster.dust.Features.Magic.ChunkAuraData.CODEC.fieldOf("aura"))
                     .build());
 
+    // The highest spell level a player has reached for each element (Features/Spells/SpellMastery): fusions need two.
+    // Kept on death.
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.SpellMastery>> SPELL_MASTERY = ATTACHMENT_TYPES.register("spell_mastery",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.SpellMastery.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.SpellMastery.CODEC.fieldOf("levels"))
+                    .copyOnDeath()
+                    .build());
+
     public static void register(IEventBus eventBus) {
         ATTACHMENT_TYPES.register(eventBus);
     }
