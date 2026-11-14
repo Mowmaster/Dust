@@ -20,16 +20,5 @@ NeoForge 26.3.0.94, Minecraft 26.3, Java 25. Used NeoForge-26x version of Pedest
 - To check 26.3 APIs, clone the public `neoforged/neoforge` repo (branch `26.3.x`) and read the 26.3 porting primer in `neoforged/.github` (`primers/26.3/index.md`; 26.1 and 26.2 primers cover earlier changes). NeoForge's docs are in the public `neoforged/Documentation` repo (`docs/`).
 
 ## Dust TODO
-- Dust Crafting Table: its own block, menu, screen and recipe type (e.g. `dust:dust_crafting_station`) for every dust
-  recipe after the Testing Disk. Gate on research in the menu (it knows the player); show ghost dust-need slots and a
-  "needs research" hint; unlocked/crafted like the Testing Disk. Reuse `DustRecipe`'s matching and `DustNeed`.
-  The Testing Disk stays on the vanilla table (bootstrap recipe, `mixin/CraftingMenuMixin`).
 - Known gaps: the Crafter ignores the research gate on dust recipes; dust recipes don't show in the recipe book;
-  instant-effect potions are only researched when drunk (not splash/lingering).
-- Mixed elements: a way to discover them in the Elements tab (`DustResearch.discoverElement`); primals come from the disk / pure flames.
-- Primal crystal ore: drops the five primal crystals (picking one up discovers its primal; they go on the Elemental Examiner).
-- Mixing table: mix primal elements. Infuser: infuse a mix into an inert crystal -> crystal with `dust:crystal_element`
-  (`CrystalElements.stackOf`); a 100% match on the examiner discovers that element.
-- Breakdown machines: reaction products carry the item they came from (data component), so the book can track which
-  process gave what; examining products fills in the source item's research.
-- Element Tester: proper table texture (currently glyph_stone_front); other workstation upgrades besides the examiner.
+instant-effect potions are only researched when drunk (not splash/lingering).
