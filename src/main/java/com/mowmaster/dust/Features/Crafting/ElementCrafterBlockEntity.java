@@ -190,6 +190,22 @@ public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IS
     }
 
     // Takes the recipe's dust from the jars (the jars keep their element when they run dry)
+    // Takes this much of an element from the jars, if they hold that much together (a permanent rune paying its
+    // dust: RuneBlockEntity). False, taking nothing, if they don't.
+    public boolean takeDust(DustElement element, int amount)
+    {
+        if (dustOf(element) < amount) return false;
+        int left = amount;
+        for (int jar = 0; jar < ElementCrafterLayout.JARS && left > 0; jar++) {
+            if (jarElements[jar] != element) continue;
+            int taken = Math.min(left, jarAmounts[jar]);
+            jarAmounts[jar] -= taken;
+            left -= taken;
+        }
+        jarsChanged();
+        return true;
+    }
+
     private void takeCosts(ElementCraftingRecipe recipe)
     {
         for (ElementCraftingRecipe.ElementCost cost : recipe.elements()) {

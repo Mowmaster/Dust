@@ -16,9 +16,17 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 // One cast of a spell, as its shape delivers it: where it's cast from, by whom, its element's effect and its stats.
-// The shape calls applySelf / applyBlock / applyEntity; these spread it by the spell's size and run the element's
-// effect on each thing. A player caster learns what each effect did (SpellKnowledge) and the shape it came by; a
-// player it lands on learns the shape too.
+// The shape calls applySelf / applyBlock / applyEntity; these run the element's effect on each thing, through the
+// spell's shape modifiers:
+//   Rune        instead of landing, a rune is left on the ground there (RuneBlock), which puts the effect on whatever
+//               steps on it later
+//   Wall        it spreads in a line across the spell's path
+//   AOE         every block within the radius, and the nearest creatures in it (as many as the target count)
+//   Chaining    from a creature it jumps on to the nearest ones not yet hit
+//   Lingering   a pool where it lands keeps putting the effect on what's in it
+// A secondary cast (a rune going off, a chain's jump...) just runs the effect, so nothing spreads twice.
+// A player caster learns what each effect did (SpellKnowledge) and the shape it came by; a player it lands on learns
+// the shape too.
 public final class SpellCast
 {
     private final ServerLevel level;
@@ -29,6 +37,8 @@ public final class SpellCast
     private final Vec3 direction;
     // Set by a modifier that delivered the spell itself (SpellModifier.beforeDelivery), so others don't again
     private boolean delivered;
+    // A cast that only runs the effect (no rune, wall, AOE, chain or pool): see the top
+    private boolean secondary;
 
     // caster: null for a block casting it (then origin and direction say where from and which way)
     public SpellCast(ServerLevel level, @Nullable LivingEntity caster, Spell spell, SpellStats stats, Vec3 origin, Vec3 direction)
@@ -56,6 +66,21 @@ public final class SpellCast
     public DustElement element() { return spell.element(); }
     public boolean delivered() { return delivered; }
     public void markDelivered() { delivered = true; }
+    public boolean isSecondary() { return secondary; }
+
+    // The same cast, only running the effect (for a rune, a chain's jump, a lingering pool)
+    public SpellCast asSecondary()
+    {
+        SpellCast copy = new SpellCast(level, caster, spell, stats, origin, direction);
+        copy.secondary = true;
+        return copy;
+    }
+
+    // Whether the spell has this modifier
+    public boolean has(net.minecraft.resources.Identifier modifier)
+    {
+        return spell.modifiers().contains(modifier);
+    }
 
     // The element's effect, or with a fusion in the spell, the fusion's (falling back to the element's for parts the
     // fusion doesn't have)
@@ -73,23 +98,83 @@ public final class SpellCast
 
     public void applySelf(LivingEntity target)
     {
+        // Rune: a rune at the caster's feet instead, giving the self effect to whoever steps on it
+        if (!secondary && has(SpellRegistries.RUNE.getId())) {
+            com.mowmaster.dust.Features.Spells.blocks.RuneBlock.place(this, target.blockPosition(), SpellTarget.SELF);
+            learn(SpellTarget.SELF);
+            return;
+        }
         effect().onSelf(this, target);
         learn(SpellTarget.SELF);
         if (target instanceof ServerPlayer player && player != caster) SpellKnowledge.unlockShape(player, spell.shape());
     }
 
-    // The block hit, and with size, every block within size of it (a cube)
+    // The block hit (on face), and with size, every block within size of it (a cube); then the shape modifiers
     public void applyBlock(BlockPos pos, Direction face)
+    {
+        Vec3 impact = Vec3.atCenterOf(pos.relative(face));
+        if (!secondary && has(SpellRegistries.RUNE.getId())) {
+            com.mowmaster.dust.Features.Spells.blocks.RuneBlock.place(this, pos.relative(face), SpellTarget.ENTITY);
+            learn(SpellTarget.BLOCK);
+            return;
+        }
+        if (!secondary && has(SpellRegistries.WALL.getId())) {
+            wall(impact, pos);
+            learn(SpellTarget.BLOCK);
+            return;
+        }
+        blockEffect(pos, face);
+        if (!secondary) {
+            if (has(SpellRegistries.AOE.getId())) {
+                double radius = aoeRadius();
+                int r = (int) Math.ceil(radius);
+                for (BlockPos at : BlockPos.betweenClosed(pos.offset(-r, -r, -r), pos.offset(r, r, r))) {
+                    if (!at.equals(pos) && Vec3.atCenterOf(at).distanceTo(Vec3.atCenterOf(pos)) <= radius) effect().onBlock(this, at.immutable(), face);
+                }
+                for (LivingEntity target : nearest(impact, radius, targetCount(), null)) entityEffect(target);
+            }
+            linger(impact);
+        }
+        learn(SpellTarget.BLOCK);
+    }
+
+    // The entity hit, and with size, every other living entity within size of it (never the caster); then the shape
+    // modifiers
+    public void applyEntity(Entity target)
+    {
+        if (!secondary && has(SpellRegistries.RUNE.getId())) {
+            com.mowmaster.dust.Features.Spells.blocks.RuneBlock.place(this, target.blockPosition(), SpellTarget.ENTITY);
+            learn(SpellTarget.ENTITY);
+            return;
+        }
+        if (!secondary && has(SpellRegistries.WALL.getId())) {
+            wall(target.position().add(0, 0.1, 0), null);
+            learn(SpellTarget.ENTITY);
+            return;
+        }
+        entityEffect(target);
+        if (!secondary) {
+            // AOE: the nearest others around it, up to the target count with it
+            if (has(SpellRegistries.AOE.getId())) {
+                for (LivingEntity other : nearest(target.position(), aoeRadius(), targetCount() - 1, target)) entityEffect(other);
+            }
+            if (has(SpellRegistries.CHAINING.getId())) chain(target);
+            linger(target.position());
+        }
+        learn(SpellTarget.ENTITY);
+    }
+
+    // The effect on one block, spread by the old size stat (a cube)
+    private void blockEffect(BlockPos pos, Direction face)
     {
         int size = stats.size();
         for (BlockPos at : BlockPos.betweenClosed(pos.offset(-size, -size, -size), pos.offset(size, size, size))) {
             effect().onBlock(this, at.immutable(), face);
         }
-        learn(SpellTarget.BLOCK);
     }
 
-    // The entity hit, and with size, every other living entity within size of it (never the caster)
-    public void applyEntity(Entity target)
+    // The effect on one entity, spread by the old size stat
+    private void entityEffect(Entity target)
     {
         effect().onEntity(this, target);
         if (target instanceof ServerPlayer player && player != caster) SpellKnowledge.unlockShape(player, spell.shape());
@@ -98,7 +183,110 @@ public final class SpellCast
                 if (nearby != target) effect().onEntity(this, nearby);
             }
         }
-        learn(SpellTarget.ENTITY);
+    }
+
+    // ---- the shape modifiers ----
+
+    // AOE's radius: its own, plus Size
+    public double aoeRadius()
+    {
+        return SpellConfig.AOE_RADIUS + SpellConfig.SIZE_PER_LEVEL * spell.levelsOf(SpellRegistries.SIZE_MODIFIER.getId());
+    }
+
+    // How many creatures AOE reaches: 1, plus Target Count
+    private int targetCount()
+    {
+        return 1 + spell.levelsOf(SpellRegistries.TARGET_COUNT.getId());
+    }
+
+    // The nearest living entities to a point within radius (not the caster, not except), at most count of them
+    private List<LivingEntity> nearest(Vec3 centre, double radius, int count, @Nullable Entity except)
+    {
+        if (count <= 0) return List.of();
+        return around(centre, radius).stream().filter(entity -> entity != except)
+                .sorted(java.util.Comparator.comparingDouble(entity -> entity.distanceToSqr(centre))).limit(count).toList();
+    }
+
+    // Chaining: from the creature hit, to the nearest not yet hit within the search distance, and on from there, as many
+    // jumps as the chain count; a line of dust shows each jump
+    private void chain(Entity first)
+    {
+        int jumps = 1 + spell.levelsOf(SpellRegistries.CHAIN_COUNT.getId());
+        double search = SpellConfig.CHAIN_SEARCH + spell.levelsOf(SpellRegistries.SEARCH_DISTANCE.getId());
+        java.util.Set<Entity> hit = new java.util.HashSet<>();
+        hit.add(first);
+        Entity from = first;
+        for (int i = 0; i < jumps; i++) {
+            Vec3 at = from.position().add(0, from.getBbHeight() / 2, 0);
+            LivingEntity next = around(at, search).stream().filter(entity -> !hit.contains(entity))
+                    .min(java.util.Comparator.comparingDouble(entity -> entity.distanceToSqr(at))).orElse(null);
+            if (next == null) return;
+            line(at, next.position().add(0, next.getBbHeight() / 2, 0));
+            hit.add(next);
+            entityEffect(next);
+            from = next;
+        }
+    }
+
+    // A line of dust in the element's colour between two points
+    private void line(Vec3 from, Vec3 to)
+    {
+        var dust = new net.minecraft.core.particles.DustParticleOptions(element().color(), 0.8F);
+        double length = from.distanceTo(to);
+        Vec3 step = to.subtract(from).normalize().scale(0.3);
+        Vec3 at = from;
+        for (double along = 0; along < length; along += 0.3, at = at.add(step)) {
+            level.sendParticles(dust, at.x, at.y, at.z, 1, 0, 0, 0, 0);
+        }
+    }
+
+    // Wall: across the path (the cast's direction, flattened: a wall stands upright) at centre, WALL_HALF either side
+    // plus Wall Width, as deep as Wall Depth. Every creature standing in it gets the effect; hitting a block, the blocks
+    // in the line do too (the row the hit block is in).
+    private void wall(Vec3 centre, @Nullable BlockPos hitBlock)
+    {
+        Vec3 along = new Vec3(direction.x, 0, direction.z);
+        if (along.lengthSqr() < 1.0E-4) along = caster == null ? new Vec3(0, 0, 1) : new Vec3(caster.getLookAngle().x, 0, caster.getLookAngle().z);
+        along = along.normalize();
+        Vec3 across = new Vec3(-along.z, 0, along.x);
+        double half = SpellConfig.WALL_HALF + SpellConfig.WALL_PER_LEVEL * spell.levelsOf(SpellRegistries.WALL_WIDTH.getId());
+        double depth = SpellConfig.WALL_PER_LEVEL * spell.levelsOf(SpellRegistries.WALL_DEPTH.getId());
+        var dust = new net.minecraft.core.particles.DustParticleOptions(element().color(), 1.0F);
+        java.util.Set<BlockPos> blocks = new java.util.LinkedHashSet<>();
+        for (double w = -half; w <= half + 1.0E-6; w += 0.5) {
+            for (double d = 0; d <= depth + 1.0E-6; d += 0.5) {
+                Vec3 point = centre.add(across.scale(w)).add(along.scale(d));
+                level.sendParticles(dust, point.x, point.y + 0.5, point.z, 2, 0.1, 0.4, 0.1, 0);
+                // The row the hit block is in: the same offsets from its centre
+                if (hitBlock != null) blocks.add(BlockPos.containing(Vec3.atCenterOf(hitBlock).add(across.scale(w)).add(along.scale(d))));
+            }
+        }
+        for (BlockPos at : blocks) {
+            if (!level.getBlockState(at).isAir()) blockEffect(at, Direction.UP);
+        }
+        // Creatures in it: within the wall's box (a little over a block high above and below the line)
+        AABB box = new AABB(centre, centre).inflate(half + depth + 1, 2, half + depth + 1);
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box, entity -> entity != caster && entity.isAlive())) {
+            Vec3 rel = target.position().subtract(centre);
+            double sideways = rel.dot(across), forward = rel.dot(along);
+            if (Math.abs(sideways) <= half + 0.5 && forward >= -0.75 && forward <= depth + 0.75 && Math.abs(rel.y) <= 2) entityEffect(target);
+        }
+    }
+
+    // Lingering: a pool at the point, putting the effect on every creature within AOE's radius each LINGER_INTERVAL
+    // ticks for the spell's duration (SpellScheduler runs the later ones)
+    private void linger(Vec3 centre)
+    {
+        if (!has(SpellRegistries.LINGERING.getId())) return;
+        double radius = aoeRadius();
+        SpellCast pool = asSecondary();
+        var dust = new net.minecraft.core.particles.DustParticleOptions(element().color(), 1.2F);
+        for (int at = SpellConfig.LINGER_INTERVAL; at <= stats.duration(); at += SpellConfig.LINGER_INTERVAL) {
+            com.mowmaster.dust.Features.Spells.SpellScheduler.later(level.getServer(), at, () -> {
+                level.sendParticles(dust, centre.x, centre.y + 0.1, centre.z, 12, radius / 2, 0.05, radius / 2, 0);
+                for (LivingEntity target : pool.around(centre, radius)) pool.effect().onEntity(pool, target);
+            });
+        }
     }
 
     // Living entities within radius of a point, except the caster

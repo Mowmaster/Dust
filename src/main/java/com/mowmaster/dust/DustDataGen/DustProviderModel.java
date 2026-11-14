@@ -76,6 +76,10 @@ public class DustProviderModel extends ModelProvider {
         createElementStations(blockModels, itemModels);
         createSpellScroll(itemModels);
         createPylons(blockModels);
+        // The Rune modifier's glyph: one model per letter (models/block/spell/rune/rune_<a-z>.json), by its glyph
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.RUNE.get()).with(
+                PropertyDispatch.initial(com.mowmaster.dust.Features.Spells.blocks.RuneBlock.GLYPH).generate(glyph -> BlockModelGenerators.plainVariant(
+                        Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/spell/rune/rune_" + (char) ('a' + glyph))))));
         // Blocks spells leave behind: their models are in models/block/spell (no items)
         for (Block block : List.of(DustBlockRegistry.POISON_POOL.get(), DustBlockRegistry.BLIGHT.get(), DustBlockRegistry.CORRUPTED.get(),
                 DustBlockRegistry.SPELL_LIGHT.get(), DustBlockRegistry.VEILED.get(), DustBlockRegistry.PHASED.get(), DustBlockRegistry.WARDED_GLASS.get())) {

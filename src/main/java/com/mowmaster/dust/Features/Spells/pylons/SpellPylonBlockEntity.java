@@ -469,7 +469,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         Map<Identifier, Integer> levels = treeLevels();
         boolean[] types = effectTypes(shape);
         int reduction = levels.containsKey(SpellRegistries.REDUCED_REQUIREMENTS.getId()) ? PylonConfig.REDUCED_REQUIREMENT : 0;
-        return new ModifierContext(element, shape, line, treeModifiers(), level(), breaks,
+        return new ModifierContext(element, shape, line, treeModifiers(), levels, level(), breaks,
                 placer == null ? Map.of() : SpellMastery.get(placer).levels(), types[0], types[1], reduction,
                 levels.getOrDefault(SpellRegistries.FRAGMENT_PROGRESS.getId(), 0));
     }

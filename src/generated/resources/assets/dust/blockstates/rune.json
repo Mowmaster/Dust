@@ -1,0 +1,82 @@
+{
+  "variants": {
+    "glyph=0": {
+      "model": "dust:block/spell/rune/rune_a"
+    },
+    "glyph=1": {
+      "model": "dust:block/spell/rune/rune_b"
+    },
+    "glyph=10": {
+      "model": "dust:block/spell/rune/rune_k"
+    },
+    "glyph=11": {
+      "model": "dust:block/spell/rune/rune_l"
+    },
+    "glyph=12": {
+      "model": "dust:block/spell/rune/rune_m"
+    },
+    "glyph=13": {
+      "model": "dust:block/spell/rune/rune_n"
+    },
+    "glyph=14": {
+      "model": "dust:block/spell/rune/rune_o"
+    },
+    "glyph=15": {
+      "model": "dust:block/spell/rune/rune_p"
+    },
+    "glyph=16": {
+      "model": "dust:block/spell/rune/rune_q"
+    },
+    "glyph=17": {
+      "model": "dust:block/spell/rune/rune_r"
+    },
+    "glyph=18": {
+      "model": "dust:block/spell/rune/rune_s"
+    },
+    "glyph=19": {
+      "model": "dust:block/spell/rune/rune_t"
+    },
+    "glyph=2": {
+      "model": "dust:block/spell/rune/rune_c"
+    },
+    "glyph=20": {
+      "model": "dust:block/spell/rune/rune_u"
+    },
+    "glyph=21": {
+      "model": "dust:block/spell/rune/rune_v"
+    },
+    "glyph=22": {
+      "model": "dust:block/spell/rune/rune_w"
+    },
+    "glyph=23": {
+      "model": "dust:block/spell/rune/rune_x"
+    },
+    "glyph=24": {
+      "model": "dust:block/spell/rune/rune_y"
+    },
+    "glyph=25": {
+      "model": "dust:block/spell/rune/rune_z"
+    },
+    "glyph=3": {
+      "model": "dust:block/spell/rune/rune_d"
+    },
+    "glyph=4": {
+      "model": "dust:block/spell/rune/rune_e"
+    },
+    "glyph=5": {
+      "model": "dust:block/spell/rune/rune_f"
+    },
+    "glyph=6": {
+      "model": "dust:block/spell/rune/rune_g"
+    },
+    "glyph=7": {
+      "model": "dust:block/spell/rune/rune_h"
+    },
+    "glyph=8": {
+      "model": "dust:block/spell/rune/rune_i"
+    },
+    "glyph=9": {
+      "model": "dust:block/spell/rune/rune_j"
+    }
+  }
+}

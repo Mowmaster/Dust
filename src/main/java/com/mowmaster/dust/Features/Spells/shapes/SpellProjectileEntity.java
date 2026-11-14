@@ -31,6 +31,8 @@ import org.jspecify.annotations.Nullable;
 //   falloff      no gravity until it's flown the spell's falloff distance (Falloff)
 //   splits       Multishot: at the falloff point it splits, this many more bolts fanning out beside it (they don't split)
 //   impact       a creature it hits takes the spell's impact damage as well as the effect (Impact Damage)
+//   pierce       Piercing: how many more creatures / blocks it can go through, affecting each, before it's spent (1,
+//                plus half a level of Depth); it won't hit the same one twice
 public class SpellProjectileEntity extends ThrowableProjectile
 {
     // The element's id, synced so the client can colour the trail
@@ -40,6 +42,12 @@ public class SpellProjectileEntity extends ThrowableProjectile
     private SpellStats stats = SpellStats.defaults();
     private Vec3 start = Vec3.ZERO;
     private int splits;
+    private int pierce;
+    // Not saved: what it's already gone through (so it doesn't hit them again)
+    private final java.util.Set<java.util.UUID> pierced = new java.util.HashSet<>();
+    private final java.util.Set<net.minecraft.core.BlockPos> piercedBlocks = new java.util.HashSet<>();
+    // Set while handling a hit it goes on through
+    private boolean goesOn;
     // Degrees between the bolts of a Multishot split
     private static final float SPREAD_DEGREES = 8F;
 
@@ -63,6 +71,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         // shoot: sets the velocity along a direction at this speed, with no spread (inaccuracy 0)
         bolt.shoot(cast.direction().x, cast.direction().y, cast.direction().z, cast.stats().speed(), 0);
         bolt.splits = cast.spell().levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.MULTISHOT.getId());
+        bolt.pierce = piercing(cast.spell());
         return bolt;
     }
 
@@ -163,6 +172,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
             bolt.setOwner(getOwner());
             bolt.setPos(getX(), getY(), getZ());
             bolt.start = start;
+            bolt.pierce = pierce;
             bolt.setDeltaMovement(velocity.yRot((float) Math.toRadians(step * SPREAD_DEGREES)));
             level().addFreshEntity(bolt);
         }
@@ -184,6 +194,20 @@ public class SpellProjectileEntity extends ThrowableProjectile
         return new SpellCast(server, caster, spell, stats, position(), getDeltaMovement().normalize());
     }
 
+    // Piercing: 1 to go through, plus half a level of Depth (0 without Piercing)
+    private static int piercing(Spell spell)
+    {
+        if (!spell.modifiers().contains(com.mowmaster.dust.Features.Spells.SpellRegistries.PIERCING.getId())) return 0;
+        return 1 + spell.levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.DEPTH.getId()) / 2;
+    }
+
+    // Not what it's already gone through
+    @Override
+    protected boolean canHitEntity(net.minecraft.world.entity.Entity target)
+    {
+        return super.canHitEntity(target) && !pierced.contains(target.getUUID());
+    }
+
     @Override
     protected void onHitEntity(EntityHitResult hit)
     {
@@ -194,22 +218,39 @@ public class SpellProjectileEntity extends ThrowableProjectile
             if (stats.impactDamage() > 0) target.hurtServer(cast.level(), damageSources().thrown(this, getOwner()), stats.impactDamage());
             cast.applyEntity(target);
         }
+        pierceThrough(() -> pierced.add(hit.getEntity().getUUID()));
     }
 
     @Override
     protected void onHitBlock(BlockHitResult hit)
     {
+        // Still passing through a block it pierced: nothing new
+        if (piercedBlocks.contains(hit.getBlockPos())) {
+            goesOn = true;
+            return;
+        }
         super.onHitBlock(hit);
         SpellCast cast = castHere();
         if (cast != null) cast.applyBlock(hit.getBlockPos(), hit.getDirection());
+        pierceThrough(() -> piercedBlocks.add(hit.getBlockPos().immutable()));
     }
 
-    // Whatever it hit, it's spent
+    // With pierces left: one used, the thing remembered, and it carries on
+    private void pierceThrough(Runnable remember)
+    {
+        if (pierce <= 0) return;
+        pierce--;
+        remember.run();
+        goesOn = true;
+    }
+
+    // Whatever it hit, it's spent (unless it pierced through)
     @Override
     protected void onHit(net.minecraft.world.phys.HitResult hit)
     {
+        goesOn = false;
         super.onHit(hit);
-        if (!level().isClientSide()) dissipate();
+        if (!level().isClientSide() && !goesOn) dissipate();
     }
 
     @Override
@@ -220,6 +261,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         output.store("stats", SpellStats.CODEC, stats);
         output.store("start", Vec3.CODEC, start);
         output.putInt("splits", splits);
+        output.putInt("pierce", pierce);
     }
 
     @Override
@@ -230,6 +272,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         stats = input.read("stats", SpellStats.CODEC).orElse(SpellStats.defaults());
         start = input.read("start", Vec3.CODEC).orElse(position());
         splits = input.getIntOr("splits", 0);
+        pierce = input.getIntOr("pierce", 0);
         if (spell != null) entityData.set(ELEMENT, spell.element().id().toString());
     }
 }

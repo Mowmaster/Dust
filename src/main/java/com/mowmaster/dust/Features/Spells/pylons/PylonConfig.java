@@ -19,9 +19,6 @@ public final class PylonConfig
     // A broken main pylon keeps this share of its levels (for the same element)
     public static final float KEPT_LEVELS = 0.1F;
 
-    // A spell tree reaching this level unlocks the Beam shape for whoever cast it (for every element)
-    public static final int BEAM_LEVEL = 50;
-
     // Fusions can be drawn once the placer has two elements' spells at FUSION_LEVEL (SpellMastery), on a spell of at
     // least FUSION_TREE_LEVEL, once per branch
     public static final int FUSION_LEVEL = 30;

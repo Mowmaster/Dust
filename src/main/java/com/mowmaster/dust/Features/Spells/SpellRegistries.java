@@ -16,6 +16,7 @@ import com.mowmaster.dust.Features.Spells.modifiers.FragmentSlotModifier;
 import com.mowmaster.dust.Features.Spells.modifiers.LeveledModifier;
 import com.mowmaster.dust.Features.Spells.api.ModifierFit;
 import com.mowmaster.dust.Features.Spells.api.SpellFragment;
+import com.mowmaster.dust.Features.Spells.api.SpellConfig;
 import com.mowmaster.dust.Features.Spells.attributes.StatAttribute;
 import com.mowmaster.dust.Features.Spells.effects.BasicEffect;
 import com.mowmaster.dust.Features.Spells.effects.MagicParts;
@@ -82,8 +83,6 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellShape, SpellShape> SELF = SHAPES.register("self", SelfShape::new);
     public static final DeferredHolder<SpellShape, SpellShape> TOUCH = SHAPES.register("touch", TouchShape::new);
     public static final DeferredHolder<SpellShape, SpellShape> PROJECTILE = SHAPES.register("projectile", ProjectileShape::new);
-    // Beam: a piercing ray, unlocked when one of the player's spell trees first reaches PylonConfig.BEAM_LEVEL
-    public static final DeferredHolder<SpellShape, SpellShape> BEAM = SHAPES.register("beam", com.mowmaster.dust.Features.Spells.shapes.BeamShape::new);
 
     // ---- attributes (what each level does: StatAttribute) ----
     public static final DeferredHolder<SpellAttribute, SpellAttribute> DURATION = ATTRIBUTES.register("duration",
@@ -191,6 +190,82 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> SHIELD_POTENCY = modifier("shield_potency",
             () -> LeveledModifier.marker().shapes(id("touch")).unlock(20).everyLevels(10).requires(context -> context.countInTree(id("overshield")) > 0));
     public static final int OVERSHIELD_TICKS = 40;
+
+    // ---- shape modifiers (from level 30, one each per spell): they change how the spell is delivered (SpellCast,
+    // SpellProjectileEntity, SpellCasting) and bring their own modifiers into the pool (addsToPool) ----
+
+    // AOE (Touch, Projectile): where it lands, the effect reaches every block within its radius (SpellConfig.AOE_RADIUS,
+    // plus Size) and the nearest creatures there (1, plus Target Count). Not with Wall.
+    public static final DeferredHolder<SpellModifier, SpellModifier> AOE = modifier("aoe",
+            () -> shapeModifier("aoe", "wall").shapes(id("touch"), id("projectile")).addsToPool(id("size"), id("target_count"), id("lingering")));
+    // Size: a quarter block more radius a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> SIZE_MODIFIER = modifier("size",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT));
+    // Target Count: one more creature a level (1-3 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> TARGET_COUNT = modifier("target_count",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(1, 3));
+    // Lingering (lingering effects; brought in by AOE): a pool where it lands keeps putting the effect on the creatures in
+    // it (the AOE's radius) for the spell's duration
+    public static final DeferredHolder<SpellModifier, SpellModifier> LINGERING = modifier("lingering",
+            () -> LeveledModifier.marker().fit(ModifierFit.DOT).requires(context -> context.countInTree(id("lingering")) == 0));
+
+    // Piercing (Projectile): the bolt goes through creatures and blocks, affecting each, before it fizzles (1, plus half
+    // a level of Depth). Not with Wall.
+    public static final DeferredHolder<SpellModifier, SpellModifier> PIERCING = modifier("piercing",
+            () -> shapeModifier("piercing", "wall").shapes(id("projectile")).addsToPool(id("depth")));
+    // Depth: half a creature / block more a level (1-3 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> DEPTH = modifier("depth",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(1, 3));
+
+    // Chaining (Touch, Projectile): after the first creature, the effect jumps to the nearest one not yet hit, within the
+    // search distance (SpellConfig.CHAIN_SEARCH, plus Search Distance), once (plus Chain Count); a line shows each jump.
+    // Not with Wall.
+    public static final DeferredHolder<SpellModifier, SpellModifier> CHAINING = modifier("chaining",
+            () -> shapeModifier("chaining", "wall").shapes(id("touch"), id("projectile")).addsToPool(id("chain_count"), id("search_distance")));
+    // Chain Count: one more jump a level (1-3 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> CHAIN_COUNT = modifier("chain_count",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(1, 3));
+    // Search Distance: a block further to find the next creature, a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> SEARCH_DISTANCE = modifier("search_distance",
+            () -> LeveledModifier.marker());
+
+    // Rune (any shape): instead of landing, it leaves a glyph on the ground there (at the caster's feet for Self) that
+    // puts the effect on whatever steps on it (RuneBlock), for SpellConfig.RUNE_SECONDS (plus Rune Duration)
+    public static final DeferredHolder<SpellModifier, SpellModifier> RUNE = modifier("rune",
+            () -> shapeModifier("rune").addsToPool(id("rune_duration"), id("permanent")));
+    // Rune Duration: 20 seconds longer a level (3-7 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> RUNE_DURATION = modifier("rune_duration",
+            () -> LeveledModifier.marker().perNode(3, 7));
+    // Permanent (once the rune lasts over 10 minutes): the rune stays until it's broken, paying each trigger's dust from
+    // Element Crafter jars nearby, or else the chunk's aura; it needs no mana after, but casting it costs 4x the mana
+    public static final DeferredHolder<SpellModifier, SpellModifier> PERMANENT = modifier("permanent",
+            () -> LeveledModifier.marker().uses(1).requires(context -> context.countInTree(id("permanent")) == 0
+                    && SpellConfig.RUNE_SECONDS + 20 * context.levelsInTree(id("rune_duration")) > SpellConfig.PERMANENT_SECONDS));
+
+    // Wall (Touch, Projectile): the effect spreads in a line across the spell's path where it lands (SpellConfig.WALL_HALF
+    // either side, plus Wall Width; Wall Depth makes it deeper). Not with AOE, Chaining or Piercing.
+    public static final DeferredHolder<SpellModifier, SpellModifier> WALL = modifier("wall",
+            () -> shapeModifier("wall", "aoe", "chaining", "piercing").shapes(id("touch"), id("projectile")).addsToPool(id("wall_width"), id("wall_depth")));
+    // Wall Width: half a block more either side, a level (1-3 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> WALL_WIDTH = modifier("wall_width",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(1, 3));
+    // Wall Depth (from level 50): half a block deeper along the path, a level (1-3 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> WALL_DEPTH = modifier("wall_depth",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(1, 3).unlock(50));
+
+    // Beam (Touch, Projectile): hold the cast to channel a piercing ray at what you're looking at, a pulse every
+    // SpellConfig.BEAM_INTERVAL ticks (each costing a cast) for as long as you hold it (Channeling)
+    public static final DeferredHolder<SpellModifier, SpellModifier> BEAM_MODIFIER = modifier("beam",
+            () -> shapeModifier("beam").shapes(id("touch"), id("projectile")).addsToPool(id("beam_distance"), id("efficiency"), id("casting_speed")));
+    // Beam Distance: a block further, a level (3-7 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> BEAM_DISTANCE = modifier("beam_distance",
+            () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(3, 7));
+    // Efficiency (one more every 10 levels): each second channelled takes 1% a level off each pulse's cost
+    public static final DeferredHolder<SpellModifier, SpellModifier> EFFICIENCY = modifier("efficiency",
+            () -> LeveledModifier.marker().categories(ModifierCategory.THRIFTY).perNode(3, 7).unlock(30).everyLevels(10));
+    // Casting Speed (one more every 10 levels): a tick less between pulses, a level (2-5 a node)
+    public static final DeferredHolder<SpellModifier, SpellModifier> CASTING_SPEED = modifier("casting_speed",
+            () -> LeveledModifier.marker().perNode(2, 5).unlock(30).everyLevels(10));
 
     // The deck and pool (read by the tree, not the cast: SpellPylonBlockEntity)
     // Category Weight: a category pylon's category is drawn into the deck more often, +1 weight a level (category pylons only)
@@ -321,6 +396,16 @@ public final class SpellRegistries
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpecialBlockParts::phase).self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
 
     // Registers a LeveledModifier and gives it its own id (for its "once per branch" / "every N levels" counts)
+    // A shape modifier: from level 30, one per spell, and not in a spell with any of the others named (incompatible)
+    private static LeveledModifier shapeModifier(String self, String... incompatible)
+    {
+        return LeveledModifier.marker().unlock(30).extraCost(2).requires(context -> {
+            if (context.countInTree(id(self)) > 0) return false;
+            for (String other : incompatible) if (context.countInTree(id(other)) > 0) return false;
+            return true;
+        });
+    }
+
     // A Dust id, for modifiers naming each other and shapes (by id: the holders may not be filled in yet when a modifier
     // is built). A method, so the modifiers above can use it: a lambda can't name a static field declared further down
     // (an "illegal forward reference"), but it can call a method.

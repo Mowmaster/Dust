@@ -25,6 +25,12 @@ public final class SpellCasting
     // True if it was cast
     public static boolean cast(ServerPlayer player, Spell spell)
     {
+        return cast(player, spell, 0);
+    }
+
+    // costReduction: percent off the dust and mana (a channelled beam's Efficiency)
+    public static boolean cast(ServerPlayer player, Spell spell, int costReduction)
+    {
         SpellShape shape = spell.shapeType();
         if (shape == null) {
             player.sendOverlayMessage(Component.translatable("dust.spell.unknown_shape", spell.shape().toString()));
@@ -38,7 +44,7 @@ public final class SpellCasting
 
         // What it costs this player
         Map<DustElement, Integer> cost = new LinkedHashMap<>();
-        spell.dustCost().forEach((element, amount) -> cost.put(element, PlayerMagicHelper.dustCost(player, element, amount)));
+        spell.dustCost().forEach((element, amount) -> cost.put(element, Math.max(1, PlayerMagicHelper.dustCost(player, element, amount) * (100 - costReduction) / 100)));
         if (!free) {
             // Short of an element: with Transmutation, its parent elements make up the difference at double the amount
             // (fire + water for air); otherwise it can't be cast
@@ -87,6 +93,9 @@ public final class SpellCasting
             }
             // Mana Reduction: percent off (int division rounds the saving down)
             int mana = PlayerMagicHelper.manaForDust(total);
+            // Permanent (a rune that pays its own way after): 4x the mana to cast
+            if (spell.modifiers().contains(SpellRegistries.PERMANENT.getId())) mana *= com.mowmaster.dust.Features.Spells.api.SpellConfig.PERMANENT_MANA;
+            mana = mana * (100 - costReduction) / 100;
             PlayerMagicHelper.spendMana(player, Math.max(0, mana + mana * stats.manaPercent() / 100));
         }
         return true;
@@ -104,7 +113,8 @@ public final class SpellCasting
                 delivered = true;
             }
         }
-        if (shapeDelivers) delivered = shape.cast(cast);
+        // Beam: each pulse is a ray, whatever the shape
+        if (shapeDelivers) delivered = Channeling.channels(cast.spell()) ? com.mowmaster.dust.Features.Spells.shapes.BeamRay.fire(cast) : shape.cast(cast);
         return delivered;
     }
 }

@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.Spells;
 
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemUseAnimation;
 import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
 import com.mowmaster.dust.Features.Spells.api.Spell;
 import com.mowmaster.dust.Features.Spells.pylons.SpellTreeData;
@@ -35,17 +37,65 @@ public class SpellScrollItem extends Item
             if (!level.isClientSide()) player.sendOverlayMessage(Component.translatable("dust.spell.blank"));
             return InteractionResult.FAIL;
         }
+        // A Beam spell is channelled: held down, it pulses (onUseTick)
+        if (Channeling.channels(spell)) {
+            if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.FAIL;
+            player.startUsingItem(hand);
+            return InteractionResult.CONSUME;
+        }
         if (player instanceof ServerPlayer serverPlayer && castFrom(serverPlayer, stack)) {
             player.getCooldowns().addCooldown(stack, cooldownFor(spell));
         }
         return InteractionResult.SUCCESS;
     }
 
+    // ---- channelling a Beam spell (held use) ----
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity)
+    {
+        Spell spell = stack.get(DustComponentDataRegistry.SPELL.get());
+        return spell != null && Channeling.channels(spell) ? Channeling.MAX_USE : 0;
+    }
+
+    @Override
+    public ItemUseAnimation getUseAnimation(ItemStack stack)
+    {
+        return ItemUseAnimation.BOW;
+    }
+
+    // Each tick it's held: a pulse every interval (Efficiency cheaper the longer it's held); out of dust, it stops
+    @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining)
+    {
+        if (!(entity instanceof ServerPlayer player)) return;
+        Spell spell = stack.get(DustComponentDataRegistry.SPELL.get());
+        if (spell == null) return;
+        int held = Channeling.MAX_USE - remaining;
+        if (held % Channeling.interval(spell) != 0) return;
+        if (!castFrom(player, stack, Channeling.reduction(spell, held))) player.stopUsingItem();
+    }
+
+    // Let go: the usual wait before it can be cast again
+    @Override
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int remaining)
+    {
+        Spell spell = stack.get(DustComponentDataRegistry.SPELL.get());
+        if (entity instanceof Player player && spell != null) player.getCooldowns().addCooldown(stack, cooldownFor(spell));
+        return true;
+    }
+
     // Casts the spell on a scroll (held, or kept in a Grimoire) and gives its tree the experience. True if it was cast.
     public static boolean castFrom(ServerPlayer player, ItemStack scroll)
     {
+        return castFrom(player, scroll, 0);
+    }
+
+    // The same, with this much (percent) off the cost (a channelled beam's Efficiency)
+    public static boolean castFrom(ServerPlayer player, ItemStack scroll, int costReduction)
+    {
         Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
-        if (spell == null || !SpellCasting.cast(player, spell)) return false;
+        if (spell == null || !SpellCasting.cast(player, spell, costReduction)) return false;
         // The spell's tree gains experience: one per pylon the spell used, wherever the tree is
         SpellTreeLink link = scroll.get(DustComponentDataRegistry.SPELL_TREE.get());
         if (link != null) {
@@ -56,11 +106,6 @@ public class SpellScrollItem extends Item
             // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
             int treeLevel = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
             SpellMastery.note(player, spell.element(), treeLevel);
-            // The first tree of theirs to reach the Beam level unlocks Beam for them, for every element
-            if (treeLevel >= com.mowmaster.dust.Features.Spells.pylons.PylonConfig.BEAM_LEVEL
-                    && SpellKnowledge.unlockShape(player, SpellRegistries.BEAM.getId())) {
-                player.sendSystemMessage(Component.translatable("dust.pylon.beam_unlocked"));
-            }
         }
         return true;
     }

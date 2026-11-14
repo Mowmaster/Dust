@@ -12,13 +12,15 @@ import java.util.Objects;
 //   element, shape     the spell's
 //   modifiers          those already in the line up to this pylon, in order (for "once per branch")
 //   tree               every modifier in the whole tree (for "once every 10 levels")
+//   treeLevels         how many levels of each modifier the whole tree has
 //   level              the spell tree's level
 //   breaks             how many spell breaks come before this pylon in its line
 //   mastery            the placing player's highest spell level for each element (SpellMastery; empty without a player)
 //   instant, dot       whether the spell's effect (on what its shape lands on) hits once / lingers (EffectType)
 //   unlockReduction    levels taken off every modifier's unlock level (Reduced Requirements)
 //   fragmentProgress   levels of Fragment Progress in the tree (the next fragment comes that much sooner)
-public record ModifierContext(DustElement element, Identifier shape, List<Identifier> modifiers, List<Identifier> tree, int level, int breaks,
+public record ModifierContext(DustElement element, Identifier shape, List<Identifier> modifiers, List<Identifier> tree, Map<Identifier, Integer> treeLevels,
+                              int level, int breaks,
                               Map<DustElement, Integer> mastery, boolean instant, boolean dot, int unlockReduction, int fragmentProgress)
 {
     public boolean has(Identifier modifier)
@@ -41,6 +43,12 @@ public record ModifierContext(DustElement element, Identifier shape, List<Identi
     public long countOf(Class<?> kind)
     {
         return modifiers.stream().map(SpellRegistries.MODIFIER_REGISTRY::getValue).filter(Objects::nonNull).filter(kind::isInstance).count();
+    }
+
+    // How many levels of this modifier the whole tree has
+    public int levelsInTree(Identifier modifier)
+    {
+        return treeLevels.getOrDefault(modifier, 0);
     }
 
     public int masteryOf(DustElement element)

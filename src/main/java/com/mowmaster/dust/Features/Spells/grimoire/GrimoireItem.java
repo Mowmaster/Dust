@@ -125,13 +125,61 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         return true;
     }
 
-    // Right-click in hand: cast the selected spell
+    // Right-click in hand: cast the selected spell (a Beam spell: hold to channel it, onUseTick)
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
+        Spell selected = selectedSpell(stack);
+        if (selected != null && com.mowmaster.dust.Features.Spells.Channeling.channels(selected)) {
+            if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.FAIL;
+            player.startUsingItem(hand);
+            return InteractionResult.CONSUME;
+        }
         if (player instanceof ServerPlayer serverPlayer) castPage(serverPlayer, stack, getPage(stack));
         return InteractionResult.SUCCESS;
+    }
+
+    // The spell on the open page, if any
+    private @Nullable Spell selectedSpell(ItemStack grimoire)
+    {
+        ItemStack scroll = scrollAt(grimoire, getPage(grimoire));
+        return scroll.isEmpty() ? null : scroll.get(DustComponentDataRegistry.SPELL.get());
+    }
+
+    // ---- channelling a Beam spell (held use), as a scroll does ----
+
+    @Override
+    public int getUseDuration(ItemStack stack, net.minecraft.world.entity.LivingEntity entity)
+    {
+        Spell spell = selectedSpell(stack);
+        return spell != null && com.mowmaster.dust.Features.Spells.Channeling.channels(spell) ? com.mowmaster.dust.Features.Spells.Channeling.MAX_USE : 0;
+    }
+
+    @Override
+    public net.minecraft.world.item.ItemUseAnimation getUseAnimation(ItemStack stack)
+    {
+        return net.minecraft.world.item.ItemUseAnimation.BOW;
+    }
+
+    @Override
+    public void onUseTick(Level level, net.minecraft.world.entity.LivingEntity entity, ItemStack stack, int remaining)
+    {
+        if (!(entity instanceof ServerPlayer player)) return;
+        Spell spell = selectedSpell(stack);
+        ItemStack scroll = scrollAt(stack, getPage(stack));
+        if (spell == null) return;
+        int held = com.mowmaster.dust.Features.Spells.Channeling.MAX_USE - remaining;
+        if (held % com.mowmaster.dust.Features.Spells.Channeling.interval(spell) != 0) return;
+        if (!SpellScrollItem.castFrom(player, scroll, com.mowmaster.dust.Features.Spells.Channeling.reduction(spell, held))) player.stopUsingItem();
+    }
+
+    @Override
+    public boolean releaseUsing(ItemStack stack, Level level, net.minecraft.world.entity.LivingEntity entity, int remaining)
+    {
+        Spell spell = selectedSpell(stack);
+        if (entity instanceof Player player && spell != null) player.getCooldowns().addCooldown(stack, SpellScrollItem.cooldownFor(spell));
+        return true;
     }
 
     // The grimoire the keys work with: in a hand (off hand first), or else the first one in the inventory

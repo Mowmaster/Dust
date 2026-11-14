@@ -155,6 +155,8 @@ public class DustClient {
         event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
         // The spell pylons: the Spell Pylon in its element's colour; the others by kind, lockout and upgrade nodes
         event.register(List.of(new com.mowmaster.dust.Features.Spells.Client.SpellPylonTint()), DustBlockRegistry.SPELL_PYLON.get());
+        // A rune in its spell's element colour
+        event.register(List.of(new com.mowmaster.dust.Features.Spells.Client.RuneTint()), DustBlockRegistry.RUNE.get());
         event.register(com.mowmaster.dust.Features.Spells.Client.PylonTint.all(), DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.NEUTRAL_PYLON.get(),
                 DustBlockRegistry.THRIFTY_PYLON.get(), DustBlockRegistry.GIANT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get(), DustBlockRegistry.EXPERIENCED_PYLON.get());
     }

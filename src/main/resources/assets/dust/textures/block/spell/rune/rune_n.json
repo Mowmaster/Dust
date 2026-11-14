@@ -1,0 +1,6 @@
+{
+	"parent": "dust:block/spell/rune/rune_template",
+	"textures": {
+		"glyph": "dust:block/glyph_stone/glyph_stone_n"
+	}
+}

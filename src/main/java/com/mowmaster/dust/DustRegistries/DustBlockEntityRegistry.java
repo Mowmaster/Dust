@@ -51,6 +51,9 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(CorruptedBlockEntity::new, Set.of(DustBlockRegistry.CORRUPTED.get())));
     public static final Supplier<BlockEntityType<PhantomBlockEntity>> PHANTOM = BLOCK_ENTITIES.register("phantom_block",
             () -> new BlockEntityType<>(PhantomBlockEntity::new, Set.of(DustBlockRegistry.VEILED.get(), DustBlockRegistry.PHASED.get())));
+    // A rune's spell (Features/Spells/blocks/RuneBlockEntity)
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.blocks.RuneBlockEntity>> RUNE = BLOCK_ENTITIES.register("rune",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.blocks.RuneBlockEntity::new, Set.of(DustBlockRegistry.RUNE.get())));
     public static final Supplier<BlockEntityType<SpellPylonBlockEntity>> SPELL_PYLON = BLOCK_ENTITIES.register("spell_pylon",
             () -> new BlockEntityType<>(SpellPylonBlockEntity::new, Set.of(DustBlockRegistry.SPELL_PYLON.get())));
     public static final Supplier<BlockEntityType<PylonBlockEntity>> PYLON = BLOCK_ENTITIES.register("pylon",

@@ -166,6 +166,9 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> DAMAGE_PYLON = pylon("damage_pylon", PylonType.DAMAGE);
 
     // Blocks spells leave behind (Features/Spells/blocks). No items: they only come from spells.
+    // The Rune modifier's glyph on the ground (RuneBlock)
+    public static final DeferredBlock<Block> RUNE = DUSTBLOCKS.registerBlock("rune", properties -> new com.mowmaster.dust.Features.Spells.blocks.RuneBlock(
+            properties.mapColor(MapColor.NONE).noCollision().instabreak().sound(SoundType.AMETHYST).noLootTable().lightLevel(state -> 4)));
     public static final DeferredBlock<Block> POISON_POOL = DUSTBLOCKS.registerBlock("poison_pool", properties -> new PoisonPoolBlock(
             properties.mapColor(MapColor.COLOR_GREEN).noCollision().instabreak().sound(SoundType.SLIME_BLOCK).noLootTable()));
     public static final DeferredBlock<Block> BLIGHT = DUSTBLOCKS.registerBlock("blight", properties -> new BlightBlock(
