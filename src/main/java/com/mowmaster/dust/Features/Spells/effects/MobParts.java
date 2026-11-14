@@ -66,10 +66,23 @@ public final class MobParts
         return entity instanceof ItemEntity || entity instanceof ExperienceOrb || entity instanceof LivingEntity;
     }
 
+    // Vacuum on a block keeps pulling for the spell's duration: a pull now, then one every VACUUM_INTERVAL ticks
+    // (SpellScheduler runs the later ones)
     public static void vacuumBlock(SpellCast cast, BlockPos pos, Direction face)
     {
-        pullTowards(cast, Vec3.atCenterOf(pos.relative(face)), 5 + cast.stats().size(), MobParts::loose);
+        Vec3 centre = Vec3.atCenterOf(pos.relative(face));
+        double radius = 5 + cast.stats().size();
+        pullTowards(cast, centre, radius, MobParts::loose);
+        cast.level().sendParticles(ParticleTypes.PORTAL, centre.x, centre.y, centre.z, 20, 0.3, 0.3, 0.3, 0.6);
+        for (int at = VACUUM_INTERVAL; at < cast.stats().duration(); at += VACUUM_INTERVAL) {
+            com.mowmaster.dust.Features.Spells.SpellScheduler.later(cast.level().getServer(), at, () -> {
+                pullTowards(cast, centre, radius, MobParts::loose);
+                cast.level().sendParticles(ParticleTypes.PORTAL, centre.x, centre.y, centre.z, 6, 0.3, 0.3, 0.3, 0.6);
+            });
+        }
     }
+
+    private static final int VACUUM_INTERVAL = 5;
 
     // The mobs around it are pulled in together around it
     public static void vacuumMob(SpellCast cast, Entity target)
@@ -147,7 +160,7 @@ public final class MobParts
 
     // ---- Growth ----
 
-    // Bonemeal on the block (and, later, faster machines)
+    // Bonemeal on the block (faster machines are Motion's: Quickening)
     public static void bonemeal(SpellCast cast, BlockPos pos, Direction face)
     {
         ServerLevel level = cast.level();

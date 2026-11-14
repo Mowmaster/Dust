@@ -1,7 +1,9 @@
 package com.mowmaster.dust.Features.Spells.effects;
 
 import com.mowmaster.dust.Features.Spells.api.ElementEffect;
+import com.mowmaster.dust.Features.Spells.api.EffectType;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
+import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -28,6 +30,30 @@ public final class BasicEffect implements ElementEffect
     private @Nullable SelfPart self;
     private @Nullable BlockPart block;
     private @Nullable EntityPart entity;
+
+    // Each part's EffectType (DOT / INSTANT): set with types(self, block, entity); INSTANT until then
+    private EffectType selfType = EffectType.INSTANT;
+    private EffectType blockType = EffectType.INSTANT;
+    private EffectType entityType = EffectType.INSTANT;
+
+    public BasicEffect types(EffectType self, EffectType block, EffectType entity)
+    {
+        this.selfType = self;
+        this.blockType = block;
+        this.entityType = entity;
+        return this;
+    }
+
+    // A switch expression: picks a value by the enum constant (no break needed, and every constant must be covered)
+    @Override
+    public EffectType type(SpellTarget target)
+    {
+        return switch (target) {
+            case SELF -> selfType;
+            case BLOCK -> blockType;
+            case ENTITY -> entityType;
+        };
+    }
 
     public BasicEffect self(SelfPart part) { this.self = part; return this; }
     public BasicEffect block(BlockPart part) { this.block = part; return this; }

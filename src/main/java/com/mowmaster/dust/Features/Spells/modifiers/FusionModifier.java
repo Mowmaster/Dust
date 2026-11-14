@@ -38,6 +38,18 @@ public class FusionModifier implements SpellModifier
         this.second = second;
     }
 
+    // The fused parts' EffectTypes (DOT / INSTANT): null for a part that falls back to the element's own (and its type)
+    private com.mowmaster.dust.Features.Spells.api.@Nullable EffectType selfType, blockType, entityType;
+
+    public FusionModifier types(com.mowmaster.dust.Features.Spells.api.EffectType self, com.mowmaster.dust.Features.Spells.api.EffectType block,
+                                com.mowmaster.dust.Features.Spells.api.EffectType entity)
+    {
+        this.selfType = self;
+        this.blockType = block;
+        this.entityType = entity;
+        return this;
+    }
+
     public FusionModifier self(BasicEffect.SelfPart part) { this.self = part; return this; }
     public FusionModifier block(BasicEffect.BlockPart part) { this.block = part; return this; }
     public FusionModifier entity(BasicEffect.EntityPart part) { this.entity = part; return this; }
@@ -70,6 +82,18 @@ public class FusionModifier implements SpellModifier
     {
         return new ElementEffect()
         {
+            // A part this fusion has: its own type (INSTANT if it didn't say); otherwise the element's
+            @Override
+            public com.mowmaster.dust.Features.Spells.api.EffectType type(com.mowmaster.dust.Features.Spells.api.SpellTarget target)
+            {
+                var own = switch (target) {
+                    case SELF -> self == null ? null : selfType == null ? com.mowmaster.dust.Features.Spells.api.EffectType.INSTANT : selfType;
+                    case BLOCK -> block == null ? null : blockType == null ? com.mowmaster.dust.Features.Spells.api.EffectType.INSTANT : blockType;
+                    case ENTITY -> entity == null ? null : entityType == null ? com.mowmaster.dust.Features.Spells.api.EffectType.INSTANT : entityType;
+                };
+                return own != null ? own : base.type(target);
+            }
+
             @Override
             public void onSelf(SpellCast cast, LivingEntity target)
             {

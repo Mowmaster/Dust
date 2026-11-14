@@ -103,10 +103,6 @@ public class DustProviderSpellConversions extends JsonCodecProvider<ConversionTa
         });
         table(DustElements.CHANGE, change);
 
-        // Motion: paths
-        table(DustElements.MOTION, List.of(convert("dirt", "dirt_path"), convert("grass_block", "dirt_path"), convert("coarse_dirt", "dirt_path"),
-                convert("podzol", "dirt_path"), convert("mycelium", "dirt_path"), convert("rooted_dirt", "dirt_path")));
-
         // Fungus: mycelium on dirt; nylium on netherrack (crimson by lava, warped by water)
         table(DustElements.FUNGUS, List.of(convert("dirt", "mycelium"), convert("grass_block", "mycelium"),
                 convert("netherrack", "crimson_nylium").near(FluidTags.LAVA), convert("netherrack", "warped_nylium").near(FluidTags.WATER)));

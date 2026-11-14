@@ -157,6 +157,9 @@ public final class SpellMobEffects
 
     // ---- damage dealt (after armour): healing, mana, thorns ----
 
+    // Mana Energy Drain's next hit gives back, per level of the effect
+    public static final int ENERGY_DRAIN_MANA = 3;
+
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent.Post event)
     {
@@ -167,7 +170,12 @@ public final class SpellMobEffects
         if (source.getEntity() instanceof LivingEntity attacker) {
             int leech = level(attacker, DustEffectsRegistry.LIFE_LEECH);
             if (leech > 0) attacker.heal(dealt * Math.min(1F, 0.2F * leech));
-            if (attacker instanceof ServerPlayer player && attacker.hasEffect(DustEffectsRegistry.ENERGY_DRAIN)) PlayerMagicHelper.addMana(player, 1);
+            // Energy Drain: the next hit drains a chunk of mana back at once (more for a stronger spell), and it's used up
+            int drain = level(attacker, DustEffectsRegistry.ENERGY_DRAIN);
+            if (attacker instanceof ServerPlayer player && drain > 0) {
+                PlayerMagicHelper.addMana(player, ENERGY_DRAIN_MANA * drain);
+                player.removeEffect(DustEffectsRegistry.ENERGY_DRAIN);
+            }
             int thorns = level(victim, DustEffectsRegistry.THORNS);
             // Not thorns from thorns (two thorny things would hurt each other forever)
             if (thorns > 0 && !source.is(DamageTypes.THORNS) && victim.level() instanceof ServerLevel level) {

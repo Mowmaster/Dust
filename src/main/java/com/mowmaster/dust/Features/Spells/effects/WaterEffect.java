@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.Spells.effects;
 
+import com.mowmaster.dust.Features.Spells.api.EffectType;
+import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import com.mowmaster.dust.Features.Spells.api.ElementEffect;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
 import net.minecraft.core.BlockPos;
@@ -25,6 +27,17 @@ import net.minecraft.world.level.material.Fluids;
 //   Entity   drowning damage
 public class WaterEffect implements ElementEffect
 {
+    // Self, block, entity: see EffectType
+    @Override
+    public EffectType type(SpellTarget target)
+    {
+        return switch (target) {
+            case SELF -> EffectType.DOT;
+            case BLOCK -> EffectType.INSTANT;
+            case ENTITY -> EffectType.INSTANT;
+        };
+    }
+
     @Override
     public void onSelf(SpellCast cast, LivingEntity target)
     {

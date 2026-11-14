@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.Spells.effects;
 
+import com.mowmaster.dust.Features.Spells.api.EffectType;
+import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import com.mowmaster.dust.DustRegistries.DustEffectsRegistry;
 import com.mowmaster.dust.Features.Spells.api.ElementEffect;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
@@ -27,6 +29,17 @@ import java.util.List;
 //   Entity   calms it: it forgets its target and anger, and won't pick a new target while Calmed lasts
 public class OrderEffect implements ElementEffect
 {
+    // Self, block, entity: see EffectType
+    @Override
+    public EffectType type(SpellTarget target)
+    {
+        return switch (target) {
+            case SELF -> EffectType.INSTANT;
+            case BLOCK -> EffectType.INSTANT;
+            case ENTITY -> EffectType.DOT;
+        };
+    }
+
     @Override
     public void onSelf(SpellCast cast, LivingEntity target)
     {

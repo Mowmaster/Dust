@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.Spells.effects;
 
+import com.mowmaster.dust.Features.Spells.api.EffectType;
+import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustEffectsRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
@@ -32,6 +34,17 @@ import net.minecraft.world.phys.AABB;
 //   Entity   Scorch (sets it alight, more for higher potency)
 public class FireEffect implements ElementEffect
 {
+    // Self, block, entity: see EffectType
+    @Override
+    public EffectType type(SpellTarget target)
+    {
+        return switch (target) {
+            case SELF -> EffectType.DOT;
+            case BLOCK -> EffectType.INSTANT;
+            case ENTITY -> EffectType.DOT;
+        };
+    }
+
     @Override
     public void onSelf(SpellCast cast, LivingEntity target)
     {

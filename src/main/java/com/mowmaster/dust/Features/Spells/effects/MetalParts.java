@@ -15,9 +15,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 
-// Metal's block effect: the block is marked for a while (duration x 12). Broken while marked, an ore drops one more of
-// its first drop; any other block drops a metal nugget, copper, iron or gold by the weights in config/dust-synced.toml
-// (70 / 20 / 10 by default). One bonus per mark. (MowLib's BonusDrops roll by block type and tool; this is one marked
+// Metal's block effect: the block is marked for good (MetalMarks, saved with its chunk). Broken while marked, an ore
+// drops one more of its first drop; any other block drops a metal nugget, copper, iron or gold by the weights in
+// config/dust-synced.toml (70 / 20 / 10 by default). One bonus per mark. (MowLib's BonusDrops roll by block type and tool; this is one marked
 // block, so it's a drops hook like Knowledge's.)
 @EventBusSubscriber(modid = DustReferences.MODID)
 public final class MetalParts
@@ -30,7 +30,7 @@ public final class MetalParts
     {
         ServerLevel level = cast.level();
         if (level.getBlockState(pos).isAir()) return;
-        BlockMarks.mark(level, pos, BlockMarks.METAL_BONUS, cast.stats().duration() * MARK_TIME_SCALE);
+        MetalMarks.add(level, pos);
         level.sendParticles(ParticleTypes.WAX_ON, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 12, 0.4, 0.4, 0.4, 0.5);
     }
 
@@ -39,8 +39,7 @@ public final class MetalParts
     {
         ServerLevel level = event.getLevel();
         BlockPos pos = event.getPos();
-        if (!BlockMarks.has(level, pos, BlockMarks.METAL_BONUS)) return;
-        BlockMarks.remove(level, pos, BlockMarks.METAL_BONUS);
+        if (!MetalMarks.take(level, pos)) return;
         ItemStack bonus;
         if (event.getState().is(Tags.BlockItems.ORES.block())) {
             if (event.getDrops().isEmpty()) return;

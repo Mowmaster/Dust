@@ -21,6 +21,10 @@ public interface ElementEffect
     // Another entity (never the caster)
     default void onEntity(SpellCast cast, Entity target) {}
 
+    // Whether its effect on this kind of target lingers (DOT) or happens once (INSTANT): see EffectType. An effect
+    // that doesn't say is INSTANT.
+    default EffectType type(SpellTarget target) { return EffectType.INSTANT; }
+
     // An element with nothing registered yet
     ElementEffect NONE = new ElementEffect() {};
 }

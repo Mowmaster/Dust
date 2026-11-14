@@ -1,5 +1,7 @@
 package com.mowmaster.dust.Features.Spells.effects;
 
+import com.mowmaster.dust.Features.Spells.api.EffectType;
+import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import com.mowmaster.dust.DustRegistries.DustEffectsRegistry;
 import com.mowmaster.dust.Features.Spells.api.ElementEffect;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
@@ -22,6 +24,17 @@ import org.jspecify.annotations.Nullable;
 //   Entity   a pointed dripstone drops on it from 5 blocks up
 public class EarthEffect implements ElementEffect
 {
+    // Self, block, entity: see EffectType
+    @Override
+    public EffectType type(SpellTarget target)
+    {
+        return switch (target) {
+            case SELF -> EffectType.DOT;
+            case BLOCK -> EffectType.INSTANT;
+            case ENTITY -> EffectType.INSTANT;
+        };
+    }
+
     private static final int SEARCH = 3;
     private static final int DRIPSTONE_HEIGHT = 5;
 

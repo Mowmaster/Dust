@@ -206,6 +206,13 @@ public class DustAttachmentTypeRegistry
                     .sync(com.mowmaster.dust.Features.Spells.blocks.StickyFaces.STREAM_CODEC)
                     .build());
 
+    // Metal's block effect: the blocks marked for a bonus drop, for good (Features/Spells/effects/MetalMarks). Saved
+    // with the chunk; not synced (only the server uses them)
+    public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Spells.effects.MetalMarks>> METAL_MARKS = ATTACHMENT_TYPES.register("metal_marks",
+            () -> AttachmentType.builder(() -> com.mowmaster.dust.Features.Spells.effects.MetalMarks.NONE)
+                    .serialize(com.mowmaster.dust.Features.Spells.effects.MetalMarks.CODEC.fieldOf("marked"))
+                    .build());
+
     // A chunk's aura (Features/Magic/ChunkAura): the five primals it holds. Saved with the chunk; untouched chunks have
     // none and count as normal
     public static final Supplier<AttachmentType<com.mowmaster.dust.Features.Magic.ChunkAuraData>> CHUNK_AURA = ATTACHMENT_TYPES.register("chunk_aura",

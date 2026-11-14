@@ -179,7 +179,7 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> PHASED = DUSTBLOCKS.registerBlock("phased_block", properties -> new PhantomBlock(
             properties.mapColor(MapColor.NONE).strength(-1.0F, 3600000.0F).noCollision().noOcclusion().sound(SoundType.GLASS).noLootTable(), false));
     public static final DeferredBlock<Block> WARDED_GLASS = DUSTBLOCKS.registerBlock("warded_glass", properties -> new WardedGlassBlock(
-            properties.mapColor(MapColor.COLOR_LIGHT_BLUE).strength(0.5F, 6.0F).noOcclusion().sound(SoundType.GLASS).noLootTable()
+            properties.mapColor(MapColor.COLOR_LIGHT_BLUE).strength(0.5F, 3600000.0F).noOcclusion().sound(SoundType.GLASS).noLootTable()
                     .isValidSpawn((state, level, pos, type) -> false).isRedstoneConductor((state, level, pos) -> false)
                     .isSuffocating((state, level, pos) -> false)));
 
