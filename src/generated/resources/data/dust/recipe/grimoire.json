@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:leather",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "dust:grimoire"
+  }
+}

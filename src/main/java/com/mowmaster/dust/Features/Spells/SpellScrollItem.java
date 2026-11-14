@@ -35,17 +35,27 @@ public class SpellScrollItem extends Item
             if (!level.isClientSide()) player.sendOverlayMessage(Component.translatable("dust.spell.blank"));
             return InteractionResult.FAIL;
         }
-        if (player instanceof ServerPlayer serverPlayer && SpellCasting.cast(serverPlayer, spell)) {
+        if (player instanceof ServerPlayer serverPlayer && castFrom(serverPlayer, stack)) {
             player.getCooldowns().addCooldown(stack, COOLDOWN);
-            // The spell's tree gains experience: one per pylon the spell used, wherever the tree is
-            SpellTreeLink link = stack.get(DustComponentDataRegistry.SPELL_TREE.get());
-            if (link != null) {
-                SpellTreeData trees = SpellTreeData.get(serverPlayer.level().getServer());
-                trees.addExperience(link.tree(), link.pylons());
-                // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
-                SpellMastery.note(serverPlayer, spell.element(), com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree())));
-            }
         }
         return InteractionResult.SUCCESS;
     }
+
+    // Casts the spell on a scroll (held, or kept in a Grimoire) and gives its tree the experience. True if it was cast.
+    public static boolean castFrom(ServerPlayer player, ItemStack scroll)
+    {
+        Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
+        if (spell == null || !SpellCasting.cast(player, spell)) return false;
+        // The spell's tree gains experience: one per pylon the spell used, wherever the tree is
+        SpellTreeLink link = scroll.get(DustComponentDataRegistry.SPELL_TREE.get());
+        if (link != null) {
+            SpellTreeData trees = SpellTreeData.get(player.level().getServer());
+            trees.addExperience(link.tree(), link.pylons());
+            // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
+            SpellMastery.note(player, spell.element(), com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree())));
+        }
+        return true;
+    }
+
+    public static final int CAST_COOLDOWN = COOLDOWN;
 }

@@ -137,6 +137,9 @@ public class DustItemRegistry
     public static final DeferredItem<Item> ALCHEMICAL_GAS = DUSTITEMS.registerItem("alchemical_compound_gas", AlchemicalCompoundItem::new);
     // Holds one spell, cast with right-click (Features/Spells)
     public static final DeferredItem<Item> SPELL_SCROLL = DUSTITEMS.registerItem("spell_scroll", SpellScrollItem::new, properties -> properties.stacksTo(1));
+    // A book of spells: a Spell Scroll on each page, cast with keys from anywhere in your inventory (Features/Spells/grimoire)
+    public static final DeferredItem<Item> GRIMOIRE = DUSTITEMS.registerItem("grimoire",
+            com.mowmaster.dust.Features.Spells.grimoire.GrimoireItem::new, properties -> properties.stacksTo(1));
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)
     public static final DeferredItem<Item> ALCHEMICAL_DUST = DUSTITEMS.registerItem("alchemical_dust", AlchemicalDustItem::new);
 

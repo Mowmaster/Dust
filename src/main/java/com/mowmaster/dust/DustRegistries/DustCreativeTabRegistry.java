@@ -25,6 +25,7 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.ANCIENT_TABLET.asItem());
                         output.accept(DustItemRegistry.RESEARCH_NOTES.asItem());
                         output.accept(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.asItem());
+                        output.accept(DustItemRegistry.GRIMOIRE.asItem());
                         // A crystal and a dust for every element, in element order
                         DustItemRegistry.CRYSTALS.values().forEach(item -> output.accept(item.get()));
                         DustItemRegistry.DUSTS.values().forEach(item -> output.accept(item.get()));
