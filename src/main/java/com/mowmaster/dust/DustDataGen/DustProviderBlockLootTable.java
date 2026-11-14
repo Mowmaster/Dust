@@ -41,6 +41,11 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
 
         add(DustBlockRegistry.INERT_CRYSTAL_ORE.get(), block -> createOreDrop(block, DustItemRegistry.CRYSTAL_INERT.get()));
         add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get(), block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTAL_INERT.get(), 2, 5));
+        // The primal ores drop their primal's crystal, the same amounts as the inert ores
+        DustBlockRegistry.PRIMAL_ORES.forEach((primal, ore) -> add(ore.get(),
+                block -> createOreDrop(block, DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.of(primal)).get())));
+        DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.forEach((primal, ore) -> add(ore.get(),
+                block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.of(primal)).get(), 2, 5)));
 
         // Glyphs crumble when broken: glyph stones give cobblestone (so players can't collect glyphs from ruins)
         add(DustBlockRegistry.GLYPH_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, Items.COBBLESTONE));

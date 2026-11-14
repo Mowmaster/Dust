@@ -609,6 +609,16 @@
   "block.dust.blockofcrystal_black": "Block of Crystal (Black)",
 
   "block.dust.block_inert_crystal_ore": "Inert Crystal Ore",
+  "block.dust.block_fire_crystal_ore": "Fire Crystal Ore",
+  "block.dust.block_fire_crystal_ore_deepslate": "Deepslate Fire Crystal Ore",
+  "block.dust.block_water_crystal_ore": "Water Crystal Ore",
+  "block.dust.block_water_crystal_ore_deepslate": "Deepslate Water Crystal Ore",
+  "block.dust.block_earth_crystal_ore": "Earth Crystal Ore",
+  "block.dust.block_earth_crystal_ore_deepslate": "Deepslate Earth Crystal Ore",
+  "block.dust.block_chaos_crystal_ore": "Chaos Crystal Ore",
+  "block.dust.block_chaos_crystal_ore_deepslate": "Deepslate Chaos Crystal Ore",
+  "block.dust.block_order_crystal_ore": "Order Crystal Ore",
+  "block.dust.block_order_crystal_ore_deepslate": "Deepslate Order Crystal Ore",
   "block.dust.block_inert_crystal_ore_deepslate": "Deepslate Inert Crystal Ore"
 
 }

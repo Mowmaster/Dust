@@ -68,10 +68,28 @@ public class DustBlockRegistry {
             properties.sound(SoundType.AMETHYST).strength(4f).requiresCorrectToolForDrops()));
 
 
-    public static final DeferredBlock<Block> INERT_CRYSTAL_ORE = registerBlock("block_inert_crystal_ore", properties -> new DropExperienceBlock(
-            UniformInt.of(2,4), properties.sound(SoundType.STONE).strength(4f).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<Block> INERT_CRYSTAL_ORE_DEEPSLATE = registerBlock("block_inert_crystal_ore_deepslate", properties -> new DropExperienceBlock(
-            UniformInt.of(2,4), properties.sound(SoundType.DEEPSLATE).strength(5f).requiresCorrectToolForDrops()));
+    // Inert Crystal Ore: the crystal ore that generates; it slowly turns into a primal ore by its chunk's aura
+    // (Features/Magic/InertCrystalOreBlock)
+    public static final DeferredBlock<Block> INERT_CRYSTAL_ORE = registerBlock("block_inert_crystal_ore", properties -> new com.mowmaster.dust.Features.Magic.InertCrystalOreBlock(
+            false, UniformInt.of(2,4), properties.sound(SoundType.STONE).strength(4f).requiresCorrectToolForDrops().randomTicks()));
+    public static final DeferredBlock<Block> INERT_CRYSTAL_ORE_DEEPSLATE = registerBlock("block_inert_crystal_ore_deepslate", properties -> new com.mowmaster.dust.Features.Magic.InertCrystalOreBlock(
+            true, UniformInt.of(2,4), properties.sound(SoundType.DEEPSLATE).strength(5f).requiresCorrectToolForDrops().randomTicks()));
+    // The primal crystal ores it becomes (block_fire_crystal_ore, block_fire_crystal_ore_deepslate...), dropping that
+    // primal's crystal. EnumMap: a map keyed by an enum, in the enum's order.
+    public static final java.util.Map<com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement, DeferredBlock<Block>> PRIMAL_ORES = primalOres(false);
+    public static final java.util.Map<com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement, DeferredBlock<Block>> PRIMAL_ORES_DEEPSLATE = primalOres(true);
+
+    private static java.util.Map<com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement, DeferredBlock<Block>> primalOres(boolean deepslate)
+    {
+        var ores = new java.util.EnumMap<com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement, DeferredBlock<Block>>(
+                com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement.class);
+        for (var primal : com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement.values()) {
+            String name = "block_" + primal.getSerializedName() + "_crystal_ore" + (deepslate ? "_deepslate" : "");
+            ores.put(primal, registerBlock(name, properties -> new DropExperienceBlock(UniformInt.of(2, 4), properties
+                    .sound(deepslate ? SoundType.DEEPSLATE : SoundType.STONE).strength(deepslate ? 5f : 4f).requiresCorrectToolForDrops())));
+        }
+        return ores;
+    }
 
 
     public static final DeferredBlock<Block> BLOCK_FLOWER_WHINDWHEEL = registerBlock("flower_windwheel",

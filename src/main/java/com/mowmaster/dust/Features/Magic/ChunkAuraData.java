@@ -10,7 +10,7 @@ import java.util.List;
 // One chunk's aura (attachment CHUNK_AURA): how much of each primal dust it holds, indexed by EnumElement.ordinal()
 // (fire, water, earth, chaos, order), as fractions so slow changes aren't lost to rounding; and the game time it was
 // last brought up to date (a chunk that was unloaded catches up on its drift back to normal when it loads).
-// A chunk that has never been touched has no data at all and counts as the baseline (ChunkAura.BASELINE of each).
+// A chunk that has never been touched has no data at all and counts as its biome's normal (ChunkAura.baseline).
 public record ChunkAuraData(float[] primals, long updated)
 {
     public static final int COUNT = EnumElement.values().length;
@@ -33,7 +33,7 @@ public record ChunkAuraData(float[] primals, long updated)
             Codec.LONG.optionalFieldOf("updated", 0L).forGetter(ChunkAuraData::updated)
     ).apply(i, ChunkAuraData::new));
 
-    // An untouched chunk: the baseline of each primal
+    // BASELINE of each primal (the attachment's default; real chunks get their biome's normal from ChunkAura.baseline)
     public static ChunkAuraData baseline(long now)
     {
         float[] values = new float[COUNT];

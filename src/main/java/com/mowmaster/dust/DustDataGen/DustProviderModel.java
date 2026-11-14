@@ -106,6 +106,9 @@ public class DustProviderModel extends ModelProvider {
 
         blockModels.createTrivialCube(DustBlockRegistry.INERT_CRYSTAL_ORE.get());
         blockModels.createTrivialCube(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get());
+        // The primal crystal ores (block_fire_crystal_ore...): plain cubes of their own textures
+        DustBlockRegistry.PRIMAL_ORES.values().forEach(ore -> blockModels.createTrivialCube(ore.get()));
+        DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.values().forEach(ore -> blockModels.createTrivialCube(ore.get()));
 
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);

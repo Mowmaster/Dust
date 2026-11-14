@@ -34,6 +34,10 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.GLYPH_STONE.key())
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE.key())
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.key());
+        // The primal ores: mined like the inert ores (deepslate ones need iron)
+        DustBlockRegistry.PRIMAL_ORES.values().forEach(ore -> tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ore.key()));
+        DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.values().forEach(ore -> tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ore.key()));
+        DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.values().forEach(ore -> tag(BlockTags.NEEDS_IRON_TOOL).add(ore.key()));
 
         tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.key());

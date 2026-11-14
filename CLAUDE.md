@@ -26,8 +26,6 @@ NeoForge 26.3.0.94, Minecraft 26.3, Java 25. Used NeoForge-26x version of Pedest
   The Testing Disk stays on the vanilla table (bootstrap recipe, `mixin/CraftingMenuMixin`).
 - Known gaps: the Crafter ignores the research gate on dust recipes; dust recipes don't show in the recipe book;
   instant-effect potions are only researched when drunk (not splash/lingering).
-- Testing Disk: replace the placeholder lodestone block with its own model.
-- Broken Testing Disks: override `TestingDiskBlockEntity.showsShares()` (false = which dusts, not how much); repairing completes them.
 - Mixed elements: a way to discover them in the Elements tab (`DustResearch.discoverElement`); primals come from the disk / pure flames.
 - Primal crystal ore: drops the five primal crystals (picking one up discovers its primal; they go on the Elemental Examiner).
 - Mixing table: mix primal elements. Infuser: infuse a mix into an inert crystal -> crystal with `dust:crystal_element`

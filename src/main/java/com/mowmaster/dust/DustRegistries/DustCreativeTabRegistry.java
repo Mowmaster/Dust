@@ -91,6 +91,8 @@ public class DustCreativeTabRegistry {
 
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE.asItem());
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.asItem());
+                        DustBlockRegistry.PRIMAL_ORES.values().forEach(ore -> output.accept(ore.asItem()));
+                        DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.values().forEach(ore -> output.accept(ore.asItem()));
 
                         output.accept(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.asItem());
                         output.accept(DustBlockRegistry.GLYPH_STONE.asItem());

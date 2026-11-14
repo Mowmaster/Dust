@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "dust:ore_inert_crystal",
+    "dust:ore_inert_crystal_large"
+  ],
+  "step": "underground_ores"
+}

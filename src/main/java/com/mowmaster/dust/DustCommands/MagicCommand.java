@@ -48,7 +48,7 @@ import java.util.function.BiConsumer;
 //   /dustmagic markfriendly <players> [seconds]       mark players friendly by magic (Radiance; default 5 minutes)
 //   /dustmagic aura                                   the aura of the chunk you're in (ChunkAura)
 //   /dustmagic aura add <primal> <amount>             add (or with a negative amount, take) one primal
-//   /dustmagic aura set <amount>                      set every primal (100 is normal)
+//   /dustmagic aura set <amount>                      set every primal (normal is 100, more of a biome's own primals)
 // Elements are ids, with suggestions: dust:fire, dust:knowledge...
 public class MagicCommand
 {

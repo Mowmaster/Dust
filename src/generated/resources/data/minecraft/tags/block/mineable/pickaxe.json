@@ -13,6 +13,16 @@
     "dust:blockofcrystal_black",
     "dust:glyph_stone",
     "dust:block_inert_crystal_ore",
-    "dust:block_inert_crystal_ore_deepslate"
+    "dust:block_inert_crystal_ore_deepslate",
+    "dust:block_fire_crystal_ore",
+    "dust:block_water_crystal_ore",
+    "dust:block_earth_crystal_ore",
+    "dust:block_chaos_crystal_ore",
+    "dust:block_order_crystal_ore",
+    "dust:block_fire_crystal_ore_deepslate",
+    "dust:block_water_crystal_ore_deepslate",
+    "dust:block_earth_crystal_ore_deepslate",
+    "dust:block_chaos_crystal_ore_deepslate",
+    "dust:block_order_crystal_ore_deepslate"
   ]
 }
