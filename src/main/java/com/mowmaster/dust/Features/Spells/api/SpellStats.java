@@ -18,14 +18,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 //   cooldown          ticks added to the delay before the next cast (negative: sooner; Cast Speed)
 //   manaPercent       change to the mana it costs, in percent (-5: 5% less)
 //   xpPercent         change to the experience a cast gives its tree, in percent
+//   falloff           how far a projectile flies before gravity starts pulling it down (blocks; Falloff)
+//   impactDamage      damage a projectile does on hitting a creature, on top of its effect (Impact Damage)
 // A record: immutable; the with... methods give a changed copy (attributes and modifiers chain them).
 public record SpellStats(int duration, float potency, int size, double range, float speed, float gravity,
-                         float bonusDamage, float damageMultiplier, float critChance, float luck, int cooldown, int manaPercent, int xpPercent)
+                         float bonusDamage, float damageMultiplier, float critChance, float luck, int cooldown, int manaPercent, int xpPercent,
+                         double falloff, float impactDamage)
 {
     public static SpellStats defaults()
     {
         return new SpellStats(SpellConfig.BASE_DURATION, 1.0F, 0, SpellConfig.BASE_RANGE, SpellConfig.BASE_SPEED, SpellConfig.BASE_GRAVITY,
-                0F, 1F, 0F, 0F, 0, 0, 0);
+                0F, 1F, 0F, 0F, 0, 0, 0, 0.0, 0F);
     }
 
     // Saved with a spell projectile in flight. optionalFieldOf(name, default): missing in older saves -> the default.
@@ -42,7 +45,9 @@ public record SpellStats(int duration, float potency, int size, double range, fl
             Codec.FLOAT.optionalFieldOf("luck", 0F).forGetter(SpellStats::luck),
             Codec.INT.optionalFieldOf("cooldown", 0).forGetter(SpellStats::cooldown),
             Codec.INT.optionalFieldOf("mana_percent", 0).forGetter(SpellStats::manaPercent),
-            Codec.INT.optionalFieldOf("xp_percent", 0).forGetter(SpellStats::xpPercent)
+            Codec.INT.optionalFieldOf("xp_percent", 0).forGetter(SpellStats::xpPercent),
+            Codec.DOUBLE.optionalFieldOf("falloff", 0.0).forGetter(SpellStats::falloff),
+            Codec.FLOAT.optionalFieldOf("impact_damage", 0F).forGetter(SpellStats::impactDamage)
     ).apply(i, SpellStats::new));
 
     // A mob effect's amplifier for this potency (0 = level I)
@@ -57,17 +62,19 @@ public record SpellStats(int duration, float potency, int size, double range, fl
         return (SpellConfig.BASE_DAMAGE * potency + bonusDamage) * damageMultiplier;
     }
 
-    public SpellStats withDuration(int duration) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withPotency(float potency) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withSize(int size) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withRange(double range) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withSpeed(float speed) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withGravity(float gravity) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withBonusDamage(float bonusDamage) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withDamageMultiplier(float damageMultiplier) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withCritChance(float critChance) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withLuck(float luck) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withCooldown(int cooldown) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withManaPercent(int manaPercent) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
-    public SpellStats withXpPercent(int xpPercent) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent); }
+    public SpellStats withDuration(int duration) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withPotency(float potency) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withSize(int size) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withRange(double range) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withSpeed(float speed) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withGravity(float gravity) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withBonusDamage(float bonusDamage) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withDamageMultiplier(float damageMultiplier) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withCritChance(float critChance) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withLuck(float luck) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withCooldown(int cooldown) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withManaPercent(int manaPercent) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withFalloff(double falloff) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withImpactDamage(float impactDamage) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
+    public SpellStats withXpPercent(int xpPercent) { return new SpellStats(duration, potency, size, range, speed, gravity, bonusDamage, damageMultiplier, critChance, luck, cooldown, manaPercent, xpPercent, falloff, impactDamage); }
 }

@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierContext;
 import com.mowmaster.dust.Features.Spells.api.ModifierFit;
 import com.mowmaster.dust.Features.Spells.api.ModifierTier;
+import com.mowmaster.dust.Features.Spells.api.SpellCast;
 import com.mowmaster.dust.Features.Spells.api.SpellModifier;
 import com.mowmaster.dust.Features.Spells.api.SpellStats;
 import net.minecraft.resources.Identifier;
@@ -44,6 +45,7 @@ public class LeveledModifier implements SpellModifier
     private Set<Identifier> shapes = Set.of();
     private List<Identifier> addsToPool = List.of();
     private Predicate<ModifierContext> requires = context -> true;
+    private java.util.function.@org.jspecify.annotations.Nullable Consumer<SpellCast> onCast;
     private Identifier id = Identifier.withDefaultNamespace("unnamed");
 
     public LeveledModifier(BiFunction<SpellStats, Integer, SpellStats> change)
@@ -75,6 +77,8 @@ public class LeveledModifier implements SpellModifier
     public LeveledModifier shapes(Identifier... shapes) { this.shapes = Set.of(shapes); return this; }
     public LeveledModifier addsToPool(Identifier... modifiers) { this.addsToPool = List.of(modifiers); return this; }
     public LeveledModifier requires(Predicate<ModifierContext> requires) { this.requires = requires; return this; }
+    // Something it does as the spell is cast (before the shape delivers it), e.g. Overshield's Resistance
+    public LeveledModifier onCast(java.util.function.Consumer<SpellCast> onCast) { this.onCast = onCast; return this; }
 
     // ---- SpellModifier ----
 
@@ -117,5 +121,12 @@ public class LeveledModifier implements SpellModifier
     public SpellStats modifyStats(SpellStats stats, int levels)
     {
         return change.apply(stats, levels);
+    }
+
+    @Override
+    public boolean beforeDelivery(SpellCast cast)
+    {
+        if (onCast != null) onCast.accept(cast);
+        return true;
     }
 }

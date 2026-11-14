@@ -28,6 +28,9 @@ import org.jspecify.annotations.Nullable;
 // A spell in flight (the Projectile shape). It carries its spell and stats; ThrowableProjectile does the moving and
 // hit detection, using our gravity and air drag. It dissipates in a puff once it's flown the spell's range. Drawn as
 // a trail of dust in its element's colour (client side, in tick; the entity itself has no model: NoopRenderer).
+//   falloff      no gravity until it's flown the spell's falloff distance (Falloff)
+//   splits       Multishot: at the falloff point it splits, this many more bolts fanning out beside it (they don't split)
+//   impact       a creature it hits takes the spell's impact damage as well as the effect (Impact Damage)
 public class SpellProjectileEntity extends ThrowableProjectile
 {
     // The element's id, synced so the client can colour the trail
@@ -36,6 +39,9 @@ public class SpellProjectileEntity extends ThrowableProjectile
     private @Nullable Spell spell;
     private SpellStats stats = SpellStats.defaults();
     private Vec3 start = Vec3.ZERO;
+    private int splits;
+    // Degrees between the bolts of a Multishot split
+    private static final float SPREAD_DEGREES = 8F;
 
     public SpellProjectileEntity(EntityType<? extends SpellProjectileEntity> type, Level level)
     {
@@ -56,6 +62,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         bolt.start = bolt.position();
         // shoot: sets the velocity along a direction at this speed, with no spread (inaccuracy 0)
         bolt.shoot(cast.direction().x, cast.direction().y, cast.direction().z, cast.stats().speed(), 0);
+        bolt.splits = cast.spell().levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.MULTISHOT.getId());
         return bolt;
     }
 
@@ -71,10 +78,16 @@ public class SpellProjectileEntity extends ThrowableProjectile
         builder.define(ELEMENT, DustElements.FIRE.id().toString());
     }
 
+    // No gravity until past the falloff distance
     @Override
     protected double getDefaultGravity()
     {
-        return stats.gravity();
+        return pastFalloff() ? stats.gravity() : 0;
+    }
+
+    private boolean pastFalloff()
+    {
+        return position().distanceToSqr(start) >= stats.falloff() * stats.falloff();
     }
 
     @Override
@@ -100,6 +113,8 @@ public class SpellProjectileEntity extends ThrowableProjectile
         // A lightning bolt bends towards the nearest conductive thing (a Conductive creature, a block a Lightning spell
         // marked) within HOMING_RANGE
         if (element() == DustElements.LIGHTNING) homeIn();
+        // Multishot: at the falloff point it splits
+        if (splits > 0 && pastFalloff()) split();
         // Gone too far, or too slow to matter: it fades out
         if (position().distanceTo(start) > stats.range() || getDeltaMovement().lengthSqr() < 0.0004 || tickCount > 20 * 30) dissipate();
     }
@@ -130,6 +145,29 @@ public class SpellProjectileEntity extends ThrowableProjectile
         setDeltaMovement(turned);
     }
 
+    // The split: this many more bolts beside this one, fanned out evenly to either side of its path (turned about the
+    // vertical: Vec3.yRot, in radians), carrying on from here with its speed. They don't split again.
+    private void split()
+    {
+        int extra = splits;
+        splits = 0;
+        Vec3 velocity = getDeltaMovement();
+        for (int i = 1; i <= extra; i++) {
+            // Alternate sides: +1, -1, +2, -2...
+            int step = (i + 1) / 2 * (i % 2 == 1 ? 1 : -1);
+            SpellProjectileEntity bolt = DustEntityRegistry.SPELL_PROJECTILE.get().create(level(), EntitySpawnReason.TRIGGERED);
+            if (bolt == null) continue;
+            bolt.spell = spell;
+            bolt.stats = stats;
+            bolt.entityData.set(ELEMENT, entityData.get(ELEMENT));
+            bolt.setOwner(getOwner());
+            bolt.setPos(getX(), getY(), getZ());
+            bolt.start = start;
+            bolt.setDeltaMovement(velocity.yRot((float) Math.toRadians(step * SPREAD_DEGREES)));
+            level().addFreshEntity(bolt);
+        }
+    }
+
     private void dissipate()
     {
         if (level() instanceof ServerLevel server) {
@@ -151,7 +189,11 @@ public class SpellProjectileEntity extends ThrowableProjectile
     {
         super.onHitEntity(hit);
         SpellCast cast = castHere();
-        if (cast != null && hit.getEntity() instanceof LivingEntity) cast.applyEntity(hit.getEntity());
+        if (cast != null && hit.getEntity() instanceof LivingEntity target) {
+            // Impact Damage: the blow itself, then the effect
+            if (stats.impactDamage() > 0) target.hurtServer(cast.level(), damageSources().thrown(this, getOwner()), stats.impactDamage());
+            cast.applyEntity(target);
+        }
     }
 
     @Override
@@ -177,6 +219,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         if (spell != null) output.store("spell", Spell.CODEC, spell);
         output.store("stats", SpellStats.CODEC, stats);
         output.store("start", Vec3.CODEC, start);
+        output.putInt("splits", splits);
     }
 
     @Override
@@ -186,6 +229,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         spell = input.read("spell", Spell.CODEC).orElse(null);
         stats = input.read("stats", SpellStats.CODEC).orElse(SpellStats.defaults());
         start = input.read("start", Vec3.CODEC).orElse(position());
+        splits = input.getIntOr("splits", 0);
         if (spell != null) entityData.set(ELEMENT, spell.element().id().toString());
     }
 }

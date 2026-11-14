@@ -151,6 +151,47 @@ public final class SpellRegistries
             () -> new LeveledModifier((stats, levels) -> stats.withPotency(stats.potency() + 0.25F * levels))
                     .categories(ModifierCategory.DAMAGE).fit(ModifierFit.DOT));
 
+    // Projectile spells
+    // Falloff: a block further before gravity starts pulling the bolt down, a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> FALLOFF = modifier("falloff",
+            () -> new LeveledModifier((stats, levels) -> stats.withFalloff(stats.falloff() + levels)).shapes(id("projectile")));
+    // Velocity: the bolt flies 0.1 blocks a tick faster a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> VELOCITY = modifier("velocity",
+            () -> new LeveledModifier((stats, levels) -> stats.withSpeed(stats.speed() + 0.1F * levels)).shapes(id("projectile")));
+    // Range: a block further before the bolt fizzles out, a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> RANGE_MODIFIER = modifier("range",
+            () -> new LeveledModifier((stats, levels) -> stats.withRange(stats.range() + levels)).shapes(id("projectile")).categories(ModifierCategory.GIANT));
+    // Impact Damage (from level 20, one more every 10 levels): 1 damage a level when the bolt hits a creature
+    public static final DeferredHolder<SpellModifier, SpellModifier> IMPACT_DAMAGE = modifier("impact_damage",
+            () -> new LeveledModifier((stats, levels) -> stats.withImpactDamage(stats.impactDamage() + levels)).shapes(id("projectile"))
+                    .categories(ModifierCategory.DAMAGE).unlock(20).everyLevels(10));
+    // Multishot (from level 30): one more bolt a level (1-3 a node), splitting off where the falloff ends
+    // (SpellProjectileEntity). Not with Hitscan in the same line.
+    public static final DeferredHolder<SpellModifier, SpellModifier> MULTISHOT = modifier("multishot",
+            () -> LeveledModifier.marker().shapes(id("projectile")).unlock(30).perNode(1, 3).extraCost(2)
+                    .requires(context -> !context.has(id("hitscan"))));
+    // Hitscan (from level 50, rare, once per branch): no bolt; a ray reaches the target at once (ProjectileShape). Not
+    // with Multishot in the same line.
+    public static final DeferredHolder<SpellModifier, SpellModifier> HITSCAN = modifier("hitscan",
+            () -> LeveledModifier.marker().shapes(id("projectile")).unlock(50).weight(2).oncePerBranch()
+                    .requires(context -> !context.has(id("multishot"))));
+
+    // Touch spells
+    // Overshield (from level 20): the caster gets Resistance for OVERSHIELD_TICKS as they cast, one level higher for
+    // each level of Shield Potency (which it brings into the pool)
+    public static final DeferredHolder<SpellModifier, SpellModifier> OVERSHIELD = modifier("overshield",
+            () -> LeveledModifier.marker().shapes(id("touch")).unlock(20).addsToPool(id("shield_potency"))
+                    .onCast(cast -> {
+                        if (cast.caster() == null) return;
+                        int potency = cast.spell().levelsOf(id("shield_potency"));
+                        cast.caster().addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.RESISTANCE, SpellRegistries.OVERSHIELD_TICKS, potency, false, true, true));
+                    }));
+    // Shield Potency (from level 20, one more every 10 levels; only once Overshield is in the spell): Overshield a level
+    // stronger, a level
+    public static final DeferredHolder<SpellModifier, SpellModifier> SHIELD_POTENCY = modifier("shield_potency",
+            () -> LeveledModifier.marker().shapes(id("touch")).unlock(20).everyLevels(10).requires(context -> context.countInTree(id("overshield")) > 0));
+    public static final int OVERSHIELD_TICKS = 40;
+
     // The deck and pool (read by the tree, not the cast: SpellPylonBlockEntity)
     // Category Weight: a category pylon's category is drawn into the deck more often, +1 weight a level (category pylons only)
     public static final DeferredHolder<SpellModifier, SpellModifier> CATEGORY_WEIGHT = modifier("category_weight",
@@ -280,6 +321,14 @@ public final class SpellRegistries
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpecialBlockParts::phase).self(BasicEffect.give(DustEffectsRegistry.SPIRIT_FORM)).entity(MovementParts::ghost));
 
     // Registers a LeveledModifier and gives it its own id (for its "once per branch" / "every N levels" counts)
+    // A Dust id, for modifiers naming each other and shapes (by id: the holders may not be filled in yet when a modifier
+    // is built). A method, so the modifiers above can use it: a lambda can't name a static field declared further down
+    // (an "illegal forward reference"), but it can call a method.
+    private static Identifier id(String path)
+    {
+        return Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+    }
+
     private static DeferredHolder<SpellModifier, SpellModifier> modifier(String name, java.util.function.Supplier<LeveledModifier> modifier)
     {
         return MODIFIERS.register(name, () -> modifier.get().named(Identifier.fromNamespaceAndPath(DustReferences.MODID, name)));
