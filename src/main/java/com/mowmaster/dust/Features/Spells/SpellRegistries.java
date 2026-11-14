@@ -267,6 +267,31 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> CASTING_SPEED = modifier("casting_speed",
             () -> LeveledModifier.marker().perNode(2, 5).unlock(30).everyLevels(10));
 
+    // ---- blessed: the twelve signs (modifiers/Blessings). Into the deck when the tree's blessing reaches 10; a Neutral
+    // pylon only; one use each ----
+    public static final DeferredHolder<SpellModifier, SpellModifier> ARIES = MODIFIERS.register("aries", com.mowmaster.dust.Features.Spells.modifiers.Blessings::aries);
+    public static final DeferredHolder<SpellModifier, SpellModifier> TAURUS = MODIFIERS.register("taurus", com.mowmaster.dust.Features.Spells.modifiers.Blessings::taurus);
+    public static final DeferredHolder<SpellModifier, SpellModifier> GEMINI = MODIFIERS.register("gemini", com.mowmaster.dust.Features.Spells.modifiers.Blessings::gemini);
+    public static final DeferredHolder<SpellModifier, SpellModifier> CANCER = MODIFIERS.register("cancer", com.mowmaster.dust.Features.Spells.modifiers.Blessings::cancer);
+    public static final DeferredHolder<SpellModifier, SpellModifier> LEO = MODIFIERS.register("leo", com.mowmaster.dust.Features.Spells.modifiers.Blessings::leo);
+    public static final DeferredHolder<SpellModifier, SpellModifier> VIRGO = MODIFIERS.register("virgo", com.mowmaster.dust.Features.Spells.modifiers.Blessings::virgo);
+    public static final DeferredHolder<SpellModifier, SpellModifier> LIBRA = MODIFIERS.register("libra", com.mowmaster.dust.Features.Spells.modifiers.Blessings::libra);
+    public static final DeferredHolder<SpellModifier, SpellModifier> SCORPIO = MODIFIERS.register("scorpio", com.mowmaster.dust.Features.Spells.modifiers.Blessings::scorpio);
+    public static final DeferredHolder<SpellModifier, SpellModifier> SAGITTARIUS = MODIFIERS.register("sagittarius", com.mowmaster.dust.Features.Spells.modifiers.Blessings::sagittarius);
+    public static final DeferredHolder<SpellModifier, SpellModifier> CAPRICORN = MODIFIERS.register("capricorn", com.mowmaster.dust.Features.Spells.modifiers.Blessings::capricorn);
+    public static final DeferredHolder<SpellModifier, SpellModifier> AQUARIUS = MODIFIERS.register("aquarius", com.mowmaster.dust.Features.Spells.modifiers.Blessings::aquarius);
+    public static final DeferredHolder<SpellModifier, SpellModifier> PISCES = MODIFIERS.register("pisces", com.mowmaster.dust.Features.Spells.modifiers.Blessings::pisces);
+
+    // ---- corrupted: the seven sins (modifiers/Sins). Into the deck when the tree's corruption reaches 5; the next pylon
+    // takes one; one use each ----
+    public static final DeferredHolder<SpellModifier, SpellModifier> PRIDE = MODIFIERS.register("pride", com.mowmaster.dust.Features.Spells.modifiers.Sins::pride);
+    public static final DeferredHolder<SpellModifier, SpellModifier> GREED = MODIFIERS.register("greed", com.mowmaster.dust.Features.Spells.modifiers.Sins::greed);
+    public static final DeferredHolder<SpellModifier, SpellModifier> WRATH = MODIFIERS.register("wrath", com.mowmaster.dust.Features.Spells.modifiers.Sins::wrath);
+    public static final DeferredHolder<SpellModifier, SpellModifier> LUST = MODIFIERS.register("lust", com.mowmaster.dust.Features.Spells.modifiers.Sins::lust);
+    public static final DeferredHolder<SpellModifier, SpellModifier> ENVY = MODIFIERS.register("envy", com.mowmaster.dust.Features.Spells.modifiers.Sins::envy);
+    public static final DeferredHolder<SpellModifier, SpellModifier> GLUTTONY = MODIFIERS.register("gluttony", com.mowmaster.dust.Features.Spells.modifiers.Sins::gluttony);
+    public static final DeferredHolder<SpellModifier, SpellModifier> SLOTH = MODIFIERS.register("sloth", com.mowmaster.dust.Features.Spells.modifiers.Sins::sloth);
+
     // The deck and pool (read by the tree, not the cast: SpellPylonBlockEntity)
     // Category Weight: a category pylon's category is drawn into the deck more often, +1 weight a level (category pylons only)
     public static final DeferredHolder<SpellModifier, SpellModifier> CATEGORY_WEIGHT = modifier("category_weight",

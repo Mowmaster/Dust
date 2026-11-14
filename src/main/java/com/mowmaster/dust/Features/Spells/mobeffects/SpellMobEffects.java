@@ -124,6 +124,15 @@ public final class SpellMobEffects
         DamageSource source = event.getSource();
         float amount = event.getAmount();
 
+        // Rebuke (Capricorn): the next attack goes back to the attacker instead, and the rebuke is spent
+        if (victim.hasEffect(DustEffectsRegistry.REBUKE) && source.getEntity() instanceof LivingEntity attacker && attacker != victim
+                && victim.level() instanceof ServerLevel rebukeLevel) {
+            victim.removeEffect(DustEffectsRegistry.REBUKE);
+            event.setCanceled(true);
+            attacker.hurtServer(rebukeLevel, rebukeLevel.damageSources().thorns(victim), amount);
+            return;
+        }
+
         if (victim.hasEffect(DustEffectsRegistry.DEATHLESS)
                 && (source.is(DamageTypeTags.IS_DROWNING) || source.is(DamageTypes.WITHER) || source.is(DamageTypes.STARVE))) {
             event.setCanceled(true);

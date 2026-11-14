@@ -76,6 +76,23 @@ public interface SpellModifier
         return stats;
     }
 
+    // The same, knowing the whole spell (its element, shape, other modifiers): what Spell.stats calls. By default the
+    // plain version, so most modifiers only override that.
+    default SpellStats modifyStats(Spell spell, SpellStats stats, int levels)
+    {
+        return modifyStats(stats, levels);
+    }
+
+    // The numbers for the effect on this one creature (Pride: double on its marked target, a quarter on the rest)
+    default SpellStats statsAgainst(SpellCast cast, net.minecraft.world.entity.Entity target, SpellStats stats)
+    {
+        return stats;
+    }
+
+    // Where the spell landed, after its effect: the point, and the creature hit (null for a block). Not for a rune
+    // going off or a chain's jump (secondary casts).
+    default void onImpact(SpellCast cast, net.minecraft.world.phys.Vec3 at, net.minecraft.world.entity.@Nullable Entity target) {}
+
     // Runs as the spell is cast, before the shape delivers it. Returning false stops the shape: the modifier delivered
     // the spell itself (e.g. several projectiles instead of one) and calls cast.markDelivered().
     default boolean beforeDelivery(SpellCast cast)

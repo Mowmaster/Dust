@@ -76,6 +76,20 @@ public final class SpellCast
         return copy;
     }
 
+    // The same cast with other numbers (for one creature: statsAgainst)
+    private SpellCast withStats(SpellStats other)
+    {
+        SpellCast copy = new SpellCast(level, caster, spell, other, origin, direction);
+        copy.secondary = secondary;
+        return copy;
+    }
+
+    // Each modifier's onImpact, where it landed (not for secondary casts)
+    private void impact(Vec3 at, @Nullable Entity target)
+    {
+        for (SpellModifier modifier : spell.modifierList()) modifier.onImpact(this, at, target);
+    }
+
     // Whether the spell has this modifier
     public boolean has(net.minecraft.resources.Identifier modifier)
     {
@@ -134,6 +148,7 @@ public final class SpellCast
                 for (LivingEntity target : nearest(impact, radius, targetCount(), null)) entityEffect(target);
             }
             linger(impact);
+            impact(impact, null);
         }
         learn(SpellTarget.BLOCK);
     }
@@ -160,6 +175,7 @@ public final class SpellCast
             }
             if (has(SpellRegistries.CHAINING.getId())) chain(target);
             linger(target.position());
+            impact(target.position(), target);
         }
         learn(SpellTarget.ENTITY);
     }
@@ -173,10 +189,20 @@ public final class SpellCast
         }
     }
 
-    // The effect on one entity, spread by the old size stat
+    // The effect on one entity, spread by the old size stat. A modifier can change the numbers for this one creature
+    // (Pride); Greed's spell no longer spares friends and allies (Social.spellBypass, just while it lands).
     private void entityEffect(Entity target)
     {
-        effect().onEntity(this, target);
+        SpellStats own = stats;
+        for (SpellModifier modifier : spell.modifierList()) own = modifier.statsAgainst(this, target, own);
+        SpellCast cast = own == stats ? this : withStats(own);
+        boolean greedy = com.mowmaster.dust.Features.Spells.modifiers.Sins.greedy(spell);
+        if (greedy) com.mowmaster.dust.Features.Spells.radiance.Social.spellBypass = true;
+        try {
+            effect().onEntity(cast, target);
+        } finally {
+            if (greedy) com.mowmaster.dust.Features.Spells.radiance.Social.spellBypass = false;
+        }
         if (target instanceof ServerPlayer player && player != caster) SpellKnowledge.unlockShape(player, spell.shape());
         if (stats.size() > 0) {
             for (Entity nearby : around(target.position(), stats.size())) {
@@ -190,7 +216,9 @@ public final class SpellCast
     // AOE's radius: its own, plus Size
     public double aoeRadius()
     {
-        return SpellConfig.AOE_RADIUS + SpellConfig.SIZE_PER_LEVEL * spell.levelsOf(SpellRegistries.SIZE_MODIFIER.getId());
+        double radius = SpellConfig.AOE_RADIUS + SpellConfig.SIZE_PER_LEVEL * spell.levelsOf(SpellRegistries.SIZE_MODIFIER.getId());
+        // Gluttony: twice the size
+        return com.mowmaster.dust.Features.Spells.modifiers.Sins.gluttonous(spell) ? radius * 2 : radius;
     }
 
     // How many creatures AOE reaches: 1, plus Target Count
@@ -251,6 +279,10 @@ public final class SpellCast
         Vec3 across = new Vec3(-along.z, 0, along.x);
         double half = SpellConfig.WALL_HALF + SpellConfig.WALL_PER_LEVEL * spell.levelsOf(SpellRegistries.WALL_WIDTH.getId());
         double depth = SpellConfig.WALL_PER_LEVEL * spell.levelsOf(SpellRegistries.WALL_DEPTH.getId());
+        if (com.mowmaster.dust.Features.Spells.modifiers.Sins.gluttonous(spell)) {
+            half *= 2;
+            depth *= 2;
+        }
         var dust = new net.minecraft.core.particles.DustParticleOptions(element().color(), 1.0F);
         java.util.Set<BlockPos> blocks = new java.util.LinkedHashSet<>();
         for (double w = -half; w <= half + 1.0E-6; w += 0.5) {
@@ -289,11 +321,12 @@ public final class SpellCast
         }
     }
 
-    // Living entities within radius of a point, except the caster
+    // Living entities within radius of a point, except the caster (unless the spell is Greedy: then them too)
     public List<LivingEntity> around(Vec3 centre, double radius)
     {
+        boolean greedy = com.mowmaster.dust.Features.Spells.modifiers.Sins.greedy(spell);
         return level.getEntitiesOfClass(LivingEntity.class, new AABB(centre, centre).inflate(radius),
-                entity -> entity != caster && entity.isAlive() && entity.position().distanceTo(centre) <= radius);
+                entity -> (greedy || entity != caster) && entity.isAlive() && entity.position().distanceTo(centre) <= radius);
     }
 
     // A player caster notes what this effect did, and the shape it came by

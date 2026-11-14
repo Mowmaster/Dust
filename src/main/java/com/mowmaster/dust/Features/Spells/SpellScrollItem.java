@@ -115,6 +115,8 @@ public class SpellScrollItem extends Item
     // The wait before this spell can be cast again: the usual, less Cast Speed (at least 1 tick)
     public static int cooldownFor(Spell spell)
     {
-        return Math.max(1, COOLDOWN + spell.stats(1F).cooldown());
+        int cooldown = Math.max(1, COOLDOWN + spell.stats(1F).cooldown());
+        // Sloth: half the wait
+        return com.mowmaster.dust.Features.Spells.modifiers.Sins.slothful(spell) ? Math.max(1, cooldown / 2) : cooldown;
     }
 }

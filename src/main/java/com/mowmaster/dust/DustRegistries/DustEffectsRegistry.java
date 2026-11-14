@@ -102,6 +102,11 @@ public class DustEffectsRegistry
             .addAttributeModifier(Attributes.SUBMERGED_MINING_SPEED, id("effect.sure_footing.mining"), 0.8, AttributeModifier.Operation.ADD_VALUE));
     // Gem on yourself: projectiles bounce back at whoever shot them
     public static final Holder<MobEffect> REFLECTING = MOB_EFFECTS.register("reflecting", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x4FE0D0));
+    // Sagittarius (blessed modifier): steps up full blocks
+    public static final Holder<MobEffect> STEP_ASSIST = MOB_EFFECTS.register("step_assist", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0x8FBF5A)
+            .addAttributeModifier(Attributes.STEP_HEIGHT, id("effect.step_assist"), 0.5, AttributeModifier.Operation.ADD_VALUE));
+    // Capricorn (blessed modifier): the next attack is turned back on the attacker, and this ends (SpellMobEffects)
+    public static final Holder<MobEffect> REBUKE = MOB_EFFECTS.register("rebuke", () -> new SpellMobEffect(MobEffectCategory.BENEFICIAL, 0xE0D070));
     // Protection on a mob: projectiles do 50% more a level to it
     public static final Holder<MobEffect> PIERCED = MOB_EFFECTS.register("pierced", () -> new SpellMobEffect(MobEffectCategory.HARMFUL, 0xA0A0C0));
     // Fracture on a mob: its max health is lowered 20% a level (up to 80%)

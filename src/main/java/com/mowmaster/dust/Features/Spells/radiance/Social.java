@@ -339,10 +339,13 @@ public final class Social
     }
 
     // No damage between friends or allies (their pets included). HIGH: before anything reacts to the hit.
+    // Set while a Greedy spell (the Greed sin) lands: it spares no one, friends and allies included
+    public static boolean spellBypass;
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onIncomingDamage(LivingIncomingDamageEvent event)
     {
-        if (!(event.getEntity() instanceof ServerPlayer victim)) return;
+        if (spellBypass || !(event.getEntity() instanceof ServerPlayer victim)) return;
         UUID attacker = playerBehind(event.getSource().getEntity());
         if (attacker != null && areProtected(victim.level().getServer(), victim.getUUID(), attacker)) event.setCanceled(true);
     }
@@ -351,7 +354,7 @@ public final class Social
     @SubscribeEvent
     public static void onEffectApplicable(MobEffectEvent.Applicable event)
     {
-        if (!(event.getEntity() instanceof ServerPlayer target)) return;
+        if (spellBypass || !(event.getEntity() instanceof ServerPlayer target)) return;
         if (event.getEffectInstance().getEffect().value().getCategory() != MobEffectCategory.HARMFUL) return;
         UUID source = playerBehind(event.getEffectSource());
         if (source != null && areProtected(target.level().getServer(), target.getUUID(), source)) {

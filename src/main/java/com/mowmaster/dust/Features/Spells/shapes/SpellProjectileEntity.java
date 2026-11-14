@@ -122,6 +122,8 @@ public class SpellProjectileEntity extends ThrowableProjectile
         // A lightning bolt bends towards the nearest conductive thing (a Conductive creature, a block a Lightning spell
         // marked) within HOMING_RANGE
         if (element() == DustElements.LIGHTNING) homeIn();
+        // Virgo (on a spell of another element): it homes in on the nearest creature
+        if (spell != null && com.mowmaster.dust.Features.Spells.modifiers.Blessings.homes(spell)) homeOnCreature();
         // Multishot: at the falloff point it splits
         if (splits > 0 && pastFalloff()) split();
         // Gone too far, or too slow to matter: it fades out
@@ -178,6 +180,26 @@ public class SpellProjectileEntity extends ThrowableProjectile
         }
     }
 
+    // Turns a fifth of the way towards the nearest living creature (not its caster) within HOMING_RANGE each tick
+    private void homeOnCreature()
+    {
+        Vec3 here = position();
+        LivingEntity nearest = null;
+        double best = HOMING_RANGE * HOMING_RANGE;
+        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(HOMING_RANGE),
+                other -> other != getOwner() && other.isAlive() && !pierced.contains(other.getUUID()))) {
+            double distance = living.position().distanceToSqr(here);
+            if (distance < best) {
+                best = distance;
+                nearest = living;
+            }
+        }
+        if (nearest == null) return;
+        Vec3 velocity = getDeltaMovement();
+        Vec3 aim = nearest.position().add(0, nearest.getBbHeight() / 2, 0).subtract(here).normalize();
+        setDeltaMovement(velocity.normalize().lerp(aim, 0.2).normalize().scale(velocity.length()));
+    }
+
     private void dissipate()
     {
         if (level() instanceof ServerLevel server) {
@@ -198,7 +220,9 @@ public class SpellProjectileEntity extends ThrowableProjectile
     private static int piercing(Spell spell)
     {
         if (!spell.modifiers().contains(com.mowmaster.dust.Features.Spells.SpellRegistries.PIERCING.getId())) return 0;
-        return 1 + spell.levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.DEPTH.getId()) / 2;
+        int pierce = 1 + spell.levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.DEPTH.getId()) / 2;
+        // Gluttony: twice as deep
+        return com.mowmaster.dust.Features.Spells.modifiers.Sins.gluttonous(spell) ? pierce * 2 : pierce;
     }
 
     // Not what it's already gone through

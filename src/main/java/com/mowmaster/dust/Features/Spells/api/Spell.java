@@ -70,7 +70,7 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         }
         for (int i = 0; i < modifiers.size(); i++) {
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(modifiers.get(i));
-            if (modifier != null) stats = modifier.modifyStats(stats, level(i));
+            if (modifier != null) stats = modifier.modifyStats(this, stats, level(i));
         }
         return stats.withPotency(stats.potency() * power);
     }

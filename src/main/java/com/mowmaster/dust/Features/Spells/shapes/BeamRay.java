@@ -33,7 +33,10 @@ public final class BeamRay
         Vec3 from = cast.origin();
         Vec3 direction = cast.direction().normalize();
         Entity caster = cast.caster();
-        double length = cast.stats().range() + cast.spell().levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.BEAM_DISTANCE.getId());
+        // Range is already doubled by Gluttony (its stats); Beam Distance is doubled here
+        int distance = cast.spell().levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.BEAM_DISTANCE.getId());
+        if (com.mowmaster.dust.Features.Spells.modifiers.Sins.gluttonous(cast.spell())) distance *= 2;
+        double length = cast.stats().range() + distance;
         Vec3 end = from.add(direction.scale(length));
 
         // The first block in the way (ClipContext: a ray through the world, stopping at block outlines, ignoring fluids)
