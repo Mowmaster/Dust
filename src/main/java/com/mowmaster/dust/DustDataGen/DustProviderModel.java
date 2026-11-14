@@ -312,7 +312,8 @@ public class DustProviderModel extends ModelProvider {
     //   Spell Pylon     spell_pylon, turned by facing (its connection arm points north in the model)
     //   Shape Pylon     shape_pylon / _1 / _2 / _3 by links (PylonLinks.shapeModel), turned by parent
     //   the others      blank_pylon_<links>_level_<nodes> (PylonLinks.blankModel), turned by parent; all four kinds
-    //                   share the models and differ by tint (Client/PylonTint)
+    //                   share the models and differ by tint (Client/PylonTint). A spell break: pylon_break_broken,
+    //                   or pylon_break_connected while powered.
     // The pylon models have their parent's arm to the south, so parent=south needs no turn, west a quarter turn...
     // Items: the plain models, the blank pylons' with the body in their kind's colour.
     private void createPylons(BlockModelGenerators blockModels)
@@ -325,15 +326,20 @@ public class DustProviderModel extends ModelProvider {
 
         Block shapePylon = DustBlockRegistry.SHAPE_PYLON.get();
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(shapePylon).with(
-                PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES).generate((parent, links, nodes) ->
+                PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES, PylonBlock.BREAK).generate((parent, links, nodes, spellBreak) ->
                         BlockModelGenerators.plainVariant(pylonModel("shape_pylon" + links.shapeModel())).with(parentTurn(parent)))));
         blockModels.itemModelOutput.accept(shapePylon.asItem(), ItemModelUtils.plainModel(pylonModel("shape_pylon")));
 
         for (Block block : List.of(DustBlockRegistry.CHANGE_PYLON.get(), DustBlockRegistry.COST_PYLON.get(),
                 DustBlockRegistry.COUNT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get())) {
+            // A spell break has its own two models (unpowered: broken, powered: connected) whatever its links and nodes
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
-                    PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES).generate((parent, links, nodes) ->
-                            BlockModelGenerators.plainVariant(pylonModel("blank_pylon_" + links.blankModel() + "_level_" + nodes)).with(parentTurn(parent)))));
+                    PropertyDispatch.initial(PylonBlock.PARENT, PylonBlock.LINKS, PylonBlock.NODES, PylonBlock.BREAK).generate((parent, links, nodes, spellBreak) ->
+                            BlockModelGenerators.plainVariant(pylonModel(switch (spellBreak) {
+                                case BROKEN -> "pylon_break_broken";
+                                case CONNECTED -> "pylon_break_connected";
+                                case NONE -> "blank_pylon_" + links.blankModel() + "_level_" + nodes;
+                            })).with(parentTurn(parent)))));
             // Tint 0 (the body) in the kind's colour; the rest have no tint source, so they stay plain
             blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(pylonModel("blank_pylon_base_level_3"),
                     ItemModelUtils.constantTint(PylonTint.kindColor(((PylonBlock) block).type()))));

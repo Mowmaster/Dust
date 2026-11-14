@@ -128,6 +128,8 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
         boolean now = level != null && level.hasNeighborSignal(worldPosition);
         if (now == powered) return;
         powered = now;
+        // The model follows (broken / connected); the arms stay as they are
+        updateLook(null, getBlockState().getValue(PylonBlock.LINKS));
         sync();
     }
 
@@ -136,7 +138,9 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     void updateLook(@Nullable Direction parent, PylonLinks links)
     {
         if (level == null || !(getBlockState().getBlock() instanceof PylonBlock)) return;
-        BlockState now = getBlockState().setValue(PylonBlock.LINKS, links).setValue(PylonBlock.NODES, Mth.clamp(maxNodes, 1, PylonConfig.MAX_NODES));
+        PylonBreak look = main == null || !spellBreak ? PylonBreak.NONE : powered ? PylonBreak.CONNECTED : PylonBreak.BROKEN;
+        BlockState now = getBlockState().setValue(PylonBlock.LINKS, links).setValue(PylonBlock.NODES, Mth.clamp(maxNodes, 1, PylonConfig.MAX_NODES))
+                .setValue(PylonBlock.BREAK, look);
         if (parent != null && parent.getAxis().isHorizontal()) now = now.setValue(PylonBlock.PARENT, parent);
         if (now != getBlockState()) level.setBlock(worldPosition, now, Block.UPDATE_ALL);
     }

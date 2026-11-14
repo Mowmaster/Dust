@@ -20,8 +20,9 @@ public final class PylonConfig
     public static final int KEEP_BLESSING = 1;
     public static final int BLESSED_LOSS = 5;
     public static final int CORRUPTED_GAIN = 5;
-    // A spell break can turn up once the line has this many modifiers, with this chance per pylon
-    public static final int BREAK_MIN_MODIFIERS = 5;
+    // A spell break can turn up once the spell is at this level, with this chance per pylon (only on a pylon kind that
+    // can break: PylonType.canBreak)
+    public static final int BREAK_MIN_LEVEL = 30;
     public static final float BREAK_CHANCE = 0.12F;
     // Upgrade nodes: each modifier pylon gets a random number of them (MIN_NODES to MAX_NODES) when it joins a tree. Each
     // costs a level to fill and adds potency (and 1 dust per point of it) to the spell: 1 point while the spell is

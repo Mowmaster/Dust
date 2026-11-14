@@ -23,5 +23,9 @@ public enum PylonType
     }
 
     public String serializedName() { return name; }
+
+    // Whether a spell break can be rolled on this kind: only the neutral pylon. Until there is one (see the TODO), the
+    // plain white Change pylon stands in for it.
+    public boolean canBreak() { return this == CHANGE; }
     public @Nullable ModifierCategory category() { return category; }
 }

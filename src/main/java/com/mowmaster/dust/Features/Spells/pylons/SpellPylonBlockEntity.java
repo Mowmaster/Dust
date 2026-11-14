@@ -179,19 +179,25 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return side.getAxis().isHorizontal() ? side : Direction.NORTH;
     }
 
-    // The sides a pylon can lead on from: all but its parent's
+    // The sides a pylon can lead on from: all but its parent's (a spell break: only straight on, as its model shows)
     private List<Direction> childSides(int index)
     {
         Direction back = parentSide(index);
+        if (isBreak(index)) return List.of(back.getOpposite());
         List<Direction> sides = new ArrayList<>();
         for (Direction side : Direction.Plane.HORIZONTAL) if (side != back) sides.add(side);
         return sides;
     }
 
-    // Whether another pylon can be placed after this one: the Shape Pylon leads on to just one
+    // Whether another pylon can be placed after this one: the Shape Pylon and a spell break lead on to just one
     private boolean canLeadOn(int index)
     {
-        return index > 0 || !hasChildren(0);
+        return (index > 0 && !isBreak(index)) || !hasChildren(index);
+    }
+
+    private boolean isBreak(int index)
+    {
+        return index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity pylon && pylon.isSpellBreak();
     }
 
     private void addIfFree(List<BlockPos> places, BlockPos pos)
@@ -277,7 +283,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         ModifierCategory branchedFrom = branch && parentPylon != null ? parentPylon.type().category() : null;
 
         if (placer != null && element != null) SpellMastery.note(placer, element, level());
-        Roll roll = roll(pylon.getBlockPos(), parent, branchedFrom, placer);
+        Roll roll = roll(pylon.getBlockPos(), parent, branchedFrom, placer, type);
         // A normal modifier gets upgrade nodes; a blessed / corrupted one a strength instead (and is locked by link)
         SpellModifier rolled = roll.modifier() == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(roll.modifier());
         boolean usesStrength = rolled != null && rolled.usesStrength();
@@ -312,12 +318,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
 
     // A weighted random pick for a new pylon at pos, placed against parent. branchedFrom: the category of the pylon a
     // branch grows from (slightly favoured), or null.
-    private Roll roll(BlockPos pos, int parent, @Nullable ModifierCategory branchedFrom, @Nullable ServerPlayer placer)
+    private Roll roll(BlockPos pos, int parent, @Nullable ModifierCategory branchedFrom, @Nullable ServerPlayer placer, PylonType type)
     {
         List<Identifier> before = modifiersUpTo(parent);
         var random = level.getRandom();
         boolean afterBreak = parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity last && last.isSpellBreak();
-        if (before.size() >= PylonConfig.BREAK_MIN_MODIFIERS && !afterBreak && random.nextFloat() < PylonConfig.BREAK_CHANCE) {
+        // A spell break: from the spell's BREAK_MIN_LEVEL, only on a kind that can break, never right after another
+        if (type.canBreak() && level() >= PylonConfig.BREAK_MIN_LEVEL && !afterBreak && random.nextFloat() < PylonConfig.BREAK_CHANCE) {
             return new Roll(null, ModifierTier.NORMAL, true);
         }
         ModifierContext context = new ModifierContext(element, shape() == null ? SpellRegistries.SELF.getId() : shape(), before, level(),

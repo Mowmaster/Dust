@@ -38,11 +38,14 @@ import org.jspecify.annotations.Nullable;
 //   parent   the side its parent (the pylon before it) is on: the model is turned so its back arm points there
 //   links    which of its other sides lead on to the next pylons (PylonLinks: the connection arms)
 //   nodes    how many upgrade nodes it has (blank_pylon_..._level_<nodes>; the Shape Pylon ignores it)
+//   break    a spell break, powered or not (PylonBreak): its own models, with an arm back to its parent and one
+//            straight on (a spell break only ever leads straight on)
 public class PylonBlock extends Block implements EntityBlock
 {
     public static final EnumProperty<Direction> PARENT = EnumProperty.create("parent", Direction.class, Direction.Plane.HORIZONTAL);
     public static final EnumProperty<PylonLinks> LINKS = EnumProperty.create("links", PylonLinks.class);
     public static final IntegerProperty NODES = IntegerProperty.create("nodes", 1, PylonConfig.MAX_NODES);
+    public static final EnumProperty<PylonBreak> BREAK = EnumProperty.create("break", PylonBreak.class);
 
     private final PylonType type;
 
@@ -50,7 +53,8 @@ public class PylonBlock extends Block implements EntityBlock
     {
         super(properties);
         this.type = type;
-        registerDefaultState(stateDefinition.any().setValue(PARENT, Direction.SOUTH).setValue(LINKS, PylonLinks.NONE).setValue(NODES, 1));
+        registerDefaultState(stateDefinition.any().setValue(PARENT, Direction.SOUTH).setValue(LINKS, PylonLinks.NONE).setValue(NODES, 1)
+                .setValue(BREAK, PylonBreak.NONE));
     }
 
     public PylonType type()
@@ -61,7 +65,7 @@ public class PylonBlock extends Block implements EntityBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(PARENT, LINKS, NODES);
+        builder.add(PARENT, LINKS, NODES, BREAK);
     }
 
     // Until it joins a tree, its back arm points at the player (towards wherever they're building from)
