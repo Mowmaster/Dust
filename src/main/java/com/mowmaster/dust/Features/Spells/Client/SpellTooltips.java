@@ -44,7 +44,8 @@ public final class SpellTooltips
                     .withStyle(ChatFormatting.DARK_GRAY));
         }
         for (int i = 0; i < spell.modifiers().size(); i++) {
-            Component line = Component.literal(" ").append(name("spell_modifier", spell.modifiers().get(i)));
+            // Its name for this spell's element and shape ("Scorch Stacks" for Potency on a Fire bolt): SpellNames
+            Component line = Component.literal(" ").append(com.mowmaster.dust.Features.Spells.SpellNames.modifier(spell.modifiers().get(i), spell.element(), spell.shape()));
             // Its levels: " Damage 4"
             if (spell.level(i) > 1) line = line.copy().append(" " + spell.level(i));
             lines.add(at++, line.copy().withStyle(ChatFormatting.DARK_PURPLE));

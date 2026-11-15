@@ -760,8 +760,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (pylon.stop()) return Component.translatable("dust.pylon.stop");
         Identifier modifier = pylon.modifier();
         if (modifier == null) return Component.translatable("dust.pylon.nothing");
+        // Its name for the tree's element and shape (SpellNames), when the pylon knows its Spell Pylon
+        SpellPylonBlockEntity tree = pylon.getLevel() != null && pylon.main() != null
+                && pylon.getLevel().getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon ? spellPylon : null;
         Component name = Component.translatable("dust.pylon.modifier." + pylon.tier().getSerializedName(),
-                Component.translatable("spell_modifier." + modifier.getNamespace() + "." + modifier.getPath()));
+                com.mowmaster.dust.Features.Spells.SpellNames.modifier(modifier, tree == null ? null : tree.element(), tree == null ? null : tree.shape()));
         if (pylon.legendary()) name = Component.translatable("dust.pylon.legendary", name);
         Component line = pylon.maxNodes() == 0 ? name
                 : Component.translatable("dust.pylon.with_nodes", name, pylon.nodes(), pylon.maxNodes(), pylon.levels() * (pylon.legendary() ? 2 : 1));
