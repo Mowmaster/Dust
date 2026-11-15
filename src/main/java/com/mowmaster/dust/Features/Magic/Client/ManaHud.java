@@ -28,7 +28,7 @@ public final class ManaHud
     // The whole panel: dust row (12 high) over the 116 x 20 mana frame
     private static final int WIDTH = 116;
     private static final int ROW_HEIGHT = 12;
-    private static final int FRAME_HEIGHT = 20;
+    private static final int FRAME_HEIGHT = 28;
     private static final int HEIGHT = ROW_HEIGHT + FRAME_HEIGHT;
     // The vanilla hotbar is 182 wide, centred; the offhand slot sits 29 further out from it
     private static final int HOTBAR_HALF = 91;
