@@ -193,9 +193,11 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
         if (owner == null) return;
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
+        // A side that burned to soot would have come out as a compound with paper on the table: a "?" in the book
+        int missed = (int) Stream.of(left, right).filter(out -> out.is(com.mowmaster.dust.DustRegistries.DustItemRegistry.ALCHEMICAL_SOOT.get())).count();
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
                 ItemStackTemplate.fromNonEmptyStack(separated).withCount(1),
-                Stream.of(left, right).filter(out -> !out.isEmpty()).map(out -> ItemStackTemplate.fromNonEmptyStack(out).withCount(1)).toList());
+                Stream.of(left, right).filter(out -> !out.isEmpty()).map(out -> ItemStackTemplate.fromNonEmptyStack(out).withCount(1)).toList(), missed);
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(separated)), step);
     }
 

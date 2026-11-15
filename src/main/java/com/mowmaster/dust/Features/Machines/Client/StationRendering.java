@@ -12,10 +12,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 // Drawing shared by the research stations' renderers:
 //   flatItem    an item lying face up on the station (top pointing away from the front)
+//   padItem     a container pad (paper, bowls, bottles): what's on it, or a ghost of what goes there when it's empty
 //   glyph       a scroll's glyph, glowing and spinning in the air (a square of a greyscale glyph texture, tinted)
 //   liquid      a flat square of tinted liquid (the evaporation pot)
 // Points are model pixels with the model facing north; they're turned to the block's facing (CrusherLayout.turned).
@@ -59,6 +61,27 @@ public final class StationRendering
         poseStack.scale(scale, scale, scale);
         item.submit(poseStack, submitNodeCollector, light, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
+    }
+
+    // A container pad's item. ghost: the pad is empty and item is what goes there, drawn as a ghost (MowLib's ghost
+    // look): hovering a pixel up, bobbing and gently pulsing in size, at full brightness so it glows even in the dark.
+    // time: ticks (with the partial tick), driving the bob and pulse.
+    public static void padItem(ItemStackRenderState item, boolean ghost, Vec3 pixels, Direction facing, float scale, int light, float time,
+                               PoseStack poseStack, SubmitNodeCollector submitNodeCollector)
+    {
+        if (!ghost) {
+            flatItem(item, pixels, facing, 0, scale, light, poseStack, submitNodeCollector);
+            return;
+        }
+        float bob = 0.3F * Mth.sin(time * 0.1F);
+        float pulse = 0.9F + 0.06F * Mth.sin(time * 0.2F);
+        flatItem(item, pixels.add(0, 1.0 + bob, 0), facing, 0, scale * pulse, FULL_BRIGHT, poseStack, submitNodeCollector);
+    }
+
+    // What a pad's render state shows: what's on it, or (empty) a ghost of the item that goes there
+    public static ItemStack padStack(ItemStack onPad, net.minecraft.world.item.Item goesThere)
+    {
+        return onPad.isEmpty() ? new ItemStack(goesThere) : onPad;
     }
 
     // A glowing glyph: a width x depth (pixels) square centred on a point, spun spin degrees, at full brightness in a

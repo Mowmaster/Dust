@@ -267,10 +267,16 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
         return with(new Dust(dust.fireColor(), Collections.unmodifiableMap(merged)));
     }
 
-    // A step it was taken through, unless the same step (same input, machine and output) is already noted
+    // A step it was taken through, unless the same step (same input, machine and output) is already noted.
+    // Steps with "?" outputs (something missed for want of a container) are only hints: one isn't noted if the same
+    // machine has already done this input with nothing missed, and doing it with nothing missed clears them.
     public EntryResearch withProcess(ProcessRecord process)
     {
-        return processes.contains(process) ? this : new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, append(processes, process), notes);
+        if (processes.contains(process)) return this;
+        if (process.unknown() > 0 && processes.stream().anyMatch(old -> old.unknown() == 0 && old.sameStep(process))) return this;
+        List<ProcessRecord> kept = process.unknown() > 0 ? processes
+                : processes.stream().filter(old -> !(old.unknown() > 0 && old.sameStep(process))).toList();
+        return new EntryResearch(day, time, biomes, drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, append(kept, process), notes);
     }
 
     // The player crossed this step out

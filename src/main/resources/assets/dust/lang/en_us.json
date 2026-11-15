@@ -153,6 +153,7 @@
   "item.dust.alchemical_soot": "Alchemical Soot",
   "item.dust.product.from": "From %s",
   "research.dust.process.compound": "%s (%s)",
+  "research.dust.process.unknown": "Something more might come out here. Try again with paper, a bowl or a bottle on the table.",
   "dust.separation.running": "It's already separating",
   "dust.separation.empty": "Put something on the scroll first",
   "dust.separation.outputs": "Take the last separation's results first",

@@ -264,6 +264,10 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         pendingSoot = ItemStack.EMPTY;
         input = ItemStack.EMPTY;
         progress = -1;
+        // Compounds that escaped for want of a bottle or bowl: the jar's (something boiled over but no jar output), and
+        // the flask's (anything else that escaped). Each is a "?" in the book. Blown-away soot isn't: it holds no element.
+        boolean jarMissed = over != null && jarOut.isEmpty();
+        int missed = (jarMissed ? 1 : 0) + (lost.size() > (jarMissed ? 1 : 0) ? 1 : 0);
 
         // What had no container escapes: gases in a puff of their colour, liquids bubbling away; soot from a flame
         Vec3 flask = turned(DistillationLayout.FLASK.add(0, 1, 0));
@@ -279,12 +283,12 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         sootBlown = false;
         over = null;
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-        noteResearch(level, distilled);
+        noteResearch(level, distilled, missed);
         sync();
     }
 
-    // The step goes into the research of whoever started it (outputs that came to nothing aren't shown)
-    private void noteResearch(ServerLevel level, ItemStack distilled)
+    // The step goes into the research of whoever started it (outputs lost for want of a container show as "?")
+    private void noteResearch(ServerLevel level, ItemStack distilled, int missed)
     {
         if (owner == null) return;
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
@@ -294,7 +298,7 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
             if (!out.isEmpty()) outputs.add(ItemStackTemplate.fromNonEmptyStack(out).withCount(1));
         }
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(distilled).withCount(1), outputs);
+                ItemStackTemplate.fromNonEmptyStack(distilled).withCount(1), outputs, missed);
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(distilled)), step);
     }
 

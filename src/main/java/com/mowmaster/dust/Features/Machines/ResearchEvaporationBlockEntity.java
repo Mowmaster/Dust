@@ -242,8 +242,10 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         if (owner == null) return;
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
+        // Soot means the solids burned for want of paper; with paper they'd have come out as a compound: a "?" in the book
+        int missed = output.is(com.mowmaster.dust.DustRegistries.DustItemRegistry.ALCHEMICAL_SOOT.get()) ? 1 : 0;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(evaporated).withCount(1), List.of(ItemStackTemplate.fromNonEmptyStack(output).withCount(1)));
+                ItemStackTemplate.fromNonEmptyStack(evaporated).withCount(1), List.of(ItemStackTemplate.fromNonEmptyStack(output).withCount(1)), missed);
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(evaporated)), step);
     }
 

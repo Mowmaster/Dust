@@ -25,6 +25,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
@@ -72,6 +73,9 @@ public class ResearchEvaporationRenderer implements BlockEntityRenderer<Research
         int liquidColor = -1;
         float time;
         float settle;
+        // The paper pad is empty: show a ghost of paper (StationRendering.padItem), bobbing with paperTime
+        boolean paperGhost;
+        float paperTime;
     }
 
     @Override
@@ -86,7 +90,9 @@ public class ResearchEvaporationRenderer implements BlockEntityRenderer<Research
     {
         BlockEntityRenderer.super.extractRenderState(table, state, partialTick, cameraPos, crumblingOverlay);
         itemModelResolver.updateForTopItem(state.input, table.getInput(), ItemDisplayContext.GROUND, table.getLevel(), null, 0);
-        itemModelResolver.updateForTopItem(state.paper, table.getPaper(), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
+        state.paperGhost = table.getPaper().isEmpty();
+        state.paperTime = table.getLevel() == null ? 0 : table.getLevel().getGameTime() + partialTick;
+        itemModelResolver.updateForTopItem(state.paper, StationRendering.padStack(table.getPaper(), Items.PAPER), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
         itemModelResolver.updateForTopItem(state.output, table.getOutput(), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
         state.facing = table.getBlockState().getValue(ResearchEvaporationBlock.FACING);
         state.phase = table.phase();
@@ -132,7 +138,7 @@ public class ResearchEvaporationRenderer implements BlockEntityRenderer<Research
                     (state.time * 6F) % 360F, state.time, state.facing, poseStack, submitNodeCollector);
         }
 
-        StationRendering.flatItem(state.paper, EvaporationLayout.PAPER_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
+        StationRendering.padItem(state.paper, state.paperGhost, EvaporationLayout.PAPER_PAD, state.facing, ITEM_SCALE, state.lightCoords, state.paperTime, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.output, EvaporationLayout.OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
     }
 }

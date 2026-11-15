@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -51,6 +52,9 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
         // 0-1: how far the glyph has risen
         float lift;
         float spin;
+        // The paper pad is empty: show a ghost of paper (StationRendering.padItem), bobbing with time
+        boolean paperGhost;
+        float time;
     }
 
     @Override
@@ -67,7 +71,9 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
         itemModelResolver.updateForTopItem(state.input, table.getInput(), ItemDisplayContext.GROUND, table.getLevel(), null, 0);
         itemModelResolver.updateForTopItem(state.left, table.getLeft(), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
         itemModelResolver.updateForTopItem(state.right, table.getRight(), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
-        itemModelResolver.updateForTopItem(state.paper, table.getPaper(), ItemDisplayContext.GROUND, table.getLevel(), null, 3);
+        state.paperGhost = table.getPaper().isEmpty();
+        state.time = table.getLevel() == null ? 0 : table.getLevel().getGameTime() + partialTick;
+        itemModelResolver.updateForTopItem(state.paper, StationRendering.padStack(table.getPaper(), Items.PAPER), ItemDisplayContext.GROUND, table.getLevel(), null, 3);
         state.facing = table.getBlockState().getValue(ResearchSeparationBlock.FACING);
         state.progress = table.progress(partialTick);
         float p = state.progress;
@@ -98,7 +104,7 @@ public class ResearchSeparationRenderer implements BlockEntityRenderer<ResearchS
             StationRendering.flatItem(state.input, px, state.facing, running ? state.spin : 0, ITEM_SCALE,
                     running ? StationRendering.FULL_BRIGHT : state.lightCoords, poseStack, submitNodeCollector);
         }
-        StationRendering.flatItem(state.paper, SeparationLayout.PAPER_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
+        StationRendering.padItem(state.paper, state.paperGhost, SeparationLayout.PAPER_PAD, state.facing, ITEM_SCALE, state.lightCoords, state.time, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.left, SeparationLayout.LEFT_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.right, SeparationLayout.RIGHT_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
     }

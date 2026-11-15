@@ -20,6 +20,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -60,6 +61,9 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
         int flaskColor = -1;
         double jarLiquid;
         int jarColor = -1;
+        // Empty pads show a ghost of their container (StationRendering.padItem); time drives its bob
+        boolean bottlesGhost, bowlsGhost, paperGhost;
+        float time;
     }
 
     @Override
@@ -78,10 +82,14 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
         boolean boiledDry = state.progress >= ResearchDistillationBlockEntity.BOIL_TICKS;
         itemModelResolver.updateForTopItem(state.input, boiledDry ? ItemStack.EMPTY : table.getInput(),
                 ItemDisplayContext.GROUND, table.getLevel(), null, 0);
-        itemModelResolver.updateForTopItem(state.bottles, table.getBottles(), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
-        itemModelResolver.updateForTopItem(state.bowls, table.getBowls(), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
+        state.bottlesGhost = table.getBottles().isEmpty();
+        state.bowlsGhost = table.getBowls().isEmpty();
+        state.paperGhost = table.getPaper().isEmpty();
+        state.time = table.getLevel() == null ? 0 : table.getLevel().getGameTime() + partialTick;
+        itemModelResolver.updateForTopItem(state.bottles, StationRendering.padStack(table.getBottles(), Items.GLASS_BOTTLE), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
+        itemModelResolver.updateForTopItem(state.bowls, StationRendering.padStack(table.getBowls(), Items.BOWL), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
         itemModelResolver.updateForTopItem(state.sootOut, table.getSootOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 3);
-        itemModelResolver.updateForTopItem(state.paper, table.getPaper(), ItemDisplayContext.GROUND, table.getLevel(), null, 6);
+        itemModelResolver.updateForTopItem(state.paper, StationRendering.padStack(table.getPaper(), Items.PAPER), ItemDisplayContext.GROUND, table.getLevel(), null, 6);
         itemModelResolver.updateForTopItem(state.flaskOut, table.getFlaskOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 4);
         itemModelResolver.updateForTopItem(state.jarOut, table.getJarOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 5);
         state.facing = table.getBlockState().getValue(ResearchDistillationBlock.FACING);
@@ -120,9 +128,9 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
             StationRendering.glyph(GLYPH, at, width, depth, (state.progress * 6F) % 360F, state.progress, state.facing, poseStack, submitNodeCollector);
         }
 
-        StationRendering.flatItem(state.bottles, DistillationLayout.BOTTLE_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
-        StationRendering.flatItem(state.bowls, DistillationLayout.BOWL_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
-        StationRendering.flatItem(state.paper, DistillationLayout.PAPER_PAD, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
+        StationRendering.padItem(state.bottles, state.bottlesGhost, DistillationLayout.BOTTLE_PAD, state.facing, ITEM_SCALE, state.lightCoords, state.time, poseStack, submitNodeCollector);
+        StationRendering.padItem(state.bowls, state.bowlsGhost, DistillationLayout.BOWL_PAD, state.facing, ITEM_SCALE, state.lightCoords, state.time, poseStack, submitNodeCollector);
+        StationRendering.padItem(state.paper, state.paperGhost, DistillationLayout.PAPER_PAD, state.facing, ITEM_SCALE, state.lightCoords, state.time, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.sootOut, DistillationLayout.SOOT_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.flaskOut, DistillationLayout.FLASK_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         StationRendering.flatItem(state.jarOut, DistillationLayout.JAR_OUTPUT, state.facing, 0, ITEM_SCALE, state.lightCoords, poseStack, submitNodeCollector);

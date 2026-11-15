@@ -634,9 +634,21 @@ public final class ResearchBook
             Paper.ink(graphics, font, Component.literal("\u2192"), x + CELL, y + 5, INK);
             linkedItem(graphics, data, step.machine(), x + CELL + 6, y);
             Paper.ink(graphics, font, Component.literal("\u2192"), x + 2 * CELL + 6, y + 5, INK);
-            // Up to three outputs side by side, touching (the distillation table makes three), clear of the "x"
-            for (int i = 0; i < step.outputs().size() && i < 3; i++) {
-                linkedStack(graphics, data, step.outputs().get(i).create(), x + 2 * CELL + 12 + i * (CELL - 1), y);
+            // Up to three outputs side by side, touching (the distillation table makes three), clear of the "x".
+            // Then a "?" for each output missed for want of a container, in the cells left; with no cell left (both
+            // sides of a separation burned), a small "?" in the last cell's corner.
+            int cell = 0;
+            for (; cell < step.outputs().size() && cell < 3; cell++) {
+                linkedStack(graphics, data, step.outputs().get(cell).create(), x + 2 * CELL + 12 + cell * (CELL - 1), y);
+            }
+            for (int missed = 0; missed < step.unknown(); missed++) {
+                if (cell < 3) {
+                    unknownOutput(graphics, font, x + 2 * CELL + 12 + cell * (CELL - 1), y);
+                    cell++;
+                } else {
+                    Paper.ink(graphics, font, Component.literal("?"), x + 2 * CELL + 12 + 2 * (CELL - 1) + 12, y + 1, INK);
+                    break;
+                }
             }
             if (editable) {
                 int crossX = RIGHT_X + PAGE_W - 12;
@@ -645,6 +657,15 @@ public final class ResearchBook
             }
             y += PROCESS_ROW;
         }
+    }
+
+    // A "?" in a slot: something might come out here with the right container on the table. Hovering explains;
+    // it links nowhere (a null entry), so clicking does nothing.
+    private static void unknownOutput(GuiGraphicsExtractor graphics, Font font, int x, int y)
+    {
+        Paper.slot(graphics, x, y);
+        Paper.inkCentred(graphics, font, Component.literal("?"), x + 9, y + 5, INK);
+        LINKS.add(new Link(x, y, null, false, Component.translatable("research.dust.process.unknown"), false));
     }
 
     // ---- spell effects page ----
