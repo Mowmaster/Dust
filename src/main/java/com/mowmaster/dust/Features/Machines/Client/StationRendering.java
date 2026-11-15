@@ -54,8 +54,8 @@ public final class StationRendering
         Vec3 at = CrusherLayout.turned(pixels, facing);
         poseStack.pushPose();
         poseStack.translate(at.x, at.y, at.z);
-        poseStack.mulPose(Axis.YP.rotationDegrees(yaw(facing) + extraYaw));
-        poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+        poseStack.rotate(Axis.YP.rotationDegrees(yaw(facing) + extraYaw));
+        poseStack.rotate(Axis.XP.rotationDegrees(-90));
         poseStack.scale(scale, scale, scale);
         item.submit(poseStack, submitNodeCollector, light, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
@@ -81,7 +81,7 @@ public final class StationRendering
         float halfZ = (float) (depth / 32);
         poseStack.pushPose();
         poseStack.translate(centre.x, centre.y, centre.z);
-        poseStack.mulPose(Axis.YP.rotationDegrees(yaw(facing) + spin));
+        poseStack.rotate(Axis.YP.rotationDegrees(yaw(facing) + spin));
         submitNodeCollector.submitCustomGeometry(poseStack, type, (pose, buffer) -> {
             vertex(buffer, pose, -halfX, -halfZ, 0, 0, color, light, 1);
             vertex(buffer, pose, -halfX, halfZ, 0, 1, color, light, 1);
@@ -109,7 +109,7 @@ public final class StationRendering
         poseStack.pushPose();
         // Turn about the block's middle, as the blockstate turns the model
         poseStack.translate(0.5F, 0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(yaw(facing)));
+        poseStack.rotate(Axis.YP.rotationDegrees(yaw(facing)));
         poseStack.translate(-0.5F, 0F, -0.5F);
         submitNodeCollector.submitCustomGeometry(poseStack, type, (pose, buffer) -> {
             // top (up)

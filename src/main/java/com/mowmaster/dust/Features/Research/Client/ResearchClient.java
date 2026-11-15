@@ -29,7 +29,7 @@ public final class ResearchClient
         if (!(book.getItem() instanceof ResearchBookItem item)) return;
         ResearchBook.show(dataFor(book), entry);
         // 26.3: screens are opened through the Gui (Minecraft.gui), no longer Minecraft.setScreen
-        Minecraft.getInstance().setScreen(new ResearchBookScreen(book.copy(), item.isShared()));
+        Minecraft.getInstance().gui.setScreen(new ResearchBookScreen(book.copy(), item.isShared()));
     }
 
     // Sneak + right-click / the activation key: the entry for what the player is looking at (or the main page)

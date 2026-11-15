@@ -154,7 +154,7 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         for (Vec3 place : state.places) {
             poseStack.pushPose();
             poseStack.translate(place.x + 0.5, place.y + height, place.z + 0.5);
-            poseStack.mulPose(Axis.YP.rotationDegrees(spin));
+            poseStack.rotate(Axis.YP.rotationDegrees(spin));
             poseStack.scale(scale, scale, scale);
             state.ghost.submit(poseStack, submitNodeCollector, FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
@@ -191,7 +191,7 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
 
         poseStack.pushPose();
         poseStack.translate(block.x + 0.5 + Mth.cos(angle) * swirl, block.y + y, block.z + 0.5 + Mth.sin(angle) * swirl);
-        poseStack.mulPose(camera.orientation);
+        poseStack.rotate(camera.orientation);
         poseStack.scale(size * (0.35F + 0.65F * t), size * (1.6F - 0.6F * t), size);
         int alpha = Math.round(255 * Math.min(1F, t * 2));
         int color = (alpha << 24) | (state.color & 0xFFFFFF);

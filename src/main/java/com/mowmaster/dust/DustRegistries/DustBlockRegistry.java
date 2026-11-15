@@ -110,10 +110,10 @@ public class DustBlockRegistry {
             //? if >=26.3 {
             itemProperties -> itemProperties.compostable(ContextIntProviders.COMPOSTABLE_LOW));
             //?} else
-            //itemProperties -> itemProperties);
-    // NeoForge links a full pot to its empty pot by itself when the block is registered, as long as the empty pot is
-    // given here (passing null throws). So there's no addPlant call in common setup any more.
-    public static final DeferredBlock<Block> BLOCK_POTTEDFLOWER_WINDWHEEL = DUSTBLOCKS.registerBlock("pottedflower_windwheel",
+            /*itemProperties -> itemProperties);
+     NeoForge links a full pot to its empty pot by itself when the block is registered, as long as the empty pot is
+     given here (passing null throws). So there's no addPlant call in common setup any more.
+*/    public static final DeferredBlock<Block> BLOCK_POTTEDFLOWER_WINDWHEEL = DUSTBLOCKS.registerBlock("pottedflower_windwheel",
             properties -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, BLOCK_FLOWER_WHINDWHEEL,
                     properties
                             .noOcclusion()

@@ -71,7 +71,7 @@ public class VoidChestRenderer extends EntityRenderer<VoidChestEntity, VoidChest
         poseStack.pushPose();
         // Face the way its owner faces. 26.3: PoseStack.rotate (was mulPose); Axis makes the rotation quaternions.
         poseStack.translate(0, 0.25, 0);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180 - state.yaw));
+        poseStack.rotate(Axis.YP.rotationDegrees(180 - state.yaw));
 
         poseStack.pushPose();
         poseStack.scale(0.5F, 0.5F, 0.5F);
@@ -92,10 +92,10 @@ public class VoidChestRenderer extends EntityRenderer<VoidChestEntity, VoidChest
     {
         poseStack.pushPose();
         poseStack.translate(0.2 * side, 0.15, 0);                       // the hinge, at the chest's top edge
-        poseStack.mulPose(Axis.ZP.rotationDegrees(flap * side));         // flap up and down
+        poseStack.rotate(Axis.ZP.rotationDegrees(flap * side));         // flap up and down
         poseStack.translate(0.25 * side, 0, 0);                         // out from the hinge
-        poseStack.mulPose(Axis.XP.rotationDegrees(90));                  // lie flat
-        poseStack.mulPose(Axis.ZP.rotationDegrees(side > 0 ? -45 : 135)); // point the feather outward
+        poseStack.rotate(Axis.XP.rotationDegrees(90));                  // lie flat
+        poseStack.rotate(Axis.ZP.rotationDegrees(side > 0 ? -45 : 135)); // point the feather outward
         poseStack.scale(0.5F, 0.5F, 0.5F);
         state.wing.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
         poseStack.popPose();

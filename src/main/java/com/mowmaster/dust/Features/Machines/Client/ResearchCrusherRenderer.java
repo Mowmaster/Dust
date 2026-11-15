@@ -97,7 +97,7 @@ public class ResearchCrusherRenderer implements BlockEntityRenderer<ResearchCrus
         // The wheels: drawn in the model's own (north-facing) space, turned to the block's facing about its centre
         poseStack.pushPose();
         poseStack.translate(0.5, 0, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F));
+        poseStack.rotate(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F));
         poseStack.translate(-0.5, 0, -0.5);
         submitWheel(WHEEL_A, CrusherLayout.WHEEL_A_AXLE, state.wheelAngle, state, poseStack, submitNodeCollector);
         submitWheel(WHEEL_B, CrusherLayout.WHEEL_B_AXLE, -state.wheelAngle, state, poseStack, submitNodeCollector);
@@ -119,8 +119,8 @@ public class ResearchCrusherRenderer implements BlockEntityRenderer<ResearchCrus
             poseStack.translate(at.x, at.y, at.z);
             // Lying in the tray face up, its top away from the player at the tray side: turned with the block (and
             // half a turn, since the tray faces the model's north), then laid down (the GROUND model stands upright)
-            poseStack.mulPose(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F + 180F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+            poseStack.rotate(Axis.YP.rotationDegrees(-quarterTurns(state.facing) * 90F + 180F));
+            poseStack.rotate(Axis.XP.rotationDegrees(-90));
             poseStack.scale(TRAY_SCALE, TRAY_SCALE, TRAY_SCALE);
             state.tray.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
@@ -137,7 +137,7 @@ public class ResearchCrusherRenderer implements BlockEntityRenderer<ResearchCrus
         poseStack.pushPose();
         Vec3 axle = axlePixels.scale(1 / 16.0);
         poseStack.translate(axle.x, axle.y, axle.z);
-        poseStack.mulPose(Axis.XP.rotationDegrees(angle));
+        poseStack.rotate(Axis.XP.rotationDegrees(angle));
         poseStack.translate(-axle.x, -axle.y, -axle.z);
         submitNodeCollector.submitBlockModel(poseStack, Sheets.cutoutBlockItemSheet(), List.of(wheel), BlockModelRenderState.EMPTY_TINTS,
                 state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

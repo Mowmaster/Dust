@@ -1,4 +1,3 @@
-/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustReferences;
@@ -68,4 +67,3 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.key());
     }
 }
-*/

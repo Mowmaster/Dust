@@ -1,4 +1,3 @@
-/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustReferences;
@@ -106,4 +105,3 @@ public class DustWorldgen
                 GenerationStep.Decoration.UNDERGROUND_ORES));
     }
 }
-*/

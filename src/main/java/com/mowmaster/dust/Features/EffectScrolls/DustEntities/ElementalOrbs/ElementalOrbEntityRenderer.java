@@ -47,7 +47,7 @@ public class ElementalOrbEntityRenderer<T extends ElementOrbEntity> extends Enti
         int bc = state.color & 0xFF;
         poseStack.translate(0.0F, 0.1F, 0.0F);
         // 26.3: PoseStack#mulPose(Quaternionf) was renamed to rotate
-        poseStack.mulPose(camera.orientation);
+        poseStack.rotate(camera.orientation);
         poseStack.scale(0.2F, 0.2F, 0.2F);
         submitNodeCollector.submitCustomGeometry(poseStack, RENDER_TYPE, (pose, buffer) -> {
             vertex(buffer, pose, -0.5F, -0.25F, rc, gc, bc, u0, v1, state.lightCoords);

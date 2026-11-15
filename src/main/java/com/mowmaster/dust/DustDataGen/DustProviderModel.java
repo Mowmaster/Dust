@@ -1,4 +1,3 @@
-/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.Features.Spells.pylons.PylonBlock;
@@ -429,4 +428,4 @@ public class DustProviderModel extends ModelProvider {
                 .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
         blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(models[0], new Constant(GlyphStoneTint.CARVED)));
     }
-}*/
+}

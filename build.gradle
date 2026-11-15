@@ -23,9 +23,22 @@ stonecutter {
     replacements.string(current.parsed.matches('>=26.2')) {
         replace 'Minecraft.getInstance().setScreen(', 'Minecraft.getInstance().gui.setScreen('
     }
+    // 26.2 fixed vanilla's spelling of "Instantaneous" (InstantenousMobEffect, applyInstantenousEffect, isInstantenous)
+    replacements.string(current.parsed.matches('>=26.2')) {
+        replace 'Instantenous', 'Instantaneous'
+    }
+    // 26.2 moved the in-game HUD (and its effect icon lookup) from Gui into the new Hud class.
+    // Write this call in full (net.minecraft.client.gui.Hud.getMobEffectSprite) so only it is renamed.
+    replacements.string(current.parsed.matches('>=26.2')) {
+        replace 'net.minecraft.client.gui.Gui.getMobEffectSprite(', 'net.minecraft.client.gui.Hud.getMobEffectSprite('
+    }
     // 26.3 renamed PoseStack#mulPose to rotate (only written as poseStack.rotate( so other rotate( calls stay)
     replacements.string(current.parsed.matches('>=26.3')) {
         replace 'poseStack.mulPose(', 'poseStack.rotate('
+    }
+    // 26.3 renamed PushReaction.DESTROY (broken and dropped when a piston pushes it) to POPPED
+    replacements.string(current.parsed.matches('>=26.3')) {
+        replace 'PushReaction.DESTROY', 'PushReaction.POPPED'
     }
 
     // Files left out of older versions. Datagen only ever runs from 26.3 (its output in src/generated is shared), and
@@ -100,7 +113,9 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
-        data {
+        // Datagen runs from 26.3 only: its providers are 26.3-only (left out of 26.1.2, see the stonecutter block), and its
+        // output in src/generated is shared by both versions. So 26.1.2 gets no data run (and no runData task).
+        if (stonecutter.current.parsed.matches('>=26.3')) data {
             clientData()
 
             // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
@@ -219,6 +234,26 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    // javac stops after 100 errors by default; show them all, so one 26.1.2 build lists everything to fix
+    options.compilerArgs += ['-Xmaxerrs', '1000']
+}
+
+// ---- 26.1.2 data ----
+// Datagen only runs from 26.3, and 26.3 changed some data formats, so the 26.1.2 build adjusts the shared data:
+//  - adds src/main/resources-26.1.2: data only 26.1.2 reads (configured features, NeoForge's compostables data map)
+//  - leaves out the brewing recipes: 26.1.2 has no data-driven brewing (DustBrewingLegacy adds them in code)
+//  - rewrites the generated loot tables and recipe advancements into the 26.1.2 format as they're copied
+//    (LegacyData, at the end of this file), so they follow whatever datagen makes without keeping a second copy
+// stonecutter.current is the version this build.gradle is running for (it runs once per version).
+if (stonecutter.current.parsed.matches('<26.3')) {
+    sourceSets.main.resources.srcDir(rootProject.file('src/main/resources-26.1.2'))
+    tasks.named('processResources', ProcessResources) {
+        exclude('data/*/recipe/brewing/**')
+        // filesMatching runs its block for each copied file matching the pattern; filter(SomeReader) passes the
+        // file's text through that FilterReader class on the way
+        filesMatching('data/*/loot_table/**/*.json') { filter(LegacyLootFilter) }
+        filesMatching('data/*/advancement/**/*.json') { filter(LegacyAdvancementFilter) }
+    }
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
@@ -226,5 +261,107 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+// ---- 26.3 -> 26.1.2 data conversion (used above) ----
+// Groovy classes can be declared right in a build script. Only the formats Dust's datagen makes are handled; anything
+// else stops the 26.1.2 build with a message saying what to add, rather than shipping data 26.1.2 can't read.
+// 26.3 changed, in loot tables: "conditions": [...] -> "condition" (one, or a list), "functions" -> "modifier",
+// the "condition"/"function" key inside each -> "type", named conditions ("minecraft:tool/can_silk_touch") instead of
+// written-out ones, and "bonus_rolls" became optional. In advancements: recipe_unlocked's "recipe" -> "recipes".
+class LegacyData
+{
+    // 26.3's named silk touch condition, written out the 26.1.2 way (as vanilla 26.1.2's own loot tables have it)
+    static final Map SILK_TOUCH = [condition: 'minecraft:match_tool',
+                                   predicate: [predicates: ['minecraft:enchantments': [[enchantments: 'minecraft:silk_touch', levels: [min: 1]]]]]]
+
+    static List listOf(value)
+    {
+        value instanceof List ? value : [value]
+    }
+
+    static Map condition(value)
+    {
+        if (value instanceof String) {
+            if (value == 'minecraft:tool/can_silk_touch') return SILK_TOUCH
+            throw new org.gradle.api.GradleException("26.1.2 data: no 26.1.2 version of the loot condition '${value}'. Add one to LegacyData in build.gradle.")
+        }
+        Map out = [:]
+        value.each { key, inner ->
+            if (key == 'type') out.condition = inner
+            else if (key == 'terms') out.terms = listOf(inner).collect { condition(it) }   // any_of / all_of
+            else if (key == 'term') out.term = condition(inner)                            // inverted
+            else out[key] = inner
+        }
+        out
+    }
+
+    static Map function(Map value)
+    {
+        Map out = [:]
+        value.each { key, inner ->
+            if (key == 'type') out.function = inner
+            else if (key == 'condition') out.conditions = listOf(inner).collect { condition(it) }
+            else out[key] = inner
+        }
+        out
+    }
+
+    // A table, pool or entry (they share these keys). Entries keep "type": only conditions and functions renamed it.
+    static Map loot(Map node, boolean pool)
+    {
+        Map out = [:]
+        node.each { key, inner ->
+            switch (key) {
+                case 'condition': out.conditions = listOf(inner).collect { condition(it) }; break
+                case 'modifier': out.functions = listOf(inner).collect { function(it as Map) }; break
+                case 'pools': out.pools = inner.collect { loot(it as Map, true) }; break
+                case 'entries':
+                case 'children': out[key] = inner.collect { loot(it as Map, false) }; break
+                default: out[key] = inner
+            }
+        }
+        if (pool && !out.containsKey('bonus_rolls')) out.bonus_rolls = 0.0
+        out
+    }
+
+    static Map advancement(Map advancement)
+    {
+        advancement.criteria?.each { name, criterion ->
+            if (criterion.trigger == 'minecraft:recipe_unlocked' && criterion.conditions?.containsKey('recipes')) {
+                def recipes = criterion.conditions.remove('recipes')
+                if (recipes instanceof List) {
+                    if (recipes.size() != 1) throw new org.gradle.api.GradleException("26.1.2 data: recipe_unlocked can only check one recipe on 26.1.2 (criterion '${name}')")
+                    recipes = recipes[0]
+                }
+                criterion.conditions.recipe = recipes
+            }
+        }
+        advancement
+    }
+
+    static String convert(Reader input, Closure<Map> change)
+    {
+        Map json = new groovy.json.JsonSlurper().parse(input) as Map
+        groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(change(json)))
+    }
+}
+
+// FilterReaders for filesMatching { filter(...) }: Gradle makes one per file, handing it the file's text.
+// This one reads it all, converts it, and gives back the converted text.
+class LegacyLootFilter extends FilterReader
+{
+    LegacyLootFilter(Reader input)
+    {
+        super(new StringReader(LegacyData.convert(input) { LegacyData.loot(it, false) }))
+    }
+}
+
+class LegacyAdvancementFilter extends FilterReader
+{
+    LegacyAdvancementFilter(Reader input)
+    {
+        super(new StringReader(LegacyData.convert(input) { LegacyData.advancement(it) }))
     }
 }
