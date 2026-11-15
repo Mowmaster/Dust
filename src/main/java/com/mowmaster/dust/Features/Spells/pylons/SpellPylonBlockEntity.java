@@ -54,7 +54,7 @@ import java.util.UUID;
 // node adds levels of the pylon's modifier (its levels per node), and locks the pylon.
 // Right-click it with a Spell Scroll to record the spell as it stands: every pylon in the tree, except those beyond a
 // spell break without redstone power (that whole branch is off).
-public class SpellPylonBlockEntity extends CBSyncedBlockEntity
+public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mowmaster.mowlib.reading.IReadableBlock
 {
     private @Nullable DustElement element;
     private UUID tree = UUID.randomUUID();
@@ -294,6 +294,14 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     private static boolean isBeside(BlockPos a, BlockPos b)
     {
         return a.getY() == b.getY() && a.distManhattan(b) == 1;
+    }
+
+    // ---- MowLib's reading HUD: the deck and pool (SpellPylonReading) ----
+
+    @Override
+    public com.mowmaster.mowlib.reading.ReadingPaper read(com.mowmaster.mowlib.reading.ReadingContext context)
+    {
+        return com.mowmaster.mowlib.reading.ReadingPaper.of(SpellPylonReading.lines(this, deck));
     }
 
     // ---- the modifier card ----

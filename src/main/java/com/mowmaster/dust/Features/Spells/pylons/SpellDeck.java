@@ -57,6 +57,8 @@ public class SpellDeck
 
     public boolean started() { return started; }
     public List<Identifier> cards() { return deck; }
+    // Every modifier in the pool and how many more times it can come out (-1: no limit), read-only
+    public Map<Identifier, Integer> pool() { return java.util.Collections.unmodifiableMap(pool); }
     public int blessed() { return blessed; }
     public int corruption() { return corruption; }
 

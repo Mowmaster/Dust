@@ -36,5 +36,8 @@ public class Dust {
         DustCreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
 
         DustParticleRegistry.PARTICLE_TYPES.register(modEventBus);
+
+        // MowLib's reading HUD: looking at a Spell Pylon shows its deck and pool, helmet or not (SpellPylonReading)
+        com.mowmaster.mowlib.reading.ReadingSight.addCondition(com.mowmaster.dust.Features.Spells.pylons.SpellPylonReading::lookingAtSpellPylon);
     }
 }
