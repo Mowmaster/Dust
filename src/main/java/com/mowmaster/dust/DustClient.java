@@ -107,6 +107,8 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
         // The Dust Grinder's turning top and the item in its hole
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_GRINDER.get(), com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer::new);
+        // The dust inside a Dust Jar, filling it as it fills
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_JAR.get(), com.mowmaster.dust.Features.DustStorage.Client.DustJarRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
         // A spell in flight draws nothing itself: its trail is particles (SpellProjectileEntity.tick)
