@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+//? if >=26.3
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -104,7 +105,12 @@ public class DustBlockRegistry {
             ),
             // 26.3: composting is an item component now (replaces the COMPOSTABLES data map). COMPOSTABLE_LOW is
             // vanilla's 30% chance to add a layer.
+            // 26.1.2 still uses NeoForge's data map: src/main/resources-26.1.2/data/neoforge/data_maps/item/compostables.json
+            // (only the 26.1.2 build includes that folder; see build.gradle).
+            //? if >=26.3 {
             itemProperties -> itemProperties.compostable(ContextIntProviders.COMPOSTABLE_LOW));
+            //?} else
+            //itemProperties -> itemProperties);
     // NeoForge links a full pot to its empty pot by itself when the block is registered, as long as the empty pot is
     // given here (passing null throws). So there's no addPlant call in common setup any more.
     public static final DeferredBlock<Block> BLOCK_POTTEDFLOWER_WINDWHEEL = DUSTBLOCKS.registerBlock("pottedflower_windwheel",

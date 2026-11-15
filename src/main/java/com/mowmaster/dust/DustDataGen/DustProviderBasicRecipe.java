@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
@@ -287,3 +288,4 @@ public class DustProviderBasicRecipe extends RecipeProvider {
     }
 
 }
+*/

@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -94,3 +95,4 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         return DustBlockRegistry.DUSTBLOCKS.getEntries().stream().map(Holder::value)::iterator;
     }
 }
+*/

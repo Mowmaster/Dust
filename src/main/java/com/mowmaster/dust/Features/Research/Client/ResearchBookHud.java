@@ -36,7 +36,10 @@ public final class ResearchBookHud
     {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
+        //? if >=26.2 {
         if (player == null || minecraft.gui.screen() instanceof ResearchBookScreen) return;
+        //?} else
+        //if (player == null || minecraft.screen instanceof ResearchBookScreen) return;
 
         ItemStack book = player.getMainHandItem().getItem() instanceof ResearchBookItem ? player.getMainHandItem() : player.getOffhandItem();
         if (book.getItem() instanceof ResearchBookItem) {

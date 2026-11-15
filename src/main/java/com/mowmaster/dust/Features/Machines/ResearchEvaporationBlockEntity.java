@@ -243,7 +243,7 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(evaporated, 1), List.of(ItemStackTemplate.fromNonEmptyStack(output, 1)));
+                ItemStackTemplate.fromNonEmptyStack(evaporated).withCount(1), List.of(ItemStackTemplate.fromNonEmptyStack(output).withCount(1)));
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(evaporated)), step);
     }
 

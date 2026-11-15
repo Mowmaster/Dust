@@ -41,7 +41,7 @@ public final class MetalParts
         BlockPos pos = event.getPos();
         if (!MetalMarks.take(level, pos)) return;
         ItemStack bonus;
-        if (event.getState().is(Tags.BlockItems.ORES.block())) {
+        if (event.getState().is(Tags.Blocks.ORES)) {
             if (event.getDrops().isEmpty()) return;
             bonus = event.getDrops().getFirst().getItem().copyWithCount(1);
         } else {

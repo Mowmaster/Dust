@@ -176,7 +176,7 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(transformed, 1), List.of(ItemStackTemplate.fromNonEmptyStack(output, 1)));
+                ItemStackTemplate.fromNonEmptyStack(transformed).withCount(1), List.of(ItemStackTemplate.fromNonEmptyStack(output).withCount(1)));
         Research.noteProcess(player, new ResearchEntry(ResearchTabs.ELEMENTS, AlchemicalDust.of(output).id()), step);
     }
 

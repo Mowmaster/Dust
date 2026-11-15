@@ -65,7 +65,11 @@ public class CarriedBlockRenderer<T extends Entity & CarriesBlock> extends Entit
         if (state.block.blockState != null && state.block.blockState.getRenderShape() == RenderShape.MODEL) {
             poseStack.pushPose();
             poseStack.translate(-0.5, state.hop, -0.5);
+            // Stonecutter: 26.2 added the outline colour (the glow outline when the entity is glowing)
+            //? if >=26.2 {
             collector.submitMovingBlock(poseStack, state.block, state.outlineColor);
+            //?} else
+            //collector.submitMovingBlock(poseStack, state.block);
             poseStack.popPose();
         }
         super.submit(state, poseStack, collector, camera);

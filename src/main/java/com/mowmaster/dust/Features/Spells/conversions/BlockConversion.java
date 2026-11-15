@@ -36,18 +36,25 @@ public record BlockConversion(Optional<BlockRef> from, List<BlockRef> to, Option
         ).apply(instance, Drop::new));
     }
 
+    // Leaves BlockRef.MISSING out of a list (blocks only newer Minecraft has; see BlockRef). xmap converts the decoded
+    // value one way and the value to encode the other way.
+    private static Codec<List<BlockRef>> withoutMissing(Codec<List<BlockRef>> list)
+    {
+        return list.xmap(refs -> refs.stream().filter(ref -> !ref.isMissing()).toList(), refs -> refs);
+    }
+
     // compactListCodec: a single value or a list of them ("to": "minecraft:stone" or "to": ["a", "b"])
     public static final Codec<BlockConversion> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BlockRef.CODEC.optionalFieldOf("from").forGetter(BlockConversion::from),
-            ExtraCodecs.compactListCodec(BlockRef.CODEC).optionalFieldOf("to", List.of()).forGetter(BlockConversion::to),
+            withoutMissing(ExtraCodecs.compactListCodec(BlockRef.CODEC)).optionalFieldOf("to", List.of()).forGetter(BlockConversion::to),
             BlockRef.CODEC.optionalFieldOf("to_deep").forGetter(BlockConversion::toDeep),
             Drop.CODEC.listOf().optionalFieldOf("drops", List.of()).forGetter(BlockConversion::drops),
             Codec.floatRange(0, 1).optionalFieldOf("chance", 1F).forGetter(BlockConversion::chance),
             BlockRef.CODEC.optionalFieldOf("fail").forGetter(BlockConversion::fail),
             TagKey.codec(Registries.FLUID).optionalFieldOf("near_fluid").forGetter(BlockConversion::nearFluid),
             Codec.BOOL.optionalFieldOf("source_only", false).forGetter(BlockConversion::sourceOnly),
-            BlockRef.CODEC.listOf().optionalFieldOf("spread", List.of()).forGetter(BlockConversion::spread),
-            BlockRef.CODEC.listOf().optionalFieldOf("cycle", List.of()).forGetter(BlockConversion::cycle)
+            withoutMissing(BlockRef.CODEC.listOf()).optionalFieldOf("spread", List.of()).forGetter(BlockConversion::spread),
+            withoutMissing(BlockRef.CODEC.listOf()).optionalFieldOf("cycle", List.of()).forGetter(BlockConversion::cycle)
     ).apply(instance, BlockConversion::new));
 
     // ---- building rules (for datagen) ----

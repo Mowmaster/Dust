@@ -3,12 +3,14 @@ package com.mowmaster.dust.Features.CrystalTools.Item;
 import com.mowmaster.dust.DustDataGen.DustTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+//? if >=26.3
 import net.minecraft.core.component.BlockTransformer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
+//? if >=26.3
 import net.minecraft.world.item.component.BlockTransformers;
 import net.minecraft.world.item.context.UseOnContext;
 
@@ -26,12 +28,14 @@ import java.util.Optional;
 public class CrystalToolMattock extends Item {
 
     // Tried in this order; the first one that changes the block wins (same order as the old code: strip, then path)
+    //? if >=26.3
     private static final List<ResourceKey<BlockTransformer>> TRANSFORMERS = List.of(BlockTransformers.AXE, BlockTransformers.SHOVEL);
 
     public CrystalToolMattock(ToolMaterial toolMaterial, float attackDamageBaseline, float attackSpeedBaseline, Properties properties) {
         super(properties.tool(toolMaterial, DustTags.Blocks.MATTOCK_MINEABLE, attackDamageBaseline, attackSpeedBaseline, 1f));
     }
 
+    //? if >=26.3 {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         HolderLookup.RegistryLookup<BlockTransformer> lookup = context.getLevel().registryAccess().lookupOrThrow(Registries.BLOCK_TRANSFORMER);
@@ -48,4 +52,17 @@ public class CrystalToolMattock extends Item {
         }
         return super.useOn(context);
     }
+    //?} else {
+    /*// Stonecutter: 26.1.2 still has AxeItem and ShovelItem (no block transformers). Let vanilla's axe try first (strip,
+    // scrape, unwax), then the shovel (path, put out campfires). Their useOn works on the stack in the context (the
+    // mattock), so the mattock takes the durability. NeoForge's tool actions mean modded strippable blocks work too.
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        InteractionResult result = net.minecraft.world.item.Items.IRON_AXE.useOn(context);
+        if (result != InteractionResult.PASS) return result;
+        result = net.minecraft.world.item.Items.IRON_SHOVEL.useOn(context);
+        if (result != InteractionResult.PASS) return result;
+        return super.useOn(context);
+    }
+    *///?}
 }

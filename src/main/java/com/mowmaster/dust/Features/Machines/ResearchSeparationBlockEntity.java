@@ -194,8 +194,8 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(separated, 1),
-                Stream.of(left, right).filter(out -> !out.isEmpty()).map(out -> ItemStackTemplate.fromNonEmptyStack(out, 1)).toList());
+                ItemStackTemplate.fromNonEmptyStack(separated).withCount(1),
+                Stream.of(left, right).filter(out -> !out.isEmpty()).map(out -> ItemStackTemplate.fromNonEmptyStack(out).withCount(1)).toList());
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(separated)), step);
     }
 

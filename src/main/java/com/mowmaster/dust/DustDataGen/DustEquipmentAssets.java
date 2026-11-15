@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustReferences;
@@ -46,3 +47,4 @@ public class DustEquipmentAssets implements DataProvider {
         return DustReferences.MODNAME +  " Equipment Definitions";
     }
 }
+*/

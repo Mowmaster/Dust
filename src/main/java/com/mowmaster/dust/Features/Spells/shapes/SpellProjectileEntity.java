@@ -99,11 +99,14 @@ public class SpellProjectileEntity extends ThrowableProjectile
         return position().distanceToSqr(start) >= stats.falloff() * stats.falloff();
     }
 
+    // Stonecutter: 26.1.2 has no getAirDrag to override; it always uses 0.99 in air (the same as AIR_DRAG now)
+    //? if >=26.3 {
     @Override
     protected float getAirDrag()
     {
         return SpellConfig.AIR_DRAG;
     }
+    //?}
 
     @Override
     public void tick()

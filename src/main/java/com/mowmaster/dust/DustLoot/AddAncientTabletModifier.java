@@ -18,10 +18,10 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 import java.util.Optional;
 
 // With the given chance, adds an Ancient Tablet with a random word to the loot (chests: see the loot modifier datagen).
-public class AddAncientTabletModifier extends LootModifier
+public class AddAncientTabletModifier extends DustLootModifier
 {
     public static final MapCodec<AddAncientTabletModifier> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            LootModifier.codecStart(instance)
+            dustCodecStart(instance)
                     .and(Codec.floatRange(0.0F, 1.0F).fieldOf("chance").forGetter(m -> m.chance))
                     .apply(instance, AddAncientTabletModifier::new));
 

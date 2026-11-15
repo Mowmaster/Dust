@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustReferences;
@@ -159,3 +160,4 @@ public class DustProviderSpellConversions extends JsonCodecProvider<ConversionTa
         return BlockConversion.dropping(b(plant), List.of(new BlockConversion.Drop(seed, 1)));
     }
 }
+*/

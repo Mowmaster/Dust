@@ -17,6 +17,7 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ConversionParams;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+//? if >=26.3
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +25,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+//? if >=26.3 {
 import net.minecraft.world.entity.monster.cubemob.Slime;
+//?} else
+//import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -92,13 +96,22 @@ public final class MobParts
 
     // ---- Life: curing the undead ----
 
-    // 26.3: the vanilla entity types are constants on EntityTypes (they used to be on EntityType itself)
+    // 26.3: the vanilla entity types are constants on EntityTypes (they used to be on EntityType itself, as on 26.1.2)
+    //? if >=26.3 {
     private static final Map<EntityType<?>, EntityType<? extends Mob>> CURES = Map.of(
             EntityTypes.ZOMBIE_VILLAGER, EntityTypes.VILLAGER,
             EntityTypes.ZOMBIFIED_PIGLIN, EntityTypes.PIGLIN,
             EntityTypes.ZOGLIN, EntityTypes.HOGLIN,
             EntityTypes.ZOMBIE_HORSE, EntityTypes.HORSE,
             EntityTypes.SKELETON_HORSE, EntityTypes.HORSE);
+    //?} else {
+    /*private static final Map<EntityType<?>, EntityType<? extends Mob>> CURES = Map.of(
+            EntityType.ZOMBIE_VILLAGER, EntityType.VILLAGER,
+            EntityType.ZOMBIFIED_PIGLIN, EntityType.PIGLIN,
+            EntityType.ZOGLIN, EntityType.HOGLIN,
+            EntityType.ZOMBIE_HORSE, EntityType.HORSE,
+            EntityType.SKELETON_HORSE, EntityType.HORSE);
+    *///?}
 
     // A zombified creature turns back into what it was (a cured villager forgets its trade). Life's entity part is
     // PetGhosts.reviveOrCure: this, unless the target is a pet's ghost.

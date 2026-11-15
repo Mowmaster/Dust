@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustReferences;
@@ -48,3 +49,4 @@ public class DustDataGenerator {
                 .lootTable(new LootTableProvider.SubProviderEntry(DustProviderBlockLootTable::new, LootContextParamSets.BLOCK));
     }
 }
+*/

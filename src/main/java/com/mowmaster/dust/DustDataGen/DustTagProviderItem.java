@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustReferences;
@@ -87,3 +88,4 @@ public class DustTagProviderItem extends ItemTagsProvider {
                 .add(DustItemRegistry.CRYSTAL_BOOTS.key());
     }
 }
+*/

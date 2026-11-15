@@ -291,10 +291,10 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         if (player == null) return;
         List<ItemStackTemplate> outputs = new ArrayList<>();
         for (ItemStack out : List.of(sootOut, flaskOut, jarOut)) {
-            if (!out.isEmpty()) outputs.add(ItemStackTemplate.fromNonEmptyStack(out, 1));
+            if (!out.isEmpty()) outputs.add(ItemStackTemplate.fromNonEmptyStack(out).withCount(1));
         }
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(distilled, 1), outputs);
+                ItemStackTemplate.fromNonEmptyStack(distilled).withCount(1), outputs);
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(distilled)), step);
     }
 

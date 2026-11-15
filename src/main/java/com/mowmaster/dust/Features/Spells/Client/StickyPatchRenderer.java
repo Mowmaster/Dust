@@ -65,7 +65,11 @@ public final class StickyPatchRenderer
                     for (Direction face : Direction.values()) {
                         if (!e.getValue().has(face)) continue;
                         // Lit by the light in front of the face (the block itself is dark inside)
+                        // Stonecutter: before 26.2 the light lookup was on LevelRenderer
+                        //? if >=26.2 {
                         patches.add(new Patch(pos, face, LightCoordsUtil.getLightCoords(level, pos.relative(face))));
+                        //?} else
+                        //patches.add(new Patch(pos, face, net.minecraft.client.renderer.LevelRenderer.getLightCoords(level, pos.relative(face))));
                     }
                 }
             }

@@ -27,6 +27,18 @@ public class GlyphStoneBlock extends HorizontalDirectionalBlock
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, net.minecraft.core.Direction.NORTH).setValue(GLYPH, 0));
     }
 
+    // Stonecutter: before 26.3, blocks were saved with a codec (MapCodec), and this parent class makes every subclass
+    // give one. simpleCodec builds one that only stores the block properties. 26.3 dropped block codecs.
+    //? if <26.3 {
+    /*public static final com.mojang.serialization.MapCodec<GlyphStoneBlock> CODEC = simpleCodec(GlyphStoneBlock::new);
+
+    @Override
+    protected com.mojang.serialization.MapCodec<GlyphStoneBlock> codec()
+    {
+        return CODEC;
+    }
+    *///?}
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {

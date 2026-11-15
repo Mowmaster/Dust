@@ -38,6 +38,18 @@ public class DustFireBlock extends BaseFireBlock implements IColorableBlock
         super(properties, 1.0F);
     }
 
+    // Stonecutter: before 26.3, blocks were saved with a codec (MapCodec), and BaseFireBlock makes every subclass
+    // give one. simpleCodec builds one that only stores the block properties. 26.3 dropped block codecs.
+    //? if <26.3 {
+    /*public static final com.mojang.serialization.MapCodec<DustFireBlock> CODEC = simpleCodec(DustFireBlock::new);
+
+    @Override
+    protected com.mojang.serialization.MapCodec<DustFireBlock> codec()
+    {
+        return CODEC;
+    }
+    *///?}
+
     // Lights a dust fire here in this colour. Returns false if it can't burn here.
     public boolean light(Level level, BlockPos pos, int color)
     {

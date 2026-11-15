@@ -26,7 +26,6 @@ import com.mowmaster.dust.Features.Research.ResearchTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
@@ -593,7 +592,8 @@ public final class ResearchBook
     }
 
     // An effect's icon in a slot frame (faded if its Effects entry isn't researched yet); clicking opens the entry.
-    // Hud.getMobEffectSprite gives the sprite id of the effect's icon in the GUI atlas; blitSprite draws a sprite
+    // Hud.getMobEffectSprite (Gui.getMobEffectSprite on 26.1.2, renamed by build.gradle; written in full so the
+    // rename only touches this call) gives the sprite id of the effect's icon in the GUI atlas; blitSprite draws a sprite
     // from the atlas at the given size (the icons are 18x18, drawn at 16x16 here to fit the slot like an item).
     private static void linkedEffect(GuiGraphicsExtractor graphics, ResearchData data, Identifier effectId, int x, int y)
     {
@@ -603,7 +603,7 @@ public final class ResearchBook
         ResearchEntry entry = new ResearchEntry(ResearchTabs.EFFECTS, effectId);
         boolean researched = data.has(entry);
         Paper.slot(graphics, x, y);
-        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, Hud.getMobEffectSprite(effect.get()), x + 1, y + 1, 16, 16);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, net.minecraft.client.gui.Hud.getMobEffectSprite(effect.get()), x + 1, y + 1, 16, 16);
         if (!researched) Paper.fade(graphics, x, y);
         LINKS.add(new Link(x, y, entry, researched, effect.get().value().getDisplayName(), false));
     }

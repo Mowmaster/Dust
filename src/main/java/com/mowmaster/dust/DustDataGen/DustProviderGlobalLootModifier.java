@@ -1,3 +1,4 @@
+/*!stonecutter-disabled
 package com.mowmaster.dust.DustDataGen;
 
 import com.mowmaster.dust.DustLoot.AddAncientTabletModifier;
@@ -76,3 +77,4 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
         return LootTableIdCondition.builder(Identifier.withDefaultNamespace(vanillaPath)).build();
     }
 }
+*/

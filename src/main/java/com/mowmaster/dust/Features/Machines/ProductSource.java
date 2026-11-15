@@ -15,7 +15,7 @@ public final class ProductSource
     // A product made from source (one of it): the same product with dust:source set
     public static ItemStack madeFrom(ItemStack product, ItemStack source)
     {
-        product.set(DustComponentDataRegistry.SOURCE.get(), ItemStackTemplate.fromNonEmptyStack(source, 1));
+        product.set(DustComponentDataRegistry.SOURCE.get(), ItemStackTemplate.fromNonEmptyStack(source).withCount(1));
         return product;
     }
 

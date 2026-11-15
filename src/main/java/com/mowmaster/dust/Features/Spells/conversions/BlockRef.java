@@ -20,6 +20,16 @@ public record BlockRef(@Nullable Block block, @Nullable TagKey<Block> tag)
 {
     public static final Codec<BlockRef> CODEC = Codec.STRING.comapFlatMap(BlockRef::parse, BlockRef::toString);
 
+    // A block this version of Minecraft doesn't have. Only made on 26.1.2 (see parse): the conversion files are made by
+    // 26.3's datagen and name 26.3 blocks (sulfur, cinnabar, wool stairs...), and one unknown block would otherwise
+    // throw away the whole file. MISSING matches nothing, and BlockConversion drops it from its lists.
+    public static final BlockRef MISSING = new BlockRef(null, null);
+
+    public boolean isMissing()
+    {
+        return block == null && tag == null;
+    }
+
     public static BlockRef of(Block block)
     {
         return new BlockRef(block, null);
@@ -37,7 +47,12 @@ public record BlockRef(@Nullable Block block, @Nullable TagKey<Block> tag)
             return id == null ? DataResult.error(() -> "Bad block tag: " + text) : DataResult.success(of(TagKey.create(Registries.BLOCK, id)));
         }
         Identifier id = Identifier.tryParse(text);
+        //? if >=26.3 {
         if (id == null || !BuiltInRegistries.BLOCK.containsKey(id)) return DataResult.error(() -> "Unknown block: " + text);
+        //?} else {
+        /*if (id == null) return DataResult.error(() -> "Unknown block: " + text);
+        if (!BuiltInRegistries.BLOCK.containsKey(id)) return DataResult.success(MISSING);
+        *///?}
         return DataResult.success(of(BuiltInRegistries.BLOCK.getValue(id)));
     }
 
@@ -59,6 +74,7 @@ public record BlockRef(@Nullable Block block, @Nullable TagKey<Block> tag)
     @Override
     public String toString()
     {
+        if (isMissing()) return "minecraft:air";
         return block != null ? BuiltInRegistries.BLOCK.getKey(block).toString() : "#" + tag.location();
     }
 }

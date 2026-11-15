@@ -241,8 +241,8 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
         ServerPlayer player = level.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(first, 1), List.of(ItemStackTemplate.fromNonEmptyStack(made, 1)),
-                List.of(ItemStackTemplate.fromNonEmptyStack(second, 1)));
+                ItemStackTemplate.fromNonEmptyStack(first).withCount(1), List.of(ItemStackTemplate.fromNonEmptyStack(made).withCount(1)),
+                List.of(ItemStackTemplate.fromNonEmptyStack(second).withCount(1)));
         Research.noteProcess(player, new ResearchEntry(ResearchTabs.ELEMENTS, element.id()), step);
     }
 

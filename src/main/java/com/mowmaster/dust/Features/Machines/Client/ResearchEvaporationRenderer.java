@@ -108,10 +108,10 @@ public class ResearchEvaporationRenderer implements BlockEntityRenderer<Research
         if (spoon != null) {
             poseStack.pushPose();
             poseStack.translate(0.5, 0, 0.5);
-            poseStack.rotate(Axis.YP.rotationDegrees(StationRendering.yaw(state.facing)));
+            poseStack.mulPose(Axis.YP.rotationDegrees(StationRendering.yaw(state.facing)));
             poseStack.translate(-0.5, 0, -0.5);
             poseStack.translate(pot.x / 16, 0, pot.z / 16);
-            poseStack.rotate(Axis.YP.rotationDegrees(-state.spoonAngle));
+            poseStack.mulPose(Axis.YP.rotationDegrees(-state.spoonAngle));
             poseStack.translate(-pot.x / 16, 0, -pot.z / 16);
             submitNodeCollector.submitBlockModel(poseStack, Sheets.cutoutBlockItemSheet(), List.of(spoon), BlockModelRenderState.EMPTY_TINTS,
                     state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

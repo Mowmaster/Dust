@@ -66,7 +66,7 @@ public class ElementTesterRenderer implements BlockEntityRenderer<ElementTesterB
         poseStack.pushPose();
         poseStack.translate(state.plate.x, state.plate.y + 0.02, state.plate.z);
         poseStack.scale(SCALE, SCALE, SCALE);
-        poseStack.rotate(Axis.YP.rotationDegrees(state.angle));
+        poseStack.mulPose(Axis.YP.rotationDegrees(state.angle));
         state.item.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }

@@ -132,7 +132,7 @@ public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity implements I
         ServerPlayer player = serverLevel.getServer().getPlayerList().getPlayer(owner);
         if (player == null) return;
         ProcessRecord step = new ProcessRecord(BuiltInRegistries.ITEM.getKey(getBlockState().getBlock().asItem()),
-                ItemStackTemplate.fromNonEmptyStack(block, 1), List.of(ItemStackTemplate.fromNonEmptyStack(result, 1)));
+                ItemStackTemplate.fromNonEmptyStack(block).withCount(1), List.of(ItemStackTemplate.fromNonEmptyStack(result).withCount(1)));
         Research.noteProcess(player, ResearchTabs.entryForItem(ProductSource.original(block)), step);
     }
 

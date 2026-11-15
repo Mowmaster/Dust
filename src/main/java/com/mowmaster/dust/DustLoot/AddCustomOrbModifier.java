@@ -24,11 +24,11 @@ import java.util.Optional;
 // Spawns ONE orb of "element" (default dust:fire) worth minimum..maximum dust where the loot is dropped, instead of adding an item.
 // Not used by any loot modifier json yet. Why it "didn't work" before: the orb was spawned without a position
 // (at 0,0,0) and once per point of value, each orb worth the full amount.
-public class AddCustomOrbModifier extends LootModifier {
+public class AddCustomOrbModifier extends DustLootModifier {
 
     public static final MapCodec<AddCustomOrbModifier> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
-                    LootModifier.codecStart(instance)
+                    dustCodecStart(instance)
                             .and(Codec.INT.fieldOf("minimum").forGetter(AddCustomOrbModifier::getMinimum))
                             .and(Codec.INT.fieldOf("maximum").forGetter(AddCustomOrbModifier::getMaximum))
                             .and(DustElements.CODEC.optionalFieldOf("element", DustElements.FIRE).forGetter(AddCustomOrbModifier::getElement))
@@ -62,7 +62,11 @@ public class AddCustomOrbModifier extends LootModifier {
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         ServerLevel level = context.getLevel();
         // ORIGIN is where the loot drops (the mob's or block's position). Some tables (fishing, gifts) may not have it.
+        // Stonecutter: 26.3 renamed getOptionalParameter to getOptional (null when the table has no ORIGIN)
+        //? if >=26.3 {
         Vec3 origin = context.getOptional(LootContextParams.ORIGIN);
+        //?} else
+        //Vec3 origin = context.getOptionalParameter(LootContextParams.ORIGIN);
         if (origin == null) {
             return generatedLoot;
         }
@@ -84,7 +88,7 @@ public class AddCustomOrbModifier extends LootModifier {
     }
 
     @Override
-    public MapCodec<? extends LootModifier> codec() {
+    public MapCodec<? extends DustLootModifier> codec() {
         return DustLootRegistry.ADD_CUSTOM_ORB.get();
     }
 }

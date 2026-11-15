@@ -17,10 +17,10 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 import java.util.Optional;
 
 // Adds between min_count and max_count of an item to the loot of every table its condition matches.
-public class AddRandomItemStackModifier extends LootModifier
+public class AddRandomItemStackModifier extends DustLootModifier
 {
     public static final MapCodec<AddRandomItemStackModifier> CODEC =
-            RecordCodecBuilder.mapCodec(instance -> LootModifier.codecStart(instance)
+            RecordCodecBuilder.mapCodec(instance -> dustCodecStart(instance)
                     .and(BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(modifier -> modifier.item))
                     .and(Codec.INT.fieldOf("min_count").forGetter(modifier -> modifier.minCount))
                     .and(Codec.INT.fieldOf("max_count").forGetter(modifier -> modifier.maxCount))

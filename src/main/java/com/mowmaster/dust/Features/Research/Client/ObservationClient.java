@@ -69,7 +69,10 @@ public final class ObservationClient
         // A ding: the note block "chime", played as a UI sound (only this player, not positioned in the world)
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_CHIME.value(), payload.newBiome() ? 1.5F : 1.8F, 0.8F));
         soundCooldown = SOUND_COOLDOWN;
+        //? if >=26.2 {
         minecraft.gui.toastManager().addToast(new ResearchToast(entry, payload.newBiome()));
+        //?} else
+        //minecraft.getToastManager().addToast(new ResearchToast(entry, payload.newBiome()));
     }
 
     // New information on a known entry: a ding for a recipe (crafted, smelted, cooked), a scribble for anything else
@@ -114,7 +117,10 @@ public final class ObservationClient
     {
         ResearchEntry entry = observing;
         Minecraft minecraft = Minecraft.getInstance();
+        //? if >=26.2 {
         if (entry == null || minecraft.gui.screen() != null) return;
+        //?} else
+        //if (entry == null || minecraft.screen != null) return;
 
         int centreX = graphics.guiWidth() / 2;
         int y = graphics.guiHeight() / 2 + 10;

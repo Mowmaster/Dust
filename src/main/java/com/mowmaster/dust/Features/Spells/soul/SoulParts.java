@@ -15,7 +15,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
+//? if >=26.3 {
 import net.minecraft.world.entity.EntityTypes;
+//?} else
+//import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
@@ -139,7 +142,11 @@ public final class SoulParts
     private static void throwPlayer(ServerLevel level, ServerPlayer player, double distance)
     {
         Vec3 at = away(level, player.position(), distance, false);
+        // Stonecutter: 26.1.2 has no "invalid spot" test argument (state -> false: no block is off limits), so it's left off
+        //? if >=26.3 {
         if (!player.randomTeleport(at.x, at.y, at.z, true, state -> false)) player.teleportTo(at.x, at.y, at.z);
+        //?} else
+        //if (!player.randomTeleport(at.x, at.y, at.z, true)) player.teleportTo(at.x, at.y, at.z);
     }
 
     // A point distance away in a random direction, about the same height. free: anywhere will do (a wisp goes through
@@ -160,7 +167,10 @@ public final class SoulParts
     // A mannequin wearing the player's skin, with no "NPC" label, that can't be pushed around
     static @Nullable Mannequin mannequin(ServerLevel level, Player player, Vec3 at, float yaw)
     {
+        //? if >=26.3 {
         Mannequin mannequin = EntityTypes.MANNEQUIN.create(level, EntitySpawnReason.TRIGGERED);
+        //?} else
+        //Mannequin mannequin = EntityType.MANNEQUIN.create(level, EntitySpawnReason.TRIGGERED);
         if (mannequin == null) return null;
         // Casting to the mixin interface: Mixin made Mannequin implement it
         MannequinAccessor access = (MannequinAccessor) mannequin;

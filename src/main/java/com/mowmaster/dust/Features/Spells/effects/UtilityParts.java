@@ -133,8 +133,15 @@ public final class UtilityParts
         for (Holder<Block> flower : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.SMALL_FLOWERS)) flowers.add(flower.value());
         if (flowers.isEmpty()) return;
         if (state.getBlock() instanceof FlowerPotBlock pot && pot.getPotted() == net.minecraft.world.level.block.Blocks.AIR) {
+            // Stonecutter: 26.1.2's pot map is keyed by the flower's id, with suppliers of the potted block
+            //? if >=26.3 {
             List<Block> pottable = flowers.stream().filter(pot.getFullPots()::containsKey).toList();
             if (!pottable.isEmpty()) level.setBlockAndUpdate(pos, pot.getFullPots().get(pottable.get(level.getRandom().nextInt(pottable.size()))).defaultBlockState());
+            //?} else {
+            /*var pots = pot.getFullPotsView();
+            List<Block> pottable = flowers.stream().filter(flower -> pots.containsKey(BuiltInRegistries.BLOCK.getKey(flower))).toList();
+            if (!pottable.isEmpty()) level.setBlockAndUpdate(pos, pots.get(BuiltInRegistries.BLOCK.getKey(pottable.get(level.getRandom().nextInt(pottable.size())))).get().defaultBlockState());
+            *///?}
             return;
         }
         BlockPos above = pos.above();

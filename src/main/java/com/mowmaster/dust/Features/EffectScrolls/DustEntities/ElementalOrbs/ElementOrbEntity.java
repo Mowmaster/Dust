@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+//? if >=26.3
 import net.minecraft.world.entity.MoveSimulationType;
 import org.jspecify.annotations.Nullable;
 
@@ -153,10 +154,13 @@ public class ElementOrbEntity extends Entity {
     // 26.3: entities say which side runs their movement. Like vanilla's experience orb, an orb moves itself on both the
     // server and the client (the client predicts it between updates). The default only lets the authoritative side
     // move it, and calling move() on the client then fails (checked in the development environment).
+    // Stonecutter: 26.1.2 has no MoveSimulationType; both sides move every entity there.
+    //? if >=26.3 {
     @Override
     public MoveSimulationType getMoveSimulationType() {
         return MoveSimulationType.SERVER_AND_CLIENT;
     }
+    //?}
 
 
     @Override

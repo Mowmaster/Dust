@@ -15,6 +15,10 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+//? if <26.3 {
+/*import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+*///?}
 
 // A small crumbling stone-brick wall with an ancient word carved across its middle row in glyph stones, sometimes with
 // a chest in front holding an Ancient Tablet. Placed on the surface of overworld biomes now and then (see DustWorldgen).
@@ -25,19 +29,39 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 //
 // 26.3: a Feature is a record with a codec. This one has no settings, so its codec is a "unit" that always gives the
 // one instance. place() gets the surface position chosen by the placement modifiers.
+//
+// Stonecutter: before 26.3 a Feature is a class that takes a configuration (none here: NoneFeatureConfiguration),
+// gets its arguments in a FeaturePlaceContext, and is registered itself (not its codec). The 26.1.2 place(context)
+// just calls the same place(level, chunkGenerator, random, origin) that 26.3 uses.
+//? if >=26.3 {
 public record AncientRuinFeature() implements Feature
 {
     public static final AncientRuinFeature INSTANCE = new AncientRuinFeature();
     public static final MapCodec<AncientRuinFeature> CODEC = MapCodec.unit(INSTANCE);
-
-    private static final float CHEST_CHANCE = 0.5F;
 
     @Override
     public MapCodec<AncientRuinFeature> codec()
     {
         return CODEC;
     }
+//?} else {
+/*public class AncientRuinFeature extends Feature<NoneFeatureConfiguration>
+{
+    public AncientRuinFeature()
+    {
+        super(NoneFeatureConfiguration.CODEC);
+    }
 
+    @Override
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
+    {
+        return place(context.level(), context.chunkGenerator(), context.random(), context.origin());
+    }
+*///?}
+
+    private static final float CHEST_CHANCE = 0.5F;
+
+    //? if >=26.3
     @Override
     public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin)
     {

@@ -55,7 +55,10 @@ public final class GrimoireKeys
     public static void onClientTick(ClientTickEvent.Post event)
     {
         Minecraft minecraft = Minecraft.getInstance();
+        //? if >=26.2 {
         if (minecraft.player == null || minecraft.gui.screen() != null) return;
+        //?} else
+        //if (minecraft.player == null || minecraft.screen != null) return;
         boolean has = !GrimoireItem.find(minecraft.player).isEmpty();
         while (CAST.consumeClick()) if (has) send(GrimoirePayload.CAST, GrimoirePayload.SELECTED);
         while (NEXT.consumeClick()) if (has) send(GrimoirePayload.TURN, 1);

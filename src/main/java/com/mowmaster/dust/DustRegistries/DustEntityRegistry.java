@@ -24,38 +24,40 @@ public class DustEntityRegistry {
     public static final DeferredHolder<EntityType<?>, EntityType<ElementOrbEntity>> ELEMENT_ORB = registerOrb("element_orb", ElementOrbEntity::new);
     // A spell in flight (Features/Spells/shapes): small, tracked from a distance like an arrow
     public static final DeferredHolder<EntityType<?>, EntityType<SpellProjectileEntity>> SPELL_PROJECTILE = ENTITY_TYPES.registerEntityType("spell_projectile",
-            SpellProjectileEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+            SpellProjectileEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
                     .updateInterval(10));
 
     // Blocks brought to life by spells (Features/Spells/entities): floating (Flight) and scurrying (Creature)
     public static final DeferredHolder<EntityType<?>, EntityType<FloatingBlockEntity>> FLOATING_BLOCK = ENTITY_TYPES.registerEntityType("floating_block",
-            FloatingBlockEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+            FloatingBlockEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.98F, 0.98F).clientTrackingRange(8).updateInterval(2));
     public static final DeferredHolder<EntityType<?>, EntityType<AnimatedBlockEntity>> ANIMATED_BLOCK = ENTITY_TYPES.registerEntityType("animated_block",
-            AnimatedBlockEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+            AnimatedBlockEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.9F, 0.9F).clientTrackingRange(8));
 
     // Void (Features/Spells/voidrift): the winged ender chest at your shoulder, updated every tick so it keeps up
     // smoothly; and the rift that swallows things (fireImmune: lava and fire can't end it early)
     public static final DeferredHolder<EntityType<?>, EntityType<VoidChestEntity>> VOID_CHEST = ENTITY_TYPES.registerEntityType("void_chest",
-            VoidChestEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+            VoidChestEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(1));
     public static final DeferredHolder<EntityType<?>, EntityType<VoidRiftEntity>> VOID_RIFT = ENTITY_TYPES.registerEntityType("void_rift",
-            VoidRiftEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+            VoidRiftEntity::new, MobCategory.MISC, builder -> builder
                     .sized(1.0F, 1.0F).clientTrackingRange(8).updateInterval(20).fireImmune());
     // Soul (Features/Spells/soul): a mob's soul looking for its body. Updated often, as it wanders.
     public static final DeferredHolder<EntityType<?>, EntityType<SoulWispEntity>> SOUL_WISP = ENTITY_TYPES.registerEntityType("soul_wisp",
-            SoulWispEntity::new, MobCategory.MISC, (factory, category) -> EntityType.Builder.of(factory, category)
+            SoulWispEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(2).fireImmune());
 
+    // registerEntityType(name, factory, category, builder -> builder...) hands you EntityType.Builder.of(factory, category)
+    // to add settings to. This form is in both 26.1.2 and 26.3 (26.3 also has a (factory, category) -> form).
     // registerEntityType builds the EntityType with its own registry key (dust:element_orb). Before, every orb was
     // built with the same made-up key "dust:base_orb_key", so they all shared one description id / loot table id.
     // Tracking range and update interval match vanilla's experience orb.
     private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> registerOrb(String name, EntityType.EntityFactory<E> factory) {
         return ENTITY_TYPES.registerEntityType(name, factory, MobCategory.MISC,
-                (entityFactory, category) -> EntityType.Builder.of(entityFactory, category)
+                builder -> builder
                         .sized(0.5F, 0.5F)
                         .clientTrackingRange(6)
                         .updateInterval(20));

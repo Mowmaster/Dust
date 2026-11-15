@@ -15,14 +15,15 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 import java.util.Optional;
 
 // Adds one fixed stack to the loot of every table its condition matches.
-// 26.3: a LootModifier has ONE optional condition (Optional<Holder<LootItemCondition>>) instead of an array.
+// 26.3: a LootModifier has ONE optional condition (Optional<Holder<LootItemCondition>>) instead of an array
+// (26.1.2 still has an array; DustLootModifier converts, so this class is the same on both versions).
 // Combine several with condA.and(condB) (an AllOfCondition) before building. LootModifier.apply() already
 // checks the condition before doApply runs, so doApply doesn't test it again.
-public class AddItemStackModifier extends LootModifier
+public class AddItemStackModifier extends DustLootModifier
 {
     public static final MapCodec<AddItemStackModifier> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
-            LootModifier.codecStart(instance)
+            dustCodecStart(instance)
                     .and(ItemStackTemplate.CODEC.fieldOf("stack").forGetter(inst -> inst.itemStack))
                     .apply(instance, AddItemStackModifier::new));
     private final ItemStackTemplate itemStack;

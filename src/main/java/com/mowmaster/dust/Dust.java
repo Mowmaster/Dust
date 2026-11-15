@@ -14,7 +14,11 @@ public class Dust {
 
     public Dust(IEventBus modEventBus, ModContainer modContainer) {
         // config/dust-synced.toml: game settings the server reads (and sends to clients)
+        // Stonecutter: 26.1.2's NeoForge calls this type SERVER (saved per world, in <world>/serverconfig/dust-server.toml)
+        //? if >=26.3 {
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.SYNCED, DustConfig.SPEC);
+        //?} else
+        //modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, DustConfig.SPEC);
         DustItemRegistry.register(modEventBus);
         DustBlockRegistry.register(modEventBus);
         DustBlockEntityRegistry.register(modEventBus);
