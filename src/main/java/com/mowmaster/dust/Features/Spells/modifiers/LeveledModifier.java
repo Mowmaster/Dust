@@ -99,11 +99,12 @@ public class LeveledModifier implements SpellModifier
     @Override
     public boolean canRoll(ModifierContext context)
     {
-        if (!context.reached(unlockLevel) || !fit.suits(context.instant(), context.dot())) return false;
+        if ((!context.reached(unlockLevel) && !context.unlockedEarly(id)) || !fit.suits(context.instant(), context.dot())) return false;
         if (!shapes.isEmpty() && !shapes.contains(context.shape())) return false;
         if (oncePerBranch && context.has(id)) return false;
         if (everyLevels > 0) {
-            long allowed = 1 + Math.max(0, context.level() + context.unlockReduction() - unlockLevel) / everyLevels;
+            int from = context.unlockedEarly(id) ? 0 : unlockLevel;
+            long allowed = 1 + Math.max(0, context.level() + context.unlockReduction() - from) / everyLevels;
             if (context.countInTree(id) >= allowed) return false;
         }
         return requires.test(context);

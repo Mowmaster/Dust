@@ -55,6 +55,9 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.ANCIENT_TABLET.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.TRANSCRIPTION.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.GRIMOIRE.get(), ModelTemplates.FLAT_ITEM);
+        // Modifier cards: their hand-made models (models/item/cards/card_<name>.json)
+        DustItemRegistry.CARDS.values().forEach(card -> itemModels.itemModelOutput.accept(card.get(), ItemModelUtils.plainModel(
+                Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/cards/" + BuiltInRegistries.ITEM.getKey(card.get()).getPath()))));
         itemModels.generateFlatItem(DustItemRegistry.PARCHMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.RESEARCH_NOTES.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.SHARED_RESEARCH_GUIDE.get(), ModelTemplates.FLAT_ITEM);

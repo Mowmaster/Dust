@@ -166,7 +166,7 @@ public final class SimpleParts
         ServerLevel level = cast.level();
         BlockState state = level.getBlockState(pos);
         if (state.isAir() || state.getDestroySpeed(level, pos) < 0) return;
-        level.destroyBlock(pos, false, cast.caster());
+        level.destroyBlock(pos, true, cast.caster());
         level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
         level.playSound(null, pos, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 0.6F, 1.2F);
     }

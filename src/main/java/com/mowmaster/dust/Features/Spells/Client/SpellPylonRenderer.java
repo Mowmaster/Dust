@@ -56,6 +56,9 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         float time;
         // How far up the ghosts are, 0-1
         float ghostAppear;
+        // The modifier card laid on top, and which way the pylon faces (it lies along the pylon)
+        final ItemStackRenderState card = new ItemStackRenderState();
+        net.minecraft.core.Direction facing = net.minecraft.core.Direction.NORTH;
         // The icons: how far out (0-1), their textures and colour, and where the Shape Pylon is (relative)
         float appear;
         @Nullable Identifier elementIcon;
@@ -80,6 +83,9 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         state.time = pylon.getLevel() == null ? 0 : (pylon.getLevel().getGameTime() % 24000) + partialTick;
         extractIcons(pylon, state, partialTick);
         state.ghostAppear = pylon.ghostAppear(partialTick);
+        state.facing = pylon.connection();
+        var cardItem = pylon.card() == null ? null : cardFor(pylon.card());
+        itemModelResolver.updateForTopItem(state.card, cardItem == null ? ItemStack.EMPTY : new ItemStack(cardItem), ItemDisplayContext.GROUND, pylon.getLevel(), null, 1);
         if (ghosts.isEmpty() || state.ghostAppear <= 0) {
             state.ghost.clear();
             return;
@@ -116,9 +122,20 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         }
     }
 
+    private static net.minecraft.world.item.@Nullable Item cardFor(Identifier modifier)
+    {
+        var item = com.mowmaster.dust.DustRegistries.DustItemRegistry.CARDS.get(modifier);
+        return item == null ? null : item.get();
+    }
+
+    // Where the card lies on top (model pixels, the pylon facing north): behind the dark square, away from the connection
+    private static final Vec3 CARD_SPOT = new Vec3(8, 14.05, 12);
+    private static final float CARD_SCALE = 0.4F;
+
     @Override
     public void submit(State state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera)
     {
+        com.mowmaster.dust.Features.Machines.Client.StationRendering.flatItem(state.card, CARD_SPOT, state.facing, 0, CARD_SCALE, state.lightCoords, poseStack, submitNodeCollector);
         if (state.elementIcon != null) genie(state.elementIcon, Vec3.ZERO, state, poseStack, submitNodeCollector, camera);
         if (state.shapeIcon != null && state.shapeAt != null) genie(state.shapeIcon, state.shapeAt, state, poseStack, submitNodeCollector, camera);
         if (state.ghost.isEmpty()) return;

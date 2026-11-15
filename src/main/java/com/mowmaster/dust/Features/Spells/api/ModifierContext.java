@@ -19,9 +19,11 @@ import java.util.Objects;
 //   instant, dot       whether the spell's effect (on what its shape lands on) hits once / lingers (EffectType)
 //   unlockReduction    levels taken off every modifier's unlock level (Reduced Requirements)
 //   fragmentProgress   levels of Fragment Progress in the tree (the next fragment comes that much sooner)
+//   unlocked           modifiers unlocked for this spell whatever the level (a modifier card's, and its own modifiers)
 public record ModifierContext(DustElement element, Identifier shape, List<Identifier> modifiers, List<Identifier> tree, Map<Identifier, Integer> treeLevels,
                               int level, int breaks,
-                              Map<DustElement, Integer> mastery, boolean instant, boolean dot, int unlockReduction, int fragmentProgress)
+                              Map<DustElement, Integer> mastery, boolean instant, boolean dot, int unlockReduction, int fragmentProgress,
+                              java.util.Set<Identifier> unlocked)
 {
     public boolean has(Identifier modifier)
     {
@@ -60,6 +62,12 @@ public record ModifierContext(DustElement element, Identifier shape, List<Identi
     public boolean reached(int unlockLevel)
     {
         return level >= unlockLevel - unlockReduction;
+    }
+
+    // Whether a modifier is unlocked for this spell already (a card), so its unlock level doesn't apply
+    public boolean unlockedEarly(Identifier id)
+    {
+        return unlocked.contains(id);
     }
 
     public boolean isShape(Identifier id)

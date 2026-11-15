@@ -61,6 +61,9 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     private final List<BlockPos> chain = new ArrayList<>();
     private final List<Integer> parents = new ArrayList<>();
     private final SpellDeck deck = new SpellDeck();
+    // The modifier card laid on top (one per spell): its modifier goes into the deck when it starts, unlocked whatever
+    // the level, with its own modifiers (placeCard)
+    private @Nullable Identifier card;
     // The tree's experience, copied from SpellTreeData every second (so the client knows the level, for the ghosts)
     private int experience;
     // From a broken pylon's item: its element and kept experience, until an element is chosen
@@ -293,6 +296,51 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         return a.getY() == b.getY() && a.distManhattan(b) == 1;
     }
 
+    // ---- the modifier card ----
+
+    public @Nullable Identifier card() { return card; }
+
+    // A modifier card right-clicked on: laid on top, once per spell, after the Shape Pylon (whose shape it must suit:
+    // that shape is fixed from now on). Its modifier goes into the deck as soon as the deck starts (now, if it has).
+    // Returns null if it was placed, or why not (a translation key).
+    public @Nullable String placeCard(Identifier modifier)
+    {
+        if (card != null) return "dust.pylon.card_already";
+        if (chain.isEmpty() || shape() == null) return "dust.pylon.card_needs_shape";
+        SpellModifier type = SpellRegistries.MODIFIER_REGISTRY.getValue(modifier);
+        if (type == null) return "dust.pylon.card_wrong_shape";
+        card = modifier;
+        if (!type.canRoll(treeContext(null))) {
+            card = null;
+            return "dust.pylon.card_wrong_shape";
+        }
+        if (level.getBlockEntity(chain.getFirst()) instanceof PylonBlockEntity shapePylon) shapePylon.lock();
+        if (deck.started()) seedCard();
+        sync();
+        return null;
+    }
+
+    // The card's modifier into the deck (straight in, not from the pool), its own modifiers into the pool
+    private void seedCard()
+    {
+        if (card == null) return;
+        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+        if (modifier == null) return;
+        deck.addCard(card);
+        deck.bringIn(modifier, level.getRandom(), false);
+    }
+
+    // What the card unlocks for the spell: its modifier and that modifier's own
+    private java.util.Set<Identifier> unlockedByCard()
+    {
+        if (card == null) return java.util.Set.of();
+        java.util.Set<Identifier> unlocked = new java.util.HashSet<>();
+        unlocked.add(card);
+        SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+        if (modifier != null) unlocked.addAll(modifier.addsToPool());
+        return unlocked;
+    }
+
     // ---- joining a pylon ----
 
     // A pylon placed in one of the ghost places: the Shape Pylon takes the placer's first known shape; a modifier
@@ -314,7 +362,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         int parent = parentFor(pylon.getBlockPos());
         if (placer != null && element != null) SpellMastery.note(placer, element, level());
         // The shape is fixed from now on: the Shape Pylon locks, and the pool and deck fill
-        if (!deck.started()) deck.start(treeContext(placer), random, categoryBonus(), doubleDraw());
+        if (!deck.started()) {
+            deck.start(treeContext(placer), random, categoryBonus(), doubleDraw());
+            seedCard();
+        }
         if (parent == 0 && level.getBlockEntity(chain.getFirst()) instanceof PylonBlockEntity shapePylon) shapePylon.lock();
         deck.addDueBreaks(level());
 
@@ -327,7 +378,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (pylon.locked()) locked(pylon);
         // A shape modifier brings its own modifiers into the pool
         SpellModifier modifier = draw.modifier() == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(draw.modifier());
-        if (modifier != null) deck.bringIn(modifier, random);
+        if (modifier != null) deck.bringIn(modifier, random, true);
         deck.topUp(treeContext(placer), random, categoryBonus(), doubleDraw());
 
         if (placer != null && draw.modifier() != null && element != null) SpellKnowledge.unlockModifier(placer, element, draw.modifier());
@@ -495,7 +546,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         int reduction = levels.containsKey(SpellRegistries.REDUCED_REQUIREMENTS.getId()) ? PylonConfig.REDUCED_REQUIREMENT : 0;
         return new ModifierContext(element, shape, line, treeModifiers(), levels, level(), breaks,
                 placer == null ? Map.of() : SpellMastery.get(placer).levels(), types[0], types[1], reduction,
-                levels.getOrDefault(SpellRegistries.FRAGMENT_PROGRESS.getId(), 0));
+                levels.getOrDefault(SpellRegistries.FRAGMENT_PROGRESS.getId(), 0), unlockedByCard());
     }
 
     // Whether the spell's effect, on what its shape lands on, is instant / lingering: {instant, dot}. Self lands on
@@ -908,6 +959,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         super.preRemoveSideEffects(pos, state);
         if (!(level instanceof ServerLevel server)) return;
         breaking = true;
+        // A modifier card for each shape modifier the tree had (on a pylon, or the card laid on top), noted before its
+        // pylons go
+        java.util.Set<Identifier> cards = new java.util.LinkedHashSet<>();
+        if (card != null) cards.add(card);
+        for (BlockPos at : chain) {
+            if (level.getBlockEntity(at) instanceof PylonBlockEntity pylon && pylon.modifier() != null) cards.add(pylon.modifier());
+        }
         for (BlockPos pylon : List.copyOf(chain)) {
             if (level.getBlockEntity(pylon) instanceof PylonBlockEntity) level.destroyBlock(pylon, true);
         }
@@ -919,6 +977,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             drop.set(DustComponentDataRegistry.PYLON_MEMORY.get(), memory);
         }
         Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop);
+        for (Identifier id : cards) {
+            var item = com.mowmaster.dust.DustRegistries.DustItemRegistry.CARDS.get(id);
+            if (item != null) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, new ItemStack(item.get()));
+        }
         SpellTreeData.get(server.getServer()).forget(tree);
     }
 
@@ -933,6 +995,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         output.store("chain", BlockPos.CODEC.listOf(), List.copyOf(chain));
         output.store("parents", Codec.INT.listOf(), List.copyOf(parents));
         output.store("deck", SpellDeck.Saved.CODEC, deck.save());
+        if (card != null) output.store("card", Identifier.CODEC, card);
         output.putInt("experience", experience);
         if (memory != null) output.store("memory", PylonMemory.CODEC, memory);
     }
@@ -950,6 +1013,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         // Trees saved before branching were one line: each pylon's parent is the one before it
         while (parents.size() < chain.size()) parents.add(parents.size() - 1);
         input.read("deck", SpellDeck.Saved.CODEC).ifPresent(deck::load);
+        card = input.read("card", Identifier.CODEC).orElse(null);
         experience = input.getIntOr("experience", 0);
         memory = input.read("memory", PylonMemory.CODEC).orElse(null);
         // On the client: the body's colour comes from the element (Client/SpellPylonTint), so draw it again

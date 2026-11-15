@@ -96,17 +96,18 @@ public class SpellDeck
         rerolls.clear();
     }
 
-    // A shape modifier went on a pylon: its own modifiers join the pool, and one of them the deck
-    public void bringIn(SpellModifier modifier, RandomSource random)
+    // A shape modifier went on a pylon (or its card was laid on the Spell Pylon): its own modifiers join the pool, and
+    // with withCard, one of them the deck too
+    public void bringIn(SpellModifier modifier, RandomSource random, boolean withCard)
     {
-        List<Identifier> added = new ArrayList<>();
+        List<Identifier> children = new ArrayList<>();
         for (Identifier id : modifier.addsToPool()) {
             SpellModifier brought = SpellRegistries.MODIFIER_REGISTRY.getValue(id);
-            if (brought == null || pool.containsKey(id)) continue;
-            pool.put(id, brought.uses() > 0 ? brought.uses() : -1);
-            added.add(id);
+            if (brought == null) continue;
+            pool.putIfAbsent(id, brought.uses() > 0 ? brought.uses() : -1);
+            if (pool.get(id) != 0) children.add(id);
         }
-        if (!added.isEmpty()) take(added.get(random.nextInt(added.size())));
+        if (withCard && !children.isEmpty()) take(children.get(random.nextInt(children.size())));
     }
 
     // ---- the deck ----

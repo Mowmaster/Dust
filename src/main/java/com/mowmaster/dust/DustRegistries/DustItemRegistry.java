@@ -138,6 +138,24 @@ public class DustItemRegistry
     // Holds one spell, cast with right-click (Features/Spells)
     public static final DeferredItem<Item> SPELL_SCROLL = DUSTITEMS.registerItem("spell_scroll", SpellScrollItem::new, properties -> properties.stacksTo(1));
     // A book of spells: a Spell Scroll on each page, cast with keys from anywhere in your inventory (Features/Spells/grimoire)
+    // Modifier cards (Features/Spells/ModifierCardItem): one per shape modifier, by the modifier's id. Their models are
+    // models/item/cards/card_<name>.json.
+    public static final Map<net.minecraft.resources.Identifier, DeferredItem<Item>> CARDS = new LinkedHashMap<>();
+    public static final DeferredItem<Item> CARD_AOE = card("card_aoe", "aoe");
+    public static final DeferredItem<Item> CARD_BEAM = card("card_beam", "beam");
+    public static final DeferredItem<Item> CARD_CHAIN = card("card_chain", "chaining");
+    public static final DeferredItem<Item> CARD_PIERCE = card("card_pierce", "piercing");
+    public static final DeferredItem<Item> CARD_RUNE = card("card_rune", "rune");
+    public static final DeferredItem<Item> CARD_WALL = card("card_wall", "wall");
+
+    private static DeferredItem<Item> card(String name, String modifier)
+    {
+        net.minecraft.resources.Identifier id = net.minecraft.resources.Identifier.fromNamespaceAndPath(DustReferences.MODID, modifier);
+        DeferredItem<Item> item = DUSTITEMS.registerItem(name, properties -> new com.mowmaster.dust.Features.Spells.ModifierCardItem(properties.stacksTo(16), id));
+        CARDS.put(id, item);
+        return item;
+    }
+
     public static final DeferredItem<Item> GRIMOIRE = DUSTITEMS.registerItem("grimoire",
             com.mowmaster.dust.Features.Spells.grimoire.GrimoireItem::new, properties -> properties.stacksTo(1));
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)

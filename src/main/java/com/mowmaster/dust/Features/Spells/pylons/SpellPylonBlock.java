@@ -34,6 +34,8 @@ import org.jspecify.annotations.Nullable;
 // The Spell Pylon (SpellPylonBlockEntity has the tree):
 //   Right-click with an element crystal   sets the spell's element (once; the crystal is used)
 //   Right-click with a Spell Scroll        records the spell as it stands onto the scroll
+//   Right-click with a modifier card       lays it on top: its modifier goes straight into the deck (one per spell)
+//   Right-click with a spell tool          binds a Touch spell to it
 //   Right-click empty-handed               its element, level, experience, levels to spend, blessing and corruption
 // Broken, it takes its whole tree with it and drops remembering its element and a tenth of its levels.
 // active: has an element. facing: the side its connection arm points to, where the Shape Pylon goes (the way the
@@ -100,6 +102,20 @@ public class SpellPylonBlock extends Block implements EntityBlock
                 serverPlayer.sendOverlayMessage(pylon.info());
             } else {
                 serverPlayer.sendOverlayMessage(Component.translatable("dust.pylon.has_element"));
+            }
+            return InteractionResult.SUCCESS;
+        }
+        // A modifier card: laid on top, its modifier straight into the deck (one per spell)
+        if (stack.getItem() instanceof com.mowmaster.dust.Features.Spells.ModifierCardItem card) {
+            if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+            String problem = pylon.placeCard(card.modifier());
+            if (problem == null) {
+                stack.consume(1, player);
+                level.playSound(null, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 0.8F);
+                serverPlayer.sendOverlayMessage(Component.translatable("dust.pylon.card_placed",
+                        Component.translatable("spell_modifier." + card.modifier().getNamespace() + "." + card.modifier().getPath())));
+            } else {
+                serverPlayer.sendOverlayMessage(Component.translatable(problem));
             }
             return InteractionResult.SUCCESS;
         }
