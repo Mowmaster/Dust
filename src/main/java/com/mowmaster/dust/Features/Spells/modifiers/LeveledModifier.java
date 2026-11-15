@@ -43,6 +43,7 @@ public class LeveledModifier implements SpellModifier
     private int everyLevels;
     private boolean oncePerBranch;
     private boolean categoryOnly;
+    private boolean oncePerSpell;
     private Set<Identifier> shapes = Set.of();
     private List<Identifier> addsToPool = List.of();
     private Predicate<ModifierContext> requires = context -> true;
@@ -77,6 +78,8 @@ public class LeveledModifier implements SpellModifier
     public LeveledModifier oncePerBranch() { this.oncePerBranch = true; return this; }
     // Only a category pylon can take it (SpellModifier.categoryPylonsOnly)
     public LeveledModifier categoryOnly() { this.categoryOnly = true; return this; }
+    // Only one per spell, ever (SpellModifier.oncePerSpell): also a one-use knockout in the pool
+    public LeveledModifier onlyOne() { this.oncePerSpell = true; this.uses = 1; return this; }
     public LeveledModifier shapes(Identifier... shapes) { this.shapes = Set.of(shapes); return this; }
     public LeveledModifier addsToPool(Identifier... modifiers) { this.addsToPool = List.of(modifiers); return this; }
     public LeveledModifier requires(Predicate<ModifierContext> requires) { this.requires = requires; return this; }
@@ -94,6 +97,7 @@ public class LeveledModifier implements SpellModifier
     @Override public int maxLevelsPerNode() { return maxPerNode; }
     @Override public int uses() { return uses; }
     @Override public boolean categoryPylonsOnly() { return categoryOnly; }
+    @Override public boolean oncePerSpell() { return oncePerSpell; }
     @Override public List<Identifier> addsToPool() { return addsToPool; }
 
     @Override

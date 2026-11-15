@@ -207,7 +207,7 @@ public final class SpellRegistries
     // Lingering (lingering effects; brought in by AOE): a pool where it lands keeps putting the effect on the creatures in
     // it (the AOE's radius) for the spell's duration
     public static final DeferredHolder<SpellModifier, SpellModifier> LINGERING = modifier("lingering",
-            () -> LeveledModifier.marker().fit(ModifierFit.DOT).requires(context -> context.countInTree(id("lingering")) == 0));
+            () -> LeveledModifier.marker().fit(ModifierFit.DOT).onlyOne().requires(context -> context.countInTree(id("lingering")) == 0));
 
     // Piercing (Projectile): the bolt goes through creatures and blocks, affecting each, before it fizzles (1, plus half
     // a level of Depth). Not with Wall.
@@ -424,7 +424,7 @@ public final class SpellRegistries
     // A shape modifier: from level 30, one per spell, and not in a spell with any of the others named (incompatible)
     private static LeveledModifier shapeModifier(String self, String... incompatible)
     {
-        return LeveledModifier.marker().unlock(30).extraCost(2).requires(context -> {
+        return LeveledModifier.marker().unlock(30).extraCost(2).onlyOne().requires(context -> {
             if (context.countInTree(id(self)) > 0) return false;
             for (String other : incompatible) if (context.countInTree(id(other)) > 0) return false;
             return true;

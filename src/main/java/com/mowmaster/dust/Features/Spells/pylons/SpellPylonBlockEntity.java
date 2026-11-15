@@ -334,7 +334,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (card == null) return;
         SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
         if (modifier == null) return;
-        deck.addCard(card);
+        // Its one use in the pool goes with it, so the pool can't put another copy in the deck
+        deck.addFromPool(card);
         deck.bringIn(modifier, level.getRandom(), false);
     }
 
@@ -446,6 +447,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
                 SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
                 return modifier != null && modifier.categories().contains(type.category());
             }).toList();
+            // None in the deck: one of its category straight from the pool, if the pool has one that fits here; only
+            // with none there either does it take any card
+            if (ours.isEmpty() && deck.drawNormal(treeContext(placer), random, categoryBonus(), doubleDraw(),
+                    modifier -> modifier.categories().contains(type.category()))) {
+                Identifier drawn = deck.cards().getLast();
+                if (fitsHere(drawn, type, line, knowledge, afterBreak)) ours = List.of(drawn);
+            }
             if (!ours.isEmpty()) fits = ours;
         }
         if (fits.isEmpty()) return Draw.NOTHING;

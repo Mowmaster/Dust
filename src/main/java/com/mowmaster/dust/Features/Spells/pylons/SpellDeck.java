@@ -140,6 +140,11 @@ public class SpellDeck
     public void topUp(ModifierContext tree, RandomSource random, Map<ModifierCategory, Integer> categoryBonus, float doubleDraw)
     {
         if (!started) return;
+        // Copies of a once-per-spell modifier the spell already has can never be drawn: out they go
+        deck.removeIf(card -> {
+            SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+            return modifier != null && modifier.oncePerSpell() && tree.countInTree(card) > 0;
+        });
         while (deck.size() < MIN_CARDS && drawNormal(tree, random, categoryBonus, doubleDraw, modifier -> true)) {}
     }
 
@@ -148,6 +153,14 @@ public class SpellDeck
     {
         int left = pool.getOrDefault(id, -1);
         if (left == 0) return;
+        if (left > 0) pool.put(id, left - 1);
+        deck.add(id);
+    }
+
+    // A modifier into the deck, using one of its uses in the pool if it has a limited number (a modifier card's)
+    public void addFromPool(Identifier id)
+    {
+        int left = pool.getOrDefault(id, -1);
         if (left > 0) pool.put(id, left - 1);
         deck.add(id);
     }

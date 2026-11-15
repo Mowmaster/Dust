@@ -20,6 +20,10 @@ public interface SpellModifier
     // The pylon categories it belongs to (none: only a Neutral pylon takes it)
     default Set<ModifierCategory> categories() { return Set.of(); }
 
+    // True for a modifier a spell can only ever have one of (the shape modifiers): once it's on a pylon, any copies left
+    // in the deck are taken out (SpellDeck.topUp)
+    default boolean oncePerSpell() { return false; }
+
     // True for a modifier only a category pylon can take (a Neutral pylon passes it over, leaving it in the deck), e.g.
     // Category Weight, which only does something on a pylon with a category
     default boolean categoryPylonsOnly() { return false; }
