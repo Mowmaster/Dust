@@ -434,6 +434,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         if (card.equals(SpellDeck.NULL_CORRUPTION)) return false;
         SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
         if (modifier == null || !modifier.canRoll(line)) return false;
+        // A Neutral pylon passes over what only a category pylon can use (Category Weight)
+        if (modifier.categoryPylonsOnly() && type.category() == null) return false;
         if (!modifier.startsUnlocked() && !knowledge.hasUnlocked(element, card)) return false;
         return modifier.tier() == ModifierTier.NORMAL || (modifier.tier() == ModifierTier.BLESSED && type == PylonType.NEUTRAL);
     }

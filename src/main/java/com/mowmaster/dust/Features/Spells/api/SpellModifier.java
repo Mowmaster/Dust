@@ -20,6 +20,10 @@ public interface SpellModifier
     // The pylon categories it belongs to (none: only a Neutral pylon takes it)
     default Set<ModifierCategory> categories() { return Set.of(); }
 
+    // True for a modifier only a category pylon can take (a Neutral pylon passes it over, leaving it in the deck), e.g.
+    // Category Weight, which only does something on a pylon with a category
+    default boolean categoryPylonsOnly() { return false; }
+
     // Normal, blessed or corrupted (how it gets into the deck: ModifierTier)
     default ModifierTier tier() { return ModifierTier.NORMAL; }
 

@@ -295,7 +295,7 @@ public final class SpellRegistries
     // The deck and pool (read by the tree, not the cast: SpellPylonBlockEntity)
     // Category Weight: a category pylon's category is drawn into the deck more often, +1 weight a level (category pylons only)
     public static final DeferredHolder<SpellModifier, SpellModifier> CATEGORY_WEIGHT = modifier("category_weight",
-            () -> LeveledModifier.marker().extraCost(0)
+            () -> LeveledModifier.marker().extraCost(0).categoryOnly()
                     .categories(ModifierCategory.DAMAGE, ModifierCategory.GIANT, ModifierCategory.THRIFTY, ModifierCategory.EXPERIENCED));
     // Double Blessed Progress (one use): each locked pylon counts twice towards a blessing
     public static final DeferredHolder<SpellModifier, SpellModifier> DOUBLE_BLESSED = modifier("double_blessed",
