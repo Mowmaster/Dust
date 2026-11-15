@@ -56,18 +56,17 @@ public class DustJarBlock extends Block implements EntityBlock
         return DustJarInteractions.pour(jar, stack, player) ? InteractionResult.SUCCESS : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
-    // Empty hand: says what's in it. Sneaking (only reaches here with both hands empty): takes 10% into the dust store;
-    // an empty jar clears its element, then (once plain) is picked up.
+    // Empty hand: empties the player's dust store of the jar's element into it. Sneaking (only reaches here with both
+    // hands empty): picks the jar up, dust and all; an empty jar with an element clears it first, then is picked up.
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
     {
         if (!(level.getBlockEntity(pos) instanceof DustJarBlockEntity jar)) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
         if (!player.isShiftKeyDown()) {
-            DustJarInteractions.showContents(jar, player);
-        } else if (jar.amount() > 0) {
-            DustJarInteractions.takeIntoStore(jar, player, DustJarInteractions.SNEAK_PERCENT);
+            DustJarInteractions.storeFromPlayer(jar, player);
         } else if (!jar.clearElement()) {
+            // clearElement only clears an empty jar with an element; anything else is picked up
             jar.pickUp((ServerLevel) level, pos, state, player);
         }
         return InteractionResult.SUCCESS;

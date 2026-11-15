@@ -743,6 +743,8 @@
   "dust.dust_jar.empty": "Empty",
   "dust.dust_jar.contents": "%s: %s / %s",
   "dust.dust_jar.full_store": "You can't carry any more %s",
+  "dust.dust_jar.none_carried": "You aren't carrying any %s",
+  "dust.dust_jar.nothing_carried": "You aren't carrying any dust",
   "dust.dust_grinder.unresearched": "You haven't fully researched what's in this yet",
   "dust.element_crafter.jar_full": "This jar is full",
   "dust.element_crafter.jar_cleared": "Jar cleared",
