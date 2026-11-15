@@ -51,7 +51,7 @@ public final class SimpleParts
     // An explosion where it stands (hurts what's around it, breaks no blocks), bigger with potency
     public static void explodeAt(SpellCast cast, Entity target)
     {
-        cast.level().explode(cast.caster(), target.getX(), target.getY() + 0.5, target.getZ(), 1.0F + cast.stats().potency(), Level.ExplosionInteraction.NONE);
+        SpellExplosions.explode(cast.level(), cast.caster(), target.getX(), target.getY() + 0.5, target.getZ(), 1.0F + cast.stats().potency(), Level.ExplosionInteraction.NONE);
     }
 
     // Kills anything under 10% health, bosses too; the undead are healed to full instead
@@ -168,7 +168,9 @@ public final class SimpleParts
         if (state.isAir() || state.getDestroySpeed(level, pos) < 0) return;
         level.destroyBlock(pos, true, cast.caster());
         level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
-        level.playSound(null, pos, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 0.6F, 1.2F);
+        // One bang per cast, however many blocks it blows apart (AOE, Wall), from our quieter explosion sound. Played at
+        // 4.0 like a real explosion (heard as far), which sounds.json's 0.1 brings down to 40% loudness.
+        if (cast.firstTime("explosion_sound")) level.playSound(null, pos, com.mowmaster.dust.DustRegistries.DustSoundRegistry.SPELL_EXPLOSION.value(), SoundSource.BLOCKS, 4.0F, 1.2F);
     }
 
     // The sound a note block would make standing on this block (its instrument), at a random note

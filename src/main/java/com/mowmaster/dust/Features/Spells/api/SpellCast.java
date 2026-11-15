@@ -39,6 +39,8 @@ public final class SpellCast
     private boolean delivered;
     // A cast that only runs the effect (no rune, wall, AOE, chain or pool): see the top
     private boolean secondary;
+    // Things done once per cast, whatever's hit (firstTime)
+    private final java.util.Set<String> done = new java.util.HashSet<>();
 
     // caster: null for a block casting it (then origin and direction say where from and which way)
     public SpellCast(ServerLevel level, @Nullable LivingEntity caster, Spell spell, SpellStats stats, Vec3 origin, Vec3 direction)
@@ -88,6 +90,13 @@ public final class SpellCast
     private void impact(Vec3 at, @Nullable Entity target)
     {
         for (SpellModifier modifier : spell.modifierList()) modifier.onImpact(this, at, target);
+    }
+
+    // True the first time this is asked with a key during this cast, false after: for something an effect should do
+    // once however many things the spell lands on (one explosion sound for an AOE of blocks)
+    public boolean firstTime(String key)
+    {
+        return done.add(key);
     }
 
     // Whether the spell has this modifier

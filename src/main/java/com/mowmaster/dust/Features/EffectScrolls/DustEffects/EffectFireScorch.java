@@ -58,7 +58,7 @@ public class EffectFireScorch extends InstantaneousMobEffect {
                         }
                     }*/
                     mob.clearFire();
-                    mob.level().explode(mob, mob.getX(), mob.getY(), mob.getZ(), (float)exploRange, Level.ExplosionInteraction.NONE);
+                    com.mowmaster.dust.Features.Spells.effects.SpellExplosions.explode(mob.level(), mob, mob.getX(), mob.getY(), mob.getZ(), (float)exploRange, Level.ExplosionInteraction.NONE);
                     mob.hurtServer(serverLevel, DustDamageTypes.create(serverLevel,DustDamageTypes.IGNITION_KEY), 10F);
                 }
             }
@@ -97,7 +97,7 @@ public class EffectFireScorch extends InstantaneousMobEffect {
                         }
                     }*/
                     mob.clearFire();
-                    mob.level().explode(mob, mob.getX(), mob.getY(), mob.getZ(), (float)exploRange, Level.ExplosionInteraction.NONE);
+                    com.mowmaster.dust.Features.Spells.effects.SpellExplosions.explode(mob.level(), mob, mob.getX(), mob.getY(), mob.getZ(), (float)exploRange, Level.ExplosionInteraction.NONE);
                     mob.hurtServer(level, mob.getLastDamageSource(), 10F);
                 }
             }
