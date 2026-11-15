@@ -57,6 +57,7 @@ Minecraft 26.3 (NeoForge 26.3.0.94, the main version) and 26.1.2 (NeoForge 26.1.
 - One file changed: send the changes in chat with line numbers. Several files: a zip, sent as a file.
 - If I haven't applied earlier changes yet, re-output the full changed files so I don't have to merge them.
 - For simple model fixes (a missing `tintindex`, `#`, texture key), just tell me the line to change; only send a model file when the geometry changes.
+- Never create or edit files in `src/generated`: `runData` (26.3) overwrites them. Change the datagen providers instead and I'll run it.
 - To check 26.3 APIs, clone the public `neoforged/neoforge` repo (branch `26.3.x`) and read the 26.3 porting primer in `neoforged/.github` (`primers/26.3/index.md`; 26.1 and 26.2 primers cover earlier changes). NeoForge's docs are in the public `neoforged/Documentation` repo (`docs/`).
 
 ## Dust TODO
