@@ -13,6 +13,12 @@ public final class PylonConfig
     public static final int LEGENDARY_MIN_NODES = 5;
     public static final int LEGENDARY_MAX_NODES = 10;
 
+    // A Neutral pylon takes a blessed card in the deck this often (otherwise it draws from the rest)
+    public static final float BLESSED_DRAW_CHANCE = 0.5F;
+    // Levelling a pylon: a step of blessing at this node (if it has more), and at its last node, besides the one for
+    // locking it
+    public static final int BLESSED_NODE = 4;
+
     // The most upgrade nodes any pylon has (the models go up to level_10)
     public static final int MAX_NODES = 10;
 

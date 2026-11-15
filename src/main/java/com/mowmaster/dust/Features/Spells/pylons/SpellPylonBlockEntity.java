@@ -133,6 +133,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         boolean wasLocked = pylon.locked();
         pylon.upgrade(min + random.nextInt(max - min + 1));
         if (!wasLocked) locked(pylon);
+        // Levelling pays off: a step of blessing at the 4th node (if there are more than 4) and at the last one (if
+        // there's more than 1), on top of the one for locking. At most two of these per pylon.
+        int filled = pylon.nodes(), total = pylon.maxNodes();
+        if ((filled == PylonConfig.BLESSED_NODE && total > PylonConfig.BLESSED_NODE) || (filled == total && total > 1)) bless();
         if (pylon.nodes() >= pylon.maxNodes() && pylon.card() != null && (pylon.type() == PylonType.NEUTRAL || pylon.legendary())) {
             deck.addCard(pylon.card());
         }
@@ -142,12 +146,19 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
         sync();
     }
 
-    // A pylon just locked: a step of blessing (two with Double Blessed Progress); a category pylon also puts another
+    // A step of blessing: one, or two with Double Blessed Progress
+    private void bless()
+    {
+        deck.bless(treeLevels().containsKey(SpellRegistries.DOUBLE_BLESSED.getId()) ? 2 : 1, level.getRandom());
+    }
+
+    // A pylon just locked: a step of blessing (not for a blessed or corrupted one); a category pylon also puts another
     // modifier of its category from the pool into the deck
     private void locked(PylonBlockEntity pylon)
     {
         var random = level.getRandom();
-        deck.bless(treeLevels().containsKey(SpellRegistries.DOUBLE_BLESSED.getId()) ? 2 : 1, random);
+        // A blessed or corrupted pylon (or a null corruption's stop) gives no blessing for locking itself
+        if (pylon.tier() == ModifierTier.NORMAL && !pylon.stop()) bless();
         ModifierCategory category = pylon.type().category();
         if (category != null && pylon.modifier() != null && pylon.tier() == ModifierTier.NORMAL) {
             deck.drawNormal(treeContext(null), random, categoryBonus(), doubleDraw(), modifier -> modifier.categories().contains(category));
@@ -379,7 +390,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
             if (!ours.isEmpty()) fits = ours;
         }
         if (fits.isEmpty()) return Draw.NOTHING;
-        Identifier card = fits.get(random.nextInt(fits.size()));
+        // A blessed card (or BLESSING) in the deck: a Neutral pylon takes it half the time (PylonConfig.BLESSED_DRAW_CHANCE),
+        // otherwise draws from the rest
+        List<Identifier> blessings = fits.stream().filter(SpellPylonBlockEntity::isBlessedCard).toList();
+        List<Identifier> rest = fits.stream().filter(c -> !isBlessedCard(c)).toList();
+        List<Identifier> from = blessings.isEmpty() || rest.isEmpty() ? fits
+                : random.nextFloat() < PylonConfig.BLESSED_DRAW_CHANCE ? blessings : rest;
+        Identifier card = from.get(random.nextInt(from.size()));
         deck.removeCard(card);
 
         if (card.equals(SpellDeck.SPELL_BREAK)) return new Draw(card, null, ModifierTier.NORMAL, true, false, false, 0);
@@ -444,6 +461,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity
     {
         SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(id);
         return modifier == null ? null : modifier.tier();
+    }
+
+    private static boolean isBlessedCard(Identifier card)
+    {
+        return card.equals(SpellDeck.BLESSING) || tierOf(card) == ModifierTier.BLESSED;
     }
 
     // Set by context(): whether that pylon's parent is a spell break
