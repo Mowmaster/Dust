@@ -77,6 +77,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchEvaporation(blockModels);
         createResearchDistillation(blockModels, itemModels);
         createElementStations(blockModels, itemModels);
+        createDustStorage(blockModels);
         createSpellScroll(itemModels);
         createPylons(blockModels);
         // The Rune modifier's glyph: one model per letter (models/block/spell/rune/rune_<a-z>.json), by its glyph
@@ -197,6 +198,24 @@ public class DustProviderModel extends ModelProvider {
             itemModels.itemModelOutput.accept(DustItemRegistry.CRYSTALS.get(element).get(), ItemModelUtils.tintedModel(crystalModel, new Constant(color)));
             itemModels.itemModelOutput.accept(DustItemRegistry.DUSTS.get(element).get(), ItemModelUtils.tintedModel(dustModel, new Constant(color)));
         }
+    }
+
+    // Dust storage (Features/DustStorage):
+    //   the Dust Jar: one model for block and item. The block's lid is tinted by Client/DustJarTint (tint index 1); the
+    //     item's by "dust:dust_jar" (Client/DustJarItemTint), with index 0 left white.
+    //   the Dust Grinder: the block shows the base (dust_grinder_base.json); the top turns in Client/DustGrinderRenderer
+    //     (dust_grinder_top.json). The item shows the whole thing (dust_grinder.json). One model whether powered or not.
+    private void createDustStorage(BlockModelGenerators blockModels)
+    {
+        Identifier jar = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_jar");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_JAR.get(), BlockModelGenerators.plainVariant(jar)));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_JAR.asItem(), ItemModelUtils.tintedModel(jar,
+                new Constant(-1), new com.mowmaster.dust.Features.DustStorage.Client.DustJarItemTint()));
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_GRINDER.get(),
+                BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_grinder_base"))));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_GRINDER.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_grinder")));
     }
 
     // The Research Crusher: the block shows its frame and funnel (models/block/station/research_crusher_body.json); its

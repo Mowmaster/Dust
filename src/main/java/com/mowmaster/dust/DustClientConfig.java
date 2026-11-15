@@ -6,6 +6,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 // Dust's settings for this player's screen only (config/dust-client.toml, never sent to servers). Registered in
 // DustClient; editable in game from Mods > Dust > Config.
 // [research_book]: where the held research book is drawn and how big.
+// [mana_hud]: where the mana bar and dust row go (Features/Magic/Client/ManaHud).
 public final class DustClientConfig
 {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -14,6 +15,10 @@ public final class DustClientConfig
     public static final ModConfigSpec.IntValue BOOK_X;
     public static final ModConfigSpec.IntValue BOOK_Y;
     public static final ModConfigSpec.IntValue BOOK_SCALE;
+    public static final ModConfigSpec.BooleanValue MANA_FOLLOW_HOTBAR;
+    public static final ModConfigSpec.EnumValue<HudAnchor> MANA_ANCHOR;
+    public static final ModConfigSpec.IntValue MANA_X;
+    public static final ModConfigSpec.IntValue MANA_Y;
 
     static {
         BUILDER.comment("The Research Notes / Shared Research Guide, shown at the side of the screen while held in either hand").push("research_book");
@@ -21,6 +26,14 @@ public final class DustClientConfig
         BOOK_X = BUILDER.comment("Move right (+) or left (-)").defineInRange("x", 0, -2000, 2000);
         BOOK_Y = BUILDER.comment("Move down (+) or up (-)").defineInRange("y", 0, -2000, 2000);
         BOOK_SCALE = BUILDER.comment("Size in percent").defineInRange("scale", 45, 20, 200);
+        BUILDER.pop();
+
+        BUILDER.comment("The mana bar, with the dust you carry in a row above it").push("mana_hud");
+        MANA_FOLLOW_HOTBAR = BUILDER.comment("Just left of the hotbar, moving further left when the offhand slot shows there.",
+                "Set false to pin it to anchor instead").define("follow_hotbar", true);
+        MANA_ANCHOR = BUILDER.comment("Which part of the screen it's pinned to (when follow_hotbar is false)").defineEnum("anchor", HudAnchor.BOTTOM_LEFT);
+        MANA_X = BUILDER.comment("Move right (+) or left (-)").defineInRange("x", 0, -2000, 2000);
+        MANA_Y = BUILDER.comment("Move down (+) or up (-)").defineInRange("y", 0, -2000, 2000);
         BUILDER.pop();
     }
 

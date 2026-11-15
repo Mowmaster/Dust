@@ -105,6 +105,8 @@ public class DustClient {
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
+        // The Dust Grinder's turning top and the item in its hole
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_GRINDER.get(), com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
         event.registerEntityRenderer(DustEntityRegistry.ELEMENT_ORB.get(), ElementalOrbEntityRenderer::new);
         // A spell in flight draws nothing itself: its trail is particles (SpellProjectileEntity.tick)
@@ -124,6 +126,7 @@ public class DustClient {
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
         ResearchCrusherRenderer.registerModels(event);
+        com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer.registerModels(event);
         ResearchEvaporationRenderer.registerModels(event);
     }
 
@@ -136,6 +139,8 @@ public class DustClient {
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "compound"), CompoundTint.MAP_CODEC);
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "alchemical_dust"), AlchemicalDustTint.MAP_CODEC);
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "spell"), com.mowmaster.dust.Features.Spells.Client.SpellTint.MAP_CODEC);
+        // "dust:dust_jar": a Dust Jar item's lid in the colour of the dust it carries
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_jar"), com.mowmaster.dust.Features.DustStorage.Client.DustJarItemTint.MAP_CODEC);
     }
 
     // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)
@@ -151,6 +156,8 @@ public class DustClient {
     public static void registerBlockTints(RegisterColorHandlersEvent.BlockTintSources event)
     {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
+        // The Dust Jar's lid in its element's colour (tint index 1)
+        event.register(com.mowmaster.dust.Features.DustStorage.Client.DustJarTint.all(), DustBlockRegistry.DUST_JAR.get());
         // Element Tester: crystal colours and gauge lines, one tint source per tint index (see ExaminerLayout)
         event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
         // The spell pylons: the Spell Pylon in its element's colour; the others by kind, lockout and upgrade nodes
@@ -184,58 +191,11 @@ public class DustClient {
         event.registerSpriteSet(DustParticleRegistry.DUSTPARTICLES_SPELLS_FIRE.get(), ParticleSpellFire.Provider::new);
     }
 
+    // The mana bar and the dust carried (Features/Magic/Client/ManaHud: placement is [mana_hud] in the client config)
     @SubscribeEvent
     public static void registerHUD(RegisterGuiLayersEvent event) {
-        event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_meter"), (guiGraphics, deltaTracker) -> {
-            int x = guiGraphics.guiWidth() / 2;
-            int y = guiGraphics.guiHeight();
-
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (player != null && !player.isCreative() && !player.isSpectator()
-                    && DustMagicAttachmentHelper.hasUnlockedMana(player)) {
-                for (int i = 0; i < 100; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_iconh_bg"),
-                            1, 4, 0, 0, x - 200 + i, y - 20, 1, 4);
-                }
-
-                int maxMana = DustMagicAttachmentHelper.getManaMaximum(player);
-                int currentMana = DustMagicAttachmentHelper.getManaLevel(player);
-                int calcPercentManaLeft = Math.round(((float)currentMana/maxMana)*100);
-                for (int i = 0; i < calcPercentManaLeft; i++) {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_iconh"),
-                            1, 4, 0, 0, x - 200 + i, y - 20, 1, 4);
-                }
-
-                //Magic meter Overlay
-                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "magicmeter_overlay"),
-                        116, 20, 0, 0, x - 208, y - 28, 116, 20);
-
-                /*EnumAffinity affinity = DustElementAttachmentHelper.getAffinity(player);
-                if(!affinity.equals(EnumAffinity.NONE))
-                {
-                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(DustReferences.MODID, "magicmeter_overlay"),
-                            16, 16, 0, 0, x - 222, y - 40, 8, 8);
-                }*/
-
-            }
-        });
-
-        // The dust carried (Features/Magic/PlayerMagic): each element's icon in its colour and how much, in a row above
-        // the mana bar, once the player's magic has awakened
-        event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_store"), (guiGraphics, deltaTracker) -> {
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (player == null || player.isSpectator() || !com.mowmaster.dust.Features.Magic.PlayerMagicHelper.isAwakened(player)) return;
-            var magic = com.mowmaster.dust.Features.Magic.PlayerMagicHelper.get(player);
-            var font = Minecraft.getInstance().font;
-            int x = guiGraphics.guiWidth() / 2 - 208;
-            int y = guiGraphics.guiHeight() - 40;
-            for (var carried : magic.dust().entrySet()) {
-                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, carried.getKey().icon(), x, y, 9, 9, 0xFF000000 | carried.getKey().color());
-                String amount = String.valueOf(carried.getValue());
-                guiGraphics.text(font, amount, x + 10, y + 1, 0xFFFFFFFF, true);
-                x += 10 + font.width(amount) + 4;
-            }
-        });
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_meter"), com.mowmaster.dust.Features.Magic.Client.ManaHud::renderMana);
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_store"), com.mowmaster.dust.Features.Magic.Client.ManaHud::renderDust);
     }
 
 

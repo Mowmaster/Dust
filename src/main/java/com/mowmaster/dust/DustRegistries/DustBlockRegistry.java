@@ -143,6 +143,17 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> ELEMENT_CRAFTER = registerBlock("element_crafter", properties -> new com.mowmaster.dust.Features.Crafting.ElementCrafterBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
 
+    // Dust storage (Features/DustStorage): the Dust Jar (1000 dust of one element; its own item class, for MowLib's place
+    // key and its contents tooltip) and the Dust Grinder (grinds researched compounds, Alchemical Dust and crystals into
+    // orbs or jars)
+    public static final DeferredBlock<Block> DUST_JAR = DUSTBLOCKS.registerBlock("dust_jar", properties -> new com.mowmaster.dust.Features.DustStorage.DustJarBlock(
+            properties.mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(0.6F).noOcclusion()));
+    static {
+        DustItemRegistry.DUSTITEMS.registerItem("dust_jar", properties -> new com.mowmaster.dust.Features.DustStorage.DustJarItem(DUST_JAR.get(), properties.useBlockDescriptionPrefix()));
+    }
+    public static final DeferredBlock<Block> DUST_GRINDER = registerBlock("dust_grinder", properties -> new com.mowmaster.dust.Features.DustStorage.DustGrinderBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
+
     // The Spell Caster (Features/Spells/caster): casts a scroll's spell on a redstone pulse, on dust and energy crystals
     public static final DeferredBlock<Block> SPELL_CASTER = registerBlock("spell_caster", properties -> new com.mowmaster.dust.Features.Spells.caster.SpellCasterBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(3.5F).requiresCorrectToolForDrops()));

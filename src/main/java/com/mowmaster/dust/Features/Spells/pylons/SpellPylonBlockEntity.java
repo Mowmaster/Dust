@@ -298,9 +298,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
 
     // ---- MowLib's reading HUD: the deck and pool (SpellPylonReading) ----
 
+    // Nothing (null) while the reader holds a research book: its own HUD is showing in the same corner of the screen
     @Override
-    public com.mowmaster.mowlib.reading.ReadingPaper read(com.mowmaster.mowlib.reading.ReadingContext context)
+    public com.mowmaster.mowlib.reading.@Nullable ReadingPaper read(com.mowmaster.mowlib.reading.ReadingContext context)
     {
+        if (SpellPylonReading.holdsResearchBook(context.player())) return null;
         return com.mowmaster.mowlib.reading.ReadingPaper.of(SpellPylonReading.lines(this, deck));
     }
 

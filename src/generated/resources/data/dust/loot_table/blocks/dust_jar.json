@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:copy_components",
+            "include": [
+              "dust:dust_jar"
+            ],
+            "source": "block_entity"
+          },
+          "name": "dust:dust_jar"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "dust:blocks/dust_jar"
+}

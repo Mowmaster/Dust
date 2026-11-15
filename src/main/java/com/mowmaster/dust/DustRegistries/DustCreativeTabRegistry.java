@@ -32,6 +32,8 @@ public class DustCreativeTabRegistry {
                         DustItemRegistry.DUSTS.values().forEach(item -> output.accept(item.get()));
                         output.accept(DustBlockRegistry.ELEMENT_TESTER.asItem());
                         output.accept(DustBlockRegistry.ELEMENT_CRAFTER.asItem());
+                        output.accept(DustBlockRegistry.DUST_JAR.asItem());
+                        output.accept(DustBlockRegistry.DUST_GRINDER.asItem());
                         output.accept(DustBlockRegistry.SPELL_CASTER.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_CRUSHER.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_SEPARATION.asItem());

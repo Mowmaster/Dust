@@ -57,6 +57,11 @@ public class DustComponentDataRegistry
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<DustElement>> ALCHEMICAL_ELEMENT = register("alchemical_element",
             builder -> builder.persistent(DustElements.CODEC).networkSynchronized(ByteBufCodecs.fromCodec(DustElements.CODEC)));
 
+    // What a Dust Jar holds (element and amount), on its item: see Features/DustStorage/DustJarContents
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.mowmaster.dust.Features.DustStorage.DustJarContents>> DUST_JAR = register("dust_jar",
+            builder -> builder.persistent(com.mowmaster.dust.Features.DustStorage.DustJarContents.CODEC)
+                    .networkSynchronized(com.mowmaster.dust.Features.DustStorage.DustJarContents.STREAM_CODEC));
+
     // The spell on a Spell Scroll: see Features/Spells/api/Spell
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Spell>> SPELL = register("spell",
             builder -> builder.persistent(Spell.CODEC).networkSynchronized(Spell.STREAM_CODEC));

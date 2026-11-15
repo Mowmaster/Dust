@@ -36,6 +36,14 @@ public final class SpellPylonReading
                 && player.level().getBlockState(block.getBlockPos()).getBlock() instanceof SpellPylonBlock;
     }
 
+    // A Research Notes / Shared Research Guide in either hand: its HUD (ResearchBookHud) is showing, so the pylon's
+    // paper isn't (they'd overlap)
+    public static boolean holdsResearchBook(Player player)
+    {
+        return player.getMainHandItem().getItem() instanceof com.mowmaster.dust.Features.Research.ResearchBookItem
+                || player.getOffhandItem().getItem() instanceof com.mowmaster.dust.Features.Research.ResearchBookItem;
+    }
+
     public static List<Component> lines(SpellPylonBlockEntity pylon, SpellDeck deck)
     {
         List<Component> lines = new ArrayList<>();

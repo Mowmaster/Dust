@@ -34,6 +34,12 @@ public class DustBlockEntityRegistry
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Crafting.ElementCrafterBlockEntity>> ELEMENT_CRAFTER = BLOCK_ENTITIES.register("element_crafter",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Crafting.ElementCrafterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_CRAFTER.get())));
 
+    // Dust storage (Features/DustStorage)
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustJarBlockEntity>> DUST_JAR = BLOCK_ENTITIES.register("dust_jar",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustJarBlockEntity::new, Set.of(DustBlockRegistry.DUST_JAR.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustGrinderBlockEntity>> DUST_GRINDER = BLOCK_ENTITIES.register("dust_grinder",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustGrinderBlockEntity::new, Set.of(DustBlockRegistry.DUST_GRINDER.get())));
+
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity>> SPELL_CASTER = BLOCK_ENTITIES.register("spell_caster",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity::new, Set.of(DustBlockRegistry.SPELL_CASTER.get())));
 

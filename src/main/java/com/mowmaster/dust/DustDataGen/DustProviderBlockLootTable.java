@@ -60,6 +60,12 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         add(DustBlockRegistry.ELEMENT_CRAFTER.get(), block -> LootTable.lootTable().withPool(applyExplosionCondition(block,
                 LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(LootItem.lootTableItem(block)
                         .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.DYED_COLOR))))));
+        // The Dust Jar keeps its dust (copy_components: the block entity's dust:dust_jar onto the dropped item)
+        add(DustBlockRegistry.DUST_JAR.get(), block -> LootTable.lootTable().withPool(applyExplosionCondition(block,
+                LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(LootItem.lootTableItem(block)
+                        .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+                                .include(com.mowmaster.dust.DustRegistries.DustComponentDataRegistry.DUST_JAR.get()))))));
+        dropSelf(DustBlockRegistry.DUST_GRINDER.get());
         dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());
         dropSelf(DustBlockRegistry.RESEARCH_SEPARATION.get());
         dropSelf(DustBlockRegistry.RESEARCH_EVAPORATION.get());
