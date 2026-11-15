@@ -161,7 +161,12 @@ public class DustItemRegistry
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)
     public static final DeferredItem<Item> ALCHEMICAL_DUST = DUSTITEMS.registerItem("alchemical_dust", AlchemicalDustItem::new);
 
-    public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire", properties -> new FireStickItem(properties.durability(8)));
+    // Wands (Features/Spells/SpellWandItem): cast their element's plain Projectile spell on durability; skeletons and
+    // strays sometimes carry them (WandMobs)
+    public static final DeferredItem<Item> SPELL_WAND_FIRE = DUSTITEMS.registerItem("wands_stick_fire",
+            properties -> new com.mowmaster.dust.Features.Spells.SpellWandItem(() -> DustElements.FIRE, properties));
+    public static final DeferredItem<Item> SPELL_WAND_ICE = DUSTITEMS.registerItem("wands_stick_ice",
+            properties -> new com.mowmaster.dust.Features.Spells.SpellWandItem(() -> DustElements.ICE, properties));
     public static final DeferredItem<Item> SPELL_WAND_EARTH = DUSTITEMS.registerItem("wands_stick_earth", properties -> new EarthStickItem(properties.durability(8)));
 
 

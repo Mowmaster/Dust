@@ -74,6 +74,7 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.CRYSTAL_HORSE_ARMOR.asItem());
 
                         output.accept(DustItemRegistry.SPELL_WAND_FIRE.asItem());
+                        output.accept(DustItemRegistry.SPELL_WAND_ICE.asItem());
                         output.accept(DustItemRegistry.SPELL_WAND_EARTH.asItem());
                     }).build());
 
