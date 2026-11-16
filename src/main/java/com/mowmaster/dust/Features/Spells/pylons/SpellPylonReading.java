@@ -28,14 +28,14 @@ public final class SpellPylonReading
 {
     private SpellPylonReading() {}
 
-    // The ReadingSight condition: the player's crosshair is on a Spell Pylon (or any pylon) within reach (pick: what they're looking
+    // The ReadingSight condition: the player's crosshair is on a modifier pylon or a Blessed / Corrupted Pylon within
+    // reach (the Spell Pylon has its own HUD: Client/SpellPylonHud) (pick: what they're looking
     // at, false: not fluids). Checked on both sides.
     public static boolean lookingAtSpellPylon(Player player)
     {
         HitResult hit = player.pick(player.blockInteractionRange(), 1.0F, false);
         return hit instanceof BlockHitResult block && hit.getType() == HitResult.Type.BLOCK
-                && (player.level().getBlockState(block.getBlockPos()).getBlock() instanceof SpellPylonBlock
-                    || player.level().getBlockState(block.getBlockPos()).getBlock() instanceof PylonBlock
+                && (player.level().getBlockState(block.getBlockPos()).getBlock() instanceof PylonBlock
                     || player.level().getBlockState(block.getBlockPos()).getBlock() instanceof CounterPylonBlock);
     }
 

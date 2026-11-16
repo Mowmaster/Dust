@@ -70,6 +70,9 @@ public final class ResearchBook
 {
     public static final int WIDTH = 256;
     public static final int HEIGHT = 188;
+    // The bottom row of tabs hangs below the cover: the whole drawing is TOTAL_HEIGHT tall
+    private static final int BOTTOM_TAB_H = 22;
+    public static final int TOTAL_HEIGHT = HEIGHT + BOTTOM_TAB_H;
 
     private static final int TAB_MAX_W = 28;
     private static final int TAB_GAP = 3;
@@ -237,6 +240,7 @@ public final class ResearchBook
     public static void draw(GuiGraphicsExtractor graphics, Font font, ResearchData data, int mouseX, int mouseY, boolean editing)
     {
         drawTabs(graphics);
+        drawBottomTabs(graphics);
         graphics.fill(0, COVER_TOP, WIDTH, HEIGHT, COVER_EDGE);
         graphics.fill(2, COVER_TOP + 2, WIDTH - 2, HEIGHT - 2, COVER);
         Paper.paper(graphics, LEFT_X - 2, PAGE_TOP - 4, PAGE_W + 4, PAGE_BOTTOM - PAGE_TOP + 6);
@@ -258,9 +262,16 @@ public final class ResearchBook
         return Math.min(TAB_MAX_W, (WIDTH - 2 * TABS_X - (count - 1) * TAB_GAP) / Math.max(1, count));
     }
 
+    // The tabs along the top (the things found in the world) and along the bottom (bottomTab: Elements, Spell Cards,
+    // Research, Codex). The open one stands out a little further.
+    private static List<ResearchTab> tabsOn(boolean bottom)
+    {
+        return ResearchTabs.all().stream().filter(each -> each.bottomTab() == bottom).toList();
+    }
+
     private static void drawTabs(GuiGraphicsExtractor graphics)
     {
-        List<ResearchTab> tabs = ResearchTabs.all();
+        List<ResearchTab> tabs = tabsOn(false);
         int width = tabWidth(tabs.size());
         for (int i = 0; i < tabs.size(); i++) {
             int x = TABS_X + i * (width + TAB_GAP);
@@ -269,6 +280,20 @@ public final class ResearchBook
             graphics.fill(x, top, x + width, COVER_TOP + 2, COVER_EDGE);
             graphics.fill(x + 1, top + 1, x + width - 1, COVER_TOP + 2, on ? TAB_ON : TAB_OFF);
             graphics.item(tabs.get(i).tabIcon(), x + (width - 16) / 2, top + 2);
+        }
+    }
+
+    private static void drawBottomTabs(GuiGraphicsExtractor graphics)
+    {
+        List<ResearchTab> tabs = tabsOn(true);
+        int width = tabWidth(tabs.size());
+        for (int i = 0; i < tabs.size(); i++) {
+            int x = TABS_X + i * (width + TAB_GAP);
+            boolean on = tabs.get(i) == tab();
+            int bottom = on ? TOTAL_HEIGHT : TOTAL_HEIGHT - 2;
+            graphics.fill(x, HEIGHT - 2, x + width, bottom, COVER_EDGE);
+            graphics.fill(x + 1, HEIGHT - 2, x + width - 1, bottom - 1, on ? TAB_ON : TAB_OFF);
+            graphics.item(tabs.get(i).tabIcon(), x + (width - 16) / 2, bottom - 18);
         }
     }
 
@@ -1105,8 +1130,9 @@ public final class ResearchBook
 
     private static @Nullable ResearchTab tabAt(int x, int y)
     {
-        if (y < 0 || y >= COVER_TOP) return null;
-        List<ResearchTab> tabs = ResearchTabs.all();
+        boolean bottom = y >= HEIGHT && y < TOTAL_HEIGHT;
+        if (!bottom && (y < 0 || y >= COVER_TOP)) return null;
+        List<ResearchTab> tabs = tabsOn(bottom);
         int width = tabWidth(tabs.size());
         for (int i = 0; i < tabs.size(); i++) {
             int tx = TABS_X + i * (width + TAB_GAP);

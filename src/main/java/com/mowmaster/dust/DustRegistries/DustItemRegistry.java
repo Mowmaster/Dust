@@ -139,7 +139,7 @@ public class DustItemRegistry
     public static final DeferredItem<Item> SPELL_SCROLL = DUSTITEMS.registerItem("spell_scroll", SpellScrollItem::new, properties -> properties.stacksTo(1));
     // A book of spells: a Spell Scroll on each page, cast with keys from anywhere in your inventory (Features/Spells/grimoire)
     // Modifier cards (Features/Spells/ModifierCardItem): one for every modifier, by the modifier's id. Their models are
-    // models/item/cards/card_<name>.json (the shape modifiers' are hand-made 3D cards; the rest flat, textures/item/cards).
+    // models/item/cards/card_<name>.json, all flat (textures/item/cards; every fusion shares card_fusion).
     public static final Map<net.minecraft.resources.Identifier, DeferredItem<Item>> CARDS = new LinkedHashMap<>();
     public static final DeferredItem<Item> CARD_AOE = card("card_aoe", "aoe");
     public static final DeferredItem<Item> CARD_BEAM = card("card_beam", "beam");

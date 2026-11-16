@@ -96,6 +96,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     public List<BlockPos> chain() { return chain; }
     public int experience() { return experience; }
     public int blessed() { return deck.blessed(); }
+    // The deck and pool (synced: the HUD reads them on the client, Client/SpellPylonHud)
+    public SpellDeck deck() { return deck; }
     public int corruption() { return deck.corruption(); }
 
     public int level()
@@ -302,8 +304,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     @Override
     public com.mowmaster.mowlib.reading.@Nullable ReadingPaper read(com.mowmaster.mowlib.reading.ReadingContext context)
     {
-        if (SpellPylonReading.holdsResearchBook(context.player())) return null;
-        return com.mowmaster.mowlib.reading.ReadingPaper.withPages(SpellPylonReading.lines(this, deck, context.player()), SpellPylonReading.deckPages(deck));
+        // Its HUD is Dust's own (Client/SpellPylonHud: two card grids with page-key selection), so nothing on MowLib's paper
+        return null;
     }
 
     // ---- the modifier card ----
@@ -382,6 +384,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
 
         Draw draw = drawFor(type, pylon.getBlockPos(), context(parent, placer), placer);
         pylon.link(worldPosition, draw.card(), draw.modifier(), draw.tier(), draw.spellBreak(), null, draw.nodes(), draw.legendary(), draw.stop());
+        // The player who placed it has now had this modifier in a spell: its Spell Cards entry unlocks
+        if (placer != null && draw.modifier() != null) com.mowmaster.dust.Features.Research.Tabs.SpellCardResearchTab.unlock(placer, draw.modifier());
         chain.add(pylon.getBlockPos());
         parents.add(parent);
         refreshLook(chain.size() - 1);

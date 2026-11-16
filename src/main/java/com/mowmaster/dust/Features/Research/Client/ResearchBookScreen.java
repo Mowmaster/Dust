@@ -54,7 +54,7 @@ public class ResearchBookScreen extends Screen
     protected void init()
     {
         left = (this.width - ResearchBook.WIDTH) / 2;
-        top = (this.height - ResearchBook.HEIGHT) / 2;
+        top = (this.height - ResearchBook.TOTAL_HEIGHT) / 2;
         if (!readOnly) {
             notesBox = MultiLineEditBox.builder()
                     .setX(left + ResearchBook.RIGHT_X + 2)

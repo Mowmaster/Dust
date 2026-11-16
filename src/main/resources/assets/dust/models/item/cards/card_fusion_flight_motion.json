@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "dust:item/cards/card_fusion_flight_motion"
+    "layer0": "dust:item/cards/card_fusion"
   }
 }

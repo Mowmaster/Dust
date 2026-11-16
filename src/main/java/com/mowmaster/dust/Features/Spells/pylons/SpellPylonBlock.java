@@ -149,9 +149,7 @@ public class SpellPylonBlock extends Block implements EntityBlock
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
     {
-        if (player instanceof ServerPlayer serverPlayer && level.getBlockEntity(pos) instanceof SpellPylonBlockEntity pylon) {
-            serverPlayer.sendOverlayMessage(pylon.info());
-        }
-        return InteractionResult.SUCCESS;
+        // Nothing to do with an empty hand: what it holds shows on its HUD just by looking at it (Client/SpellPylonHud)
+        return InteractionResult.PASS;
     }
 }

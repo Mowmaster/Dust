@@ -59,4 +59,11 @@ public class ResearchUnlockTab extends ResearchTab
     {
         return false;
     }
+
+    // Along the bottom of the book
+    @Override
+    public boolean bottomTab()
+    {
+        return true;
+    }
 }

@@ -59,7 +59,7 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.GRIMOIRE.get(), ModelTemplates.FLAT_ITEM);
         // The Akashic: its hand-made 3D book (models/item/akashic.json)
         itemModels.itemModelOutput.accept(DustItemRegistry.AKASHIC.get(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/akashic")));
-        // Modifier cards: their hand-made models (models/item/cards/card_<name>.json)
+        // Modifier cards: their models (models/item/cards/card_<name>.json, flat cards)
         DustItemRegistry.CARDS.values().forEach(card -> itemModels.itemModelOutput.accept(card.get(), ItemModelUtils.plainModel(
                 Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/cards/" + BuiltInRegistries.ITEM.getKey(card.get()).getPath()))));
         itemModels.generateFlatItem(DustItemRegistry.PARCHMENT.get(), ModelTemplates.FLAT_ITEM);

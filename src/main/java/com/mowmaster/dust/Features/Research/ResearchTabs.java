@@ -34,6 +34,7 @@ public final class ResearchTabs
     public static final ResearchTab BOSSES = register(new CreatureResearchTab(true));
     public static final EffectResearchTab EFFECTS = register(new EffectResearchTab());
     public static final ElementResearchTab ELEMENTS = register(new ElementResearchTab());
+    public static final com.mowmaster.dust.Features.Research.Tabs.SpellCardResearchTab SPELL_CARDS = register(new com.mowmaster.dust.Features.Research.Tabs.SpellCardResearchTab());
     public static final ResearchUnlockTab RESEARCH = register(new ResearchUnlockTab());
     public static final CodexResearchTab CODEX = register(new CodexResearchTab());
 

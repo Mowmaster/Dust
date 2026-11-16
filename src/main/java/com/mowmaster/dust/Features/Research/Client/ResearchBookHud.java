@@ -51,7 +51,7 @@ public final class ResearchBookHud
     {
         float scale = scalePercent / 100.0F;
         int width = Math.round(ResearchBook.WIDTH * scale);
-        int height = Math.round(ResearchBook.HEIGHT * scale);
+        int height = Math.round(ResearchBook.TOTAL_HEIGHT * scale);
         int x = HudAnchor.keepOnScreen(anchor.x(graphics.guiWidth(), width) + xOffset, width, graphics.guiWidth());
         int y = HudAnchor.keepOnScreen(anchor.y(graphics.guiHeight(), height) + yOffset, height, graphics.guiHeight());
 

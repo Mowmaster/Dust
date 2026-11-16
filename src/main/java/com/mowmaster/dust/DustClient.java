@@ -206,6 +206,8 @@ public class DustClient {
     public static void registerHUD(RegisterGuiLayersEvent event) {
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "aura_meter"), com.mowmaster.dust.Features.Magic.Client.ManaHud::renderMana);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_store"), com.mowmaster.dust.Features.Magic.Client.ManaHud::renderDust);
+        // The Spell Pylon's HUD while it's looked at (its deck and, with the Akashic, its pool)
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(DustReferences.MODID, "spell_pylon"), com.mowmaster.dust.Features.Spells.Client.SpellPylonHud::render);
     }
 
 

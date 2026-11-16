@@ -89,6 +89,12 @@ public class LeveledModifier implements SpellModifier
     // Something it does as the spell is cast (before the shape delivers it), e.g. Overshield's Resistance
     public LeveledModifier onCast(java.util.function.Consumer<SpellCast> onCast) { this.onCast = onCast; return this; }
 
+    // ---- for the book (Research/Tabs/SpellCardResearchTab) ----
+    public int everyLevelsCount() { return everyLevels; }
+    public Set<Identifier> allowedShapes() { return shapes; }
+    public boolean branchOnly() { return oncePerBranch; }
+    public int costPercentPerLevel() { return costPerLevel; }
+
     // ---- SpellModifier ----
 
     @Override public Set<ModifierCategory> categories() { return categories; }

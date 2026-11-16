@@ -69,6 +69,6 @@ public final class PylonReading
     public static @Nullable Identifier cardTexture(@Nullable Identifier modifier)
     {
         if (modifier == null) return null;
-        return Identifier.fromNamespaceAndPath(modifier.getNamespace(), "textures/item/cards/card_" + modifier.getPath() + ".png");
+        return com.mowmaster.dust.Features.Spells.ModifierCardItem.texture(modifier);
     }
 }

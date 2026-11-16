@@ -131,9 +131,8 @@ public class PylonBlock extends Block implements EntityBlock
                 tree.upgrade(pylon, serverPlayer);
             } else if (tree != null && type == PylonType.SHAPE) {
                 tree.cycleShape(pylon, serverPlayer);
-            } else {
-                serverPlayer.sendOverlayMessage(SpellPylonBlockEntity.describe(pylon));
             }
+            // (What it holds shows on the reading HUD just by looking at it: PylonReading)
         }
         return InteractionResult.SUCCESS;
     }

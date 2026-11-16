@@ -159,6 +159,12 @@ public abstract class ResearchTab
         return null;
     }
 
+    // true: the tab sits along the bottom of the book (Elements, Spell Cards, Research, Codex), not the top
+    public boolean bottomTab()
+    {
+        return false;
+    }
+
     // How long something on this tab must be looked at to observe it, in ticks (20 = one second)
     public int observeTicks()
     {

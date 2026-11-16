@@ -139,6 +139,8 @@ public final class SpellCasting
             player.sendOverlayMessage(Component.translatable("dust.spell.no_target"));
             return false;
         }
+        // Every modifier in a spell the player casts counts as had in a spell (their Spell Cards entries)
+        for (net.minecraft.resources.Identifier modifier : spell.modifiers()) com.mowmaster.dust.Features.Research.Tabs.SpellCardResearchTab.unlock(player, modifier);
 
         if (!free) {
             int total = 0;
