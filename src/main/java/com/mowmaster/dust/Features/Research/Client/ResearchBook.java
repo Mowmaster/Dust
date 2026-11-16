@@ -218,8 +218,8 @@ public final class ResearchBook
     {
         if (selected == null) return null;
         EntryResearch research = data.get(selected);
-        if (research == null) return null;
-        List<NotesPage> pages = notesPages(selected, research);
+        List<NotesPage> pages = research != null ? notesPages(selected, research) : previewPages(selected);
+        if (pages.isEmpty()) return null;
         notesPage = Math.clamp(notesPage, 0, pages.size() - 1);
         return pages.get(notesPage);
     }
@@ -244,6 +244,8 @@ public final class ResearchBook
 
         if (selected != null && data.has(selected)) {
             drawEntry(graphics, font, data, selected, editing);
+        } else if (selected != null && previewable(selected)) {
+            drawPreview(graphics, font, data, selected);
         } else {
             selected = null;
             drawList(graphics, font, data);
@@ -424,6 +426,72 @@ public final class ResearchBook
                 }
                 default -> drawLines(graphics, font, font.split(notesText(entry, research, page.kind()), PAGE_W - 8), RIGHT_X + 4, NOTES_TOP, FOOTER_Y - 2, INK);
             }
+        }
+        Paper.inkCentred(graphics, font, Component.literal((notesPage + 1) + "/" + pages.size()), rightCentre, FOOTER_Y + 2, FADED);
+        if (notesPage > 0) Paper.ink(graphics, font, Component.literal("<"), RIGHT_X + 2, FOOTER_Y + 2, INK);
+        if (notesPage < pages.size() - 1) Paper.ink(graphics, font, Component.literal(">"), RIGHT_X + PAGE_W - 8, FOOTER_Y + 2, INK);
+    }
+
+    // ---- previews: an entry not yet researched ----
+    // A block or item not yet researched (faded in the list) can still be opened if anyone can craft it at a crafting
+    // table (RecipeCatalog.previewsFor): just those recipes, with a "?" in place of the item and no notes, drops or
+    // anything else until it's been observed. Element Crafter recipes (and crafting recipes that need research) don't
+    // count, so those entries stay shut until they're unlocked.
+
+    static boolean previewable(ResearchEntry entry)
+    {
+        return !previewPages(entry).isEmpty();
+    }
+
+    private static List<RecipeRecord> previewRecipes(ResearchEntry entry)
+    {
+        if (entry.tab() != ResearchTabs.BLOCKS && entry.tab() != ResearchTabs.ITEMS) return List.of();
+        ItemStack icon = entry.icon();
+        if (icon.isEmpty()) return List.of();
+        return com.mowmaster.dust.Features.Research.RecipeCatalog.previewsFor(BuiltInRegistries.ITEM.getKey(icon.getItem()));
+    }
+
+    private static List<NotesPage> previewPages(ResearchEntry entry)
+    {
+        List<NotesPage> pages = new ArrayList<>();
+        addRecipePages(pages, Kind.CRAFTED_FROM, previewRecipes(entry));
+        return pages;
+    }
+
+    // The first member of a list group that can be previewed, or null
+    private static @Nullable Identifier previewableIn(ResearchTab tab, List<Identifier> group)
+    {
+        for (Identifier member : group) {
+            if (previewable(new ResearchEntry(tab, member))) return member;
+        }
+        return null;
+    }
+
+    private static void drawPreview(GuiGraphicsExtractor graphics, Font font, ResearchData data, ResearchEntry entry)
+    {
+        LINKS.clear();
+        CROSSES.clear();
+        // Left page: a big "?" where the item would be, and how to learn more
+        int centreX = LEFT_X + PAGE_W / 2;
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(centreX, PAGE_TOP + 14);
+        graphics.pose().scale(4.0F, 4.0F);
+        Paper.inkCentred(graphics, font, Component.literal("?"), 0, 0, FADED);
+        graphics.pose().popMatrix();
+        drawLines(graphics, font, font.split(Component.translatable("research.dust.preview.hint"), PAGE_W - 8), LEFT_X + 4, PAGE_TOP + 68, FOOTER_Y - 2, FADED);
+        Paper.ink(graphics, font, Component.translatable("research.dust.back"), LEFT_X + 2, FOOTER_Y + 2, INK);
+
+        // Right page: unnamed, then its recipes
+        int rightCentre = RIGHT_X + PAGE_W / 2;
+        drawCentredClipped(graphics, font, Component.translatable("research.dust.undiscovered").withStyle(ChatFormatting.BOLD), rightCentre, PAGE_TOP + 2, PAGE_W - 4, INK);
+        drawCentredClipped(graphics, font, Component.translatable("research.dust.preview.unresearched"), rightCentre, PAGE_TOP + 13, PAGE_W - 4, FADED);
+        graphics.fill(RIGHT_X + 6, PAGE_TOP + 24, RIGHT_X + PAGE_W - 6, PAGE_TOP + 25, FADED);
+        List<NotesPage> pages = previewPages(entry);
+        NotesPage page = currentNotesPage(data);
+        if (page != null) {
+            Paper.ink(graphics, font, Component.translatable("research.dust.notes.crafted_from"), RIGHT_X + 4, PAGE_TOP + 28, INK);
+            int y = NOTES_TOP;
+            for (RecipeRecord recipe : page.recipes()) y += drawRecipe(graphics, font, data, recipe, RIGHT_X + 3, y) + RECIPE_GAP;
         }
         Paper.inkCentred(graphics, font, Component.literal((notesPage + 1) + "/" + pages.size()), rightCentre, FOOTER_Y + 2, FADED);
         if (notesPage > 0) Paper.ink(graphics, font, Component.literal("<"), RIGHT_X + 2, FOOTER_Y + 2, INK);
@@ -1068,7 +1136,9 @@ public final class ResearchBook
         List<Identifier> group = groupAt(x, y);
         if (group != null) {
             Identifier shown = data.firstResearched(tab(), group);
-            return shown == null ? Component.translatable("research.dust.undiscovered") : tab().name(shown);
+            if (shown != null) return tab().name(shown);
+            // Not researched, but its recipe can be looked at
+            return previewableIn(tab(), group) != null ? Component.translatable("research.dust.preview.tooltip") : Component.translatable("research.dust.undiscovered");
         }
         // Linked icons: an item's name (things seen in recipes and drops are known by sight); unfound family members "???"
         if (crossAt(x, y) != null && editable) return Component.translatable("research.dust.process.remove");
@@ -1086,7 +1156,7 @@ public final class ResearchBook
     static void show(ResearchData data, @Nullable ResearchEntry entry)
     {
         if (entry == null) return;
-        if (data.has(entry)) {
+        if (data.has(entry) || previewable(entry)) {
             tab = entry.tab();
             selected = entry;
             notesPage = 0;
@@ -1098,7 +1168,7 @@ public final class ResearchBook
     // The page keys: the list's pages on the main page, the notes pages on an entry (clamped when drawn)
     static void turnPage(ResearchData data, int direction)
     {
-        if (selected != null && data.has(selected)) notesPage = Math.max(0, notesPage + direction);
+        if (selected != null && (data.has(selected) || previewable(selected))) notesPage = Math.max(0, notesPage + direction);
         else listPage = Math.max(0, listPage + direction);
     }
 
@@ -1119,6 +1189,8 @@ public final class ResearchBook
             if (footer && x >= RIGHT_X + PAGE_W - 16 && x < RIGHT_X + PAGE_W) { listPage++; return true; }
             List<Identifier> group = groupAt(x, y);
             Identifier open = group == null ? null : data.firstResearched(tab(), group);
+            // Not researched: open it to its recipes if it has some anyone can make
+            if (open == null && group != null) open = previewableIn(tab(), group);
             if (open != null) {
                 selected = new ResearchEntry(tab(), open);
                 notesPage = 0;
@@ -1136,7 +1208,7 @@ public final class ResearchBook
 
         // A linked icon: open its entry if it's been researched (a family member keeps the family page open)
         Link link = linkAt(x, y);
-        if (link != null && link.researched() && link.entry() != null) {
+        if (link != null && link.entry() != null && (link.researched() || (!link.family() && previewable(link.entry())))) {
             ResearchEntry target = link.entry();
             tab = target.tab();
             selected = target;

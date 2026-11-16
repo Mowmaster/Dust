@@ -119,6 +119,7 @@ public class DustRecipe extends CustomRecipe
     public ItemStackTemplate result() { return result; }
     public List<DustNeed> dusts() { return dusts; }
     public List<Ingredient> ingredients() { return ingredients; }
+    public boolean needsResearch() { return research.isPresent(); }
 
     // ---- matching ----
 
