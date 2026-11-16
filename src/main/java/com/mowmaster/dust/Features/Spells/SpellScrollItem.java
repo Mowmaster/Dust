@@ -100,18 +100,20 @@ public class SpellScrollItem extends Item
         return true;
     }
 
-    // A cast's experience to its spell's tree (scrolls, Grimoires, spell tools): one per pylon the spell used, wherever
-    // the tree is, plus Spell XP Gain
+    // A cast's experience to its spell's tree (scrolls, Grimoires, spell tools), wherever the tree is: 1, or with Spell
+    // XP Gain 1 + 0.1 a level, rounded up. Each level the tree gains is a point of the caster's Magic Level experience
+    // (MagicCredits: taken back if the spell is broken).
     public static void giveExperience(ServerPlayer player, Spell spell, @org.jspecify.annotations.Nullable SpellTreeLink link)
     {
         if (link != null) {
             SpellTreeData trees = SpellTreeData.get(player.level().getServer());
-            // Spell XP Gain: percent more (rounded down)
-            int xp = link.pylons();
-            trees.addExperience(link.tree(), xp + xp * spell.stats(1F).xpPercent() / 100);
+            int before = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
+            // xpPercent: Spell XP Gain's bonus in percent (10 a level); Math.ceil rounds up
+            trees.addExperience(link.tree(), (int) Math.ceil((100 + spell.stats(1F).xpPercent()) / 100.0));
             // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
             int treeLevel = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
             SpellMastery.note(player, spell.element(), treeLevel);
+            com.mowmaster.dust.Features.Magic.MagicCredits.get(player.level().getServer()).credit(player, link.tree(), treeLevel - before);
         }
     }
 

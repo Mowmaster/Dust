@@ -499,6 +499,9 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         int[] range = type.nodeRange(deck.rerolls(pos));
         int nodes = Math.min(PylonConfig.MAX_NODES, range[0] + level.getRandom().nextInt(range[1] - range[0] + 1));
         Identifier modifier = resolve(card, line);
+        // A single-level modifier (Transmutation) can't be levelled: no upgrade nodes
+        SpellModifier drawn = modifier == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(modifier);
+        if (drawn != null && drawn.singleLevel()) nodes = 0;
         return modifier == null ? Draw.NOTHING : new Draw(card, modifier, ModifierTier.NORMAL, false, false, false, nodes);
     }
 
@@ -1000,6 +1003,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             if (item != null) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, new ItemStack(item.get()));
         }
         SpellTreeData.get(server.getServer()).forget(tree);
+        // Everyone this spell gave Magic Level experience loses it again
+        com.mowmaster.dust.Features.Magic.MagicCredits.get(server.getServer()).revoke(server.getServer(), tree);
     }
 
     // ---- saving (and the client's copy) ----

@@ -43,6 +43,8 @@ public interface SpellModifier
     // How many levels of it each upgrade node gives (a random number from min to max). A pylon starts with one level.
     default int minLevelsPerNode() { return 1; }
     default int maxLevelsPerNode() { return 1; }
+    // Only ever one level: a pylon holding it gets no upgrade nodes (Transmutation)
+    default boolean singleLevel() { return false; }
 
     // How many times it can come out of the pool: 0 for no limit, otherwise a "knockout" modifier, gone from the pool
     // once it's been drawn that many times

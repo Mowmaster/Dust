@@ -25,6 +25,10 @@ public interface ElementEffect
     // that doesn't say is INSTANT.
     default EffectType type(SpellTarget target) { return EffectType.INSTANT; }
 
+    // Whether its entity part deals the spell's damage (stats.damage): only then do damage modifiers like Crit Chance
+    // do anything, so only then can they be drawn. An effect that doesn't say doesn't.
+    default boolean damages() { return false; }
+
     // An element with nothing registered yet
     ElementEffect NONE = new ElementEffect() {};
 }

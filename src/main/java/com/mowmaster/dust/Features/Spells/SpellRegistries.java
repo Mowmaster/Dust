@@ -111,15 +111,17 @@ public final class SpellRegistries
             () -> new LeveledModifier((stats, levels) -> stats.withManaPercent(stats.manaPercent() - levels)).categories(ModifierCategory.THRIFTY));
     public static final DeferredHolder<SpellModifier, SpellModifier> DUST_REDUCTION = modifier("dust_reduction",
             () -> new LeveledModifier((stats, levels) -> stats).categories(ModifierCategory.THRIFTY).costPerLevel(-1));
-    // Transmutation (one use): short of the element's dust, its parent elements' pay instead, at double the amount
-    // (SpellCasting)
+    // Transmutation: short of the element's dust, one of each of its parent elements pays for each missing dust instead
+    // (SpellCasting). From level 50; one level only; once on a spell, it's knocked out of the deck and pool (onlyOne).
+    // It has a card (DustItemRegistry.CARD_TRANSMUTATION), dropped when the spell is broken.
     public static final DeferredHolder<SpellModifier, SpellModifier> TRANSMUTATION = modifier("transmutation",
-            () -> LeveledModifier.marker().categories(ModifierCategory.THRIFTY).uses(1).oncePerBranch());
+            () -> LeveledModifier.marker().categories(ModifierCategory.THRIFTY).unlock(50).onlyOne().oneLevel());
 
     // Experienced
-    // Spell XP Gain: 1% more experience to the tree a level (rounded down)
+    // Spell XP Gain: a cast gives the tree 1 experience; this adds 0.1 a level (xpPercent 10 a level), rounded up
+    // (SpellScrollItem.giveExperience)
     public static final DeferredHolder<SpellModifier, SpellModifier> SPELL_XP = modifier("spell_xp",
-            () -> new LeveledModifier((stats, levels) -> stats.withXpPercent(stats.xpPercent() + levels)).categories(ModifierCategory.EXPERIENCED));
+            () -> new LeveledModifier((stats, levels) -> stats.withXpPercent(stats.xpPercent() + 10 * levels)).categories(ModifierCategory.EXPERIENCED));
     // Fragment Progress: the next fragment slot comes a level sooner per level. Only once the line has a fragment and
     // there are more fragments for the element to come.
     public static final DeferredHolder<SpellModifier, SpellModifier> FRAGMENT_PROGRESS = modifier("fragment_progress",
@@ -134,9 +136,10 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> DAMAGE = modifier("damage",
             () -> new LeveledModifier((stats, levels) -> stats.withBonusDamage(stats.bonusDamage() + 0.5F * levels))
                     .categories(ModifierCategory.DAMAGE).fit(ModifierFit.INSTANT));
-    // Crit Chance: 1% a level to deal double damage
+    // Crit Chance: 1% a level to deal double damage. Only for spells that damage what they hit (damagesTargets).
     public static final DeferredHolder<SpellModifier, SpellModifier> CRIT_CHANCE = modifier("crit_chance",
-            () -> new LeveledModifier((stats, levels) -> stats.withCritChance(stats.critChance() + 0.01F * levels)).fit(ModifierFit.INSTANT));
+            () -> new LeveledModifier((stats, levels) -> stats.withCritChance(stats.critChance() + 0.01F * levels)).fit(ModifierFit.INSTANT)
+                    .requires(SpellRegistries::damagesTargets));
     // Luck: 1% a level on the chance of an effect's chance-based results
     public static final DeferredHolder<SpellModifier, SpellModifier> LUCK = modifier("luck",
             () -> new LeveledModifier((stats, levels) -> stats.withLuck(stats.luck() + 0.01F * levels)).fit(ModifierFit.INSTANT));
@@ -351,15 +354,15 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> FLESH_EFFECT = element(DustElements.FLESH,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpellBlocks::blight).entity(BasicEffect.inflict(DustEffectsRegistry.BUTCHERED)).self(BasicEffect.give(MobEffects.STRENGTH)));
     public static final DeferredHolder<ElementEffect, ElementEffect> DAMAGE_EFFECT = element(DustElements.DAMAGE,
-            () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).block(MobParts::markQuickBreak).self(BasicEffect.give(DustEffectsRegistry.MAGIC_WARD)).entity(SimpleParts::magicDamage));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).block(MobParts::markQuickBreak).self(BasicEffect.give(DustEffectsRegistry.MAGIC_WARD)).entity(SimpleParts::magicDamage).damaging());
     public static final DeferredHolder<ElementEffect, ElementEffect> MAGIC_EFFECT = element(DustElements.MAGIC,
-            () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).self(MagicParts::surge).block(MagicParts::amplify).entity(SimpleParts::magicDamage));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).self(MagicParts::surge).block(MagicParts::amplify).entity(SimpleParts::magicDamage).damaging());
     public static final DeferredHolder<ElementEffect, ElementEffect> VOID_EFFECT = element(DustElements.VOID,
-            () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).self(VoidParts::chest).block(VoidParts::rift).entity(SimpleParts::voidDamage));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).self(VoidParts::chest).block(VoidParts::rift).entity(SimpleParts::voidDamage).damaging());
     public static final DeferredHolder<ElementEffect, ElementEffect> SOUL_EFFECT = element(DustElements.SOUL,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).self(SoulParts::anchor).block(SoulParts::bind).entity(SoulParts::pull));
     public static final DeferredHolder<ElementEffect, ElementEffect> STONE_EFFECT = element(DustElements.STONE,
-            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT).block(SpellConversions::convert).self(BasicEffect.give(DustEffectsRegistry.STONE_SKIN)).entity(SimpleParts::kineticDamage));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT).block(SpellConversions::convert).self(BasicEffect.give(DustEffectsRegistry.STONE_SKIN)).entity(SimpleParts::kineticDamage).damaging());
     public static final DeferredHolder<ElementEffect, ElementEffect> EXPLOSION_EFFECT = element(DustElements.EXPLOSION,
             () -> new BasicEffect().types(EffectType.INSTANT, EffectType.INSTANT, EffectType.INSTANT).self(MobParts::flare).block(SimpleParts::explodeBlock).entity(SimpleParts::explodeAt));
     public static final DeferredHolder<ElementEffect, ElementEffect> SOUND_EFFECT = element(DustElements.SOUND,
@@ -377,7 +380,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> ABYSS_EFFECT = element(DustElements.ABYSS,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpellBlocks::corruptBlock).self(BasicEffect.give(DustEffectsRegistry.LIFE_LEECH)).entity(BasicEffect.inflict(DustEffectsRegistry.SILENCED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> ENERGY_EFFECT = element(DustElements.ENERGY,
-            () -> new BasicEffect().types(EffectType.INSTANT, EffectType.INSTANT, EffectType.DOT).block(UtilityParts::fuelFurnaces).self(BasicEffect.give(DustEffectsRegistry.ENERGY_DRAIN)).entity(EnergyCharge::charge));
+            () -> new BasicEffect().types(EffectType.INSTANT, EffectType.INSTANT, EffectType.DOT).block(UtilityParts::fuelFurnaces).self(BasicEffect.give(DustEffectsRegistry.ENERGY_DRAIN)).entity(EnergyCharge::charge).damaging());
     public static final DeferredHolder<ElementEffect, ElementEffect> CREATURE_EFFECT = element(DustElements.CREATURE,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpecialBlockParts::animate).self(BasicEffect.give(DustEffectsRegistry.PACK_TACTICS)).entity(SimpleParts::mark));
     public static final DeferredHolder<ElementEffect, ElementEffect> PLANTS_EFFECT = element(DustElements.PLANTS,
@@ -399,7 +402,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> RUST_EFFECT = element(DustElements.RUST,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.DOT).self(RustParts::corrosiveAura).block(RustParts::oxidise).entity(RustParts::corrode));
     public static final DeferredHolder<ElementEffect, ElementEffect> CRYSTAL_EFFECT = element(DustElements.CRYSTAL,
-            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT).self(StoreParts::crystallize).entity(MobParts::shatter).block(SpellConversions::convert));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT).self(StoreParts::crystallize).entity(MobParts::shatter).damaging().block(SpellConversions::convert));
     public static final DeferredHolder<ElementEffect, ElementEffect> RADIANCE_EFFECT = element(DustElements.RADIANCE,
             () -> new BasicEffect().types(EffectType.INSTANT, EffectType.INSTANT, EffectType.INSTANT).self(Radiance::shareSelf).block(SpellConversions::convert).entity(Radiance::shareMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> SEEDS_EFFECT = element(DustElements.SEEDS,
@@ -463,5 +466,14 @@ public final class SpellRegistries
         ATTRIBUTES.register(bus);
         MODIFIERS.register(bus);
         ELEMENT_EFFECTS.register(bus);
+    }
+
+    // Whether a spell in the making deals damage to what it hits: a shape that lands on creatures (not Self), with an
+    // element whose effect on a creature is the spell's damage (ElementEffect.damages). Damage-only modifiers need it.
+    public static boolean damagesTargets(com.mowmaster.dust.Features.Spells.api.ModifierContext context)
+    {
+        if (context.element() == null || SELF.getId().equals(context.shape())) return false;
+        ElementEffect effect = ELEMENT_EFFECT_REGISTRY.getValue(context.element().id());
+        return effect != null && effect.damages();
     }
 }

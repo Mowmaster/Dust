@@ -40,7 +40,7 @@ import java.util.function.BiConsumer;
 //   /dustmagic dust <players> clear
 //   /dustmagic store <players> <types> <capacity>       how many elements can be carried, and how much of each
 //   /dustmagic mana <players> <amount>                  set mana (up to max)
-//   /dustmagic maxmana <players> <amount>
+//   /dustmagic magiclevel <players> <level>              set the Magic Level (which sets max mana)
 //   /dustmagic attune <players> <element>   /dustmagic unattune <players> <element>
 //   /dustmagic spell <element> <shape> [attributes]   a Spell Scroll for you, e.g.
 //                                                     /dustmagic spell dust:fire dust:projectile potency=1 size=2
@@ -135,14 +135,16 @@ public class MagicCommand
                                             int amount = IntegerArgumentType.getInteger(c, "amount");
                                             return each(c, (source, player) -> PlayerMagicHelper.setMana(player, amount));
                                         }))))
-                .then(Commands.literal("maxmana")
+                .then(Commands.literal("magiclevel")
                         .then(Commands.argument("targets", EntityArgument.players())
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(1))
+                                .then(Commands.argument("level", IntegerArgumentType.integer(0))
                                         .executes(c -> {
-                                            int amount = IntegerArgumentType.getInteger(c, "amount");
+                                            int level = IntegerArgumentType.getInteger(c, "level");
                                             return each(c, (source, player) -> {
+                                                // The experience at the start of that level; max mana follows on the next tick
                                                 PlayerMagic magic = PlayerMagicHelper.get(player);
-                                                PlayerMagicHelper.set(player, magic.withMana(Math.min(magic.mana(), amount), amount));
+                                                int xp = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.xpForLevel(level);
+                                                PlayerMagicHelper.addMagicXp(player, xp - magic.magicXp());
                                             });
                                         }))))
                 .then(Commands.literal("attune")

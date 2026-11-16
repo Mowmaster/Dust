@@ -16,9 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 // The rules for a player's magic (PlayerMagic): mana, the dust store and attunement.
-//   Mana        starts at 10. It only regenerates (1 a minute) once the player has awakened to their magic (Awakening). Kept under 30% for 10 minutes straight, max mana goes up 1;
-//               kept at 90% or more for an hour straight, it goes down 1. A spell needing more mana than the player has
-//               takes what's there and hurts half a heart per missing point.
+//   Mana        max mana comes from the Magic Level (maxManaFor). It only regenerates once the player has awakened to
+//               their magic (Awakening): 1% of max mana every 120 ticks. Sleeping through the night fills it. A spell
+//               needing more mana than the player has takes what's there and hurts half a heart per missing point.
+//   Magic Level experience on the same curve as spells (SpellLevels): 1 for each level a spell tree gains from their
+//               casting (taken back if that spell is broken: MagicCredits), and 1 for each item they fully research
+//               (every element in it found and discovered).
 //   Dust store  whole elements, a limited number of different ones (dustTypes) and of each (dustCapacity). An element
 //               not carried yet needs a free type slot.
 //   Attunement  0-3 elements: more dust from orbs, cheaper and (for 1-2) stronger spells of those elements
@@ -71,10 +74,11 @@ public final class PlayerMagicHelper
         return added;
     }
 
+    // Sets mana, up to the cap (manaCap: higher while Crystallized)
     public static void setMana(Player player, int amount)
     {
         PlayerMagic magic = get(player);
-        set(player, magic.withMana(Math.clamp(amount, 0, magic.maxMana()), magic.maxMana()));
+        set(player, magic.withMana(Math.clamp(amount, 0, manaCap(player)), magic.maxMana()));
     }
 
     // Spends mana for a spell. Whatever's missing is paid in health: half a heart per point (magic damage, so armour
@@ -197,13 +201,61 @@ public final class PlayerMagicHelper
         return get(player).awakened();
     }
 
-    // ---- ticking: regeneration, and max mana creeping up or down (only once awakened) ----
+    // ---- Magic Level ----
+
+    public static int magicLevel(Player player)
+    {
+        return com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(get(player).magicXp());
+    }
+
+    // Max mana at a Magic Level: START_MAX_MANA, plus (reached level / 10) + 1 for every level reached
+    // (levels 1-9: +1 each, 10-19: +2, 20-29: +3...). Level 10: 10 + 9 + 2 = 21.
+    public static int maxManaFor(int level)
+    {
+        int max = MagicConfig.START_MAX_MANA;
+        for (int reached = 1; reached <= level; reached++) max += reached / 10 + 1;
+        return max;
+    }
+
+    // Adds (or with a negative amount, takes away) Magic Level experience; max mana follows the level, and mana over
+    // a lowered max is lost
+    public static void addMagicXp(Player player, int amount)
+    {
+        if (amount == 0) return;
+        PlayerMagic magic = get(player);
+        int xp = Math.max(0, magic.magicXp() + amount);
+        set(player, withLevelMana(magic.withMagicXp(xp, magic.workedOut())));
+    }
+
+    // The same magic with max mana set from its level (and mana kept within it)
+    private static PlayerMagic withLevelMana(PlayerMagic magic)
+    {
+        int max = maxManaFor(com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(magic.magicXp()));
+        return magic.withMana(Math.min(magic.mana(), max), max);
+    }
+
+    // The player has fully researched this many items in all: a point of experience for each one not counted yet
+    public static void noteWorkedOut(Player player, int count)
+    {
+        PlayerMagic magic = get(player);
+        if (count <= magic.workedOut()) return;
+        int gained = count - magic.workedOut();
+        set(player, withLevelMana(magic.withMagicXp(magic.magicXp() + gained, count)));
+    }
+
+    // ---- ticking: regeneration (only once awakened) ----
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event)
     {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         PlayerMagic magic = get(player);
+        // Max mana follows the Magic Level (also fixes saves from when max mana crept up and down by itself)
+        int levelMax = maxManaFor(com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(magic.magicXp()));
+        if (magic.maxMana() != levelMax) {
+            magic = magic.withMana(Math.min(magic.mana(), levelMax), levelMax);
+            set(player, magic);
+        }
         if (!magic.awakened()) return;
         ManaTimers timers = player.getData(DustAttachmentTypeRegistry.MANA_TIMERS);
         int mana = magic.mana(), max = magic.maxMana();
@@ -212,31 +264,43 @@ public final class PlayerMagicHelper
         int step = surge == null ? 1 : 2 + surge.getAmplifier();
         // A rich chunk's aura (ChunkAura) speeds it up too
         step += AuraEffects.regenBonus(player.level(), player.blockPosition());
-        int regen = timers.regen() + step, low = timers.low(), high = timers.high();
+        int regen = timers.regen() + step, fraction = timers.fraction();
 
-        // Regenerates up to the cap (higher while Crystallized)
+        // Regenerates up to the cap (higher while Crystallized): every REGEN_TICKS, REGEN_PERCENT of max mana, kept in
+        // hundredths until it makes a whole point
         if (mana < manaCap(player)) {
-            if (regen >= MagicConfig.REGEN_TICKS) {
+            while (regen >= MagicConfig.REGEN_TICKS) {
+                regen -= MagicConfig.REGEN_TICKS;
+                fraction += max * MagicConfig.REGEN_PERCENT;
+            }
+            while (fraction >= 100 && mana < manaCap(player)) {
+                fraction -= 100;
                 mana++;
-                regen = 0;
             }
         } else {
             regen = 0;
-        }
-        float fraction = max <= 0 ? 0 : (float) mana / max;
-        low = fraction < MagicConfig.LOW_FRACTION ? low + 1 : 0;
-        high = fraction >= MagicConfig.HIGH_FRACTION ? high + 1 : 0;
-        if (low >= MagicConfig.LOW_TICKS) {
-            max++;
-            low = 0;
-        }
-        if (high >= MagicConfig.HIGH_TICKS) {
-            max = Math.max(MagicConfig.MIN_MAX_MANA, max - 1);
-            mana = Math.min(mana, max);
-            high = 0;
+            fraction = 0;
         }
         // The timers aren't synced, so setting them every tick costs nothing; mana only syncs when it changes
-        player.setData(DustAttachmentTypeRegistry.MANA_TIMERS, new ManaTimers(regen, low, high));
-        if (mana != magic.mana() || max != magic.maxMana()) set(player, magic.withMana(mana, max));
+        player.setData(DustAttachmentTypeRegistry.MANA_TIMERS, new ManaTimers(regen, fraction));
+        if (mana != magic.mana()) set(player, magic.withMana(mana, max));
+    }
+
+    // Sleeping through the night: everyone asleep wakes with full mana (SleepFinishedTimeEvent: the night was skipped,
+    // before the sleepers get up)
+    @SubscribeEvent
+    public static void onNightSkipped(net.neoforged.neoforge.event.level.SleepFinishedTimeEvent event)
+    {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        for (ServerPlayer player : level.players()) {
+            if (player.isSleeping() && isAwakened(player)) setMana(player, manaCap(player));
+        }
+    }
+
+    // Experience taken away by spells broken while the player was offline (MagicCredits)
+    @SubscribeEvent
+    public static void onLogIn(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event)
+    {
+        if (event.getEntity() instanceof ServerPlayer player) MagicCredits.get(player.level().getServer()).applyPending(player);
     }
 }

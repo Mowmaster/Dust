@@ -35,6 +35,8 @@ public final class BasicEffect implements ElementEffect
     private EffectType selfType = EffectType.INSTANT;
     private EffectType blockType = EffectType.INSTANT;
     private EffectType entityType = EffectType.INSTANT;
+    // Its entity part deals the spell's damage (damaging())
+    private boolean damaging;
 
     public BasicEffect types(EffectType self, EffectType block, EffectType entity)
     {
@@ -58,6 +60,14 @@ public final class BasicEffect implements ElementEffect
     public BasicEffect self(SelfPart part) { this.self = part; return this; }
     public BasicEffect block(BlockPart part) { this.block = part; return this; }
     public BasicEffect entity(EntityPart part) { this.entity = part; return this; }
+    // Marks the entity part as dealing the spell's damage (ElementEffect.damages)
+    public BasicEffect damaging() { this.damaging = true; return this; }
+
+    @Override
+    public boolean damages()
+    {
+        return damaging;
+    }
 
     // A mob effect for the spell's duration at its potency, as a self part
     public static SelfPart give(Holder<MobEffect> effect)

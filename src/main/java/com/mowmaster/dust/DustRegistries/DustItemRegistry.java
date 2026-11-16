@@ -147,6 +147,7 @@ public class DustItemRegistry
     public static final DeferredItem<Item> CARD_PIERCE = card("card_pierce", "piercing");
     public static final DeferredItem<Item> CARD_RUNE = card("card_rune", "rune");
     public static final DeferredItem<Item> CARD_WALL = card("card_wall", "wall");
+    public static final DeferredItem<Item> CARD_TRANSMUTATION = card("card_transmutation", "transmutation");
 
     private static DeferredItem<Item> card(String name, String modifier)
     {

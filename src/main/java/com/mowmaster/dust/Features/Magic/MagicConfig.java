@@ -4,16 +4,12 @@ package com.mowmaster.dust.Features.Magic;
 public final class MagicConfig
 {
     // ---- mana ----
+    // Max mana at Magic Level 0; each level adds more (PlayerMagicHelper.maxManaFor: +1 a level for levels 1-9, +2 for
+    // 10-19, +3 for 20-29...)
     public static final int START_MAX_MANA = 10;
-    // One mana back per minute
-    public static final int REGEN_TICKS = 20 * 60;
-    // Kept under 30% for 10 minutes straight: max mana +1
-    public static final float LOW_FRACTION = 0.3F;
-    public static final int LOW_TICKS = 20 * 60 * 10;
-    // Kept at 90% or more for 60 minutes straight: max mana -1 (never below MIN_MAX_MANA, the starting amount)
-    public static final float HIGH_FRACTION = 0.9F;
-    public static final int HIGH_TICKS = 20 * 60 * 60;
-    public static final int MIN_MAX_MANA = 10;
+    // Regeneration: REGEN_PERCENT of max mana back every REGEN_TICKS (10 max: 1 mana a minute; 21 max: about every 29s)
+    public static final int REGEN_TICKS = 120;
+    public static final int REGEN_PERCENT = 1;
     // Damage per mana point a spell needs that the player doesn't have (1 = half a heart)
     public static final float DAMAGE_PER_MISSING_MANA = 1.0F;
     // A spell's mana cost: 1 per this much dust it uses, rounded up (10 dust: 1 mana, 11 dust: 2)

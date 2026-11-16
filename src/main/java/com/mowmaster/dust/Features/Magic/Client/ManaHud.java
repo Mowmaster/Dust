@@ -78,6 +78,25 @@ public final class ManaHud
         for (int i = 0; i < 100; i++) graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BAR_BACK, 1, 4, 0, 0, barX + i, barY, 1, 4);
         for (int i = 0; i < percent; i++) graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BAR, 1, 4, 0, 0, barX + i, barY, 1, 4);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FRAME, WIDTH, FRAME_HEIGHT, 0, 0, panel.x(), frameY, WIDTH, FRAME_HEIGHT);
+        drawLevel(graphics, Minecraft.getInstance().font, PlayerMagicHelper.magicLevel(player), panel.x() + LEVEL_CENTRE_X, frameY + LEVEL_TOP);
+    }
+
+    // The Magic Level in the bump under the bar (frame pixels 52-63 across, from 16 down): black, centred, shrunk to fit
+    // if it's ever wider than the bump. pose() is the GUI's 2D transform (translate / scale, pushed and popped).
+    private static final int LEVEL_CENTRE_X = 58;
+    private static final int LEVEL_TOP = 18;
+    private static final int LEVEL_ROOM = 10;
+
+    private static void drawLevel(GuiGraphicsExtractor graphics, Font font, int level, int centreX, int top)
+    {
+        String text = String.valueOf(level);
+        int width = font.width(text);
+        float scale = width > LEVEL_ROOM ? LEVEL_ROOM / (float) width : 1F;
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(centreX, top);
+        graphics.pose().scale(scale, scale);
+        graphics.text(font, text, -width / 2, 0, 0xFF000000, false);
+        graphics.pose().popMatrix();
     }
 
     // The dust carried (Features/Magic/PlayerMagic): each element's icon in its colour and how much, in a row, once the

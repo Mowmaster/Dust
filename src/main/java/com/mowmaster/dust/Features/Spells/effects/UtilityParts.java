@@ -130,8 +130,18 @@ public final class UtilityParts
         ServerLevel level = cast.level();
         BlockState state = level.getBlockState(pos);
         List<Block> flowers = new ArrayList<>();
-        for (Holder<Block> flower : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.SMALL_FLOWERS)) flowers.add(flower.value());
-        if (flowers.isEmpty()) return;
+        for (Holder<Block> flower : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.SMALL_FLOWERS)) {
+            // A player only plants flowers they've fully researched (every element in it found and discovered: the
+            // same test as the element tooltip). A Spell Caster (no player) plants any.
+            if (cast.caster() instanceof ServerPlayer player
+                    && com.mowmaster.dust.Features.DustComposition.ElementTooltip.forPlayer(new ItemStack(flower.value()), player) == null) continue;
+            flowers.add(flower.value());
+        }
+        if (flowers.isEmpty()) {
+            if (cast.caster() instanceof ServerPlayer player
+                    && cast.firstTime("plant_unknown")) player.sendOverlayMessage(Component.translatable("dust.spell.unknown_plants"));
+            return;
+        }
         if (state.getBlock() instanceof FlowerPotBlock pot && pot.getPotted() == net.minecraft.world.level.block.Blocks.AIR) {
             // Stonecutter: 26.1.2's pot map is keyed by the flower's id, with suppliers of the potted block
             //? if >=26.3 {

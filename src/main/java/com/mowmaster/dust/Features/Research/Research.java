@@ -126,6 +126,28 @@ public final class Research
     {
         // Setting a new value is what syncs it to the player's client
         player.setData(DustAttachmentTypeRegistry.RESEARCH, data);
+        // A point of Magic Level experience for each item newly fully researched
+        if (player instanceof ServerPlayer) com.mowmaster.dust.Features.Magic.PlayerMagicHelper.noteWorkedOut(player, workedOutCount(data));
+    }
+
+    // How many items this research has fully worked out: every element in the item found (measured) and each of those
+    // elements discovered (the same test as the element tooltip, DustComposition.ElementTooltip)
+    public static int workedOutCount(ResearchData data)
+    {
+        int count = 0;
+        for (var tab : data.tabs().entrySet()) {
+            ResearchTab researchTab = ResearchTabs.byId(tab.getKey());
+            if (researchTab == null || researchTab == ResearchTabs.ELEMENTS) continue;
+            for (var entry : tab.getValue().entrySet()) {
+                var composition = com.mowmaster.dust.Features.DustComposition.DustCompositions.of(researchTab.icon(entry.getKey()));
+                if (composition == null || composition.isEmpty()) continue;
+                var measured = entry.getValue().dust().measured();
+                boolean all = composition.counted().keySet().stream().allMatch(element -> measured.getOrDefault(element, 0) > 0
+                        && data.has(new ResearchEntry(ResearchTabs.ELEMENTS, element.id())));
+                if (all) count++;
+            }
+        }
+        return count;
     }
 
     // ---- time ----

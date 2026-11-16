@@ -63,8 +63,8 @@ public final class SpellCasting
         Map<DustElement, Integer> cost = new LinkedHashMap<>();
         spell.dustCost().forEach((element, amount) -> cost.put(element, Math.max(1, PlayerMagicHelper.dustCost(player, element, amount) * (100 - costReduction) / 100)));
         if (!free) {
-            // Short of an element: with Transmutation, its parent elements make up the difference at double the amount
-            // (fire + water for air); otherwise it can't be cast
+            // Short of an element: with Transmutation, its parent elements make up the difference, one of each per
+            // missing dust (fire + water for air); otherwise it can't be cast
             boolean transmute = spell.modifiers().contains(SpellRegistries.TRANSMUTATION.getId());
             Map<DustElement, Integer> pay = new LinkedHashMap<>();
             for (Map.Entry<DustElement, Integer> need : cost.entrySet()) {
@@ -73,7 +73,7 @@ public final class SpellCasting
                 pay.merge(need.getKey(), Math.min(need.getValue(), Math.max(0, have)), Integer::sum);
                 if (shortBy <= 0) continue;
                 if (transmute && !need.getKey().parts().isEmpty()) {
-                    for (DustElement parent : need.getKey().parts()) pay.merge(parent, shortBy * 2, Integer::sum);
+                    for (DustElement parent : need.getKey().parts()) pay.merge(parent, shortBy, Integer::sum);
                 } else {
                     player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", need.getKey().name(), need.getValue()));
                     return false;

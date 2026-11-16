@@ -21,13 +21,16 @@ import java.util.Map;
 //   exhausted           they've paid for magic with their health (burning Alchemical Dust with no mana left) and
 //                       need to sleep it off
 //   awakened            they've slept after that and woken with their magic: mana regenerates, and the HUD shows
+//   magicXp             experience towards their Magic Level (PlayerMagicHelper: spell levels gained, items fully
+//                       researched). The level sets maxMana.
+//   workedOut           how many items they've fully researched so far (each one gave a point of magicXp once)
 // Immutable: every change makes a new one (the with... methods), which is what setting the attachment syncs. The
 // regeneration timers are kept apart (ManaTimers), so ticking doesn't send this to the client every tick.
 public record PlayerMagic(int mana, int maxMana, Map<DustElement, Integer> dust, int dustTypes, int dustCapacity, List<DustElement> attunements,
-                          boolean exhausted, boolean awakened)
+                          boolean exhausted, boolean awakened, int magicXp, int workedOut)
 {
     public static final PlayerMagic DEFAULT = new PlayerMagic(MagicConfig.START_MAX_MANA, MagicConfig.START_MAX_MANA,
-            Map.of(), MagicConfig.START_DUST_TYPES, MagicConfig.START_DUST_CAPACITY, List.of(), false, false);
+            Map.of(), MagicConfig.START_DUST_TYPES, MagicConfig.START_DUST_CAPACITY, List.of(), false, false, 0, 0);
 
     public PlayerMagic
     {
@@ -44,7 +47,9 @@ public record PlayerMagic(int mana, int maxMana, Map<DustElement, Integer> dust,
             Codec.INT.optionalFieldOf("dust_capacity", MagicConfig.START_DUST_CAPACITY).forGetter(PlayerMagic::dustCapacity),
             DustElements.CODEC.listOf().optionalFieldOf("attunements", List.of()).forGetter(PlayerMagic::attunements),
             Codec.BOOL.optionalFieldOf("exhausted", false).forGetter(PlayerMagic::exhausted),
-            Codec.BOOL.optionalFieldOf("awakened", false).forGetter(PlayerMagic::awakened)
+            Codec.BOOL.optionalFieldOf("awakened", false).forGetter(PlayerMagic::awakened),
+            Codec.INT.optionalFieldOf("magic_xp", 0).forGetter(PlayerMagic::magicXp),
+            Codec.INT.optionalFieldOf("worked_out", 0).forGetter(PlayerMagic::workedOut)
     ).apply(instance, PlayerMagic::new));
 
     // Sent to the player's own client (the HUD reads it), through the same codec
@@ -57,7 +62,7 @@ public record PlayerMagic(int mana, int maxMana, Map<DustElement, Integer> dust,
 
     public PlayerMagic withMana(int mana, int maxMana)
     {
-        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened);
+        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened, magicXp, workedOut);
     }
 
     // The dust with this element set to amount (0 removes it, freeing its type slot)
@@ -66,21 +71,26 @@ public record PlayerMagic(int mana, int maxMana, Map<DustElement, Integer> dust,
         Map<DustElement, Integer> changed = new LinkedHashMap<>(dust);
         if (amount <= 0) changed.remove(element);
         else changed.put(element, amount);
-        return new PlayerMagic(mana, maxMana, changed, dustTypes, dustCapacity, attunements, exhausted, awakened);
+        return new PlayerMagic(mana, maxMana, changed, dustTypes, dustCapacity, attunements, exhausted, awakened, magicXp, workedOut);
     }
 
     public PlayerMagic withStoreSize(int dustTypes, int dustCapacity)
     {
-        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened);
+        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened, magicXp, workedOut);
     }
 
     public PlayerMagic withAwakening(boolean exhausted, boolean awakened)
     {
-        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened);
+        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened, magicXp, workedOut);
+    }
+
+    public PlayerMagic withMagicXp(int magicXp, int workedOut)
+    {
+        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened, magicXp, workedOut);
     }
 
     public PlayerMagic withAttunements(List<DustElement> attunements)
     {
-        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened);
+        return new PlayerMagic(mana, maxMana, dust, dustTypes, dustCapacity, attunements, exhausted, awakened, magicXp, workedOut);
     }
 }

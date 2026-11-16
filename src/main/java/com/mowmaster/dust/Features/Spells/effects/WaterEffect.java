@@ -71,4 +71,11 @@ public class WaterEffect implements ElementEffect
     {
         target.hurtServer(cast.level(), cast.level().damageSources().drown(), cast.stats().damage());
     }
+
+    // Its entity part is drowning damage (ElementEffect.damages: damage modifiers can be drawn)
+    @Override
+    public boolean damages()
+    {
+        return true;
+    }
 }
