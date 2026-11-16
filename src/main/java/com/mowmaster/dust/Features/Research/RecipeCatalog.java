@@ -50,7 +50,6 @@ import java.util.Set;
 //   - Crafting table: plain shaped and shapeless recipes, and Dust's dust recipes (their dust needs as dust items)
 //   - Element Crafter: its recipes, with the dust they use from the jars (RecipeRecord.elements)
 //   - An ingredient that takes several items shows one of them: an oak one if there is one, else a vanilla one
-// Also knows which items vanilla's own crafting table recipes make (vanillaCrafted, server only), for ResearchStart.
 // Previews: the crafting table recipes anyone can make (not ones needing research): an entry not yet researched can
 // still be opened to see these (ResearchBook). Element Crafter recipes stay hidden until the entry is unlocked.
 @EventBusSubscriber(modid = DustReferences.MODID)
@@ -59,7 +58,6 @@ public final class RecipeCatalog
     // Item id -> its recipes. Swapped whole, never changed in place (volatile: every thread sees the newest).
     private static volatile Map<Identifier, List<RecipeRecord>> recipes = Map.of();
     private static volatile Map<Identifier, List<RecipeRecord>> previews = Map.of();
-    private static volatile Set<Item> vanillaCrafted = Set.of();
 
     private RecipeCatalog() {}
 
@@ -73,12 +71,6 @@ public final class RecipeCatalog
     public static List<RecipeRecord> previewsFor(Identifier item)
     {
         return previews.getOrDefault(item, List.of());
-    }
-
-    // Items made by a minecraft: crafting recipe (server)
-    public static Set<Item> vanillaCrafted()
-    {
-        return vanillaCrafted;
     }
 
     // ---- building it (server) ----
@@ -101,7 +93,6 @@ public final class RecipeCatalog
     {
         Map<Identifier, List<RecipeRecord>> found = new HashMap<>();
         Map<Identifier, List<RecipeRecord>> open = new HashMap<>();
-        Set<Item> vanilla = new java.util.HashSet<>();
         Optional<Identifier> table = Optional.of(BuiltInRegistries.ITEM.getKey(Items.CRAFTING_TABLE));
         Optional<Identifier> crafter = Optional.of(BuiltInRegistries.ITEM.getKey(DustBlockRegistry.ELEMENT_CRAFTER.get().asItem()));
         // Sorted by id, so the book lists them the same way every time
@@ -112,7 +103,6 @@ public final class RecipeCatalog
             if (record == null) continue;
             found.computeIfAbsent(record.output(), id -> new ArrayList<>()).add(record);
             if (!(holder.value() instanceof DustRecipe dust && dust.needsResearch())) open.computeIfAbsent(record.output(), id -> new ArrayList<>()).add(record);
-            if (holder.id().identifier().getNamespace().equals("minecraft")) vanilla.add(BuiltInRegistries.ITEM.getValue(record.output()));
         }
         List<RecipeHolder<ElementCraftingRecipe>> element = new ArrayList<>(server.getRecipeManager().recipeMap().byType(DustRecipeRegistry.ELEMENT_CRAFTING_TYPE.get()));
         element.sort(Comparator.comparing(holder -> holder.id().identifier().toString()));
@@ -126,7 +116,6 @@ public final class RecipeCatalog
         Map<Identifier, List<RecipeRecord>> frozenOpen = new HashMap<>();
         open.forEach((id, list) -> frozenOpen.put(id, List.copyOf(list)));
         previews = Map.copyOf(frozenOpen);
-        vanillaCrafted = Set.copyOf(vanilla);
     }
 
     private static RecipeRecord fromCrafting(CraftingRecipe recipe, Optional<Identifier> station)
