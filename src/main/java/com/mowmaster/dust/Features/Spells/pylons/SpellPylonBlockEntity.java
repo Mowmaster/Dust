@@ -814,7 +814,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (element == null) return Component.translatable("dust.pylon.no_element");
         int lvl = level();
         int into = experience - SpellLevels.xpForLevel(lvl);
-        return Component.translatable("dust.pylon.info", element.name(), lvl, into, SpellLevels.xpForNextLevel(lvl), Math.max(0, availableLevels()),
+        return Component.translatable("dust.pylon.info", com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(element), lvl, into, SpellLevels.xpForNextLevel(lvl), Math.max(0, availableLevels()),
                 deck.blessed(), deck.corruption());
     }
 

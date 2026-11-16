@@ -163,7 +163,7 @@ public final class ResearchBook
         }
         if (research.biomes().size() >= 2) pages.add(new NotesPage(Kind.WHERE_FOUND, List.of(), List.of()));
         if (entry.group().size() > 1) pages.add(new NotesPage(Kind.FAMILY, List.of(), List.of()));
-        addRecipePages(pages, Kind.CRAFTED_FROM, research.madeBy());
+        addRecipePages(pages, Kind.CRAFTED_FROM, craftedFrom(entry, research));
         addRecipePages(pages, Kind.CRAFTED_INTO, research.usedIn());
         if (research.maxHealth() > 0 || !research.breeding().isEmpty() || !research.madeFrom().isEmpty()
                 || !research.makes().isEmpty() || !research.modifiers().isEmpty()
@@ -178,6 +178,22 @@ public final class ResearchBook
             pages.add(new NotesPage(Kind.PROCESSES, List.of(), List.copyOf(steps.subList(i, Math.min(steps.size(), i + PROCESS_ROWS)))));
         }
         return pages;
+    }
+
+    // "Crafted from": the recipes seen making it, then every crafting table / Element Crafter recipe for it
+    // (RecipeCatalog) not already among them. Blocks, items and the Research tab's discoveries (their item's recipe).
+    private static List<RecipeRecord> craftedFrom(ResearchEntry entry, EntryResearch research)
+    {
+        List<RecipeRecord> all = new ArrayList<>(research.madeBy());
+        if (entry.tab() == ResearchTabs.BLOCKS || entry.tab() == ResearchTabs.ITEMS || entry.tab() == ResearchTabs.RESEARCH) {
+            ItemStack icon = entry.icon();
+            if (!icon.isEmpty()) {
+                for (RecipeRecord recipe : com.mowmaster.dust.Features.Research.RecipeCatalog.recipesFor(BuiltInRegistries.ITEM.getKey(icon.getItem()))) {
+                    if (all.stream().noneMatch(seen -> seen.sameAs(recipe))) all.add(recipe);
+                }
+            }
+        }
+        return all;
     }
 
     // Splits recipes over as many pages as it takes: each recipe is as tall as its ingredient grid
@@ -483,7 +499,22 @@ public final class ResearchBook
     private static int recipeHeight(RecipeRecord recipe)
     {
         int rows = (ingredients(recipe).size() + INGREDIENT_COLS - 1) / INGREDIENT_COLS;
-        return Math.max(1, rows) * CELL;
+        return Math.max(1, rows) * CELL + costLines(recipe).size() * COST_LINE;
+    }
+
+    // An Element Crafter recipe's dust from the jars, under its grid: "10 [icon] Fire  10 [icon] Water" (ElementNames:
+    // an element not yet discovered in the ancient script), wrapped to the page
+    private static final int COST_LINE = 10;
+
+    private static List<FormattedCharSequence> costLines(RecipeRecord recipe)
+    {
+        if (recipe.elements().isEmpty()) return List.of();
+        MutableComponent text = Component.empty();
+        for (RecipeRecord.Cost cost : recipe.elements()) {
+            if (!text.getSiblings().isEmpty()) text.append("  ");
+            text.append(cost.amount() + " ").append(com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(cost.element()));
+        }
+        return net.minecraft.client.Minecraft.getInstance().font.split(text, PAGE_W - 8);
     }
 
     // One recipe as  [ingredients]  [station]  ->  [result]. Each ingredient is shown once, with a count when it's used
@@ -497,8 +528,11 @@ public final class ResearchBook
             Map.Entry<Identifier, Integer> ingredient = ingredients.get(i);
             linkedItem(graphics, font, data, ingredient.getKey(), ingredient.getValue(), cx, cy);
         }
+        List<FormattedCharSequence> costs = costLines(recipe);
         int height = recipeHeight(recipe);
-        int middle = y + (height - CELL) / 2;
+        int gridHeight = height - costs.size() * COST_LINE;
+        int middle = y + (gridHeight - CELL) / 2;
+        for (int i = 0; i < costs.size(); i++) graphics.text(font, costs.get(i), x + 1, y + gridHeight + 1 + i * COST_LINE, INK, false);
         // Fixed columns, so recipes of different sizes line up: ingredients up to 3 wide, then station, arrow, result
         recipe.station().ifPresent(station -> linkedItem(graphics, data, station, x + INGREDIENT_COLS * CELL + 4, middle));
         Paper.ink(graphics, font, Component.literal("\u2192"), x + 4 * CELL + 7, middle + 5, INK);
@@ -778,9 +812,13 @@ public final class ResearchBook
         ResearchEntry entry = new ResearchEntry(ResearchTabs.ELEMENTS, element.id());
         boolean discovered = data.has(entry);
         Paper.slot(graphics, x, y);
-        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y + 1, 16, 16, 0xFF000000 | element.color());
-        if (!discovered) Paper.fade(graphics, x, y);
-        LINKS.add(new Link(x, y, entry, discovered, discovered ? element.name() : Component.translatable("research.dust.undiscovered"), false));
+        // Undiscovered: no icon, a "?" in the slot, and the name in the ancient script (ElementNames)
+        if (discovered) {
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y + 1, 16, 16, 0xFF000000 | element.color());
+        } else {
+            Paper.inkCentred(graphics, net.minecraft.client.Minecraft.getInstance().font, Component.literal("?"), x + 9, y + 5, INK);
+        }
+        LINKS.add(new Link(x, y, entry, discovered, com.mowmaster.dust.Features.DustComposition.ElementNames.named(element, discovered), false));
     }
 
     // A two-input step (the Combination and Mixing Tables):  [dust] + [dust] -> [table] -> [result]  x
@@ -811,7 +849,7 @@ public final class ResearchBook
             ResearchEntry element = new ResearchEntry(ResearchTabs.ELEMENTS, dust.id());
             boolean discovered = data.has(element);
             drawIcon(graphics, stack, x, y, true);
-            Component known = discovered ? dust.name() : Component.translatable("research.dust.undiscovered");
+            Component known = com.mowmaster.dust.Features.DustComposition.ElementNames.named(dust, discovered);
             LINKS.add(new Link(x, y, element, discovered, Component.translatable("research.dust.process.compound", stack.getHoverName(), known), false));
             return;
         }

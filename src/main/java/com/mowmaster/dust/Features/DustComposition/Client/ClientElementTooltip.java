@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.RenderPipelines;
 
 // Draws an ElementTooltip: for each element, its icon (the greyscale sprite tinted with the element's colour) and
-// how many of it, all on one line.
+// how many of it and its name ([icon] 9 Growth), all on one line. (Only shown once every element is discovered.)
 public class ClientElementTooltip implements ClientTooltipComponent
 {
     private static final int ICON = 9;
@@ -32,7 +32,7 @@ public class ClientElementTooltip implements ClientTooltipComponent
     public int getWidth(Font font)
     {
         int width = 0;
-        for (ElementTooltip.Entry entry : tooltip.entries()) width += ICON + 1 + font.width(String.valueOf(entry.count())) + GAP;
+        for (ElementTooltip.Entry entry : tooltip.entries()) width += ICON + 1 + font.width(label(entry)) + GAP;
         return Math.max(0, width - GAP);
     }
 
@@ -43,9 +43,15 @@ public class ClientElementTooltip implements ClientTooltipComponent
         int dx = x;
         for (ElementTooltip.Entry entry : tooltip.entries()) {
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, entry.element().icon(), dx, y, ICON, ICON, 0xFF000000 | entry.element().color());
-            String count = String.valueOf(entry.count());
-            graphics.text(font, count, dx + ICON + 1, y + 1, TEXT, true);
-            dx += ICON + 1 + font.width(count) + GAP;
+            net.minecraft.network.chat.Component label = label(entry);
+            graphics.text(font, label, dx + ICON + 1, y + 1, TEXT, true);
+            dx += ICON + 1 + font.width(label) + GAP;
         }
+    }
+
+    // "9 Growth"
+    private static net.minecraft.network.chat.Component label(ElementTooltip.Entry entry)
+    {
+        return net.minecraft.network.chat.Component.literal(entry.count() + " ").append(entry.element().name());
     }
 }

@@ -102,7 +102,7 @@ public class ElementCrafterBlock extends StationBlock implements IColorableBlock
             if (!level.isClientSide()) {
                 DustElement element = crafter.jarElement(jar);
                 player.sendOverlayMessage(element != null && element != dust
-                        ? Component.translatable("dust.element_crafter.jar_other", element.name())
+                        ? Component.translatable("dust.element_crafter.jar_other", com.mowmaster.dust.Features.DustComposition.ElementNames.forViewer(element, player))
                         : Component.translatable("dust.element_crafter.jar_full"));
             }
             return InteractionResult.FAIL;
@@ -131,7 +131,7 @@ public class ElementCrafterBlock extends StationBlock implements IColorableBlock
             }
             else if (element == null) player.sendOverlayMessage(Component.translatable("dust.element_crafter.jar_unset"));
             else player.sendOverlayMessage(Component.translatable("dust.element_crafter.jar_contents",
-                    crafter.jarAmount(jar), ElementCrafterLayout.JAR_CAPACITY, element.name()));
+                    crafter.jarAmount(jar), ElementCrafterLayout.JAR_CAPACITY, com.mowmaster.dust.Features.DustComposition.ElementNames.forViewer(element, player)));
         }
         return InteractionResult.SUCCESS;
     }

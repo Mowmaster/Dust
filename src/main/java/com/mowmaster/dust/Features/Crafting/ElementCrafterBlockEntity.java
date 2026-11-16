@@ -254,7 +254,7 @@ public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IS
                 ElementCraftingRecipe.ElementCost cost = recipe.elements().get(i);
                 if (i > 0) costs.append(Component.literal("  "));
                 boolean enough = dustOf(cost.element()) >= cost.amount();
-                costs.append(Component.literal(cost.amount() + " ").append(cost.element().name())
+                costs.append(Component.literal(cost.amount() + " ").append(com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(cost.element()))
                         .withStyle(enough ? ChatFormatting.WHITE : ChatFormatting.RED));
             }
             below = Optional.of(costs);
@@ -290,6 +290,8 @@ public class ElementCrafterBlockEntity extends CBSyncedBlockEntity implements IS
         // Sneaking: again while the same recipe still matches and the jars still have its dust
         } while (all && recipe.matches(input(), level) && hasCosts(recipe));
 
+        // Crafting some machines unlocks Research tab discoveries (ResearchProgress)
+        com.mowmaster.dust.Features.Research.ResearchProgress.onCrafted(player, made);
         StorageInteractions.giveToPlayer(player, made);
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.8F, 1.2F);
         jarsChanged();

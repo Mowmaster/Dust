@@ -75,13 +75,13 @@ public final class SpellCasting
                 if (transmute && !need.getKey().parts().isEmpty()) {
                     for (DustElement parent : need.getKey().parts()) pay.merge(parent, shortBy, Integer::sum);
                 } else {
-                    player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", need.getKey().name(), need.getValue()));
+                    player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", com.mowmaster.dust.Features.DustComposition.ElementNames.forViewer(need.getKey(), player), need.getValue()));
                     return false;
                 }
             }
             for (Map.Entry<DustElement, Integer> part : pay.entrySet()) {
                 if (PlayerMagicHelper.dust(player, part.getKey()) < part.getValue()) {
-                    player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", part.getKey().name(), part.getValue()));
+                    player.sendOverlayMessage(Component.translatable("dust.spell.not_enough_dust", com.mowmaster.dust.Features.DustComposition.ElementNames.forViewer(part.getKey(), player), part.getValue()));
                     return false;
                 }
             }

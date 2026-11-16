@@ -104,7 +104,7 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         if (scroll.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) return scroll.getHoverName();
         Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
         if (spell == null) return scroll.getHoverName();
-        return Component.translatable("dust.grimoire.spell", spell.element().name(),
+        return Component.translatable("dust.grimoire.spell", com.mowmaster.dust.Features.DustComposition.ElementNames.plainForClient(spell.element()),
                 Component.translatable("spell_shape." + spell.shape().getNamespace() + "." + spell.shape().getPath()));
     }
 

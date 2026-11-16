@@ -151,6 +151,11 @@ public class DustClient {
     {
         event.register(ElementTooltip.class, ClientElementTooltip::new);
         event.register(AlchemicalDustTooltip.class, ClientAlchemicalDustTooltip::new);
+        // Element names in item names follow what the local player has discovered (ElementNames)
+        com.mowmaster.dust.Features.DustComposition.ElementNames.setClientKnows(element -> {
+            var player = Minecraft.getInstance().player;
+            return player != null && com.mowmaster.dust.Features.Machines.Compounds.knows(player, element);
+        });
     }
 
     // Glyph stone carving colour: dark, or worn blank on stones the local player has transcribed (tint index 0)

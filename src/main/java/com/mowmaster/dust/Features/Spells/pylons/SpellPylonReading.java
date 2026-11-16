@@ -53,7 +53,7 @@ public final class SpellPylonReading
             lines.add(Component.translatable("dust.pylon.no_element"));
             return lines;
         }
-        lines.add(Component.translatable("hud.dust.pylon.spell", element.name(), pylon.level()));
+        lines.add(Component.translatable("hud.dust.pylon.spell", com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(element), pylon.level()));
         lines.add(Component.translatable("hud.dust.pylon.counters", deck.blessed(), SpellDeck.BLESS_AT, deck.corruption(), SpellDeck.CORRUPT_AT));
         if (!deck.started()) {
             lines.add(Component.empty());

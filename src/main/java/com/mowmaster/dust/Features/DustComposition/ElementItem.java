@@ -36,6 +36,6 @@ public class ElementItem extends Item
     @Override
     public Component getName(ItemStack stack)
     {
-        return kind == Kind.CRYSTAL ? Component.translatable("item.dust.crystal") : Component.translatable("item.dust.element_dust", element.name());
+        return kind == Kind.CRYSTAL ? Component.translatable("item.dust.crystal") : Component.translatable("item.dust.element_dust", ElementNames.plainForClient(element));
     }
 }

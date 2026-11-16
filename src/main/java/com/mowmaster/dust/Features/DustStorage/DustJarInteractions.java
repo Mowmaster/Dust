@@ -99,12 +99,10 @@ public final class DustJarInteractions
                 : Component.translatable("dust.dust_jar.contents", elementName(element, viewer), amount, DustJarContents.CAPACITY);
     }
 
-    // An element's name as this player knows it: plain once they've discovered it, otherwise written in the ancient
-    // script (whose letters show plainly as the player learns them: the dust:ancient font)
+    // An element's name as this player knows it (ElementNames: icon and name once discovered, else the ancient script)
     public static Component elementName(DustElement element, Player viewer)
     {
-        return com.mowmaster.dust.Features.Machines.Compounds.knows(viewer, element) ? element.name()
-                : com.mowmaster.dust.Features.AncientLanguage.AncientLanguage.inscribe(element.name());
+        return com.mowmaster.dust.Features.DustComposition.ElementNames.forViewer(element, viewer);
     }
 
     // ---- labels ----

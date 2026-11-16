@@ -92,8 +92,9 @@ public class ElementResearchTab extends ResearchTab
             made = Component.translatable("research.dust.note.default.elements.primal", name(entry));
         } else {
             List<DustElement> parts = element.parts();
-            Component first = parts.get(0).name();
-            Component second = parts.size() > 1 ? parts.get(1).name() : first;
+            // The parts as the reader knows them (ElementNames)
+            Component first = com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(parts.get(0));
+            Component second = parts.size() > 1 ? com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(parts.get(1)) : first;
             made = Component.translatable("research.dust.note.default.elements.mix", name(entry), first, second);
         }
         // Component.empty().append(...): a component built from pieces, the way chat messages join coloured parts

@@ -28,7 +28,7 @@ public final class SpellTooltips
         if (spell == null) return;
         List<Component> lines = event.getToolTip();
         int at = Math.min(1, lines.size());
-        lines.add(at++, Component.translatable("dust.spell.tooltip.element", spell.element().name(), name("spell_shape", spell.shape()))
+        lines.add(at++, Component.translatable("dust.spell.tooltip.element", com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(spell.element()), name("spell_shape", spell.shape()))
                 .withStyle(ChatFormatting.GRAY));
         // Whether its effect lingers or is instant (EffectType): a Self spell lands on the caster, the others on a
         // creature or a block, whichever they hit
@@ -50,9 +50,12 @@ public final class SpellTooltips
             if (spell.level(i) > 1) line = line.copy().append(" " + spell.level(i));
             lines.add(at++, line.copy().withStyle(ChatFormatting.DARK_PURPLE));
         }
-        StringBuilder cost = new StringBuilder();
-        spell.dustCost().forEach((element, amount) -> cost.append(cost.isEmpty() ? "" : ", ").append(amount).append(' ').append(element.name().getString()));
-        lines.add(at, Component.translatable("dust.spell.tooltip.cost", cost.toString()).withStyle(ChatFormatting.DARK_GRAY));
+        net.minecraft.network.chat.MutableComponent cost = Component.empty();
+        spell.dustCost().forEach((element, amount) -> {
+            if (!cost.getSiblings().isEmpty()) cost.append(", ");
+            cost.append(amount + " ").append(com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(element));
+        });
+        lines.add(at, Component.translatable("dust.spell.tooltip.cost", cost).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     // "spell_shape.dust.projectile" -> "Projectile" (from the lang file)

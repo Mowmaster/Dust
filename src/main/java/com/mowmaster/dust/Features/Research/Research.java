@@ -56,6 +56,21 @@ public final class Research
         }
     }
 
+    // Starts these entries all at once, quietly (no toasts): what a player knows from the start (ResearchStart)
+    public static void grantQuietly(ServerPlayer player, java.util.Collection<ResearchEntry> entries)
+    {
+        ResearchData data = get(player);
+        long clock = player.level().getOverworldClockTime();
+        Identifier biome = biomeAt(player.level(), player.blockPosition());
+        boolean changed = false;
+        for (ResearchEntry entry : entries) {
+            if (data.has(entry)) continue;
+            data = data.update(entry, old -> EntryResearch.firstSeen(day(clock), timeOfDay(clock), biome));
+            changed = true;
+        }
+        if (changed) set(player, data);
+    }
+
     // Would observing this entry here teach the player anything (a new entry, or a new biome for it)?
     public static boolean wouldLearn(Player player, ResearchEntry entry, BlockPos where)
     {

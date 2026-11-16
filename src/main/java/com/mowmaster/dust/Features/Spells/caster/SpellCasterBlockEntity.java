@@ -205,9 +205,12 @@ public class SpellCasterBlockEntity extends CBSyncedBlockEntity
     public void report(ServerPlayer player)
     {
         Component spell = scroll.isEmpty() ? Component.translatable("dust.caster.no_scroll") : GrimoireItem.spellName(scroll);
-        StringBuilder dusts = new StringBuilder();
-        dust.forEach((element, amount) -> dusts.append(dusts.isEmpty() ? "" : ", ").append(amount).append(' ').append(element.name().getString()));
-        player.sendSystemMessage(Component.translatable("dust.caster.report", spell, dusts.isEmpty() ? "-" : dusts.toString(), energy));
+        net.minecraft.network.chat.MutableComponent dusts = Component.empty();
+        dust.forEach((element, amount) -> {
+            if (!dusts.getSiblings().isEmpty()) dusts.append(", ");
+            dusts.append(amount + " ").append(com.mowmaster.dust.Features.DustComposition.ElementNames.forViewer(element, player));
+        });
+        player.sendSystemMessage(Component.translatable("dust.caster.report", spell, dusts.getSiblings().isEmpty() ? Component.literal("-") : dusts, energy));
     }
 
     // Broken: the scroll and anything still in the input slots drop (the stored dust and energy are lost)

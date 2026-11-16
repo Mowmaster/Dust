@@ -190,6 +190,11 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
         progress = -1;
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0F, 1.2F);
         noteResearch(level, transformed);
+        // The first crystal made unlocks the Spell and Shape Pylons (ResearchProgress)
+        if (owner != null && CrystalElements.of(output) != null) {
+            ServerPlayer maker = level.getServer().getPlayerList().getPlayer(owner);
+            if (maker != null) com.mowmaster.dust.Features.Research.ResearchProgress.onCrystalMade(maker);
+        }
         sync();
     }
 

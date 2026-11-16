@@ -90,14 +90,14 @@ public final class Compounds
         return Research.get(player).has(new ResearchEntry(ResearchTabs.ELEMENTS, element.id()));
     }
 
-    // "Fire, Earth, ???": the elements in it, each named only if known (known says which are)
+    // "[icon] Fire, [icon] Earth, <ancient>": the elements in it, as ElementNames shows them (known says which are known)
     public static Component describe(DustComposition composition, Predicate<DustElement> known)
     {
         MutableComponent text = Component.empty();
         boolean first = true;
         for (DustElement element : composition.counted().keySet()) {
             if (!first) text.append(", ");
-            text.append(known.test(element) ? element.name() : Component.translatable("research.dust.undiscovered"));
+            text.append(com.mowmaster.dust.Features.DustComposition.ElementNames.named(element, known.test(element)));
             first = false;
         }
         return text;

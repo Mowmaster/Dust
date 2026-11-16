@@ -235,8 +235,8 @@ public final class CraftedCompositions
         }
     }
 
-    // Lower is better: 0 an oak item, 1 a vanilla one, 2 anything else
-    private static int preference(Holder<Item> holder)
+    // Lower is better: 0 an oak item, 1 a vanilla one, 2 anything else (also RecipeCatalog's choice of what to show)
+    public static int preference(Holder<Item> holder)
     {
         Identifier id = holder.unwrapKey().map(key -> key.identifier()).orElse(null);
         if (id == null) return 2;

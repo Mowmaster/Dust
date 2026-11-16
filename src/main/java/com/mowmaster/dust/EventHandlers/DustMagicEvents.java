@@ -43,6 +43,8 @@ public class DustMagicEvents {
         registrar.playToClient(ObservationPayloads.Noted.TYPE, ObservationPayloads.Noted.STREAM_CODEC);
         registrar.playToClient(com.mowmaster.dust.Features.DustComposition.CraftedCompositions.Sync.TYPE,
                 com.mowmaster.dust.Features.DustComposition.CraftedCompositions.Sync.STREAM_CODEC, com.mowmaster.dust.Features.DustComposition.CraftedCompositions.Sync::handle);
+        registrar.playToClient(com.mowmaster.dust.Features.Research.RecipeCatalog.Sync.TYPE,
+                com.mowmaster.dust.Features.Research.RecipeCatalog.Sync.STREAM_CODEC, com.mowmaster.dust.Features.Research.RecipeCatalog.Sync::handle);
         registrar.playToServer(ResearchNotesPayload.TYPE, ResearchNotesPayload.STREAM_CODEC, ResearchNotesPayload::handle);
         registrar.playToServer(com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload.TYPE,
                 com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload.STREAM_CODEC, com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload::handle);

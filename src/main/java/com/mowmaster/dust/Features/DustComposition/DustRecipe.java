@@ -115,6 +115,11 @@ public class DustRecipe extends CustomRecipe
             ResearchKey.STREAM_CODEC.apply(ByteBufCodecs::optional), recipe -> recipe.research,
             DustRecipe::new);
 
+    // What it's made of, for the research book's recipe pages (RecipeCatalog)
+    public ItemStackTemplate result() { return result; }
+    public List<DustNeed> dusts() { return dusts; }
+    public List<Ingredient> ingredients() { return ingredients; }
+
     // ---- matching ----
 
     // Every grid item fills exactly one need (a dust need or an ingredient), and every need is filled

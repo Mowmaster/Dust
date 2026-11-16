@@ -133,6 +133,8 @@ public class SpellPylonBlock extends Block implements EntityBlock
         }
         if (stack.getItem() instanceof SpellScrollItem) {
             if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+            // The first scroll on a Spell Pylon unlocks the Dust Grinder (ResearchProgress)
+            com.mowmaster.dust.Features.Research.ResearchProgress.onScrollOnPylon(serverPlayer);
             if (pylon.record(stack)) {
                 level.playSound(null, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.0F);
                 serverPlayer.sendOverlayMessage(Component.translatable("dust.pylon.recorded"));

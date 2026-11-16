@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 
-// Draws an AlchemicalDustTooltip: [icon] Fire - Amorphous (the name is ??? until discovered; the phase always shows)
+// Draws an AlchemicalDustTooltip: [icon] Fire - Amorphous (undiscovered: the ancient name, no icon; the phase always shows)
 public class ClientAlchemicalDustTooltip implements ClientTooltipComponent
 {
     private static final int ICON = 9;
@@ -24,7 +24,8 @@ public class ClientAlchemicalDustTooltip implements ClientTooltipComponent
 
     private Component name()
     {
-        return tooltip.known() ? tooltip.element().name() : Component.translatable("research.dust.undiscovered");
+        // Undiscovered: the ancient name, and no icon (ElementNames)
+        return tooltip.known() ? tooltip.element().name() : com.mowmaster.dust.Features.AncientLanguage.AncientLanguage.inscribe(tooltip.element().name());
     }
 
     private Component phase()
@@ -42,14 +43,17 @@ public class ClientAlchemicalDustTooltip implements ClientTooltipComponent
     @Override
     public int getWidth(Font font)
     {
-        return ICON + 2 + font.width(name()) + font.width(phase());
+        return (tooltip.known() ? ICON + 2 : 0) + font.width(name()) + font.width(phase());
     }
 
     @Override
     public void extractImage(Font font, int x, int y, int width, int height, GuiGraphicsExtractor graphics)
     {
-        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, tooltip.element().icon(), x, y, ICON, ICON, 0xFF000000 | tooltip.element().color());
-        int textX = x + ICON + 2;
+        int textX = x;
+        if (tooltip.known()) {
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, tooltip.element().icon(), x, y, ICON, ICON, 0xFF000000 | tooltip.element().color());
+            textX += ICON + 2;
+        }
         graphics.text(font, name(), textX, y + 1, NAME, true);
         graphics.text(font, phase(), textX + font.width(name()), y + 1, PHASE, true);
     }

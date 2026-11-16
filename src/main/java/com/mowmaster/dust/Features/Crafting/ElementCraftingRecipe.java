@@ -99,7 +99,14 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
     // A shaped recipe: the pattern's rows, what each letter stands for, and the dust it uses from the jars
     public static ElementCraftingRecipe shaped(ItemStackTemplate result, java.util.Map<Character, Ingredient> key, List<String> rows, List<ElementCost> elements)
     {
-        return new ElementCraftingRecipe(result, List.of(), List.of(), elements, Optional.empty(), Optional.of(ShapedRecipePattern.of(key, rows)));
+        return shaped(result, key, rows, elements, Optional.empty());
+    }
+
+    // ...that only players with this research entry can craft
+    public static ElementCraftingRecipe shaped(ItemStackTemplate result, java.util.Map<Character, Ingredient> key, List<String> rows, List<ElementCost> elements,
+                                               Optional<DustRecipe.ResearchKey> research)
+    {
+        return new ElementCraftingRecipe(result, List.of(), List.of(), elements, research, Optional.of(ShapedRecipePattern.of(key, rows)));
     }
 
     public static final MapCodec<ElementCraftingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
@@ -124,6 +131,12 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
     {
         return elements;
     }
+
+    // What it's made of, for the research book's recipe pages (RecipeCatalog)
+    public ItemStackTemplate result() { return result; }
+    public List<DustRecipe.DustNeed> dusts() { return dusts; }
+    public List<Ingredient> ingredients() { return ingredients; }
+    public Optional<ShapedRecipePattern> shapedPattern() { return shaped; }
 
     // ---- matching: the grid items, as a dust recipe matches them ----
 
