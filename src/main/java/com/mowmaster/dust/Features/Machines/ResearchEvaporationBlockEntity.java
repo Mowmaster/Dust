@@ -168,7 +168,6 @@ public class ResearchEvaporationBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchEvaporationBlockEntity table)
     {
-        table.automationTick();
         if (table.phase == Phase.IDLE) return;
         table.time++;
         if (table.phase == Phase.STIRRING && table.stirTicks >= 0 && ++table.stirTicks >= STIR_TICKS) {

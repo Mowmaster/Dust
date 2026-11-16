@@ -134,7 +134,6 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchTransformationBlockEntity table)
     {
-        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress < TRANSFORM_TICKS) {

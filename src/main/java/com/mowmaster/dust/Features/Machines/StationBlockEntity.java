@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -19,8 +18,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -30,9 +27,8 @@ import java.util.UUID;
 //   Hoppers and pipes   from the top: what it works on (StationSlot.Role.INPUT slots)
 //                       from the sides: what it uses up: paper, bottles, bowls, crystals, nether quartz (SUPPLY slots)
 //                       out the bottom: what it made (OUTPUT slots)
-//                       Each way in or out is a one-slot buffer (like the Spell Caster's): changing the station from
-//                       inside a hopper's transaction isn't safe, so the buffers are emptied into the station (and the
-//                       outputs moved into the bottom one) on the station's own tick (automationTick).
+//                       They reach the station's own slots (StationSlotHandler), so outputs stay on their pads for
+//                       the player until a hopper takes them.
 //   Starting it         a redstone pulse (StationAutomation.onNeighborChanged), a dispenser firing a Magical Flint and
 //                       Steel into it, or a fire spell landing on it (a Spell Caster's, or a player's): activate. On a
 //                       table that's being stirred, each one is a stir.
@@ -46,33 +42,18 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
     private boolean powered;
     private @Nullable UUID lastUser;
 
-    // The automation buffers (see above). isValid: what a hopper may put in.
-    private final ItemStacksResourceHandler topBuffer = buffer(StationSlot.Role.INPUT);
-    private final ItemStacksResourceHandler sideBuffer = buffer(StationSlot.Role.SUPPLY);
-    private final ItemStacksResourceHandler bottomBuffer = buffer(StationSlot.Role.OUTPUT);
+    // What hoppers and pipes reach, by side (see above)
+    private final StationSlotHandler inputs = new StationSlotHandler(this, StationSlot.Role.INPUT);
+    private final StationSlotHandler supplies = new StationSlotHandler(this, StationSlot.Role.SUPPLY);
+    private final StationSlotHandler outputs = new StationSlotHandler(this, StationSlot.Role.OUTPUT);
+    // Items left in the hopper buffers an earlier version had (top_buffer, side_buffer, bottom_buffer): kept until the
+    // station is broken, then dropped
+    private static final List<String> OLD_BUFFERS = List.of("top_buffer", "side_buffer", "bottom_buffer");
+    private final java.util.Map<String, ItemStack> leftovers = new java.util.HashMap<>();
 
     protected StationBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-    }
-
-    private ItemStacksResourceHandler buffer(StationSlot.Role role)
-    {
-        return new ItemStacksResourceHandler(1)
-        {
-            @Override
-            public boolean isValid(int index, ItemResource resource)
-            {
-                // Nothing goes into the output buffer from outside; the others take what one of their slots would
-                return role != StationSlot.Role.OUTPUT && acceptsFromAutomation(role, resource.toStack(1));
-            }
-
-            @Override
-            protected void onContentsChanged(int index, ItemStack previous)
-            {
-                setChanged();
-            }
-        };
     }
 
     // Every research station's block entity type, for the item capability below
@@ -84,7 +65,7 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
                 DustBlockEntityRegistry.RESEARCH_MIXING.get());
     }
 
-    // Hoppers and pipes: the buffer for the side they're on (side is null when something asks without a side: the top)
+    // Hoppers and pipes: the slots for the side they're on (side is null when something asks without a side: the top)
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event)
     {
@@ -94,58 +75,14 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
     // <T extends StationBlockEntity>: a generic method, so the lambda knows each type's block entity is a station
     private static <T extends StationBlockEntity> void register(RegisterCapabilitiesEvent event, BlockEntityType<T> type)
     {
-        event.registerBlockEntity(Capabilities.Item.BLOCK, type, (station, side) -> station.bufferFor(side));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, type, (station, side) -> station.slotsFor(side));
     }
 
-    public ItemStacksResourceHandler bufferFor(@Nullable Direction side)
+    public StationSlotHandler slotsFor(@Nullable Direction side)
     {
-        if (side == Direction.DOWN) return bottomBuffer;
-        if (side == null || side == Direction.UP) return topBuffer;
-        return sideBuffer;
-    }
-
-    // Whether a slot with this role would take the stack now
-    private boolean acceptsFromAutomation(StationSlot.Role role, ItemStack stack)
-    {
-        for (StationSlot slot : slots()) {
-            if (slot.role() == role && slot.accepts().test(stack)) return true;
-        }
-        return false;
-    }
-
-    // ---- the tick (each station's serverTick calls this first) ----
-
-    protected void automationTick()
-    {
-        boolean moved = feed(topBuffer, StationSlot.Role.INPUT) | feed(sideBuffer, StationSlot.Role.SUPPLY);
-        // The bottom buffer fills from the outputs once a hopper has emptied it
-        if (bottomBuffer.copyToList().getFirst().isEmpty()) {
-            for (StationSlot slot : slots()) {
-                if (slot.role() != StationSlot.Role.OUTPUT || slot.contents().get().isEmpty()) continue;
-                ItemStack taken = slot.extractor().extract(64);
-                if (taken.isEmpty()) continue;
-                bottomBuffer.set(0, ItemResource.of(taken), taken.getCount());
-                moved = true;
-                break;
-            }
-        }
-        if (moved) setChanged();
-    }
-
-    // What's in a buffer into the station's slots of this role (as much as they take). True if any went in.
-    private boolean feed(ItemStacksResourceHandler buffer, StationSlot.Role role)
-    {
-        ItemStack stack = buffer.copyToList().getFirst();
-        if (stack.isEmpty()) return false;
-        int before = stack.getCount();
-        for (StationSlot slot : slots()) {
-            if (stack.isEmpty()) break;
-            if (slot.role() != role || !slot.accepts().test(stack)) continue;
-            stack.shrink(slot.inserter().insert(stack, null));
-        }
-        if (stack.getCount() == before) return false;
-        buffer.set(0, stack.isEmpty() ? ItemResource.EMPTY : ItemResource.of(stack), stack.getCount());
-        return true;
+        if (side == Direction.DOWN) return outputs;
+        if (side == null || side == Direction.UP) return inputs;
+        return supplies;
     }
 
     // ---- starting it ----
@@ -198,9 +135,7 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
         super.saveAdditional(output);
         output.putBoolean("powered", powered);
         if (lastUser != null) output.store("last_user", UUIDUtil.CODEC, lastUser);
-        storeBuffer(output, "top_buffer", topBuffer);
-        storeBuffer(output, "side_buffer", sideBuffer);
-        storeBuffer(output, "bottom_buffer", bottomBuffer);
+        leftovers.forEach((key, stack) -> output.store(key, ItemStack.OPTIONAL_CODEC, stack));
     }
 
     @Override
@@ -209,33 +144,17 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
         super.loadAdditional(input);
         powered = input.getBooleanOr("powered", false);
         lastUser = input.read("last_user", UUIDUtil.CODEC).orElse(null);
-        readBuffer(input, "top_buffer", topBuffer);
-        readBuffer(input, "side_buffer", sideBuffer);
-        readBuffer(input, "bottom_buffer", bottomBuffer);
+        leftovers.clear();
+        for (String key : OLD_BUFFERS) input.read(key, ItemStack.OPTIONAL_CODEC).filter(stack -> !stack.isEmpty()).ifPresent(stack -> leftovers.put(key, stack));
     }
 
-    private static void storeBuffer(ValueOutput output, String key, ItemStacksResourceHandler buffer)
-    {
-        ItemStack stack = buffer.copyToList().getFirst();
-        if (!stack.isEmpty()) output.store(key, ItemStack.OPTIONAL_CODEC, stack);
-    }
-
-    private static void readBuffer(ValueInput input, String key, ItemStacksResourceHandler buffer)
-    {
-        ItemStack stack = input.read(key, ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
-        buffer.set(0, stack.isEmpty() ? ItemResource.EMPTY : ItemResource.of(stack), stack.getCount());
-    }
-
-    // Broken: whatever is waiting in the buffers drops too
+    // Broken: anything left in an old buffer drops
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state)
     {
         super.preRemoveSideEffects(pos, state);
-        Level level = getLevel();
         if (level == null) return;
-        for (ItemStacksResourceHandler buffer : List.of(topBuffer, sideBuffer, bottomBuffer)) {
-            ItemStack stack = buffer.copyToList().getFirst();
-            if (!stack.isEmpty()) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, stack);
-        }
+        for (ItemStack stack : leftovers.values()) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, stack);
+        leftovers.clear();
     }
 }

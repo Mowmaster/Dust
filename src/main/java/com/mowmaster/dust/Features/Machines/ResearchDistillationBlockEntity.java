@@ -183,7 +183,6 @@ public class ResearchDistillationBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchDistillationBlockEntity table)
     {
-        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress % 20 == 0 && table.progress < BOIL_TICKS) level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 0.5F, 1.4F);

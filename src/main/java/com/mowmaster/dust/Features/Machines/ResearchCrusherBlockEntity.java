@@ -97,7 +97,6 @@ public class ResearchCrusherBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchCrusherBlockEntity crusher)
     {
-        crusher.automationTick();
         if (crusher.input.isEmpty()) return;
         ItemStack result = crushed(crusher.input);
         // The tray takes the same pebbles up to a stack; anything else waits until it's emptied

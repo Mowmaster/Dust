@@ -138,7 +138,6 @@ public class ResearchSeparationBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchSeparationBlockEntity table)
     {
-        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress < SEPARATE_TICKS) {

@@ -186,7 +186,6 @@ public class ResearchMixingBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchMixingBlockEntity table)
     {
-        table.automationTick();
         if (table.idle()) return;
         table.time++;
         if (table.isStirring() && table.stirTicks >= 0 && ++table.stirTicks >= STIR_TICKS) {

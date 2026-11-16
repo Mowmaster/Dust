@@ -115,7 +115,6 @@ public class ResearchCombinationBlockEntity extends StationBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchCombinationBlockEntity table)
     {
-        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress == DRAW_IN_TICKS) {
