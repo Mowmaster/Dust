@@ -138,8 +138,8 @@ public class DustItemRegistry
     // Holds one spell, cast with right-click (Features/Spells)
     public static final DeferredItem<Item> SPELL_SCROLL = DUSTITEMS.registerItem("spell_scroll", SpellScrollItem::new, properties -> properties.stacksTo(1));
     // A book of spells: a Spell Scroll on each page, cast with keys from anywhere in your inventory (Features/Spells/grimoire)
-    // Modifier cards (Features/Spells/ModifierCardItem): one per shape modifier, by the modifier's id. Their models are
-    // models/item/cards/card_<name>.json.
+    // Modifier cards (Features/Spells/ModifierCardItem): one for every modifier, by the modifier's id. Their models are
+    // models/item/cards/card_<name>.json (the shape modifiers' are hand-made 3D cards; the rest flat, textures/item/cards).
     public static final Map<net.minecraft.resources.Identifier, DeferredItem<Item>> CARDS = new LinkedHashMap<>();
     public static final DeferredItem<Item> CARD_AOE = card("card_aoe", "aoe");
     public static final DeferredItem<Item> CARD_BEAM = card("card_beam", "beam");
@@ -149,12 +149,32 @@ public class DustItemRegistry
     public static final DeferredItem<Item> CARD_WALL = card("card_wall", "wall");
     public static final DeferredItem<Item> CARD_TRANSMUTATION = card("card_transmutation", "transmutation");
 
+    // A card for every other modifier: card_<modifier>, shown on pylons and in the Spell Pylon's HUD, and collectable,
+    // but not laid on a Spell Pylon (only the shape modifiers' and Transmutation's cards are: playable)
+    static {
+        for (var holder : com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIERS.getEntries()) {
+            net.minecraft.resources.Identifier id = holder.getId();
+            if (!CARDS.containsKey(id)) cardFor("card_" + id.getPath(), id, false);
+        }
+    }
+
     private static DeferredItem<Item> card(String name, String modifier)
     {
-        net.minecraft.resources.Identifier id = net.minecraft.resources.Identifier.fromNamespaceAndPath(DustReferences.MODID, modifier);
-        DeferredItem<Item> item = DUSTITEMS.registerItem(name, properties -> new com.mowmaster.dust.Features.Spells.ModifierCardItem(properties.stacksTo(16), id));
+        return cardFor(name, net.minecraft.resources.Identifier.fromNamespaceAndPath(DustReferences.MODID, modifier), true);
+    }
+
+    private static DeferredItem<Item> cardFor(String name, net.minecraft.resources.Identifier id, boolean playable)
+    {
+        DeferredItem<Item> item = DUSTITEMS.registerItem(name, properties -> new com.mowmaster.dust.Features.Spells.ModifierCardItem(properties.stacksTo(16), id, playable));
         CARDS.put(id, item);
         return item;
+    }
+
+    // A modifier's card, or EMPTY if it has none
+    public static ItemStack cardOf(net.minecraft.resources.Identifier modifier)
+    {
+        DeferredItem<Item> card = CARDS.get(modifier);
+        return card == null ? ItemStack.EMPTY : new ItemStack(card.get());
     }
 
     // Jar Label (Features/DustStorage): stuck on a Dust Jar's side, it shows the element and how much (scraped off with shears)
@@ -162,6 +182,9 @@ public class DustItemRegistry
 
     public static final DeferredItem<Item> GRIMOIRE = DUSTITEMS.registerItem("grimoire",
             com.mowmaster.dust.Features.Spells.grimoire.GrimoireItem::new, properties -> properties.stacksTo(1));
+    // The Akashic: a grimoire whose spells are four times as strong for half the cost (Features/Spells/grimoire/AkashicItem)
+    public static final DeferredItem<Item> AKASHIC = DUSTITEMS.registerItem("akashic",
+            com.mowmaster.dust.Features.Spells.grimoire.AkashicItem::new, properties -> properties.stacksTo(1).rarity(Rarity.EPIC));
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)
     public static final DeferredItem<Item> ALCHEMICAL_DUST = DUSTITEMS.registerItem("alchemical_dust", AlchemicalDustItem::new);
 

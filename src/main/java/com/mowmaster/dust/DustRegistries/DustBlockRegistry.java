@@ -207,6 +207,12 @@ public class DustBlockRegistry {
                     .isValidSpawn((state, level, pos, type) -> false).isRedstoneConductor((state, level, pos) -> false)
                     .isSuffocating((state, level, pos) -> false)));
 
+    // Placed near a Spell Pylon, they show its blessing / corruption on their nodes (Features/Spells/pylons/CounterPylonBlock)
+    public static final DeferredBlock<Block> PYLON_BLESSED = registerBlock("pylon_blessed", properties -> new com.mowmaster.dust.Features.Spells.pylons.CounterPylonBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.AMETHYST).strength(1.5F, 6.0F).noOcclusion(), true));
+    public static final DeferredBlock<Block> PYLON_CORRUPTED = registerBlock("pylon_corrupted", properties -> new com.mowmaster.dust.Features.Spells.pylons.CounterPylonBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.AMETHYST).strength(1.5F, 6.0F).noOcclusion(), false));
+
     private static DeferredBlock<Block> pylon(String name, PylonType type)
     {
         return registerBlock(name, properties -> new PylonBlock(properties.mapColor(MapColor.STONE).sound(SoundType.AMETHYST)

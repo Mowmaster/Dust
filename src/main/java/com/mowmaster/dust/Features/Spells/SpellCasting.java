@@ -26,6 +26,24 @@ public final class SpellCasting
 {
     private SpellCasting() {}
 
+    // ---- the Akashic (grimoire/AkashicItem): a cast from it is boosted, switched on just around that cast ----
+    public static final int AKASHIC_POWER = 4;
+    // ThreadLocal: a value of its own for each thread (the server's main thread is the one casting)
+    private static final ThreadLocal<Boolean> AKASHIC = ThreadLocal.withInitial(() -> false);
+
+    // Runs a cast with the Akashic's boost on: 4x damage, potency, range and velocity; half the dust and mana (rounded
+    // down)
+    public static boolean akashic(java.util.function.BooleanSupplier cast)
+    {
+        boolean before = AKASHIC.get();
+        AKASHIC.set(true);
+        try {
+            return cast.getAsBoolean();
+        } finally {
+            AKASHIC.set(before);
+        }
+    }
+
     // True if it was cast
     public static boolean cast(ServerPlayer player, Spell spell)
     {
@@ -88,8 +106,21 @@ public final class SpellCasting
             cost.clear();
             cost.putAll(pay);
         }
+        // The Akashic: half the dust (rounded down, so a single dust is free), and half the mana that dust would have
+        // cost (below). fullDust: the dust before halving.
+        boolean akashic = AKASHIC.get();
+        int fullDust = 0;
+        for (int amount : cost.values()) fullDust += amount;
+        if (akashic) {
+            cost.replaceAll((element, amount) -> amount / 2);
+            cost.values().removeIf(amount -> amount <= 0);
+        }
 
         SpellStats stats = spell.stats(PlayerMagicHelper.spellPower(player, spell.element()));
+        if (akashic) {
+            stats = stats.withDamageMultiplier(stats.damageMultiplier() * AKASHIC_POWER).withPotency(stats.potency() * AKASHIC_POWER)
+                    .withRange(stats.range() * AKASHIC_POWER).withSpeed(stats.speed() * AKASHIC_POWER);
+        }
         // A critical hit (Crit Chance): double damage this cast
         if (stats.critChance() > 0 && player.getRandom().nextFloat() < stats.critChance()) {
             stats = stats.withDamageMultiplier(stats.damageMultiplier() * 2);
@@ -115,8 +146,8 @@ public final class SpellCasting
                 PlayerMagicHelper.removeDust(player, need.getKey(), need.getValue(), false);
                 total += need.getValue();
             }
-            // Mana Reduction: percent off (int division rounds the saving down)
-            int mana = PlayerMagicHelper.manaForDust(total);
+            // Mana Reduction: percent off (int division rounds the saving down). The Akashic: half the full dust's mana.
+            int mana = akashic ? PlayerMagicHelper.manaForDust(fullDust) / 2 : PlayerMagicHelper.manaForDust(total);
             // Permanent (a rune that pays its own way after): 4x the mana to cast
             if (spell.modifiers().contains(SpellRegistries.PERMANENT.getId())) mana *= com.mowmaster.dust.Features.Spells.api.SpellConfig.PERMANENT_MANA;
             mana = mana * (100 - costReduction) / 100;

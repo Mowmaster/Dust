@@ -303,7 +303,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     public com.mowmaster.mowlib.reading.@Nullable ReadingPaper read(com.mowmaster.mowlib.reading.ReadingContext context)
     {
         if (SpellPylonReading.holdsResearchBook(context.player())) return null;
-        return com.mowmaster.mowlib.reading.ReadingPaper.of(SpellPylonReading.lines(this, deck));
+        return com.mowmaster.mowlib.reading.ReadingPaper.withPages(SpellPylonReading.lines(this, deck, context.player()), SpellPylonReading.deckPages(deck));
     }
 
     // ---- the modifier card ----

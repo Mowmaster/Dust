@@ -102,6 +102,7 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.RESEARCH_MIXING.get(), ResearchMixingRenderer::new);
         // The Spell Pylon's ghosts (where the next pylon can go)
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.SPELL_PYLON.get(), com.mowmaster.dust.Features.Spells.Client.SpellPylonRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.PYLON.get(), com.mowmaster.dust.Features.Spells.Client.PylonCardRenderer::new);
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
@@ -171,6 +172,8 @@ public class DustClient {
         event.register(List.of(new com.mowmaster.dust.Features.Spells.Client.SpellPylonTint()), DustBlockRegistry.SPELL_PYLON.get());
         // A rune in its spell's element colour
         event.register(List.of(new com.mowmaster.dust.Features.Spells.Client.RuneTint()), DustBlockRegistry.RUNE.get());
+        // The Blessed and Corrupted Pylons' nodes (their tree's blessing / corruption)
+        event.register(com.mowmaster.dust.Features.Spells.Client.CounterPylonTint.all(), DustBlockRegistry.PYLON_BLESSED.get(), DustBlockRegistry.PYLON_CORRUPTED.get());
         event.register(com.mowmaster.dust.Features.Spells.Client.PylonTint.all(), DustBlockRegistry.SHAPE_PYLON.get(), DustBlockRegistry.NEUTRAL_PYLON.get(),
                 DustBlockRegistry.THRIFTY_PYLON.get(), DustBlockRegistry.GIANT_PYLON.get(), DustBlockRegistry.DAMAGE_PYLON.get(), DustBlockRegistry.EXPERIENCED_PYLON.get());
     }

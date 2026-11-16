@@ -57,6 +57,8 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.ANCIENT_TABLET.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.TRANSCRIPTION.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.GRIMOIRE.get(), ModelTemplates.FLAT_ITEM);
+        // The Akashic: its hand-made 3D book (models/item/akashic.json)
+        itemModels.itemModelOutput.accept(DustItemRegistry.AKASHIC.get(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/akashic")));
         // Modifier cards: their hand-made models (models/item/cards/card_<name>.json)
         DustItemRegistry.CARDS.values().forEach(card -> itemModels.itemModelOutput.accept(card.get(), ItemModelUtils.plainModel(
                 Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/cards/" + BuiltInRegistries.ITEM.getKey(card.get()).getPath()))));
@@ -82,6 +84,7 @@ public class DustProviderModel extends ModelProvider {
         createDustStorage(blockModels);
         createSpellScroll(itemModels);
         createPylons(blockModels);
+        createCounterPylons(blockModels);
         // The Rune modifier's glyph: one model per letter (models/block/spell/rune/rune_<a-z>.json), by its glyph
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.RUNE.get()).with(
                 PropertyDispatch.initial(com.mowmaster.dust.Features.Spells.blocks.RuneBlock.GLYPH).generate(glyph -> BlockModelGenerators.plainVariant(
@@ -371,6 +374,29 @@ public class DustProviderModel extends ModelProvider {
             // Tint 0 (the body) in the kind's colour; the rest have no tint source, so they stay plain
             blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(pylonModel("blank_pylon_base_level_3"),
                     ItemModelUtils.constantTint(PylonTint.kindColor(((PylonBlock) block).type()))));
+        }
+    }
+
+    // The Blessed and Corrupted Pylons: one model each, turned by facing (the angel / devil faces north in the model),
+    // whatever the count (the nodes are tints: Client/CounterPylonTint). Items: the model with its count at 0.
+    private void createCounterPylons(BlockModelGenerators blockModels)
+    {
+        for (Block block : List.of(DustBlockRegistry.PYLON_BLESSED.get(), DustBlockRegistry.PYLON_CORRUPTED.get())) {
+            boolean blessed = ((com.mowmaster.dust.Features.Spells.pylons.CounterPylonBlock) block).blessed();
+            Identifier model = pylonModel(blessed ? "pylon_blessed" : "pylon_corrupted");
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+                    PropertyDispatch.initial(com.mowmaster.dust.Features.Spells.pylons.CounterPylonBlock.FACING, com.mowmaster.dust.Features.Spells.pylons.CounterPylonBlock.LEVEL)
+                            .generate((facing, level) -> BlockModelGenerators.plainVariant(model).with(switch (facing) {
+                                case EAST -> BlockModelGenerators.Y_ROT_90;
+                                case SOUTH -> BlockModelGenerators.Y_ROT_180;
+                                case WEST -> BlockModelGenerators.Y_ROT_270;
+                                default -> BlockModelGenerators.NOP;
+                            }))));
+            List<net.minecraft.client.color.item.ItemTintSource> tints = new java.util.ArrayList<>();
+            for (int i = 0; i <= com.mowmaster.dust.Features.Spells.Client.CounterPylonTint.MAX_INDEX; i++) {
+                tints.add(ItemModelUtils.constantTint(com.mowmaster.dust.Features.Spells.Client.CounterPylonTint.colorOf(blessed, i, 0)));
+            }
+            blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(model, tints.toArray(new net.minecraft.client.color.item.ItemTintSource[0])));
         }
     }
 

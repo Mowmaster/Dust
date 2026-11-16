@@ -106,7 +106,7 @@ public class SpellPylonBlock extends Block implements EntityBlock
             return InteractionResult.SUCCESS;
         }
         // A modifier card: laid on top, its modifier straight into the deck (one per spell)
-        if (stack.getItem() instanceof com.mowmaster.dust.Features.Spells.ModifierCardItem card) {
+        if (stack.getItem() instanceof com.mowmaster.dust.Features.Spells.ModifierCardItem card && card.playable()) {
             if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
             String problem = pylon.placeCard(card.modifier());
             if (problem == null) {

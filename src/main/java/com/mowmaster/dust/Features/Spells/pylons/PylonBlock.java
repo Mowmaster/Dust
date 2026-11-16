@@ -75,6 +75,17 @@ public class PylonBlock extends Block implements EntityBlock
         return defaultBlockState().setValue(PARENT, context.getHorizontalDirection().getOpposite());
     }
 
+    // The card rising out of the top runs on the client only
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends BlockEntity> net.minecraft.world.level.block.entity.@Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state,
+                                                                                                                   net.minecraft.world.level.block.entity.BlockEntityType<T> type)
+    {
+        if (!level.isClientSide() || type != com.mowmaster.dust.DustRegistries.DustBlockEntityRegistry.PYLON.get()) return null;
+        net.minecraft.world.level.block.entity.BlockEntityTicker<PylonBlockEntity> ticker = PylonBlockEntity::clientTick;
+        return (net.minecraft.world.level.block.entity.BlockEntityTicker<T>) ticker;
+    }
+
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {

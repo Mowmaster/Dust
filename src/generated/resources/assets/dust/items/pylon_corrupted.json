@@ -1,0 +1,56 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:block/pylon/pylon_corrupted",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -11914188
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -5236712
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -15066598
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -15066598
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -15066598
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -15066598
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -15066598
+      }
+    ]
+  }
+}

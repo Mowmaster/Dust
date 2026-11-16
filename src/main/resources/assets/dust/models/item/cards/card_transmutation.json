@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "dust:item/card_transmutation"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dust:item/cards/card_transmutation"
+  }
 }

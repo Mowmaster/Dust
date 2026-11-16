@@ -78,6 +78,8 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         add(DustBlockRegistry.SPELL_PYLON.get(), noDrop());
         dropSelf(DustBlockRegistry.SHAPE_PYLON.get());
         dropSelf(DustBlockRegistry.NEUTRAL_PYLON.get());
+        dropSelf(DustBlockRegistry.PYLON_BLESSED.get());
+        dropSelf(DustBlockRegistry.PYLON_CORRUPTED.get());
         dropSelf(DustBlockRegistry.THRIFTY_PYLON.get());
         dropSelf(DustBlockRegistry.GIANT_PYLON.get());
         dropSelf(DustBlockRegistry.DAMAGE_PYLON.get());

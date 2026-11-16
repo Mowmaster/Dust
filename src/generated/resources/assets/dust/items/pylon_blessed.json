@@ -1,0 +1,56 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:block/pylon/pylon_blessed",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1511169
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -10144
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
+  }
+}

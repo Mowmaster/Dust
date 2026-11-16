@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
 //              legendary / stop pylons, and for the Shape Pylon once a pylon follows it
 //   powered    a spell break with redstone power (the line carries on)
 // All of it is synced: the client tints the pylon from it (Client/PylonTint).
-public class PylonBlockEntity extends CBSyncedBlockEntity
+public class PylonBlockEntity extends CBSyncedBlockEntity implements com.mowmaster.mowlib.reading.IReadableBlock
 {
     private @Nullable BlockPos main;
     private @Nullable Identifier modifier;
@@ -59,6 +59,56 @@ public class PylonBlockEntity extends CBSyncedBlockEntity
     public boolean stop() { return stop; }
     public boolean locked() { return locked; }
     public boolean powered() { return powered; }
+
+    // ---- client only: its card rising out of the top while a player is near, poofing away when they leave, like the
+    // Spell Pylon's element icon (clientTick; Client/PylonCardRenderer draws it) ----
+    private int appear;
+    private int lastAppear;
+
+    public static void clientTick(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, PylonBlockEntity pylon)
+    {
+        pylon.lastAppear = pylon.appear;
+        if (pylon.modifier == null) {
+            pylon.appear = 0;
+            return;
+        }
+        boolean near = false;
+        for (net.minecraft.world.entity.player.Player player : level.players()) {
+            if (player.isLocalPlayer() && !player.isSpectator()
+                    && player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos)) <= SpellPylonBlockEntity.NEAR_DISTANCE * SpellPylonBlockEntity.NEAR_DISTANCE) near = true;
+        }
+        var random = level.getRandom();
+        if (near) {
+            if (pylon.appear < SpellPylonBlockEntity.APPEAR_TICKS) {
+                pylon.appear++;
+                // Sparkles curling out of the top as it rises
+                level.addParticle(net.minecraft.core.particles.ParticleTypes.ENCHANT, pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.3,
+                        pos.getY() + 1.0, pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.3, 0, 0.05, 0);
+            }
+        } else if (pylon.appear > 0) {
+            for (int i = 0; i < 8; i++) {
+                level.addParticle(net.minecraft.core.particles.ParticleTypes.POOF, pos.getX() + 0.5, pos.getY() + 1.0 + SpellPylonBlockEntity.ICON_RISE, pos.getZ() + 0.5,
+                        (random.nextDouble() - 0.5) * 0.08, (random.nextDouble() - 0.5) * 0.08, (random.nextDouble() - 0.5) * 0.08);
+            }
+            pylon.appear = 0;
+            pylon.lastAppear = 0;
+        }
+    }
+
+    // How far out the card is, 0 (gone) to 1 (out), smoothed between ticks
+    public float appear(float partialTick)
+    {
+        return Mth.lerp(partialTick, lastAppear, appear) / SpellPylonBlockEntity.APPEAR_TICKS;
+    }
+
+    // ---- MowLib's reading HUD: what it holds (PylonReading) ----
+
+    @Override
+    public com.mowmaster.mowlib.reading.@Nullable ReadingPaper read(com.mowmaster.mowlib.reading.ReadingContext context)
+    {
+        if (SpellPylonReading.holdsResearchBook(context.player())) return null;
+        return com.mowmaster.mowlib.reading.ReadingPaper.of(PylonReading.lines(this));
+    }
 
     public boolean canUpgrade()
     {

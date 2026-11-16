@@ -26,6 +26,7 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.RESEARCH_NOTES.asItem());
                         output.accept(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.asItem());
                         output.accept(DustItemRegistry.GRIMOIRE.asItem());
+                        output.accept(DustItemRegistry.AKASHIC.asItem());
                         DustItemRegistry.CARDS.values().forEach(card -> output.accept(card.get()));
                         // A crystal and a dust for every element, in element order
                         DustItemRegistry.CRYSTALS.values().forEach(item -> output.accept(item.get()));
@@ -46,6 +47,8 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.SPELL_PYLON.asItem());
                         output.accept(DustBlockRegistry.SHAPE_PYLON.asItem());
                         output.accept(DustBlockRegistry.NEUTRAL_PYLON.asItem());
+                        output.accept(DustBlockRegistry.PYLON_BLESSED.asItem());
+                        output.accept(DustBlockRegistry.PYLON_CORRUPTED.asItem());
                         output.accept(DustBlockRegistry.THRIFTY_PYLON.asItem());
                         output.accept(DustBlockRegistry.GIANT_PYLON.asItem());
                         output.accept(DustBlockRegistry.DAMAGE_PYLON.asItem());
