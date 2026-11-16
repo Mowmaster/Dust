@@ -28,7 +28,7 @@ import net.minecraft.world.phys.AABB;
 
 // Fire
 //   Self     Fire Resistance
-//   Block    like the Magical Flint and Steel: a dropped item with dust in it, where the fire would go, burns in its
+//   Block    a research station is started (StationAutomation); otherwise like the Magical Flint and Steel: a dropped item with dust in it, where the fire would go, burns in its
 //            colour (and a player caster notes the colour); otherwise it lights the block: a campfire / candle is lit,
 //            or fire is placed against the face hit
 //   Entity   Scorch (sets it alight, more for higher potency)
@@ -56,6 +56,9 @@ public class FireEffect implements ElementEffect
     {
         ServerLevel level = cast.level();
         BlockState state = level.getBlockState(pos);
+        // A research station is started (or stirred) by the flame, as by a Magical Flint and Steel: a Spell Caster can run
+        // one (StationAutomation). A player's spell notes the research for them.
+        if (com.mowmaster.dust.Features.Machines.StationAutomation.activate(level, pos, cast.caster() instanceof net.minecraft.world.entity.player.Player player ? player : null)) return;
         // Something that can be lit (campfires, candles, furnaces' LIT is driven by burning, so only blocks that are
         // lit by flint and steel: those whose LIT a player can toggle)
         if (state.hasProperty(BlockStateProperties.LIT) && !state.getValue(BlockStateProperties.LIT)

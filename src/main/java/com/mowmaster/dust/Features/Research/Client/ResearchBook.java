@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.Features.AncientLanguage.AncientLanguage;
 import com.mowmaster.dust.Features.DustComposition.DustComposition;
 import com.mowmaster.dust.Features.DustComposition.DustCompositions;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
@@ -258,6 +259,10 @@ public final class ResearchBook
     private static void drawList(GuiGraphicsExtractor graphics, Font font, ResearchData data)
     {
         ResearchTab tab = tab();
+        if (tab == ResearchTabs.CODEX) {
+            drawCodex(graphics, font);
+            return;
+        }
         List<List<Identifier>> groups = tab.groups();
         int pages = Math.max(1, (groups.size() + PER_SPREAD - 1) / PER_SPREAD);
         listPage = Math.clamp(listPage, 0, pages - 1);
@@ -280,6 +285,43 @@ public final class ResearchBook
         Paper.inkCentred(graphics, font, count, WIDTH / 2, FOOTER_Y + 2, INK);
         if (listPage > 0) Paper.ink(graphics, font, Component.literal("<"), LEFT_X + 2, FOOTER_Y + 2, INK);
         if (listPage < pages - 1) Paper.ink(graphics, font, Component.literal(">"), RIGHT_X + PAGE_W - 8, FOOTER_Y + 2, INK);
+    }
+
+    // ---- the Codex ----
+    // The glyphs the local player knows (a Shared Research Guide too: glyphs are learned, not written down), two
+    // columns a page: the glyph in a slot frame, then "= A". Only known ones, A to Z, so the gaps give nothing away.
+    private static final int CODEX_ROW = 18;
+    private static final int CODEX_ROWS = 7;
+    private static final int CODEX_PER_PAGE = CODEX_ROWS * 2;
+
+    private static void drawCodex(GuiGraphicsExtractor graphics, Font font)
+    {
+        var player = net.minecraft.client.Minecraft.getInstance().player;
+        int mask = player == null ? 0 : AncientLanguage.knownMask(player);
+        List<Integer> known = new ArrayList<>();
+        for (int glyph = 0; glyph < AncientLanguage.GLYPH_COUNT; glyph++) {
+            if ((mask & (1 << glyph)) != 0) known.add(glyph);
+        }
+        Paper.inkCentred(graphics, font, ResearchTabs.CODEX.title(), LEFT_X + PAGE_W / 2, PAGE_TOP + 2, INK);
+        Paper.inkCentred(graphics, font, Component.translatable("research.dust.codex.subtitle"), RIGHT_X + PAGE_W / 2, PAGE_TOP + 2, FADED);
+        if (known.isEmpty()) {
+            drawLines(graphics, font, font.split(Component.translatable("research.dust.codex.none"), PAGE_W - 8), LEFT_X + 4, GRID_TOP, FOOTER_Y - 2, FADED);
+        }
+        for (int i = 0; i < known.size() && i < CODEX_PER_PAGE * 2; i++) {
+            int glyph = known.get(i);
+            int pageX = i < CODEX_PER_PAGE ? LEFT_X : RIGHT_X;
+            int index = i % CODEX_PER_PAGE;
+            int x = pageX + 8 + (index / CODEX_ROWS) * (PAGE_W / 2);
+            int y = GRID_TOP + (index % CODEX_ROWS) * CODEX_ROW;
+            Paper.slot(graphics, x, y);
+            // The raw glyph font (dust:ancient_glyphs) never turns into a letter, however much the reader knows
+            Component symbol = Component.literal(String.valueOf(Character.toLowerCase(AncientLanguage.letter(glyph))))
+                    .withStyle(style -> style.withFont(AncientLanguage.GLYPHS));
+            Paper.inkCentred(graphics, font, symbol, x + 9, y + 5, INK);
+            Paper.ink(graphics, font, Component.literal("= " + AncientLanguage.letter(glyph)), x + 22, y + 5, INK);
+        }
+        Component count = Component.translatable("research.dust.codex.known", known.size(), AncientLanguage.GLYPH_COUNT);
+        Paper.inkCentred(graphics, font, count, WIDTH / 2, FOOTER_Y + 2, INK);
     }
 
     // Top-left of the i-th cell on the open spread (the first PER_PAGE on the left page)

@@ -33,7 +33,7 @@ import java.util.UUID;
 // Dust of the element mixed from them (ElementCombining). Two that don't make an element won't start. Started with a
 // Magical Flint and Steel: the glyph rises off the scroll spinning, both dusts are pulled off their pads into it
 // (trailing their colours), and the new element streams from the glyph down to the output. (What an element is made from shows in its Elements entry once it's discovered.)
-public class ResearchCombinationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchCombinationBlockEntity extends StationBlockEntity
 {
     public static final int COMBINE_TICKS = 100;
     // The inputs are pulled into the glyph from PULL_START (once it's up) to DRAW_IN_TICKS; after that the result
@@ -102,10 +102,20 @@ public class ResearchCombinationBlockEntity extends CBSyncedBlockEntity implemen
         sync();
     }
 
+    // Automation (StationBlockEntity): starts it if it can start
+    @Override
+    public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        if (cannotStart() != null) return false;
+        start(level, researcher(level, by));
+        return true;
+    }
+
     // ---- ticking ----
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchCombinationBlockEntity table)
     {
+        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress == DRAW_IN_TICKS) {

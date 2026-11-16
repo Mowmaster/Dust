@@ -8,6 +8,7 @@ import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
 import com.mowmaster.mowlib.util.CBPixelBox;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +32,7 @@ import java.util.UUID;
 // (their research notes the step). One block at a time, CRUSH_TICKS each.
 // The client keeps its own count while a block is in (for the descent and the wheels), restarted whenever the server's
 // copy arrives, so the server only syncs when the block or the tray changes, not every tick.
-public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchCrusherBlockEntity extends StationBlockEntity
 {
     public static final int CRUSH_TICKS = 100;
     public static final int TRAY_LIMIT = 64;
@@ -68,7 +69,8 @@ public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity implements I
         StationSlot.Inserter dropIn = (stack, player) -> {
             if (!input.isEmpty()) return 0;
             input = stack.copyWithCount(1);
-            owner = player == null ? null : player.getUUID();
+            // Dropped in by a hopper: the research goes to whoever last used it by hand
+            owner = player == null ? lastUserId() : player.getUUID();
             progress = 0;
             sync();
             return 1;
@@ -95,6 +97,7 @@ public class ResearchCrusherBlockEntity extends CBSyncedBlockEntity implements I
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchCrusherBlockEntity crusher)
     {
+        crusher.automationTick();
         if (crusher.input.isEmpty()) return;
         ItemStack result = crushed(crusher.input);
         // The tray takes the same pebbles up to a stack; anything else waits until it's emptied

@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Features.Research;
 
 import com.mowmaster.dust.Features.Research.Tabs.BlockResearchTab;
+import com.mowmaster.dust.Features.Research.Tabs.CodexResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.CreatureResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.EffectResearchTab;
 import com.mowmaster.dust.Features.Research.Tabs.ElementResearchTab;
@@ -34,6 +35,7 @@ public final class ResearchTabs
     public static final EffectResearchTab EFFECTS = register(new EffectResearchTab());
     public static final ElementResearchTab ELEMENTS = register(new ElementResearchTab());
     public static final ResearchUnlockTab RESEARCH = register(new ResearchUnlockTab());
+    public static final CodexResearchTab CODEX = register(new CodexResearchTab());
 
     private ResearchTabs() {}
 

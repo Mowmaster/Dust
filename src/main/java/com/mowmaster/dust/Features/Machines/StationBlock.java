@@ -2,6 +2,8 @@ package com.mowmaster.dust.Features.Machines;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -66,5 +68,12 @@ public abstract class StationBlock extends Block implements EntityBlock
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return shape;
+    }
+
+    // A redstone pulse starts it (or stirs it): StationAutomation
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, net.minecraft.world.level.redstone.@Nullable Orientation orientation, boolean movedByPiston)
+    {
+        StationAutomation.onNeighborChanged(level, pos);
     }
 }

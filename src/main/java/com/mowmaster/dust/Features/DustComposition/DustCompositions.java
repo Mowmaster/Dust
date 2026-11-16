@@ -27,6 +27,7 @@ import static com.mowmaster.dust.Features.DustComposition.DustElements.*;
 //   Elements  an element's crystal or dust is that element alone
 //   Compounds an alchemical compound is the elements separated into it
 //   Products  a process product (crushed stone) is made of what it came from
+//   Crafted   a crafted item is what goes into it (CraftedCompositions, from the crafting recipes); before the data map
 //   Fluids    for fluids burned where they lie (lava)
 // "import static ...DustElements.*" lets the code below write WATER instead of DustElements.WATER.
 public final class DustCompositions
@@ -59,6 +60,17 @@ public final class DustCompositions
     // The item's dust, or null if it has none that can be read
     public static @Nullable DustComposition of(ItemStack stack)
     {
+        return of(stack, true);
+    }
+
+    // The same, but ignoring crafting recipes (what CraftedCompositions starts from)
+    public static @Nullable DustComposition ofUncrafted(ItemStack stack)
+    {
+        return of(stack, false);
+    }
+
+    private static @Nullable DustComposition of(ItemStack stack, boolean crafted)
+    {
         if (stack.isEmpty()) return null;
         for (StackRule rule : STACK_RULES) {
             if (rule.test().test(stack)) return rule.composition();
@@ -71,11 +83,16 @@ public final class DustCompositions
         if (compound != null) return compound.isEmpty() ? null : compound;
         // A process product (crushed stone) is still what it was made from
         ItemStack original = ProductSource.original(stack);
-        if (original != stack) return of(original);
+        if (original != stack) return of(original, crafted);
         // An element's crystal or dust is that element and nothing else
         DustElement element = CrystalElements.of(stack);
         if (element == null) element = CrystalElements.ofDust(stack);
         if (element != null) return DustComposition.of(element);
+        // Crafted: what went into it
+        if (crafted) {
+            DustComposition fromRecipe = CraftedCompositions.of(stack.getItem());
+            if (fromRecipe != null) return fromRecipe;
+        }
         // typeHolder(): the item's registry holder, which is what data maps are attached to. getData gives null for
         // items the data map doesn't list.
         DustComposition composition = stack.typeHolder().getData(DustDataMaps.ELEMENTS);

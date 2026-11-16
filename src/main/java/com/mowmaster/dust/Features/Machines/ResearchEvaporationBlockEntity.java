@@ -39,7 +39,7 @@ import java.util.UUID;
 //   settling   the glyph sinks into the pot, and the solids stream across to the output pad
 // What's left is decided at the start (paper is used then); whoever started it gets the step in their research.
 // What boils off goes into the air (into the chunk's aura: Features/Magic/ChunkAura).
-public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchEvaporationBlockEntity extends StationBlockEntity
 {
     public static final int STIR_TICKS = 20;
     public static final int SETTLE_TICKS = 40;
@@ -99,7 +99,7 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
     public List<StationSlot> slots()
     {
         return List.of(
-                StationSlot.ofStack(EvaporationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
+                StationSlot.ofStack(EvaporationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync).supply(),
                 // Into the pot: one, and it stays while it's being worked
                 StationSlot.ofStack(EvaporationLayout.POT_AREA, stack -> phase == Phase.IDLE && ResearchInput.accepts(stack), 1,
                         () -> phase == Phase.IDLE ? input : ItemStack.EMPTY, stack -> input = stack, this::sync),
@@ -151,10 +151,24 @@ public class ResearchEvaporationBlockEntity extends CBSyncedBlockEntity implemen
         sync();
     }
 
+    // Automation (StationBlockEntity): a stir while it's being stirred, otherwise starts it if it can start
+    @Override
+    public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        if (isStirring()) {
+            stir(level);
+            return true;
+        }
+        if (cannotStart() != null) return false;
+        start(level, researcher(level, by));
+        return true;
+    }
+
     // ---- ticking ----
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchEvaporationBlockEntity table)
     {
+        table.automationTick();
         if (table.phase == Phase.IDLE) return;
         table.time++;
         if (table.phase == Phase.STIRRING && table.stirTicks >= 0 && ++table.stirTicks >= STIR_TICKS) {

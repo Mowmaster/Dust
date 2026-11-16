@@ -37,7 +37,7 @@ import java.util.UUID;
 //                and the glyph spins over it; right-click the pot to stir: STIRS full turns of the spoon, the liquid
 //                turning to the new element's colour
 //   settling     (SETTLE_TICKS) the glyph sinks into the pot, and the new dust streams to the output
-public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchMixingBlockEntity extends StationBlockEntity
 {
     public static final int STIRS = 2;
     public static final int STIR_TICKS = 20;
@@ -169,10 +169,24 @@ public class ResearchMixingBlockEntity extends CBSyncedBlockEntity implements IS
         sync();
     }
 
+    // Automation (StationBlockEntity): a stir while it's being stirred, otherwise starts it if it can start
+    @Override
+    public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        if (isStirring()) {
+            stir(level);
+            return true;
+        }
+        if (cannotStart() != null) return false;
+        start(level, researcher(level, by));
+        return true;
+    }
+
     // ---- ticking ----
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchMixingBlockEntity table)
     {
+        table.automationTick();
         if (table.idle()) return;
         table.time++;
         if (table.isStirring() && table.stirTicks >= 0 && ++table.stirTicks >= STIR_TICKS) {

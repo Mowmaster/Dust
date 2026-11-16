@@ -142,4 +142,11 @@ public class ResearchEvaporationBlock extends Block implements EntityBlock
         if (!level.isClientSide()) table.stir(level);
         return InteractionResult.SUCCESS;
     }
+
+    // A redstone pulse starts it (or stirs it): StationAutomation
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, net.minecraft.world.level.redstone.@Nullable Orientation orientation, boolean movedByPiston)
+    {
+        StationAutomation.onNeighborChanged(level, pos);
+    }
 }

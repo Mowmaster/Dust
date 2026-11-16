@@ -126,4 +126,11 @@ public class ResearchSeparationBlock extends Block implements EntityBlock
         if (ResearchInput.refuseBlock(stack, level, pos, player, hit, ResearchSeparationBlockEntity.SCROLL)) return InteractionResult.FAIL;
         return StationInteractions.rightClick(stack, level, pos, player, hit);
     }
+
+    // A redstone pulse starts it (or stirs it): StationAutomation
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, net.minecraft.world.level.redstone.@Nullable Orientation orientation, boolean movedByPiston)
+    {
+        StationAutomation.onNeighborChanged(level, pos);
+    }
 }

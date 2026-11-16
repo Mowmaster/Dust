@@ -1,7 +1,11 @@
 package com.mowmaster.dust.Features.Research.Client;
 
 import com.mowmaster.dust.DustRegistries.DustComponentDataRegistry;
+import com.mowmaster.dust.Features.DustComposition.CrystalElements;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.Machines.AlchemicalDust;
 import com.mowmaster.dust.Features.Research.Research;
+import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.dust.Features.Research.ResearchBookItem;
 import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
@@ -11,6 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
@@ -32,12 +37,27 @@ public final class ResearchClient
         Minecraft.getInstance().gui.setScreen(new ResearchBookScreen(book.copy(), item.isShared()));
     }
 
-    // Sneak + right-click / the activation key: the entry for what the player is looking at (or the main page)
+    // Sneak + right-click / the activation key: the entry for what the player is looking at (or the main page).
+    // A dropped element crystal, element dust or Alchemical Dust opens its element's page instead of its own.
     public static void openAtLookedAt(ItemStack book)
     {
         Minecraft minecraft = Minecraft.getInstance();
         ResearchLook.Target target = minecraft.player == null ? null : ResearchLook.lookedAt(minecraft.player);
-        openBook(book, target == null ? null : target.entry());
+        ResearchEntry entry = target == null ? null : target.entry();
+        if (target != null && target.entity() instanceof ItemEntity dropped) {
+            DustElement element = elementOf(dropped.getItem());
+            if (element != null) entry = new ResearchEntry(ResearchTabs.ELEMENTS, element.id());
+        }
+        openBook(book, entry);
+    }
+
+    // The one element a crystal, dust or Alchemical Dust is, or null for anything else
+    private static @Nullable DustElement elementOf(ItemStack stack)
+    {
+        DustElement element = AlchemicalDust.of(stack);
+        if (element == null) element = CrystalElements.of(stack);
+        if (element == null) element = CrystalElements.ofDust(stack);
+        return element;
     }
 
     // MowLib's page keys while the book is held (the side view)

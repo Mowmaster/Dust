@@ -46,7 +46,7 @@ import java.util.UUID;
 // The split and what each part becomes are decided at the start (containers are used then). Gases and liquids
 // without their container escape when it finishes (puffs and bubbles); the solids burn to soot (a flame), which blows
 // away (smoke) without paper to catch it.
-public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchDistillationBlockEntity extends StationBlockEntity
 {
     public static final int BOIL_TICKS = 100;
     public static final int TRANSFER_TICKS = 30;
@@ -107,9 +107,9 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
     public List<StationSlot> slots()
     {
         return List.of(
-                StationSlot.ofStack(DistillationLayout.BOTTLE_AREA, stack -> stack.is(Items.GLASS_BOTTLE), CONTAINER_LIMIT, () -> bottles, stack -> bottles = stack, this::sync),
-                StationSlot.ofStack(DistillationLayout.BOWL_AREA, stack -> stack.is(Items.BOWL), CONTAINER_LIMIT, () -> bowls, stack -> bowls = stack, this::sync),
-                StationSlot.ofStack(DistillationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), CONTAINER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
+                StationSlot.ofStack(DistillationLayout.BOTTLE_AREA, stack -> stack.is(Items.GLASS_BOTTLE), CONTAINER_LIMIT, () -> bottles, stack -> bottles = stack, this::sync).supply(),
+                StationSlot.ofStack(DistillationLayout.BOWL_AREA, stack -> stack.is(Items.BOWL), CONTAINER_LIMIT, () -> bowls, stack -> bowls = stack, this::sync).supply(),
+                StationSlot.ofStack(DistillationLayout.PAPER_AREA, stack -> stack.is(Items.PAPER), CONTAINER_LIMIT, () -> paper, stack -> paper = stack, this::sync).supply(),
                 StationSlot.ofStack(DistillationLayout.FLASK_AREA, stack -> !isRunning() && ResearchInput.accepts(stack), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
                 StationSlot.output(DistillationLayout.SOOT_OUTPUT_AREA, () -> sootOut, stack -> sootOut = stack, this::sync),
                 StationSlot.output(DistillationLayout.FLASK_OUTPUT_AREA, () -> flaskOut, stack -> flaskOut = stack, this::sync),
@@ -170,10 +170,20 @@ public class ResearchDistillationBlockEntity extends CBSyncedBlockEntity impleme
         return ItemStack.EMPTY;
     }
 
+    // Automation (StationBlockEntity): starts it if it can start
+    @Override
+    public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        if (cannotStart() != null) return false;
+        start(level, researcher(level, by));
+        return true;
+    }
+
     // ---- ticking ----
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchDistillationBlockEntity table)
     {
+        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress % 20 == 0 && table.progress < BOIL_TICKS) level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 0.5F, 1.4F);

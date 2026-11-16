@@ -62,6 +62,7 @@ public final class StationInteractions
         if (slot == null || !slot.accepts().test(stack)) return InteractionResult.TRY_WITH_EMPTY_HAND;
         if (!level.isClientSide()) {
             int moved = slot.inserter().insert(stack, player);
+            if (moved > 0 && level.getBlockEntity(pos) instanceof StationBlockEntity station) station.noteUser(player);
             if (moved > 0) {
                 stack.consume(moved, player); // creative players keep their stack
                 level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.0F);

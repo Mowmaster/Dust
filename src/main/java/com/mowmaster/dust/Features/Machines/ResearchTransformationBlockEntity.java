@@ -37,7 +37,7 @@ import java.util.UUID;
 // that element; Alchemical Dust with an inert crystal or nether quartz on the pad behind becomes a crystal of its
 // element (one crystal used). Started with a Magical Flint and Steel; the glyph rises off the scroll spinning, the item
 // riding above it, and the result streams down to the output (like the Separation Table).
-public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchTransformationBlockEntity extends StationBlockEntity
 {
     public static final int TRANSFORM_TICKS = 100;
     public static final int CRYSTAL_LIMIT = 64;
@@ -82,7 +82,7 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
     public List<StationSlot> slots()
     {
         return List.of(
-                StationSlot.ofStack(TransformationLayout.CRYSTAL_AREA, ResearchTransformationBlockEntity::isCrystal, CRYSTAL_LIMIT, () -> crystals, stack -> crystals = stack, this::sync),
+                StationSlot.ofStack(TransformationLayout.CRYSTAL_AREA, ResearchTransformationBlockEntity::isCrystal, CRYSTAL_LIMIT, () -> crystals, stack -> crystals = stack, this::sync).supply(),
                 StationSlot.ofStack(TransformationLayout.SCROLL_AREA, stack -> !isRunning() && isTransformable(stack), 1,
                         () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
                 StationSlot.output(TransformationLayout.OUTPUT_AREA, () -> output, stack -> output = stack, this::sync));
@@ -90,8 +90,8 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
 
     // ---- starting ----
 
-    // Why this player can't start it now (a lang key suffix), or null if they can
-    public @Nullable String cannotStart(Player player)
+    // Why this player can't start it now (a lang key suffix), or null if they can (no player: only dust into a crystal)
+    public @Nullable String cannotStart(@Nullable Player player)
     {
         if (isRunning()) return "running";
         if (input.isEmpty()) return "empty";
@@ -100,11 +100,11 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
         DustComposition compound = Compounds.of(input);
         if (compound == null || compound.isEmpty()) return "nothing";
         if (compound.counted().size() != 1) return "single";
-        if (!Compounds.knows(player, compound.elements().getFirst())) return "unknown";
+        if (player == null || !Compounds.knows(player, compound.elements().getFirst())) return "unknown";
         return null;
     }
 
-    public void start(ServerLevel level, Player player)
+    public void start(ServerLevel level, @Nullable Player player)
     {
         DustElement dust = AlchemicalDust.of(input);
         if (dust != null) {
@@ -113,16 +113,28 @@ public class ResearchTransformationBlockEntity extends CBSyncedBlockEntity imple
         } else {
             pending = AlchemicalDust.create(Compounds.of(input).elements().getFirst());
         }
-        owner = player.getUUID();
+        owner = player == null ? null : player.getUUID();
         progress = 0;
         level.playSound(null, worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
         sync();
+    }
+
+    // Automation (StationBlockEntity): starts it if it can. Making a compound into dust needs someone who knows the
+    // element: whoever started it (a player's fire spell), else the last player to use the table by hand.
+    @Override
+    public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        Player researcher = researcher(level, by);
+        if (cannotStart(researcher) != null) return false;
+        start(level, researcher);
+        return true;
     }
 
     // ---- ticking ----
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchTransformationBlockEntity table)
     {
+        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress < TRANSFORM_TICKS) {

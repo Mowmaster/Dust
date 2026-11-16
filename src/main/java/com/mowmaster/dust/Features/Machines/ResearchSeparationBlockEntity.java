@@ -39,7 +39,7 @@ import java.util.UUID;
 // (ResearchSeparationBlock): the split is decided at the start (Separation), so the client can colour the streams of
 // dust running down to each output, and the outputs arrive when it finishes. Whoever started it gets the step in
 // their research.
-public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
+public class ResearchSeparationBlockEntity extends StationBlockEntity
 {
     public static final int SEPARATE_TICKS = 100;
     public static final int PAPER_LIMIT = 64;
@@ -85,7 +85,7 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
     {
         return List.of(
                 // Paper, to catch compounds (up to a stack)
-                StationSlot.ofStack(PAPER_PAD, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync),
+                StationSlot.ofStack(PAPER_PAD, stack -> stack.is(Items.PAPER), PAPER_LIMIT, () -> paper, stack -> paper = stack, this::sync).supply(),
                 // The item to separate, on the scroll: one, and it stays put while separating
                 StationSlot.ofStack(SCROLL, stack -> !isRunning() && ResearchInput.accepts(stack), 1, () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
                 StationSlot.output(LEFT_PAD, () -> left, stack -> left = stack, this::sync),
@@ -125,10 +125,20 @@ public class ResearchSeparationBlockEntity extends CBSyncedBlockEntity implement
         sync();
     }
 
+    // Automation (StationBlockEntity): starts it if it can start
+    @Override
+    public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        if (cannotStart() != null) return false;
+        start(level, researcher(level, by));
+        return true;
+    }
+
     // ---- ticking ----
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ResearchSeparationBlockEntity table)
     {
+        table.automationTick();
         if (table.progress < 0) return;
         table.progress++;
         if (table.progress < SEPARATE_TICKS) {

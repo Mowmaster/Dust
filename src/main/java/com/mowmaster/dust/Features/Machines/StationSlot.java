@@ -16,8 +16,24 @@ import java.util.function.Supplier;
 //   inserter   puts some of the held stack in; returns how many it took (the stack itself isn't changed)
 //   contents   what's there now (left-click takes from it, when not empty)
 //   extractor  takes up to this many out
-public record StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserter inserter, Supplier<ItemStack> contents, Extractor extractor)
+//   role       which way automation reaches it (StationBlockEntity): INPUT from the top (what the station works on),
+//              SUPPLY from the sides (what it uses up: paper, containers, crystals), OUTPUT out the bottom
+public record StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserter inserter, Supplier<ItemStack> contents, Extractor extractor, Role role)
 {
+    public enum Role { INPUT, SUPPLY, OUTPUT }
+
+    // An INPUT slot (a record can have extra constructors, as long as they call the full one with this(...))
+    public StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserter inserter, Supplier<ItemStack> contents, Extractor extractor)
+    {
+        this(area, accepts, inserter, contents, extractor, Role.INPUT);
+    }
+
+    // The same slot, filled from the sides by automation
+    public StationSlot supply()
+    {
+        return new StationSlot(area, accepts, inserter, contents, extractor, Role.SUPPLY);
+    }
+
     @FunctionalInterface
     public interface Inserter
     {
@@ -61,6 +77,7 @@ public record StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserte
     // A slot that only gives things out (an output)
     public static StationSlot output(CBPixelBox area, Supplier<ItemStack> get, Consumer<ItemStack> set, Runnable changed)
     {
-        return ofStack(area, stack -> false, 0, get, set, changed);
+        StationSlot slot = ofStack(area, stack -> false, 0, get, set, changed);
+        return new StationSlot(area, slot.accepts(), slot.inserter(), get, slot.extractor(), Role.OUTPUT);
     }
 }
