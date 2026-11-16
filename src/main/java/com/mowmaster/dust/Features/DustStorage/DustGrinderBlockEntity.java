@@ -30,13 +30,26 @@ import java.util.List;
 
 // The Dust Grinder's input (a stack of one grindable item, in the hole in the middle of the top) and its turning.
 // Grindable: an alchemical compound, Alchemical Dust or an element crystal, every element of which the player putting
-// it in has discovered. Each full turn of the top (TURN_TICKS: a right-click, or a redstone pulse) grinds one of
+// it in has discovered (anything a hopper or pipe feeds in, from any side, goes in as it is). Each full turn of the top (TURN_TICKS: a right-click, or a redstone pulse) grinds one of
 // them: one dust of each element in it goes into a Dust Jar next to the grinder that takes it (any side), and any no
 // jar takes comes out as an element orb on top, worth 1.
 // The client keeps its own count while turning (for the top's animation), restarted whenever the server's copy
 // arrives, so the server only syncs when a turn starts or ends and when the input changes.
+@net.neoforged.fml.common.EventBusSubscriber(modid = com.mowmaster.dust.DustReferences.MODID)
 public class DustGrinderBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
+    // Hoppers and pipes, from any side, put into the hole (the same slot a right-click fills: StationSlotHandler).
+    // They aren't anyone, so what they put in needn't be researched.
+    private final com.mowmaster.dust.Features.Machines.StationSlotHandler hopperInput =
+            new com.mowmaster.dust.Features.Machines.StationSlotHandler(this, StationSlot.Role.INPUT);
+
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void registerCapabilities(net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event)
+    {
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.Item.BLOCK, DustBlockEntityRegistry.DUST_GRINDER.get(),
+                (grinder, side) -> grinder.hopperInput);
+    }
+
     public static final int TURN_TICKS = 40;
     public static final int INPUT_LIMIT = 64;
 
@@ -109,7 +122,8 @@ public class DustGrinderBlockEntity extends CBSyncedBlockEntity implements IStat
             sync();
             return taken;
         };
-        return List.of(new StationSlot(HOLE, DustGrinderBlockEntity::isGrindable, putIn, () -> isTurning() ? ItemStack.EMPTY : input, takeOut));
+        // contents is always the real input (hoppers are told how much is there); taking out waits for the turn to end
+        return List.of(new StationSlot(HOLE, DustGrinderBlockEntity::isGrindable, putIn, () -> input, takeOut, StationSlot.Role.INPUT, INPUT_LIMIT));
     }
 
     // ---- turning ----

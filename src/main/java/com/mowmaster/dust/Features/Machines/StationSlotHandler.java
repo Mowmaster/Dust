@@ -23,7 +23,8 @@ import java.util.List;
 // touches it, and puts that copy back if the transaction is cancelled.
 public class StationSlotHandler implements ResourceHandler<ItemResource>
 {
-    private final StationBlockEntity station;
+    // Anything with station slots: the research stations (StationBlockEntity) and the Dust Grinder
+    private final IStationSlots station;
     private final StationSlot.Role role;
 
     // One pending change: insert (or take out) amount of resource at the role's index-th slot
@@ -31,7 +32,7 @@ public class StationSlotHandler implements ResourceHandler<ItemResource>
 
     private final Journal journal = new Journal();
 
-    public StationSlotHandler(StationBlockEntity station, StationSlot.Role role)
+    public StationSlotHandler(IStationSlots station, StationSlot.Role role)
     {
         this.station = station;
         this.role = role;
