@@ -6,6 +6,10 @@
       "element": "dust:knowledge"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_experienced_pylon",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:experienced_pylon"
   },

@@ -6,6 +6,10 @@
       "element": "dust:change"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_shape_pylon",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:shape_pylon"
   },

@@ -6,6 +6,10 @@
       "element": "dust:fracture"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_dust_grinder",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:dust_grinder"
   },

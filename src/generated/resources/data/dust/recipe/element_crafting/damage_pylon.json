@@ -6,6 +6,10 @@
       "element": "dust:death"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_damage_pylon",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:damage_pylon"
   },

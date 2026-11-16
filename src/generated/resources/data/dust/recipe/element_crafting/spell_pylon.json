@@ -14,6 +14,10 @@
       "element": "dust:earth"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_spell_pylon",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:spell_pylon"
   },

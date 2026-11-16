@@ -6,6 +6,10 @@
       "element": "dust:tool"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_thrifty_pylon",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:thrifty_pylon"
   },

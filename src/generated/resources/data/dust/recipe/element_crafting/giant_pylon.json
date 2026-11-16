@@ -6,6 +6,10 @@
       "element": "dust:growth"
     }
   ],
+  "research": {
+    "entry": "dust:unlock_giant_pylon",
+    "tab": "dust:research"
+  },
   "result": {
     "id": "dust:giant_pylon"
   },
