@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "dust:alchemical_dust",
+    "G": "minecraft:glass",
+    "S": "#minecraft:slabs"
+  },
+  "pattern": [
+    "SSS",
+    "GDG",
+    "GGG"
+  ],
+  "result": {
+    "id": "dust:dust_jar"
+  }
+}

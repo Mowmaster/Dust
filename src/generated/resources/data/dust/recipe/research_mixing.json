@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "dust:element_tester",
+    "minecraft:copper_block",
+    "minecraft:bucket",
+    "minecraft:paper"
+  ],
+  "result": {
+    "id": "dust:research_mixing"
+  }
+}

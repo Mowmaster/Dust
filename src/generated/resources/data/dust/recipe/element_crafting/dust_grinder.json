@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:fracture"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_grinder"
+  },
+  "shaped": {
+    "key": {
+      "A": "dust:alchemical_dust",
+      "S": "minecraft:stone"
+    },
+    "pattern": [
+      "SSS",
+      "AAA",
+      "SSS"
+    ]
+  }
+}

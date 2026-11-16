@@ -72,15 +72,10 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .unlockedBy(getHasName(DustItemRegistry.RESEARCH_NOTES.get()), has(DustItemRegistry.RESEARCH_NOTES.get()))
                 .save(output);
 
-        // Dust composition (placeholder recipes; no dust needed, since these are how dust research starts)
-        // Magical Flint and Steel: a flint and steel and an amethyst shard
-        // Spell Caster: a dispenser, an energy crystal and an amethyst shard (a placeholder recipe, like the Grimoire's)
-        shapeless(RecipeCategory.REDSTONE, DustBlockRegistry.SPELL_CASTER.get())
-                .requires(Items.DISPENSER)
-                .requires(DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.ENERGY).get())
-                .requires(Items.AMETHYST_SHARD)
-                .unlockedBy(getHasName(DustItemRegistry.SPELL_SCROLL.get()), has(DustItemRegistry.SPELL_SCROLL.get()))
-                .save(output);
+        // ---- survival recipes ----
+        survivalTableRecipes();
+        elementCrafterRecipes();
+
         // Grimoire: a book, leather and an amethyst shard (a placeholder recipe until it has a proper place in the tech)
         shapeless(RecipeCategory.TOOLS, DustItemRegistry.GRIMOIRE.get())
                 .requires(Items.BOOK)
@@ -88,31 +83,6 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .requires(Items.AMETHYST_SHARD)
                 .unlockedBy(getHasName(DustItemRegistry.SPELL_SCROLL.get()), has(DustItemRegistry.SPELL_SCROLL.get()))
                 .save(output);
-        shapeless(RecipeCategory.TOOLS, DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get())
-                .requires(Items.FLINT_AND_STEEL)
-                .requires(Items.AMETHYST_SHARD)
-                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
-                .save(output);
-        // Element Tester, the first dust recipe: any item of each pure dust (red, green, blue, white, black) and a
-        // crafting table, shapeless. Only for players who've unlocked it in the Research tab (by finding all five).
-        SpecialRecipeBuilder.special(() -> new DustRecipe(
-                        new ItemStackTemplate(DustBlockRegistry.ELEMENT_TESTER.get().asItem()),
-                        List.of(DustRecipe.DustNeed.pure(EnumElement.FIRE), DustRecipe.DustNeed.pure(EnumElement.EARTH),
-                                DustRecipe.DustNeed.pure(EnumElement.WATER), DustRecipe.DustNeed.pure(EnumElement.ORDER),
-                                DustRecipe.DustNeed.pure(EnumElement.CHAOS)),
-                        List.of(Ingredient.of(Items.CRAFTING_TABLE)),
-                        Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.ELEMENT_TESTER.id()))))
-                .save(output, DustReferences.MODID + ":element_tester");
-
-        // Element Crafter: a dust recipe on the vanilla table (after the Element Tester's research), any item of pure
-        // red and blue dust, a crafting table and four glass bottles (the jars)
-        SpecialRecipeBuilder.special(() -> new DustRecipe(
-                        new ItemStackTemplate(DustBlockRegistry.ELEMENT_CRAFTER.get().asItem()),
-                        List.of(DustRecipe.DustNeed.pure(EnumElement.FIRE), DustRecipe.DustNeed.pure(EnumElement.WATER)),
-                        List.of(Ingredient.of(Items.CRAFTING_TABLE), Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.GLASS_BOTTLE),
-                                Ingredient.of(Items.GLASS_BOTTLE), Ingredient.of(Items.GLASS_BOTTLE)),
-                        Optional.of(new DustRecipe.ResearchKey(ResearchTabs.RESEARCH.id(), ResearchUnlocks.ELEMENT_TESTER.id()))))
-                .save(output, DustReferences.MODID + ":element_crafter");
 
         // Element crafting (the Element Crafter), examples: grid items plus dust from the jars
         SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
@@ -258,6 +228,107 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_HORSE_ARMOR)
                 .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
                 .save(output);
+    }
+
+    // The crafting table recipes for the dust machines (the Element Tester starts it all; the research tables are the
+    // Tester plus what each one works with)
+    private void survivalTableRecipes() {
+        Item alchemicalDust = DustItemRegistry.ALCHEMICAL_DUST.get();
+        Item tester = DustBlockRegistry.ELEMENT_TESTER.asItem();
+        shaped(RecipeCategory.MISC, DustBlockRegistry.ELEMENT_TESTER.get())
+                .pattern("CCC").pattern("SSS").pattern("S S")
+                .define('C', DustTags.Items.CRYSTALS_OR_AMETHYST).define('S', Items.STONE)
+                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
+                .save(output);
+        shaped(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_CRUSHER.get())
+                .pattern("SSS").pattern("SIS").pattern("SSS")
+                .define('S', Items.STONE).define('I', Items.IRON_BLOCK)
+                .unlockedBy(getHasName(Items.IRON_BLOCK), has(Items.IRON_BLOCK))
+                .save(output);
+        // Any Alchemical Dust: the item ignores its element here (a plain ingredient doesn't look at data components)
+        shaped(RecipeCategory.MISC, DustBlockRegistry.DUST_JAR.get())
+                .pattern("SSS").pattern("GDG").pattern("GGG")
+                .define('S', net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.Identifier.withDefaultNamespace("slabs"))).define('G', Items.GLASS).define('D', alchemicalDust)
+                .unlockedBy(getHasName(alchemicalDust), has(alchemicalDust))
+                .save(output);
+        shaped(RecipeCategory.MISC, DustBlockRegistry.ELEMENT_CRAFTER.get())
+                .pattern("SJS").pattern("JCJ").pattern("SJS")
+                .define('S', alchemicalDust).define('J', DustBlockRegistry.DUST_JAR.asItem()).define('C', Items.CRAFTING_TABLE)
+                .unlockedBy(getHasName(DustBlockRegistry.DUST_JAR.asItem()), has(DustBlockRegistry.DUST_JAR.asItem()))
+                .save(output);
+
+        shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_SEPARATION.get())
+                .requires(tester).requires(Items.PAPER)
+                .unlockedBy(getHasName(tester), has(tester)).save(output);
+        shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_EVAPORATION.get())
+                .requires(tester).requires(Items.PAPER).requires(Items.BUCKET)
+                .unlockedBy(getHasName(tester), has(tester)).save(output);
+        shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_DISTILLATION.get())
+                .requires(tester).requires(Items.PAPER).requires(Items.GLASS_BOTTLE)
+                .unlockedBy(getHasName(tester), has(tester)).save(output);
+        shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_TRANSFORMATION.get())
+                .requires(tester).requires(Items.COPPER_BLOCK.weathering().unaffected()).requires(Items.PAPER)
+                .unlockedBy(getHasName(tester), has(tester)).save(output);
+        shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_COMBINATION.get())
+                .requires(tester).requires(Items.COPPER_BLOCK.weathering().unaffected()).requires(Items.COAL_BLOCK).requires(Items.PAPER)
+                .unlockedBy(getHasName(tester), has(tester)).save(output);
+        shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_MIXING.get())
+                .requires(tester).requires(Items.COPPER_BLOCK.weathering().unaffected()).requires(Items.BUCKET).requires(Items.PAPER)
+                .unlockedBy(getHasName(tester), has(tester)).save(output);
+
+        // Magical Flint and Steel: a flint and steel ringed with Alchemical Dust (any elements)
+        shaped(RecipeCategory.TOOLS, DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get())
+                .pattern("DDD").pattern("DFD").pattern("DDD")
+                .define('D', alchemicalDust).define('F', Items.FLINT_AND_STEEL)
+                .unlockedBy(getHasName(alchemicalDust), has(alchemicalDust))
+                .save(output);
+        // Jar Label: paper and something sticky, a slime ball or Slime Alchemical Dust. CompoundIngredient: either one;
+        // DataComponentIngredient: Alchemical Dust only when its element (the dust:alchemical_element component) is slime.
+        shapeless(RecipeCategory.MISC, DustItemRegistry.JAR_LABEL.get())
+                .requires(Items.PAPER)
+                .requires(net.neoforged.neoforge.common.crafting.CompoundIngredient.of(Ingredient.of(Items.SLIME_BALL),
+                        net.neoforged.neoforge.common.crafting.DataComponentIngredient.of(false, com.mowmaster.dust.DustRegistries.DustComponentDataRegistry.ALCHEMICAL_ELEMENT.get(),
+                                com.mowmaster.dust.Features.DustComposition.DustElements.SLIME, alchemicalDust)))
+                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
+                .save(output);
+    }
+
+    // Element Crafter recipes (dust:element_crafting): shaped, with dust from the crafter's jars
+    private void elementCrafterRecipes() {
+        Item soot = DustItemRegistry.ALCHEMICAL_SOOT.get();
+        Ingredient stone = Ingredient.of(Items.STONE);
+        elementShaped(DustBlockRegistry.DUST_GRINDER.asItem(), "dust_grinder", java.util.Map.of('S', stone, 'A', Ingredient.of(DustItemRegistry.ALCHEMICAL_DUST.get())),
+                List.of("SSS", "AAA", "SSS"), cost(com.mowmaster.dust.Features.DustComposition.DustElements.FRACTURE, 10));
+        // The pylons: one pattern, a different element for each
+        java.util.Map<Character, Ingredient> pylonKey = java.util.Map.of('S', stone, 'A', Ingredient.of(soot));
+        List<String> pylon = List.of("SAS", " S ", "SSS");
+        elementShaped(DustBlockRegistry.SPELL_PYLON.asItem(), "spell_pylon", pylonKey, pylon,
+                cost(com.mowmaster.dust.Features.DustComposition.DustElements.FIRE, 10), cost(com.mowmaster.dust.Features.DustComposition.DustElements.WATER, 10),
+                cost(com.mowmaster.dust.Features.DustComposition.DustElements.EARTH, 10));
+        elementShaped(DustBlockRegistry.SHAPE_PYLON.asItem(), "shape_pylon", pylonKey, pylon, cost(com.mowmaster.dust.Features.DustComposition.DustElements.CHANGE, 10));
+        elementShaped(DustBlockRegistry.NEUTRAL_PYLON.asItem(), "neutral_pylon", pylonKey, pylon, cost(com.mowmaster.dust.Features.DustComposition.DustElements.ORDER, 10));
+        elementShaped(DustBlockRegistry.DAMAGE_PYLON.asItem(), "damage_pylon", pylonKey, pylon, cost(com.mowmaster.dust.Features.DustComposition.DustElements.DEATH, 100));
+        elementShaped(DustBlockRegistry.EXPERIENCED_PYLON.asItem(), "experienced_pylon", pylonKey, pylon, cost(com.mowmaster.dust.Features.DustComposition.DustElements.KNOWLEDGE, 100));
+        elementShaped(DustBlockRegistry.THRIFTY_PYLON.asItem(), "thrifty_pylon", pylonKey, pylon, cost(com.mowmaster.dust.Features.DustComposition.DustElements.TOOL, 100));
+        elementShaped(DustBlockRegistry.GIANT_PYLON.asItem(), "giant_pylon", pylonKey, pylon, cost(com.mowmaster.dust.Features.DustComposition.DustElements.GROWTH, 100));
+        elementShaped(DustBlockRegistry.SPELL_CASTER.asItem(), "spell_caster",
+                java.util.Map.of('S', stone, 'A', Ingredient.of(soot), 'C', Ingredient.of(DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.ENERGY).get())),
+                List.of("SSS", "SAC", "SSS"), cost(com.mowmaster.dust.Features.DustComposition.DustElements.ENERGY, 100));
+        // Spell Scroll: shapeless, paper and soot
+        SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
+                        new ItemStackTemplate(DustItemRegistry.SPELL_SCROLL.get()), List.of(), List.of(Ingredient.of(Items.PAPER), Ingredient.of(soot)),
+                        List.of(cost(com.mowmaster.dust.Features.DustComposition.DustElements.TOOL, 10)), Optional.empty()))
+                .save(output, DustReferences.MODID + ":element_crafting/spell_scroll");
+    }
+
+    private static com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost cost(com.mowmaster.dust.Features.DustComposition.DustElement element, int amount) {
+        return new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(element, amount);
+    }
+
+    private void elementShaped(Item result, String name, java.util.Map<Character, Ingredient> key, List<String> rows,
+                               com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost... costs) {
+        SpecialRecipeBuilder.special(() -> com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.shaped(new ItemStackTemplate(result), key, rows, List.of(costs)))
+                .save(output, DustReferences.MODID + ":element_crafting/" + name);
     }
 
     // 26.3: brewing is recipe data now (RegisterBrewingRecipesEvent is gone). A brewing recipe names the exact

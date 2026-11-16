@@ -12,7 +12,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 
-// Adds Alchemical Dust's element line (AlchemicalDustTooltip) right under its name
+// Adds the element line (AlchemicalDustTooltip) right under the name of Alchemical Dust and of element crystals
+// (CrystalElements: every element's crystal, and the five primals' older ones)
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
 public final class AlchemicalDustTooltips
 {
@@ -23,6 +24,7 @@ public final class AlchemicalDustTooltips
     {
         Minecraft minecraft = Minecraft.getInstance();
         DustElement element = AlchemicalDust.of(event.getItemStack());
+        if (element == null) element = com.mowmaster.dust.Features.DustComposition.CrystalElements.of(event.getItemStack());
         if (minecraft.player == null || element == null) return;
         boolean known = Compounds.knows(minecraft.player, element);
         event.getTooltipElements().add(Math.min(1, event.getTooltipElements().size()), Either.right(new AlchemicalDustTooltip(element, known)));

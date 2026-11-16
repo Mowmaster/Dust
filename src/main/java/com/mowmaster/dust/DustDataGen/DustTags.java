@@ -17,6 +17,8 @@ public class DustTags
         public static final TagKey<Item> SPELL_WEAPONS = createTag("spell_weapons");
         public static final TagKey<Item> SPELL_TOOLS = createTag("spell_tools");
         public static final TagKey<Item> MAGICAL_CRYSTAL_ITEMS = createTag("magical_crystals");
+        // Any element crystal, or an amethyst shard (the Element Tester's recipe)
+        public static final TagKey<Item> CRYSTALS_OR_AMETHYST = createTag("crystals_or_amethyst");
         public static final TagKey<Item> CRYSTAL_REPAIRABLES = createTag("crystal_repairables");
         public static final TagKey<Item> CRYSTAL_BLOCK_REPAIRABLES = createTag("crystal_block_repairables");
 

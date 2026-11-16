@@ -242,7 +242,8 @@ tasks.withType(JavaCompile).configureEach {
 // Datagen only runs from 26.3, and 26.3 changed some data formats, so the 26.1.2 build adjusts the shared data:
 //  - adds src/main/resources-26.1.2: data only 26.1.2 reads (configured features, NeoForge's compostables data map)
 //  - leaves out the brewing recipes: 26.1.2 has no data-driven brewing (DustBrewingLegacy adds them in code)
-//  - rewrites the generated loot tables and recipe advancements into the 26.1.2 format as they're copied
+//  - rewrites the generated loot tables, loot modifiers' conditions and recipe advancements into the 26.1.2 format as
+//    they're copied
 //    (LegacyData, at the end of this file), so they follow whatever datagen makes without keeping a second copy
 // stonecutter.current is the version this build.gradle is running for (it runs once per version).
 if (stonecutter.current.parsed.matches('<26.3')) {
@@ -253,6 +254,7 @@ if (stonecutter.current.parsed.matches('<26.3')) {
         // file's text through that FilterReader class on the way
         filesMatching('data/*/loot_table/**/*.json') { filter(LegacyLootFilter) }
         filesMatching('data/*/advancement/**/*.json') { filter(LegacyAdvancementFilter) }
+        filesMatching('data/*/loot_modifiers/**/*.json') { filter(LegacyLootModifierFilter) }
     }
 }
 
@@ -287,6 +289,15 @@ class LegacyData
             if (value == 'minecraft:tool/can_silk_touch') return SILK_TOUCH
             throw new org.gradle.api.GradleException("26.1.2 data: no 26.1.2 version of the loot condition '${value}'. Add one to LegacyData in build.gradle.")
         }
+        // 26.3's match_block (one block, maybe with a state) was 26.1.2's block_state_property
+        if (value.type == 'minecraft:match_block') {
+            if (!(value.blocks instanceof String) || value.blocks.startsWith('#')) {
+                throw new org.gradle.api.GradleException("26.1.2 data: match_block for ${value.blocks} has no 26.1.2 version (only a single block). Add one to LegacyData in build.gradle.")
+            }
+            Map block = [condition: 'minecraft:block_state_property', block: value.blocks]
+            if (value.state != null) block.properties = value.state
+            return block
+        }
         Map out = [:]
         value.each { key, inner ->
             if (key == 'type') out.condition = inner
@@ -295,6 +306,13 @@ class LegacyData
             else out[key] = inner
         }
         out
+    }
+
+    // A loot modifier: only its condition changes (its own "type" is the modifier's, and stays)
+    static Map lootModifier(Map modifier)
+    {
+        if (modifier.condition != null) modifier.condition = condition(modifier.condition)
+        modifier
     }
 
     static Map function(Map value)
@@ -363,5 +381,13 @@ class LegacyAdvancementFilter extends FilterReader
     LegacyAdvancementFilter(Reader input)
     {
         super(new StringReader(LegacyData.convert(input) { LegacyData.advancement(it) }))
+    }
+}
+
+class LegacyLootModifierFilter extends FilterReader
+{
+    LegacyLootModifierFilter(Reader input)
+    {
+        super(new StringReader(LegacyData.convert(input) { LegacyData.lootModifier(it) }))
     }
 }

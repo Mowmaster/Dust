@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dust_jar": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:dust_jar"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:element_crafter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_dust_jar"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:element_crafter"
+    ]
+  }
+}

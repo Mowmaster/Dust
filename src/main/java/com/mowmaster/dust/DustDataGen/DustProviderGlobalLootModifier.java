@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
@@ -57,8 +58,23 @@ public class DustProviderGlobalLootModifier extends GlobalLootModifierProvider {
         tablet("chests/underwater_ruin_big", 0.3F);
         tablet("chests/shipwreck_map", 0.2F);
 
+        // The Magical Flint and Steel: now and then in village chests (any of them) and ruined portal chests
+        for (String village : List.of("armorer", "butcher", "cartographer", "desert_house", "fisher", "fletcher", "mason", "plains_house",
+                "savanna_house", "shepherd", "snowy_house", "taiga_house", "tannery", "temple", "toolsmith", "weaponsmith")) {
+            magicalFlint("chests/village/village_" + village, 0.1F);
+        }
+        magicalFlint("chests/ruined_portal", 0.25F);
+
         add("slime_dustdrop_water",
                 new AddRandomItemStackModifier(lootTable("entities/slime"), DustItemRegistry.DUST_BLUE, 1, 3));
+    }
+
+    // One Magical Flint and Steel in this chest, chance of the time (the chest's loot table and a random chance, both)
+    private void magicalFlint(String vanillaChest, float chance) {
+        LootItemCondition condition = LootTableIdCondition.builder(Identifier.withDefaultNamespace(vanillaChest))
+                .and(net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition.randomChance(chance)).build();
+        add("magical_flint_" + vanillaChest.substring(vanillaChest.lastIndexOf('/') + 1),
+                new AddItemStackModifier(condition, new ItemStackTemplate(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get())));
     }
 
     private void tablet(String vanillaChest, float chance) {

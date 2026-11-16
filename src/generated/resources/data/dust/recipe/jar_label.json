@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:paper",
+    {
+      "neoforge:ingredient_type": "neoforge:compound",
+      "children": [
+        "minecraft:slime_ball",
+        {
+          "neoforge:ingredient_type": "neoforge:components",
+          "components": {
+            "dust:alchemical_element": "dust:slime"
+          },
+          "items": "dust:alchemical_dust"
+        }
+      ]
+    }
+  ],
+  "result": {
+    "id": "dust:jar_label"
+  }
+}

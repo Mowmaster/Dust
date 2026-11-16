@@ -1,0 +1,16 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:tool"
+    }
+  ],
+  "ingredients": [
+    "minecraft:paper",
+    "dust:alchemical_soot"
+  ],
+  "result": {
+    "id": "dust:spell_scroll"
+  }
+}

@@ -1,24 +1,15 @@
 {
-  "type": "dust:dust_crafting",
-  "dusts": [
-    {
-      "element": "fire"
-    },
-    {
-      "element": "water"
-    }
-  ],
-  "ingredients": [
-    "minecraft:crafting_table",
-    "minecraft:glass_bottle",
-    "minecraft:glass_bottle",
-    "minecraft:glass_bottle",
-    "minecraft:glass_bottle"
-  ],
-  "research": {
-    "entry": "dust:element_tester",
-    "tab": "dust:research"
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:crafting_table",
+    "J": "dust:dust_jar",
+    "S": "dust:alchemical_dust"
   },
+  "pattern": [
+    "SJS",
+    "JCJ",
+    "SJS"
+  ],
   "result": {
     "id": "dust:element_crafter"
   }

@@ -44,6 +44,7 @@ public class DustTagProviderItem extends ItemTagsProvider {
         // Every element's crystal (DustItemRegistry.CRYSTALS)
         var crystals = tag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS);
         DustItemRegistry.CRYSTALS.values().forEach(item -> crystals.add(item.key()));
+        tag(DustTags.Items.CRYSTALS_OR_AMETHYST).addTag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS).add(net.minecraft.world.item.Items.AMETHYST_SHARD.builtInRegistryHolder().key());
 
         tag(DustTags.Items.CRYSTAL_REPAIRABLES)
                 .add(DustItemRegistry.CRYSTAL_RED.key())

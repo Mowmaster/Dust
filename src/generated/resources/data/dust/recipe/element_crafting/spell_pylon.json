@@ -1,0 +1,31 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:fire"
+    },
+    {
+      "amount": 10,
+      "element": "dust:water"
+    },
+    {
+      "amount": 10,
+      "element": "dust:earth"
+    }
+  ],
+  "result": {
+    "id": "dust:spell_pylon"
+  },
+  "shaped": {
+    "key": {
+      "A": "dust:alchemical_soot",
+      "S": "minecraft:stone"
+    },
+    "pattern": [
+      "SAS",
+      " S ",
+      "SSS"
+    ]
+  }
+}

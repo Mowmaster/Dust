@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:change"
+    }
+  ],
+  "result": {
+    "id": "dust:shape_pylon"
+  },
+  "shaped": {
+    "key": {
+      "A": "dust:alchemical_soot",
+      "S": "minecraft:stone"
+    },
+    "pattern": [
+      "SAS",
+      " S ",
+      "SSS"
+    ]
+  }
+}

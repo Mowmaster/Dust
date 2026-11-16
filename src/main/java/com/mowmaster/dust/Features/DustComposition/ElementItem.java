@@ -31,11 +31,11 @@ public class ElementItem extends Item
         return kind;
     }
 
-    // "Knowledge Crystal": item.dust.element_crystal / element_dust with the element's name, so no lang line is needed
-    // per element (and elements other mods add get names too)
+    // A crystal is just "Crystal" (its element is in the tooltip, like Alchemical Dust's: Client/AlchemicalDustTooltips);
+    // dust is "Knowledge Dust" (item.dust.element_dust with the element's name, so no lang line is needed per element)
     @Override
     public Component getName(ItemStack stack)
     {
-        return Component.translatable(kind == Kind.CRYSTAL ? "item.dust.element_crystal" : "item.dust.element_dust", element.name());
+        return kind == Kind.CRYSTAL ? Component.translatable("item.dust.crystal") : Component.translatable("item.dust.element_dust", element.name());
     }
 }

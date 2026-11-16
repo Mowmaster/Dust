@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeBookCategories;
@@ -32,8 +33,8 @@ import java.util.List;
 import java.util.Optional;
 
 // An Element Crafter recipe (type dust:element_crafting): its own recipe type, so the vanilla table never sees it.
-// Like a dust recipe (DustRecipe) it's shapeless and can ask for grid items by the dust in them; and it can also use up
-// dust of up to MAX_ELEMENTS elements from the crafter's jars. A research entry, if given, must be unlocked by whoever
+// Shapeless like a dust recipe (DustRecipe: grid items, some by the dust in them), or shaped with a vanilla-style
+// pattern ("shaped"); either way it can also use up dust of up to MAX_ELEMENTS elements from the crafter's jars. A research entry, if given, must be unlocked by whoever
 // crafts it (the crafter knows who's clicking).
 //
 // JSON (data/<namespace>/recipe/<name>.json):
@@ -45,6 +46,8 @@ import java.util.Optional;
 //     "elements": [ { "element": "dust:fire", "amount": 20 } ], (optional: dust from the jars, up to 4 elements)
 //     "research": { "tab": "dust:research", "entry": "dust:element_tester" }   (optional)
 //   }
+// Shaped instead (then "ingredients" and "dusts" aren't used): the pattern and key of a vanilla shaped recipe, e.g.
+//     "shaped": { "pattern": ["SSS", "AAA", "SSS"], "key": { "S": "minecraft:stone", "A": "dust:alchemical_dust" } }
 public class ElementCraftingRecipe implements Recipe<CraftingInput>
 {
     public static final int MAX_ELEMENTS = 4;
@@ -72,15 +75,31 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
     private final List<Ingredient> ingredients;
     private final List<ElementCost> elements;
     private final Optional<DustRecipe.ResearchKey> research;
+    // A shaped recipe's pattern (vanilla's ShapedRecipePattern: rows of key letters, and what each letter means)
+    private final Optional<ShapedRecipePattern> shaped;
 
     public ElementCraftingRecipe(ItemStackTemplate result, List<DustRecipe.DustNeed> dusts, List<Ingredient> ingredients,
-                                 List<ElementCost> elements, Optional<DustRecipe.ResearchKey> research)
+                                 List<ElementCost> elements, Optional<DustRecipe.ResearchKey> research, Optional<ShapedRecipePattern> shaped)
     {
         this.result = result;
         this.dusts = List.copyOf(dusts);
         this.ingredients = List.copyOf(ingredients);
         this.elements = List.copyOf(elements);
         this.research = research;
+        this.shaped = shaped;
+    }
+
+    // A shapeless recipe
+    public ElementCraftingRecipe(ItemStackTemplate result, List<DustRecipe.DustNeed> dusts, List<Ingredient> ingredients,
+                                 List<ElementCost> elements, Optional<DustRecipe.ResearchKey> research)
+    {
+        this(result, dusts, ingredients, elements, research, Optional.empty());
+    }
+
+    // A shaped recipe: the pattern's rows, what each letter stands for, and the dust it uses from the jars
+    public static ElementCraftingRecipe shaped(ItemStackTemplate result, java.util.Map<Character, Ingredient> key, List<String> rows, List<ElementCost> elements)
+    {
+        return new ElementCraftingRecipe(result, List.of(), List.of(), elements, Optional.empty(), Optional.of(ShapedRecipePattern.of(key, rows)));
     }
 
     public static final MapCodec<ElementCraftingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
@@ -88,7 +107,8 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
             DustRecipe.DustNeed.CODEC.listOf().optionalFieldOf("dusts", List.of()).forGetter(r -> r.dusts),
             Ingredient.CODEC.listOf().optionalFieldOf("ingredients", List.of()).forGetter(r -> r.ingredients),
             ELEMENTS_CODEC.optionalFieldOf("elements", List.of()).forGetter(r -> r.elements),
-            DustRecipe.ResearchKey.CODEC.optionalFieldOf("research").forGetter(r -> r.research)
+            DustRecipe.ResearchKey.CODEC.optionalFieldOf("research").forGetter(r -> r.research),
+            ShapedRecipePattern.MAP_CODEC.codec().optionalFieldOf("shaped").forGetter(r -> r.shaped)
     ).apply(i, ElementCraftingRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ElementCraftingRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -97,6 +117,7 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
             Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.ingredients,
             ElementCost.STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.elements,
             DustRecipe.ResearchKey.STREAM_CODEC.apply(ByteBufCodecs::optional), r -> r.research,
+            ShapedRecipePattern.STREAM_CODEC.apply(ByteBufCodecs::optional), r -> r.shaped,
             ElementCraftingRecipe::new);
 
     public List<ElementCost> elements()
@@ -109,6 +130,9 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
     @Override
     public boolean matches(CraftingInput input, Level level)
     {
+        // Shaped: the grid trimmed to what's in it (ofPositioned drops empty edge rows and columns), against the pattern
+        // (which also tries it mirrored, as vanilla does)
+        if (shaped.isPresent()) return shaped.get().matches(CraftingInput.ofPositioned(input.width(), input.height(), input.items()).input());
         List<ItemStack> items = new ArrayList<>();
         for (int slot = 0; slot < input.size(); slot++) {
             if (!input.getItem(slot).isEmpty()) items.add(input.getItem(slot));

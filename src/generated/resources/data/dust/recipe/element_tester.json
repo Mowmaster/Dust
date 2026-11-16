@@ -1,29 +1,14 @@
 {
-  "type": "dust:dust_crafting",
-  "dusts": [
-    {
-      "element": "fire"
-    },
-    {
-      "element": "earth"
-    },
-    {
-      "element": "water"
-    },
-    {
-      "element": "order"
-    },
-    {
-      "element": "chaos"
-    }
-  ],
-  "ingredients": [
-    "minecraft:crafting_table"
-  ],
-  "research": {
-    "entry": "dust:element_tester",
-    "tab": "dust:research"
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#dust:crystals_or_amethyst",
+    "S": "minecraft:stone"
   },
+  "pattern": [
+    "CCC",
+    "SSS",
+    "S S"
+  ],
   "result": {
     "id": "dust:element_tester"
   }

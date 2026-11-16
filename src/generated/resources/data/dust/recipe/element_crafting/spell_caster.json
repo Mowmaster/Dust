@@ -1,0 +1,24 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 100,
+      "element": "dust:energy"
+    }
+  ],
+  "result": {
+    "id": "dust:spell_caster"
+  },
+  "shaped": {
+    "key": {
+      "A": "dust:alchemical_soot",
+      "C": "dust:energy_crystal",
+      "S": "minecraft:stone"
+    },
+    "pattern": [
+      "SSS",
+      "SAC",
+      "SSS"
+    ]
+  }
+}

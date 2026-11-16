@@ -16,6 +16,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,6 +29,8 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
 {
     private @Nullable DustElement element;
     private int amount;
+    // The sides with a Jar Label (only the four around: north, east, south, west)
+    private final java.util.EnumSet<net.minecraft.core.Direction> labels = java.util.EnumSet.noneOf(net.minecraft.core.Direction.class);
     private boolean pickedUp;
 
     public DustJarBlockEntity(BlockPos pos, BlockState state)
@@ -41,7 +44,30 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
 
     public DustJarContents contents()
     {
-        return new DustJarContents(Optional.ofNullable(element), amount);
+        return new DustJarContents(Optional.ofNullable(element), amount, List.copyOf(labels));
+    }
+
+    // ---- labels ----
+
+    public java.util.Set<net.minecraft.core.Direction> labels()
+    {
+        return java.util.Collections.unmodifiableSet(labels);
+    }
+
+    // Sticks a label on this side; false if it isn't one of the four around, or already has one
+    public boolean addLabel(net.minecraft.core.Direction side)
+    {
+        if (!side.getAxis().isHorizontal() || !labels.add(side)) return false;
+        changed();
+        return true;
+    }
+
+    // Scrapes this side's label off; false if there wasn't one
+    public boolean removeLabel(net.minecraft.core.Direction side)
+    {
+        if (!labels.remove(side)) return false;
+        changed();
+        return true;
     }
 
     // Whether this element's dust can go in: the jar has no element yet, or the same one, and has room
@@ -128,6 +154,8 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         DustJarContents held = components.getOrDefault(DustComponentDataRegistry.DUST_JAR.get(), DustJarContents.EMPTY);
         element = held.element().orElse(null);
         amount = held.amount();
+        labels.clear();
+        labels.addAll(held.labels());
     }
 
     // ---- saving ----
@@ -147,6 +175,8 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         DustJarContents saved = input.read("contents", DustJarContents.CODEC).orElse(DustJarContents.EMPTY);
         element = saved.element().orElse(null);
         amount = saved.amount();
+        labels.clear();
+        labels.addAll(saved.labels());
         // On the client the block state didn't change, so ask for the block to be drawn again when the lid's colour has
         if (level != null && level.isClientSide() && !Objects.equals(before, element)) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);

@@ -157,6 +157,9 @@ public class DustItemRegistry
         return item;
     }
 
+    // Jar Label (Features/DustStorage): stuck on a Dust Jar's side, it shows the element and how much (scraped off with shears)
+    public static final DeferredItem<Item> JAR_LABEL = DUSTITEMS.registerItem("jar_label", Item::new);
+
     public static final DeferredItem<Item> GRIMOIRE = DUSTITEMS.registerItem("grimoire",
             com.mowmaster.dust.Features.Spells.grimoire.GrimoireItem::new, properties -> properties.stacksTo(1));
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)

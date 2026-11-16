@@ -17,6 +17,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 // The Dust Jar's clicks:
 //   right-click with element dust    pours it in (as much as fits)
+//   right-click with a Jar Label     sticks it on that side (it shows the element and amount: Client/DustJarRenderer)
+//   right-click with shears          scrapes that side's label off (the label is lost)
 //   right-click, empty hand          empties your dust store of the jar's element into it (as much as fits); an
 //                                    empty jar with no element takes the first element you carry
 //   left-click                       takes 1% of how much of an element you can carry into your dust store (at least 1)
@@ -53,7 +55,7 @@ public final class DustJarInteractions
         int wanted = Math.max(minimum, PlayerMagicHelper.dustCap(player) * percent / 100);
         int fits = PlayerMagicHelper.addDust(player, element, Math.min(wanted, jar.amount()), true);
         if (fits <= 0) {
-            player.sendOverlayMessage(Component.translatable("dust.dust_jar.full_store", element.name()));
+            player.sendOverlayMessage(Component.translatable("dust.dust_jar.full_store", elementName(element, player)));
             return;
         }
         int taken = jar.extract(fits);
@@ -70,7 +72,7 @@ public final class DustJarInteractions
         if (element == null) element = PlayerMagicHelper.get(player).dust().keySet().stream().findFirst().orElse(null);
         if (element == null || PlayerMagicHelper.dust(player, element) <= 0) {
             player.sendOverlayMessage(element == null ? Component.translatable("dust.dust_jar.nothing_carried")
-                    : Component.translatable("dust.dust_jar.none_carried", element.name()));
+                    : Component.translatable("dust.dust_jar.none_carried", elementName(element, player)));
             return;
         }
         int fits = jar.insertDust(element, PlayerMagicHelper.dust(player, element), true);
@@ -87,10 +89,42 @@ public final class DustJarInteractions
     // "Fire: 512 / 1000" over the hotbar
     public static void showContents(DustJarBlockEntity jar, Player player)
     {
-        Component text = jar.element() == null
-                ? Component.translatable("dust.dust_jar.empty")
-                : Component.translatable("dust.dust_jar.contents", jar.element().name(), jar.amount(), DustJarContents.CAPACITY);
-        player.sendOverlayMessage(text);
+        player.sendOverlayMessage(describe(jar.element(), jar.amount(), player));
+    }
+
+    // "Fire: 512 / 1000", or "Empty"
+    public static Component describe(@org.jspecify.annotations.Nullable DustElement element, int amount, Player viewer)
+    {
+        return element == null ? Component.translatable("dust.dust_jar.empty")
+                : Component.translatable("dust.dust_jar.contents", elementName(element, viewer), amount, DustJarContents.CAPACITY);
+    }
+
+    // An element's name as this player knows it: plain once they've discovered it, otherwise written in the ancient
+    // script (whose letters show plainly as the player learns them: the dust:ancient font)
+    public static Component elementName(DustElement element, Player viewer)
+    {
+        return com.mowmaster.dust.Features.Machines.Compounds.knows(viewer, element) ? element.name()
+                : com.mowmaster.dust.Features.AncientLanguage.AncientLanguage.inscribe(element.name());
+    }
+
+    // ---- labels ----
+
+    // A Jar Label onto the clicked side (one of the four around). True if it went on.
+    public static boolean stickLabel(DustJarBlockEntity jar, net.minecraft.core.Direction side, ItemStack label, Player player)
+    {
+        if (!jar.addLabel(side)) return false;
+        label.consume(1, player);
+        player.level().playSound(null, jar.getBlockPos(), SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 0.8F, 1.2F);
+        return true;
+    }
+
+    // Shears scrape the clicked side's label off (it's lost). True if there was one.
+    public static boolean scrapeLabel(DustJarBlockEntity jar, net.minecraft.core.Direction side, ItemStack shears, Player player, net.minecraft.world.InteractionHand hand)
+    {
+        if (!jar.removeLabel(side)) return false;
+        shears.hurtAndBreak(1, player, hand.asEquipmentSlot());
+        player.level().playSound(null, jar.getBlockPos(), SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 0.8F, 1.2F);
+        return true;
     }
 
     // Left-click: the event fires on both sides; cancelling it (when the jar has dust) stops the jar being mined

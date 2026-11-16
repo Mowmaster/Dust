@@ -48,6 +48,16 @@ public class DustJarBlock extends Block implements EntityBlock
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         if (!(level.getBlockEntity(pos) instanceof DustJarBlockEntity jar)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+        // Labels on, and off with shears, on the clicked side
+        if (stack.is(com.mowmaster.dust.DustRegistries.DustItemRegistry.JAR_LABEL.get())) {
+            if (level.isClientSide()) return jar.labels().contains(hit.getDirection()) || !hit.getDirection().getAxis().isHorizontal()
+                    ? InteractionResult.TRY_WITH_EMPTY_HAND : InteractionResult.SUCCESS;
+            return DustJarInteractions.stickLabel(jar, hit.getDirection(), stack, player) ? InteractionResult.SUCCESS : InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        if (stack.getItem() instanceof net.minecraft.world.item.ShearsItem) {
+            if (level.isClientSide()) return jar.labels().contains(hit.getDirection()) ? InteractionResult.SUCCESS : InteractionResult.TRY_WITH_EMPTY_HAND;
+            return DustJarInteractions.scrapeLabel(jar, hit.getDirection(), stack, player, hand) ? InteractionResult.SUCCESS : InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
         if (level.isClientSide()) {
             // The client only guesses (the arm swings); the server pours
             DustElement dust = CrystalElements.ofDust(stack);

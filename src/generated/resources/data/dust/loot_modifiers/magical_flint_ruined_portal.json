@@ -1,0 +1,19 @@
+{
+  "type": "dust:add_itemstack",
+  "condition": {
+    "type": "minecraft:all_of",
+    "terms": [
+      {
+        "type": "neoforge:loot_table_id",
+        "loot_table_id": "minecraft:chests/ruined_portal"
+      },
+      {
+        "type": "minecraft:random_chance",
+        "chance": 0.25
+      }
+    ]
+  },
+  "stack": {
+    "id": "dust:magical_flint_and_steel"
+  }
+}

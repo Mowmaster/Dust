@@ -33,6 +33,7 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.ELEMENT_TESTER.asItem());
                         output.accept(DustBlockRegistry.ELEMENT_CRAFTER.asItem());
                         output.accept(DustBlockRegistry.DUST_JAR.asItem());
+                        output.accept(DustItemRegistry.JAR_LABEL.asItem());
                         output.accept(DustBlockRegistry.DUST_GRINDER.asItem());
                         output.accept(DustBlockRegistry.SPELL_CASTER.asItem());
                         output.accept(DustBlockRegistry.RESEARCH_CRUSHER.asItem());

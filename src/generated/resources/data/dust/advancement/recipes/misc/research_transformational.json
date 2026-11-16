@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_element_tester": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:element_tester"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:research_transformational"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_element_tester"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:research_transformational"
+    ]
+  }
+}

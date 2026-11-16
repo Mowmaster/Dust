@@ -1,9 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "ingredients": [
-    "minecraft:flint_and_steel",
-    "minecraft:amethyst_shard"
+  "key": {
+    "D": "dust:alchemical_dust",
+    "F": "minecraft:flint_and_steel"
+  },
+  "pattern": [
+    "DDD",
+    "DFD",
+    "DDD"
   ],
   "result": {
     "id": "dust:magical_flint_and_steel"

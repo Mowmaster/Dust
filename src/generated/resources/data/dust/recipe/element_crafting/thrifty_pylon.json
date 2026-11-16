@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 100,
+      "element": "dust:tool"
+    }
+  ],
+  "result": {
+    "id": "dust:thrifty_pylon"
+  },
+  "shaped": {
+    "key": {
+      "A": "dust:alchemical_soot",
+      "S": "minecraft:stone"
+    },
+    "pattern": [
+      "SAS",
+      " S ",
+      "SSS"
+    ]
+  }
+}

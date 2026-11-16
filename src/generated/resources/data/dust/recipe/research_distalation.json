@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "dust:element_tester",
+    "minecraft:paper",
+    "minecraft:glass_bottle"
+  ],
+  "result": {
+    "id": "dust:research_distalation"
+  }
+}
