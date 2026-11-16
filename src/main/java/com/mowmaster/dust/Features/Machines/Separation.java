@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 // The rules of alchemical separation (the Alchemical Separation Table):
-//   - Only solids separate: something must hold at least two solid elements (crystalline or amorphous; counting an
-//     element listed twice as two). Gaseous and aqueous elements in it hiss or bubble away.
-//   - One solid element, picked at random, goes left; the rest of the solids go right, together.
+//   - Only solids separate: something must hold at least two different solid elements (crystalline or amorphous).
+//     Gaseous and aqueous elements in it hiss or bubble away.
+//   - One solid element, picked at random, goes left, all of it (3 Stone in it: 3 Stone left); the rest of the solids
+//     go right, together.
 //   - Each side comes out as:
 //       with paper in the table    an alchemical compound (one paper each). Its tooltip names the elements the
 //                                  player has discovered, and the material it came from.
@@ -43,7 +44,8 @@ public final class Separation
     public static boolean canSeparate(ItemStack stack)
     {
         List<DustElement> solids = solids(stack);
-        return solids.size() >= 2 || (ResearchInput.isSingleElement(stack) && solids.size() == 1);
+        // distinct(): each element once
+        return solids.stream().distinct().count() >= 2 || (ResearchInput.isSingleElement(stack) && !solids.isEmpty());
     }
 
     // The two sides of a split: the element picked out, and the rest
@@ -51,9 +53,10 @@ public final class Separation
 
     public static Split split(ItemStack stack, RandomSource random)
     {
-        List<DustElement> rest = new ArrayList<>(solids(stack));
-        DustElement picked = rest.remove(random.nextInt(rest.size()));
-        return new Split(List.of(picked), List.copyOf(rest));
+        List<DustElement> solids = solids(stack);
+        List<DustElement> kinds = solids.stream().distinct().toList();
+        DustElement picked = kinds.get(random.nextInt(kinds.size()));
+        return new Split(solids.stream().filter(picked::equals).toList(), solids.stream().filter(element -> !element.equals(picked)).toList());
     }
 
     // What one side becomes. paper: how much paper there is (one is used if the result needs it; usesPaper says).

@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 // The rules of distillation (the Distillation Table):
-//   - Something with at least two elements, one of them gaseous or aqueous.
-//   - One gaseous or aqueous element, picked at random, boils over into the jar; everything else stays in the flask.
+//   - Something with at least two different elements, one of them gaseous or aqueous.
+//   - One gaseous or aqueous element, picked at random, boils over into the jar, all of it; everything else stays in
+//     the flask.
 //   - The gaseous and aqueous parts come out as a compound of their kind (Compounds.Kind: gas if anything in it is
 //     gaseous, else liquid), if its container is on the table (a glass bottle or a bowl; one used). Without it, they
 //     escape (hiss / bubble away).
@@ -35,7 +36,7 @@ public final class Distillation
     {
         List<DustElement> elements = elements(stack);
         boolean anyFluid = elements.stream().anyMatch(element -> !Separation.isSolid(element));
-        return anyFluid && (elements.size() >= 2 || ResearchInput.isSingleElement(stack));
+        return anyFluid && (elements.stream().distinct().count() >= 2 || ResearchInput.isSingleElement(stack));
     }
 
     // The two parts: what boils over (one element) and what stays in the flask
@@ -43,14 +44,10 @@ public final class Distillation
 
     public static Split split(ItemStack stack, RandomSource random)
     {
-        List<DustElement> rest = new ArrayList<>(elements(stack));
-        List<Integer> volatileAt = new ArrayList<>();
-        for (int i = 0; i < rest.size(); i++) {
-            if (!Separation.isSolid(rest.get(i))) volatileAt.add(i);
-        }
-        int picked = volatileAt.get(random.nextInt(volatileAt.size()));
-        DustElement over = rest.remove(picked);
-        return new Split(List.of(over), List.copyOf(rest));
+        List<DustElement> elements = elements(stack);
+        List<DustElement> volatiles = elements.stream().filter(element -> !Separation.isSolid(element)).distinct().toList();
+        DustElement over = volatiles.get(random.nextInt(volatiles.size()));
+        return new Split(elements.stream().filter(over::equals).toList(), elements.stream().filter(element -> !element.equals(over)).toList());
     }
 
     // What one part becomes:

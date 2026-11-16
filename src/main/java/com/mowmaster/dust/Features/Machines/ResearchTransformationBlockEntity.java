@@ -46,6 +46,12 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
     private ItemStack crystals = ItemStack.EMPTY;
     private ItemStack output = ItemStack.EMPTY;
     private ItemStack pending = ItemStack.EMPTY;
+    // How many the result makes: a compound of 9 fire gives 9 Alchemical Dust (pendingCount while running). More than
+    // a stack: the rest waits in extra and tops the output up as it's taken.
+    private int pendingCount;
+    private int extra;
+    // One of what the output is, so it can be topped up from extra after a hopper empties it
+    private ItemStack lastOutput = ItemStack.EMPTY;
     private int progress = -1;
     private @Nullable UUID owner;
 
@@ -85,7 +91,7 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
                 StationSlot.ofStack(TransformationLayout.CRYSTAL_AREA, ResearchTransformationBlockEntity::isCrystal, CRYSTAL_LIMIT, () -> crystals, stack -> crystals = stack, this::sync).supply(),
                 StationSlot.ofStack(TransformationLayout.SCROLL_AREA, stack -> !isRunning() && isTransformable(stack), 1,
                         () -> isRunning() ? ItemStack.EMPTY : input, stack -> input = stack, this::sync),
-                StationSlot.output(TransformationLayout.OUTPUT_AREA, () -> output, stack -> output = stack, this::sync));
+                StationSlot.output(TransformationLayout.OUTPUT_AREA, () -> output, stack -> output = stack, this::outputTaken));
     }
 
     // ---- starting ----
@@ -95,7 +101,7 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
     {
         if (isRunning()) return "running";
         if (input.isEmpty()) return "empty";
-        if (!output.isEmpty()) return "outputs";
+        if (!output.isEmpty() || extra > 0) return "outputs";
         if (AlchemicalDust.is(input)) return crystals.isEmpty() ? "no_crystal" : null;
         DustComposition compound = Compounds.of(input);
         if (compound == null || compound.isEmpty()) return "nothing";
@@ -109,9 +115,13 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
         DustElement dust = AlchemicalDust.of(input);
         if (dust != null) {
             pending = CrystalElements.stackOf(dust);
+            pendingCount = 1;
             crystals.shrink(1);
         } else {
-            pending = AlchemicalDust.create(Compounds.of(input).elements().getFirst());
+            // One Alchemical Dust for each of the element in the compound
+            DustComposition compound = Compounds.of(input);
+            pending = AlchemicalDust.create(compound.elements().getFirst());
+            pendingCount = compound.elements().size();
         }
         owner = player == null ? null : player.getUUID();
         progress = 0;
@@ -170,12 +180,34 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
     private void finish(ServerLevel level)
     {
         ItemStack transformed = input;
-        output = pending;
+        int made = Math.max(1, pendingCount);
+        output = pending.copyWithCount(Math.min(made, pending.getMaxStackSize()));
+        extra = made - output.getCount();
+        lastOutput = output.copyWithCount(1);
         pending = ItemStack.EMPTY;
+        pendingCount = 0;
         input = ItemStack.EMPTY;
         progress = -1;
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.BLOCKS, 1.0F, 1.2F);
         noteResearch(level, transformed);
+        sync();
+    }
+
+    // Some of the output was taken (by hand or a hopper): top it back up from extra
+    private void outputTaken()
+    {
+        if (extra > 0) {
+            ItemStack kind = output.isEmpty() ? lastOutput : output;
+            if (!kind.isEmpty()) {
+                int add = Math.min(extra, kind.getMaxStackSize() - output.getCount());
+                if (add > 0) {
+                    output = output.isEmpty() ? kind.copyWithCount(add) : output.copyWithCount(output.getCount() + add);
+                    extra -= add;
+                }
+            }
+        }
+        if (!output.isEmpty()) lastOutput = output.copyWithCount(1);
+        setChanged();
         sync();
     }
 
@@ -206,6 +238,9 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
         StationSaving.store(out, "crystals", crystals);
         StationSaving.store(out, "output", output);
         StationSaving.store(out, "pending", pending);
+        out.putInt("pending_count", pendingCount);
+        out.putInt("extra", extra);
+        StationSaving.store(out, "last_output", lastOutput);
         out.putInt("progress", progress);
         if (owner != null) out.store("owner", UUIDUtil.CODEC, owner);
     }
@@ -218,6 +253,9 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
         crystals = StationSaving.read(in, "crystals");
         output = StationSaving.read(in, "output");
         pending = StationSaving.read(in, "pending");
+        pendingCount = in.getIntOr("pending_count", 1);
+        extra = in.getIntOr("extra", 0);
+        lastOutput = StationSaving.read(in, "last_output");
         progress = in.getIntOr("progress", -1);
         owner = in.read("owner", UUIDUtil.CODEC).orElse(null);
     }
@@ -229,6 +267,13 @@ public class ResearchTransformationBlockEntity extends StationBlockEntity
         if (level == null) return;
         for (ItemStack stack : List.of(input, crystals, output)) {
             if (!stack.isEmpty()) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, stack);
+        }
+        // What was still waiting to top the output up
+        ItemStack kind = output.isEmpty() ? lastOutput : output;
+        while (extra > 0 && !kind.isEmpty()) {
+            int count = Math.min(extra, kind.getMaxStackSize());
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, kind.copyWithCount(count));
+            extra -= count;
         }
     }
 }

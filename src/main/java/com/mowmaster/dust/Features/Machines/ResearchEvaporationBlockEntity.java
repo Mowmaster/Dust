@@ -126,7 +126,7 @@ public class ResearchEvaporationBlockEntity extends StationBlockEntity
         Separation.Output result = Separation.output(Separation.solids(input), ProductSource.original(input), paper.getCount());
         if (result.usesPaper()) paper.shrink(1);
         pending = result.stack();
-        stirsNeeded = Math.max(1, ResearchInput.elements(input).size());
+        stirsNeeded = Math.max(1, (int) ResearchInput.elements(input).stream().distinct().count()); // one per kind of element
         stirsDone = 0;
         stirTicks = -1;
         settleTicks = 0;

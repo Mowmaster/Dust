@@ -18,6 +18,7 @@ import java.util.List;
 // What the research machines after the crusher (the Separation, Evaporation and Distillation Tables) take, and what
 // they see in it:
 //   - Items only: a block has to go through the Research Crusher first (its pebbles are an item and go in fine).
+//   - Elements are taken out by kind: all of one element at once (a compound keeps how many there were).
 //   - An item or pebbles holding a single element (mixed or primal) is first turned into that element's compound
 //     (isSingleElement): by the Separation or Evaporation Table if the element is solid, by the Distillation Table if
 //     it's gaseous or aqueous. (So oak planks, which is Trees, gives a Trees compound: its own element.)
@@ -39,7 +40,17 @@ public final class ResearchInput
         DustComposition composition = DustCompositions.of(stack);
         if (composition == null) return List.of();
         List<DustElement> elements = composition.elements();
-        if (isElemental(stack) && elements.size() == 1 && !elements.getFirst().isPrimal()) return elements.getFirst().parts();
+        // A compound of one mixed element (any count) breaks into what it's mixed from, as many of each: 9 Trees is 9
+        // Plants and 9 Earth
+        var counted = composition.counted();
+        if (isElemental(stack) && counted.size() == 1 && !elements.getFirst().isPrimal()) {
+            int count = elements.size();
+            List<DustElement> parts = new java.util.ArrayList<>();
+            for (DustElement part : elements.getFirst().parts()) {
+                for (int i = 0; i < count; i++) parts.add(part);
+            }
+            return parts;
+        }
         return elements;
     }
 
@@ -49,7 +60,8 @@ public final class ResearchInput
     {
         if (isElemental(stack)) return false;
         DustComposition composition = DustCompositions.of(stack);
-        return composition != null && composition.elements().size() == 1;
+        // counted(): each element once, so 2 Stone is still a single element
+        return composition != null && composition.counted().size() == 1;
     }
 
     // Already elements rather than a material: a compound or Alchemical Dust
