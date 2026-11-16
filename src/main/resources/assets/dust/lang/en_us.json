@@ -344,7 +344,7 @@
   "research.dust.spell_effects.entity": "On a creature",
   "item.dust.spell_scroll": "Spell Scroll",
   "dust.spell.blank": "This scroll is blank",
-  "dust.spell.unknown_plants": "We don't understand plants well enough yet",
+  "dust.spell.unknown_plants": "If you wish to make anything grow, you must understand it...",
   "dust.spell.no_target": "There's nothing there for the spell",
   "dust.spell.not_enough_dust": "Not enough %s dust (%s needed)",
   "dust.spell.unknown_shape": "Unknown spell shape: %s",

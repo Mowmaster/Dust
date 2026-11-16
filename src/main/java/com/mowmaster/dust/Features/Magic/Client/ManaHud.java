@@ -84,8 +84,8 @@ public final class ManaHud
     // The Magic Level in the bump under the bar (frame pixels 52-63 across, from 16 down): black, centred, shrunk to fit
     // if it's ever wider than the bump. pose() is the GUI's 2D transform (translate / scale, pushed and popped).
     private static final int LEVEL_CENTRE_X = 58;
-    private static final int LEVEL_TOP = 18;
-    private static final int LEVEL_ROOM = 10;
+    private static final int LEVEL_TOP = 14;
+    private static final int LEVEL_ROOM = 6;
 
     private static void drawLevel(GuiGraphicsExtractor graphics, Font font, int level, int centreX, int top)
     {
