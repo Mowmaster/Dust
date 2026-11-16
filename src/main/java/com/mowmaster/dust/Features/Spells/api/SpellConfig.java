@@ -9,11 +9,14 @@ public final class SpellConfig
     public static final float BASE_DAMAGE = 2.0F;
     // "Nearby": 5 blocks around the caster / target
     public static final double NEARBY = 5.0;
-    // A projectile: flies this far before dissipating, at this many blocks per tick, dropping this much per tick, and
-    // keeping this much of its speed each tick (air drag)
-    public static final double BASE_RANGE = 24.0;
-    public static final float BASE_SPEED = 1.2F;
+
+    // A projectile: flies this far before dissipating,
+    public static final double BASE_RANGE = 8.0;
+    //at this many blocks per tick,
+    public static final float BASE_SPEED = 0.5F;
+    // dropping this much per tick,
     public static final float BASE_GRAVITY = 0.01F;
+    // keeping this much of its speed each tick (air drag)
     public static final float AIR_DRAG = 0.99F;
     // A spell's dust cost: this much of its element, plus each modifier's cost (1 of its element unless it says otherwise)
     public static final int BASE_DUST_COST = 1;
