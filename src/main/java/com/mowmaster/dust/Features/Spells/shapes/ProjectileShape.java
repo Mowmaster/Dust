@@ -22,6 +22,8 @@ import com.mowmaster.dust.Features.Spells.api.SpellShape;
 public class ProjectileShape implements SpellShape
 {
     private static final double PARTICLE_STEP = 0.35;
+    // Telekinesis without AOE: a creature this close to where the ray hit a block is taken instead of the block
+    private static final double TELEKINESIS_REACH = 1.5;
 
     @Override
     public boolean cast(SpellCast cast)
@@ -62,6 +64,19 @@ public class ProjectileShape implements SpellShape
             return true;
         }
         if (block.getType() == HitResult.Type.BLOCK) {
+            // Telekinesis takes creatures over blocks: the ray just missed one (looking down past a mob onto the
+            // ground), so a creature near where it landed is taken instead of the block (within the AOE radius with AOE)
+            if (com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(cast.spell())) {
+                double radius = cast.has(SpellRegistries.AOE.getId()) ? cast.aoeRadius() : TELEKINESIS_REACH;
+                Vec3 landed = block.getLocation();
+                LivingEntity near = cast.level().getEntitiesOfClass(LivingEntity.class, new AABB(landed, landed).inflate(radius),
+                                target -> target != caster && target.isAlive() && !target.isSpectator() && target.distanceToSqr(landed) <= radius * radius)
+                        .stream().min(java.util.Comparator.comparingDouble(target -> target.distanceToSqr(landed))).orElse(null);
+                if (near != null) {
+                    cast.applyEntity(near);
+                    return true;
+                }
+            }
             cast.applyBlock(block.getBlockPos(), block.getDirection());
             return true;
         }
