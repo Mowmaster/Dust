@@ -1,0 +1,223 @@
+{
+  "title": {"translate": "guide.dust.research_mixing.title"},
+  "items": ["dust:research_mixing"],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [2, 1, 2],
+      "state": "dust:research_mixing[facing=north]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_mixing.1"},
+      "ticks": 95,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    },
+    {
+      "type": "click",
+      "point": [2.1875, 1.975, 2.5],
+      "button": "right",
+      "ticks": 30,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:water"
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "item",
+      "id": "a",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:water"
+        }
+      },
+      "at": [2.1875, 1.975, 2.5],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "click",
+      "point": [2.8125, 1.975, 2.5],
+      "button": "right",
+      "ticks": 30,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "item",
+      "id": "b",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [2.8125, 1.975, 2.5],
+      "scale": 0.6
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_mixing.2"},
+      "ticks": 75,
+      "point": [2.1875, 1.975, 2.5],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 50,
+      "item": "dust:magical_flint_and_steel"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_mixing.3"},
+      "ticks": 80,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 30
+    },
+    {
+      "type": "remove",
+      "id": "a"
+    },
+    {
+      "type": "remove",
+      "id": "b"
+    },
+    {
+      "type": "item",
+      "id": "a2",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:water"
+        }
+      },
+      "at": [2.4937, 2.0375, 2.5031],
+      "scale": 0.6,
+      "from": [2.1875, 1.975, 2.5],
+      "ticks": 20,
+      "wait": 0
+    },
+    {
+      "type": "item",
+      "id": "b2",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [2.4937, 2.0375, 2.5031],
+      "scale": 0.6,
+      "from": [2.8125, 1.975, 2.5],
+      "ticks": 20
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "remove",
+      "id": "a2"
+    },
+    {
+      "type": "remove",
+      "id": "b2"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_mixing.4"},
+      "ticks": 100,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "left"
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 28
+    },
+    {
+      "type": "idle",
+      "ticks": 36
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 28
+    },
+    {
+      "type": "idle",
+      "ticks": 36
+    },
+    {
+      "type": "item",
+      "id": "out",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:air"
+        }
+      },
+      "at": [2.5, 1.975, 2.7812],
+      "scale": 0.6
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_mixing.5"},
+      "ticks": 85,
+      "point": [2.5, 1.975, 2.7812],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    }
+  ]
+}

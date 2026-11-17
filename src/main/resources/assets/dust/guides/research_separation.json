@@ -1,0 +1,208 @@
+{
+  "title": {"translate": "guide.dust.research_separation.title"},
+  "items": ["dust:research_separation"],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [2, 1, 2],
+      "state": "dust:research_separation[facing=north]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.1"},
+      "ticks": 80,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "highlight",
+      "from": [2.375, 1.9375, 2.0844],
+      "to": [2.625, 2.05, 2.3344],
+      "ticks": 70,
+      "color": "#FFE070"
+    },
+    {
+      "type": "click",
+      "point": [2.5, 1.975, 2.2094],
+      "button": "right",
+      "ticks": 45,
+      "item": "minecraft:paper"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.2"},
+      "ticks": 95,
+      "point": [2.5, 1.975, 2.2094],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "item",
+      "id": "paper",
+      "item": "minecraft:paper",
+      "at": [2.5, 1.975, 2.2094],
+      "scale": 0.7
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 45,
+      "item": "dust:crushed_block"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.3"},
+      "ticks": 90,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "item",
+      "id": "input",
+      "item": "dust:crushed_block",
+      "at": [2.4962, 1.975, 2.5219],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 50,
+      "item": "dust:magical_flint_and_steel"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.4"},
+      "ticks": 65,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 40
+    },
+    {
+      "type": "remove",
+      "id": "input"
+    },
+    {
+      "type": "item",
+      "id": "rising",
+      "item": "dust:crushed_block",
+      "at": [2.4962, 2.4250000000000003, 2.5219],
+      "scale": 0.6,
+      "from": [2.4962, 1.975, 2.5219],
+      "ticks": 25,
+      "spin": true
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "remove",
+      "id": "rising"
+    },
+    {
+      "type": "remove",
+      "id": "paper"
+    },
+    {
+      "type": "item",
+      "id": "left",
+      "item": "dust:alchemical_compound",
+      "at": [2.4062, 1.9563, 2.7812],
+      "scale": 0.5
+    },
+    {
+      "type": "item",
+      "id": "right",
+      "item": "dust:alchemical_compound",
+      "at": [2.5938, 1.9563, 2.7812],
+      "scale": 0.5
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.5"},
+      "ticks": 85,
+      "point": [2.4062, 1.9563, 2.7812],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 45
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.6"},
+      "ticks": 85,
+      "point": [2.5938, 1.9563, 2.7812],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.7"},
+      "ticks": 95
+    },
+    {
+      "type": "idle",
+      "ticks": 75
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.8"},
+      "ticks": 95
+    },
+    {
+      "type": "idle",
+      "ticks": 75
+    },
+    {
+      "type": "click",
+      "point": [2.4062, 1.9563, 2.7812],
+      "button": "left",
+      "ticks": 45
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_separation.9"},
+      "ticks": 95,
+      "point": [2.4062, 1.9563, 2.7812],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 75
+    }
+  ]
+}

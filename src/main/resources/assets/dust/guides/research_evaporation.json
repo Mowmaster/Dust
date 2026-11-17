@@ -1,0 +1,185 @@
+{
+  "title": {"translate": "guide.dust.research_evaporation.title"},
+  "items": ["dust:research_evaporation"],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [2, 1, 2],
+      "state": "dust:research_evaporation[facing=north]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.1"},
+      "ticks": 95,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 45,
+      "item": "minecraft:clay_ball"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.2"},
+      "ticks": 85,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "item",
+      "id": "input",
+      "item": "minecraft:clay_ball",
+      "at": [2.4937, 2.0375, 2.5031],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [2.5, 1.975, 2.2094],
+      "button": "right",
+      "ticks": 45,
+      "item": "minecraft:paper"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.3"},
+      "ticks": 80,
+      "point": [2.5, 1.975, 2.2094],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "item",
+      "id": "paper",
+      "item": "minecraft:paper",
+      "at": [2.5, 1.975, 2.2094],
+      "scale": 0.7
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 50,
+      "item": "dust:magical_flint_and_steel"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.4"},
+      "ticks": 60,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 45
+    },
+    {
+      "type": "remove",
+      "id": "input"
+    },
+    {
+      "type": "remove",
+      "id": "paper"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.5"},
+      "ticks": 115,
+      "point": [2.4937, 2.0375, 2.5031],
+      "side": "right"
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 25
+    },
+    {
+      "type": "idle",
+      "ticks": 32
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 25
+    },
+    {
+      "type": "idle",
+      "ticks": 32
+    },
+    {
+      "type": "click",
+      "point": [2.4937, 2.0375, 2.5031],
+      "button": "right",
+      "ticks": 25
+    },
+    {
+      "type": "idle",
+      "ticks": 32
+    },
+    {
+      "type": "item",
+      "id": "out",
+      "item": "dust:alchemical_compound",
+      "at": [2.5, 1.975, 2.7812],
+      "scale": 0.7
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.6"},
+      "ticks": 85,
+      "point": [2.5, 1.975, 2.7812],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.7"},
+      "ticks": 70
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_evaporation.8"},
+      "ticks": 85
+    },
+    {
+      "type": "idle",
+      "ticks": 70
+    }
+  ]
+}

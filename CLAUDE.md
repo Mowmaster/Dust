@@ -68,3 +68,6 @@ instant-effect potions are only researched when drunk (not splash/lingering).
 - Suggestion: a generic timed block-outline API in MowLib (outline a list of positions in given colours for N ticks,
   not tied to `ILinkable`). `LinkOutlines` drops anything that isn't an `ILinkable`, so Dust draws its own for the
   Spell Pylon's line highlight (`Features/Spells/Client/PylonLineOutlines`).
+- Suggestion: move the guide system (`Features/Guide`: scenes as JSON or code, the hold-G viewer, `RegisterGuidesEvent`)
+  into MowLib, so any mod can add guides without depending on Dust. Its only Dust ties are the mod id on its event
+  subscribers and its `guide.dust.*` / `key.dust.guide` lang keys. Format and API: `GUIDES.md`.

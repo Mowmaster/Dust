@@ -1,0 +1,207 @@
+{
+  "title": {"translate": "guide.dust.research_combination.title"},
+  "items": ["dust:research_combination"],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [2, 1, 2],
+      "state": "dust:research_combination[facing=north]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_combination.1"},
+      "ticks": 90,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "click",
+      "point": [2.1875, 1.975, 2.5],
+      "button": "right",
+      "ticks": 30,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "item",
+      "id": "a",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [2.1875, 1.975, 2.5],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "click",
+      "point": [2.8125, 1.975, 2.5],
+      "button": "right",
+      "ticks": 30,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:earth"
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "item",
+      "id": "b",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:earth"
+        }
+      },
+      "at": [2.8125, 1.975, 2.5],
+      "scale": 0.6
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_combination.2"},
+      "ticks": 90,
+      "point": [2.1875, 1.975, 2.5],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 50,
+      "item": "dust:magical_flint_and_steel"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_combination.3"},
+      "ticks": 60,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 35
+    },
+    {
+      "type": "remove",
+      "id": "a"
+    },
+    {
+      "type": "remove",
+      "id": "b"
+    },
+    {
+      "type": "item",
+      "id": "a2",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [2.5, 2.3, 2.5],
+      "scale": 0.6,
+      "from": [2.1875, 1.975, 2.5],
+      "ticks": 22,
+      "spin": true,
+      "wait": 0
+    },
+    {
+      "type": "item",
+      "id": "b2",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:earth"
+        }
+      },
+      "at": [2.5, 2.3, 2.5],
+      "scale": 0.6,
+      "from": [2.8125, 1.975, 2.5],
+      "ticks": 22,
+      "spin": true
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "remove",
+      "id": "a2"
+    },
+    {
+      "type": "remove",
+      "id": "b2"
+    },
+    {
+      "type": "item",
+      "id": "out",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:metal"
+        }
+      },
+      "at": [2.5, 1.975, 2.8125],
+      "scale": 0.6
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_combination.4"},
+      "ticks": 95,
+      "point": [2.5, 1.975, 2.8125],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_combination.5"},
+      "ticks": 105
+    },
+    {
+      "type": "idle",
+      "ticks": 85
+    }
+  ]
+}

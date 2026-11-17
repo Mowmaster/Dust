@@ -1,0 +1,200 @@
+{
+  "title": {"translate": "guide.dust.research_transformational.title"},
+  "items": ["dust:research_transformational"],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [2, 1, 2],
+      "state": "dust:research_transformational[facing=north]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_transformational.1"},
+      "ticks": 80,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 45,
+      "item": "dust:alchemical_compound"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_transformational.2"},
+      "ticks": 85,
+      "point": [2.4962, 1.975, 2.5219],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "item",
+      "id": "compound",
+      "item": "dust:alchemical_compound",
+      "at": [2.4962, 1.975, 2.5219],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 35
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:magical_flint_and_steel"
+    },
+    {
+      "type": "idle",
+      "ticks": 30
+    },
+    {
+      "type": "remove",
+      "id": "compound"
+    },
+    {
+      "type": "item",
+      "id": "dust",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [2.5, 1.975, 2.8125],
+      "scale": 0.6
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_transformational.3"},
+      "ticks": 75,
+      "point": [2.5, 1.975, 2.8125],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "remove",
+      "id": "dust"
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 45,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "item",
+      "id": "input",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [2.4962, 1.975, 2.5219],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "click",
+      "point": [2.5, 1.975, 2.1875],
+      "button": "right",
+      "ticks": 45,
+      "item": "dust:crystal_inert"
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_transformational.4"},
+      "ticks": 95,
+      "point": [2.5, 1.975, 2.1875],
+      "side": "left"
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "item",
+      "id": "crystal",
+      "item": "dust:crystal_inert",
+      "at": [2.5, 1.975, 2.1875],
+      "scale": 0.6
+    },
+    {
+      "type": "idle",
+      "ticks": 45
+    },
+    {
+      "type": "click",
+      "point": [2.4962, 1.975, 2.5219],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:magical_flint_and_steel"
+    },
+    {
+      "type": "idle",
+      "ticks": 30
+    },
+    {
+      "type": "remove",
+      "id": "input"
+    },
+    {
+      "type": "remove",
+      "id": "crystal"
+    },
+    {
+      "type": "item",
+      "id": "result",
+      "item": "dust:crystal_red",
+      "at": [2.5, 1.975, 2.8125],
+      "scale": 0.6
+    },
+    {
+      "type": "text",
+      "text": {"translate": "guide.dust.research_transformational.5"},
+      "ticks": 85,
+      "point": [2.5, 1.975, 2.8125],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    }
+  ]
+}
