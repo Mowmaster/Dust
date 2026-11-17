@@ -43,35 +43,16 @@ public class FloatingBlockEntity extends Entity implements CarriesBlock
     // Lifts the block at pos out into a floating block (not air, not one with contents, not an unbreakable one)
     public static boolean lift(ServerLevel level, BlockPos pos, int lifetime)
     {
-        return liftEntity(level, pos, lifetime) != null;
-    }
-
-    // The same, handing back the floating block (null if it couldn't lift it): Telekinesis moves it about
-    public static @Nullable FloatingBlockEntity liftEntity(ServerLevel level, BlockPos pos, int lifetime)
-    {
         BlockState state = level.getBlockState(pos);
-        if (state.isAir() || !state.getFluidState().isEmpty() || level.getBlockEntity(pos) != null || state.getDestroySpeed(level, pos) < 0) return null;
+        if (state.isAir() || !state.getFluidState().isEmpty() || level.getBlockEntity(pos) != null || state.getDestroySpeed(level, pos) < 0) return false;
         FloatingBlockEntity floating = DustEntityRegistry.FLOATING_BLOCK.get().create(level, EntitySpawnReason.TRIGGERED);
-        if (floating == null) return null;
+        if (floating == null) return false;
         floating.entityData.set(BLOCK, state);
         floating.lifetime = lifetime;
         floating.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         level.removeBlock(pos, false);
         level.addFreshEntity(floating);
-        return floating;
-    }
-
-    // Sent flying by someone (Telekinesis): what it hits at speed is hurt as theirs
-    public void launch(@Nullable Entity by, Vec3 motion)
-    {
-        lastPuncher = by;
-        setDeltaMovement(motion);
-    }
-
-    // Floats for this much longer from now, then falls
-    public void floatFor(int ticks)
-    {
-        lifetime = tickCount + ticks;
+        return true;
     }
 
     @Override

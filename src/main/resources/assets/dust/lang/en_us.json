@@ -807,6 +807,7 @@
   "block.dust.phased_block": "Phased Block",
   "block.dust.warded_glass": "Warded Glass",
   "entity.dust.floating_block": "Floating Block",
+  "entity.dust.telekinesis_cube": "Telekinetic Cube",
   "entity.dust.animated_block": "Animated Block",
   "entity.dust.void_chest": "Void Chest",
   "entity.dust.void_rift": "Void Rift",

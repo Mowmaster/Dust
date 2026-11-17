@@ -33,6 +33,10 @@ public class DustEntityRegistry {
     public static final DeferredHolder<EntityType<?>, EntityType<FloatingBlockEntity>> FLOATING_BLOCK = ENTITY_TYPES.registerEntityType("floating_block",
             FloatingBlockEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.98F, 0.98F).clientTrackingRange(8).updateInterval(2));
+    // Telekinesis's block in a jelly cube (like a sulfur cube holding a block); updated every tick so it keeps up while held
+    public static final DeferredHolder<EntityType<?>, EntityType<com.mowmaster.dust.Features.Spells.entities.TelekinesisCubeEntity>> TELEKINESIS_CUBE = ENTITY_TYPES.registerEntityType("telekinesis_cube",
+            com.mowmaster.dust.Features.Spells.entities.TelekinesisCubeEntity::new, MobCategory.MISC, builder -> builder
+                    .sized(0.98F, 0.98F).clientTrackingRange(8).updateInterval(1));
     public static final DeferredHolder<EntityType<?>, EntityType<AnimatedBlockEntity>> ANIMATED_BLOCK = ENTITY_TYPES.registerEntityType("animated_block",
             AnimatedBlockEntity::new, MobCategory.MISC, builder -> builder
                     .sized(0.9F, 0.9F).clientTrackingRange(8));

@@ -5,7 +5,7 @@ import com.mowmaster.dust.Features.Spells.SpellRegistries;
 import com.mowmaster.dust.Features.Spells.api.Spell;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
 import com.mowmaster.dust.Features.Spells.api.SpellConfig;
-import com.mowmaster.dust.Features.Spells.entities.FloatingBlockEntity;
+import com.mowmaster.dust.Features.Spells.entities.TelekinesisCubeEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +30,8 @@ import java.util.UUID;
 
 // Telekinesis (the Warp + Vacuum fusion, SpellRegistries.FUSION_WARP_VACUUM): a hitscan spell that takes hold of what it
 // lands on. With AOE it takes the nearest creatures there too (1, plus Target Count, as AOE always does).
-//   a block    lifted out as a floating block (FloatingBlockEntity) and held like a creature
+//   a block    taken out into a jelly cube (TelekinesisCubeEntity, like a sulfur cube holding it) and held like a
+//              creature; let go, it falls, and once it comes to rest it's placed back as a block, squared up
 //   tap        (cast and let go at once, or a grimoire key, or a Spell Caster): pushed away the way the caster faces
 //   hold       (the scroll or grimoire held down: SpellScrollItem / GrimoireItem.onUseTick -> hold): pulled to the caster
 //              and kept floating in front of them
@@ -51,8 +52,10 @@ public final class Telekinesis
     private static final double HOLD_DISTANCE = 2.5;
     // A grab not held for this many ticks is let go as a tap (no scroll held down: a key, a Spell Caster)
     private static final int UNHELD_TICKS = 2;
-    // How long a lifted block floats after it's let go before it falls (ticks)
-    private static final int BLOCK_FLOAT_AFTER = 60;
+    // A pushed / thrown creature's speed: distance / this (in the air a creature keeps about 0.91 of its speed a tick)
+    private static final double MOB_SPREAD = 5.8;
+    // A cube's: distance / this (it keeps 0.98 of its speed a tick in the air, then slides a little)
+    private static final double CUBE_SPREAD = 11.0;
 
     // A caster's grip: what they hold, how far a push / throw goes, how fast a throw is, when it was last held, and their
     // last few looks (for a swipe)
@@ -94,8 +97,8 @@ public final class Telekinesis
 
     public static void grabBlock(SpellCast cast, BlockPos pos, Direction face)
     {
-        FloatingBlockEntity floating = FloatingBlockEntity.liftEntity(cast.level(), pos, 20 * 60);
-        if (floating != null) take(cast, floating);
+        TelekinesisCubeEntity cube = TelekinesisCubeEntity.lift(cast.level(), pos, cast.caster());
+        if (cube != null) take(cast, cube);
     }
 
     private static void take(SpellCast cast, Entity target)
@@ -139,8 +142,12 @@ public final class Telekinesis
             Vec3 toward = spot.subtract(target.position());
             Vec3 motion = toward.scale(0.35);
             if (motion.length() > 1.2) motion = motion.normalize().scale(1.2);
-            move(target, motion, player);
-            target.fallDistance = 0;
+            if (target instanceof TelekinesisCubeEntity cube) {
+                cube.hold(player, motion);
+            } else {
+                move(target, motion);
+                target.fallDistance = 0;
+            }
         }
     }
 
@@ -159,9 +166,11 @@ public final class Telekinesis
         for (Entity target : grip.targets) {
             if (swipe.length() >= SWIPE) {
                 throwAlong(target, swipe.normalize(), grip.distance, grip.speed, player);
+            } else if (target instanceof TelekinesisCubeEntity cube) {
+                // Just let go: it falls, and becomes a block where it comes to rest
+                cube.launch(player, Vec3.ZERO);
             } else {
-                move(target, Vec3.ZERO, player);
-                if (target instanceof FloatingBlockEntity floating) floating.floatFor(BLOCK_FLOAT_AFTER);
+                move(target, Vec3.ZERO);
             }
         }
     }
@@ -188,36 +197,23 @@ public final class Telekinesis
     private static void push(Entity target, Vec3 direction, double distance, @Nullable Entity by)
     {
         Vec3 along = direction.normalize();
-        if (target instanceof FloatingBlockEntity floating) {
-            // No gravity, drag 0.9 a tick: it drifts about ten times its starting speed
-            floating.launch(by, along.scale(distance / 10.0));
-            floating.floatFor(BLOCK_FLOAT_AFTER);
-        } else {
-            // A little up so it clears the ground; in the air a creature keeps about 0.91 of its speed a tick
-            move(target, along.scale(distance / 5.8).add(0, 0.3, 0), by);
-        }
+        // A little up so it clears the ground
+        if (target instanceof TelekinesisCubeEntity cube) cube.launch(by, along.scale(distance / CUBE_SPREAD).add(0, 0.25, 0));
+        else move(target, along.scale(distance / MOB_SPREAD).add(0, 0.3, 0));
         target.level().playSound(null, target.blockPosition(), net.minecraft.sounds.SoundEvents.ENDER_PEARL_THROW, net.minecraft.sounds.SoundSource.PLAYERS, 0.6F, 0.8F);
     }
 
     // Thrown: like a push, but along the swipe and faster with Velocity
     private static void throwAlong(Entity target, Vec3 direction, double distance, double speed, @Nullable Entity by)
     {
-        if (target instanceof FloatingBlockEntity floating) {
-            floating.launch(by, direction.scale(distance / 10.0 * speed));
-            floating.floatFor(BLOCK_FLOAT_AFTER);
-        } else {
-            move(target, direction.scale(distance / 5.8 * speed).add(0, 0.2, 0), by);
-        }
+        if (target instanceof TelekinesisCubeEntity cube) cube.launch(by, direction.scale(distance / CUBE_SPREAD * speed).add(0, 0.2, 0));
+        else move(target, direction.scale(distance / MOB_SPREAD * speed).add(0, 0.2, 0));
         target.level().playSound(null, target.blockPosition(), net.minecraft.sounds.SoundEvents.PLAYER_ATTACK_SWEEP, net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.2F);
     }
 
     // Sets its motion (a player's own client moves them, so it's sent the new speed: needsSync, as SimpleParts.pushAway)
-    private static void move(Entity target, Vec3 motion, @Nullable Entity by)
+    private static void move(Entity target, Vec3 motion)
     {
-        if (target instanceof FloatingBlockEntity floating) {
-            floating.launch(by, motion);
-            return;
-        }
         target.setDeltaMovement(motion);
         target.needsSync = true;
     }
