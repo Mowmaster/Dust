@@ -125,6 +125,13 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         return true;
     }
 
+    // The first cast of a held spell (Telekinesis), as it's pressed: no cooldown yet (that starts when it's let go,
+    // releaseUsing). Its own method so the Akashic grimoire can boost it, as it does castPage.
+    protected boolean castHeld(ServerPlayer player, ItemStack scroll)
+    {
+        return SpellScrollItem.castFrom(player, scroll);
+    }
+
     // Right-click in hand: cast the selected spell (a Beam spell: hold to channel it, onUseTick)
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand)
@@ -135,7 +142,7 @@ public class GrimoireItem extends Item implements IPagedStorageItem
             if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.FAIL;
             // Telekinesis casts the moment it's pressed, then it's held (onUseTick) until let go (releaseUsing)
             if (com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(selected) && player instanceof ServerPlayer serverPlayer
-                    && !SpellScrollItem.castFrom(serverPlayer, scrollAt(stack, getPage(stack)))) return InteractionResult.FAIL;
+                    && !castHeld(serverPlayer, scrollAt(stack, getPage(stack)))) return InteractionResult.FAIL;
             player.startUsingItem(hand);
             return InteractionResult.CONSUME;
         }

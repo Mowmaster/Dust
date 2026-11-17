@@ -30,11 +30,17 @@ public class AkashicItem extends GrimoireItem
         return player.getMainHandItem().getItem() instanceof AkashicItem || player.getOffhandItem().getItem() instanceof AkashicItem;
     }
 
-    // Every cast from it goes through these two: the boost is switched on just for the cast
+    // Every cast from it goes through these three: the boost is switched on just for the cast
     @Override
     public boolean castPage(ServerPlayer player, ItemStack grimoire, int page)
     {
         return SpellCasting.akashic(() -> super.castPage(player, grimoire, page));
+    }
+
+    @Override
+    protected boolean castHeld(ServerPlayer player, ItemStack scroll)
+    {
+        return SpellCasting.akashic(() -> super.castHeld(player, scroll));
     }
 
     @Override
