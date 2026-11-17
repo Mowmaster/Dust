@@ -58,19 +58,12 @@ public class ElementResearchTab extends ResearchTab
         });
     }
 
-    // In the list and on its page: the element's own icon, tinted with its colour
+    // In the list and on its page: the element's own icon (in its own colours, so untinted: listTint's white)
     @Override
     public @Nullable Identifier listSprite(Identifier entry)
     {
         DustElement element = DustElements.get(entry);
         return element == null ? null : element.icon();
-    }
-
-    @Override
-    public int listTint(Identifier entry)
-    {
-        DustElement element = DustElements.get(entry);
-        return element == null ? 0xFFFFFFFF : 0xFF000000 | element.color();
     }
 
     @Override

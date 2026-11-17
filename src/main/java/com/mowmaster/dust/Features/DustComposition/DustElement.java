@@ -82,8 +82,8 @@ public final class DustElement
         return Component.translatable("dust.element." + id.getNamespace() + "." + id.getPath());
     }
 
-    // Its icon: a greyscale GUI sprite (textures/gui/sprites/element/<path>.png in its namespace) that's drawn tinted
-    // with its colour
+    // Its icon: a GUI sprite (textures/gui/sprites/element/<path>.png in its namespace), drawn in its own colours (not
+    // tinted; the element's colour is in the art)
     public Identifier icon()
     {
         return Identifier.fromNamespaceAndPath(id.getNamespace(), "element/" + id.getPath());

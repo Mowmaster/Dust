@@ -17,7 +17,8 @@ import java.util.Map;
 // order makes it paler and chaos darker (DustComposition#colorOf). Each mix is listed with its parts.
 //
 // Other mods can add elements with register (from their mod constructor, so both sides have them), and give them an
-// icon at textures/gui/sprites/element/<path>.png and a name at dust.element.<namespace>.<path>.
+// icon at textures/gui/sprites/element/<path>.png (16x16, drawn in its own colours: it isn't tinted) and a name at
+// dust.element.<namespace>.<path>.
 public final class DustElements
 {
     // LinkedHashMap keeps them in the order they were registered (the order the book lists them in)

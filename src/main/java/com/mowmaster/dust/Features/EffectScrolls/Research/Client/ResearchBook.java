@@ -596,7 +596,8 @@ public final class ResearchBook
             for (Map.Entry<DustElement, Integer> measured : dust.measured().entrySet()) {
                 if ((measured.getValue() > 0) != present || y + 10 > bottom) continue;
                 DustElement element = measured.getKey();
-                int tint = present ? 0xFF000000 | element.color() : 0x66000000 | element.color();
+                // The icons are in their own colours: white leaves them as they are (faded for ones not there)
+                int tint = present ? 0xFFFFFFFF : 0x66FFFFFF;
                 graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, tint);
                 Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", element.name(), measured.getValue()), x + 14, y, present ? INK : FADED);
                 y += 11;

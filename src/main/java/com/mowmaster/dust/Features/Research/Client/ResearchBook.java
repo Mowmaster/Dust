@@ -907,7 +907,7 @@ public final class ResearchBook
         Paper.slot(graphics, x, y);
         // Undiscovered: no icon, a "?" in the slot, and the name in the ancient script (ElementNames)
         if (discovered) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y + 1, 16, 16, 0xFF000000 | element.color());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y + 1, 16, 16, 0xFFFFFFFF);
         } else {
             Paper.inkCentred(graphics, net.minecraft.client.Minecraft.getInstance().font, Component.literal("?"), x + 9, y + 5, INK);
         }
@@ -1010,7 +1010,7 @@ public final class ResearchBook
         for (Map.Entry<DustElement, Integer> measured : shown) {
             if (y + 10 > bottom) continue;
             DustElement element = measured.getKey();
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, 0xFF000000 | element.color());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, element.icon(), x + 1, y - 1, 10, 10, 0xFFFFFFFF);
             Paper.ink(graphics, font, Component.translatable("research.dust.research.percent", element.name(), measured.getValue()), x + 14, y, INK);
             y += 11;
         }

@@ -15,7 +15,8 @@ import java.util.function.Predicate;
 //   discovered      its icon and its name: [icon] Fire
 //   not yet         its name in the ancient script, no icon (letters the reader knows show plainly: AncientLanguage)
 // The icon is an "object" text component: a sprite from the GUI atlas drawn inline like a letter (the element icons
-// are GUI sprites, textures/gui/sprites/element/). Its colour comes from the text colour, so it's given the element's.
+// are GUI sprites, textures/gui/sprites/element/). The text colour tints an object, so it's given white: the icon shows
+// in its own colours.
 public final class ElementNames
 {
     // Whether the local player has discovered an element, for text made without a player to hand (item names). Set by
@@ -32,7 +33,7 @@ public final class ElementNames
     // The element's icon as a piece of text, in its colour
     public static MutableComponent icon(DustElement element)
     {
-        return Component.object(new AtlasSprite(AtlasIds.GUI, element.icon())).withColor(element.color());
+        return Component.object(new AtlasSprite(AtlasIds.GUI, element.icon())).withColor(0xFFFFFF);
     }
 
     // [icon] Name, or the ancient name

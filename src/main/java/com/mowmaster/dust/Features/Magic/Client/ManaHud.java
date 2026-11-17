@@ -110,7 +110,7 @@ public final class ManaHud
         int x = panel.x();
         int y = panel.rowBelow() ? panel.y() + FRAME_HEIGHT + 2 : panel.y();
         for (var carried : PlayerMagicHelper.get(player).dust().entrySet()) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, carried.getKey().icon(), x, y, 9, 9, 0xFF000000 | carried.getKey().color());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, carried.getKey().icon(), x, y, 9, 9, 0xFFFFFFFF);
             String amount = String.valueOf(carried.getValue());
             graphics.text(font, amount, x + 10, y + 1, 0xFFFFFFFF, true);
             x += 10 + font.width(amount) + 4;

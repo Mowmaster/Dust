@@ -99,8 +99,7 @@ public abstract class ResearchTab
         return null;
     }
 
-    // The colour listSprite is drawn in (0xAARRGGBB; white leaves the sprite as it is). Element icons are greyscale
-    // and take their element's colour this way.
+    // The colour listSprite is drawn in (0xAARRGGBB; white leaves the sprite as it is)
     public int listTint(Identifier entry)
     {
         return 0xFFFFFFFF;

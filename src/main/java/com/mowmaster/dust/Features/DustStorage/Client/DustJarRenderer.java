@@ -87,7 +87,7 @@ public class DustJarRenderer implements BlockEntityRenderer<DustJarBlockEntity, 
         state.labels.addAll(jar.labels());
         var player = Minecraft.getInstance().player;
         boolean known = element != null && player != null && Compounds.knows(player, element);
-        // The element's GUI sprite, drawn as a texture of its own (textures/gui/sprites/element/<name>.png)
+        // The element's GUI sprite, drawn as a texture of its own (textures/gui/sprites/element/<name>.png), untinted
         state.icon = known ? Identifier.fromNamespaceAndPath(element.icon().getNamespace(), "textures/gui/sprites/" + element.icon().getPath() + ".png") : null;
         state.unknown = element != null && !known ? Component.literal("?").getVisualOrderText() : null;
         state.amount = element == null ? null : Component.literal(String.valueOf(jar.amount())).getVisualOrderText();
@@ -122,7 +122,7 @@ public class DustJarRenderer implements BlockEntityRenderer<DustJarBlockEntity, 
         poseStack.translate(-0.5, 0, -0.5);
         quad(LABEL, LABEL_LEFT, LABEL_BOTTOM, LABEL_RIGHT, LABEL_TOP, LABEL_Z, 0xFFFFFFFF, state.lightCoords, poseStack, submitNodeCollector);
         if (state.icon != null) {
-            quad(RenderTypes.entityCutout(state.icon), ICON_LEFT, ICON_BOTTOM, ICON_RIGHT, ICON_TOP, ICON_Z, state.color, state.lightCoords, poseStack, submitNodeCollector);
+            quad(RenderTypes.entityCutout(state.icon), ICON_LEFT, ICON_BOTTOM, ICON_RIGHT, ICON_TOP, ICON_Z, 0xFFFFFFFF, state.lightCoords, poseStack, submitNodeCollector);
         } else if (state.unknown != null) {
             text(state.unknown, 9.4F, 2.4F / 16 / 9, state, poseStack, submitNodeCollector);
         }

@@ -51,7 +51,7 @@ public class ClientAlchemicalDustTooltip implements ClientTooltipComponent
     {
         int textX = x;
         if (tooltip.known()) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, tooltip.element().icon(), x, y, ICON, ICON, 0xFF000000 | tooltip.element().color());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, tooltip.element().icon(), x, y, ICON, ICON, 0xFFFFFFFF);
             textX += ICON + 2;
         }
         graphics.text(font, name(), textX, y + 1, NAME, true);

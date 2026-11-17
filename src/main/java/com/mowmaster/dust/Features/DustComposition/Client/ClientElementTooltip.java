@@ -42,7 +42,7 @@ public class ClientElementTooltip implements ClientTooltipComponent
     {
         int dx = x;
         for (ElementTooltip.Entry entry : tooltip.entries()) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, entry.element().icon(), dx, y, ICON, ICON, 0xFF000000 | entry.element().color());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, entry.element().icon(), dx, y, ICON, ICON, 0xFFFFFFFF);
             net.minecraft.network.chat.Component label = label(entry);
             graphics.text(font, label, dx + ICON + 1, y + 1, TEXT, true);
             dx += ICON + 1 + font.width(label) + GAP;

@@ -59,11 +59,10 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         // The modifier card laid on top, and which way the pylon faces (it lies along the pylon)
         final ItemStackRenderState card = new ItemStackRenderState();
         net.minecraft.core.Direction facing = net.minecraft.core.Direction.NORTH;
-        // The icons: how far out (0-1), their textures and colour, and where the Shape Pylon is (relative)
+        // The icons: how far out (0-1), their textures (drawn in their own colours), and where the Shape Pylon is (relative)
         float appear;
         @Nullable Identifier elementIcon;
         @Nullable Identifier shapeIcon;
-        int color;
         @Nullable Vec3 shapeAt;
     }
 
@@ -111,7 +110,6 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         state.shapeIcon = null;
         state.shapeAt = null;
         if (state.appear <= 0 || element == null) return;
-        state.color = element.color();
         // The element's GUI sprite, drawn as a texture of its own (textures/gui/sprites/element/<name>.png); a fused
         // spell shows its fusion's icon instead, in its own colours
         Identifier sprite = element.icon();
@@ -119,7 +117,6 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         Identifier fusion = pylon.fusion();
         if (fusion != null) {
             state.elementIcon = com.mowmaster.dust.Features.Spells.pylons.SpellLinks.fusionIcon(fusion);
-            state.color = 0xFFFFFF;
         }
         Identifier shape = pylon.shape();
         if (shape != null && !pylon.chain().isEmpty()) {
@@ -200,7 +197,8 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         poseStack.rotate(camera.orientation);
         poseStack.scale(size * (0.35F + 0.65F * t), size * (1.6F - 0.6F * t), size);
         int alpha = Math.round(255 * Math.min(1F, t * 2));
-        int color = (alpha << 24) | (state.color & 0xFFFFFF);
+        // White: the icon shows in its own colours, fading in
+        int color = (alpha << 24) | 0xFFFFFF;
         // entityTranslucent: see-through pixels blended; drawn on both sides, so it shows whichever way round it is
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(texture), (pose, buffer) -> {
             iconVertex(buffer, pose, -0.5F, -0.5F, 0, 1, color, 1);
