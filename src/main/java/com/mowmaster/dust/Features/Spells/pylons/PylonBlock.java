@@ -37,14 +37,15 @@ import org.jspecify.annotations.Nullable;
 // Its look (block state; the tints come from the block entity, Client/PylonTint):
 //   parent   the side its parent (the pylon before it) is on: the model is turned so its back arm points there
 //   links    which of its other sides lead on to the next pylons (PylonLinks: the connection arms)
-//   nodes    how many upgrade nodes it has (blank_pylon_..._level_<nodes>; the Shape Pylon ignores it)
+//   nodes    how many upgrade nodes it has (blank_pylon_..._level_<nodes>; 0 for a pylon that can't be levelled:
+//            blessed, corrupted, single-level modifiers like Spell Branch; the Shape Pylon ignores it)
 //   break    a spell break, powered or not (PylonBreak): its own models, with an arm back to its parent and one
 //            straight on (a spell break only ever leads straight on)
 public class PylonBlock extends Block implements EntityBlock
 {
     public static final EnumProperty<Direction> PARENT = EnumProperty.create("parent", Direction.class, Direction.Plane.HORIZONTAL);
     public static final EnumProperty<PylonLinks> LINKS = EnumProperty.create("links", PylonLinks.class);
-    public static final IntegerProperty NODES = IntegerProperty.create("nodes", 1, PylonConfig.MAX_NODES);
+    public static final IntegerProperty NODES = IntegerProperty.create("nodes", 0, PylonConfig.MAX_NODES);
     public static final EnumProperty<PylonBreak> BREAK = EnumProperty.create("break", PylonBreak.class);
 
     private final PylonType type;

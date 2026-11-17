@@ -334,6 +334,11 @@ public final class SpellRegistries
     // per spell): the spell does nothing to blocks / to creatures. Drawing one knocks the other out of the deck and pool;
     // a pylon holding one that's broken loses it for good and the other comes back, taken by the next Neutral pylon
     // (SpellDeck.breakPrevent). Neither blesses when locked nor corrupts when broken.
+    // Spell Branch: does nothing to the spell; the pylon holding it lets the spell have one more branch (no levels: its
+    // pylon has no upgrade nodes). Never drawn from the pool by chance: one goes in the deck every
+    // PylonConfig.BRANCH_EVERY levels (SpellDeck.addDueBranches).
+    public static final DeferredHolder<SpellModifier, SpellModifier> SPELL_BRANCH = modifier("spell_branch",
+            () -> LeveledModifier.marker().oneLevel());
     public static final DeferredHolder<SpellModifier, SpellModifier> PREVENT_BLOCK = modifier("prevent_block",
             () -> LeveledModifier.marker().shapes(id("touch"), id("projectile")).unlock(10).oneLevel().onlyOne()
                     .requires(context -> context.countInTree(id("prevent_block")) == 0 && context.countInTree(id("prevent_attack")) == 0));

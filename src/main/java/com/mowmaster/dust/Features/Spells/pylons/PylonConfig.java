@@ -7,6 +7,11 @@ public final class PylonConfig
     public static final int BREAK_MIN_LEVEL = 30;
     public static final int BREAK_EVERY = 20;
 
+    // Branches: a Spell Branch card goes in the deck every BRANCH_EVERY levels; each pylon holding one lets the spell
+    // have one more branch (BASE_BRANCHES without any)
+    public static final int BRANCH_EVERY = 10;
+    public static final int BASE_BRANCHES = 0;
+
     // A Legendary pylon: instead of a Blessed one this often (twice as often once no blessed modifier is left), with
     // this many upgrade nodes; its modifier counts double
     public static final float LEGENDARY_CHANCE = 0.05F;

@@ -287,15 +287,72 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         return sides;
     }
 
-    // Whether another pylon can be placed after this one: the Shape Pylon and a spell break lead on to just one
+    // Whether another pylon can be placed after this one: the Shape Pylon, a spell break and a corrupted pylon lead on
+    // to just one; any other pylon already leading on starts a branch, only while the spell has a branch to spare
     private boolean canLeadOn(int index)
     {
+        if (index > 0 && hasChildren(index)) {
+            if (level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity corrupted && corrupted.tier() == ModifierTier.CORRUPTED) return false;
+            if (branchCount() >= allowedBranches()) return false;
+        }
         // A null corruption's stop ends its branch
         if (index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity pylon && pylon.stop()) return false;
         // A Fusion / Stack pylon waits for another spell first (SpellLinks); once linked, the line carries on
         if (index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity link
                 && SpellLinks.isDrawnLinkCard(link.modifier()) && !chain.get(index).equals(linkPylon)) return false;
         return (index > 0 && !isBreak(index)) || !hasChildren(index);
+    }
+
+    // ---- the main line and its branches ----
+
+    // The tree as lines of pylons (chain indices), the main line first. A pylon's first child (the earliest placed after
+    // it) carries its line on; each later child starts a branch, which carries on the same way (a branch off a branch
+    // is a branch too). The main line starts at the Shape Pylon.
+    public List<List<Integer>> lines()
+    {
+        List<List<Integer>> lines = new ArrayList<>();
+        if (chain.isEmpty()) return lines;
+        java.util.ArrayDeque<Integer> starts = new java.util.ArrayDeque<>();
+        starts.add(0);
+        while (!starts.isEmpty()) {
+            List<Integer> line = new ArrayList<>();
+            int at = starts.poll();
+            while (at >= 0) {
+                line.add(at);
+                int first = -1;
+                for (int child = 0; child < parents.size(); child++) {
+                    if (parents.get(child) != at) continue;
+                    if (first < 0) first = child;
+                    else starts.add(child);
+                }
+                at = first;
+            }
+            lines.add(line);
+        }
+        return lines;
+    }
+
+    // How many branches the tree has (every line but the main one)
+    public int branchCount()
+    {
+        int count = 0;
+        for (int index = 0; index < parents.size(); index++) {
+            int parent = parents.get(index);
+            // Not its parent's first child: it starts a branch
+            if (parents.indexOf(parent) != index) count++;
+        }
+        return count;
+    }
+
+    // How many branches it may have: one for each pylon holding a Spell Branch card (PylonConfig.BASE_BRANCHES without)
+    public int allowedBranches()
+    {
+        int allowed = PylonConfig.BASE_BRANCHES;
+        if (level == null) return allowed;
+        for (int index = 1; index < chain.size(); index++) {
+            if (level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity pylon && SpellRegistries.SPELL_BRANCH.getId().equals(pylon.modifier())) allowed++;
+        }
+        return allowed;
     }
 
     private boolean isBreak(int index)
@@ -447,6 +504,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             locked(before);
         }
         deck.addDueBreaks(level());
+        deck.addDueBranches(level());
 
         Draw draw = drawFor(type, pylon.getBlockPos(), context(parent, placer), placer);
         pylon.link(worldPosition, draw.card(), draw.modifier(), draw.tier(), draw.spellBreak(), null, draw.nodes(), draw.legendary(), draw.stop());

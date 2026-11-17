@@ -63,3 +63,8 @@ Minecraft 26.3 (NeoForge 26.3.0.94, the main version) and 26.1.2 (NeoForge 26.1.
 ## Dust TODO
 - Known gaps: the Crafter ignores the research gate on dust recipes; dust recipes don't show in the recipe book;
 instant-effect potions are only researched when drunk (not splash/lingering).
+
+## MowLib TODO
+- Suggestion: a generic timed block-outline API in MowLib (outline a list of positions in given colours for N ticks,
+  not tied to `ILinkable`). `LinkOutlines` drops anything that isn't an `ILinkable`, so Dust draws its own for the
+  Spell Pylon's line highlight (`Features/Spells/Client/PylonLineOutlines`).

@@ -1,5 +1,20 @@
 {
   "variants": {
+    "break=broken,links=all,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=all,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=all,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=all,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
     "break=broken,links=all,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 270
@@ -147,6 +162,21 @@
       "model": "dust:block/pylon/pylon_break_broken"
     },
     "break=broken,links=all,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
+    "break=broken,links=left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=left,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
@@ -300,6 +330,21 @@
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
+    "break=broken,links=left_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=left_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=left_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=left_right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
     "break=broken,links=left_right,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 270
@@ -447,6 +492,21 @@
       "model": "dust:block/pylon/pylon_break_broken"
     },
     "break=broken,links=left_right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
+    "break=broken,links=none,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=none,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=none,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=none,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
@@ -600,6 +660,21 @@
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
+    "break=broken,links=right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
     "break=broken,links=right,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 270
@@ -747,6 +822,21 @@
       "model": "dust:block/pylon/pylon_break_broken"
     },
     "break=broken,links=right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
+    "break=broken,links=straight,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=straight,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=straight,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=straight,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
@@ -900,6 +990,21 @@
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
+    "break=broken,links=straight_left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=straight_left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=straight_left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=straight_left,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
     "break=broken,links=straight_left,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 270
@@ -1047,6 +1152,21 @@
       "model": "dust:block/pylon/pylon_break_broken"
     },
     "break=broken,links=straight_left,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 90
+    },
+    "break=broken,links=straight_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 270
+    },
+    "break=broken,links=straight_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_broken",
+      "y": 180
+    },
+    "break=broken,links=straight_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_broken"
+    },
+    "break=broken,links=straight_right,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
@@ -1200,6 +1320,21 @@
       "model": "dust:block/pylon/pylon_break_broken",
       "y": 90
     },
+    "break=connected,links=all,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=all,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=all,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=all,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
     "break=connected,links=all,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 270
@@ -1347,6 +1482,21 @@
       "model": "dust:block/pylon/pylon_break_connected"
     },
     "break=connected,links=all,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
+    "break=connected,links=left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=left,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
@@ -1500,6 +1650,21 @@
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
+    "break=connected,links=left_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=left_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=left_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=left_right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
     "break=connected,links=left_right,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 270
@@ -1647,6 +1812,21 @@
       "model": "dust:block/pylon/pylon_break_connected"
     },
     "break=connected,links=left_right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
+    "break=connected,links=none,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=none,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=none,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=none,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
@@ -1800,6 +1980,21 @@
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
+    "break=connected,links=right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
     "break=connected,links=right,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 270
@@ -1947,6 +2142,21 @@
       "model": "dust:block/pylon/pylon_break_connected"
     },
     "break=connected,links=right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
+    "break=connected,links=straight,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=straight,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=straight,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=straight,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
@@ -2100,6 +2310,21 @@
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
+    "break=connected,links=straight_left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=straight_left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=straight_left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=straight_left,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
     "break=connected,links=straight_left,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 270
@@ -2247,6 +2472,21 @@
       "model": "dust:block/pylon/pylon_break_connected"
     },
     "break=connected,links=straight_left,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 90
+    },
+    "break=connected,links=straight_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 270
+    },
+    "break=connected,links=straight_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_break_connected",
+      "y": 180
+    },
+    "break=connected,links=straight_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_break_connected"
+    },
+    "break=connected,links=straight_right,nodes=0,parent=west": {
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
@@ -2400,6 +2640,21 @@
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
+    "break=fusion,links=all,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
     "break=fusion,links=all,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_fusionstack_7",
       "y": 270
@@ -2548,6 +2803,21 @@
     },
     "break=fusion,links=all,nodes=9,parent=west": {
       "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
       "y": 90
     },
     "break=fusion,links=left,nodes=1,parent=east": {
@@ -2700,6 +2970,21 @@
       "model": "dust:block/pylon/pylon_fusionstack_1",
       "y": 90
     },
+    "break=fusion,links=left_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
     "break=fusion,links=left_right,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_fusionstack_6",
       "y": 270
@@ -2848,6 +3133,21 @@
     },
     "break=fusion,links=left_right,nodes=9,parent=west": {
       "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
       "y": 90
     },
     "break=fusion,links=none,nodes=1,parent=east": {
@@ -3000,6 +3300,21 @@
       "model": "dust:block/pylon/pylon_fusionstack_base",
       "y": 90
     },
+    "break=fusion,links=right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
     "break=fusion,links=right,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_fusionstack_3",
       "y": 270
@@ -3148,6 +3463,21 @@
     },
     "break=fusion,links=right,nodes=9,parent=west": {
       "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
       "y": 90
     },
     "break=fusion,links=straight,nodes=1,parent=east": {
@@ -3300,6 +3630,21 @@
       "model": "dust:block/pylon/pylon_fusionstack_2",
       "y": 90
     },
+    "break=fusion,links=straight_left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
     "break=fusion,links=straight_left,nodes=1,parent=east": {
       "model": "dust:block/pylon/pylon_fusionstack_4",
       "y": 270
@@ -3448,6 +3793,21 @@
     },
     "break=fusion,links=straight_left,nodes=9,parent=west": {
       "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
       "y": 90
     },
     "break=fusion,links=straight_right,nodes=1,parent=east": {
@@ -3600,6 +3960,21 @@
       "model": "dust:block/pylon/pylon_fusionstack_5",
       "y": 90
     },
+    "break=none,links=all,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_7_level_0",
+      "y": 270
+    },
+    "break=none,links=all,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_7_level_0",
+      "y": 180
+    },
+    "break=none,links=all,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_7_level_0"
+    },
+    "break=none,links=all,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_7_level_0",
+      "y": 90
+    },
     "break=none,links=all,nodes=1,parent=east": {
       "model": "dust:block/pylon/blank_pylon_7_level_1",
       "y": 270
@@ -3748,6 +4123,21 @@
     },
     "break=none,links=all,nodes=9,parent=west": {
       "model": "dust:block/pylon/blank_pylon_7_level_9",
+      "y": 90
+    },
+    "break=none,links=left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_1_level_0",
+      "y": 270
+    },
+    "break=none,links=left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_1_level_0",
+      "y": 180
+    },
+    "break=none,links=left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_1_level_0"
+    },
+    "break=none,links=left,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_1_level_0",
       "y": 90
     },
     "break=none,links=left,nodes=1,parent=east": {
@@ -3900,6 +4290,21 @@
       "model": "dust:block/pylon/blank_pylon_1_level_9",
       "y": 90
     },
+    "break=none,links=left_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_6_level_0",
+      "y": 270
+    },
+    "break=none,links=left_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_6_level_0",
+      "y": 180
+    },
+    "break=none,links=left_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_6_level_0"
+    },
+    "break=none,links=left_right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_6_level_0",
+      "y": 90
+    },
     "break=none,links=left_right,nodes=1,parent=east": {
       "model": "dust:block/pylon/blank_pylon_6_level_1",
       "y": 270
@@ -4048,6 +4453,21 @@
     },
     "break=none,links=left_right,nodes=9,parent=west": {
       "model": "dust:block/pylon/blank_pylon_6_level_9",
+      "y": 90
+    },
+    "break=none,links=none,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_base_level_0",
+      "y": 270
+    },
+    "break=none,links=none,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_base_level_0",
+      "y": 180
+    },
+    "break=none,links=none,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_base_level_0"
+    },
+    "break=none,links=none,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_base_level_0",
       "y": 90
     },
     "break=none,links=none,nodes=1,parent=east": {
@@ -4200,6 +4620,21 @@
       "model": "dust:block/pylon/blank_pylon_base_level_9",
       "y": 90
     },
+    "break=none,links=right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_3_level_0",
+      "y": 270
+    },
+    "break=none,links=right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_3_level_0",
+      "y": 180
+    },
+    "break=none,links=right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_3_level_0"
+    },
+    "break=none,links=right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_3_level_0",
+      "y": 90
+    },
     "break=none,links=right,nodes=1,parent=east": {
       "model": "dust:block/pylon/blank_pylon_3_level_1",
       "y": 270
@@ -4348,6 +4783,21 @@
     },
     "break=none,links=right,nodes=9,parent=west": {
       "model": "dust:block/pylon/blank_pylon_3_level_9",
+      "y": 90
+    },
+    "break=none,links=straight,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_2_level_0",
+      "y": 270
+    },
+    "break=none,links=straight,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_2_level_0",
+      "y": 180
+    },
+    "break=none,links=straight,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_2_level_0"
+    },
+    "break=none,links=straight,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_2_level_0",
       "y": 90
     },
     "break=none,links=straight,nodes=1,parent=east": {
@@ -4500,6 +4950,21 @@
       "model": "dust:block/pylon/blank_pylon_2_level_9",
       "y": 90
     },
+    "break=none,links=straight_left,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_4_level_0",
+      "y": 270
+    },
+    "break=none,links=straight_left,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_4_level_0",
+      "y": 180
+    },
+    "break=none,links=straight_left,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_4_level_0"
+    },
+    "break=none,links=straight_left,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_4_level_0",
+      "y": 90
+    },
     "break=none,links=straight_left,nodes=1,parent=east": {
       "model": "dust:block/pylon/blank_pylon_4_level_1",
       "y": 270
@@ -4648,6 +5113,21 @@
     },
     "break=none,links=straight_left,nodes=9,parent=west": {
       "model": "dust:block/pylon/blank_pylon_4_level_9",
+      "y": 90
+    },
+    "break=none,links=straight_right,nodes=0,parent=east": {
+      "model": "dust:block/pylon/blank_pylon_5_level_0",
+      "y": 270
+    },
+    "break=none,links=straight_right,nodes=0,parent=north": {
+      "model": "dust:block/pylon/blank_pylon_5_level_0",
+      "y": 180
+    },
+    "break=none,links=straight_right,nodes=0,parent=south": {
+      "model": "dust:block/pylon/blank_pylon_5_level_0"
+    },
+    "break=none,links=straight_right,nodes=0,parent=west": {
+      "model": "dust:block/pylon/blank_pylon_5_level_0",
       "y": 90
     },
     "break=none,links=straight_right,nodes=1,parent=east": {

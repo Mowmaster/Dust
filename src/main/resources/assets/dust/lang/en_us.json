@@ -554,6 +554,8 @@
   "spell_modifier.dust.prevent_attack": "Prevent Attack Action",
   "spell_modifier.dust.prevent_block.desc": "The spell does nothing to blocks. Only one of the two Prevent cards per spell",
   "spell_modifier.dust.prevent_attack.desc": "The spell does nothing to creatures. Only one of the two Prevent cards per spell",
+  "spell_modifier.dust.spell_branch": "Spell Branch",
+  "spell_modifier.dust.spell_branch.desc": "Lets the spell have one more branch off its main line. One comes into the deck every 10 levels",
   "spell_modifier.dust.fusion_warp_vacuum": "Telekinesis",
   "spell_modifier.dust.fusion_warp_vacuum.desc": "Warp and Vacuum fused: tap to push what you look at away, hold to pull it to you, swipe and let go to throw it. Blocks are lifted out to be moved the same way",
   "spell_modifier.dust.cast_speed": "Cast Speed",

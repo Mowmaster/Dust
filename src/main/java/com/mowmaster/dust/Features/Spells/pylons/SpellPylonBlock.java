@@ -162,7 +162,11 @@ public class SpellPylonBlock extends Block implements EntityBlock
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
     {
-        // Nothing to do with an empty hand: what it holds shows on its HUD just by looking at it (Client/SpellPylonHud)
-        return InteractionResult.PASS;
+        // An empty main hand: the tree's main line and branches light up for 10 seconds (client only:
+        // Client/PylonLineOutlines; what it holds shows on its HUD just by looking at it, Client/SpellPylonHud).
+        // useWithoutItem also runs when the hand holds something that did nothing, so the hand is checked.
+        if (!player.getMainHandItem().isEmpty() || !(level.getBlockEntity(pos) instanceof SpellPylonBlockEntity pylon)) return InteractionResult.PASS;
+        if (level.isClientSide()) com.mowmaster.dust.Features.Spells.Client.PylonLineOutlines.show(pylon);
+        return InteractionResult.SUCCESS;
     }
 }

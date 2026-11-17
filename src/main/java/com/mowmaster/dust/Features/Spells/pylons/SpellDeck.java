@@ -30,6 +30,8 @@ import java.util.function.Predicate;
 //   deck     the cards pylons draw from: START_CARDS drawn from the pool to begin with, topped back up to MIN_CARDS
 //            whenever it runs low. Besides modifiers, three special cards:
 //              SPELL_BREAK      a spell break, for a Neutral pylon (one at level 30, another every 20 levels)
+//            and the Spell Branch modifier (SpellRegistries.SPELL_BRANCH), which only comes into the deck every 10 levels
+//            (addDueBranches), never by chance
 //              BLESSING         a blessing with no blessed modifier left: a Neutral pylon taking it may turn Legendary
 //              NULL_CORRUPTION  corruption with no corrupted modifier left: the pylon taking it ends its branch
 //   blessed, corruption   the counters: a pylon locking adds to blessed (after paying corruption back to 0); at
@@ -53,6 +55,7 @@ public class SpellDeck
     private int blessed;
     private int corruption;
     private int breakCards;
+    private int branchCards;
     private final Map<BlockPos, Integer> rerolls = new HashMap<>();
     // The Prevent cards (SpellRegistries.PREVENT_BLOCK / PREVENT_ATTACK): gone for good (a pylon holding it was broken),
     // and the one the next Neutral pylon must take (it came back when the other was broken)
@@ -85,7 +88,8 @@ public class SpellDeck
             Identifier id = entry.getKey().identifier();
             SpellModifier modifier = entry.getValue();
             if (broughtIn.contains(id) || modifier instanceof SpellFragment) continue;
-            pool.put(id, modifier.uses() > 0 ? modifier.uses() : -1);
+            // Spell Branch: none to draw by chance (addDueBranches puts them in)
+            pool.put(id, id.equals(SpellRegistries.SPELL_BRANCH.getId()) ? 0 : modifier.uses() > 0 ? modifier.uses() : -1);
         }
         for (int i = 0; i < START_CARDS; i++) drawNormal(tree, random, categoryBonus, doubleDraw, modifier -> true);
     }
@@ -99,6 +103,7 @@ public class SpellDeck
         blessed = 0;
         corruption = 0;
         breakCards = 0;
+        branchCards = 0;
         rerolls.clear();
         gone.clear();
         forced = null;
@@ -255,6 +260,22 @@ public class SpellDeck
         }
     }
 
+    // ---- branches ----
+
+    // A Spell Branch card every PylonConfig.BRANCH_EVERY levels (10, 20, 30...), through the pool (a use is added
+    // and taken at once, so the pool never offers it otherwise)
+    public void addDueBranches(int level)
+    {
+        if (!started) return;
+        Identifier branch = SpellRegistries.SPELL_BRANCH.getId();
+        int due = level / PylonConfig.BRANCH_EVERY;
+        while (branchCards < due) {
+            pool.put(branch, Math.max(0, pool.getOrDefault(branch, 0)) + 1);
+            take(branch);
+            branchCards++;
+        }
+    }
+
     // ---- the counters ----
 
     // A pylon locked: blessing (step: 2 with Double Blessed Progress), after corruption is paid back to 0. At BLESS_AT, a
@@ -329,7 +350,7 @@ public class SpellDeck
 
     // Everything as one record, for the block entity's save (and the client's copy, though it doesn't show it yet)
     public record Saved(boolean started, List<PoolEntry> pool, List<Identifier> deck, int blessed, int corruption, int breakCards, List<Reroll> rerolls,
-                        List<Identifier> gone, java.util.Optional<Identifier> forced)
+                        List<Identifier> gone, java.util.Optional<Identifier> forced, int branchCards)
     {
         public static final Codec<Saved> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Codec.BOOL.optionalFieldOf("started", false).forGetter(Saved::started),
@@ -340,7 +361,8 @@ public class SpellDeck
                 Codec.INT.optionalFieldOf("break_cards", 0).forGetter(Saved::breakCards),
                 Reroll.CODEC.listOf().optionalFieldOf("rerolls", List.of()).forGetter(Saved::rerolls),
                 Identifier.CODEC.listOf().optionalFieldOf("gone", List.of()).forGetter(Saved::gone),
-                Identifier.CODEC.optionalFieldOf("forced").forGetter(Saved::forced)
+                Identifier.CODEC.optionalFieldOf("forced").forGetter(Saved::forced),
+                Codec.INT.optionalFieldOf("branch_cards", 0).forGetter(Saved::branchCards)
         ).apply(i, Saved::new));
     }
 
@@ -348,7 +370,7 @@ public class SpellDeck
     {
         return new Saved(started, pool.entrySet().stream().map(e -> new PoolEntry(e.getKey(), e.getValue())).toList(), List.copyOf(deck),
                 blessed, corruption, breakCards, rerolls.entrySet().stream().map(e -> new Reroll(e.getKey(), e.getValue())).toList(),
-                List.copyOf(gone), java.util.Optional.ofNullable(forced));
+                List.copyOf(gone), java.util.Optional.ofNullable(forced), branchCards);
     }
 
     public void load(Saved saved)
@@ -363,5 +385,6 @@ public class SpellDeck
         saved.rerolls().forEach(r -> rerolls.put(r.pos(), r.count()));
         gone.addAll(saved.gone());
         forced = saved.forced().orElse(null);
+        branchCards = saved.branchCards();
     }
 }

@@ -212,7 +212,7 @@ public class PylonBlockEntity extends CBSyncedBlockEntity implements com.mowmast
         if (level == null || !(getBlockState().getBlock() instanceof PylonBlock)) return;
         PylonBreak look = main != null && SpellLinks.isLinkCard(modifier) ? PylonBreak.FUSION
                 : main == null || !spellBreak ? PylonBreak.NONE : powered ? PylonBreak.CONNECTED : PylonBreak.BROKEN;
-        BlockState now = getBlockState().setValue(PylonBlock.LINKS, links).setValue(PylonBlock.NODES, Mth.clamp(maxNodes, 1, PylonConfig.MAX_NODES))
+        BlockState now = getBlockState().setValue(PylonBlock.LINKS, links).setValue(PylonBlock.NODES, Mth.clamp(maxNodes, 0, PylonConfig.MAX_NODES))
                 .setValue(PylonBlock.BREAK, look);
         if (parent != null && parent.getAxis().isHorizontal()) now = now.setValue(PylonBlock.PARENT, parent);
         if (now != getBlockState()) level.setBlock(worldPosition, now, Block.UPDATE_ALL);
