@@ -131,6 +131,17 @@ public class PylonBlockEntity extends CBSyncedBlockEntity implements com.mowmast
         sync();
     }
 
+    // A Fusion / Spell Stack pylon's link made (SpellLinks): it now holds what the link became (a fusion, or Spell Stack),
+    // locks, and takes no upgrade nodes
+    void resolveLink(Identifier result)
+    {
+        modifier = result;
+        maxNodes = 0;
+        locked = true;
+        if (getBlockState().getBlock() instanceof PylonBlock) updateLook(null, getBlockState().getValue(PylonBlock.LINKS));
+        sync();
+    }
+
     public PylonType type()
     {
         return getBlockState().getBlock() instanceof PylonBlock pylon ? pylon.type() : PylonType.SHAPE;
@@ -199,7 +210,8 @@ public class PylonBlockEntity extends CBSyncedBlockEntity implements com.mowmast
     void updateLook(@Nullable Direction parent, PylonLinks links)
     {
         if (level == null || !(getBlockState().getBlock() instanceof PylonBlock)) return;
-        PylonBreak look = main == null || !spellBreak ? PylonBreak.NONE : powered ? PylonBreak.CONNECTED : PylonBreak.BROKEN;
+        PylonBreak look = main != null && SpellLinks.isLinkCard(modifier) ? PylonBreak.FUSION
+                : main == null || !spellBreak ? PylonBreak.NONE : powered ? PylonBreak.CONNECTED : PylonBreak.BROKEN;
         BlockState now = getBlockState().setValue(PylonBlock.LINKS, links).setValue(PylonBlock.NODES, Mth.clamp(maxNodes, 1, PylonConfig.MAX_NODES))
                 .setValue(PylonBlock.BREAK, look);
         if (parent != null && parent.getAxis().isHorizontal()) now = now.setValue(PylonBlock.PARENT, parent);

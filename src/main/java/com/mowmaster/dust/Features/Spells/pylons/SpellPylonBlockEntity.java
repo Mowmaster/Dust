@@ -70,6 +70,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     private @Nullable PylonMemory memory;
     // While this pylon is being broken (its pylons are broken with it; they shouldn't report back)
     private boolean breaking;
+    // A link to another spell (SpellLinks). The owner has the Fusion / Stack pylon (linkPylon, in its chain); the other
+    // is linked in where it touches that pylon (linkVia: one of its pylons, or itself). linkedTo: the other Spell Pylon.
+    private @Nullable BlockPos linkPylon;
+    private @Nullable BlockPos linkedTo;
+    private @Nullable BlockPos linkVia;
+    // Started from a Fused Crystal: the fusion the spell is (FusedCrystalItem)
+    private @Nullable Identifier fusedStart;
 
     // ---- client only: the icons (element over this pylon, shape over the Shape Pylon) coming out like a genie from a
     // lamp while a player is near, and poofing away when they leave (clientTick; Client/SpellPylonRenderer draws them)
@@ -99,6 +106,56 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     // The deck and pool (synced: the HUD reads them on the client, Client/SpellPylonHud)
     public SpellDeck deck() { return deck; }
     public int corruption() { return deck.corruption(); }
+
+    // ---- links (SpellLinks) ----
+
+    public boolean isLinked() { return linkedTo != null; }
+    public @Nullable BlockPos linkedTo() { return linkedTo; }
+    public @Nullable Identifier fusedStart() { return fusedStart; }
+
+    void linkAsOwner(BlockPos pylon, BlockPos other)
+    {
+        linkPylon = pylon;
+        linkedTo = other;
+        linkVia = null;
+        sync();
+    }
+
+    void linkInto(BlockPos owner, BlockPos via)
+    {
+        linkPylon = null;
+        linkedTo = owner;
+        linkVia = via;
+        sync();
+    }
+
+    // What the link became (a fusion's id, or Spell Stack), as the owner's link pylon holds it; null if not linked
+    public @Nullable Identifier linkResult()
+    {
+        if (level == null || linkedTo == null) return null;
+        SpellPylonBlockEntity owner = linkPylon != null ? this : level.getBlockEntity(linkedTo) instanceof SpellPylonBlockEntity found ? found : null;
+        if (owner == null || owner.linkPylon == null) return null;
+        return level.getBlockEntity(owner.linkPylon) instanceof PylonBlockEntity pylon ? pylon.modifier() : null;
+    }
+
+    // The fusion this spell is (from its link, or the Fused Crystal it started from), or null: its icon shows instead of
+    // the element's (Client/SpellPylonRenderer)
+    public @Nullable Identifier fusion()
+    {
+        if (fusedStart != null) return fusedStart;
+        Identifier result = linkResult();
+        return result != null && SpellRegistries.MODIFIER_REGISTRY.getValue(result) instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier ? result : null;
+    }
+
+    // A Fused Crystal used on it (only while it has no element): the spell starts as that fusion, of its first element
+    public boolean setFused(Identifier fusion, @Nullable ServerPlayer player)
+    {
+        if (element != null || !(SpellRegistries.MODIFIER_REGISTRY.getValue(fusion) instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier fused)) return false;
+        if (!setElement(fused.first(), player)) return false;
+        fusedStart = fusion;
+        sync();
+        return true;
+    }
 
     public int level()
     {
@@ -235,6 +292,9 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     {
         // A null corruption's stop ends its branch
         if (index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity pylon && pylon.stop()) return false;
+        // A Fusion / Stack pylon waits for another spell first (SpellLinks); once linked, the line carries on
+        if (index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity link
+                && SpellLinks.isDrawnLinkCard(link.modifier()) && !chain.get(index).equals(linkPylon)) return false;
         return (index > 0 && !isBreak(index)) || !hasChildren(index);
     }
 
@@ -401,6 +461,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
                 SoundSource.BLOCKS, 1.0F, draw.tier() == ModifierTier.CORRUPTED || draw.stop() ? 0.6F : draw.tier() == ModifierTier.BLESSED || draw.legendary() ? 1.6F : 1.1F);
         if (placer != null) placer.sendOverlayMessage(describe(pylon));
         sync();
+        // A Fusion / Stack pylon beside another spell, or this pylon beside another spell's waiting one: linked
+        SpellLinks.afterJoin(server, this, pylon, placer);
     }
 
     private Identifier defaultShape(@Nullable ServerPlayer placer)
@@ -463,6 +525,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             if (!ours.isEmpty()) fits = ours;
         }
         if (fits.isEmpty()) return Draw.NOTHING;
+        // After a spell break in the line (on or off), a Fusion / Spell Stack card in the deck is always taken
+        if (line.breaks() >= 1) {
+            List<Identifier> links = fits.stream().filter(SpellLinks::isDrawnLinkCard).toList();
+            if (!links.isEmpty()) fits = links;
+        }
         // A blessed card (or BLESSING) in the deck: a Neutral pylon takes it half the time (PylonConfig.BLESSED_DRAW_CHANCE),
         // otherwise draws from the rest
         List<Identifier> blessings = fits.stream().filter(SpellPylonBlockEntity::isBlessedCard).toList();
@@ -525,6 +592,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (card.equals(SpellDeck.SPELL_BREAK)) return type == PylonType.NEUTRAL && !afterBreak;
         if (card.equals(SpellDeck.BLESSING)) return type == PylonType.NEUTRAL;
         if (card.equals(SpellDeck.NULL_CORRUPTION)) return false;
+        // A Fusion / Spell Stack card only on a Neutral pylon
+        if (SpellLinks.isDrawnLinkCard(card) && type != PylonType.NEUTRAL) return false;
         SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
         if (modifier == null || !modifier.canRoll(line)) return false;
         // A Neutral pylon passes over what only a category pylon can use (Category Weight)
@@ -678,6 +747,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (breaking) return;
         int index = chain.indexOf(pylon.getBlockPos());
         if (index < 0) return;
+        // A part of a linked spell: both spells break (SpellLinks), spell break or not
+        if (linkedTo != null && level instanceof ServerLevel server) {
+            SpellLinks.breakBoth(server, worldPosition, linkedTo);
+            return;
+        }
         BlockPos parentPos = parents.get(index) >= 0 ? chain.get(parents.get(index)) : null;
         var random = level.getRandom();
         if (index >= 1) {
@@ -736,6 +810,12 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     // experience.
     public boolean setElement(DustElement chosen)
     {
+        return setElement(chosen, null);
+    }
+
+    // ...by this player (beside another spell's waiting Fusion / Stack pylon, the two are linked: SpellLinks)
+    public boolean setElement(DustElement chosen, @Nullable ServerPlayer player)
+    {
         if (element != null || !(level instanceof ServerLevel server)) return false;
         element = chosen;
         int start = memory != null && memory.element() == chosen ? memory.experience() : 0;
@@ -744,6 +824,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         experience = start;
         level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SpellPylonBlock.ACTIVE, true));
         sync();
+        SpellLinks.afterElement(server, this, player);
         return true;
     }
 
@@ -753,39 +834,108 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         setChanged();
     }
 
-    // The spell as it stands: its element and shape, then the modifier of every pylon in the tree in the order placed,
-    // except a spell break without redstone power and everything grown from it. Null without an element or shape.
-    // pylonsOut gets how many pylons the spell uses.
-    public @Nullable Spell compile(int[] pylonsOut)
+    // Which pylons are off: past a spell break without redstone power (or a pylon that's gone), and everything grown
+    // from those
+    private boolean[] offFlags()
+    {
+        boolean[] off = new boolean[chain.size()];
+        for (int i = 1; i < chain.size(); i++) {
+            int parent = parents.get(i);
+            if ((parent >= 1 && off[parent]) || !(level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon)
+                    || (pylon.isSpellBreak() && !level.hasNeighborSignal(pylon.getBlockPos()))) {
+                off[i] = true;
+            }
+        }
+        return off;
+    }
+
+    // This tree's own spell: its element and shape, then the modifier of every pylon that's on, in the order placed
+    // (a Fused Crystal's fusion first), then any extra (a link's). Null without an element or shape. pylonsOut gets how
+    // many pylons the spell uses.
+    private @Nullable Spell compileOwn(int @Nullable [] pylonsOut, List<Identifier> extra, List<Integer> extraLevels)
     {
         Identifier shape = shape();
         if (element == null || shape == null || level == null) return null;
-        boolean[] off = new boolean[chain.size()];
+        boolean[] off = offFlags();
         List<Identifier> modifiers = new ArrayList<>();
         List<Integer> levels = new ArrayList<>();
+        if (fusedStart != null) {
+            modifiers.add(fusedStart);
+            levels.add(1);
+        }
         int pylons = 2;
         for (int i = 1; i < chain.size(); i++) {
-            int parent = parents.get(i);
-            if (parent >= 1 && off[parent]) {
-                off[i] = true;
-                continue;
-            }
-            if (!(level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon)) {
-                off[i] = true;
-                continue;
-            }
-            if (pylon.isSpellBreak() && !level.hasNeighborSignal(pylon.getBlockPos())) {
-                off[i] = true;
-                continue;
-            }
+            if (off[i] || !(level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon)) continue;
             pylons++;
             if (pylon.modifier() != null) {
                 modifiers.add(pylon.modifier());
                 levels.add(pylon.levels() * (pylon.legendary() ? 2 : 1));
             }
         }
+        modifiers.addAll(extra);
+        levels.addAll(extraLevels);
         if (pylonsOut != null && pylonsOut.length > 0) pylonsOut[0] = pylons;
         return new Spell(element, shape, Map.of(), modifiers, levels);
+    }
+
+    // The owner's pylons after its link pylon (they count for both spells), each that's on counting from the link pylon
+    private void afterLink(List<Identifier> modifiers, List<Integer> levels)
+    {
+        int link = linkPylon == null ? -1 : chain.indexOf(linkPylon);
+        if (link < 0) return;
+        boolean[] in = new boolean[chain.size()];
+        in[link] = true;
+        for (int i = link + 1; i < chain.size(); i++) {
+            int parent = parents.get(i);
+            if (parent < 0 || !in[parent] || !(level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon)) continue;
+            if (pylon.isSpellBreak() && !level.hasNeighborSignal(pylon.getBlockPos())) continue;
+            in[i] = true;
+            if (pylon.modifier() != null) {
+                modifiers.add(pylon.modifier());
+                levels.add(pylon.levels() * (pylon.legendary() ? 2 : 1));
+            }
+        }
+    }
+
+    // Whether this tree's way to the link is on: the owner's link pylon, or the linked-in tree's via
+    private boolean linkActive()
+    {
+        BlockPos at = linkPylon != null ? linkPylon : linkVia;
+        if (at == null) return false;
+        if (at.equals(worldPosition)) return true;
+        int index = chain.indexOf(at);
+        return index >= 1 && !offFlags()[index];
+    }
+
+    // The spell as it stands (compileOwn), with its link if both spells' ways to it are on (SpellLinks):
+    //   a fusion   the owner's spell has it already (its link pylon holds it); the linked-in spell adds it, and the
+    //              owner's pylons after the link
+    //   a stack    the owner's spell, then the linked-in one (with the owner's pylons after the link), from either
+    public @Nullable Spell compile(int[] pylonsOut)
+    {
+        Spell own = compileOwn(pylonsOut, List.of(), List.of());
+        if (own == null || linkedTo == null || level == null || !linkActive()) return own;
+        if (!(level.getBlockEntity(linkedTo) instanceof SpellPylonBlockEntity other) || !worldPosition.equals(other.linkedTo) || !other.linkActive()) return own;
+        Identifier result = linkResult();
+        if (result == null) return own;
+        boolean stack = result.equals(SpellRegistries.SPELL_STACK.getId());
+        SpellPylonBlockEntity owner = linkPylon != null ? this : other;
+        SpellPylonBlockEntity linked = linkPylon != null ? other : this;
+        if (stack) {
+            Spell first = owner.compileOwn(null, List.of(), List.of());
+            List<Identifier> after = new ArrayList<>();
+            List<Integer> afterLevels = new ArrayList<>();
+            owner.afterLink(after, afterLevels);
+            Spell second = linked.compileOwn(null, after, afterLevels);
+            if (first == null || second == null) return own;
+            return first.withStack(List.of(second));
+        }
+        if (owner == this) return own;
+        // Linked in to a fusion: the fusion, then the owner's pylons after the link
+        List<Identifier> extra = new ArrayList<>(List.of(result));
+        List<Integer> extraLevels = new ArrayList<>(List.of(1));
+        owner.afterLink(extra, extraLevels);
+        return compileOwn(pylonsOut, extra, extraLevels);
     }
 
     // A Spell Scroll used on it: the spell as it stands is written onto the scroll, linked to this tree
@@ -991,6 +1141,22 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         for (BlockPos at : chain) {
             if (level.getBlockEntity(at) instanceof PylonBlockEntity pylon && pylon.modifier() != null) cards.add(pylon.modifier());
         }
+        // Linked: the other spell breaks too (next tick), and a fusion leaves a Fused Crystal of it (one per link, from
+        // the owner)
+        Identifier linkedFusion = null;
+        if (linkedTo != null) {
+            // What the link made (a fusion, or a stack: null), read before either side forgets the link
+            Identifier result = linkResult();
+            if (result != null && SpellRegistries.MODIFIER_REGISTRY.getValue(result) instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) linkedFusion = result;
+            if (level.getBlockEntity(linkedTo) instanceof SpellPylonBlockEntity other) {
+                // The other side forgets the link (so it doesn't drop a second Fused Crystal), then breaks next tick
+                other.linkedTo = null;
+                other.linkPylon = null;
+                other.linkVia = null;
+                SpellLinks.breakBoth(server, linkedTo, null);
+            }
+            linkedTo = null;
+        }
         for (BlockPos pylon : List.copyOf(chain)) {
             if (level.getBlockEntity(pylon) instanceof PylonBlockEntity) level.destroyBlock(pylon, true);
         }
@@ -1002,9 +1168,22 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             drop.set(DustComponentDataRegistry.PYLON_MEMORY.get(), memory);
         }
         Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop);
+        // Its crystal back: the element's, or the Fused Crystal it was started from
+        if (fusedStart != null) {
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, com.mowmaster.dust.Features.Spells.FusedCrystalItem.of(fusedStart));
+        } else if (element != null) {
+            ItemStack crystal = com.mowmaster.dust.Features.DustComposition.CrystalElements.stackOf(element);
+            if (!crystal.isEmpty()) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, crystal);
+        }
+        if (linkedFusion != null) {
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, com.mowmaster.dust.Features.Spells.FusedCrystalItem.of(linkedFusion));
+        }
+        // The cards that can be laid on a Spell Pylon again (shape modifiers, Transmutation)
         for (Identifier id : cards) {
             var item = com.mowmaster.dust.DustRegistries.DustItemRegistry.CARDS.get(id);
-            if (item != null) Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, new ItemStack(item.get()));
+            if (item != null && item.get() instanceof com.mowmaster.dust.Features.Spells.ModifierCardItem card && card.playable()) {
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, new ItemStack(item.get()));
+            }
         }
         SpellTreeData.get(server.getServer()).forget(tree);
         // Everyone this spell gave Magic Level experience loses it again
@@ -1025,6 +1204,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (card != null) output.store("card", Identifier.CODEC, card);
         output.putInt("experience", experience);
         if (memory != null) output.store("memory", PylonMemory.CODEC, memory);
+        if (linkPylon != null) output.store("link_pylon", BlockPos.CODEC, linkPylon);
+        if (linkedTo != null) output.store("linked_to", BlockPos.CODEC, linkedTo);
+        if (linkVia != null) output.store("link_via", BlockPos.CODEC, linkVia);
+        if (fusedStart != null) output.store("fused_start", Identifier.CODEC, fusedStart);
     }
 
     @Override
@@ -1043,6 +1226,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         card = input.read("card", Identifier.CODEC).orElse(null);
         experience = input.getIntOr("experience", 0);
         memory = input.read("memory", PylonMemory.CODEC).orElse(null);
+        linkPylon = input.read("link_pylon", BlockPos.CODEC).orElse(null);
+        linkedTo = input.read("linked_to", BlockPos.CODEC).orElse(null);
+        linkVia = input.read("link_via", BlockPos.CODEC).orElse(null);
+        fusedStart = input.read("fused_start", Identifier.CODEC).orElse(null);
         // On the client: the body's colour comes from the element (Client/SpellPylonTint), so draw it again
         if (level != null && level.isClientSide()) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), net.minecraft.world.level.block.Block.UPDATE_ALL);
     }

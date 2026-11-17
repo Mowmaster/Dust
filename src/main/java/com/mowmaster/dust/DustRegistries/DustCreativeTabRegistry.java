@@ -27,6 +27,13 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.asItem());
                         output.accept(DustItemRegistry.GRIMOIRE.asItem());
                         output.accept(DustItemRegistry.AKASHIC.asItem());
+                        // A Fused Crystal of each fusion
+                        for (var modifier : com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY) {
+                            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) {
+                                var id = com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY.getKey(modifier);
+                                if (id != null) output.accept(com.mowmaster.dust.Features.Spells.FusedCrystalItem.of(id));
+                            }
+                        }
                         DustItemRegistry.CARDS.values().forEach(card -> output.accept(card.get()));
                         // A crystal and a dust for every element, in element order
                         DustItemRegistry.CRYSTALS.values().forEach(item -> output.accept(item.get()));

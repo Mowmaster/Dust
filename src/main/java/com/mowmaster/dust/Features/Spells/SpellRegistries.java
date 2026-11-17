@@ -10,6 +10,7 @@ import com.mowmaster.dust.Features.Spells.api.SpellShape;
 import com.mowmaster.dust.Features.Spells.api.ModifierCategory;
 import com.mowmaster.dust.Features.Spells.api.ModifierTier;
 import com.mowmaster.dust.Features.Spells.modifiers.FusionModifier;
+import com.mowmaster.dust.Features.Spells.pylons.SpellLinks;
 import com.mowmaster.dust.Features.Spells.modifiers.BasicAspect;
 import com.mowmaster.dust.Features.Spells.modifiers.EchoFragment;
 import com.mowmaster.dust.Features.Spells.modifiers.FragmentSlotModifier;
@@ -316,10 +317,34 @@ public final class SpellRegistries
             () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), 10));
     public static final DeferredHolder<SpellModifier, SpellModifier> ECHO_QUICKENING = MODIFIERS.register("echo_quickening",
             () -> new BasicAspect(Identifier.fromNamespaceAndPath(DustReferences.MODID, "echo"), 8));
-    // Fusions: one per pair of elements, each with its own effects (parts it leaves out fall back to the spell's element)
+    // ---- linking two spells (pylons/SpellLinks): drawn from level 50, a Neutral pylon only. The next pylon beside it
+    // must belong to another spell (or be a new Spell Pylon given its crystal there): the two spells are then linked ----
+    // Fusion: if the two elements have a fusion (below), both spells become it; otherwise the link is a Spell Stack
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION = modifier("fusion",
+            () -> LeveledModifier.marker().unlock(SpellLinks.LINK_LEVEL).oneLevel().weight(4).oncePerBranch());
+    // Spell Stack: both spells cast, one after the other (the spell the link came from first)
+    public static final DeferredHolder<SpellModifier, SpellModifier> SPELL_STACK = modifier("spell_stack",
+            () -> LeveledModifier.marker().unlock(SpellLinks.LINK_LEVEL).oneLevel().weight(4).oncePerBranch());
+    // Silky (one level): what the spell breaks drops as itself (Silk Touch); an explosion breaks no blocks; blocks the
+    // spell makes don't fade
+    public static final DeferredHolder<SpellModifier, SpellModifier> SILKY = modifier("silky",
+            () -> LeveledModifier.marker().oneLevel().onlyOne().requires(context -> context.countInTree(id("silky")) == 0));
+
+    // Whether a cast has Silky
+    public static boolean silky(com.mowmaster.dust.Features.Spells.api.SpellCast cast)
+    {
+        return cast.spell().levelsOf(SILKY.getId()) > 0 || cast.spell().modifiers().contains(SILKY.getId());
+    }
+
+    // Fusions: one per pair of elements, each with its own effects (parts it leaves out fall back to the spell's element).
+    // They aren't drawn: a Fusion link between spells of the two elements gives the spells the fusion (SpellLinks).
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FLIGHT_MOTION = MODIFIERS.register("fusion_flight_motion",
             () -> new FusionModifier(DustElements.FLIGHT, DustElements.MOTION).self(MovementParts::glide)
                     .types(EffectType.DOT, null, null));
+    // Fracture + Earth: it breaks the block it lands on as a pickaxe would (FusionParts.mine)
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FRACTURE_EARTH = MODIFIERS.register("fusion_fracture_earth",
+            () -> new FusionModifier(DustElements.FRACTURE, DustElements.EARTH).block(com.mowmaster.dust.Features.Spells.effects.FusionParts::mine)
+                    .types(null, EffectType.INSTANT, null));
 
     // ---- the elements' effects (the rest come in later steps; until then an element does nothing) ----
     public static final DeferredHolder<ElementEffect, ElementEffect> FIRE = ELEMENT_EFFECTS.register(DustElements.FIRE.id().getPath(), FireEffect::new);

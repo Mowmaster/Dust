@@ -2400,6 +2400,1206 @@
       "model": "dust:block/pylon/pylon_break_connected",
       "y": 90
     },
+    "break=fusion,links=all,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=all,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 270
+    },
+    "break=fusion,links=all,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 180
+    },
+    "break=fusion,links=all,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_7"
+    },
+    "break=fusion,links=all,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_7",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 270
+    },
+    "break=fusion,links=left,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 180
+    },
+    "break=fusion,links=left,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_1"
+    },
+    "break=fusion,links=left,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_1",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=left_right,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 270
+    },
+    "break=fusion,links=left_right,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 180
+    },
+    "break=fusion,links=left_right,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_6"
+    },
+    "break=fusion,links=left_right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_6",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=none,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 270
+    },
+    "break=fusion,links=none,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 180
+    },
+    "break=fusion,links=none,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_base"
+    },
+    "break=fusion,links=none,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_base",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=right,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 270
+    },
+    "break=fusion,links=right,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 180
+    },
+    "break=fusion,links=right,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_3"
+    },
+    "break=fusion,links=right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_3",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 270
+    },
+    "break=fusion,links=straight,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 180
+    },
+    "break=fusion,links=straight,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_2"
+    },
+    "break=fusion,links=straight,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_2",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_left,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 270
+    },
+    "break=fusion,links=straight_left,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 180
+    },
+    "break=fusion,links=straight_left,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_4"
+    },
+    "break=fusion,links=straight_left,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_4",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=1,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=1,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=1,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=1,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=10,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=10,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=10,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=10,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=2,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=2,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=2,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=2,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=3,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=3,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=3,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=3,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=4,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=4,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=4,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=4,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=5,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=5,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=5,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=5,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=6,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=6,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=6,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=6,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=7,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=7,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=7,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=7,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=8,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=8,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=8,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=8,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
+    "break=fusion,links=straight_right,nodes=9,parent=east": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 270
+    },
+    "break=fusion,links=straight_right,nodes=9,parent=north": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 180
+    },
+    "break=fusion,links=straight_right,nodes=9,parent=south": {
+      "model": "dust:block/pylon/pylon_fusionstack_5"
+    },
+    "break=fusion,links=straight_right,nodes=9,parent=west": {
+      "model": "dust:block/pylon/pylon_fusionstack_5",
+      "y": 90
+    },
     "break=none,links=all,nodes=1,parent=east": {
       "model": "dust:block/pylon/blank_pylon_7_level_1",
       "y": 270

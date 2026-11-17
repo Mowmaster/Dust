@@ -65,7 +65,8 @@ public class PhantomBlock extends Block implements EntityBlock
         Block phantom = (solid ? DustBlockRegistry.VEILED : DustBlockRegistry.PHASED).get();
         level.setBlockAndUpdate(pos, phantom.defaultBlockState());
         if (level.getBlockEntity(pos) instanceof PhantomBlockEntity entity) entity.setOriginal(state);
-        level.scheduleTick(pos, phantom, ticks);
+        // No time (Silky): it stays as it is
+        if (ticks > 0) level.scheduleTick(pos, phantom, ticks);
         return true;
     }
 }

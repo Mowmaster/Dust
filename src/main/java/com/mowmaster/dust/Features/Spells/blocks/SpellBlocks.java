@@ -24,6 +24,10 @@ public final class SpellBlocks
     public static void poisonPool(SpellCast cast, BlockPos pos, Direction face)
     {
         layer(cast.level(), pos, (SpellLayerBlock) DustBlockRegistry.POISON_POOL.get());
+        // Silky: the pool doesn't dry up (its drying tick, set as it's placed, is cleared)
+        if (com.mowmaster.dust.Features.Spells.SpellRegistries.silky(cast)) {
+            cast.level().getBlockTicks().clearArea(new net.minecraft.world.level.levelgen.structure.BoundingBox(pos.above()));
+        }
     }
 
     public static void blight(SpellCast cast, BlockPos pos, Direction face)

@@ -50,6 +50,18 @@ public final class SpellCasting
         }
     }
 
+    // How long after a spell each spell stacked on it is cast (ticks)
+    public static final int STACK_DELAY = 5;
+
+    // A stacked spell's own turn (DelayedCasts): cast as the player's, already paid for. True if it landed.
+    public static boolean castStacked(ServerPlayer player, Spell spell)
+    {
+        SpellShape shape = spell.shapeType();
+        if (shape == null) return false;
+        SpellStats stats = spell.stats(PlayerMagicHelper.spellPower(player, spell.element()));
+        return deliver(SpellCast.by(player, spell, stats), shape);
+    }
+
     // True if it was cast
     public static boolean cast(ServerPlayer player, Spell spell)
     {
@@ -86,7 +98,8 @@ public final class SpellCasting
 
         // What it costs this player
         Map<DustElement, Integer> cost = new LinkedHashMap<>();
-        spell.dustCost().forEach((element, amount) -> cost.put(element, Math.max(1, PlayerMagicHelper.dustCost(player, element, amount) * (100 - costReduction) / 100)));
+        // A stacked spell's dust is paid with the first (totalDustCost: the whole stack's)
+        spell.totalDustCost().forEach((element, amount) -> cost.put(element, Math.max(1, PlayerMagicHelper.dustCost(player, element, amount) * (100 - costReduction) / 100)));
         if (!free) {
             // Short of an element: with Transmutation, its parent elements make up the difference, one of each per
             // missing dust (fire + water for air); otherwise it can't be cast
@@ -133,6 +146,8 @@ public final class SpellCasting
             player.sendOverlayMessage(Component.translatable("dust.spell.no_target"));
             return false;
         }
+        // A Spell Stack: the spells stacked after it follow, STACK_DELAY ticks apart (already paid for)
+        for (int i = 0; i < spell.stack().size(); i++) DelayedCasts.add(player, spell.stack().get(i), STACK_DELAY * (i + 1));
         // Every modifier in a spell the player casts counts as had in a spell (their Spell Cards entries)
         for (net.minecraft.resources.Identifier modifier : spell.modifiers()) com.mowmaster.dust.Features.Research.Tabs.SpellCardResearchTab.unlock(player, modifier);
 

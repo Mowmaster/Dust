@@ -15,6 +15,12 @@ public final class SpecialBlockParts
 
     private SpecialBlockParts() {}
 
+    // How long a block the spell makes lasts: its usual time, or (Silky) for good (-1: no fading tick is set)
+    private static int lifetime(SpellCast cast, int ticks)
+    {
+        return com.mowmaster.dust.Features.Spells.SpellRegistries.silky(cast) ? -1 : ticks;
+    }
+
     // Light: a mote of light against the face hit, in the Light element's colour (dye it to change it)
     public static void light(SpellCast cast, BlockPos pos, Direction face)
     {
@@ -24,13 +30,13 @@ public final class SpecialBlockParts
     // Darkness: the block goes see-through (still solid) for a while
     public static void veil(SpellCast cast, BlockPos pos, Direction face)
     {
-        PhantomBlock.make(cast.level(), pos, true, cast.stats().duration() * TIME_SCALE);
+        PhantomBlock.make(cast.level(), pos, true, lifetime(cast, cast.stats().duration() * TIME_SCALE));
     }
 
     // Spirit: the block can be walked through for a while
     public static void phase(SpellCast cast, BlockPos pos, Direction face)
     {
-        PhantomBlock.make(cast.level(), pos, false, cast.stats().duration() * TIME_SCALE);
+        PhantomBlock.make(cast.level(), pos, false, lifetime(cast, cast.stats().duration() * TIME_SCALE));
     }
 
     // Armor: the block is warded (for good)
@@ -49,7 +55,8 @@ public final class SpecialBlockParts
     // Flight: the block floats free for a while
     public static void floatBlock(SpellCast cast, BlockPos pos, Direction face)
     {
-        FloatingBlockEntity.lift(cast.level(), pos, cast.stats().duration() * TIME_SCALE);
+        int ticks = cast.stats().duration() * TIME_SCALE;
+        FloatingBlockEntity.lift(cast.level(), pos, com.mowmaster.dust.Features.Spells.SpellRegistries.silky(cast) ? Integer.MAX_VALUE : ticks);
     }
 
     // Creature: the block comes alive for a while

@@ -6,6 +6,7 @@ import com.mowmaster.dust.Features.DustComposition.CrystalElements;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Spells.SpellScrollItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -96,10 +97,22 @@ public class SpellPylonBlock extends Block implements EntityBlock
         DustElement crystal = CrystalElements.of(stack);
         if (crystal != null) {
             if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
-            if (pylon.setElement(crystal)) {
+            if (pylon.setElement(crystal, serverPlayer)) {
                 stack.consume(1, player);
                 level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 serverPlayer.sendOverlayMessage(pylon.info());
+            } else {
+                serverPlayer.sendOverlayMessage(Component.translatable("dust.pylon.has_element"));
+            }
+            return InteractionResult.SUCCESS;
+        }
+        // A Fused Crystal: the spell starts as its fusion (only on a Spell Pylon with no element yet)
+        if (stack.getItem() instanceof com.mowmaster.dust.Features.Spells.FusedCrystalItem) {
+            if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+            Identifier fusion = com.mowmaster.dust.Features.Spells.FusedCrystalItem.fusionOf(stack);
+            if (fusion != null && pylon.setFused(fusion, serverPlayer)) {
+                stack.consume(1, player);
+                level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.2F);
             } else {
                 serverPlayer.sendOverlayMessage(Component.translatable("dust.pylon.has_element"));
             }

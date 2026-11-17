@@ -154,7 +154,9 @@ public class DustItemRegistry
     static {
         for (var holder : com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIERS.getEntries()) {
             net.minecraft.resources.Identifier id = holder.getId();
-            if (!CARDS.containsKey(id)) cardFor("card_" + id.getPath(), id, false);
+            // The fusions themselves (fusion_<a>_<b>) have no cards: they come from the Fusion card's link, and are
+            // shown by the Fusion card (ModifierCardItem.sprite)
+            if (!CARDS.containsKey(id) && !id.getPath().startsWith("fusion_")) cardFor("card_" + id.getPath(), id, false);
         }
     }
 
@@ -174,6 +176,8 @@ public class DustItemRegistry
     public static ItemStack cardOf(net.minecraft.resources.Identifier modifier)
     {
         DeferredItem<Item> card = CARDS.get(modifier);
+        // A fusion has no card of its own: it shows as the Fusion card
+        if (card == null && modifier.getPath().startsWith("fusion_")) card = CARDS.get(net.minecraft.resources.Identifier.fromNamespaceAndPath(modifier.getNamespace(), "fusion"));
         return card == null ? ItemStack.EMPTY : new ItemStack(card.get());
     }
 
@@ -183,6 +187,9 @@ public class DustItemRegistry
     public static final DeferredItem<Item> GRIMOIRE = DUSTITEMS.registerItem("grimoire",
             com.mowmaster.dust.Features.Spells.grimoire.GrimoireItem::new, properties -> properties.stacksTo(1));
     // The Akashic: a grimoire whose spells are four times as strong for half the cost (Features/Spells/grimoire/AkashicItem)
+    // What's left of a broken fused spell: starts a new spell as that fusion (Features/Spells/FusedCrystalItem)
+    public static final DeferredItem<Item> FUSED_CRYSTAL = DUSTITEMS.registerItem("fused_crystal",
+            com.mowmaster.dust.Features.Spells.FusedCrystalItem::new, properties -> properties.stacksTo(16).rarity(Rarity.RARE));
     public static final DeferredItem<Item> AKASHIC = DUSTITEMS.registerItem("akashic",
             com.mowmaster.dust.Features.Spells.grimoire.AkashicItem::new, properties -> properties.stacksTo(1).rarity(Rarity.EPIC));
     // Transformation Table output: stable dust of one element (Features/Machines/AlchemicalDust)

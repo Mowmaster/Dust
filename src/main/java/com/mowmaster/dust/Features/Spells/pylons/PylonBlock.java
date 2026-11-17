@@ -98,26 +98,35 @@ public class PylonBlock extends Block implements EntityBlock
     {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (level.isClientSide() || !(level.getBlockEntity(pos) instanceof PylonBlockEntity pylon)) return;
-        SpellPylonBlockEntity tree = treeNextTo(level, pos);
-        if (tree != null && tree.accepts(pos, type)) {
+        // The first tree beside it that takes it (beside two spells, e.g. next to another's waiting Fusion pylon, it
+        // joins the one it can)
+        SpellPylonBlockEntity tree = null;
+        for (SpellPylonBlockEntity candidate : treesNextTo(level, pos)) {
+            if (candidate.accepts(pos, type)) {
+                tree = candidate;
+                break;
+            }
+        }
+        if (tree != null) {
             tree.attach(pylon, placer instanceof ServerPlayer player ? player : null);
         } else if (placer instanceof ServerPlayer player) {
             player.sendOverlayMessage(Component.translatable("dust.pylon.not_connected"));
         }
     }
 
-    // The tree whose Spell Pylon, or any of whose pylons, is beside pos
-    private static @Nullable SpellPylonBlockEntity treeNextTo(Level level, BlockPos pos)
+    // The trees whose Spell Pylon, or any of whose pylons, is beside pos
+    private static java.util.List<SpellPylonBlockEntity> treesNextTo(Level level, BlockPos pos)
     {
+        java.util.List<SpellPylonBlockEntity> trees = new java.util.ArrayList<>();
         for (Direction side : Direction.Plane.HORIZONTAL) {
             BlockEntity beside = level.getBlockEntity(pos.relative(side));
-            if (beside instanceof SpellPylonBlockEntity spellPylon) return spellPylon;
-            if (beside instanceof PylonBlockEntity pylon && pylon.main() != null
-                    && level.getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon) {
-                return spellPylon;
-            }
+            SpellPylonBlockEntity tree = null;
+            if (beside instanceof SpellPylonBlockEntity spellPylon) tree = spellPylon;
+            else if (beside instanceof PylonBlockEntity pylon && pylon.main() != null
+                    && level.getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon) tree = spellPylon;
+            if (tree != null && !trees.contains(tree)) trees.add(tree);
         }
-        return null;
+        return trees;
     }
 
     @Override

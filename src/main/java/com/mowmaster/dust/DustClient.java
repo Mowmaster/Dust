@@ -141,6 +141,8 @@ public class DustClient {
         // "dust:compound": an alchemical compound's colour, for its dust pile
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "compound"), CompoundTint.MAP_CODEC);
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "alchemical_dust"), AlchemicalDustTint.MAP_CODEC);
+        // A Fused Crystal's two elements (layer 0 the first, layer 1 the second)
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "fused_crystal"), com.mowmaster.dust.Features.Spells.Client.FusedCrystalTint.MAP_CODEC);
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "spell"), com.mowmaster.dust.Features.Spells.Client.SpellTint.MAP_CODEC);
         // "dust:dust_jar": a Dust Jar item's lid in the colour of the dust it carries
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_jar"), com.mowmaster.dust.Features.DustStorage.Client.DustJarItemTint.MAP_CODEC);

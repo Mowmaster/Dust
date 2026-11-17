@@ -51,7 +51,9 @@ public final class SimpleParts
     // An explosion where it stands (hurts what's around it, breaks no blocks), bigger with potency
     public static void explodeAt(SpellCast cast, Entity target)
     {
-        SpellExplosions.explode(cast.level(), cast.caster(), target.getX(), target.getY() + 0.5, target.getZ(), 1.0F + cast.stats().potency(), Level.ExplosionInteraction.NONE);
+        // It breaks blocks like TNT, unless the spell is Silky
+        SpellExplosions.explode(cast.level(), cast.caster(), target.getX(), target.getY() + 0.5, target.getZ(), 1.0F + cast.stats().potency(),
+                com.mowmaster.dust.Features.Spells.SpellRegistries.silky(cast) ? Level.ExplosionInteraction.NONE : Level.ExplosionInteraction.TNT);
     }
 
     // Kills anything under 10% health, bosses too; the undead are healed to full instead
@@ -166,7 +168,8 @@ public final class SimpleParts
         ServerLevel level = cast.level();
         BlockState state = level.getBlockState(pos);
         if (state.isAir() || state.getDestroySpeed(level, pos) < 0) return;
-        level.destroyBlock(pos, true, cast.caster());
+        // Silky: the bang without the damage
+        if (!com.mowmaster.dust.Features.Spells.SpellRegistries.silky(cast)) level.destroyBlock(pos, true, cast.caster());
         level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0, 0, 0, 0);
         // One bang per cast, however many blocks it blows apart (AOE, Wall), from our quieter explosion sound. Played at
         // 4.0 like a real explosion (heard as far), which sounds.json's 0.1 brings down to 40% loudness.

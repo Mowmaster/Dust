@@ -20,13 +20,29 @@ import java.util.Map;
 // mod was removed is skipped when the spell is cast.
 // levels: for each modifier (same order), how many levels of it the spell has (its pylon's levels, doubled on a
 // Legendary pylon). Missing entries count as 1.
-public record Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers, List<Integer> levels)
+// stack: spells cast straight after this one, in order (a Spell Stack link: pylons/SpellLinks; SpellCasting casts
+// each a moment after the one before, and the dust and mana are all of them added together)
+public record Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers, List<Integer> levels,
+                    List<Spell> stack)
 {
     public Spell
     {
         attributes = java.util.Collections.unmodifiableMap(new LinkedHashMap<>(attributes));
         modifiers = List.copyOf(modifiers);
         levels = List.copyOf(levels);
+        stack = List.copyOf(stack);
+    }
+
+    // A spell with nothing stacked after it
+    public Spell(DustElement element, Identifier shape, Map<Identifier, Integer> attributes, List<Identifier> modifiers, List<Integer> levels)
+    {
+        this(element, shape, attributes, modifiers, levels, List.of());
+    }
+
+    // The same spell with these spells stacked after it
+    public Spell withStack(List<Spell> stacked)
+    {
+        return new Spell(element, shape, attributes, modifiers, levels, stacked);
     }
 
     // A spell with one level of each modifier (by command, an awakening...). A record can have more constructors as
@@ -50,13 +66,16 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         return total;
     }
 
-    public static final Codec<Spell> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    // Codec.recursive: a codec that can refer to itself (a spell holds a list of spells: its stack). Spells saved
+    // before stacks existed have no "stack" field, so it's optional.
+    public static final Codec<Spell> CODEC = Codec.recursive("spell", self -> RecordCodecBuilder.create(instance -> instance.group(
             DustElements.CODEC.fieldOf("element").forGetter(Spell::element),
             Identifier.CODEC.fieldOf("shape").forGetter(Spell::shape),
             Codec.unboundedMap(Identifier.CODEC, Codec.INT).optionalFieldOf("attributes", Map.of()).forGetter(Spell::attributes),
             Identifier.CODEC.listOf().optionalFieldOf("modifiers", List.of()).forGetter(Spell::modifiers),
-            Codec.INT.listOf().optionalFieldOf("levels", List.of()).forGetter(Spell::levels)
-    ).apply(instance, Spell::new));
+            Codec.INT.listOf().optionalFieldOf("levels", List.of()).forGetter(Spell::levels),
+            self.listOf().optionalFieldOf("stack", List.of()).forGetter(Spell::stack)
+    ).apply(instance, Spell::new)));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Spell> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
@@ -95,6 +114,14 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         cost.replaceAll((type, amount) -> Math.round(amount * Math.max(0, 100 + finalPercent) / 100F));
         cost.replaceAll((type, amount) -> type == element ? Math.max(1, amount) : Math.max(0, amount));
         cost.values().removeIf(amount -> amount <= 0);
+        return cost;
+    }
+
+    // What casting it costs with its whole stack: every stacked spell's dust added to its own
+    public Map<DustElement, Integer> totalDustCost()
+    {
+        Map<DustElement, Integer> cost = new LinkedHashMap<>(dustCost());
+        for (Spell stacked : stack) stacked.totalDustCost().forEach((type, amount) -> cost.merge(type, amount, Integer::sum));
         return cost;
     }
 

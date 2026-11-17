@@ -27,6 +27,10 @@ public class DustComponentDataRegistry
     public static final DeferredRegister<DataComponentType<?>> DUST_DATA_COMPONENT_TYPES =
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, DustReferences.MODID);
 
+    // The fusion a Fused Crystal carries (a fusion modifier's id: Features/Spells/FusedCrystalItem)
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.resources.Identifier>> FUSION = register("fusion",
+            builder -> builder.persistent(net.minecraft.resources.Identifier.CODEC).networkSynchronized(net.minecraft.resources.Identifier.STREAM_CODEC));
+
     // The ancient word written on a tablet or transcription (lowercase a-z)
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ANCIENT_WORD = register("ancient_word",
             builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));

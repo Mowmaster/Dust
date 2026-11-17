@@ -112,9 +112,15 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         state.shapeAt = null;
         if (state.appear <= 0 || element == null) return;
         state.color = element.color();
-        // The element's GUI sprite, drawn as a texture of its own (textures/gui/sprites/element/<name>.png)
+        // The element's GUI sprite, drawn as a texture of its own (textures/gui/sprites/element/<name>.png); a fused
+        // spell shows its fusion's icon instead, in its own colours
         Identifier sprite = element.icon();
         state.elementIcon = Identifier.fromNamespaceAndPath(sprite.getNamespace(), "textures/gui/sprites/" + sprite.getPath() + ".png");
+        Identifier fusion = pylon.fusion();
+        if (fusion != null) {
+            state.elementIcon = com.mowmaster.dust.Features.Spells.pylons.SpellLinks.fusionIcon(fusion);
+            state.color = 0xFFFFFF;
+        }
         Identifier shape = pylon.shape();
         if (shape != null && !pylon.chain().isEmpty()) {
             state.shapeIcon = Identifier.fromNamespaceAndPath(shape.getNamespace(), "textures/block/spell/" + shape.getPath() + ".png");

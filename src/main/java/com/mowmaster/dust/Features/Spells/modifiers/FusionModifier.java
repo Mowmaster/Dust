@@ -16,11 +16,9 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 
 // A fusion: two elements joined into what is really a different spell, with its own self, block and entity effects.
-// Each fusion is made by hand for one pair (register one per pair in SpellRegistries.MODIFIERS). It's rolled as a
-// modifier on a spell of either element, once:
-//   the placing player has taken spells of both elements to PylonConfig.FUSION_LEVEL (SpellMastery)
-//   there's been a spell break earlier in the line (not necessarily just before)
-//   the line has no fusion yet
+// Each fusion is made by hand for one pair (register one per pair in SpellRegistries.MODIFIERS). It isn't drawn: a
+// Fusion card links two spells (pylons/SpellLinks), and if their elements are this pair, both spells get the fusion
+// (a Fused Crystal carries it on to a new spell too).
 // Casting a fused spell runs the fusion's parts in place of the element's (SpellCast.effect); a part the fusion doesn't
 // define falls back to the spell's own element. It costs dust of both elements.
 public class FusionModifier implements SpellModifier
@@ -59,13 +57,17 @@ public class FusionModifier implements SpellModifier
     @Override
     public int weight() { return 4; }
 
+    // Never drawn: a Fusion link between a spell of each element gives both spells the fusion (pylons/SpellLinks)
     @Override
     public boolean canRoll(ModifierContext context)
     {
-        boolean ours = context.element().equals(first) || context.element().equals(second);
-        // Over the fusion level, once per branch (any fusion), and after a spell break
-        return ours && context.level() >= PylonConfig.FUSION_TREE_LEVEL && context.breaks() >= 1 && context.countOf(FusionModifier.class) == 0
-                && context.masteryOf(first) >= PylonConfig.FUSION_LEVEL && context.masteryOf(second) >= PylonConfig.FUSION_LEVEL;
+        return false;
+    }
+
+    // Whether this fusion is of these two elements (either way round)
+    public boolean joins(DustElement a, DustElement b)
+    {
+        return (first.equals(a) && second.equals(b)) || (first.equals(b) && second.equals(a));
     }
 
     @Override

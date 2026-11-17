@@ -82,8 +82,12 @@ public class PylonTint implements BlockTintSource
         return node < pylon.nodes() ? FILLED : WHITE;
     }
 
+    // A Fusion / Spell Stack pylon: the diamond block's colour
+    public static final int LINK = 0xFF5CDBD5;
+
     private static int body(PylonBlockEntity pylon)
     {
+        if (pylon.main() != null && com.mowmaster.dust.Features.Spells.pylons.SpellLinks.isLinkCard(pylon.modifier())) return LINK;
         if (pylon.main() != null && pylon.isSpellBreak()) return pylon.powered() ? BREAK_ON : BREAK_OFF;
         if (pylon.legendary()) return LEGENDARY;
         if (pylon.tier() == ModifierTier.BLESSED) return BLESSED;

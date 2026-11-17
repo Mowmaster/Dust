@@ -55,6 +55,12 @@ public class PylonCardRenderer implements BlockEntityRenderer<PylonBlockEntity, 
         BlockEntityRenderer.super.extractRenderState(pylon, state, partialTick, cameraPos, crumblingOverlay);
         state.appear = pylon.appear(partialTick);
         state.card = state.appear > 0 ? PylonReading.cardTexture(pylon.modifier()) : null;
+        // A link pylon that fused shows the fusion's icon instead of a card
+        var modifier = pylon.modifier();
+        if (state.appear > 0 && modifier != null && com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY.getValue(modifier)
+                instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) {
+            state.card = com.mowmaster.dust.Features.Spells.pylons.SpellLinks.fusionIcon(modifier);
+        }
         state.time = pylon.getLevel() == null ? 0 : (pylon.getLevel().getGameTime() % 24000) + partialTick;
     }
 

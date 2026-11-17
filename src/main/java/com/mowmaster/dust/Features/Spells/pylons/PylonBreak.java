@@ -7,9 +7,10 @@ import net.minecraft.util.StringRepresentable;
 //   none        not a spell break (the blank pylon models)
 //   broken      a spell break without power: the spell ends here (the default break model)
 //   connected   a spell break with redstone power: the line carries on past it
+//   fusion      not a break: a Fusion / Spell Stack pylon (models/block/pylon/pylon_fusionstack_<links>: SpellLinks)
 public enum PylonBreak implements StringRepresentable
 {
-    NONE("none"), BROKEN("broken"), CONNECTED("connected");
+    NONE("none"), BROKEN("broken"), CONNECTED("connected"), FUSION("fusion");
 
     private final String name;
 

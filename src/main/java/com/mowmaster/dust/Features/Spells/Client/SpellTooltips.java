@@ -51,7 +51,8 @@ public final class SpellTooltips
             lines.add(at++, line.copy().withStyle(ChatFormatting.DARK_PURPLE));
         }
         net.minecraft.network.chat.MutableComponent cost = Component.empty();
-        spell.dustCost().forEach((element, amount) -> {
+        // A Spell Stack's cost is all of its spells'
+        spell.totalDustCost().forEach((element, amount) -> {
             if (!cost.getSiblings().isEmpty()) cost.append(", ");
             cost.append(amount + " ").append(com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(element));
         });

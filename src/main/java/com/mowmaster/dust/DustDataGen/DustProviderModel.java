@@ -57,6 +57,10 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.ANCIENT_TABLET.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.TRANSCRIPTION.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.GRIMOIRE.get(), ModelTemplates.FLAT_ITEM);
+        // The Fused Crystal: two layers (models/item/fused_crystal.json), one in each of its fusion's elements' colours
+        itemModels.itemModelOutput.accept(DustItemRegistry.FUSED_CRYSTAL.get(), ItemModelUtils.tintedModel(
+                Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/fused_crystal"),
+                new com.mowmaster.dust.Features.Spells.Client.FusedCrystalTint(false), new com.mowmaster.dust.Features.Spells.Client.FusedCrystalTint(true)));
         // The Akashic: its hand-made 3D book (models/item/akashic.json)
         itemModels.itemModelOutput.accept(DustItemRegistry.AKASHIC.get(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "item/akashic")));
         // Modifier cards: their models (models/item/cards/card_<name>.json, flat cards)
@@ -369,6 +373,8 @@ public class DustProviderModel extends ModelProvider {
                             BlockModelGenerators.plainVariant(pylonModel(switch (spellBreak) {
                                 case BROKEN -> "pylon_break_broken";
                                 case CONNECTED -> "pylon_break_connected";
+                                // A Fusion / Spell Stack pylon (pylon_fusionstack_base, _1 ... _7, by links like the blank ones)
+                                case FUSION -> "pylon_fusionstack_" + links.blankModel();
                                 case NONE -> "blank_pylon_" + links.blankModel() + "_level_" + nodes;
                             })).with(parentTurn(parent)))));
             // Tint 0 (the body) in the kind's colour; the rest have no tint source, so they stay plain
