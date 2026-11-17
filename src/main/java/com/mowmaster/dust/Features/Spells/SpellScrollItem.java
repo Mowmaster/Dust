@@ -40,6 +40,9 @@ public class SpellScrollItem extends Item
         // A Beam spell is channelled: held down, it pulses (onUseTick)
         if (Channeling.channels(spell)) {
             if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.FAIL;
+            // Telekinesis casts the moment it's pressed (a quick click may be let go before the first held tick), then
+            // it's held (onUseTick) until let go (releaseUsing)
+            if (com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(spell) && player instanceof ServerPlayer serverPlayer && !castFrom(serverPlayer, stack)) return InteractionResult.FAIL;
             player.startUsingItem(hand);
             return InteractionResult.CONSUME;
         }
@@ -72,6 +75,11 @@ public class SpellScrollItem extends Item
         Spell spell = stack.get(DustComponentDataRegistry.SPELL.get());
         if (spell == null) return;
         int held = Channeling.MAX_USE - remaining;
+        // Telekinesis (already cast in use): each tick held, what it took hold of is pulled in
+        if (com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(spell)) {
+            com.mowmaster.dust.Features.Spells.effects.Telekinesis.hold(player);
+            return;
+        }
         if (held % Channeling.interval(spell) != 0) return;
         if (!castFrom(player, stack, Channeling.reduction(spell, held))) player.stopUsingItem();
     }
@@ -81,6 +89,10 @@ public class SpellScrollItem extends Item
     public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int remaining)
     {
         Spell spell = stack.get(DustComponentDataRegistry.SPELL.get());
+        // Telekinesis let go: a push, a throw, or a drop (effects/Telekinesis)
+        if (entity instanceof ServerPlayer player && com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(spell)) {
+            com.mowmaster.dust.Features.Spells.effects.Telekinesis.release(player, Channeling.MAX_USE - remaining);
+        }
         if (entity instanceof Player player && spell != null) player.getCooldowns().addCooldown(stack, cooldownFor(spell));
         return true;
     }

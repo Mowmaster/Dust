@@ -111,10 +111,40 @@ public final class SpellCast
     {
         ElementEffect effect = SpellRegistries.ELEMENT_EFFECT_REGISTRY.getValue(spell.element().id());
         ElementEffect base = effect == null ? ElementEffect.NONE : effect;
+        ElementEffect chosen = base;
         for (SpellModifier modifier : spell.modifierList()) {
-            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier fusion) return fusion.fuse(base);
+            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier fusion) {
+                chosen = fusion.fuse(base);
+                break;
+            }
         }
-        return base;
+        // Prevent Block Action / Prevent Attack Action: that part does nothing
+        boolean noBlocks = has(SpellRegistries.PREVENT_BLOCK.getId()), noCreatures = has(SpellRegistries.PREVENT_ATTACK.getId());
+        if (!noBlocks && !noCreatures) return chosen;
+        ElementEffect inner = chosen;
+        return new ElementEffect()
+        {
+            @Override
+            public EffectType type(SpellTarget target) { return inner.type(target); }
+
+            @Override
+            public void onSelf(SpellCast cast, LivingEntity target) { inner.onSelf(cast, target); }
+
+            @Override
+            public void onBlock(SpellCast cast, BlockPos pos, Direction face)
+            {
+                if (!noBlocks) inner.onBlock(cast, pos, face);
+            }
+
+            @Override
+            public void onEntity(SpellCast cast, Entity target)
+            {
+                if (!noCreatures) inner.onEntity(cast, target);
+            }
+
+            @Override
+            public boolean damages() { return !noCreatures && inner.damages(); }
+        };
     }
 
     // ---- delivering ----

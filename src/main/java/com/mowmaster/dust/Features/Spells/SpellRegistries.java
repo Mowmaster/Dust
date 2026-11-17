@@ -330,6 +330,29 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> SILKY = modifier("silky",
             () -> LeveledModifier.marker().oneLevel().onlyOne().requires(context -> context.countInTree(id("silky")) == 0));
 
+    // Prevent Block Action / Prevent Attack Action (Touch, Projectile; from level 10; one use, and only one of the two
+    // per spell): the spell does nothing to blocks / to creatures. Drawing one knocks the other out of the deck and pool;
+    // a pylon holding one that's broken loses it for good and the other comes back, taken by the next Neutral pylon
+    // (SpellDeck.breakPrevent). Neither blesses when locked nor corrupts when broken.
+    public static final DeferredHolder<SpellModifier, SpellModifier> PREVENT_BLOCK = modifier("prevent_block",
+            () -> LeveledModifier.marker().shapes(id("touch"), id("projectile")).unlock(10).oneLevel().onlyOne()
+                    .requires(context -> context.countInTree(id("prevent_block")) == 0 && context.countInTree(id("prevent_attack")) == 0));
+    public static final DeferredHolder<SpellModifier, SpellModifier> PREVENT_ATTACK = modifier("prevent_attack",
+            () -> LeveledModifier.marker().shapes(id("touch"), id("projectile")).unlock(10).oneLevel().onlyOne()
+                    .requires(context -> context.countInTree(id("prevent_block")) == 0 && context.countInTree(id("prevent_attack")) == 0));
+
+    // Whether a modifier is one of the two Prevent cards
+    public static boolean isPrevent(@org.jspecify.annotations.Nullable Identifier modifier)
+    {
+        return PREVENT_BLOCK.getId().equals(modifier) || PREVENT_ATTACK.getId().equals(modifier);
+    }
+
+    // The other Prevent card
+    public static Identifier otherPrevent(Identifier modifier)
+    {
+        return PREVENT_BLOCK.getId().equals(modifier) ? PREVENT_ATTACK.getId() : PREVENT_BLOCK.getId();
+    }
+
     // Whether a cast has Silky
     public static boolean silky(com.mowmaster.dust.Features.Spells.api.SpellCast cast)
     {
@@ -341,6 +364,13 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FLIGHT_MOTION = MODIFIERS.register("fusion_flight_motion",
             () -> new FusionModifier(DustElements.FLIGHT, DustElements.MOTION).self(MovementParts::glide)
                     .types(EffectType.DOT, null, null));
+    // Warp + Vacuum: Telekinesis (effects/Telekinesis): tap to push, hold to pull, swipe to throw; self: Vacuum's own
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_WARP_VACUUM = MODIFIERS.register("fusion_warp_vacuum",
+            () -> new FusionModifier(DustElements.WARP, DustElements.VACUUM)
+                    .self(BasicEffect.give(DustEffectsRegistry.VACUUM))
+                    .entity(com.mowmaster.dust.Features.Spells.effects.Telekinesis::grabEntity)
+                    .block(com.mowmaster.dust.Features.Spells.effects.Telekinesis::grabBlock)
+                    .types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT));
     // Fracture + Earth: it breaks the block it lands on as a pickaxe would (FusionParts.mine)
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FRACTURE_EARTH = MODIFIERS.register("fusion_fracture_earth",
             () -> new FusionModifier(DustElements.FRACTURE, DustElements.EARTH).block(com.mowmaster.dust.Features.Spells.effects.FusionParts::mine)

@@ -54,6 +54,10 @@ public class SpellDeck
     private int corruption;
     private int breakCards;
     private final Map<BlockPos, Integer> rerolls = new HashMap<>();
+    // The Prevent cards (SpellRegistries.PREVENT_BLOCK / PREVENT_ATTACK): gone for good (a pylon holding it was broken),
+    // and the one the next Neutral pylon must take (it came back when the other was broken)
+    private final Set<Identifier> gone = new HashSet<>();
+    private @Nullable Identifier forced;
 
     public boolean started() { return started; }
     public List<Identifier> cards() { return deck; }
@@ -96,6 +100,8 @@ public class SpellDeck
         corruption = 0;
         breakCards = 0;
         rerolls.clear();
+        gone.clear();
+        forced = null;
     }
 
     // A shape modifier went on a pylon (or its card was laid on the Spell Pylon): its own modifiers join the pool, and
@@ -174,6 +180,36 @@ public class SpellDeck
     public void removeCard(Identifier card)
     {
         deck.remove(card);
+    }
+
+    // ---- the Prevent cards ----
+
+    // Out of the deck and pool for this spell. True if any copy was in the deck.
+    public boolean knockOut(Identifier card)
+    {
+        pool.put(card, 0);
+        return deck.removeIf(card::equals);
+    }
+
+    // A pylon holding this Prevent card was broken: it's gone for good, and the other one (unless it's gone too) comes
+    // back into the deck, for the next Neutral pylon to take
+    public void breakPrevent(Identifier card)
+    {
+        knockOut(card);
+        gone.add(card);
+        if (forced != null && forced.equals(card)) forced = null;
+        Identifier other = SpellRegistries.otherPrevent(card);
+        if (gone.contains(other)) return;
+        knockOut(other);
+        deck.add(other);
+        forced = other;
+    }
+
+    public @Nullable Identifier forced() { return forced; }
+
+    public void clearForced()
+    {
+        forced = null;
     }
 
     // A weighted random pick from the pool among the ids passing which (null if none do)
@@ -292,7 +328,8 @@ public class SpellDeck
     }
 
     // Everything as one record, for the block entity's save (and the client's copy, though it doesn't show it yet)
-    public record Saved(boolean started, List<PoolEntry> pool, List<Identifier> deck, int blessed, int corruption, int breakCards, List<Reroll> rerolls)
+    public record Saved(boolean started, List<PoolEntry> pool, List<Identifier> deck, int blessed, int corruption, int breakCards, List<Reroll> rerolls,
+                        List<Identifier> gone, java.util.Optional<Identifier> forced)
     {
         public static final Codec<Saved> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Codec.BOOL.optionalFieldOf("started", false).forGetter(Saved::started),
@@ -301,14 +338,17 @@ public class SpellDeck
                 Codec.INT.optionalFieldOf("blessed", 0).forGetter(Saved::blessed),
                 Codec.INT.optionalFieldOf("corruption", 0).forGetter(Saved::corruption),
                 Codec.INT.optionalFieldOf("break_cards", 0).forGetter(Saved::breakCards),
-                Reroll.CODEC.listOf().optionalFieldOf("rerolls", List.of()).forGetter(Saved::rerolls)
+                Reroll.CODEC.listOf().optionalFieldOf("rerolls", List.of()).forGetter(Saved::rerolls),
+                Identifier.CODEC.listOf().optionalFieldOf("gone", List.of()).forGetter(Saved::gone),
+                Identifier.CODEC.optionalFieldOf("forced").forGetter(Saved::forced)
         ).apply(i, Saved::new));
     }
 
     public Saved save()
     {
         return new Saved(started, pool.entrySet().stream().map(e -> new PoolEntry(e.getKey(), e.getValue())).toList(), List.copyOf(deck),
-                blessed, corruption, breakCards, rerolls.entrySet().stream().map(e -> new Reroll(e.getKey(), e.getValue())).toList());
+                blessed, corruption, breakCards, rerolls.entrySet().stream().map(e -> new Reroll(e.getKey(), e.getValue())).toList(),
+                List.copyOf(gone), java.util.Optional.ofNullable(forced));
     }
 
     public void load(Saved saved)
@@ -321,5 +361,7 @@ public class SpellDeck
         corruption = saved.corruption();
         breakCards = saved.breakCards();
         saved.rerolls().forEach(r -> rerolls.put(r.pos(), r.count()));
+        gone.addAll(saved.gone());
+        forced = saved.forced().orElse(null);
     }
 }

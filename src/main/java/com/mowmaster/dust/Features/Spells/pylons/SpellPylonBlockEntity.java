@@ -219,8 +219,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     private void locked(PylonBlockEntity pylon)
     {
         var random = level.getRandom();
-        // A blessed or corrupted pylon (or a null corruption's stop) gives no blessing for locking itself
-        if (pylon.tier() == ModifierTier.NORMAL && !pylon.stop()) bless();
+        // A blessed or corrupted pylon (or a null corruption's stop, or a Prevent card) gives no blessing for locking itself
+        if (pylon.tier() == ModifierTier.NORMAL && !pylon.stop() && !SpellRegistries.isPrevent(pylon.modifier())) bless();
         ModifierCategory category = pylon.type().category();
         if (category != null && pylon.modifier() != null && pylon.tier() == ModifierTier.NORMAL) {
             deck.drawNormal(treeContext(null), random, categoryBonus(), doubleDraw(), modifier -> modifier.categories().contains(category));
@@ -440,6 +440,12 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             seedCard();
         }
         if (parent == 0 && level.getBlockEntity(chain.getFirst()) instanceof PylonBlockEntity shapePylon) shapePylon.lock();
+        // A pylon placed after an unlocked one locks it (no level: its nodes stay as they are), with what locking does
+        // (a step of blessing, a category card). So only the last pylon of a branch can ever be broken.
+        if (parent >= 1 && level.getBlockEntity(chain.get(parent)) instanceof PylonBlockEntity before && !before.locked()) {
+            before.lock();
+            locked(before);
+        }
         deck.addDueBreaks(level());
 
         Draw draw = drawFor(type, pylon.getBlockPos(), context(parent, placer), placer);
@@ -451,6 +457,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         refreshLook(chain.size() - 1);
         refreshLook(parent);
         if (pylon.locked()) locked(pylon);
+        // A Prevent card: the other one leaves the deck and pool (a card from the pool takes its place in the deck)
+        if (SpellRegistries.isPrevent(draw.modifier()) && deck.knockOut(SpellRegistries.otherPrevent(draw.modifier()))) {
+            deck.drawNormal(treeContext(placer), random, categoryBonus(), doubleDraw(), m -> true);
+        }
+        if (draw.modifier() != null && draw.modifier().equals(deck.forced())) deck.clearForced();
         // A shape modifier brings its own modifiers into the pool
         SpellModifier modifier = draw.modifier() == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(draw.modifier());
         if (modifier != null) deck.bringIn(modifier, random, true);
@@ -506,6 +517,13 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         }
         SpellKnowledge knowledge = placer == null ? SpellKnowledge.EMPTY : SpellKnowledge.get(placer);
         boolean afterBreak = lastParentIsBreak;
+        // A Prevent card that came back (its other was broken) goes on the next Neutral pylon
+        Identifier forced = deck.forced();
+        if (forced != null && type == PylonType.NEUTRAL && cards.contains(forced)) {
+            deck.removeCard(forced);
+            deck.clearForced();
+            return normalDraw(forced, type, pos, line);
+        }
         List<Identifier> fits = new ArrayList<>();
         for (Identifier card : cards) {
             if (fitsHere(card, type, line, knowledge, afterBreak)) fits.add(card);
@@ -754,7 +772,11 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         }
         BlockPos parentPos = parents.get(index) >= 0 ? chain.get(parents.get(index)) : null;
         var random = level.getRandom();
-        if (index >= 1) {
+        if (index >= 1 && SpellRegistries.isPrevent(pylon.modifier())) {
+            // A Prevent card: no corruption; it's gone for good, and the other comes back for the next Neutral pylon
+            deck.breakPrevent(pylon.modifier());
+            deck.rerolled(pylon.getBlockPos());
+        } else if (index >= 1) {
             // A reroll: corruption, its card back in the deck (a spell break's isn't), fewer nodes at this spot next time
             deck.corrupt(random);
             returnCard(pylon);

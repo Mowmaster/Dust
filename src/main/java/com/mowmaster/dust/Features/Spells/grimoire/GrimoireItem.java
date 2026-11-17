@@ -133,6 +133,9 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         Spell selected = selectedSpell(stack);
         if (selected != null && com.mowmaster.dust.Features.Spells.Channeling.channels(selected)) {
             if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.FAIL;
+            // Telekinesis casts the moment it's pressed, then it's held (onUseTick) until let go (releaseUsing)
+            if (com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(selected) && player instanceof ServerPlayer serverPlayer
+                    && !SpellScrollItem.castFrom(serverPlayer, scrollAt(stack, getPage(stack)))) return InteractionResult.FAIL;
             player.startUsingItem(hand);
             return InteractionResult.CONSUME;
         }
@@ -170,6 +173,11 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         ItemStack scroll = scrollAt(stack, getPage(stack));
         if (spell == null) return;
         int held = com.mowmaster.dust.Features.Spells.Channeling.MAX_USE - remaining;
+        // Telekinesis (already cast in use): each tick held, what it took hold of is pulled in
+        if (com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(spell)) {
+            com.mowmaster.dust.Features.Spells.effects.Telekinesis.hold(player);
+            return;
+        }
         if (held % com.mowmaster.dust.Features.Spells.Channeling.interval(spell) != 0) return;
         if (!SpellScrollItem.castFrom(player, scroll, com.mowmaster.dust.Features.Spells.Channeling.reduction(spell, held))) player.stopUsingItem();
     }
@@ -178,6 +186,10 @@ public class GrimoireItem extends Item implements IPagedStorageItem
     public boolean releaseUsing(ItemStack stack, Level level, net.minecraft.world.entity.LivingEntity entity, int remaining)
     {
         Spell spell = selectedSpell(stack);
+        // Telekinesis let go: a push, a throw, or a drop (effects/Telekinesis)
+        if (entity instanceof ServerPlayer player && com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(spell)) {
+            com.mowmaster.dust.Features.Spells.effects.Telekinesis.release(player, com.mowmaster.dust.Features.Spells.Channeling.MAX_USE - remaining);
+        }
         if (entity instanceof Player player && spell != null) player.getCooldowns().addCooldown(stack, SpellScrollItem.cooldownFor(spell));
         return true;
     }

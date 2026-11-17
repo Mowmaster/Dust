@@ -26,7 +26,9 @@ public class ProjectileShape implements SpellShape
     @Override
     public boolean cast(SpellCast cast)
     {
-        if (cast.spell().modifiers().contains(SpellRegistries.HITSCAN.getId())) return hitscan(cast);
+        // Hitscan, or Telekinesis (always a ray: it takes hold of what you look at)
+        if (cast.spell().modifiers().contains(SpellRegistries.HITSCAN.getId())
+                || com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(cast.spell())) return hitscan(cast);
         SpellProjectileEntity bolt = SpellProjectileEntity.create(cast);
         return bolt != null && cast.level().addFreshEntity(bolt);
     }

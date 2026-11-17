@@ -15,9 +15,10 @@ public final class Channeling
 
     private Channeling() {}
 
+    // Held down: a Beam spell (it pulses), or Telekinesis (cast once, then held: effects/Telekinesis)
     public static boolean channels(Spell spell)
     {
-        return spell.modifiers().contains(SpellRegistries.BEAM_MODIFIER.getId());
+        return spell.modifiers().contains(SpellRegistries.BEAM_MODIFIER.getId()) || com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(spell);
     }
 
     public static int interval(Spell spell)
