@@ -37,7 +37,7 @@ import org.jspecify.annotations.Nullable;
 public class TelekinesisCubeEntity extends Entity implements CarriesBlock
 {
     private static final EntityDataAccessor<BlockState> BLOCK = SynchedEntityData.defineId(TelekinesisCubeEntity.class, EntityDataSerializers.BLOCK_STATE);
-    private static final double GRAVITY = 0.1;
+    private static final double GRAVITY = 0.01;
     private static final double PUNCH = 0.6;
     // Faster than this (blocks a tick), what it runs into is hurt
     private static final double HURT_SPEED = 0.4;
