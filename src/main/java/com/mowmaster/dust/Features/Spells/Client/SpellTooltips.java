@@ -30,6 +30,8 @@ public final class SpellTooltips
         int at = Math.min(1, lines.size());
         lines.add(at++, Component.translatable("dust.spell.tooltip.element", com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(spell.element()), name("spell_shape", spell.shape()))
                 .withStyle(ChatFormatting.GRAY));
+        // Locked (SpellSync): it no longer follows its tree
+        if (event.getItemStack().has(DustComponentDataRegistry.SPELL_LOCKED.get())) lines.add(at++, Component.translatable("dust.spell.tooltip.locked").withStyle(ChatFormatting.GOLD));
         // Whether its effect lingers or is instant (EffectType): a Self spell lands on the caster, the others on a
         // creature or a block, whichever they hit
         com.mowmaster.dust.Features.Spells.api.ElementEffect effect = com.mowmaster.dust.Features.Spells.SpellRegistries.ELEMENT_EFFECT_REGISTRY.getValue(spell.element().id());

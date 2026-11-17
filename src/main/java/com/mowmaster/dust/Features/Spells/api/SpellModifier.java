@@ -61,6 +61,11 @@ public interface SpellModifier
     // Once a modifier has been on one of a player's spells, it's unlocked for them for that element.
     default boolean startsUnlocked() { return true; }
 
+    // Whether something in the spell uses it, so it belongs in the pool (Silky: only once the spell breaks or makes
+    // blocks; Luck: only with an effect that rolls chances). False: it stays out of the pool (SpellDeck adds it once
+    // it's true) and can't be drawn.
+    default boolean inPlay(ModifierContext context) { return true; }
+
     // Chosen for a pylon: the modifier the pylon actually gets. Normally itself (null); a stand-in can hand back another,
     // e.g. the Fragment slot picks a random fragment for the spell's element.
     default @Nullable Identifier resolveRoll(ModifierContext context, RandomSource random)

@@ -108,6 +108,9 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         // Ancient Ink + a written book / named item -> written in the ancient script (code-driven "special" recipe)
         SpecialRecipeBuilder.special(() -> AncientInscribeRecipe.INSTANCE)
                 .save(output, DustReferences.MODID + ":ancient_inscribe");
+        // A Spell Scroll + a gold ingot -> locked; a written Spell Scroll alone -> a blank one (code-driven "special" recipe)
+        SpecialRecipeBuilder.special(() -> com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE)
+                .save(output, DustReferences.MODID + ":spell_scroll_crafting");
 
         List<ItemLike> DUST_SMELTABLES = List.of(DustItemRegistry.CRYSTAL_RED);
 

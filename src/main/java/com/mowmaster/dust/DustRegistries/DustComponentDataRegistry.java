@@ -73,6 +73,10 @@ public class DustComponentDataRegistry
     // Which spell tree a scroll's spell came from (casting it gives the tree experience): Features/Spells/pylons
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<SpellTreeLink>> SPELL_TREE = register("spell_tree",
             builder -> builder.persistent(SpellTreeLink.CODEC).networkSynchronized(SpellTreeLink.STREAM_CODEC));
+    // A locked spell (a scroll crafted with a gold ingot, or one whose Spell Pylon was broken): it no longer follows its
+    // tree (Features/Spells/SpellSync). Unit: a component with no value, just there or not.
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.util.Unit>> SPELL_LOCKED = register("spell_locked",
+            builder -> builder.persistent(net.minecraft.util.Unit.CODEC).networkSynchronized(net.minecraft.util.Unit.STREAM_CODEC));
     // What a broken Spell Pylon keeps (its element and some experience): Features/Spells/pylons/PylonMemory
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<PylonMemory>> PYLON_MEMORY = register("pylon_memory",
             builder -> builder.persistent(PylonMemory.CODEC).networkSynchronized(PylonMemory.STREAM_CODEC));

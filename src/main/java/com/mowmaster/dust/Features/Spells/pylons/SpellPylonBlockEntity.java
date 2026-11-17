@@ -278,23 +278,27 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     }
 
     // The sides a pylon can lead on from: all but its parent's (a spell break: only straight on, as its model shows)
+    // Straight on keeps to the pylon's line; turning left or right starts a branch, so it's only offered while the spell
+    // has a branch to spare (the Shape Pylon's one pylon can go any way: that starts the main line)
     private List<Direction> childSides(int index)
     {
         Direction back = parentSide(index);
         if (isBreak(index)) return List.of(back.getOpposite());
+        boolean canTurn = index == 0 || branchCount() < allowedBranches();
         List<Direction> sides = new ArrayList<>();
-        for (Direction side : Direction.Plane.HORIZONTAL) if (side != back) sides.add(side);
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            if (side == back) continue;
+            if (side == back.getOpposite() || canTurn) sides.add(side);
+        }
         return sides;
     }
 
     // Whether another pylon can be placed after this one: the Shape Pylon, a spell break and a corrupted pylon lead on
-    // to just one; any other pylon already leading on starts a branch, only while the spell has a branch to spare
+    // to just one (which sides it may use, straight on or turning into a branch: childSides)
     private boolean canLeadOn(int index)
     {
-        if (index > 0 && hasChildren(index)) {
-            if (level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity corrupted && corrupted.tier() == ModifierTier.CORRUPTED) return false;
-            if (branchCount() >= allowedBranches()) return false;
-        }
+        if (index > 0 && hasChildren(index) && level != null
+                && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity corrupted && corrupted.tier() == ModifierTier.CORRUPTED) return false;
         // A null corruption's stop ends its branch
         if (index > 0 && level != null && level.getBlockEntity(chain.get(index)) instanceof PylonBlockEntity pylon && pylon.stop()) return false;
         // A Fusion / Stack pylon waits for another spell first (SpellLinks); once linked, the line carries on
@@ -305,9 +309,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
 
     // ---- the main line and its branches ----
 
-    // The tree as lines of pylons (chain indices), the main line first. A pylon's first child (the earliest placed after
-    // it) carries its line on; each later child starts a branch, which carries on the same way (a branch off a branch
-    // is a branch too). The main line starts at the Shape Pylon.
+    // The tree as lines of pylons (chain indices), the main line first. The main line starts at the Shape Pylon, takes
+    // in the first pylon after it (whichever way that went) and runs straight on from there. Every turn off a line
+    // (a pylon placed to the left or right of the one before) starts a branch, which also runs straight on; a turn off
+    // a branch is another branch.
     public List<List<Integer>> lines()
     {
         List<List<Integer>> lines = new ArrayList<>();
@@ -319,28 +324,35 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             int at = starts.poll();
             while (at >= 0) {
                 line.add(at);
-                int first = -1;
+                int next = -1;
                 for (int child = 0; child < parents.size(); child++) {
                     if (parents.get(child) != at) continue;
-                    if (first < 0) first = child;
+                    if (next < 0 && !turns(child)) next = child;
                     else starts.add(child);
                 }
-                at = first;
+                at = next;
             }
             lines.add(line);
         }
         return lines;
     }
 
-    // How many branches the tree has (every line but the main one)
+    // Whether this pylon turned off its parent's line (left or right of it), starting a branch. The Shape Pylon and the
+    // first pylon after it never do.
+    private boolean turns(int index)
+    {
+        int parent = parents.get(index);
+        if (parent <= 0) return false;
+        BlockPos from = chain.get(parent), at = chain.get(index);
+        Direction side = Direction.getNearest(at.getX() - from.getX(), 0, at.getZ() - from.getZ(), Direction.NORTH);
+        return side != parentSide(parent).getOpposite();
+    }
+
+    // How many branches the tree has (every turn)
     public int branchCount()
     {
         int count = 0;
-        for (int index = 0; index < parents.size(); index++) {
-            int parent = parents.get(index);
-            // Not its parent's first child: it starts a branch
-            if (parents.indexOf(parent) != index) count++;
-        }
+        for (int index = 1; index < chain.size() && index < parents.size(); index++) if (turns(index)) count++;
         return count;
     }
 
@@ -735,6 +747,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     private List<Identifier> treeModifiers()
     {
         List<Identifier> modifiers = new ArrayList<>();
+        // A spell started from a Fused Crystal is that fusion (what goes with it, Silky / Luck, can come into the pool)
+        if (fusedStart != null) modifiers.add(fusedStart);
         if (level == null) return modifiers;
         for (int i = 1; i < chain.size(); i++) {
             if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.modifier() != null) modifiers.add(pylon.modifier());
@@ -1082,6 +1096,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     public static void serverTick(Level level, BlockPos pos, BlockState state, SpellPylonBlockEntity pylon)
     {
         if (level.getGameTime() % 20 != 0 || !(level instanceof ServerLevel server)) return;
+        // The spell as it stands, for the scrolls and tools recorded from it to follow (SpellSync)
+        int[] pylons = new int[1];
+        Spell spell = pylon.compile(pylons);
+        if (spell != null) SpellTreeSpells.get(server.getServer()).publish(pylon.tree, spell, pylons[0]);
         int xp = SpellTreeData.get(server.getServer()).experience(pylon.tree);
         if (xp != pylon.experience) {
             boolean levelled = SpellLevels.levelForXp(xp) > pylon.level();
@@ -1266,6 +1284,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             }
         }
         SpellTreeData.get(server.getServer()).forget(tree);
+        // Its scrolls and tools lock as they are: no further changes can come (SpellSync)
+        SpellTreeSpells.get(server.getServer()).end(tree);
         // Everyone this spell gave Magic Level experience loses it again
         com.mowmaster.dust.Features.Magic.MagicCredits.get(server.getServer()).revoke(server.getServer(), tree);
     }

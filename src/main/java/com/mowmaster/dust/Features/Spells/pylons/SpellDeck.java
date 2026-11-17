@@ -88,6 +88,8 @@ public class SpellDeck
             Identifier id = entry.getKey().identifier();
             SpellModifier modifier = entry.getValue();
             if (broughtIn.contains(id) || modifier instanceof SpellFragment) continue;
+            // Nothing in the spell uses it yet (Silky, Luck): it joins the pool later (addInPlay)
+            if (!modifier.inPlay(tree)) continue;
             // Spell Branch: none to draw by chance (addDueBranches puts them in)
             pool.put(id, id.equals(SpellRegistries.SPELL_BRANCH.getId()) ? 0 : modifier.uses() > 0 ? modifier.uses() : -1);
         }
@@ -123,6 +125,23 @@ public class SpellDeck
         if (withCard && !children.isEmpty()) take(children.get(random.nextInt(children.size())));
     }
 
+    // Modifiers left out of the pool at the start because nothing used them (SpellModifier.inPlay) join it once
+    // something does (a pylon with the Fracture + Earth fusion brings in Silky and Luck)
+    private void addInPlay(ModifierContext tree)
+    {
+        Set<Identifier> broughtIn = new HashSet<>();
+        for (SpellModifier modifier : SpellRegistries.MODIFIER_REGISTRY) broughtIn.addAll(modifier.addsToPool());
+        for (var entry : SpellRegistries.MODIFIER_REGISTRY.entrySet()) {
+            Identifier id = entry.getKey().identifier();
+            SpellModifier modifier = entry.getValue();
+            if (pool.containsKey(id) || broughtIn.contains(id) || modifier instanceof SpellFragment) continue;
+            // Only those held back for this reason (anything else missing from the pool is missing on purpose)
+            if (id.equals(SpellRegistries.SPELL_BRANCH.getId()) || !modifier.inPlay(tree)) continue;
+            if (modifier.tier() != ModifierTier.NORMAL || modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) continue;
+            pool.put(id, modifier.uses() > 0 ? modifier.uses() : -1);
+        }
+    }
+
     // ---- the deck ----
 
     // Draws a normal modifier from the pool into the deck, weighted (its weight, more for a category with Category
@@ -151,6 +170,7 @@ public class SpellDeck
     public void topUp(ModifierContext tree, RandomSource random, Map<ModifierCategory, Integer> categoryBonus, float doubleDraw)
     {
         if (!started) return;
+        addInPlay(tree);
         // Copies of a once-per-spell modifier the spell already has can never be drawn: out they go
         deck.removeIf(card -> {
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);

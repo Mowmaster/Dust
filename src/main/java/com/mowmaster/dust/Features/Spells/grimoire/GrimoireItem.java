@@ -150,6 +150,26 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         return InteractionResult.SUCCESS;
     }
 
+    // Carried: once a second the scrolls in it catch up with their trees (SpellSync)
+    @Override
+    public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level, net.minecraft.world.entity.Entity entity,
+                              net.minecraft.world.entity.@Nullable EquipmentSlot slot)
+    {
+        if (level.getGameTime() % 20 != 0) return;
+        com.mowmaster.mowlib.paging.PagedContents contents = contents(stack);
+        java.util.List<ResourceStack<ItemResource>> pages = new java.util.ArrayList<>(contents.stacks());
+        boolean changed = false;
+        for (int page = 0; page < pages.size(); page++) {
+            ResourceStack<ItemResource> held = pages.get(page);
+            if (held.isEmpty()) continue;
+            ItemStack scroll = held.resource().toStack(held.amount());
+            if (!com.mowmaster.dust.Features.Spells.SpellSync.refresh(scroll, level.getServer())) continue;
+            pages.set(page, new ResourceStack<>(ItemResource.of(scroll), held.amount()));
+            changed = true;
+        }
+        if (changed) setContents(stack, new com.mowmaster.mowlib.paging.PagedContents(contents.pages(), contents.page(), java.util.List.copyOf(pages)));
+    }
+
     // The spell on the open page, if any
     private @Nullable Spell selectedSpell(ItemStack grimoire)
     {

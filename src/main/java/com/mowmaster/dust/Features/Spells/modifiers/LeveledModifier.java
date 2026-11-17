@@ -48,6 +48,7 @@ public class LeveledModifier implements SpellModifier
     private Set<Identifier> shapes = Set.of();
     private List<Identifier> addsToPool = List.of();
     private Predicate<ModifierContext> requires = context -> true;
+    private Predicate<ModifierContext> inPlay = context -> true;
     private java.util.function.@org.jspecify.annotations.Nullable Consumer<SpellCast> onCast;
     private Identifier id = Identifier.withDefaultNamespace("unnamed");
 
@@ -86,6 +87,8 @@ public class LeveledModifier implements SpellModifier
     public LeveledModifier shapes(Identifier... shapes) { this.shapes = Set.of(shapes); return this; }
     public LeveledModifier addsToPool(Identifier... modifiers) { this.addsToPool = List.of(modifiers); return this; }
     public LeveledModifier requires(Predicate<ModifierContext> requires) { this.requires = requires; return this; }
+    // Only in the pool (and drawable) while something in the spell uses it (SpellModifier.inPlay)
+    public LeveledModifier onlyWhen(Predicate<ModifierContext> inPlay) { this.inPlay = inPlay; return this; }
     // Something it does as the spell is cast (before the shape delivers it), e.g. Overshield's Resistance
     public LeveledModifier onCast(java.util.function.Consumer<SpellCast> onCast) { this.onCast = onCast; return this; }
 
@@ -109,6 +112,7 @@ public class LeveledModifier implements SpellModifier
     @Override public boolean oncePerSpell() { return oncePerSpell; }
     @Override public boolean singleLevel() { return singleLevel; }
     @Override public List<Identifier> addsToPool() { return addsToPool; }
+    @Override public boolean inPlay(ModifierContext context) { return inPlay.test(context); }
 
     @Override
     public boolean canRoll(ModifierContext context)
@@ -121,7 +125,7 @@ public class LeveledModifier implements SpellModifier
             long allowed = 1 + Math.max(0, context.level() + context.unlockReduction() - from) / everyLevels;
             if (context.countInTree(id) >= allowed) return false;
         }
-        return requires.test(context);
+        return inPlay.test(context) && requires.test(context);
     }
 
     @Override

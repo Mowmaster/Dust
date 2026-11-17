@@ -22,6 +22,10 @@ public class DustRecipeRegistry
             () -> new RecipeSerializer<>(MapCodec.unit(AncientInscribeRecipe.INSTANCE), StreamCodec.unit(AncientInscribeRecipe.INSTANCE)));
 
     // Dust recipes: ingredients by the dust in them, and a research entry the crafter needs (Features/DustComposition)
+    // A Spell Scroll locked with a gold ingot, or reset on its own (Features/Spells/SpellScrollRecipe)
+    public static final Supplier<RecipeSerializer<com.mowmaster.dust.Features.Spells.SpellScrollRecipe>> SPELL_SCROLL_CRAFTING = RECIPE_SERIALIZERS.register("spell_scroll_crafting",
+            () -> new RecipeSerializer<>(MapCodec.unit(com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE),
+                    StreamCodec.unit(com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE)));
     public static final Supplier<RecipeSerializer<DustRecipe>> DUST_CRAFTING = RECIPE_SERIALIZERS.register("dust_crafting",
             () -> new RecipeSerializer<>(DustRecipe.MAP_CODEC, DustRecipe.STREAM_CODEC));
 

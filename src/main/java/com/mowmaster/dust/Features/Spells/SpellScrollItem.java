@@ -97,6 +97,14 @@ public class SpellScrollItem extends Item
         return true;
     }
 
+    // Carried: once a second it catches up with its tree (SpellSync), or locks if the tree's Spell Pylon is gone
+    @Override
+    public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level, net.minecraft.world.entity.Entity entity,
+                              net.minecraft.world.entity.@org.jspecify.annotations.Nullable EquipmentSlot slot)
+    {
+        if (level.getGameTime() % 20 == 0) SpellSync.refresh(stack, level.getServer());
+    }
+
     // Casts the spell on a scroll (held, or kept in a Grimoire) and gives its tree the experience. True if it was cast.
     public static boolean castFrom(ServerPlayer player, ItemStack scroll)
     {
@@ -106,6 +114,8 @@ public class SpellScrollItem extends Item
     // The same, with this much (percent) off the cost (a channelled beam's Efficiency)
     public static boolean castFrom(ServerPlayer player, ItemStack scroll, int costReduction)
     {
+        // The spell as its tree has it now (SpellSync)
+        SpellSync.refresh(scroll, player.level().getServer());
         Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
         if (spell == null || !SpellCasting.cast(player, spell, costReduction)) return false;
         giveExperience(player, spell, scroll.get(DustComponentDataRegistry.SPELL_TREE.get()));

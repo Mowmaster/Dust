@@ -445,6 +445,8 @@
   "dust.pylon.card_wrong_shape": "That card doesn't suit this spell's shape",
   "dust.pylon.tool_needs_touch": "Only a Touch spell can be bound to a tool",
   "dust.pylon.cant_record": "The spell needs an element and a Shape Pylon first",
+  "dust.pylon.scroll_locked": "This scroll is locked: its spell can't change",
+  "dust.spell.tooltip.locked": "Locked",
   "dust.pylon.not_connected": "This pylon isn't part of a spell: place it where a Spell Pylon shows a ghost",
   "dust.pylon.inert": "Not part of a spell",
   "dust.pylon.shape": "Shape: %s",

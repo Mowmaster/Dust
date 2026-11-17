@@ -143,7 +143,8 @@ public final class SpellRegistries
                     .requires(SpellRegistries::damagesTargets));
     // Luck: 1% a level on the chance of an effect's chance-based results
     public static final DeferredHolder<SpellModifier, SpellModifier> LUCK = modifier("luck",
-            () -> new LeveledModifier((stats, levels) -> stats.withLuck(stats.luck() + 0.01F * levels)).fit(ModifierFit.INSTANT));
+            () -> new LeveledModifier((stats, levels) -> stats.withLuck(stats.luck() + 0.01F * levels)).fit(ModifierFit.INSTANT)
+                    .onlyWhen(SpellRegistries::luckMatters));
 
     // Lingering (DOT) effects
     // Duration: a second longer a level
@@ -303,7 +304,7 @@ public final class SpellRegistries
                     .categories(ModifierCategory.DAMAGE, ModifierCategory.GIANT, ModifierCategory.THRIFTY, ModifierCategory.EXPERIENCED));
     // Double Blessed Progress (one use): each locked pylon counts twice towards a blessing
     public static final DeferredHolder<SpellModifier, SpellModifier> DOUBLE_BLESSED = modifier("double_blessed",
-            () -> LeveledModifier.marker().extraCost(0).uses(1));
+            () -> LeveledModifier.marker().extraCost(0).oneLevel().onlyOne());
     // Double Draw: 5% a level that a modifier drawn into the deck comes twice
     public static final DeferredHolder<SpellModifier, SpellModifier> DOUBLE_DRAW = modifier("double_draw",
             () -> LeveledModifier.marker().extraCost(0));
@@ -328,7 +329,26 @@ public final class SpellRegistries
     // Silky (one level): what the spell breaks drops as itself (Silk Touch); an explosion breaks no blocks; blocks the
     // spell makes don't fade
     public static final DeferredHolder<SpellModifier, SpellModifier> SILKY = modifier("silky",
-            () -> LeveledModifier.marker().oneLevel().onlyOne().requires(context -> context.countInTree(id("silky")) == 0));
+            () -> LeveledModifier.marker().oneLevel().onlyOne().onlyWhen(SpellRegistries::silkyMatters)
+                    .requires(context -> context.countInTree(id("silky")) == 0));
+
+    // Silky only does something to a spell that breaks or makes blocks: a block effect that blows blocks apart or
+    // makes blocks that fade (Explosion, Darkness's veil, Spirit's phase, Flight's floating block, Poison's pool), or
+    // the Fracture + Earth fusion (it mines). Not on a Self spell (it never lands on a block).
+    private static final java.util.Set<com.mowmaster.dust.Features.DustComposition.DustElement> SILKY_ELEMENTS = java.util.Set.of(
+            DustElements.EXPLOSION, DustElements.DARKNESS, DustElements.SPIRIT, DustElements.FLIGHT, DustElements.POISON);
+
+    public static boolean silkyMatters(com.mowmaster.dust.Features.Spells.api.ModifierContext context)
+    {
+        if (context.shape().equals(SELF.getId())) return false;
+        return SILKY_ELEMENTS.contains(context.element()) || context.countInTree(id("fusion_fracture_earth")) > 0;
+    }
+
+    // Luck only matters to an effect with chance-based results: the Fracture + Earth fusion's mining (Fortune)
+    public static boolean luckMatters(com.mowmaster.dust.Features.Spells.api.ModifierContext context)
+    {
+        return context.countInTree(id("fusion_fracture_earth")) > 0;
+    }
 
     // Prevent Block Action / Prevent Attack Action (Touch, Projectile; from level 10; one use, and only one of the two
     // per spell): the spell does nothing to blocks / to creatures. Drawing one knocks the other out of the deck and pool;

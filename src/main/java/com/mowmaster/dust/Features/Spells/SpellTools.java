@@ -58,6 +58,8 @@ public final class SpellTools
     // Casts the tool's spell (if it has one and isn't cooling down), then the cooldown and the tree's experience
     private static void cast(ServerPlayer player, ItemStack tool, java.util.function.Predicate<com.mowmaster.dust.Features.Spells.api.SpellCast> landing)
     {
+        // The spell as its tree has it now (SpellSync)
+        SpellSync.refresh(tool, player.level().getServer());
         Spell spell = tool.get(DustComponentDataRegistry.SPELL.get());
         if (spell == null || player.getCooldowns().isOnCooldown(tool)) return;
         Spell held = spell;
