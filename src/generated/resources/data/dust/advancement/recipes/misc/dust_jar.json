@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_alchemical_dust": {
+    "has_alchemical_soot": {
       "conditions": {
         "items": [
           {
-            "items": "dust:alchemical_dust"
+            "items": "dust:alchemical_soot"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_alchemical_dust"
+      "has_alchemical_soot"
     ]
   ],
   "rewards": {

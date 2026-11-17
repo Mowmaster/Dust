@@ -1,0 +1,26 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:magic"
+    }
+  ],
+  "research": {
+    "entry": "dust:unlock_magical_flint_and_steel",
+    "tab": "dust:research"
+  },
+  "result": {
+    "id": "dust:magical_flint_and_steel"
+  },
+  "shaped": {
+    "key": {
+      "F": "minecraft:flint",
+      "S": "minecraft:iron_ingot"
+    },
+    "pattern": [
+      " F",
+      "S "
+    ]
+  }
+}

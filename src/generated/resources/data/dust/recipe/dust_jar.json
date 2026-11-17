@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "D": "dust:alchemical_dust",
+    "D": "dust:alchemical_soot",
     "G": "minecraft:glass",
     "S": "#minecraft:slabs"
   },

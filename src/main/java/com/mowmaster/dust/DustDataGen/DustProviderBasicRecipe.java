@@ -161,8 +161,8 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 cost(DustElements.SLIME, 10));
 
         //Magical Flint and Steel
-        elementShaped(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get(), "magical_flint_and_steel", unlock("magical_flint_and_steel"),
-                java.util.Map.of('S', Ingredient.of(Items.FLINT), 'A', Ingredient.of(Items.IRON_INGOT)),
+        elementShaped(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get(), "magical_flint_and_steel", Optional.empty(),
+                java.util.Map.of('F', Ingredient.of(Items.FLINT), 'S', Ingredient.of(Items.IRON_INGOT)),
                 List.of(" F", "S "), cost(DustElements.MAGIC, 10));
     }
 

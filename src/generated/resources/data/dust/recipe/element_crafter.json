@@ -3,7 +3,7 @@
   "key": {
     "C": "minecraft:crafting_table",
     "J": "dust:dust_jar",
-    "S": "dust:alchemical_dust"
+    "S": "dust:alchemical_soot"
   },
   "pattern": [
     "SJS",

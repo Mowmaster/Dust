@@ -2,14 +2,14 @@
   "type": "dust:element_crafting",
   "elements": [
     {
-      "amount": 20,
-      "element": "dust:fire"
+      "amount": 10,
+      "element": "dust:slime"
     }
   ],
   "ingredients": [
-    "minecraft:gunpowder"
+    "minecraft:paper"
   ],
   "result": {
-    "id": "minecraft:blaze_powder"
+    "id": "dust:jar_label"
   }
 }
