@@ -160,7 +160,7 @@ public final class SpellRegistries
             () -> new LeveledModifier((stats, levels) -> stats.withFalloff(stats.falloff() + levels)).shapes(id("projectile")));
     // Velocity: the bolt flies 0.1 blocks a tick faster a level
     public static final DeferredHolder<SpellModifier, SpellModifier> VELOCITY = modifier("velocity",
-            () -> new LeveledModifier((stats, levels) -> stats.withSpeed(stats.speed() + 0.1F * levels)).shapes(id("projectile")));
+            () -> new LeveledModifier((stats, levels) -> stats.withSpeed(stats.speed() + 0.1F * levels)).shapes(id("projectile")).categories(ModifierCategory.GIANT));
     // Range: a block further before the bolt fizzles out, a level
     public static final DeferredHolder<SpellModifier, SpellModifier> RANGE_MODIFIER = modifier("range",
             () -> new LeveledModifier((stats, levels) -> stats.withRange(stats.range() + levels)).shapes(id("projectile")).categories(ModifierCategory.GIANT));
