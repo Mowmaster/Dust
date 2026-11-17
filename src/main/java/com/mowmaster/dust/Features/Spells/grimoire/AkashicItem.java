@@ -13,9 +13,9 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Consumer;
 
-// The Akashic: a grimoire with as many pages as there are grimoire page keys (GrimoireItem.PAGES), and every spell cast
-// from it is far stronger (SpellCasting.AKASHIC):
-//   4x damage and potency, 4x range and velocity, half the dust and mana (rounded down: a 1-dust spell is free)
+// The Akashic: a grimoire with as many pages as there are grimoire page keys (GrimoireItem.PAGES). Spells cast from it
+// cost no dust or mana, and their trees get ten times the spell experience (SpellCasting.isAkashic,
+// SpellScrollItem.giveExperience). Otherwise they're cast exactly as from a Grimoire.
 // Held in either hand, it also shows a Spell Pylon's pool on the reading HUD (SpellPylonReading).
 public class AkashicItem extends GrimoireItem
 {
@@ -49,8 +49,7 @@ public class AkashicItem extends GrimoireItem
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag)
     {
-        builder.accept(Component.translatable("item.dust.akashic.tooltip.power").withStyle(ChatFormatting.GOLD));
-        builder.accept(Component.translatable("item.dust.akashic.tooltip.reach").withStyle(ChatFormatting.GOLD));
+        builder.accept(Component.translatable("item.dust.akashic.tooltip.xp").withStyle(ChatFormatting.GOLD));
         builder.accept(Component.translatable("item.dust.akashic.tooltip.cost").withStyle(ChatFormatting.GOLD));
         builder.accept(Component.translatable("item.dust.akashic.tooltip.pool").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, context, display, builder, flag);

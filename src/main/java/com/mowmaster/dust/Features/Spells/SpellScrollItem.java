@@ -109,7 +109,10 @@ public class SpellScrollItem extends Item
             SpellTreeData trees = SpellTreeData.get(player.level().getServer());
             int before = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
             // xpPercent: Spell XP Gain's bonus in percent (10 a level); Math.ceil rounds up
-            trees.addExperience(link.tree(), (int) Math.ceil((100 + spell.stats(1F).xpPercent()) / 100.0));
+            int xp = (int) Math.ceil((100 + spell.stats(1F).xpPercent()) / 100.0);
+            // Cast from the Akashic: ten times as much
+            if (SpellCasting.isAkashic()) xp *= SpellCasting.AKASHIC_XP;
+            trees.addExperience(link.tree(), xp);
             // How far they've taken a spell of this element (fusions need two at FUSION_LEVEL)
             int treeLevel = com.mowmaster.dust.Features.Spells.pylons.SpellLevels.levelForXp(trees.experience(link.tree()));
             SpellMastery.note(player, spell.element(), treeLevel);
