@@ -37,18 +37,23 @@ import org.jspecify.annotations.Nullable;
 public class TelekinesisCubeEntity extends Entity implements CarriesBlock
 {
     private static final EntityDataAccessor<BlockState> BLOCK = SynchedEntityData.defineId(TelekinesisCubeEntity.class, EntityDataSerializers.BLOCK_STATE);
-    private static final double GRAVITY = 0.04;
+    private static final double GRAVITY = 0.08;
     private static final double PUNCH = 0.6;
     // Faster than this (blocks a tick), what it runs into is hurt
     private static final double HURT_SPEED = 0.4;
     // Still on the ground this long (ticks): it becomes a block again
     private static final int SETTLE_TICKS = 10;
+    // On the ground or in water this long without settling (rolling about, bobbing in water): it's placed or dropped where it is (time in the air doesn't count)
     // Let go this long without settling (stuck in water, rolling about): it's placed or dropped wherever it is
-    private static final int MAX_FREE_TICKS = 20 * 30;
+    private static final int MAX_FREE_TICKS = 100;
+
+    // heldAt when nothing holds it. Not Long.MIN_VALUE: "now - MIN_VALUE" overflows to a negative number, which would
+    // read as just held
+    private static final long NOT_HELD = -1;
 
     private @Nullable Entity thrower;
     // When Telekinesis last held it (game time); held this tick or last: no gravity
-    private long heldAt = Long.MIN_VALUE;
+    private long heldAt = NOT_HELD;
     private int still;
     private int free;
     // The caster's yaw when it was taken, and its own then: held, it turns as far as they've turned since
@@ -100,14 +105,14 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
     public void launch(@Nullable Entity by, Vec3 motion)
     {
         thrower = by;
-        heldAt = Long.MIN_VALUE;
+        heldAt = NOT_HELD;
         setDeltaMovement(motion);
         still = 0;
     }
 
     private boolean held()
     {
-        return level().getGameTime() - heldAt <= 1;
+        return heldAt != NOT_HELD && level().getGameTime() - heldAt <= 1;
     }
 
     // To the nearest quarter turn (0, 90, 180, 270), as a sulfur cube with a block squares itself
@@ -158,7 +163,7 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
             after = new Vec3(after.x * slip, after.y < 0 ? 0 : after.y, after.z * slip);
         }
         setDeltaMovement(after);
-        free++;
+        if (onGround() || isInWater()) free++;
         still = onGround() && after.horizontalDistanceSqr() < 1.0E-4 ? still + 1 : 0;
         if (still >= SETTLE_TICKS || free >= MAX_FREE_TICKS) settle(level);
     }
