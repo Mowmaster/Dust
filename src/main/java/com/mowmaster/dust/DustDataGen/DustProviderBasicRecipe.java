@@ -5,10 +5,12 @@ import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustPotionRegistry;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.AncientInscribeRecipe;
+import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.DustComposition.DustRecipe;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
 import com.mowmaster.dust.Features.Research.ResearchTabs;
 import com.mowmaster.dust.Features.Research.ResearchUnlocks;
+import net.minecraft.client.color.item.Dye;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.registries.MultiRegistryBootstrap;
@@ -52,8 +54,8 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         // Ancient Ink: an ink sac steeped in black (chaos) and white (order) dust. Placeholder recipe.
         shapeless(RecipeCategory.MISC, DustItemRegistry.ANCIENT_INK.get())
                 .requires(Items.INK_SAC)
-                .requires(DustItemRegistry.DUST_BLACK.get())
-                .requires(DustItemRegistry.DUST_WHITE.get())
+                .requires(Items.GOLD_NUGGET)
+                .requires(Items.GLASS_BOTTLE)
                 .unlockedBy(getHasName(Items.INK_SAC), has(Items.INK_SAC))
                 .save(output);
         // Research Notes: Ancient Ink, a feather and a book
@@ -76,29 +78,6 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         survivalTableRecipes();
         elementCrafterRecipes();
 
-        // Grimoire: a book, leather and an amethyst shard (a placeholder recipe until it has a proper place in the tech)
-        shapeless(RecipeCategory.TOOLS, DustItemRegistry.GRIMOIRE.get())
-                .requires(Items.BOOK)
-                .requires(Items.LEATHER)
-                .requires(Items.AMETHYST_SHARD)
-                .unlockedBy(getHasName(DustItemRegistry.SPELL_SCROLL.get()), has(DustItemRegistry.SPELL_SCROLL.get()))
-                .save(output);
-
-        // Element crafting (the Element Crafter), examples: grid items plus dust from the jars
-        SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
-                        new ItemStackTemplate(Items.BLAZE_POWDER),
-                        List.of(), List.of(Ingredient.of(Items.GUNPOWDER)),
-                        List.of(new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.FIRE, 20)),
-                        Optional.empty()))
-                .save(output, DustReferences.MODID + ":element_crafting/blaze_powder");
-        SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
-                        new ItemStackTemplate(Items.GLOWSTONE_DUST, 2),
-                        List.of(), List.of(Ingredient.of(Items.REDSTONE)),
-                        List.of(new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.LIGHT, 10),
-                                new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.FIRE, 5)),
-                        Optional.empty()))
-                .save(output, DustReferences.MODID + ":element_crafting/glowstone_dust");
-
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
         shapeless(RecipeCategory.MISC, DustItemRegistry.PARCHMENT.get(), 3)
                 .requires(Items.PAPER).requires(Items.PAPER).requires(Items.PAPER)
@@ -112,125 +91,6 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         SpecialRecipeBuilder.special(() -> com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE)
                 .save(output, DustReferences.MODID + ":spell_scroll_crafting");
 
-        List<ItemLike> DUST_SMELTABLES = List.of(DustItemRegistry.CRYSTAL_RED);
-
-        oreSmelting(DUST_SMELTABLES,RecipeCategory.MISC, CookingBookCategory.BLOCKS, DustItemRegistry.DUST_RED.get(), 0.25f, 200, DustReferences.MODID);
-        oreBlasting(DUST_SMELTABLES,RecipeCategory.MISC, CookingBookCategory.BLOCKS, DustItemRegistry.DUST_RED.get(), 0.25f, 100, DustReferences.MODID);
-
-
-        shaped(RecipeCategory.BUILDING_BLOCKS, DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get())
-                .pattern("CCC")
-                .pattern("CCC")
-                .pattern("CCC")
-                .define('C', DustItemRegistry.CRYSTAL_RED.get())
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-
-        shaped(RecipeCategory.BUILDING_BLOCKS, DustItemRegistry.CRYSTAL_RED.get())
-                .pattern("DDD")
-                .pattern("DID")
-                .pattern("DDD")
-                .define('D', DustItemRegistry.DUST_RED.get())
-                .define('I', DustItemRegistry.CRYSTAL_INERT.get())
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_INERT.get()), has(DustItemRegistry.CRYSTAL_INERT.get()))
-                .save(output, DustReferences.MODID + ":" + "inertcrystal_dustcrafting_red");
-
-        shapeless(RecipeCategory.MISC, DustItemRegistry.CRYSTAL_RED.get(),9)
-                .requires(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get())
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()), has(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()))
-                .save(output);
-
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SWORD.get())
-                .pattern("C")
-                .pattern("C")
-                .pattern("S")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_AXE.get())
-                .pattern("CC")
-                .pattern("CS")
-                .pattern(" S")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_PICKAXE.get())
-                .pattern("CCC")
-                .pattern(" S ")
-                .pattern(" S ")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SHOVEL.get())
-                .pattern(" C ")
-                .pattern(" S ")
-                .pattern(" S ")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_HOE.get())
-                .pattern("CC")
-                .pattern(" S")
-                .pattern(" S")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_SPEAR.get())
-                .pattern("  C")
-                .pattern(" C ")
-                .pattern("S  ")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shapeless(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_MATTOCK.get())
-                .requires(DustItemRegistry.CRYSTAL_HOE.get())
-                .requires(DustItemRegistry.CRYSTAL_AXE.get())
-                .requires(DustItemRegistry.CRYSTAL_SHOVEL.get())
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_AXE.get()), has(DustItemRegistry.CRYSTAL_AXE.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_HAMMER.get())
-                .pattern("BBB")
-                .pattern(" S ")
-                .pattern(" S ")
-                .define('B', DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.asItem()).define('S', Items.STICK)
-                .unlockedBy(getHasName(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()), has(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get()))
-                .save(output);
-
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_HELMET.get())
-                .pattern("CCC")
-                .pattern("CAC")
-                .pattern("CCC")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_HELMET)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_CHESTPLATE.get())
-                .pattern("CCC")
-                .pattern("CAC")
-                .pattern("CCC")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_CHESTPLATE)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_LEGGINGS.get())
-                .pattern("CCC")
-                .pattern("CAC")
-                .pattern("CCC")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_LEGGINGS)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_BOOTS.get())
-                .pattern("CCC")
-                .pattern("CAC")
-                .pattern("CCC")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_BOOTS)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
-        shaped(RecipeCategory.COMBAT, DustItemRegistry.CRYSTAL_HORSE_ARMOR.get())
-                .pattern("CCC")
-                .pattern("CAC")
-                .pattern("CCC")
-                .define('C', DustTags.Items.MAGICAL_CRYSTAL_ITEMS).define('A', Items.LEATHER_HORSE_ARMOR)
-                .unlockedBy(getHasName(DustItemRegistry.CRYSTAL_RED.get()), has(DustItemRegistry.CRYSTAL_RED.get()))
-                .save(output);
     }
 
     // The crafting table recipes for the dust machines (the Element Tester starts it all; the research tables are the
@@ -238,27 +98,25 @@ public class DustProviderBasicRecipe extends RecipeProvider {
     private void survivalTableRecipes() {
         Item alchemicalDust = DustItemRegistry.ALCHEMICAL_DUST.get();
         Item tester = DustBlockRegistry.ELEMENT_TESTER.asItem();
-        shaped(RecipeCategory.MISC, DustBlockRegistry.ELEMENT_TESTER.get())
-                .pattern("CCC").pattern("SSS").pattern("S S")
-                .define('C', DustTags.Items.CRYSTALS_OR_AMETHYST).define('S', Items.STONE)
-                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
-                .save(output);
+        Item soot = DustItemRegistry.ALCHEMICAL_SOOT.get();
+
+
+        //Needed for Crushing blocks before analysing them
         shaped(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_CRUSHER.get())
-                .pattern("SSS").pattern("SIS").pattern("SSS")
-                .define('S', Items.STONE).define('I', Items.IRON_BLOCK)
+                .pattern("SSS")
+                .pattern("SIS")
+                .pattern("SSS")
+                .define('S', Items.STONE)
+                .define('I', Items.IRON_BLOCK)
                 .unlockedBy(getHasName(Items.IRON_BLOCK), has(Items.IRON_BLOCK))
                 .save(output);
-        // Any Alchemical Dust: the item ignores its element here (a plain ingredient doesn't look at data components)
-        shaped(RecipeCategory.MISC, DustBlockRegistry.DUST_JAR.get())
-                .pattern("SSS").pattern("GDG").pattern("GGG")
-                .define('S', net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.Identifier.withDefaultNamespace("slabs"))).define('G', Items.GLASS).define('D', alchemicalDust)
-                .unlockedBy(getHasName(alchemicalDust), has(alchemicalDust))
+        shaped(RecipeCategory.MISC, DustBlockRegistry.ELEMENT_TESTER.get())
+                .pattern("CCC").pattern("SSS").pattern("S S")
+                .define('C', DustTags.Items.CRYSTALS_OR_AMETHYST)
+                .define('S', Items.STONE)
+                .unlockedBy(getHasName(Items.AMETHYST_SHARD), has(Items.AMETHYST_SHARD))
                 .save(output);
-        shaped(RecipeCategory.MISC, DustBlockRegistry.ELEMENT_CRAFTER.get())
-                .pattern("SJS").pattern("JCJ").pattern("SJS")
-                .define('S', alchemicalDust).define('J', DustBlockRegistry.DUST_JAR.asItem()).define('C', Items.CRAFTING_TABLE)
-                .unlockedBy(getHasName(DustBlockRegistry.DUST_JAR.asItem()), has(DustBlockRegistry.DUST_JAR.asItem()))
-                .save(output);
+
 
         shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_SEPARATION.get())
                 .requires(tester).requires(Items.PAPER)
@@ -269,6 +127,26 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         shapeless(RecipeCategory.MISC, DustBlockRegistry.RESEARCH_DISTILLATION.get())
                 .requires(tester).requires(Items.PAPER).requires(Items.GLASS_BOTTLE)
                 .unlockedBy(getHasName(tester), has(tester)).save(output);
+
+        // Alchemical Soot gates it till after some research has happened
+        shaped(RecipeCategory.MISC, DustBlockRegistry.DUST_JAR.get())
+                .pattern("SSS")
+                .pattern("GDG")
+                .pattern("GGG")
+                .define('S', net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, net.minecraft.resources.Identifier.withDefaultNamespace("slabs")))
+                .define('G', Items.GLASS)
+                .define('D', soot)
+                .unlockedBy(getHasName(soot), has(soot))
+                .save(output);
+        shaped(RecipeCategory.MISC, DustBlockRegistry.ELEMENT_CRAFTER.get())
+                .pattern("SJS")
+                .pattern("JCJ")
+                .pattern("SJS")
+                .define('S', soot).define('J', DustBlockRegistry.DUST_JAR.asItem()).define('C', Items.CRAFTING_TABLE)
+                .unlockedBy(getHasName(DustBlockRegistry.DUST_JAR.asItem()), has(DustBlockRegistry.DUST_JAR.asItem()))
+                .save(output);
+
+
         // The Transformation, Combination and Mixing Tables are dust recipes that need their Research tab discovery,
         // which crafting the Element Crafter unlocks (Features/Research/ResearchProgress)
         Item copper = Items.COPPER_BLOCK.weathering().unaffected();
@@ -276,20 +154,29 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         gatedTableRecipe(DustBlockRegistry.RESEARCH_COMBINATION.asItem(), "research_combination", tester, copper, Items.COAL_BLOCK, Items.PAPER);
         gatedTableRecipe(DustBlockRegistry.RESEARCH_MIXING.asItem(), "research_mixing", tester, copper, Items.BUCKET, Items.PAPER);
 
+        //Jar Labels
+        SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
+                        new ItemStackTemplate(DustItemRegistry.JAR_LABEL.get()),
+                        List.of(), List.of(Ingredient.of(Items.PAPER)),
+                        List.of(new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(DustElements.SLIME, 5)),
+                        Optional.empty()))
+                .save(output, DustReferences.MODID + ":element_crafting/jar_label");
+
+
+        //SpecialRecipeBuilder.special(() -> new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe(
+        //                new ItemStackTemplate(Items.GLOWSTONE_DUST, 2),
+        //                List.of(), List.of(Ingredient.of(Items.REDSTONE)),
+        //                List.of(new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.LIGHT, 10),
+        //                        new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost(com.mowmaster.dust.Features.DustComposition.DustElements.FIRE, 5)),
+        //                Optional.empty()))
+        //        .save(output, DustReferences.MODID + ":element_crafting/glowstone_dust");
+
+
         // Magical Flint and Steel: a flint and steel ringed with Alchemical Dust (any elements)
         shaped(RecipeCategory.TOOLS, DustItemRegistry.MAGICAL_FLINT_AND_STEEL.get())
                 .pattern("DDD").pattern("DFD").pattern("DDD")
                 .define('D', alchemicalDust).define('F', Items.FLINT_AND_STEEL)
                 .unlockedBy(getHasName(alchemicalDust), has(alchemicalDust))
-                .save(output);
-        // Jar Label: paper and something sticky, a slime ball or Slime Alchemical Dust. CompoundIngredient: either one;
-        // DataComponentIngredient: Alchemical Dust only when its element (the dust:alchemical_element component) is slime.
-        shapeless(RecipeCategory.MISC, DustItemRegistry.JAR_LABEL.get())
-                .requires(Items.PAPER)
-                .requires(net.neoforged.neoforge.common.crafting.CompoundIngredient.of(Ingredient.of(Items.SLIME_BALL),
-                        net.neoforged.neoforge.common.crafting.DataComponentIngredient.of(false, com.mowmaster.dust.DustRegistries.DustComponentDataRegistry.ALCHEMICAL_ELEMENT.get(),
-                                com.mowmaster.dust.Features.DustComposition.DustElements.SLIME, alchemicalDust)))
-                .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
                 .save(output);
     }
 
@@ -312,7 +199,9 @@ public class DustProviderBasicRecipe extends RecipeProvider {
     private void elementCrafterRecipes() {
         Item soot = DustItemRegistry.ALCHEMICAL_SOOT.get();
         Ingredient stone = Ingredient.of(Items.STONE);
-        elementShaped(DustBlockRegistry.DUST_GRINDER.asItem(), "dust_grinder", unlock("dust_grinder"), java.util.Map.of('S', stone, 'A', Ingredient.of(DustItemRegistry.ALCHEMICAL_DUST.get())),
+
+        elementShaped(DustBlockRegistry.DUST_GRINDER.asItem(), "dust_grinder", unlock("dust_grinder"),
+                java.util.Map.of('S', stone, 'A', Ingredient.of(DustItemRegistry.ALCHEMICAL_DUST.get())),
                 List.of("SSS", "AAA", "SSS"), cost(com.mowmaster.dust.Features.DustComposition.DustElements.FRACTURE, 10));
         // The pylons: one pattern, a different element for each
         java.util.Map<Character, Ingredient> pylonKey = java.util.Map.of('S', stone, 'A', Ingredient.of(soot));

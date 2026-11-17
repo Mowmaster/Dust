@@ -169,16 +169,23 @@ public class ResearchMixingBlockEntity extends StationBlockEntity
         sync();
     }
 
-    // Automation (StationBlockEntity): a stir while it's being stirred, otherwise starts it if it can start
+    // A dispenser's Magical Flint and Steel, or a fire spell (StationBlockEntity): a stir while it's being stirred,
+    // otherwise starts it if it can start
     @Override
     public boolean activate(ServerLevel level, @Nullable Player by)
     {
-        if (isStirring()) {
-            stir(level);
-            return true;
-        }
+        if (pulse(level)) return true;
         if (cannotStart() != null) return false;
         start(level, researcher(level, by));
+        return true;
+    }
+
+    // A redstone pulse (StationBlockEntity): a stir while it's being stirred. It never starts it.
+    @Override
+    public boolean pulse(ServerLevel level)
+    {
+        if (!isStirring()) return false;
+        stir(level);
         return true;
     }
 

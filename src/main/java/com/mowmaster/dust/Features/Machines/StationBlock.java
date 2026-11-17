@@ -70,7 +70,7 @@ public abstract class StationBlock extends Block implements EntityBlock
         return shape;
     }
 
-    // A redstone pulse starts it (or stirs it): StationAutomation
+    // A redstone pulse stirs a station that's being stirred, and never starts one: StationAutomation
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, net.minecraft.world.level.redstone.@Nullable Orientation orientation, boolean movedByPiston)
     {

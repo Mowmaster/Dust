@@ -18,23 +18,25 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jspecify.annotations.Nullable;
 
-// Starting research stations without a player's hand (StationBlockEntity.activate):
-//   a redstone pulse                          onNeighborChanged, from each station block's neighborChanged
-//   a dispenser with a Magical Flint and Steel  facing a station: starts it (one durability); facing anything else it
+// Running research stations without a player's hand:
+//   a dispenser with a Magical Flint and Steel  facing a station: starts it, or stirs it while it's being stirred
+//                                             (StationBlockEntity.activate; one durability). Facing anything else it
 //                                             does nothing (a click, like an empty dispenser)
-//   a fire spell landing on a station         FireEffect calls activate
+//   a fire spell landing on a station         the same: FireEffect calls activate
+//   a redstone pulse                          only stirs a station that's being stirred (StationBlockEntity.pulse,
+//                                             from each station block's neighborChanged). It never starts one.
 public final class StationAutomation
 {
     private StationAutomation() {}
 
-    // From a station block's neighborChanged (server): starts it when the power has just come on
+    // From a station block's neighborChanged (server): a pulse when the power has just come on (a stir, never a start)
     public static void onNeighborChanged(Level level, BlockPos pos)
     {
         if (!(level instanceof ServerLevel serverLevel) || !(level.getBlockEntity(pos) instanceof StationBlockEntity station)) return;
-        if (station.newPulse(level.hasNeighborSignal(pos))) station.activate(serverLevel, null);
+        if (station.newPulse(level.hasNeighborSignal(pos))) station.pulse(serverLevel);
     }
 
-    // Starts the station at pos if there is one and it can start. True if it did something.
+    // Starts the station at pos (or stirs it) if there is one and it can. True if it did something.
     public static boolean activate(ServerLevel level, BlockPos pos, @Nullable Player by)
     {
         return level.getBlockEntity(pos) instanceof StationBlockEntity station && station.activate(level, by);

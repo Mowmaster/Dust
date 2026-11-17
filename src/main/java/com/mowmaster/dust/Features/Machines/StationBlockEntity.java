@@ -29,16 +29,17 @@ import java.util.UUID;
 //                       out the bottom: what it made (OUTPUT slots)
 //                       They reach the station's own slots (StationSlotHandler), so outputs stay on their pads for
 //                       the player until a hopper takes them.
-//   Starting it         a redstone pulse (StationAutomation.onNeighborChanged), a dispenser firing a Magical Flint and
-//                       Steel into it, or a fire spell landing on it (a Spell Caster's, or a player's): activate. On a
-//                       table that's being stirred, each one is a stir.
+//   Starting it         a dispenser firing a Magical Flint and Steel into it, or a fire spell landing on it (a Spell
+//                       Caster's, or a player's): activate. On a table that's being stirred, each one is a stir.
+//   Redstone            a pulse (StationAutomation.onNeighborChanged) only stirs a table that's being stirred: pulse.
+//                       It never starts a station: that takes a Magical Flint and Steel or a fire spell.
 //   Research            a station started by a player notes its steps in their research. Started by automation, the
 //                       notes go to whoever last put something in it by hand (lastUser), if they're online.
 @EventBusSubscriber(modid = DustReferences.MODID)
 public abstract class StationBlockEntity extends CBSyncedBlockEntity implements IStationSlots
 {
-    // Whether it was powered at the last neighbour update, so only a new pulse starts it (saved: a station that stays
-    // powered through a reload doesn't start again)
+    // Whether it was powered at the last neighbour update, so only a new pulse counts (saved: a station that stays
+    // powered through a reload doesn't count it again)
     private boolean powered;
     private @Nullable UUID lastUser;
 
@@ -87,9 +88,16 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
 
     // ---- starting it ----
 
-    // Starts the station (or stirs it) from automation, or from a player's fire spell (by: that player, else null).
-    // True if it did something.
+    // Starts the station (or stirs it) from a dispenser's Magical Flint and Steel, or from a fire spell (by: the player
+    // who cast it, else null). True if it did something.
     public boolean activate(ServerLevel level, @Nullable Player by)
+    {
+        return false;
+    }
+
+    // A redstone pulse (StationAutomation.onNeighborChanged): stirs a station that's being stirred (the stations that
+    // stir override this). It never starts one. True if it did something.
+    public boolean pulse(ServerLevel level)
     {
         return false;
     }
