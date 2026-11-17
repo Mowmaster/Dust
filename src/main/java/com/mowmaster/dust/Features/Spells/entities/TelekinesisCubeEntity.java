@@ -37,7 +37,9 @@ import org.jspecify.annotations.Nullable;
 public class TelekinesisCubeEntity extends Entity implements CarriesBlock
 {
     private static final EntityDataAccessor<BlockState> BLOCK = SynchedEntityData.defineId(TelekinesisCubeEntity.class, EntityDataSerializers.BLOCK_STATE);
-    private static final double GRAVITY = 0.01;
+    private static final double GRAVITY = 0.05;
+    // And this much more for each block it's above where it was taken from: the higher it goes, the harder it falls
+    private static final double GRAVITY_PER_BLOCK = 0.075;
     private static final double PUNCH = 0.6;
     // Faster than this (blocks a tick), what it runs into is hurt
     private static final double HURT_SPEED = 0.4;
@@ -58,6 +60,8 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
     private int free;
     // The caster's yaw when it was taken, and its own then: held, it turns as far as they've turned since
     private float casterYawAtGrab;
+    // The height it was taken from (the block's bottom)
+    private double startY;
     private float yawAtGrab;
 
     public TelekinesisCubeEntity(EntityType<? extends TelekinesisCubeEntity> type, Level level)
@@ -76,6 +80,7 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
         cube.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         cube.setYRot(0);
         cube.thrower = by;
+        cube.startY = pos.getY();
         cube.heldAt = level.getGameTime();
         if (by != null) cube.casterYawAtGrab = by.getYRot();
         level.removeBlock(pos, false);
@@ -144,7 +149,7 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
         if (!(level() instanceof ServerLevel level)) return;
         boolean held = held();
         Vec3 motion = getDeltaMovement();
-        if (!held) motion = motion.add(0, -GRAVITY, 0);
+        if (!held) motion = motion.add(0, -(GRAVITY + GRAVITY_PER_BLOCK * Math.max(0, getY() - startY)), 0);
         move(MoverType.SELF, motion);
         double speed = motion.length();
         if (speed > HURT_SPEED) hurtWhatItHits(level, speed);
@@ -234,6 +239,7 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
     {
         output.store("block", BlockState.CODEC, carriedBlock());
         output.putInt("free", free);
+        output.putDouble("start_y", startY);
     }
 
     // Loaded again (it was saved mid-flight): it just falls from where it was
@@ -242,5 +248,6 @@ public class TelekinesisCubeEntity extends Entity implements CarriesBlock
     {
         entityData.set(BLOCK, input.read("block", BlockState.CODEC).orElse(Blocks.STONE.defaultBlockState()));
         free = input.getIntOr("free", 0);
+        startY = input.getDoubleOr("start_y", getY());
     }
 }

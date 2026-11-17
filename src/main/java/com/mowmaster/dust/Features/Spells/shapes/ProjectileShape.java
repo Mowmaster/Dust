@@ -24,6 +24,8 @@ public class ProjectileShape implements SpellShape
     private static final double PARTICLE_STEP = 0.35;
     // Telekinesis without AOE: a creature this close to where the ray hit a block is taken instead of the block
     private static final double TELEKINESIS_REACH = 1.5;
+    // Telekinesis: the line takes a creature it passes this close to (blocks outside its box)
+    private static final float TELEKINESIS_MARGIN = 0.75F;
 
     @Override
     public boolean cast(SpellCast cast)
@@ -46,8 +48,11 @@ public class ProjectileShape implements SpellShape
         BlockHitResult block = cast.level().clip(new ClipContext(from, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE,
                 caster == null ? CollisionContext.empty() : CollisionContext.of(caster)));
         Vec3 stop = block.getType() == HitResult.Type.MISS ? end : block.getLocation();
-        EntityHitResult entity = ProjectileUtil.getEntityHitResult(cast.level(), caster, from, stop, new AABB(from, stop).inflate(1.0),
-                target -> target instanceof LivingEntity && target != caster && target.isAlive() && !target.isSpectator(), 0.3F);
+        // The last number: how far outside a creature's box the line may pass and still hit it. Telekinesis aims more
+        // generously, so small creatures (baby slimes) are easy to take rather than the ground behind them.
+        float margin = com.mowmaster.dust.Features.Spells.effects.Telekinesis.applies(cast.spell()) ? TELEKINESIS_MARGIN : 0.3F;
+        EntityHitResult entity = ProjectileUtil.getEntityHitResult(cast.level(), caster, from, stop, new AABB(from, stop).inflate(1.0 + margin),
+                target -> target instanceof LivingEntity && target != caster && target.isAlive() && !target.isSpectator(), margin);
         Vec3 hitAt = entity != null ? entity.getLocation() : stop;
 
         DustParticleOptions dust = new DustParticleOptions(cast.element().color(), 0.9F);

@@ -65,6 +65,8 @@ public final class Telekinesis
         final List<Entity> targets = new ArrayList<>();
         final double distance;
         final double speed;
+        // The game time of the cast that made it: things taken that same tick are taken by that cast
+        final long startedAt;
         long lastHeld;
         boolean everHeld;
         final Deque<Vec3> looks = new ArrayDeque<>();
@@ -74,6 +76,7 @@ public final class Telekinesis
             this.level = level;
             this.distance = distance;
             this.speed = speed;
+            this.startedAt = now;
             this.lastHeld = now;
         }
     }
@@ -91,14 +94,25 @@ public final class Telekinesis
 
     public static void grabEntity(SpellCast cast, Entity target)
     {
-        if (target == cast.caster() || !target.isAlive()) return;
+        if (target == cast.caster() || !target.isAlive() || full(cast)) return;
         take(cast, target);
     }
 
     public static void grabBlock(SpellCast cast, BlockPos pos, Direction face)
     {
+        if (full(cast)) return;
         TelekinesisCubeEntity cube = TelekinesisCubeEntity.lift(cast.level(), pos, cast.caster());
         if (cube != null) take(cast, cube);
+    }
+
+    // Without AOE it takes one thing a cast: the first it lands on. (The Size stat spreads an effect to nearby blocks and
+    // creatures, and the spell may land on a block and the creatures by it: none of those are taken.) With AOE, as many
+    // as AOE reaches.
+    private static boolean full(SpellCast cast)
+    {
+        if (cast.caster() == null || cast.has(SpellRegistries.AOE.getId())) return false;
+        Grip grip = GRIPS.get(cast.caster().getUUID());
+        return grip != null && grip.startedAt == cast.level().getGameTime() && !grip.targets.isEmpty();
     }
 
     private static void take(SpellCast cast, Entity target)
