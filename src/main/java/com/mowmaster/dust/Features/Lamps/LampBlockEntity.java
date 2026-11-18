@@ -1,12 +1,10 @@
 package com.mowmaster.dust.Features.Lamps;
 
-import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustStorage.DustJarBlockEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 import com.mowmaster.dust.Features.Lamps.Client.LampClient;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
-import com.mowmaster.mowlib.transport.TransportTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -25,12 +23,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
 // What the lamps share (LampBlock: the Growth Lamp, the Lovely Lamp):
 //   fuel      element dust, up to CAPACITY units, gathered from GATHER_RANGE blocks round it: element orbs of its element
-//             lying there (absorbed whole, as much as fits) and Dust Jars holding it (drawn out). Checked every second
-//             while there's room.
+//             lying there (absorbed whole, as much as fits) and Dust Jars holding it (drawn out), each shown as a stream
+//             of dust in the element's colour flowing to the lamp (DustStream). It only refills once it's run low
+//             (refillBelow: under 10 units), and then fills right up, so jars aren't drawn on a little at a time and
+//             orbs it doesn't need are left for players. Checked every second.
 //   burning   while it has fuel it's lit: each unit lasts TICKS_PER_UNIT (10 seconds); what it does while lit is the
 //             lamp's own (work): within RADIUS blocks, and only what it can see (a clear line from the lamp)
 // Clients only need to know whether it's lit (the ambient particles and the area's hue: Client/LampClient), so it
@@ -68,7 +67,7 @@ public abstract class LampBlockEntity extends CBSyncedBlockEntity
     {
         if (!(level instanceof ServerLevel server)) return;
         // Spread out over the second by position, so lamps placed together don't all gather on the same tick
-        if (lamp.fuel < CAPACITY && (level.getGameTime() + pos.asLong()) % 20 == 0) lamp.gather(server);
+        if (lamp.fuel < refillBelow(CAPACITY) && (level.getGameTime() + pos.asLong()) % 20 == 0) lamp.gather(server);
         if (lamp.fuel <= 0) return;
         lamp.work(server);
         if (++lamp.burn >= TICKS_PER_UNIT) {
@@ -84,6 +83,12 @@ public abstract class LampBlockEntity extends CBSyncedBlockEntity
     }
 
     // ---- fuel ----
+
+    // How low a store of this size has to run before it refills: 10 units, or a tenth of it for one smaller than 100
+    public static int refillBelow(int capacity)
+    {
+        return Math.min(10, Math.max(1, capacity / 10));
+    }
 
     // Uses up some fuel (a bred animal's unit, a burnt-out unit). False if there wasn't that much.
     protected boolean use(int units)
@@ -105,7 +110,7 @@ public abstract class LampBlockEntity extends CBSyncedBlockEntity
     }
 
     // Element orbs of its element and Dust Jars holding it, within GATHER_RANGE: as much as there's room for, each move
-    // shown as bits of the element's dust flying to the lamp
+    // shown as the element's dust flowing to the lamp
     private void gather(ServerLevel level)
     {
         DustElement element = element();
@@ -118,7 +123,7 @@ public abstract class LampBlockEntity extends CBSyncedBlockEntity
             if (taken >= orb.getValue()) orb.discard();
             else orb.setValue(orb.getValue() - taken);
             add(taken);
-            showMove(level, orb.position(), here);
+            showMove(level, orb.position(), here, taken);
         }
         // Dust Jars: found among the block entities of the chunks the area covers (getChunkNow: only chunks already
         // loaded, so gathering never loads one)
@@ -138,17 +143,16 @@ public abstract class LampBlockEntity extends CBSyncedBlockEntity
                     int taken = jar.extract(room);
                     if (taken <= 0) continue;
                     add(taken);
-                    showMove(level, Vec3.atCenterOf(at), here);
+                    showMove(level, Vec3.atCenterOf(at), here, taken);
                 }
             }
         }
     }
 
-    // Bits of the element's dust flying from there to the lamp (MowLib's item transfer particles: one packet)
-    private void showMove(ServerLevel level, Vec3 from, Vec3 to)
+    // The element's dust flowing from there to the lamp: a winding stream in its colour (DustStream, drawn by the client)
+    private void showMove(ServerLevel level, Vec3 from, Vec3 to, int amount)
     {
-        var dust = DustItemRegistry.DUSTS.get(element());
-        if (dust != null) TransportTypes.ITEMS.get().sendTransferParticles(level, from, to, ItemResource.of(dust.get()));
+        com.mowmaster.dust.Features.DustStorage.DustStream.send(level, from, to, element().color(), amount);
     }
 
     // ---- what it reaches ----

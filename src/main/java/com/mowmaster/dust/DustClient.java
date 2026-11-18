@@ -189,6 +189,7 @@ public class DustClient {
         event.register(ObservationPayloads.Progress.TYPE, ObservationClient::onProgress);
         event.register(ObservationPayloads.Discovered.TYPE, ObservationClient::onDiscovered);
         event.register(ObservationPayloads.Noted.TYPE, ObservationClient::onNoted);
+        event.register(com.mowmaster.dust.Features.DustStorage.DustStream.TYPE, com.mowmaster.dust.Features.DustStorage.Client.DustStreams::onStream);
     }
 
     // Which screen opens for which menu type

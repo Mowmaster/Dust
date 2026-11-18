@@ -37,10 +37,11 @@ public class DustMagicEvents {
     {
         PayloadRegistrar registrar = event.registrar("1");
 
-        // Handlers for these two are client-only, registered in DustClient (RegisterClientPayloadHandlersEvent)
+        // Handlers for these are client-only, registered in DustClient (RegisterClientPayloadHandlersEvent)
         registrar.playToClient(ObservationPayloads.Progress.TYPE, ObservationPayloads.Progress.STREAM_CODEC);
         registrar.playToClient(ObservationPayloads.Discovered.TYPE, ObservationPayloads.Discovered.STREAM_CODEC);
         registrar.playToClient(ObservationPayloads.Noted.TYPE, ObservationPayloads.Noted.STREAM_CODEC);
+        registrar.playToClient(com.mowmaster.dust.Features.DustStorage.DustStream.TYPE, com.mowmaster.dust.Features.DustStorage.DustStream.STREAM_CODEC);
         registrar.playToClient(com.mowmaster.dust.Features.DustComposition.CraftedCompositions.Sync.TYPE,
                 com.mowmaster.dust.Features.DustComposition.CraftedCompositions.Sync.STREAM_CODEC, com.mowmaster.dust.Features.DustComposition.CraftedCompositions.Sync::handle);
         registrar.playToClient(com.mowmaster.dust.Features.Research.RecipeCatalog.Sync.TYPE,
