@@ -1,0 +1,26 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 50,
+      "element": "dust:order"
+    }
+  ],
+  "result": {
+    "id": "dust:alchemical_separator"
+  },
+  "shaped": {
+    "key": {
+      "B": "minecraft:polished_blackstone",
+      "C": "minecraft:copper_ingot",
+      "G": "minecraft:glass",
+      "I": "minecraft:iron_ingot",
+      "R": "dust:research_separation"
+    },
+    "pattern": [
+      "CGC",
+      "IRI",
+      "BBB"
+    ]
+  }
+}

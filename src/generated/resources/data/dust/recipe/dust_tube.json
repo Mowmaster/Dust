@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "G": "minecraft:glass",
+    "S": "dust:alchemical_soot"
+  },
+  "pattern": [
+    "CGC",
+    "GSG",
+    "CGC"
+  ],
+  "result": {
+    "count": 8,
+    "id": "dust:dust_tube"
+  }
+}

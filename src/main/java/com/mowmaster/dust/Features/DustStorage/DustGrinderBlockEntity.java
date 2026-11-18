@@ -31,8 +31,9 @@ import java.util.List;
 // The Dust Grinder's input (a stack of one grindable item, in the hole in the middle of the top) and its turning.
 // Grindable: an alchemical compound, Alchemical Dust or an element crystal, every element of which the player putting
 // it in has discovered (anything a hopper or pipe feeds in, from any side, goes in as it is). Each full turn of the top (TURN_TICKS: a right-click, or a redstone pulse) grinds one of
-// them: one dust of each element in it goes into a Dust Jar next to the grinder that takes it (any side), and any no
-// jar takes comes out as an element orb on top, worth 1.
+// them: one dust of each element in it goes into a Dust Jar next to the grinder that takes it (any side), else along
+// the Glass Dust Tubes joined on to it to a jar on their network (DustNetwork), and any nothing takes comes out as an
+// element orb on top, worth 1.
 // The client keeps its own count while turning (for the top's animation), restarted whenever the server's copy
 // arrives, so the server only syncs when a turn starts or ends and when the input changes.
 @net.neoforged.fml.common.EventBusSubscriber(modid = com.mowmaster.dust.DustReferences.MODID)
@@ -166,7 +167,7 @@ public class DustGrinderBlockEntity extends CBSyncedBlockEntity implements IStat
         if (input.isEmpty()) input = ItemStack.EMPTY;
         Vec3 top = Vec3.atBottomCenterOf(worldPosition).add(0, 1.15, 0);
         for (DustElement element : elements) {
-            if (!intoJar(level, element)) ElementOrbEntity.spawn(level, element, 1, top);
+            if (!intoJar(level, element) && DustNetwork.insert(level, worldPosition, element, 1) <= 0) ElementOrbEntity.spawn(level, element, 1, top);
         }
         level.playSound(null, worldPosition, SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 0.7F, 1.2F);
     }

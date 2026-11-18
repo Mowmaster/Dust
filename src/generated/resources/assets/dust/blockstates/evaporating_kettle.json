@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/apparatus/evaporating_kettle",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/apparatus/evaporating_kettle"
+    },
+    "facing=south": {
+      "model": "dust:block/apparatus/evaporating_kettle",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dust:block/apparatus/evaporating_kettle",
+      "y": 270
+    }
+  }
+}

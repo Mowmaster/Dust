@@ -1,0 +1,31 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 50,
+      "element": "dust:water"
+    },
+    {
+      "amount": 20,
+      "element": "dust:fire"
+    }
+  ],
+  "result": {
+    "id": "dust:alembic"
+  },
+  "shaped": {
+    "key": {
+      "B": "minecraft:polished_blackstone",
+      "C": "minecraft:copper_ingot",
+      "F": "minecraft:furnace",
+      "G": "minecraft:glass",
+      "I": "minecraft:iron_ingot",
+      "R": "dust:research_distalation"
+    },
+    "pattern": [
+      "GCG",
+      "IRI",
+      "BFB"
+    ]
+  }
+}

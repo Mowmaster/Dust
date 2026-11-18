@@ -157,6 +157,9 @@ public class DustBlockRegistry {
     }
     public static final DeferredBlock<Block> DUST_GRINDER = registerBlock("dust_grinder", properties -> new com.mowmaster.dust.Features.DustStorage.DustGrinderBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
+    // The Glass Dust Tube: carries element dust between Dust Jars and the alchemical apparatus (DustNetwork)
+    public static final DeferredBlock<Block> DUST_TUBE = registerBlock("dust_tube", properties -> new com.mowmaster.dust.Features.DustStorage.DustTubeBlock(
+            properties.mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(0.5F).noOcclusion()));
 
     // Lamps (Features/Lamps): lanterns that burn element dust for an effect on what's round them. Set up as vanilla's
     // lantern is.
@@ -169,6 +172,33 @@ public class DustBlockRegistry {
     {
         return properties.mapColor(MapColor.METAL).forceSolidOn().strength(3.5F).sound(SoundType.LANTERN).lightLevel(state -> 15).noOcclusion()
                 .pushReaction(PushReaction.POPPED);
+    }
+
+    // The alchemical apparatus (Features/Apparatus): factory machines of copper, brass and iron, one for each research
+    // station, that work without stopping and pour the dust they make along Glass Dust Tubes into Dust Jars
+    public static final DeferredBlock<Block> CRUSHING_MILL = apparatus("crushing_mill", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUSHING_MILL,
+            com.mowmaster.dust.Features.Apparatus.CrushingMillBlockEntity::new);
+    public static final DeferredBlock<Block> ALCHEMICAL_SEPARATOR = apparatus("alchemical_separator", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.SEPARATOR,
+            com.mowmaster.dust.Features.Apparatus.SeparatorBlockEntity::new);
+    public static final DeferredBlock<Block> EVAPORATING_KETTLE = apparatus("evaporating_kettle", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.KETTLE,
+            com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity::new);
+    public static final DeferredBlock<Block> ALEMBIC = apparatus("alembic", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.ALEMBIC,
+            com.mowmaster.dust.Features.Apparatus.AlembicBlockEntity::new);
+    public static final DeferredBlock<Block> TRANSMUTER = apparatus("transmuter", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER,
+            com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new);
+    public static final DeferredBlock<Block> CONJOINING_CRUCIBLE = apparatus("conjoining_crucible", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE,
+            com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity::new);
+    public static final DeferredBlock<Block> MIXING_VAT = apparatus("mixing_vat", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.MIXING_VAT,
+            com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity::new);
+
+    // One apparatus: copper, brass and iron (mined with a pickaxe; tool needed for it to drop), its own shape and block
+    // entity (ApparatusBlock)
+    private static DeferredBlock<Block> apparatus(String name, net.minecraft.world.phys.shapes.VoxelShape shape,
+                                                  java.util.function.BiFunction<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState,
+                                                          ? extends com.mowmaster.dust.Features.Apparatus.ApparatusBlockEntity> factory)
+    {
+        return registerBlock(name, properties -> new com.mowmaster.dust.Features.Apparatus.ApparatusBlock(properties.mapColor(MapColor.COLOR_ORANGE)
+                .sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion(), shape, factory));
     }
 
     // The Spell Caster (Features/Spells/caster): casts a scroll's spell on a redstone pulse, on dust and energy crystals

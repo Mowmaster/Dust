@@ -32,7 +32,8 @@ import org.jspecify.annotations.Nullable;
 //   right-click anywhere else / empty hand     turns the top one full turn, grinding one
 //   a redstone pulse                           also turns it once
 // The block model is the base (dust_grinder_base.json); the top and its handle turn in Client/DustGrinderRenderer.
-public class DustGrinderBlock extends Block implements EntityBlock
+// Glass Dust Tubes join on to it (DustTubeConnectable): what no jar next to it takes goes off along them (DustNetwork).
+public class DustGrinderBlock extends Block implements EntityBlock, DustTubeConnectable
 {
     // Remembers whether it's powered, so only a new pulse turns it (not every neighbour update while it stays on)
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -98,5 +99,20 @@ public class DustGrinderBlock extends Block implements EntityBlock
         if (powered == state.getValue(POWERED)) return;
         level.setBlock(pos, state.setValue(POWERED, powered), Block.UPDATE_CLIENTS);
         if (powered && level.getBlockEntity(pos) instanceof DustGrinderBlockEntity grinder) grinder.startTurn(level);
+    }
+
+    // Placed or taken away: the tube networks round it have to be found again
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)
+    {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!oldState.is(this)) DustNetwork.changed(level);
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, net.minecraft.server.level.ServerLevel level, BlockPos pos, boolean movedByPiston)
+    {
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        DustNetwork.changed(level);
     }
 }

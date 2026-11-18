@@ -1,0 +1,26 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 50,
+      "element": "dust:water"
+    }
+  ],
+  "result": {
+    "id": "dust:mixing_vat"
+  },
+  "shaped": {
+    "key": {
+      "B": "minecraft:polished_blackstone",
+      "C": "minecraft:copper_ingot",
+      "I": "minecraft:iron_ingot",
+      "R": "dust:research_mixing",
+      "V": "minecraft:barrel"
+    },
+    "pattern": [
+      "CVC",
+      "IRI",
+      "BBB"
+    ]
+  }
+}

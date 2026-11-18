@@ -106,6 +106,12 @@ public class DustClient {
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
+        // The alchemical apparatus share one renderer (it draws each one's own moving parts)
+        for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
+                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.ALEMBIC.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
+                DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get())) {
+            registerApparatusRenderer(event, type);
+        }
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_REPLICATOR.get(), com.mowmaster.dust.Features.Machines.Client.ElementReplicatorRenderer::new);
         // The Dust Grinder's turning top and the item in its hole
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_GRINDER.get(), com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer::new);
@@ -126,10 +132,19 @@ public class DustClient {
         event.registerEntityRenderer(DustEntityRegistry.SOUL_WISP.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
+    // <T extends ApparatusBlockEntity>: a generic method, so each apparatus's block entity type can take the one renderer
+    // written for them all
+    private static <T extends com.mowmaster.dust.Features.Apparatus.ApparatusBlockEntity> void registerApparatusRenderer(EntityRenderersEvent.RegisterRenderers event,
+                                                                                                                       net.minecraft.world.level.block.entity.BlockEntityType<T> type)
+    {
+        event.registerBlockEntityRenderer(type, context -> new com.mowmaster.dust.Features.Apparatus.Client.ApparatusRenderer(context));
+    }
+
     // Models drawn by code rather than placed as blocks (the crusher's wheels)
     @SubscribeEvent
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
+        com.mowmaster.dust.Features.Apparatus.Client.ApparatusRenderer.registerModels(event);
         ResearchCrusherRenderer.registerModels(event);
         com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer.registerModels(event);
         ResearchEvaporationRenderer.registerModels(event);
@@ -191,6 +206,7 @@ public class DustClient {
         event.register(ObservationPayloads.Discovered.TYPE, ObservationClient::onDiscovered);
         event.register(ObservationPayloads.Noted.TYPE, ObservationClient::onNoted);
         event.register(com.mowmaster.dust.Features.DustStorage.DustStream.TYPE, com.mowmaster.dust.Features.DustStorage.Client.DustStreams::onStream);
+        event.register(com.mowmaster.dust.Features.DustStorage.DustTubeFlow.TYPE, com.mowmaster.dust.Features.DustStorage.Client.DustTubeFlows::onFlow);
     }
 
     // Which screen opens for which menu type

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_alchemical_soot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:alchemical_soot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:dust_tube"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_alchemical_soot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:dust_tube"
+    ]
+  }
+}

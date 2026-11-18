@@ -46,7 +46,8 @@ import java.util.Map;
 // A cast costs the spell's dust (no attunement discount: a block isn't attuned to anything) and its energy, and only if
 // it lands on something. Blocks don't give the spell's tree experience: only players practising do.
 // Hoppers and pipes reach it through `inputs` (one slot for dust, one for energy crystals), which it empties into its
-// stores every tick.
+// stores every tick. Glass Dust Tubes: every second it tops up the dust its scroll's spell costs from the Dust Jars on
+// their network (DustNetwork), up to DUST_CAPACITY of each.
 @EventBusSubscriber(modid = DustReferences.MODID)
 public class SpellCasterBlockEntity extends CBSyncedBlockEntity
 {
@@ -124,6 +125,26 @@ public class SpellCasterBlockEntity extends CBSyncedBlockEntity
     public static void serverTick(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, SpellCasterBlockEntity caster)
     {
         caster.absorbInputs();
+        // Once a second, spread over the second by position so casters placed together don't all draw on the same tick
+        if (level instanceof ServerLevel server && (level.getGameTime() + pos.asLong()) % 20 == 0) caster.topUpFromTubes(server);
+    }
+
+    // The dust its scroll's spell costs, drawn from the jars on its tube network (or right against it) until it holds
+    // DUST_CAPACITY of each
+    private void topUpFromTubes(ServerLevel level)
+    {
+        Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
+        if (spell == null) return;
+        boolean changed = false;
+        for (DustElement element : spell.dustCost().keySet()) {
+            int room = DUST_CAPACITY - dust.getOrDefault(element, 0);
+            if (room <= 0) continue;
+            int taken = com.mowmaster.dust.Features.DustStorage.DustNetwork.extract(level, worldPosition, element, room);
+            if (taken <= 0) continue;
+            dust.merge(element, taken, Integer::sum);
+            changed = true;
+        }
+        if (changed) setChanged();
     }
 
     // Whatever hoppers put in goes into the stores (what doesn't fit stays in the input slot, and hoppers stop)

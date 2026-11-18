@@ -21,7 +21,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 // The Dust Jar (models/block/station/dust_jar.json): 1000 dust of one element, its lid in the element's colour.
 // The clicks are in DustJarInteractions; the dust in DustJarBlockEntity. Broken, it drops itself with its dust (the
 // loot table copies the dust:dust_jar component from the block entity).
-public class DustJarBlock extends Block implements EntityBlock
+// Glass Dust Tubes join on to it from any side (DustTubeConnectable): it's the storage of their network (DustNetwork).
+public class DustJarBlock extends Block implements EntityBlock, DustTubeConnectable
 {
     // The jar and its lid knob: 3-13 across, 14 high
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 14, 13);
@@ -80,6 +81,21 @@ public class DustJarBlock extends Block implements EntityBlock
             jar.pickUp((ServerLevel) level, pos, state, player);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    // A jar placed or taken away: the tube networks round it have to be found again
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)
+    {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!oldState.is(this)) DustNetwork.changed(level);
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston)
+    {
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        DustNetwork.changed(level);
     }
 
     // Comparators read how full it is (0-15)

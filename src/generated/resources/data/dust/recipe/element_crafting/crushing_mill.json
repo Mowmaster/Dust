@@ -1,0 +1,26 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 50,
+      "element": "dust:earth"
+    }
+  ],
+  "result": {
+    "id": "dust:crushing_mill"
+  },
+  "shaped": {
+    "key": {
+      "B": "minecraft:polished_blackstone",
+      "C": "minecraft:copper_ingot",
+      "H": "minecraft:hopper",
+      "I": "minecraft:iron_ingot",
+      "R": "dust:research_crusher"
+    },
+    "pattern": [
+      "CHC",
+      "IRI",
+      "BBB"
+    ]
+  }
+}

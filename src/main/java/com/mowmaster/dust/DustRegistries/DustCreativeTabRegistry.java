@@ -44,6 +44,14 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.DUST_JAR.asItem());
                         output.accept(DustItemRegistry.JAR_LABEL.asItem());
                         output.accept(DustBlockRegistry.DUST_GRINDER.asItem());
+                        output.accept(DustBlockRegistry.DUST_TUBE.asItem());
+                        output.accept(DustBlockRegistry.CRUSHING_MILL.asItem());
+                        output.accept(DustBlockRegistry.ALCHEMICAL_SEPARATOR.asItem());
+                        output.accept(DustBlockRegistry.EVAPORATING_KETTLE.asItem());
+                        output.accept(DustBlockRegistry.ALEMBIC.asItem());
+                        output.accept(DustBlockRegistry.TRANSMUTER.asItem());
+                        output.accept(DustBlockRegistry.CONJOINING_CRUCIBLE.asItem());
+                        output.accept(DustBlockRegistry.MIXING_VAT.asItem());
                         output.accept(DustBlockRegistry.GROWTH_LAMP.asItem());
                         output.accept(DustBlockRegistry.LOVELY_LAMP.asItem());
                         output.accept(DustBlockRegistry.SPELL_CASTER.asItem());

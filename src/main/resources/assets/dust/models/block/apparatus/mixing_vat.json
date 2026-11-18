@@ -1,0 +1,267 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {"stone": "minecraft:block/polished_blackstone", "brass": "dust:block/apparatus/brass", "copper": "minecraft:block/cut_copper", "copper_block": "minecraft:block/copper_block", "iron": "minecraft:block/anvil", "plate": "dust:block/apparatus/brass_plate", "particle": "minecraft:block/cut_copper"},
+	"elements": [
+		{
+			"name": "plinth",
+			"from": [0, 0, 0],
+			"to": [16, 3, 16],
+			"faces": {
+				"north": {"uv": [0, 13, 16, 16], "texture": "#stone"},
+				"south": {"uv": [0, 13, 16, 16], "texture": "#stone"},
+				"west": {"uv": [0, 13, 16, 16], "texture": "#stone"},
+				"east": {"uv": [0, 13, 16, 16], "texture": "#stone"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#stone"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#stone"}
+			}
+		},
+		{
+			"name": "plinth_band",
+			"from": [-0.25, 1, -0.25],
+			"to": [16.25, 2, 16.25],
+			"faces": {
+				"north": {"uv": [0, 14, 16, 15], "texture": "#brass"},
+				"south": {"uv": [0, 14, 16, 15], "texture": "#brass"},
+				"west": {"uv": [0, 14, 16, 15], "texture": "#brass"},
+				"east": {"uv": [0, 14, 16, 15], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "vat_n",
+			"from": [2, 3, 2],
+			"to": [14, 12, 3.5],
+			"faces": {
+				"north": {"uv": [2, 4, 14, 13], "texture": "#copper_block"},
+				"south": {"uv": [2, 4, 14, 13], "texture": "#copper_block"},
+				"west": {"uv": [2, 4, 3.5, 13], "texture": "#copper_block"},
+				"east": {"uv": [12.5, 4, 14, 13], "texture": "#copper_block"},
+				"up": {"uv": [2, 2, 14, 3.5], "texture": "#copper_block"},
+				"down": {"uv": [2, 12.5, 14, 14], "texture": "#copper_block"}
+			}
+		},
+		{
+			"name": "vat_s",
+			"from": [2, 3, 12.5],
+			"to": [14, 12, 14],
+			"faces": {
+				"north": {"uv": [2, 4, 14, 13], "texture": "#copper_block"},
+				"south": {"uv": [2, 4, 14, 13], "texture": "#copper_block"},
+				"west": {"uv": [12.5, 4, 14, 13], "texture": "#copper_block"},
+				"east": {"uv": [2, 4, 3.5, 13], "texture": "#copper_block"},
+				"up": {"uv": [2, 12.5, 14, 14], "texture": "#copper_block"},
+				"down": {"uv": [2, 2, 14, 3.5], "texture": "#copper_block"}
+			}
+		},
+		{
+			"name": "vat_w",
+			"from": [2, 3, 3.5],
+			"to": [3.5, 12, 12.5],
+			"faces": {
+				"north": {"uv": [12.5, 4, 14, 13], "texture": "#copper_block"},
+				"south": {"uv": [2, 4, 3.5, 13], "texture": "#copper_block"},
+				"west": {"uv": [3.5, 4, 12.5, 13], "texture": "#copper_block"},
+				"east": {"uv": [3.5, 4, 12.5, 13], "texture": "#copper_block"},
+				"up": {"uv": [2, 3.5, 3.5, 12.5], "texture": "#copper_block"},
+				"down": {"uv": [2, 3.5, 3.5, 12.5], "texture": "#copper_block"}
+			}
+		},
+		{
+			"name": "vat_e",
+			"from": [12.5, 3, 3.5],
+			"to": [14, 12, 12.5],
+			"faces": {
+				"north": {"uv": [2, 4, 3.5, 13], "texture": "#copper_block"},
+				"south": {"uv": [12.5, 4, 14, 13], "texture": "#copper_block"},
+				"west": {"uv": [3.5, 4, 12.5, 13], "texture": "#copper_block"},
+				"east": {"uv": [3.5, 4, 12.5, 13], "texture": "#copper_block"},
+				"up": {"uv": [12.5, 3.5, 14, 12.5], "texture": "#copper_block"},
+				"down": {"uv": [12.5, 3.5, 14, 12.5], "texture": "#copper_block"}
+			}
+		},
+		{
+			"name": "vat_floor",
+			"from": [3.5, 3, 3.5],
+			"to": [12.5, 4, 12.5],
+			"faces": {
+				"up": {"uv": [3.5, 3.5, 12.5, 12.5], "texture": "#copper"}
+			}
+		},
+		{
+			"name": "hoop_low_n",
+			"from": [1.75, 4.5, 1.75],
+			"to": [14.25, 5.5, 3.5],
+			"faces": {
+				"north": {"uv": [1.75, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"south": {"uv": [1.75, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"west": {"uv": [1.75, 10.5, 3.5, 11.5], "texture": "#brass"},
+				"east": {"uv": [12.5, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"up": {"uv": [1.75, 1.75, 14.25, 3.5], "texture": "#brass"},
+				"down": {"uv": [1.75, 12.5, 14.25, 14.25], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_low_s",
+			"from": [1.75, 4.5, 12.5],
+			"to": [14.25, 5.5, 14.25],
+			"faces": {
+				"north": {"uv": [1.75, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"south": {"uv": [1.75, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"west": {"uv": [12.5, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"east": {"uv": [1.75, 10.5, 3.5, 11.5], "texture": "#brass"},
+				"up": {"uv": [1.75, 12.5, 14.25, 14.25], "texture": "#brass"},
+				"down": {"uv": [1.75, 1.75, 14.25, 3.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_low_w",
+			"from": [1.75, 4.5, 3.5],
+			"to": [3.5, 5.5, 12.5],
+			"faces": {
+				"north": {"uv": [12.5, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"south": {"uv": [1.75, 10.5, 3.5, 11.5], "texture": "#brass"},
+				"west": {"uv": [3.5, 10.5, 12.5, 11.5], "texture": "#brass"},
+				"east": {"uv": [3.5, 10.5, 12.5, 11.5], "texture": "#brass"},
+				"up": {"uv": [1.75, 3.5, 3.5, 12.5], "texture": "#brass"},
+				"down": {"uv": [1.75, 3.5, 3.5, 12.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_low_e",
+			"from": [12.5, 4.5, 3.5],
+			"to": [14.25, 5.5, 12.5],
+			"faces": {
+				"north": {"uv": [1.75, 10.5, 3.5, 11.5], "texture": "#brass"},
+				"south": {"uv": [12.5, 10.5, 14.25, 11.5], "texture": "#brass"},
+				"west": {"uv": [3.5, 10.5, 12.5, 11.5], "texture": "#brass"},
+				"east": {"uv": [3.5, 10.5, 12.5, 11.5], "texture": "#brass"},
+				"up": {"uv": [12.5, 3.5, 14.25, 12.5], "texture": "#brass"},
+				"down": {"uv": [12.5, 3.5, 14.25, 12.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_high_n",
+			"from": [1.75, 9.5, 1.75],
+			"to": [14.25, 10.5, 3.5],
+			"faces": {
+				"north": {"uv": [1.75, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"south": {"uv": [1.75, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"west": {"uv": [1.75, 5.5, 3.5, 6.5], "texture": "#brass"},
+				"east": {"uv": [12.5, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"up": {"uv": [1.75, 1.75, 14.25, 3.5], "texture": "#brass"},
+				"down": {"uv": [1.75, 12.5, 14.25, 14.25], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_high_s",
+			"from": [1.75, 9.5, 12.5],
+			"to": [14.25, 10.5, 14.25],
+			"faces": {
+				"north": {"uv": [1.75, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"south": {"uv": [1.75, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"west": {"uv": [12.5, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"east": {"uv": [1.75, 5.5, 3.5, 6.5], "texture": "#brass"},
+				"up": {"uv": [1.75, 12.5, 14.25, 14.25], "texture": "#brass"},
+				"down": {"uv": [1.75, 1.75, 14.25, 3.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_high_w",
+			"from": [1.75, 9.5, 3.5],
+			"to": [3.5, 10.5, 12.5],
+			"faces": {
+				"north": {"uv": [12.5, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"south": {"uv": [1.75, 5.5, 3.5, 6.5], "texture": "#brass"},
+				"west": {"uv": [3.5, 5.5, 12.5, 6.5], "texture": "#brass"},
+				"east": {"uv": [3.5, 5.5, 12.5, 6.5], "texture": "#brass"},
+				"up": {"uv": [1.75, 3.5, 3.5, 12.5], "texture": "#brass"},
+				"down": {"uv": [1.75, 3.5, 3.5, 12.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "hoop_high_e",
+			"from": [12.5, 9.5, 3.5],
+			"to": [14.25, 10.5, 12.5],
+			"faces": {
+				"north": {"uv": [1.75, 5.5, 3.5, 6.5], "texture": "#brass"},
+				"south": {"uv": [12.5, 5.5, 14.25, 6.5], "texture": "#brass"},
+				"west": {"uv": [3.5, 5.5, 12.5, 6.5], "texture": "#brass"},
+				"east": {"uv": [3.5, 5.5, 12.5, 6.5], "texture": "#brass"},
+				"up": {"uv": [12.5, 3.5, 14.25, 12.5], "texture": "#brass"},
+				"down": {"uv": [12.5, 3.5, 14.25, 12.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "gantry_w",
+			"from": [0.5, 3, 7],
+			"to": [2, 15, 9],
+			"faces": {
+				"north": {"uv": [14, 1, 15.5, 13], "texture": "#iron"},
+				"south": {"uv": [0.5, 1, 2, 13], "texture": "#iron"},
+				"west": {"uv": [7, 1, 9, 13], "texture": "#iron"},
+				"east": {"uv": [7, 1, 9, 13], "texture": "#iron"},
+				"up": {"uv": [0.5, 7, 2, 9], "texture": "#iron"},
+				"down": {"uv": [0.5, 7, 2, 9], "texture": "#iron"}
+			}
+		},
+		{
+			"name": "gantry_e",
+			"from": [14, 3, 7],
+			"to": [15.5, 15, 9],
+			"faces": {
+				"north": {"uv": [0.5, 1, 2, 13], "texture": "#iron"},
+				"south": {"uv": [14, 1, 15.5, 13], "texture": "#iron"},
+				"west": {"uv": [7, 1, 9, 13], "texture": "#iron"},
+				"east": {"uv": [7, 1, 9, 13], "texture": "#iron"},
+				"up": {"uv": [14, 7, 15.5, 9], "texture": "#iron"},
+				"down": {"uv": [14, 7, 15.5, 9], "texture": "#iron"}
+			}
+		},
+		{
+			"name": "gantry_top",
+			"from": [0.5, 15, 7],
+			"to": [15.5, 16, 9],
+			"faces": {
+				"north": {"uv": [0.5, 0, 15.5, 1], "texture": "#iron"},
+				"south": {"uv": [0.5, 0, 15.5, 1], "texture": "#iron"},
+				"west": {"uv": [7, 0, 9, 1], "texture": "#iron"},
+				"east": {"uv": [7, 0, 9, 1], "texture": "#iron"},
+				"up": {"uv": [0.5, 7, 15.5, 9], "texture": "#iron"},
+				"down": {"uv": [0.5, 7, 15.5, 9], "texture": "#iron"}
+			}
+		},
+		{
+			"name": "gear_box",
+			"from": [6.5, 14, 6.5],
+			"to": [9.5, 15, 9.5],
+			"faces": {
+				"north": {"uv": [6.5, 1, 9.5, 2], "texture": "#brass"},
+				"south": {"uv": [6.5, 1, 9.5, 2], "texture": "#brass"},
+				"west": {"uv": [6.5, 1, 9.5, 2], "texture": "#brass"},
+				"east": {"uv": [6.5, 1, 9.5, 2], "texture": "#brass"},
+				"up": {"uv": [6.5, 6.5, 9.5, 9.5], "texture": "#brass"},
+				"down": {"uv": [6.5, 6.5, 9.5, 9.5], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "pattern_plate",
+			"from": [5, 6, 1.75],
+			"to": [11, 9.5, 2],
+			"faces": {
+				"north": {"uv": [5, 6.5, 11, 10], "texture": "#plate"}
+			}
+		},
+		{
+			"name": "spout_tray",
+			"from": [4, 3, 0.25],
+			"to": [12, 4, 1.75],
+			"faces": {
+				"north": {"uv": [4, 12, 12, 13], "texture": "#brass"},
+				"south": {"uv": [4, 12, 12, 13], "texture": "#brass"},
+				"west": {"uv": [0.25, 12, 1.75, 13], "texture": "#brass"},
+				"east": {"uv": [14.25, 12, 15.75, 13], "texture": "#brass"},
+				"up": {"uv": [4, 0.25, 12, 1.75], "texture": "#brass"},
+				"down": {"uv": [4, 14.25, 12, 15.75], "texture": "#brass"}
+			}
+		}
+	]
+}

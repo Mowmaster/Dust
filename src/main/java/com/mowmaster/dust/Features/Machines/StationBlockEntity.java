@@ -58,13 +58,18 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
         super(type, pos, state);
     }
 
-    // Every station's block entity type (the research stations and the Element Replicator), for the item capability below
+    // Every station's block entity type (the research stations, the Element Replicator and the alchemical apparatus),
+    // for the item capability below
     private static List<BlockEntityType<? extends StationBlockEntity>> types()
     {
         return List.of(DustBlockEntityRegistry.RESEARCH_CRUSHER.get(), DustBlockEntityRegistry.RESEARCH_SEPARATION.get(),
                 DustBlockEntityRegistry.RESEARCH_EVAPORATION.get(), DustBlockEntityRegistry.RESEARCH_DISTILLATION.get(),
                 DustBlockEntityRegistry.RESEARCH_TRANSFORMATION.get(), DustBlockEntityRegistry.RESEARCH_COMBINATION.get(),
-                DustBlockEntityRegistry.RESEARCH_MIXING.get(), DustBlockEntityRegistry.ELEMENT_REPLICATOR.get());
+                DustBlockEntityRegistry.RESEARCH_MIXING.get(), DustBlockEntityRegistry.ELEMENT_REPLICATOR.get(),
+                // The alchemical apparatus (Features/Apparatus)
+                DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
+                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.ALEMBIC.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
+                DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get());
     }
 
     // Hoppers and pipes: the slots for the side they're on (side is null when something asks without a side: the top)

@@ -1,0 +1,57 @@
+{
+	"textures": {"iron": "minecraft:block/anvil", "brass": "dust:block/apparatus/brass", "particle": "minecraft:block/anvil", "stone": "minecraft:block/grindstone_side", "round": "minecraft:block/grindstone_round"},
+	"elements": [
+		{
+			"name": "wheel_a",
+			"from": [4.5, 6.5, 6.5],
+			"to": [11.5, 9.5, 9.5],
+			"faces": {
+				"north": {"uv": [4.5, 6.5, 11.5, 9.5], "texture": "#stone"},
+				"south": {"uv": [4.5, 6.5, 11.5, 9.5], "texture": "#stone"},
+				"west": {"uv": [6.5, 6.5, 9.5, 9.5], "texture": "#round"},
+				"east": {"uv": [6.5, 6.5, 9.5, 9.5], "texture": "#round"},
+				"up": {"uv": [4.5, 6.5, 11.5, 9.5], "texture": "#stone"},
+				"down": {"uv": [4.5, 6.5, 11.5, 9.5], "texture": "#stone"}
+			}
+		},
+		{
+			"name": "wheel_b",
+			"from": [4.5, 7, 6],
+			"to": [11.5, 9, 10],
+			"faces": {
+				"north": {"uv": [4.5, 7, 11.5, 9], "texture": "#stone"},
+				"south": {"uv": [4.5, 7, 11.5, 9], "texture": "#stone"},
+				"west": {"uv": [6, 7, 10, 9], "texture": "#round"},
+				"east": {"uv": [6, 7, 10, 9], "texture": "#round"},
+				"up": {"uv": [4.5, 6, 11.5, 10], "texture": "#stone"},
+				"down": {"uv": [4.5, 6, 11.5, 10], "texture": "#stone"}
+			}
+		},
+		{
+			"name": "wheel_c",
+			"from": [4.5, 6, 7],
+			"to": [11.5, 10, 9],
+			"faces": {
+				"north": {"uv": [4.5, 6, 11.5, 10], "texture": "#stone"},
+				"south": {"uv": [4.5, 6, 11.5, 10], "texture": "#stone"},
+				"west": {"uv": [7, 6, 9, 10], "texture": "#round"},
+				"east": {"uv": [7, 6, 9, 10], "texture": "#round"},
+				"up": {"uv": [4.5, 7, 11.5, 9], "texture": "#stone"},
+				"down": {"uv": [4.5, 7, 11.5, 9], "texture": "#stone"}
+			}
+		},
+		{
+			"name": "axle",
+			"from": [3.5, 7.5, 7.5],
+			"to": [12.5, 8.5, 8.5],
+			"faces": {
+				"north": {"uv": [3.5, 7.5, 12.5, 8.5], "texture": "#iron"},
+				"south": {"uv": [3.5, 7.5, 12.5, 8.5], "texture": "#iron"},
+				"west": {"uv": [7.5, 7.5, 8.5, 8.5], "texture": "#iron"},
+				"east": {"uv": [7.5, 7.5, 8.5, 8.5], "texture": "#iron"},
+				"up": {"uv": [3.5, 7.5, 12.5, 8.5], "texture": "#iron"},
+				"down": {"uv": [3.5, 7.5, 12.5, 8.5], "texture": "#iron"}
+			}
+		}
+	]
+}

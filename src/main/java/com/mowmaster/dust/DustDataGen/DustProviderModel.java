@@ -87,6 +87,7 @@ public class DustProviderModel extends ModelProvider {
         createElementStations(blockModels, itemModels);
         createDustStorage(blockModels);
         createLamps(blockModels);
+        createApparatus(blockModels);
         createSpellScroll(itemModels);
         createPylons(blockModels);
         createCounterPylons(blockModels);
@@ -440,6 +441,35 @@ public class DustProviderModel extends ModelProvider {
     }
 
     // A station turned by FACING (the models face north), with its block and item models
+    // The alchemical apparatus (Features/Apparatus): one hand-made model each (models/block/apparatus/<name>.json, made
+    // with the scratch generator: copper, brass and wrought iron on a blackstone plinth), turned to face the way it was
+    // placed; the item is the same model. Their moving parts are standalone models drawn by Client/ApparatusRenderer.
+    // The Glass Dust Tube: a multipart blockstate (every part whose condition holds is drawn): the glass middle always,
+    // and an arm (dust_tube_arm.json, made pointing north) turned toward each side it's joined on that side; the item is
+    // a straight run (dust_tube_item.json).
+    private void createApparatus(BlockModelGenerators blockModels)
+    {
+        for (Block block : List.of(DustBlockRegistry.CRUSHING_MILL.get(), DustBlockRegistry.ALCHEMICAL_SEPARATOR.get(), DustBlockRegistry.EVAPORATING_KETTLE.get(),
+                DustBlockRegistry.ALEMBIC.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get())) {
+            Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
+                    .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+            blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+        }
+        Block tube = DustBlockRegistry.DUST_TUBE.get();
+        MultiVariant core = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_core"));
+        MultiVariant arm = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_arm"));
+        blockModels.blockStateOutput.accept(MultiPartGenerator.multiPart(tube)
+                .with(core)
+                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.NORTH, true), arm)
+                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.EAST, true), arm.with(BlockModelGenerators.Y_ROT_90))
+                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.SOUTH, true), arm.with(BlockModelGenerators.Y_ROT_180))
+                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.WEST, true), arm.with(BlockModelGenerators.Y_ROT_270))
+                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.UP, true), arm.with(BlockModelGenerators.X_ROT_270))
+                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOWN, true), arm.with(BlockModelGenerators.X_ROT_90)));
+        blockModels.itemModelOutput.accept(tube.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_item")));
+    }
+
     private void station(BlockModelGenerators blockModels, Block block, String blockModel, String itemModel)
     {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,

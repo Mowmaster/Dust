@@ -37,8 +37,9 @@ import org.jspecify.annotations.Nullable;
 //   right-click with energy crystals       feed it the crystals (the whole stack)
 //   sneak-right-click with an empty hand   take the scroll out
 //   right-click with an empty hand         what it holds: the spell, its dust and its energy
-// Hoppers and pipes can feed it dust and energy crystals from any side.
-public class SpellCasterBlock extends Block implements EntityBlock
+// Hoppers and pipes can feed it dust and energy crystals from any side. Glass Dust Tubes join on to it too
+// (DustTubeConnectable): it keeps its spell's dust topped up from the Dust Jars on their network.
+public class SpellCasterBlock extends Block implements EntityBlock, com.mowmaster.dust.Features.DustStorage.DustTubeConnectable
 {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
@@ -149,5 +150,20 @@ public class SpellCasterBlock extends Block implements EntityBlock
         }
         if (player instanceof ServerPlayer serverPlayer) caster.report(serverPlayer);
         return InteractionResult.SUCCESS;
+    }
+
+    // Placed or taken away: the tube networks round it have to be found again
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)
+    {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!oldState.is(this)) com.mowmaster.dust.Features.DustStorage.DustNetwork.changed(level);
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston)
+    {
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        com.mowmaster.dust.Features.DustStorage.DustNetwork.changed(level);
     }
 }

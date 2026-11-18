@@ -24,8 +24,9 @@ import java.util.Optional;
 // its colour, Client/DustJarTint); an empty jar keeps it until it's cleared (DustJarBlock: sneak + right-click).
 // What's saved is also what the client gets (CBSyncedBlockEntity), for the lid colour.
 // IPickupableBlock: MowLib's pick-up key (and the jar's own sneak-click) take it as an item, dust and all.
-// IDustReceiver: machines (the Dust Grinder) pour dust in.
-public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupableBlock, IDustReceiver
+// IDustHolder: machines (the Dust Grinder, the alchemical apparatus through Glass Dust Tubes) pour dust in and draw it
+// out (DustNetwork).
+public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupableBlock, IDustHolder
 {
     private @Nullable DustElement element;
     private int amount;
@@ -87,6 +88,33 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
             changed();
         }
         return moved;
+    }
+
+    // ---- dust holder (IDustHolder: tubes and the apparatus) ----
+
+    @Override
+    public int dustAmount(DustElement dust)
+    {
+        return dust.equals(element) ? amount : 0;
+    }
+
+    @Override
+    public int extractDust(DustElement dust, int count, boolean simulate)
+    {
+        if (!dust.equals(element)) return 0;
+        int taken = Math.min(count, amount);
+        if (!simulate && taken > 0) {
+            amount -= taken;
+            changed();
+        }
+        return taken;
+    }
+
+    // Set to this element: it keeps its element while empty, so tubes fill it before an empty, unset jar
+    @Override
+    public boolean prefersDust(DustElement dust)
+    {
+        return dust.equals(element);
     }
 
     // Takes up to count out (the element stays, so the jar keeps its colour when it runs dry); returns how much

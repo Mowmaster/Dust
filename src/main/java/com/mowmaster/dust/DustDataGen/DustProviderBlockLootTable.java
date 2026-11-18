@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
+import java.util.List;
 import java.util.Set;
 
 // 26.3: loot tables are registry entries. This sub provider is handed to GatherDataRegistryEntriesEvent
@@ -71,6 +72,10 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
                                 .include(com.mowmaster.dust.DustRegistries.DustComponentDataRegistry.DUST_JAR.get()))))));
         dropSelf(DustBlockRegistry.DUST_GRINDER.get());
         dropSelf(DustBlockRegistry.GROWTH_LAMP.get());
+        // The alchemical apparatus and the Glass Dust Tube (what's inside an apparatus drops when it's broken: its block entity)
+        for (var block : List.of(DustBlockRegistry.CRUSHING_MILL, DustBlockRegistry.ALCHEMICAL_SEPARATOR, DustBlockRegistry.EVAPORATING_KETTLE,
+                DustBlockRegistry.ALEMBIC, DustBlockRegistry.TRANSMUTER, DustBlockRegistry.CONJOINING_CRUCIBLE, DustBlockRegistry.MIXING_VAT,
+                DustBlockRegistry.DUST_TUBE)) dropSelf(block.get());
         dropSelf(DustBlockRegistry.LOVELY_LAMP.get());
         dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());
         dropSelf(DustBlockRegistry.RESEARCH_SEPARATION.get());
