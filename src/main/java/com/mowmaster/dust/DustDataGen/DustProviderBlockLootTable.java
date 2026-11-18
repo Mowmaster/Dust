@@ -66,6 +66,8 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
                         .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
                                 .include(com.mowmaster.dust.DustRegistries.DustComponentDataRegistry.DUST_JAR.get()))))));
         dropSelf(DustBlockRegistry.DUST_GRINDER.get());
+        dropSelf(DustBlockRegistry.GROWTH_LAMP.get());
+        dropSelf(DustBlockRegistry.LOVELY_LAMP.get());
         dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());
         dropSelf(DustBlockRegistry.RESEARCH_SEPARATION.get());
         dropSelf(DustBlockRegistry.RESEARCH_EVAPORATION.get());

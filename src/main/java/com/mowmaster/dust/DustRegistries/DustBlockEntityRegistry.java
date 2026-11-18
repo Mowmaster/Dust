@@ -40,6 +40,12 @@ public class DustBlockEntityRegistry
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustGrinderBlockEntity>> DUST_GRINDER = BLOCK_ENTITIES.register("dust_grinder",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustGrinderBlockEntity::new, Set.of(DustBlockRegistry.DUST_GRINDER.get())));
 
+    // Lamps (Features/Lamps)
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Lamps.GrowthLampBlockEntity>> GROWTH_LAMP = BLOCK_ENTITIES.register("growth_lamp",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Lamps.GrowthLampBlockEntity::new, Set.of(DustBlockRegistry.GROWTH_LAMP.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Lamps.LovelyLampBlockEntity>> LOVELY_LAMP = BLOCK_ENTITIES.register("lovely_lamp",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Lamps.LovelyLampBlockEntity::new, Set.of(DustBlockRegistry.LOVELY_LAMP.get())));
+
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity>> SPELL_CASTER = BLOCK_ENTITIES.register("spell_caster",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity::new, Set.of(DustBlockRegistry.SPELL_CASTER.get())));
 

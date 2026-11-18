@@ -105,23 +105,27 @@ public final class UtilityParts
 
     // ---- Plants ----
 
-    // Plants what's in the caster's hand (a seed, sapling, flower...) in the nearest spot around them it'll grow
-    public static void plantHeld(SpellCast cast, LivingEntity target)
+    // Seeds on a block: what's in the caster's hand that can be planted (a seed, sapling, flower...), the main hand
+    // first, planted on the block as if they'd right-clicked its top with it (an empty flower pot takes a flower). Used up
+    // as a player's planting uses it (not in creative). Cast by a Spell Caster: something from the containers around it
+    // instead (they stand in for a player's hands: CasterStorage).
+    public static void plantFromHand(SpellCast cast, BlockPos pos, Direction face)
     {
-        if (!(target instanceof Player player)) return;
+        ServerLevel level = cast.level();
+        com.mowmaster.dust.Features.Spells.caster.CasterStorage storage = com.mowmaster.dust.Features.Spells.caster.CasterStorage.of(cast);
+        if (storage != null) {
+            plantFromStorage(level, storage, pos);
+            return;
+        }
+        if (!(cast.caster() instanceof Player player)) return;
+        BlockState state = level.getBlockState(pos);
+        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(pos).add(0, 0.5, 0), Direction.UP, pos, false);
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
             if (!plantable(stack)) continue;
-            List<BlockPos> ground = new ArrayList<>();
-            BlockPos feet = player.blockPosition();
-            for (BlockPos at : BlockPos.betweenClosed(feet.offset(-2, -2, -2), feet.offset(2, 0, 2))) ground.add(at.immutable());
-            ground.sort(Comparator.comparingDouble(at -> at.distSqr(feet)));
-            for (BlockPos at : ground) {
-                if (!cast.level().getBlockState(at.above()).isAir()) continue;
-                // As if the player right-clicked the top of that block with the item
-                BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(at).add(0, 0.5, 0), Direction.UP, at, false);
-                if (stack.useOn(new UseOnContext(player, hand, hit)).consumesAction()) return;
-            }
+            // A flower pot takes it through the pot's own use (only pots: other blocks' uses, a composter's, aren't planting)
+            if (state.getBlock() instanceof FlowerPotBlock && state.useItemOn(stack, level, player, hand, hit).consumesAction()) return;
+            if (stack.useOn(new UseOnContext(player, hand, hit)).consumesAction()) return;
         }
     }
 

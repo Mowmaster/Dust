@@ -189,6 +189,13 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.DUST_GRINDER.asItem(), "dust_grinder", unlock("dust_grinder"),
                 java.util.Map.of('S', stone, 'A', Ingredient.of(DustItemRegistry.ALCHEMICAL_DUST.get())),
                 List.of("SSS", "AAA", "SSS"), cost(DustElements.FRACTURE, 10));
+        // The lamps: a lantern with a crystal of what they burn on top, and some of that dust from the jars
+        elementShaped(DustBlockRegistry.GROWTH_LAMP.asItem(), "growth_lamp", Optional.empty(),
+                java.util.Map.of('C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.GROWTH).get()), 'L', Ingredient.of(Items.LANTERN)),
+                List.of("C", "L"), cost(DustElements.GROWTH, 20));
+        elementShaped(DustBlockRegistry.LOVELY_LAMP.asItem(), "lovely_lamp", Optional.empty(),
+                java.util.Map.of('C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.SEEDS).get()), 'L', Ingredient.of(Items.LANTERN)),
+                List.of("C", "L"), cost(DustElements.SEEDS, 20));
         // The pylons: one pattern, a different element for each
         java.util.Map<Character, Ingredient> pylonKey = java.util.Map.of('S', stone, 'A', Ingredient.of(soot));
         List<String> pylon = List.of("SAS", " S ", "SSS");

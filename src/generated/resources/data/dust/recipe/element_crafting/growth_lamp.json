@@ -1,0 +1,22 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:growth"
+    }
+  ],
+  "result": {
+    "id": "dust:growth_lamp"
+  },
+  "shaped": {
+    "key": {
+      "C": "dust:growth_crystal",
+      "L": "minecraft:lantern"
+    },
+    "pattern": [
+      "C",
+      "L"
+    ]
+  }
+}

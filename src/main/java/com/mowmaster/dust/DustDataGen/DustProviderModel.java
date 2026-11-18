@@ -86,6 +86,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchDistillation(blockModels, itemModels);
         createElementStations(blockModels, itemModels);
         createDustStorage(blockModels);
+        createLamps(blockModels);
         createSpellScroll(itemModels);
         createPylons(blockModels);
         createCounterPylons(blockModels);
@@ -214,6 +215,14 @@ public class DustProviderModel extends ModelProvider {
     //     item's by "dust:dust_jar" (Client/DustJarItemTint), with index 0 left white.
     //   the Dust Grinder: the block shows the base (dust_grinder_base.json); the top turns in Client/DustGrinderRenderer
     //     (dust_grinder_top.json). The item shows the whole thing (dust_grinder.json). One model whether powered or not.
+    // The lamps: vanilla's lantern models (standing, and hanging by its chain) with each lamp's own texture
+    // (block/growth_lamp), and a flat item (item/growth_lamp), just as BlockModelGenerators.createLantern makes them
+    private void createLamps(BlockModelGenerators blockModels)
+    {
+        blockModels.createLantern(DustBlockRegistry.GROWTH_LAMP.get());
+        blockModels.createLantern(DustBlockRegistry.LOVELY_LAMP.get());
+    }
+
     private void createDustStorage(BlockModelGenerators blockModels)
     {
         Identifier jar = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_jar");

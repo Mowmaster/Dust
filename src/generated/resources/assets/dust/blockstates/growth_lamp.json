@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "dust:block/growth_lamp"
+    },
+    "hanging=true": {
+      "model": "dust:block/growth_lamp_hanging"
+    }
+  }
+}

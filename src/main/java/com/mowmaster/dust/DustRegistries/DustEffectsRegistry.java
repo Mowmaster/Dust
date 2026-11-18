@@ -122,6 +122,21 @@ public class DustEffectsRegistry
     // Growth on yourself: bigger (a quarter more a level)
     public static final Holder<MobEffect> GROWN = MOB_EFFECTS.register("grown", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x7FD650)
             .addAttributeModifier(Attributes.SCALE, id("effect.grown"), AttributeModifier.Operation.ADD_VALUE, amplifier -> 0.25 * (amplifier + 1)));
+    // The Growth + Chaos fusion, on yourself or a mob: a quarter smaller a level (Grown the other way), down to a tenth
+    public static final Holder<MobEffect> SHRUNK = MOB_EFFECTS.register("shrunk", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0xA070D8)
+            .addAttributeModifier(Attributes.SCALE, id("effect.shrunk"), AttributeModifier.Operation.ADD_VALUE, amplifier -> -Math.min(0.9, 0.25 * (amplifier + 1))));
+    // Plants on yourself: in sunlight (the sky overhead, daytime, no rain on you) it heals half a heart; under cover (no
+    // sky overhead) it feeds a player instead (1 food, and saturation). Every 2 seconds at level I, faster each level.
+    public static final Holder<MobEffect> PHOTOSYNTHESIS = MOB_EFFECTS.register("photosynthesis", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0x9ADB4A, 40,
+            (level, entity, amplifier) -> {
+                net.minecraft.core.BlockPos head = net.minecraft.core.BlockPos.containing(entity.getEyePosition());
+                if (level.canSeeSky(head)) {
+                    if (level.isBrightOutside() && !level.isRainingAt(head) && entity.getHealth() < entity.getMaxHealth()) entity.heal(1.0F);
+                } else if (entity instanceof net.minecraft.world.entity.player.Player player) {
+                    // eat(food, saturation modifier): 1 food, and 1 saturation (food x modifier x 2)
+                    player.getFoodData().eat(1, 0.5F);
+                }
+            }));
     // Fungus on a mob: it hunts the monsters around it, and won't turn on whoever cast it or theirs
     public static final Holder<MobEffect> ENTHRALLED = MOB_EFFECTS.register("enthralled", () -> new TickingMobEffect(MobEffectCategory.NEUTRAL, 0xB07A50, 20,
             SpellMobEffects::thrallTick));

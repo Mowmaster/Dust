@@ -1,0 +1,22 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:seeds"
+    }
+  ],
+  "result": {
+    "id": "dust:lovely_lamp"
+  },
+  "shaped": {
+    "key": {
+      "C": "dust:seeds_crystal",
+      "L": "minecraft:lantern"
+    },
+    "pattern": [
+      "C",
+      "L"
+    ]
+  }
+}

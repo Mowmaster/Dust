@@ -70,10 +70,17 @@ public final class SpellConversions extends SimpleJsonResourceReloadListener<Con
     // The block effect of any element with a table: the first rule matching the block changes it. True if one did.
     public static boolean convert(SpellCast cast, BlockPos pos, Direction face)
     {
+        return convert(cast, pos, face, cast.element());
+    }
+
+    // The same with another element's table: the Growth + Chaos fusion uses the Seeds table (plants back into their
+    // seeds), which is no longer Seeds' own block effect
+    public static boolean convert(SpellCast cast, BlockPos pos, Direction face, DustElement table)
+    {
         ServerLevel level = cast.level();
         BlockState state = level.getBlockState(pos);
         RandomSource random = level.getRandom();
-        for (BlockConversion rule : rules(cast.element())) {
+        for (BlockConversion rule : rules(table)) {
             if (!rule.cycle().isEmpty()) {
                 for (int i = 0; i < rule.cycle().size(); i++) {
                     if (!rule.cycle().get(i).matches(state)) continue;

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "dust:block/lovely_lamp"
+    },
+    "hanging=true": {
+      "model": "dust:block/lovely_lamp_hanging"
+    }
+  }
+}

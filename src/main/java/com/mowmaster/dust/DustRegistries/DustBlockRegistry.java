@@ -154,6 +154,19 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> DUST_GRINDER = registerBlock("dust_grinder", properties -> new com.mowmaster.dust.Features.DustStorage.DustGrinderBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
 
+    // Lamps (Features/Lamps): lanterns that burn element dust for an effect on what's round them. Set up as vanilla's
+    // lantern is.
+    public static final DeferredBlock<Block> GROWTH_LAMP = registerBlock("growth_lamp", properties -> new com.mowmaster.dust.Features.Lamps.GrowthLampBlock(
+            lampProperties(properties)));
+    public static final DeferredBlock<Block> LOVELY_LAMP = registerBlock("lovely_lamp", properties -> new com.mowmaster.dust.Features.Lamps.LovelyLampBlock(
+            lampProperties(properties)));
+
+    private static BlockBehaviour.Properties lampProperties(BlockBehaviour.Properties properties)
+    {
+        return properties.mapColor(MapColor.METAL).forceSolidOn().strength(3.5F).sound(SoundType.LANTERN).lightLevel(state -> 15).noOcclusion()
+                .pushReaction(PushReaction.POPPED);
+    }
+
     // The Spell Caster (Features/Spells/caster): casts a scroll's spell on a redstone pulse, on dust and energy crystals
     public static final DeferredBlock<Block> SPELL_CASTER = registerBlock("spell_caster", properties -> new com.mowmaster.dust.Features.Spells.caster.SpellCasterBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(3.5F).requiresCorrectToolForDrops()));

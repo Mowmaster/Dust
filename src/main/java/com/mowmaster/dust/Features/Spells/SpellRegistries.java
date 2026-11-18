@@ -414,6 +414,14 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FRACTURE_EARTH = MODIFIERS.register("fusion_fracture_earth",
             () -> new FusionModifier(DustElements.FRACTURE, DustElements.EARTH).block(com.mowmaster.dust.Features.Spells.effects.FusionParts::mine)
                     .types(null, EffectType.INSTANT, null));
+    // Growth + Chaos: Regression. Self and creatures shrink (Shrunk: a quarter smaller a level); on a block it turns a
+    // plant back into its seeds (the Seeds conversion table, data/dust/dust_spell_conversions/seeds.json)
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_GROWTH_CHAOS = MODIFIERS.register("fusion_growth_chaos",
+            () -> new FusionModifier(DustElements.GROWTH, DustElements.CHAOS)
+                    .self(BasicEffect.give(DustEffectsRegistry.SHRUNK))
+                    .block((cast, pos, face) -> SpellConversions.convert(cast, pos, face, DustElements.SEEDS))
+                    .entity(BasicEffect.inflict(DustEffectsRegistry.SHRUNK))
+                    .types(EffectType.DOT, EffectType.INSTANT, EffectType.DOT));
     // Plants + Tool: Harvest (FusionParts): self harvests what the caster stands in or on; on a block it harvests, or
     // shears what has nothing to harvest; on a creature it shears
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_PLANTS_TOOL = MODIFIERS.register("fusion_plants_tool",
@@ -486,7 +494,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> CREATURE_EFFECT = element(DustElements.CREATURE,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.DOT).block(SpecialBlockParts::animate).self(BasicEffect.give(DustEffectsRegistry.PACK_TACTICS)).entity(SimpleParts::mark));
     public static final DeferredHolder<ElementEffect, ElementEffect> PLANTS_EFFECT = element(DustElements.PLANTS,
-            () -> new BasicEffect().types(EffectType.INSTANT, EffectType.INSTANT, EffectType.DOT).self(UtilityParts::plantHeld).block(UtilityParts::plantFlower).entity(BasicEffect.inflict(DustEffectsRegistry.TANGLED)));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.DOT).self(BasicEffect.give(DustEffectsRegistry.PHOTOSYNTHESIS)).block(UtilityParts::plantFlower).entity(BasicEffect.inflict(DustEffectsRegistry.TANGLED)));
     public static final DeferredHolder<ElementEffect, ElementEffect> TREES_EFFECT = element(DustElements.TREES,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.DOT).block(UtilityParts::fellTree).self(BasicEffect.give(DustEffectsRegistry.THORNS)).entity(RootParts::roots));
     public static final DeferredHolder<ElementEffect, ElementEffect> KNOWLEDGE_EFFECT = element(DustElements.KNOWLEDGE,
@@ -508,7 +516,7 @@ public final class SpellRegistries
     public static final DeferredHolder<ElementEffect, ElementEffect> RADIANCE_EFFECT = element(DustElements.RADIANCE,
             () -> new BasicEffect().types(EffectType.INSTANT, EffectType.INSTANT, EffectType.INSTANT).self(Radiance::shareSelf).block(SpellConversions::convert).entity(Radiance::shareMob));
     public static final DeferredHolder<ElementEffect, ElementEffect> SEEDS_EFFECT = element(DustElements.SEEDS,
-            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT).self(StoreParts::plantSeed).entity(MobParts::toBreedingItem).block(SpellConversions::convert));
+            () -> new BasicEffect().types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT).self(StoreParts::plantSeed).entity(MobParts::toBreedingItem).block(UtilityParts::plantFromHand));
 
     public static final DeferredHolder<ElementEffect, ElementEffect> VACUUM_EFFECT = element(DustElements.VACUUM,
             () -> new BasicEffect().types(EffectType.DOT, EffectType.DOT, EffectType.INSTANT).self(BasicEffect.give(DustEffectsRegistry.VACUUM)).block(MobParts::vacuumBlock).entity(MobParts::vacuumMob));
