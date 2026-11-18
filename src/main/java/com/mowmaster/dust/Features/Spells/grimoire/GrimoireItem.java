@@ -104,7 +104,9 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         if (scroll.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) return scroll.getHoverName();
         Spell spell = scroll.get(DustComponentDataRegistry.SPELL.get());
         if (spell == null) return scroll.getHoverName();
-        return Component.translatable("dust.grimoire.spell", com.mowmaster.dust.Features.DustComposition.ElementNames.plainForClient(spell.element()),
+        // A fused spell goes by its fusion's name ("Harvest Touch")
+        return Component.translatable("dust.grimoire.spell",
+                com.mowmaster.dust.Features.Spells.SpellNames.plainSpellForClient(spell.element(), com.mowmaster.dust.Features.Spells.SpellNames.fusionOf(spell)),
                 Component.translatable("spell_shape." + spell.shape().getNamespace() + "." + spell.shape().getPath()));
     }
 

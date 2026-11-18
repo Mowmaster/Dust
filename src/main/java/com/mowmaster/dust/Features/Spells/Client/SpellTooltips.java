@@ -28,7 +28,10 @@ public final class SpellTooltips
         if (spell == null) return;
         List<Component> lines = event.getToolTip();
         int at = Math.min(1, lines.size());
-        lines.add(at++, Component.translatable("dust.spell.tooltip.element", com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(spell.element()), name("spell_shape", spell.shape()))
+        // A fused spell goes by its fusion's name (SpellNames.spellForClient)
+        lines.add(at++, Component.translatable("dust.spell.tooltip.element",
+                        com.mowmaster.dust.Features.Spells.SpellNames.spellForClient(spell.element(), com.mowmaster.dust.Features.Spells.SpellNames.fusionOf(spell)),
+                        name("spell_shape", spell.shape()))
                 .withStyle(ChatFormatting.GRAY));
         // Locked (SpellSync): it no longer follows its tree
         if (event.getItemStack().has(DustComponentDataRegistry.SPELL_LOCKED.get())) lines.add(at++, Component.translatable("dust.spell.tooltip.locked").withStyle(ChatFormatting.GOLD));

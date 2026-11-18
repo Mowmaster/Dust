@@ -1,3 +1,4 @@
+
 package com.mowmaster.dust.Features.Spells;
 
 import com.mowmaster.dust.DustReferences;
@@ -5,6 +6,7 @@ import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Spells.api.SpellTarget;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
@@ -48,6 +50,36 @@ public final class SpellNames
             if (Language.getInstance().has(byElement)) return Component.translatable(byElement);
         }
         return Component.translatable(base);
+    }
+
+    // ---- a spell's own name ----
+    // A fused spell is named for its fusion, not its element (a spell started from a Harvest Fused Crystal is a Plants
+    // spell underneath, but it's Harvest): [fusion icon] Harvest. Any other spell: its element, as the local player
+    // knows it ([icon] Plants, or the ancient name).
+
+    public static MutableComponent spellForClient(DustElement element, @Nullable Identifier fusion)
+    {
+        if (fusion == null) return com.mowmaster.dust.Features.DustComposition.ElementNames.forClient(element);
+        return Component.empty().append(fusionIcon(fusion)).append(" ").append(fusionName(fusion));
+    }
+
+    // Just the name, no icon: for item names ("Harvest Touch")
+    public static Component plainSpellForClient(DustElement element, @Nullable Identifier fusion)
+    {
+        return fusion == null ? com.mowmaster.dust.Features.DustComposition.ElementNames.plainForClient(element) : fusionName(fusion);
+    }
+
+    public static MutableComponent fusionName(Identifier fusion)
+    {
+        return Component.translatable("spell_modifier." + fusion.getNamespace() + "." + fusion.getPath());
+    }
+
+    // The fusion's icon as a piece of text: its GUI sprite (textures/gui/sprites/fusion/<id>.png) drawn inline like a
+    // letter, given white so it shows in its own colours (as ElementNames.icon does for elements)
+    public static MutableComponent fusionIcon(Identifier fusion)
+    {
+        return Component.object(new net.minecraft.network.chat.contents.objects.AtlasSprite(net.minecraft.data.AtlasIds.GUI,
+                Identifier.fromNamespaceAndPath(fusion.getNamespace(), "fusion/" + fusion.getPath()))).withColor(0xFFFFFF);
     }
 
     // The fusion a spell is (the first fusion among its modifiers), or null

@@ -3,7 +3,6 @@ package com.mowmaster.dust.Features.Spells.Client;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
-import com.mowmaster.dust.Features.DustComposition.ElementNames;
 import com.mowmaster.dust.Features.Spells.SpellNames;
 import com.mowmaster.dust.Features.Spells.grimoire.AkashicItem;
 import com.mowmaster.dust.Features.Spells.pylons.SpellDeck;
@@ -181,7 +180,8 @@ public final class SpellPylonHud
         } else {
             int level = pylon.level();
             int into = pylon.experience() - SpellLevels.xpForLevel(level);
-            rows.add(Component.translatable("hud.dust.pylon.title", ElementNames.forClient(element), level, into, SpellLevels.xpForNextLevel(level)));
+            // A fused spell goes by its fusion's name (SpellNames.spellForClient)
+            rows.add(Component.translatable("hud.dust.pylon.title", SpellNames.spellForClient(element, pylon.fusion()), level, into, SpellLevels.xpForNextLevel(level)));
             if (!deck.started()) {
                 rows.add(Component.empty());
                 rows.add(Component.translatable("hud.dust.pylon.not_started").withStyle(ChatFormatting.ITALIC));
@@ -226,7 +226,7 @@ public final class SpellPylonHud
         int left = x + PADDING, top = y + PADDING;
         for (Object row : rows) {
             if (row instanceof Component text) {
-                // The element's icon is part of the title line (an inline picture): ElementNames
+                // The element's (or fusion's) icon is part of the title line, an inline picture: SpellNames.spellForClient
                 graphics.text(font, text, left, top, INK, false);
                 top += LINE;
             } else if (row instanceof Grid grid) {
