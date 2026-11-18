@@ -6,10 +6,6 @@
       "element": "dust:magic"
     }
   ],
-  "research": {
-    "entry": "dust:unlock_magical_flint_and_steel",
-    "tab": "dust:research"
-  },
   "result": {
     "id": "dust:magical_flint_and_steel"
   },

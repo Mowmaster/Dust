@@ -41,6 +41,9 @@ public final class SpellCast
     private boolean secondary;
     // Things done once per cast, whatever's hit (firstTime)
     private final java.util.Set<String> done = new java.util.HashSet<>();
+    // The Spell Caster that cast it (a block, so caster is null): effects use the containers around it as a player's
+    // hands and inventory (caster/CasterStorage). Its projectile and echoes carry it on.
+    private @Nullable BlockPos casterBlock;
 
     // caster: null for a block casting it (then origin and direction say where from and which way)
     public SpellCast(ServerLevel level, @Nullable LivingEntity caster, Spell spell, SpellStats stats, Vec3 origin, Vec3 direction)
@@ -69,12 +72,21 @@ public final class SpellCast
     public boolean delivered() { return delivered; }
     public void markDelivered() { delivered = true; }
     public boolean isSecondary() { return secondary; }
+    public @Nullable BlockPos casterBlock() { return casterBlock; }
+
+    // Marks it as cast by the Spell Caster at pos (null: not by one); returns the same cast
+    public SpellCast fromBlock(@Nullable BlockPos pos)
+    {
+        casterBlock = pos;
+        return this;
+    }
 
     // The same cast, only running the effect (for a rune, a chain's jump, a lingering pool)
     public SpellCast asSecondary()
     {
         SpellCast copy = new SpellCast(level, caster, spell, stats, origin, direction);
         copy.secondary = true;
+        copy.casterBlock = casterBlock;
         return copy;
     }
 
@@ -83,6 +95,7 @@ public final class SpellCast
     {
         SpellCast copy = new SpellCast(level, caster, spell, other, origin, direction);
         copy.secondary = secondary;
+        copy.casterBlock = casterBlock;
         return copy;
     }
 

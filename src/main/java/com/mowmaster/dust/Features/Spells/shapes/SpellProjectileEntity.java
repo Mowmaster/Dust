@@ -43,6 +43,8 @@ public class SpellProjectileEntity extends ThrowableProjectile
     private Vec3 start = Vec3.ZERO;
     private int splits;
     private int pierce;
+    // The Spell Caster that fired it, if one did (SpellCast.casterBlock), for the cast where it lands
+    private net.minecraft.core.@Nullable BlockPos casterBlock;
     // Not saved: what it's already gone through (so it doesn't hit them again)
     private final java.util.Set<java.util.UUID> pierced = new java.util.HashSet<>();
     private final java.util.Set<net.minecraft.core.BlockPos> piercedBlocks = new java.util.HashSet<>();
@@ -72,6 +74,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         bolt.shoot(cast.direction().x, cast.direction().y, cast.direction().z, cast.stats().speed(), 0);
         bolt.splits = cast.spell().levelsOf(com.mowmaster.dust.Features.Spells.SpellRegistries.MULTISHOT.getId());
         bolt.pierce = piercing(cast.spell());
+        bolt.casterBlock = cast.casterBlock();
         return bolt;
     }
 
@@ -178,6 +181,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
             bolt.setPos(getX(), getY(), getZ());
             bolt.start = start;
             bolt.pierce = pierce;
+            bolt.casterBlock = casterBlock;
             bolt.setDeltaMovement(velocity.yRot((float) Math.toRadians(step * SPREAD_DEGREES)));
             level().addFreshEntity(bolt);
         }
@@ -216,7 +220,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
     {
         if (spell == null || !(level() instanceof ServerLevel server)) return null;
         LivingEntity caster = getOwner() instanceof LivingEntity living ? living : null;
-        return new SpellCast(server, caster, spell, stats, position(), getDeltaMovement().normalize());
+        return new SpellCast(server, caster, spell, stats, position(), getDeltaMovement().normalize()).fromBlock(casterBlock);
     }
 
     // Piercing: 1 to go through, plus half a level of Depth (0 without Piercing)
@@ -289,6 +293,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         output.store("start", Vec3.CODEC, start);
         output.putInt("splits", splits);
         output.putInt("pierce", pierce);
+        if (casterBlock != null) output.store("caster_block", net.minecraft.core.BlockPos.CODEC, casterBlock);
     }
 
     @Override
@@ -300,6 +305,7 @@ public class SpellProjectileEntity extends ThrowableProjectile
         start = input.read("start", Vec3.CODEC).orElse(position());
         splits = input.getIntOr("splits", 0);
         pierce = input.getIntOr("pierce", 0);
+        casterBlock = input.read("caster_block", net.minecraft.core.BlockPos.CODEC).orElse(null);
         if (spell != null) entityData.set(ELEMENT, spell.element().id().toString());
     }
 }

@@ -42,7 +42,7 @@ public class EchoFragment implements SpellFragment
                 if (caster != null && !caster.isAlive()) return;
                 SpellCast echo = caster != null
                         ? new SpellCast(cast.level(), caster, cast.spell(), cast.stats(), caster.getEyePosition(), caster.getLookAngle())
-                        : new SpellCast(cast.level(), null, cast.spell(), cast.stats(), cast.origin(), cast.direction());
+                        : new SpellCast(cast.level(), null, cast.spell(), cast.stats(), cast.origin(), cast.direction()).fromBlock(cast.casterBlock());
                 shape.cast(echo);
             });
         }

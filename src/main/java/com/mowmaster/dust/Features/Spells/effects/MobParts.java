@@ -67,26 +67,44 @@ public final class MobParts
 
     private static boolean loose(Entity entity)
     {
-        return entity instanceof ItemEntity || entity instanceof ExperienceOrb || entity instanceof LivingEntity;
+        return entity instanceof ItemEntity || entity instanceof ExperienceOrb || entity instanceof LivingEntity
+                || entity instanceof com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
     }
 
     // Vacuum on a block keeps pulling for the spell's duration: a pull now, then one every VACUUM_INTERVAL ticks
-    // (SpellScheduler runs the later ones)
+    // (SpellScheduler runs the later ones). Cast by a Spell Caster, what's been pulled in goes into the containers
+    // around it (vacuumPull).
     public static void vacuumBlock(SpellCast cast, BlockPos pos, Direction face)
     {
         Vec3 centre = Vec3.atCenterOf(pos.relative(face));
         double radius = 5 + cast.stats().size();
-        pullTowards(cast, centre, radius, MobParts::loose);
+        vacuumPull(cast, centre, radius);
         cast.level().sendParticles(ParticleTypes.PORTAL, centre.x, centre.y, centre.z, 20, 0.3, 0.3, 0.3, 0.6);
         for (int at = VACUUM_INTERVAL; at < cast.stats().duration(); at += VACUUM_INTERVAL) {
             com.mowmaster.dust.Features.Spells.SpellScheduler.later(cast.level().getServer(), at, () -> {
-                pullTowards(cast, centre, radius, MobParts::loose);
+                vacuumPull(cast, centre, radius);
                 cast.level().sendParticles(ParticleTypes.PORTAL, centre.x, centre.y, centre.z, 6, 0.3, 0.3, 0.3, 0.6);
             });
         }
     }
 
     private static final int VACUUM_INTERVAL = 5;
+    // How near the middle something pulled in has to be to go into a Spell Caster's containers
+    private static final double VACUUM_COLLECT_RADIUS = 1.5;
+
+    // One pull. Cast by a Spell Caster, whatever has reached the middle then goes into the containers around it, as a
+    // player would pick it up (CasterStorage: items into what holds items, experience into what holds experience,
+    // element orbs into Dust Jars); what doesn't fit stays.
+    private static void vacuumPull(SpellCast cast, Vec3 centre, double radius)
+    {
+        pullTowards(cast, centre, radius, MobParts::loose);
+        com.mowmaster.dust.Features.Spells.caster.CasterStorage storage = com.mowmaster.dust.Features.Spells.caster.CasterStorage.of(cast);
+        if (storage == null) return;
+        for (Entity entity : cast.level().getEntities((Entity) null, new AABB(centre, centre).inflate(VACUUM_COLLECT_RADIUS),
+                com.mowmaster.dust.Features.Spells.caster.CasterStorage::takes)) {
+            storage.absorb(entity);
+        }
+    }
 
     // The mobs around it are pulled in together around it
     public static void vacuumMob(SpellCast cast, Entity target)

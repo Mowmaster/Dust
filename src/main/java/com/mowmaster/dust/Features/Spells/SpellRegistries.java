@@ -344,10 +344,11 @@ public final class SpellRegistries
         return SILKY_ELEMENTS.contains(context.element()) || context.countInTree(id("fusion_fracture_earth")) > 0;
     }
 
-    // Luck only matters to an effect with chance-based results: the Fracture + Earth fusion's mining (Fortune)
+    // Luck only matters to an effect with chance-based results: the Fracture + Earth fusion's mining and the Plants +
+    // Tool fusion's harvest (both use it as Fortune)
     public static boolean luckMatters(com.mowmaster.dust.Features.Spells.api.ModifierContext context)
     {
-        return context.countInTree(id("fusion_fracture_earth")) > 0;
+        return context.countInTree(id("fusion_fracture_earth")) > 0 || context.countInTree(id("fusion_plants_tool")) > 0;
     }
 
     // Prevent Block Action / Prevent Attack Action (Touch, Projectile; from level 10; one use, and only one of the two
@@ -400,6 +401,14 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FRACTURE_EARTH = MODIFIERS.register("fusion_fracture_earth",
             () -> new FusionModifier(DustElements.FRACTURE, DustElements.EARTH).block(com.mowmaster.dust.Features.Spells.effects.FusionParts::mine)
                     .types(null, EffectType.INSTANT, null));
+    // Plants + Tool: Harvest (FusionParts): self harvests what the caster stands in or on; on a block it harvests, or
+    // shears what has nothing to harvest; on a creature it shears
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_PLANTS_TOOL = MODIFIERS.register("fusion_plants_tool",
+            () -> new FusionModifier(DustElements.PLANTS, DustElements.TOOL)
+                    .self(com.mowmaster.dust.Features.Spells.effects.FusionParts::harvestUnder)
+                    .block(com.mowmaster.dust.Features.Spells.effects.FusionParts::harvestOrShear)
+                    .entity(com.mowmaster.dust.Features.Spells.effects.FusionParts::shearMob)
+                    .types(EffectType.INSTANT, EffectType.INSTANT, EffectType.INSTANT));
 
     // ---- the elements' effects (the rest come in later steps; until then an element does nothing) ----
     public static final DeferredHolder<ElementEffect, ElementEffect> FIRE = ELEMENT_EFFECTS.register(DustElements.FIRE.id().getPath(), FireEffect::new);

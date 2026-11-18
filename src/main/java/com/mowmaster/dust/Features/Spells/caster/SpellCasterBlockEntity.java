@@ -180,7 +180,8 @@ public class SpellCasterBlockEntity extends CBSyncedBlockEntity
         // From just in front of its face, straight out
         Vec3 direction = Vec3.atLowerCornerOf(facing.getUnitVec3i());
         Vec3 origin = Vec3.atCenterOf(worldPosition).add(direction.scale(0.7));
-        SpellCast cast = new SpellCast(level, null, spell, spell.stats(1.0F), origin, direction);
+        // fromBlock: the containers around it stand in for a player's hands and inventory (CasterStorage)
+        SpellCast cast = new SpellCast(level, null, spell, spell.stats(1.0F), origin, direction).fromBlock(worldPosition);
         if (!SpellCasting.deliver(cast, shape)) {
             fizzle(level, facing);
             return;

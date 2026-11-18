@@ -22,6 +22,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
@@ -110,7 +111,7 @@ public final class UtilityParts
         if (!(target instanceof Player player)) return;
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack stack = player.getItemInHand(hand);
-            if (!(stack.getItem() instanceof BlockItem item) || !(item.getBlock() instanceof VegetationBlock || item.getBlock() instanceof CropBlock)) continue;
+            if (!plantable(stack)) continue;
             List<BlockPos> ground = new ArrayList<>();
             BlockPos feet = player.blockPosition();
             for (BlockPos at : BlockPos.betweenClosed(feet.offset(-2, -2, -2), feet.offset(2, 0, 2))) ground.add(at.immutable());
@@ -124,10 +125,22 @@ public final class UtilityParts
         }
     }
 
-    // A random flower on the block (or in it, if it's an empty flower pot)
+    // What can be planted: a block item for a plant (a seed, sapling, flower, mushroom...)
+    private static boolean plantable(ItemStack stack)
+    {
+        return stack.getItem() instanceof BlockItem item && (item.getBlock() instanceof VegetationBlock || item.getBlock() instanceof CropBlock);
+    }
+
+    // A random flower on the block (or in it, if it's an empty flower pot). Cast by a Spell Caster with containers
+    // around it, something from them is planted instead (plantFromStorage).
     public static void plantFlower(SpellCast cast, BlockPos pos, Direction face)
     {
         ServerLevel level = cast.level();
+        com.mowmaster.dust.Features.Spells.caster.CasterStorage storage = com.mowmaster.dust.Features.Spells.caster.CasterStorage.of(cast);
+        if (storage != null && storage.hasItems()) {
+            plantFromStorage(level, storage, pos);
+            return;
+        }
         BlockState state = level.getBlockState(pos);
         List<Block> flowers = new ArrayList<>();
         for (Holder<Block> flower : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.SMALL_FLOWERS)) {
@@ -161,6 +174,44 @@ public final class UtilityParts
             level.setBlockAndUpdate(above, flower.defaultBlockState());
             level.levelEvent(1505, above, 6);
         }
+    }
+
+    // The first thing in a Spell Caster's containers that can be planted on the block (the containers stand in for a
+    // player's inventory: CasterStorage), planted on top of it as a player would plant it, or put in it if it's an
+    // empty flower pot. Only what's planted is used up.
+    private static void plantFromStorage(ServerLevel level, com.mowmaster.dust.Features.Spells.caster.CasterStorage storage, BlockPos pos)
+    {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof FlowerPotBlock pot && pot.getPotted() == net.minecraft.world.level.block.Blocks.AIR) {
+            storage.useOne(UtilityParts::plantable, stack -> potPlant(level, pos, pot, stack));
+            return;
+        }
+        BlockPos above = pos.above();
+        if (!level.getBlockState(above).canBeReplaced()) return;
+        storage.useOne(UtilityParts::plantable, stack -> {
+            // Placed as a dispenser places a block (no player), on top of the block: BlockItem.place checks it can
+            // grow there (a seed on farmland, a sapling on dirt...)
+            BlockItem item = (BlockItem) stack.getItem();
+            boolean planted = item.place(new DirectionalPlaceContext(level, above, Direction.DOWN, stack, Direction.UP)).consumesAction();
+            if (planted) level.levelEvent(1505, above, 6);
+            return planted;
+        });
+    }
+
+    // Puts the item's plant in an empty flower pot, if it's one that can be potted
+    private static boolean potPlant(ServerLevel level, BlockPos pos, FlowerPotBlock pot, ItemStack stack)
+    {
+        Block plant = ((BlockItem) stack.getItem()).getBlock();
+        // Stonecutter: 26.1.2's pot map is keyed by the plant's id, with suppliers of the potted block
+        //? if >=26.3 {
+        Block potted = pot.getFullPots().get(plant);
+        //?} else {
+        /*var supplier = pot.getFullPotsView().get(BuiltInRegistries.BLOCK.getKey(plant));
+        Block potted = supplier == null ? null : supplier.get();
+        *///?}
+        if (potted == null || potted == net.minecraft.world.level.block.Blocks.AIR) return false;
+        level.setBlockAndUpdate(pos, potted.defaultBlockState());
+        return true;
     }
 
     // ---- Warp ----
