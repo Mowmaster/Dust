@@ -331,6 +331,14 @@ public class DustProviderModel extends ModelProvider {
         blockModels.itemModelOutput.accept(DustBlockRegistry.ELEMENT_CRAFTER.asItem(),
                 ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/element_crafter"),
                         new net.minecraft.client.color.item.Dye(-1), new net.minecraft.client.color.item.Dye(-1)));
+        // The Element Replicator: the same way (tint indices 0 the slabs, rails and sigils, 1 the posts); its glyphs and
+        // items are drawn by Client/ElementReplicatorRenderer
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.ELEMENT_REPLICATOR.get(),
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/element_replicator")))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.ELEMENT_REPLICATOR.asItem(),
+                ItemModelUtils.tintedModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/element_replicator"),
+                        new net.minecraft.client.color.item.Dye(-1), new net.minecraft.client.color.item.Dye(-1)));
         station(blockModels, DustBlockRegistry.RESEARCH_MIXING.get(), "research_mixing_body", "research_mixing");
 
         Identifier dustModel = ModelTemplates.TWO_LAYERED_ITEM.create(DustItemRegistry.ALCHEMICAL_DUST.get(),

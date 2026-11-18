@@ -1,0 +1,29 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 50,
+      "element": "dust:knowledge"
+    },
+    {
+      "amount": 50,
+      "element": "dust:change"
+    }
+  ],
+  "result": {
+    "id": "dust:element_replicator"
+  },
+  "shaped": {
+    "key": {
+      "A": "dust:alchemical_soot",
+      "J": "dust:dust_jar",
+      "K": "dust:knowledge_crystal",
+      "P": "minecraft:paper"
+    },
+    "pattern": [
+      "APA",
+      "JKJ",
+      "APA"
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 {
   "values": [
-    "dust:element_crafter"
+    "dust:element_crafter",
+    "dust:element_replicator"
   ]
 }

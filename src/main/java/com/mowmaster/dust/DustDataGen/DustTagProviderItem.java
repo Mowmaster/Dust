@@ -28,8 +28,10 @@ public class DustTagProviderItem extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Dyeable in a crafting grid with MowLib's dyes (ColorableItemDyeRecipe): the crafter keeps the colour when placed
-        tag(com.mowmaster.mowlib.recipes.ColorableItemDyeRecipe.DYEABLE_IN_CRAFTING).add(blockItem(DustBlockRegistry.ELEMENT_CRAFTER));
+        // Dyeable in a crafting grid with MowLib's dyes (ColorableItemDyeRecipe): the crafter and replicator keep the
+        // colour when placed
+        tag(com.mowmaster.mowlib.recipes.ColorableItemDyeRecipe.DYEABLE_IN_CRAFTING).add(blockItem(DustBlockRegistry.ELEMENT_CRAFTER))
+                .add(blockItem(DustBlockRegistry.ELEMENT_REPLICATOR));
 
         // Spell tools: the crystal weapons cast on a hit, the crystal tools on striking a block (SpellTools)
         tag(DustTags.Items.SPELL_WEAPONS).add(DustItemRegistry.CRYSTAL_SWORD.key()).add(DustItemRegistry.CRYSTAL_SPEAR.key());

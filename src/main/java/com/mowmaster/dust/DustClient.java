@@ -106,6 +106,7 @@ public class DustClient {
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_REPLICATOR.get(), com.mowmaster.dust.Features.Machines.Client.ElementReplicatorRenderer::new);
         // The Dust Grinder's turning top and the item in its hole
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_GRINDER.get(), com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer::new);
         // The dust inside a Dust Jar, filling it as it fills

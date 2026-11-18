@@ -56,8 +56,12 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         add(DustBlockRegistry.GLYPH_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, Items.COBBLESTONE));
 
         dropSelf(DustBlockRegistry.ELEMENT_TESTER.get());
-        // The Element Crafter keeps its dye colour (copy_components: the block entity's dyed_color onto the dropped item)
+        // The Element Crafter and Element Replicator keep their dye colour (copy_components: the block entity's dyed_color
+        // onto the dropped item)
         add(DustBlockRegistry.ELEMENT_CRAFTER.get(), block -> LootTable.lootTable().withPool(applyExplosionCondition(block,
+                LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(LootItem.lootTableItem(block)
+                        .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.DYED_COLOR))))));
+        add(DustBlockRegistry.ELEMENT_REPLICATOR.get(), block -> LootTable.lootTable().withPool(applyExplosionCondition(block,
                 LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(LootItem.lootTableItem(block)
                         .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.DYED_COLOR))))));
         // The Dust Jar keeps its dust (copy_components: the block entity's dust:dust_jar onto the dropped item)

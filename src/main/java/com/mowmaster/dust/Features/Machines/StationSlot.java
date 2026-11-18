@@ -17,11 +17,12 @@ import java.util.function.Supplier;
 //   contents   what's there now (left-click takes from it, when not empty)
 //   extractor  takes up to this many out
 //   role       which way automation reaches it (StationSlotHandler): INPUT from the top (what the station works on),
-//              SUPPLY from the sides (what it uses up: paper, containers, crystals), OUTPUT out the bottom
+//              SUPPLY from the sides (what it uses up: paper, containers, crystals), OUTPUT out the bottom; MANUAL not
+//              at all (only a player's hand: the Element Replicator's template)
 //   limit      how many it holds at most (hoppers are told this, so they only offer what fits)
 public record StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserter inserter, Supplier<ItemStack> contents, Extractor extractor, Role role, int limit)
 {
-    public enum Role { INPUT, SUPPLY, OUTPUT }
+    public enum Role { INPUT, SUPPLY, OUTPUT, MANUAL }
 
     // An INPUT slot holding one (a record can have extra constructors, as long as they call the full one with this(...))
     public StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserter inserter, Supplier<ItemStack> contents, Extractor extractor)
@@ -33,6 +34,12 @@ public record StationSlot(CBPixelBox area, Predicate<ItemStack> accepts, Inserte
     public StationSlot supply()
     {
         return new StationSlot(area, accepts, inserter, contents, extractor, Role.SUPPLY, limit);
+    }
+
+    // The same slot, for players' hands only: no hopper or pipe reaches it
+    public StationSlot manual()
+    {
+        return new StationSlot(area, accepts, inserter, contents, extractor, Role.MANUAL, limit);
     }
 
     @FunctionalInterface

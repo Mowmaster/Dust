@@ -33,6 +33,9 @@ public class DustBlockEntityRegistry
     // The Element Crafter (Features/Crafting): the grid, the jars and the result
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Crafting.ElementCrafterBlockEntity>> ELEMENT_CRAFTER = BLOCK_ENTITIES.register("element_crafter",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Crafting.ElementCrafterBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_CRAFTER.get())));
+    // The Element Replicator (Features/Machines): the item to copy, the copy, the run and the dye colour
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Machines.ElementReplicatorBlockEntity>> ELEMENT_REPLICATOR = BLOCK_ENTITIES.register("element_replicator",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Machines.ElementReplicatorBlockEntity::new, Set.of(DustBlockRegistry.ELEMENT_REPLICATOR.get())));
 
     // Dust storage (Features/DustStorage)
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustJarBlockEntity>> DUST_JAR = BLOCK_ENTITIES.register("dust_jar",

@@ -142,6 +142,10 @@ public class DustBlockRegistry {
     // The Element Crafter (Features/Crafting): element crafting recipes, with dust from its four jars
     public static final DeferredBlock<Block> ELEMENT_CRAFTER = registerBlock("element_crafter", properties -> new com.mowmaster.dust.Features.Crafting.ElementCrafterBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
+    // The Element Replicator (Features/Machines): copies an item a player has fully worked out, with dust from the jars
+    // round it
+    public static final DeferredBlock<Block> ELEMENT_REPLICATOR = registerBlock("element_replicator", properties -> new com.mowmaster.dust.Features.Machines.ElementReplicatorBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).noOcclusion()));
 
     // Dust storage (Features/DustStorage): the Dust Jar (1000 dust of one element; its own item class, for MowLib's place
     // key and its contents tooltip) and the Dust Grinder (grinds researched compounds, Alchemical Dust and crystals into

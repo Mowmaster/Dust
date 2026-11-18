@@ -23,12 +23,13 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-// What every research station shares: automation.
+// What every research station (and the Element Replicator) shares: automation.
 //   Hoppers and pipes   from the top: what it works on (StationSlot.Role.INPUT slots)
 //                       from the sides: what it uses up: paper, bottles, bowls, crystals, nether quartz (SUPPLY slots)
 //                       out the bottom: what it made (OUTPUT slots)
 //                       They reach the station's own slots (StationSlotHandler), so outputs stay on their pads for
-//                       the player until a hopper takes them.
+//                       the player until a hopper takes them. MANUAL slots (the Element Replicator's item to copy)
+//                       they don't reach at all.
 //   Starting it         a dispenser firing a Magical Flint and Steel into it, or a fire spell landing on it (a Spell
 //                       Caster's, or a player's): activate. On a table that's being stirred, each one is a stir.
 //   Redstone            a pulse (StationAutomation.onNeighborChanged) only stirs a table that's being stirred: pulse.
@@ -57,13 +58,13 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
         super(type, pos, state);
     }
 
-    // Every research station's block entity type, for the item capability below
+    // Every station's block entity type (the research stations and the Element Replicator), for the item capability below
     private static List<BlockEntityType<? extends StationBlockEntity>> types()
     {
         return List.of(DustBlockEntityRegistry.RESEARCH_CRUSHER.get(), DustBlockEntityRegistry.RESEARCH_SEPARATION.get(),
                 DustBlockEntityRegistry.RESEARCH_EVAPORATION.get(), DustBlockEntityRegistry.RESEARCH_DISTILLATION.get(),
                 DustBlockEntityRegistry.RESEARCH_TRANSFORMATION.get(), DustBlockEntityRegistry.RESEARCH_COMBINATION.get(),
-                DustBlockEntityRegistry.RESEARCH_MIXING.get());
+                DustBlockEntityRegistry.RESEARCH_MIXING.get(), DustBlockEntityRegistry.ELEMENT_REPLICATOR.get());
     }
 
     // Hoppers and pipes: the slots for the side they're on (side is null when something asks without a side: the top)

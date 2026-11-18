@@ -196,6 +196,12 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.LOVELY_LAMP.asItem(), "lovely_lamp", Optional.empty(),
                 java.util.Map.of('C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.SEEDS).get()), 'L', Ingredient.of(Items.LANTERN)),
                 List.of("C", "L"), cost(DustElements.SEEDS, 20));
+        // The Element Replicator: soot round a Knowledge crystal, two papers for its sigils, two Dust Jars for the dust
+        // it draws on
+        elementShaped(DustBlockRegistry.ELEMENT_REPLICATOR.asItem(), "element_replicator", Optional.empty(),
+                java.util.Map.of('A', Ingredient.of(soot), 'P', Ingredient.of(Items.PAPER), 'J', Ingredient.of(DustBlockRegistry.DUST_JAR.asItem()),
+                        'K', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.KNOWLEDGE).get())),
+                List.of("APA", "JKJ", "APA"), cost(DustElements.KNOWLEDGE, 50), cost(DustElements.CHANGE, 50));
         // The pylons: one pattern, a different element for each
         java.util.Map<Character, Ingredient> pylonKey = java.util.Map.of('S', stone, 'A', Ingredient.of(soot));
         List<String> pylon = List.of("SAS", " S ", "SSS");

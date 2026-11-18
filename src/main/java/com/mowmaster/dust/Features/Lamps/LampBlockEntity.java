@@ -12,10 +12,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
@@ -125,27 +123,15 @@ public abstract class LampBlockEntity extends CBSyncedBlockEntity
             add(taken);
             showMove(level, orb.position(), here, taken);
         }
-        // Dust Jars: found among the block entities of the chunks the area covers (getChunkNow: only chunks already
-        // loaded, so gathering never loads one)
-        int minX = (worldPosition.getX() - GATHER_RANGE) >> 4, maxX = (worldPosition.getX() + GATHER_RANGE) >> 4;
-        int minZ = (worldPosition.getZ() - GATHER_RANGE) >> 4, maxZ = (worldPosition.getZ() + GATHER_RANGE) >> 4;
-        for (int cx = minX; cx <= maxX; cx++) {
-            for (int cz = minZ; cz <= maxZ; cz++) {
-                LevelChunk chunk = level.getChunkSource().getChunkNow(cx, cz);
-                if (chunk == null) continue;
-                for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
-                    int room = CAPACITY - fuel;
-                    if (room <= 0) return;
-                    if (!(blockEntity instanceof DustJarBlockEntity jar) || !element.equals(jar.element())) continue;
-                    BlockPos at = jar.getBlockPos();
-                    if (Math.abs(at.getX() - worldPosition.getX()) > GATHER_RANGE || Math.abs(at.getY() - worldPosition.getY()) > GATHER_RANGE
-                            || Math.abs(at.getZ() - worldPosition.getZ()) > GATHER_RANGE) continue;
-                    int taken = jar.extract(room);
-                    if (taken <= 0) continue;
-                    add(taken);
-                    showMove(level, Vec3.atCenterOf(at), here, taken);
-                }
-            }
+        // Dust Jars holding its element (DustJars: nearest first)
+        for (DustJarBlockEntity jar : com.mowmaster.dust.Features.DustStorage.DustJars.nearby(level, worldPosition, GATHER_RANGE)) {
+            int room = CAPACITY - fuel;
+            if (room <= 0) return;
+            if (!element.equals(jar.element())) continue;
+            int taken = jar.extract(room);
+            if (taken <= 0) continue;
+            add(taken);
+            showMove(level, Vec3.atCenterOf(jar.getBlockPos()), here, taken);
         }
     }
 

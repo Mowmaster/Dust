@@ -20,6 +20,7 @@ public class DustTagProviderBlock extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(DustBlockRegistry.SPELL_CASTER.key())
                 .add(DustBlockRegistry.ELEMENT_CRAFTER.key())
+                .add(DustBlockRegistry.ELEMENT_REPLICATOR.key())
                 .add(DustBlockRegistry.DUST_GRINDER.key())
                 .add(DustBlockRegistry.GROWTH_LAMP.key())
                 .add(DustBlockRegistry.LOVELY_LAMP.key())
