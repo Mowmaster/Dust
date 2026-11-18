@@ -45,6 +45,9 @@ public interface SpellModifier
     default int maxLevelsPerNode() { return 1; }
     // Only ever one level: a pylon holding it gets no upgrade nodes (Transmutation)
     default boolean singleLevel() { return false; }
+    // The same, for this spell in particular: one level here even if it can have more elsewhere (Potency on a Harvest
+    // spell)
+    default boolean singleLevel(ModifierContext context) { return singleLevel(); }
 
     // How many times it can come out of the pool: 0 for no limit, otherwise a "knockout" modifier, gone from the pool
     // once it's been drawn that many times
@@ -56,6 +59,10 @@ public interface SpellModifier
 
     // Its preconditions: whether it can go on a pylon at this point in the line (shape, counts, incompatibilities...)
     default boolean canRoll(ModifierContext context) { return true; }
+
+    // Whether it's at odds with what the spell already is (Lingering with the Harvest fusion): it's never drawn into the
+    // deck or onto a pylon, and a card of it already in the deck is greyed out in the Spell Pylon's HUD
+    default boolean incompatible(ModifierContext context) { return false; }
 
     // False for modifiers that have to be unlocked another way (research, exploring...) before they can be drawn.
     // Once a modifier has been on one of a player's spells, it's unlocked for them for that element.

@@ -113,6 +113,36 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
     public @Nullable BlockPos linkedTo() { return linkedTo; }
     public @Nullable Identifier fusedStart() { return fusedStart; }
 
+    // The deck's and pool's cards that can't go on this spell's pylons any more, worked out on the server whenever it
+    // syncs (the client can't: it doesn't see the whole tree), and greyed out in the HUD (Client/SpellPylonHud)
+    private List<Identifier> blocked = List.of();
+
+    public List<Identifier> blockedCards() { return blocked; }
+
+    @Override
+    public void sync()
+    {
+        if (level != null && !level.isClientSide() && deck.started()) blocked = findBlocked();
+        super.sync();
+    }
+
+    // At odds with the spell (SpellModifier.incompatible: Lingering on a Harvest spell), or Category Weight with no
+    // category's pylons able to take it any more
+    private List<Identifier> findBlocked()
+    {
+        ModifierContext tree = treeContext(null);
+        java.util.Set<Identifier> found = new java.util.LinkedHashSet<>();
+        List<Identifier> cards = new ArrayList<>(deck.cards());
+        cards.addAll(deck.pool().keySet());
+        for (Identifier card : cards) {
+            SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
+            if (modifier == null) continue;
+            boolean noCategoryLeft = card.equals(SpellRegistries.CATEGORY_WEIGHT.getId()) && deck.categoryWeightLeft(null) <= 0;
+            if (modifier.incompatible(tree) || noCategoryLeft) found.add(card);
+        }
+        return List.copyOf(found);
+    }
+
     void linkAsOwner(BlockPos pylon, BlockPos other)
     {
         linkPylon = pylon;
@@ -606,7 +636,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             // None in the deck: one of its category straight from the pool, if the pool has one that fits here; only
             // with none there either does it take any card
             if (ours.isEmpty() && deck.drawNormal(treeContext(placer), random, categoryBonus(), doubleDraw(),
-                    modifier -> modifier.categories().contains(type.category()))) {
+                    modifier -> modifier.categories().contains(type.category()), type.category())) {
                 Identifier drawn = deck.cards().getLast();
                 if (fitsHere(drawn, type, line, knowledge, afterBreak)) ours = List.of(drawn);
             }
@@ -626,6 +656,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
                 : random.nextFloat() < PylonConfig.BLESSED_DRAW_CHANCE ? blessings : rest;
         Identifier card = from.get(random.nextInt(from.size()));
         deck.removeCard(card);
+        // Category Weight: each one a category's pylons take makes it less likely (in the end, impossible) for them again
+        if (card.equals(SpellRegistries.CATEGORY_WEIGHT.getId()) && type.category() != null) deck.drewCategoryWeight(type.category());
 
         if (card.equals(SpellDeck.SPELL_BREAK)) return new Draw(card, null, ModifierTier.NORMAL, true, false, false, 0);
         float legendaryChance = PylonConfig.LEGENDARY_CHANCE * (deck.blessingsLeft() ? 1 : 2);
@@ -658,9 +690,9 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         int[] range = type.nodeRange(deck.rerolls(pos));
         int nodes = Math.min(PylonConfig.MAX_NODES, range[0] + level.getRandom().nextInt(range[1] - range[0] + 1));
         Identifier modifier = resolve(card, line);
-        // A single-level modifier (Transmutation) can't be levelled: no upgrade nodes
+        // A single-level modifier (Transmutation, or Potency on a Harvest spell) can't be levelled: no upgrade nodes
         SpellModifier drawn = modifier == null ? null : SpellRegistries.MODIFIER_REGISTRY.getValue(modifier);
-        if (drawn != null && drawn.singleLevel()) nodes = 0;
+        if (drawn != null && drawn.singleLevel(line)) nodes = 0;
         return modifier == null ? Draw.NOTHING : new Draw(card, modifier, ModifierTier.NORMAL, false, false, false, nodes);
     }
 
@@ -686,6 +718,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (modifier == null || !modifier.canRoll(line)) return false;
         // A Neutral pylon passes over what only a category pylon can use (Category Weight)
         if (modifier.categoryPylonsOnly() && type.category() == null) return false;
+        // Category Weight: not once this category's pylons have used up its weight (SpellDeck.categoryWeightLeft)
+        if (card.equals(SpellRegistries.CATEGORY_WEIGHT.getId()) && deck.categoryWeightLeft(type.category()) <= 0) return false;
         if (!modifier.startsUnlocked() && !knowledge.hasUnlocked(element, card)) return false;
         return modifier.tier() == ModifierTier.NORMAL || (modifier.tier() == ModifierTier.BLESSED && type == PylonType.NEUTRAL);
     }
@@ -753,6 +787,10 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         for (int i = 1; i < chain.size(); i++) {
             if (level.getBlockEntity(chain.get(i)) instanceof PylonBlockEntity pylon && pylon.modifier() != null) modifiers.add(pylon.modifier());
         }
+        // Linked by a fusion: the fusion is on the owner's link pylon, in the owner's chain only, so the other spell
+        // counts it here too (what goes with it, such as Silky for Harvest, comes into its pool as well)
+        Identifier fusion = fusion();
+        if (fusion != null && !modifiers.contains(fusion)) modifiers.add(fusion);
         return modifiers;
     }
 
@@ -1084,7 +1122,8 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         SpellPylonBlockEntity tree = pylon.getLevel() != null && pylon.main() != null
                 && pylon.getLevel().getBlockEntity(pylon.main()) instanceof SpellPylonBlockEntity spellPylon ? spellPylon : null;
         Component name = Component.translatable("dust.pylon.modifier." + pylon.tier().getSerializedName(),
-                com.mowmaster.dust.Features.Spells.SpellNames.modifier(modifier, tree == null ? null : tree.element(), tree == null ? null : tree.shape()));
+                com.mowmaster.dust.Features.Spells.SpellNames.modifier(modifier, tree == null ? null : tree.element(), tree == null ? null : tree.shape(),
+                        tree == null ? null : tree.fusion()));
         if (pylon.legendary()) name = Component.translatable("dust.pylon.legendary", name);
         Component line = pylon.maxNodes() == 0 ? name
                 : Component.translatable("dust.pylon.with_nodes", name, pylon.nodes(), pylon.maxNodes(), pylon.levels() * (pylon.legendary() ? 2 : 1));
@@ -1308,6 +1347,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (linkedTo != null) output.store("linked_to", BlockPos.CODEC, linkedTo);
         if (linkVia != null) output.store("link_via", BlockPos.CODEC, linkVia);
         if (fusedStart != null) output.store("fused_start", Identifier.CODEC, fusedStart);
+        if (!blocked.isEmpty()) output.store("blocked", Identifier.CODEC.listOf(), blocked);
     }
 
     @Override
@@ -1330,6 +1370,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         linkedTo = input.read("linked_to", BlockPos.CODEC).orElse(null);
         linkVia = input.read("link_via", BlockPos.CODEC).orElse(null);
         fusedStart = input.read("fused_start", Identifier.CODEC).orElse(null);
+        blocked = input.read("blocked", Identifier.CODEC.listOf()).orElse(List.of());
         // On the client: the body's colour comes from the element (Client/SpellPylonTint), so draw it again
         if (level != null && level.isClientSide()) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), net.minecraft.world.level.block.Block.UPDATE_ALL);
     }

@@ -49,6 +49,9 @@ public class LeveledModifier implements SpellModifier
     private List<Identifier> addsToPool = List.of();
     private Predicate<ModifierContext> requires = context -> true;
     private Predicate<ModifierContext> inPlay = context -> true;
+    private Predicate<ModifierContext> oneLevelWhen = context -> false;
+    private Predicate<ModifierContext> suitsAlso = context -> false;
+    private Set<Identifier> notWith = Set.of();
     private java.util.function.@org.jspecify.annotations.Nullable Consumer<SpellCast> onCast;
     private Identifier id = Identifier.withDefaultNamespace("unnamed");
 
@@ -84,6 +87,12 @@ public class LeveledModifier implements SpellModifier
     public LeveledModifier onlyOne() { this.oncePerSpell = true; this.uses = 1; return this; }
     // Never more than one level: its pylon gets no upgrade nodes
     public LeveledModifier oneLevel() { this.singleLevel = true; return this; }
+    // One level only in a spell like this (SpellModifier.singleLevel(context)): Potency on a Harvest spell
+    public LeveledModifier oneLevelWhen(Predicate<ModifierContext> when) { this.oneLevelWhen = when; return this; }
+    // Suits a spell like this whatever its fit says (Potency, a lingering-effect modifier, on a Harvest spell)
+    public LeveledModifier suitsAlso(Predicate<ModifierContext> when) { this.suitsAlso = when; return this; }
+    // At odds with any of these modifiers in the tree (SpellModifier.incompatible): never drawn with them there
+    public LeveledModifier notWith(Identifier... modifiers) { this.notWith = Set.of(modifiers); return this; }
     public LeveledModifier shapes(Identifier... shapes) { this.shapes = Set.of(shapes); return this; }
     public LeveledModifier addsToPool(Identifier... modifiers) { this.addsToPool = List.of(modifiers); return this; }
     public LeveledModifier requires(Predicate<ModifierContext> requires) { this.requires = requires; return this; }
@@ -111,13 +120,23 @@ public class LeveledModifier implements SpellModifier
     @Override public boolean categoryPylonsOnly() { return categoryOnly; }
     @Override public boolean oncePerSpell() { return oncePerSpell; }
     @Override public boolean singleLevel() { return singleLevel; }
+    @Override public boolean singleLevel(ModifierContext context) { return singleLevel || oneLevelWhen.test(context); }
+
+    @Override
+    public boolean incompatible(ModifierContext context)
+    {
+        for (Identifier other : notWith) if (context.countInTree(other) > 0) return true;
+        return false;
+    }
     @Override public List<Identifier> addsToPool() { return addsToPool; }
     @Override public boolean inPlay(ModifierContext context) { return inPlay.test(context); }
 
     @Override
     public boolean canRoll(ModifierContext context)
     {
-        if ((!context.reached(unlockLevel) && !context.unlockedEarly(id)) || !fit.suits(context.instant(), context.dot())) return false;
+        if (!context.reached(unlockLevel) && !context.unlockedEarly(id)) return false;
+        if (!fit.suits(context.instant(), context.dot()) && !suitsAlso.test(context)) return false;
+        if (incompatible(context)) return false;
         if (!shapes.isEmpty() && !shapes.contains(context.shape())) return false;
         if (oncePerBranch && context.has(id)) return false;
         if (everyLevels > 0) {

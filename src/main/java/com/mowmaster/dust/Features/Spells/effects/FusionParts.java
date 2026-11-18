@@ -89,10 +89,11 @@ public final class FusionParts
     }
 
     // ---- Plants + Tool: Harvest ----
-    // Harvesting takes what has grown and leaves the plant to grow again, as a farmer would:
+    // Harvesting takes what has grown:
     //   crops          wheat, carrots, potatoes, beetroots, nether wart, cocoa (and other mods' crops that are
-    //                  CropBlocks), fully grown only: what they drop (luck is Fortune), and they're planted again young
-    //                  with one of the seeds they dropped
+    //                  CropBlocks), fully grown only: what they drop (luck is Fortune). They're broken outright, unless
+    //                  the spell has Silky: then they're planted again with one of the seeds they dropped, each Potency
+    //                  pylon starting them a growth stage further on (never fully grown)
     //   berries        a sweet berry bush's or a glow berry vine's, picked off
     //   melons, pumpkins                   broken for what they drop
     //   sugar cane, cactus, bamboo, kelp   cut down to the bottom one, which grows again
@@ -126,14 +127,16 @@ public final class FusionParts
         ServerLevel level = cast.level();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        // Each case names the block's class and binds it (pattern matching), or tests the block itself
+        // Each case names the block's class and binds it (pattern matching), or tests the block itself. young: what
+        // it's planted again as (null: it isn't grown yet)
+        int head = headStart(cast);
         BlockState young;
         if (block instanceof CropBlock crop) {
-            young = crop.isMaxAge(state) ? crop.getStateForAge(0) : null;
+            young = crop.isMaxAge(state) ? crop.getStateForAge(Math.min(head, crop.getMaxAge() - 1)) : null;
         } else if (block instanceof NetherWartBlock) {
-            young = state.getValue(NetherWartBlock.AGE) >= NetherWartBlock.MAX_AGE ? state.setValue(NetherWartBlock.AGE, 0) : null;
+            young = state.getValue(NetherWartBlock.AGE) >= NetherWartBlock.MAX_AGE ? state.setValue(NetherWartBlock.AGE, Math.min(head, NetherWartBlock.MAX_AGE - 1)) : null;
         } else if (block instanceof CocoaBlock) {
-            young = state.getValue(CocoaBlock.AGE) >= CocoaBlock.MAX_AGE ? state.setValue(CocoaBlock.AGE, 0) : null;
+            young = state.getValue(CocoaBlock.AGE) >= CocoaBlock.MAX_AGE ? state.setValue(CocoaBlock.AGE, Math.min(head, CocoaBlock.MAX_AGE - 1)) : null;
         } else if (block instanceof SweetBerryBushBlock) {
             return pickBerries(cast, pos, state);
         } else if (block instanceof CaveVines) {
@@ -146,9 +149,18 @@ public final class FusionParts
             return cutColumn(cast, pos, state);
         }
         if (young == null) return false;
-        // A crop's block item is its seed (wheat's is wheat seeds; carrots are their own)
-        reap(cast, pos, state, block.asItem(), young);
+        // Silky: planted again, keeping back one of its seeds (a crop's block item is its seed: wheat's is wheat seeds,
+        // carrots are their own). Otherwise broken outright.
+        if (SpellRegistries.silky(cast)) reap(cast, pos, state, block.asItem(), young);
+        else reap(cast, pos, state, null, Blocks.AIR.defaultBlockState());
         return true;
+    }
+
+    // Potency on a Harvest spell: how many growth stages a replanted crop starts on, one for each pylon holding it
+    // (Spell.modifiers has one entry per pylon; those pylons have no upgrade levels on a Harvest spell)
+    private static int headStart(SpellCast cast)
+    {
+        return java.util.Collections.frequency(cast.spell().modifiers(), SpellRegistries.POTENCY_MODIFIER.getId());
     }
 
     // A sweet berry bush with berries (age 2 or 3): picked as by hand (1-2 berries, one more when it's fully grown),

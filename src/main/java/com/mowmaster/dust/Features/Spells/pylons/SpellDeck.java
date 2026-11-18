@@ -37,6 +37,8 @@ import java.util.function.Predicate;
 //   blessed, corruption   the counters: a pylon locking adds to blessed (after paying corruption back to 0); at
 //            BLESS_AT a blessed card goes in the deck. A pylon broken adds to corruption; at CORRUPT_AT a corrupted card.
 //   rerolls  how many times a pylon has been broken and replaced at each spot (fewer upgrade nodes each time)
+//   category weight draws   how many Category Weight cards each category's pylons have taken: each takes
+//            CATEGORY_WEIGHT_STEP off the card's weight for that category, and at 0 its pylons can't draw it any more
 // The drawing itself (which card a pylon takes) is SpellPylonBlockEntity's, which knows the pylon and its line.
 public class SpellDeck
 {
@@ -44,6 +46,8 @@ public class SpellDeck
     public static final int MIN_CARDS = 5;
     public static final int BLESS_AT = 10;
     public static final int CORRUPT_AT = 5;
+    // Weight a Category Weight card loses for a category each time one of that category's pylons takes one
+    public static final int CATEGORY_WEIGHT_STEP = 10;
 
     public static final Identifier SPELL_BREAK = Identifier.fromNamespaceAndPath(DustReferences.MODID, "spell_break");
     public static final Identifier BLESSING = Identifier.fromNamespaceAndPath(DustReferences.MODID, "blessing");
@@ -57,6 +61,7 @@ public class SpellDeck
     private int breakCards;
     private int branchCards;
     private final Map<BlockPos, Integer> rerolls = new HashMap<>();
+    private final Map<ModifierCategory, Integer> categoryWeightDraws = new java.util.EnumMap<>(ModifierCategory.class);
     // The Prevent cards (SpellRegistries.PREVENT_BLOCK / PREVENT_ATTACK): gone for good (a pylon holding it was broken),
     // and the one the next Neutral pylon must take (it came back when the other was broken)
     private final Set<Identifier> gone = new HashSet<>();
@@ -107,6 +112,7 @@ public class SpellDeck
         breakCards = 0;
         branchCards = 0;
         rerolls.clear();
+        categoryWeightDraws.clear();
         gone.clear();
         forced = null;
     }
@@ -150,10 +156,21 @@ public class SpellDeck
     public boolean drawNormal(ModifierContext tree, RandomSource random, Map<ModifierCategory, Integer> categoryBonus, float doubleDraw,
                               Predicate<SpellModifier> filter)
     {
+        return drawNormal(tree, random, categoryBonus, doubleDraw, filter, null);
+    }
+
+    // The same for one category's pylon (forCategory: Category Weight's weight is what's left of it for that category)
+    public boolean drawNormal(ModifierContext tree, RandomSource random, Map<ModifierCategory, Integer> categoryBonus, float doubleDraw,
+                              Predicate<SpellModifier> filter, @Nullable ModifierCategory forCategory)
+    {
+        Identifier categoryWeight = SpellRegistries.CATEGORY_WEIGHT.getId();
         Identifier chosen = pick(random, id -> {
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(id);
             return modifier != null && modifier.tier() == ModifierTier.NORMAL && filter.test(modifier) && modifier.canRoll(tree);
         }, id -> {
+            // Category Weight: what's left of its weight (categoryWeightLeft), never boosted by Category Weight itself
+            // (it's in every category, so each one drawn used to make the next more likely)
+            if (id.equals(categoryWeight)) return categoryWeightLeft(forCategory);
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(id);
             int bonus = 0;
             for (ModifierCategory category : modifier.categories()) bonus = Math.max(bonus, categoryBonus.getOrDefault(category, 0));
@@ -258,13 +275,34 @@ public class SpellDeck
     }
 
     // A random normal modifier from the pool that fits this pylon (a Legendary pylon's), without taking it out of
-    // the pool (null if none fits)
+    // the pool (null if none fits). Legendary pylons are Neutral pylons, so never one only a category pylon can take
+    // (Category Weight).
     public @Nullable Identifier randomFor(ModifierContext line, RandomSource random)
     {
         return pick(random, id -> {
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(id);
-            return modifier != null && modifier.tier() == ModifierTier.NORMAL && modifier.canRoll(line);
+            return modifier != null && modifier.tier() == ModifierTier.NORMAL && !modifier.categoryPylonsOnly() && modifier.canRoll(line);
         }, id -> SpellRegistries.MODIFIER_REGISTRY.getValue(id).weight());
+    }
+
+    // ---- Category Weight ----
+
+    // What's left of the Category Weight card's weight for a category's pylons: its weight, less CATEGORY_WEIGHT_STEP
+    // for each one that category's pylons have taken. For no category in particular (drawing into the deck), the most
+    // any category has left: while one still can take it, it can come into the deck.
+    public int categoryWeightLeft(@Nullable ModifierCategory category)
+    {
+        SpellModifier card = SpellRegistries.CATEGORY_WEIGHT.get();
+        if (category != null) return Math.max(0, card.weight() - CATEGORY_WEIGHT_STEP * categoryWeightDraws.getOrDefault(category, 0));
+        int most = 0;
+        for (ModifierCategory each : card.categories()) most = Math.max(most, categoryWeightLeft(each));
+        return most;
+    }
+
+    // A pylon of this category took a Category Weight card
+    public void drewCategoryWeight(ModifierCategory category)
+    {
+        categoryWeightDraws.merge(category, 1, Integer::sum);
     }
 
     // ---- spell breaks ----
@@ -370,7 +408,7 @@ public class SpellDeck
 
     // Everything as one record, for the block entity's save (and the client's copy, though it doesn't show it yet)
     public record Saved(boolean started, List<PoolEntry> pool, List<Identifier> deck, int blessed, int corruption, int breakCards, List<Reroll> rerolls,
-                        List<Identifier> gone, java.util.Optional<Identifier> forced, int branchCards)
+                        List<Identifier> gone, java.util.Optional<Identifier> forced, int branchCards, Map<ModifierCategory, Integer> categoryWeightDraws)
     {
         public static final Codec<Saved> CODEC = RecordCodecBuilder.create(i -> i.group(
                 Codec.BOOL.optionalFieldOf("started", false).forGetter(Saved::started),
@@ -382,7 +420,9 @@ public class SpellDeck
                 Reroll.CODEC.listOf().optionalFieldOf("rerolls", List.of()).forGetter(Saved::rerolls),
                 Identifier.CODEC.listOf().optionalFieldOf("gone", List.of()).forGetter(Saved::gone),
                 Identifier.CODEC.optionalFieldOf("forced").forGetter(Saved::forced),
-                Codec.INT.optionalFieldOf("branch_cards", 0).forGetter(Saved::branchCards)
+                Codec.INT.optionalFieldOf("branch_cards", 0).forGetter(Saved::branchCards),
+                // unboundedMap: a map with keys of any (string-like) codec, here the category's name
+                Codec.unboundedMap(ModifierCategory.CODEC, Codec.INT).optionalFieldOf("category_weight_draws", Map.of()).forGetter(Saved::categoryWeightDraws)
         ).apply(i, Saved::new));
     }
 
@@ -390,7 +430,7 @@ public class SpellDeck
     {
         return new Saved(started, pool.entrySet().stream().map(e -> new PoolEntry(e.getKey(), e.getValue())).toList(), List.copyOf(deck),
                 blessed, corruption, breakCards, rerolls.entrySet().stream().map(e -> new Reroll(e.getKey(), e.getValue())).toList(),
-                List.copyOf(gone), java.util.Optional.ofNullable(forced), branchCards);
+                List.copyOf(gone), java.util.Optional.ofNullable(forced), branchCards, Map.copyOf(categoryWeightDraws));
     }
 
     public void load(Saved saved)
@@ -406,5 +446,6 @@ public class SpellDeck
         gone.addAll(saved.gone());
         forced = saved.forced().orElse(null);
         branchCards = saved.branchCards();
+        categoryWeightDraws.putAll(saved.categoryWeightDraws());
     }
 }

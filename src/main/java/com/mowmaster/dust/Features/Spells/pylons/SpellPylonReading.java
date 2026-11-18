@@ -131,7 +131,7 @@ public final class SpellPylonReading
         if (card.equals(SpellDeck.SPELL_BREAK)) return Component.translatable("hud.dust.pylon.card.spell_break").withStyle(ChatFormatting.DARK_RED);
         if (card.equals(SpellDeck.BLESSING)) return Component.translatable("hud.dust.pylon.card.blessing").withStyle(ChatFormatting.DARK_PURPLE);
         if (card.equals(SpellDeck.NULL_CORRUPTION)) return Component.translatable("hud.dust.pylon.card.null_corruption").withStyle(ChatFormatting.DARK_RED);
-        MutableComponent name = SpellNames.modifier(card, pylon.element(), pylon.shape()).copy();
+        MutableComponent name = SpellNames.modifier(card, pylon.element(), pylon.shape(), pylon.fusion()).copy();
         SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(card);
         if (modifier != null && modifier.tier() == ModifierTier.BLESSED) name.withStyle(ChatFormatting.DARK_PURPLE);
         if (modifier != null && modifier.tier() == ModifierTier.CORRUPTED) name.withStyle(ChatFormatting.DARK_RED);

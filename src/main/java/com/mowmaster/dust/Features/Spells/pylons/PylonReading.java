@@ -49,7 +49,7 @@ public final class PylonReading
             if (pylon.shape() == null) lines.add(Component.translatable("hud.dust.pylon.empty").withStyle(ChatFormatting.ITALIC));
             return lines;
         }
-        MutableComponent name = SpellNames.modifier(modifier, element, shape).copy();
+        MutableComponent name = SpellNames.modifier(modifier, element, shape, tree == null ? null : tree.fusion()).copy();
         if (pylon.tier() == ModifierTier.BLESSED) name.withStyle(ChatFormatting.DARK_PURPLE);
         else if (pylon.tier() == ModifierTier.CORRUPTED) name.withStyle(ChatFormatting.DARK_RED);
         lines.add(name.withStyle(ChatFormatting.UNDERLINE));

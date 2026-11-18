@@ -11,6 +11,7 @@ import org.jspecify.annotations.Nullable;
 // A modifier's name as players see it, which can say what it does for the spell's element: Potency on a Fire spell
 // landing on a creature is "Scorch Stacks". The lang file is searched from most to least specific, and the first key
 // that exists is used:
+//   spell_modifier.<ns>.<modifier>.<fusion>             e.g. spell_modifier.dust.potency.fusion_plants_tool (fused spells)
 //   spell_modifier.<ns>.<modifier>.<element>.<target>   e.g. spell_modifier.dust.potency.fire.entity
 //   spell_modifier.<ns>.<modifier>.<element>            e.g. spell_modifier.dust.potency.fire
 //   spell_modifier.<ns>.<modifier>                      e.g. spell_modifier.dust.potency
@@ -24,7 +25,18 @@ public final class SpellNames
 
     public static Component modifier(Identifier modifier, @Nullable DustElement element, @Nullable Identifier shape)
     {
+        return modifier(modifier, element, shape, null);
+    }
+
+    // The same for a fused spell: a name for the fusion comes first (spell_modifier.dust.potency.fusion_plants_tool:
+    // Potency on a Harvest spell is "Head Start"), then the element's, then the plain one
+    public static Component modifier(Identifier modifier, @Nullable DustElement element, @Nullable Identifier shape, @Nullable Identifier fusion)
+    {
         String base = "spell_modifier." + modifier.getNamespace() + "." + modifier.getPath();
+        if (fusion != null) {
+            String byFusion = base + "." + (fusion.getNamespace().equals(DustReferences.MODID) ? fusion.getPath() : fusion.getNamespace() + "." + fusion.getPath());
+            if (Language.getInstance().has(byFusion)) return Component.translatable(byFusion);
+        }
         if (element != null) {
             Identifier id = element.id();
             String byElement = base + "." + (id.getNamespace().equals(DustReferences.MODID) ? id.getPath() : id.getNamespace() + "." + id.getPath());
@@ -36,5 +48,14 @@ public final class SpellNames
             if (Language.getInstance().has(byElement)) return Component.translatable(byElement);
         }
         return Component.translatable(base);
+    }
+
+    // The fusion a spell is (the first fusion among its modifiers), or null
+    public static @Nullable Identifier fusionOf(com.mowmaster.dust.Features.Spells.api.Spell spell)
+    {
+        for (Identifier modifier : spell.modifiers()) {
+            if (SpellRegistries.MODIFIER_REGISTRY.getValue(modifier) instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) return modifier;
+        }
+        return null;
     }
 }

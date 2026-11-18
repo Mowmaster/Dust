@@ -150,10 +150,13 @@ public final class SpellRegistries
     // Duration: a second longer a level
     public static final DeferredHolder<SpellModifier, SpellModifier> DURATION_MODIFIER = modifier("duration",
             () -> new LeveledModifier((stats, levels) -> stats.withDuration(stats.duration() + 20 * levels)).fit(ModifierFit.DOT));
-    // Potency: a quarter level stronger a level
+    // Potency: a quarter level stronger a level. On a Harvest spell (the Plants + Tool fusion) it works by pylon instead:
+    // each pylon holding it plants Silky-replanted crops a growth stage further on (FusionParts), so there its pylons
+    // have no upgrade levels, and it can come up whatever the spell's fit
     public static final DeferredHolder<SpellModifier, SpellModifier> POTENCY_MODIFIER = modifier("potency",
             () -> new LeveledModifier((stats, levels) -> stats.withPotency(stats.potency() + 0.25F * levels))
-                    .categories(ModifierCategory.DAMAGE).fit(ModifierFit.DOT));
+                    .categories(ModifierCategory.DAMAGE).fit(ModifierFit.DOT)
+                    .oneLevelWhen(SpellRegistries::harvests).suitsAlso(SpellRegistries::harvests));
 
     // Projectile spells
     // Falloff: a block further before gravity starts pulling the bolt down, a level
@@ -211,8 +214,10 @@ public final class SpellRegistries
             () -> LeveledModifier.marker().categories(ModifierCategory.GIANT).perNode(1, 3));
     // Lingering (lingering effects; brought in by AOE): a pool where it lands keeps putting the effect on the creatures in
     // it (the AOE's radius) for the spell's duration
+    // Not with the Harvest fusion: a pool that keeps harvesting and shearing whatever is in it
     public static final DeferredHolder<SpellModifier, SpellModifier> LINGERING = modifier("lingering",
-            () -> LeveledModifier.marker().fit(ModifierFit.DOT).onlyOne().requires(context -> context.countInTree(id("lingering")) == 0));
+            () -> LeveledModifier.marker().fit(ModifierFit.DOT).onlyOne().requires(context -> context.countInTree(id("lingering")) == 0)
+                    .notWith(id("fusion_plants_tool")));
 
     // Piercing (Projectile): the bolt goes through creatures and blocks, affecting each, before it fizzles (1, plus half
     // a level of Depth). Not with Wall.
@@ -327,7 +332,7 @@ public final class SpellRegistries
     public static final DeferredHolder<SpellModifier, SpellModifier> SPELL_STACK = modifier("spell_stack",
             () -> LeveledModifier.marker().unlock(SpellLinks.LINK_LEVEL).oneLevel().weight(4).oncePerBranch());
     // Silky (one level): what the spell breaks drops as itself (Silk Touch); an explosion breaks no blocks; blocks the
-    // spell makes don't fade
+    // spell makes don't fade; a Harvest spell plants the crops it harvests again (without it, they're broken outright)
     public static final DeferredHolder<SpellModifier, SpellModifier> SILKY = modifier("silky",
             () -> LeveledModifier.marker().oneLevel().onlyOne().onlyWhen(SpellRegistries::silkyMatters)
                     .requires(context -> context.countInTree(id("silky")) == 0));
@@ -340,8 +345,16 @@ public final class SpellRegistries
 
     public static boolean silkyMatters(com.mowmaster.dust.Features.Spells.api.ModifierContext context)
     {
+        // Harvest replants with it, on any shape (Self harvests where the caster stands)
+        if (harvests(context)) return true;
         if (context.shape().equals(SELF.getId())) return false;
         return SILKY_ELEMENTS.contains(context.element()) || context.countInTree(id("fusion_fracture_earth")) > 0;
+    }
+
+    // Whether the spell is a Harvest spell (the Plants + Tool fusion is in its tree)
+    public static boolean harvests(com.mowmaster.dust.Features.Spells.api.ModifierContext context)
+    {
+        return context.countInTree(id("fusion_plants_tool")) > 0;
     }
 
     // Luck only matters to an effect with chance-based results: the Fracture + Earth fusion's mining and the Plants +

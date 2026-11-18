@@ -123,8 +123,9 @@ public final class SpellPylonHud
 
     // ---- the cards ----
 
-    // A card and how many (-1: no limit, shown without a count)
-    private record Entry(Identifier card, int count) {}
+    // A card and how many (-1: no limit, shown without a count); blocked: it can't go on this spell's pylons any more
+    // (greyed out: SpellPylonBlockEntity.blockedCards)
+    private record Entry(Identifier card, int count, boolean blocked) {}
 
     // The deck's modifier cards, each once with how many (in deck order)
     private static List<Entry> deckCards(SpellPylonBlockEntity pylon)
@@ -134,7 +135,7 @@ public final class SpellPylonHud
             if (!SpellDeck.isSpecial(card)) counted.merge(card, 1, Integer::sum);
         }
         List<Entry> entries = new ArrayList<>();
-        counted.forEach((card, count) -> entries.add(new Entry(card, count)));
+        counted.forEach((card, count) -> entries.add(new Entry(card, count, pylon.blockedCards().contains(card))));
         return entries;
     }
 
@@ -143,9 +144,16 @@ public final class SpellPylonHud
     {
         List<Entry> entries = new ArrayList<>();
         pylon.deck().pool().forEach((card, uses) -> {
-            if (uses != 0) entries.add(new Entry(card, uses));
+            if (uses != 0) entries.add(new Entry(card, uses, pylon.blockedCards().contains(card)));
         });
         return entries;
+    }
+
+    // The selected card's name, with a note under it if it's greyed out
+    private static void addSelected(List<Object> rows, Entry entry, SpellPylonBlockEntity pylon)
+    {
+        rows.add(cardName(entry.card(), pylon));
+        if (entry.blocked()) rows.add(Component.translatable("hud.dust.pylon.card_blocked").withStyle(ChatFormatting.ITALIC));
     }
 
     // ---- drawing ----
@@ -184,14 +192,14 @@ public final class SpellPylonHud
                 rows.add(new Grid(deckCards, 0));
                 Component specials = specials(pylon);
                 if (specials != null) rows.add(specials);
-                if (selected >= 0 && selected < deckCards.size()) rows.add(cardName(deckCards.get(selected).card(), pylon));
+                if (selected >= 0 && selected < deckCards.size()) addSelected(rows, deckCards.get(selected), pylon);
                 if (showsPool()) {
                     List<Entry> poolCards = poolCards(pylon);
                     rows.add(Component.empty());
                     rows.add(Component.translatable("hud.dust.pylon.pool", poolCards.size()).withStyle(ChatFormatting.UNDERLINE));
                     rows.add(new Grid(poolCards, deckCards.size()));
                     int inPool = selected - deckCards.size();
-                    if (inPool >= 0 && inPool < poolCards.size()) rows.add(cardName(poolCards.get(inPool).card(), pylon));
+                    if (inPool >= 0 && inPool < poolCards.size()) addSelected(rows, poolCards.get(inPool), pylon);
                 }
             }
         }
@@ -237,6 +245,7 @@ public final class SpellPylonHud
             graphics.text(font, Component.translatable("hud.dust.pylon.none"), left, top + 5, FADED, false);
             return;
         }
+        boolean anyBlocked = false;
         for (int i = 0; i < grid.entries().size(); i++) {
             int slotX = SlotGrid.slotX(left, i, COLUMNS);
             int slotY = SlotGrid.slotY(top, i, COLUMNS, 0);
@@ -246,8 +255,19 @@ public final class SpellPylonHud
             Entry entry = grid.entries().get(i);
             ItemStack card = DustItemRegistry.cardOf(entry.card());
             if (!card.isEmpty()) SlotGrid.item(graphics, font, card, slotX, slotY, Math.max(1, entry.count()));
+            anyBlocked |= entry.blocked();
+        }
+        if (!anyBlocked) return;
+        // Greyed-out cards: a see-through grey over them. Items are drawn after everything else in a layer (a
+        // "stratum"), so the cover goes in the next one to land on top of them.
+        graphics.nextStratum();
+        for (int i = 0; i < grid.entries().size(); i++) {
+            if (grid.entries().get(i).blocked()) SlotGrid.fill(graphics, SlotGrid.slotX(left, i, COLUMNS), SlotGrid.slotY(top, i, COLUMNS, 0), BLOCKED_COVER);
         }
     }
+
+    // Over a greyed-out card
+    private static final int BLOCKED_COVER = 0xB0707078;
 
     // The special cards in the deck (they have no picture), or null if there are none: "Spell Break x1, Blessing x2"
     private static @Nullable Component specials(SpellPylonBlockEntity pylon)
@@ -268,6 +288,6 @@ public final class SpellPylonHud
     // A card's name for this spell (SpellNames: Potency on a Fire bolt is "Scorch Stacks")
     private static Component cardName(Identifier card, SpellPylonBlockEntity pylon)
     {
-        return SpellNames.modifier(card, pylon.element(), pylon.shape()).copy().withStyle(ChatFormatting.ITALIC);
+        return SpellNames.modifier(card, pylon.element(), pylon.shape(), pylon.fusion()).copy().withStyle(ChatFormatting.ITALIC);
     }
 }
