@@ -73,7 +73,9 @@ public class FusionModifier implements SpellModifier
     @Override
     public Map<DustElement, Integer> cost(DustElement spellElement)
     {
-        return Map.of(first, 2, second, 2);
+        // The spell already pays 1 of its own element (SpellConfig.BASE_DUST_COST): 1 more of that, 2 of the other
+        DustElement other = spellElement.equals(first) ? second : first;
+        return Map.of(spellElement, 0, other, 1);
     }
 
     // The fused effect: this fusion's parts, and the spell's own element for any it doesn't have
