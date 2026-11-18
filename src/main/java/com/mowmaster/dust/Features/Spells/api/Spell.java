@@ -102,11 +102,23 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         cost.merge(element, SpellConfig.BASE_DUST_COST, Integer::sum);
         int levels = attributes.values().stream().mapToInt(Integer::intValue).sum();
         if (levels > 0) cost.merge(element, levels, Integer::sum);
+        // A fused spell: what each pylon costs of the spell's own element is split between the fusion's two elements,
+        // each half rounded up so they stay even ((amount + 1) / 2: whole-number division rounds down, so adding 1
+        // first rounds up; a cost of 1 is 1 of each). The fusion's own cost (2 of each) is left as it is.
+        com.mowmaster.dust.Features.Spells.modifiers.FusionModifier fusion = fusion();
         int percent = 0;
         for (int i = 0; i < modifiers.size(); i++) {
             SpellModifier modifier = SpellRegistries.MODIFIER_REGISTRY.getValue(modifiers.get(i));
             if (modifier == null) continue;
-            modifier.cost(element).forEach((type, amount) -> cost.merge(type, amount, Integer::sum));
+            modifier.cost(element).forEach((type, amount) -> {
+                if (fusion != null && modifier != fusion && type.equals(element)) {
+                    int half = (amount + 1) / 2;
+                    cost.merge(fusion.first(), half, Integer::sum);
+                    cost.merge(fusion.second(), half, Integer::sum);
+                } else {
+                    cost.merge(type, amount, Integer::sum);
+                }
+            });
             percent += modifier.costPercent(level(i));
         }
         // The percentages together, then nothing below 1 of the spell's own element (other elements can drop to 0)
@@ -115,6 +127,15 @@ public record Spell(DustElement element, Identifier shape, Map<Identifier, Integ
         cost.replaceAll((type, amount) -> type == element ? Math.max(1, amount) : Math.max(0, amount));
         cost.values().removeIf(amount -> amount <= 0);
         return cost;
+    }
+
+    // The fusion this spell is (the first fusion among its modifiers), or null
+    private com.mowmaster.dust.Features.Spells.modifiers.@org.jspecify.annotations.Nullable FusionModifier fusion()
+    {
+        for (SpellModifier modifier : modifierList()) {
+            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier found) return found;
+        }
+        return null;
     }
 
     // What casting it costs with its whole stack: every stacked spell's dust added to its own
