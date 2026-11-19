@@ -83,7 +83,16 @@ public final class UtilityParts
     public static void fellTree(SpellCast cast, BlockPos pos, Direction face)
     {
         ServerLevel level = cast.level();
-        if (!level.getBlockState(pos).is(BlockTags.LOGS)) return;
+        List<BlockPos> logs = treeLogs(level, pos);
+        if (logs == null) return;
+        for (BlockPos log : logs) level.destroyBlock(log, true, cast.caster());
+    }
+
+    // The logs of the tree this log is part of (every log connected to it), or null if it isn't a log of a natural tree
+    // (none of the connected logs touch natural leaves: a log in a build). Also used by research (Research.notesBiome).
+    public static @Nullable List<BlockPos> treeLogs(net.minecraft.world.level.Level level, BlockPos pos)
+    {
+        if (!level.getBlockState(pos).is(BlockTags.LOGS)) return null;
         List<BlockPos> logs = new ArrayList<>();
         Set<BlockPos> seen = new HashSet<>();
         ArrayDeque<BlockPos> open = new ArrayDeque<>();
@@ -99,8 +108,7 @@ public final class UtilityParts
                 if (there.is(BlockTags.LOGS) && seen.add(near.immutable())) open.add(near.immutable());
             }
         }
-        if (!natural) return;
-        for (BlockPos log : logs) level.destroyBlock(log, true, cast.caster());
+        return natural ? logs : null;
     }
 
     // ---- Plants ----

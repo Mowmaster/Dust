@@ -34,6 +34,10 @@ public class DustTags
         public static final TagKey<Block> INCORRECT_FOR_CRYSTAL_TOOL = createTag("incorrect_for_crystal_tool");
         public static final TagKey<Block> PICKADZE_MINEABLE = createTag("mineable/pickadze");
         public static final TagKey<Block> MATTOCK_MINEABLE = createTag("mineable/mattock");
+        // Research's "Found in" biomes (Research.notesBiome): blocks too common in world generation to be worth noting,
+        // and crafted blocks that are worth noting anyway because they also generate (snow, packed ice)
+        public static final TagKey<Block> NO_BIOME_NOTES = createTag("no_biome_notes");
+        public static final TagKey<Block> BIOME_NOTES = createTag("biome_notes");
 
         public static TagKey<Block> createTag(String name)
         {

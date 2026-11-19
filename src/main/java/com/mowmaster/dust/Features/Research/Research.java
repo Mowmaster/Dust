@@ -39,18 +39,23 @@ public final class Research
 
     // ---- observation ----
 
-    // The player has watched this entry at this position long enough. Starts the entry, or notes a new biome.
-    // Their client then plays a ding and shows a toast (Client/ObservationClient).
+    // The player has watched this entry at this position long enough. Starts the entry, or notes a new biome (only for
+    // things that are found in biomes: notesBiome). Their client then plays a ding and shows a toast
+    // (Client/ObservationClient).
     public static void observe(ServerPlayer player, ResearchEntry entry, BlockPos where)
     {
         Level level = player.level();
         Identifier biome = biomeAt(level, where);
+        boolean noteBiome = notesBiome(level, entry, where);
         EntryResearch before = get(player).get(entry);
         if (before == null) {
             long clock = level.getOverworldClockTime();
-            set(player, get(player).update(entry, old -> EntryResearch.firstSeen(day(clock), timeOfDay(clock), biome)));
+            set(player, get(player).update(entry, old -> {
+                EntryResearch first = EntryResearch.firstSeen(day(clock), timeOfDay(clock), biome);
+                return noteBiome ? first : first.withoutBiomes();
+            }));
             PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.tab().id(), entry.id(), false));
-        } else if (!before.biomes().contains(biome)) {
+        } else if (noteBiome && !before.biomes().contains(biome)) {
             set(player, get(player).update(entry, old -> old.withBiome(biome)));
             PacketDistributor.sendToPlayer(player, new ObservationPayloads.Discovered(entry.tab().id(), entry.id(), true));
         }
@@ -60,7 +65,29 @@ public final class Research
     public static boolean wouldLearn(Player player, ResearchEntry entry, BlockPos where)
     {
         EntryResearch known = get(player).get(entry);
-        return known == null || !known.biomes().contains(biomeAt(player.level(), where));
+        return known == null || (notesBiome(player.level(), entry, where) && !known.biomes().contains(biomeAt(player.level(), where)));
+    }
+
+    // Whether seeing this entry here notes the biome ("Found in"): only things the world puts there by itself, so the
+    // page says where to look for them:
+    //   creatures                       always
+    //   blocks                          the block actually there (not its item seen elsewhere), and
+    //     logs                          only a natural tree's (connected to natural leaves: the tree-felling spell's test)
+    //     #dust:biome_notes             yes (crafted blocks that also generate: snow, packed ice)
+    //     #dust:no_biome_notes          no (world generation's everyday blocks: stone, dirt, grass, granite...)
+    //     anything crafted              no (made, not found: CraftedCompositions knows what has a crafting recipe)
+    //     the rest                      yes (ores, ice, flowers, rarer stones...)
+    //   items, effects, everything else never
+    public static boolean notesBiome(Level level, ResearchEntry entry, BlockPos where)
+    {
+        if (entry.tab() == ResearchTabs.CREATURES || entry.tab() == ResearchTabs.BOSSES) return true;
+        if (entry.tab() != ResearchTabs.BLOCKS) return false;
+        net.minecraft.world.level.block.state.BlockState state = level.getBlockState(where);
+        if (!entry.id().equals(BuiltInRegistries.BLOCK.getKey(state.getBlock()))) return false;
+        if (state.is(net.minecraft.tags.BlockTags.LOGS)) return com.mowmaster.dust.Features.Spells.effects.UtilityParts.treeLogs(level, where) != null;
+        if (state.is(com.mowmaster.dust.DustDataGen.DustTags.Blocks.BIOME_NOTES)) return true;
+        if (state.is(com.mowmaster.dust.DustDataGen.DustTags.Blocks.NO_BIOME_NOTES)) return false;
+        return com.mowmaster.dust.Features.DustComposition.CraftedCompositions.of(state.getBlock().asItem()) == null;
     }
 
     private static Identifier biomeAt(Level level, BlockPos pos)

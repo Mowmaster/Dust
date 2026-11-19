@@ -193,6 +193,12 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
     // Each with... returns a copy with one thing changed. The private with(...) helpers below swap a single field or
     // group so the long constructor call is only written out a few times.
 
+    // The same with no biomes noted (first seen somewhere that doesn't count: Research.notesBiome)
+    public EntryResearch withoutBiomes()
+    {
+        return biomes.isEmpty() ? this : new EntryResearch(day, time, List.of(), drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
+    }
+
     public EntryResearch withBiome(Identifier biome)
     {
         return biomes.contains(biome) ? this : new EntryResearch(day, time, add(biomes, List.of(biome)), drops, creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);

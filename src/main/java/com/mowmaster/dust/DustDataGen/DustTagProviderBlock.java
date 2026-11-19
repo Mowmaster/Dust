@@ -15,6 +15,12 @@ public class DustTagProviderBlock extends BlockTagsProvider {
         super(output, lookupProvider, DustReferences.MODID);
     }
 
+    // A vanilla block's registry key (the tag builder takes keys)
+    private static net.minecraft.resources.ResourceKey<net.minecraft.world.level.block.Block> key(net.minecraft.world.level.block.Block block)
+    {
+        return block.builtInRegistryHolder().key();
+    }
+
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
@@ -56,6 +62,16 @@ public class DustTagProviderBlock extends BlockTagsProvider {
         tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.key());
 
+        // Research's "Found in" biomes: world generation's everyday blocks aren't noted; these crafted ones are
+        tag(DustTags.Blocks.NO_BIOME_NOTES)
+                .add(key(net.minecraft.world.level.block.Blocks.STONE), key(net.minecraft.world.level.block.Blocks.DEEPSLATE), key(net.minecraft.world.level.block.Blocks.GRANITE),
+                        key(net.minecraft.world.level.block.Blocks.DIORITE), key(net.minecraft.world.level.block.Blocks.ANDESITE), key(net.minecraft.world.level.block.Blocks.TUFF),
+                        key(net.minecraft.world.level.block.Blocks.DIRT), key(net.minecraft.world.level.block.Blocks.GRASS_BLOCK), key(net.minecraft.world.level.block.Blocks.COARSE_DIRT),
+                        key(net.minecraft.world.level.block.Blocks.GRAVEL), key(net.minecraft.world.level.block.Blocks.SAND), key(net.minecraft.world.level.block.Blocks.COBBLESTONE),
+                        key(net.minecraft.world.level.block.Blocks.NETHERRACK), key(net.minecraft.world.level.block.Blocks.BEDROCK), key(net.minecraft.world.level.block.Blocks.SHORT_GRASS),
+                        key(net.minecraft.world.level.block.Blocks.TALL_GRASS), key(net.minecraft.world.level.block.Blocks.WATER), key(net.minecraft.world.level.block.Blocks.LAVA));
+        tag(DustTags.Blocks.BIOME_NOTES)
+                .add(key(net.minecraft.world.level.block.Blocks.SNOW_BLOCK), key(net.minecraft.world.level.block.Blocks.PACKED_ICE), key(net.minecraft.world.level.block.Blocks.BLUE_ICE));
         tag(DustTags.Blocks.MAGICAL_CRYSTAL_BLOCKS)
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.key())
                 .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.key())
