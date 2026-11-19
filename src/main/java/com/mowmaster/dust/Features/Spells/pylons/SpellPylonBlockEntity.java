@@ -253,9 +253,20 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
         if (pylon.tier() == ModifierTier.NORMAL && !pylon.stop() && !SpellRegistries.isPrevent(pylon.modifier())) bless();
         ModifierCategory category = pylon.type().category();
         if (category != null && pylon.modifier() != null && pylon.tier() == ModifierTier.NORMAL) {
-            deck.drawNormal(treeContext(null), random, categoryBonus(), doubleDraw(), modifier -> modifier.categories().contains(category));
-        }
+            drawForCategory(random, treeContext(null), category, null);        }
     }
+
+    // A category pylon pulling a modifier of its category from the pool into the deck. Category Weight (it's in every
+    // category) only when the pool has nothing else of that category left; otherwise it only comes into the deck by the
+    // ordinary draws. forCategory: the pylon drawing for itself (Category Weight's weight left for that category).
+    // False if nothing was drawn.
+    private boolean drawForCategory(net.minecraft.util.RandomSource random, ModifierContext tree, ModifierCategory category, @Nullable ModifierCategory forCategory)
+    {
+        SpellModifier weight = SpellRegistries.CATEGORY_WEIGHT.get();
+        if (deck.drawNormal(tree, random, categoryBonus(), doubleDraw(), modifier -> modifier.categories().contains(category) && modifier != weight, forCategory)) return true;
+        return deck.drawNormal(tree, random, categoryBonus(), doubleDraw(), modifier -> modifier.categories().contains(category), forCategory);
+    }
+
 
     public @Nullable Identifier shape()
     {
@@ -635,8 +646,7 @@ public class SpellPylonBlockEntity extends CBSyncedBlockEntity implements com.mo
             }).toList();
             // None in the deck: one of its category straight from the pool, if the pool has one that fits here; only
             // with none there either does it take any card
-            if (ours.isEmpty() && deck.drawNormal(treeContext(placer), random, categoryBonus(), doubleDraw(),
-                    modifier -> modifier.categories().contains(type.category()), type.category())) {
+            if (ours.isEmpty() && drawForCategory(random, treeContext(placer), type.category(), type.category())) {
                 Identifier drawn = deck.cards().getLast();
                 if (fitsHere(drawn, type, line, knowledge, afterBreak)) ours = List.of(drawn);
             }

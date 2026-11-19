@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:stone",
+    "minecraft:deepslate",
+    "minecraft:granite",
+    "minecraft:diorite",
+    "minecraft:andesite",
+    "minecraft:tuff",
+    "minecraft:dirt",
+    "minecraft:grass_block",
+    "minecraft:coarse_dirt",
+    "minecraft:gravel",
+    "minecraft:sand",
+    "minecraft:cobblestone",
+    "minecraft:netherrack",
+    "minecraft:bedrock",
+    "minecraft:short_grass",
+    "minecraft:tall_grass",
+    "minecraft:water",
+    "minecraft:lava"
+  ]
+}
