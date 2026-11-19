@@ -190,6 +190,8 @@ public class DustBlockRegistry {
             com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity::new);
     public static final DeferredBlock<Block> MIXING_VAT = apparatus("mixing_vat", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.MIXING_VAT,
             com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity::new);
+    public static final DeferredBlock<Block> DISSOLVING_RETORT = apparatus("dissolving_retort", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.RETORT,
+            com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity::new);
 
     // One apparatus: copper, brass and iron (mined with a pickaxe; tool needed for it to drop), its own shape and block
     // entity (ApparatusBlock)

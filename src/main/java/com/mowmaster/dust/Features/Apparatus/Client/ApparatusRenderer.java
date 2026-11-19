@@ -47,6 +47,7 @@ import java.util.List;
 //   Separator            its copper drum (separator_drum.json) spinning in the glass case
 //   Transmuter           what it's making, growing and turning in the glass dome, glowing; its pattern on the dome's front
 //   Conjoining Crucible  its pattern on the plate on the front
+//   Dissolving Retort    its pattern on the plate on the belly's front
 //   Mixing Vat           the liquid in the vat, in the pattern's colour; the paddle (vat_paddle.json) stirring while it
 //                        works; its pattern on the front plate
 // The Kettle and the Alembic have no moving parts: their steam, bubbles and flames are particles (their block entities'
@@ -70,7 +71,7 @@ public class ApparatusRenderer implements BlockEntityRenderer<ApparatusBlockEnti
         event.register(VAT_PADDLE, SimpleUnbakedStandaloneModel.simpleModelWrapper(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/vat_paddle")));
     }
 
-    private enum Kind { MILL, SEPARATOR, TRANSMUTER, CRUCIBLE, VAT, OTHER }
+    private enum Kind { MILL, SEPARATOR, TRANSMUTER, CRUCIBLE, VAT, RETORT, OTHER }
 
     private final ItemModelResolver itemModelResolver;
 
@@ -112,6 +113,7 @@ public class ApparatusRenderer implements BlockEntityRenderer<ApparatusBlockEnti
             case TransmuterBlockEntity transmuter -> Kind.TRANSMUTER;
             case ConjoiningCrucibleBlockEntity crucible -> Kind.CRUCIBLE;
             case MixingVatBlockEntity vat -> Kind.VAT;
+            case com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity retort -> Kind.RETORT;
             default -> Kind.OTHER;
         };
         ItemStack item = ItemStack.EMPTY;
@@ -162,6 +164,7 @@ public class ApparatusRenderer implements BlockEntityRenderer<ApparatusBlockEnti
                 plate(state.pattern, new Vec3(8, 9.5, 2.85), 0.45F, state.lightCoords, poseStack, collector);
             }
             case CRUCIBLE -> plate(state.pattern, new Vec3(8, 8.5, 2.6), 0.5F, state.lightCoords, poseStack, collector);
+            case RETORT -> plate(state.pattern, new Vec3(8, 8.75, 3.1), 0.45F, state.lightCoords, poseStack, collector);
             case VAT -> {
                 // The liquid's surface (a square, see-through, in the pattern's colour), then the paddle and pattern
                 poseStack.pushPose();

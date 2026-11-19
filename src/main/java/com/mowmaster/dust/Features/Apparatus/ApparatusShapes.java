@@ -22,6 +22,8 @@ public final class ApparatusShapes
     public static final VoxelShape ALEMBIC = Shapes.or(BASE, Block.box(3, 3, 1, 13, 12, 14), Block.box(5, 12, 6, 11, 16, 12));
     public static final VoxelShape TRANSMUTER = Shapes.or(BASE, Block.box(3, 3, 3, 13, 16, 13));
     public static final VoxelShape CRUCIBLE = Shapes.or(BASE, Block.box(2.5, 3, 2.5, 13.5, 13.5, 13.5));
+    // The retort's belly with its side outlets, and its neck
+    public static final VoxelShape RETORT = Shapes.or(BASE, Block.box(1, 3, 3, 15, 12, 13), Block.box(6, 12, 6, 10, 15.5, 10));
     // The vat, and its stirrer's gantry across it (west to east)
     public static final VoxelShape MIXING_VAT = Shapes.or(BASE, Block.box(1.75, 3, 1.75, 14.25, 12, 14.25), Block.box(0.5, 3, 7, 15.5, 16, 9));
 

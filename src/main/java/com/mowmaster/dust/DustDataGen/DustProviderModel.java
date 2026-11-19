@@ -445,12 +445,14 @@ public class DustProviderModel extends ModelProvider {
     // with the scratch generator: copper, brass and wrought iron on a blackstone plinth), turned to face the way it was
     // placed; the item is the same model. Their moving parts are standalone models drawn by Client/ApparatusRenderer.
     // The Glass Dust Tube: a multipart blockstate (every part whose condition holds is drawn): the glass middle always,
-    // and an arm (dust_tube_arm.json, made pointing north) turned toward each side it's joined on that side; the item is
+    // and an arm (dust_tube_arm.json, made pointing north) turned toward each side joined to a tube, a longer one
+    // (dust_tube_reach.json) toward each side joined to a jar or apparatus; the item is
     // a straight run (dust_tube_item.json).
     private void createApparatus(BlockModelGenerators blockModels)
     {
         for (Block block : List.of(DustBlockRegistry.CRUSHING_MILL.get(), DustBlockRegistry.ALCHEMICAL_SEPARATOR.get(), DustBlockRegistry.EVAPORATING_KETTLE.get(),
-                DustBlockRegistry.ALEMBIC.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get())) {
+                DustBlockRegistry.ALEMBIC.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get(),
+                DustBlockRegistry.DISSOLVING_RETORT.get())) {
             Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
                     .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
@@ -459,14 +461,18 @@ public class DustProviderModel extends ModelProvider {
         Block tube = DustBlockRegistry.DUST_TUBE.get();
         MultiVariant core = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_core"));
         MultiVariant arm = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_arm"));
-        blockModels.blockStateOutput.accept(MultiPartGenerator.multiPart(tube)
-                .with(core)
-                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.NORTH, true), arm)
-                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.EAST, true), arm.with(BlockModelGenerators.Y_ROT_90))
-                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.SOUTH, true), arm.with(BlockModelGenerators.Y_ROT_180))
-                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.WEST, true), arm.with(BlockModelGenerators.Y_ROT_270))
-                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.UP, true), arm.with(BlockModelGenerators.X_ROT_270))
-                .with(BlockModelGenerators.condition(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOWN, true), arm.with(BlockModelGenerators.X_ROT_90)));
+        // A longer arm toward a block that takes tubes (it reaches into that block's space to meet its body)
+        MultiVariant reach = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_reach"));
+        MultiPartGenerator parts = MultiPartGenerator.multiPart(tube).with(core);
+        Map<Direction, VariantMutator> turns = Map.of(
+                Direction.NORTH, BlockModelGenerators.NOP, Direction.EAST, BlockModelGenerators.Y_ROT_90, Direction.SOUTH, BlockModelGenerators.Y_ROT_180,
+                Direction.WEST, BlockModelGenerators.Y_ROT_270, Direction.UP, BlockModelGenerators.X_ROT_270, Direction.DOWN, BlockModelGenerators.X_ROT_90);
+        for (Direction side : Direction.values()) {
+            var property = com.mowmaster.dust.Features.DustStorage.DustTubeBlock.CONNECTIONS.get(side);
+            parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.TUBE), arm.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK), reach.with(turns.get(side)));
+        }
+        blockModels.blockStateOutput.accept(parts);
         blockModels.itemModelOutput.accept(tube.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_item")));
     }
 

@@ -10,10 +10,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -23,12 +22,26 @@ import java.util.Map;
 
 // The Glass Dust Tube: a glass vacuum tube in brass collars that carries element dust (DustNetwork). It joins on to the
 // tubes beside it and to the blocks that take tubes (DustTubeConnectable: Dust Jars, the Dust Grinder, the alchemical
-// apparatus, Spell Casters), a block state property for each side (the model shows an arm on each joined side:
-// a multipart blockstate). Tubes have no block entity: the network is found by walking them.
+// apparatus, Spell Casters), a block state property for each side (TubeJoin: none, a tube, or a block; the model shows
+// an arm on each joined side, a longer one reaching into a block's space: a multipart blockstate). Tubes have no block
+// entity: the network is found by walking them.
 public class DustTubeBlock extends Block implements DustTubeConnectable
 {
-    // Joined on each side (vanilla's set of six, as chorus plants use)
-    public static final Map<Direction, BooleanProperty> CONNECTIONS = PipeBlock.PROPERTY_BY_DIRECTION;
+    // How it's joined on each side (named like vanilla's six sides: "north", ...)
+    public static final Map<Direction, EnumProperty<TubeJoin>> CONNECTIONS = makeConnections();
+
+    private static Map<Direction, EnumProperty<TubeJoin>> makeConnections()
+    {
+        Map<Direction, EnumProperty<TubeJoin>> map = new java.util.EnumMap<>(Direction.class);
+        for (Direction side : Direction.values()) map.put(side, EnumProperty.create(side.getSerializedName(), TubeJoin.class));
+        return java.util.Collections.unmodifiableMap(map);
+    }
+
+    // Whether it's joined (to anything) on this side
+    public static boolean isJoined(BlockState state, Direction side)
+    {
+        return state.getValue(CONNECTIONS.get(side)).joined();
+    }
 
     // The middle, and an arm out to each side (the glass is 5 wide; the collars at the ends 6)
     private static final VoxelShape CORE = Block.box(5, 5, 5, 11, 11, 11);
@@ -56,14 +69,14 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     {
         super(properties);
         BlockState state = stateDefinition.any();
-        for (BooleanProperty property : CONNECTIONS.values()) state = state.setValue(property, false);
+        for (EnumProperty<TubeJoin> property : CONNECTIONS.values()) state = state.setValue(property, TubeJoin.NONE);
         registerDefaultState(state);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(CONNECTIONS.values().toArray(new BooleanProperty[0]));
+        CONNECTIONS.values().forEach(builder::add);
     }
 
     // Placed: joined on to whatever round it takes tubes
@@ -75,7 +88,7 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         BlockPos pos = context.getClickedPos();
         for (Direction side : Direction.values()) {
             BlockPos next = pos.relative(side);
-            state = state.setValue(CONNECTIONS.get(side), joins(level.getBlockState(next), side.getOpposite()));
+            state = state.setValue(CONNECTIONS.get(side), join(level.getBlockState(next), side.getOpposite()));
         }
         return state;
     }
@@ -85,7 +98,14 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
                                      BlockPos neighborPos, BlockState neighborState, RandomSource random)
     {
-        return state.setValue(CONNECTIONS.get(direction), joins(neighborState, direction.getOpposite()));
+        return state.setValue(CONNECTIONS.get(direction), join(neighborState, direction.getOpposite()));
+    }
+
+    // How a tube joins on to this block: to another tube, to a block that takes tubes, or not at all
+    public static TubeJoin join(BlockState neighbor, Direction side)
+    {
+        if (neighbor.getBlock() instanceof DustTubeBlock) return TubeJoin.TUBE;
+        return joins(neighbor, side) ? TubeJoin.BLOCK : TubeJoin.NONE;
     }
 
     // Whether a tube joins on to this block (side: the block's side facing the tube)
@@ -99,7 +119,7 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     {
         int mask = 0;
         for (Direction side : Direction.values()) {
-            if (state.getValue(CONNECTIONS.get(side))) mask |= 1 << side.ordinal();
+            if (isJoined(state, side)) mask |= 1 << side.ordinal();
         }
         return SHAPES[mask];
     }

@@ -30,6 +30,7 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.TRANSMUTER.key())
                 .add(DustBlockRegistry.CONJOINING_CRUCIBLE.key())
                 .add(DustBlockRegistry.MIXING_VAT.key())
+                .add(DustBlockRegistry.DISSOLVING_RETORT.key())
                 .add(DustBlockRegistry.DUST_TUBE.key())
                 .add(DustBlockRegistry.LOVELY_LAMP.key())
                 .add(DustBlockRegistry.BLOCK_OF_DUST_RED.key())

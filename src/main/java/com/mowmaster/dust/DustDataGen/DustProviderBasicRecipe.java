@@ -235,6 +235,10 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.MIXING_VAT.asItem(), "mixing_vat", Optional.empty(),
                 java.util.Map.of('C', copperIngot, 'V', Ingredient.of(Items.BARREL), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_MIXING.asItem()), 'B', blackstone),
                 List.of("CVC", "IRI", "BBB"), cost(DustElements.WATER, 50));
+        // The Dissolving Retort breaks elements apart, as the Separation Table breaks compounds down
+        elementShaped(DustBlockRegistry.DISSOLVING_RETORT.asItem(), "dissolving_retort", Optional.empty(),
+                java.util.Map.of('C', copperIngot, 'G', glass, 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_SEPARATION.asItem()), 'B', blackstone, 'F', furnace),
+                List.of("CGC", "IRI", "BFB"), cost(DustElements.CHAOS, 50));
         // The pylons: one pattern, a different element for each
         java.util.Map<Character, Ingredient> pylonKey = java.util.Map.of('S', stone, 'A', Ingredient.of(soot));
         List<String> pylon = List.of("SAS", " S ", "SSS");

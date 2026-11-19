@@ -1,0 +1,81 @@
+{
+	"parent": "minecraft:block/block",
+	"render_type": "minecraft:translucent",
+	"textures": {"glass": "dust:block/apparatus/tube_glass", "brass": "dust:block/apparatus/brass", "particle": "dust:block/apparatus/brass"},
+	"elements": [
+		{
+			"name": "arm",
+			"from": [5.5, 5.5, -3.0],
+			"to": [10.5, 10.5, 5.5],
+			"faces": {
+				"west": {"uv": [0, 0, 16, 16], "texture": "#glass"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#glass"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#glass"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#glass"}
+			}
+		},
+		{
+			"name": "collar_bottom",
+			"from": [5, 5, -3.0],
+			"to": [11, 5.5, -1.75],
+			"faces": {
+				"north": {"uv": [5, 10.5, 11, 11], "texture": "#brass"},
+				"south": {"uv": [5, 10.5, 11, 11], "texture": "#brass"},
+				"west": {"uv": [0, 10.5, 1.25, 11], "texture": "#brass"},
+				"east": {"uv": [14.75, 10.5, 16, 11], "texture": "#brass"},
+				"up": {"uv": [5, 0, 11, 1.25], "texture": "#brass"},
+				"down": {"uv": [5, 14.75, 11, 16], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "collar_top",
+			"from": [5, 10.5, -3.0],
+			"to": [11, 11, -1.75],
+			"faces": {
+				"north": {"uv": [5, 5, 11, 5.5], "texture": "#brass"},
+				"south": {"uv": [5, 5, 11, 5.5], "texture": "#brass"},
+				"west": {"uv": [0, 5, 1.25, 5.5], "texture": "#brass"},
+				"east": {"uv": [14.75, 5, 16, 5.5], "texture": "#brass"},
+				"up": {"uv": [5, 0, 11, 1.25], "texture": "#brass"},
+				"down": {"uv": [5, 14.75, 11, 16], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "collar_west",
+			"from": [5, 5.5, -3.0],
+			"to": [5.5, 10.5, -1.75],
+			"faces": {
+				"north": {"uv": [10.5, 5.5, 11, 10.5], "texture": "#brass"},
+				"south": {"uv": [5, 5.5, 5.5, 10.5], "texture": "#brass"},
+				"west": {"uv": [0, 5.5, 1.25, 10.5], "texture": "#brass"},
+				"east": {"uv": [14.75, 5.5, 16, 10.5], "texture": "#brass"},
+				"up": {"uv": [5, 0, 5.5, 1.25], "texture": "#brass"},
+				"down": {"uv": [5, 14.75, 5.5, 16], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "collar_east",
+			"from": [10.5, 5.5, -3.0],
+			"to": [11, 10.5, -1.75],
+			"faces": {
+				"north": {"uv": [5, 5.5, 5.5, 10.5], "texture": "#brass"},
+				"south": {"uv": [10.5, 5.5, 11, 10.5], "texture": "#brass"},
+				"west": {"uv": [0, 5.5, 1.25, 10.5], "texture": "#brass"},
+				"east": {"uv": [14.75, 5.5, 16, 10.5], "texture": "#brass"},
+				"up": {"uv": [10.5, 0, 11, 1.25], "texture": "#brass"},
+				"down": {"uv": [10.5, 14.75, 11, 16], "texture": "#brass"}
+			}
+		},
+		{
+			"name": "edge_band",
+			"from": [5.25, 5.25, -0.25],
+			"to": [10.75, 10.75, 0.25],
+			"faces": {
+				"west": {"uv": [0, 5.25, 0.5, 10.75], "texture": "#brass"},
+				"east": {"uv": [15.5, 5.25, 16, 10.75], "texture": "#brass"},
+				"up": {"uv": [5.25, 0, 10.75, 0.5], "texture": "#brass"},
+				"down": {"uv": [5.25, 15.5, 10.75, 16], "texture": "#brass"}
+			}
+		}
+	]
+}

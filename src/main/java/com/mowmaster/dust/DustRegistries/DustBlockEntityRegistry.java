@@ -64,6 +64,8 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity::new, Set.of(DustBlockRegistry.CONJOINING_CRUCIBLE.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity>> MIXING_VAT = BLOCK_ENTITIES.register("mixing_vat",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity::new, Set.of(DustBlockRegistry.MIXING_VAT.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity>> DISSOLVING_RETORT = BLOCK_ENTITIES.register("dissolving_retort",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity::new, Set.of(DustBlockRegistry.DISSOLVING_RETORT.get())));
 
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity>> SPELL_CASTER = BLOCK_ENTITIES.register("spell_caster",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity::new, Set.of(DustBlockRegistry.SPELL_CASTER.get())));

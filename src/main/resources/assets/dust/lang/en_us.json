@@ -930,6 +930,8 @@
   "block.dust.transmuter": "Transmuter",
   "block.dust.conjoining_crucible": "Conjoining Crucible",
   "block.dust.mixing_vat": "Mixing Vat",
+  "block.dust.dissolving_retort": "Dissolving Retort",
+  "dust.apparatus.dissolving": "dissolving %s (%s%%)",
   "dust.apparatus.no_owner": "no owner (right-click it with an empty hand to claim it)",
   "dust.apparatus.paused": "paused by redstone",
   "dust.apparatus.idle": "idle",

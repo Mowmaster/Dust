@@ -158,7 +158,7 @@ public final class DustNetwork
             if (!level.isLoaded(next)) continue;
             BlockState state = level.getBlockState(next);
             if (state.getBlock() instanceof DustTubeBlock) {
-                if (!state.getValue(DustTubeBlock.CONNECTIONS.get(side.getOpposite()))) continue;
+                if (!DustTubeBlock.isJoined(state, side.getOpposite())) continue;
                 cameFrom.put(next, origin);
                 depth.put(next, 1);
                 queue.add(next);
@@ -173,7 +173,7 @@ public final class DustNetwork
             BlockState state = level.getBlockState(tube);
             if (!(state.getBlock() instanceof DustTubeBlock)) continue;
             for (Direction side : Direction.values()) {
-                if (!state.getValue(DustTubeBlock.CONNECTIONS.get(side))) continue;
+                if (!DustTubeBlock.isJoined(state, side)) continue;
                 BlockPos next = tube.relative(side);
                 if (next.equals(origin) || cameFrom.containsKey(next) || storesSeen.contains(next) || !level.isLoaded(next)) continue;
                 if (level.getBlockState(next).getBlock() instanceof DustTubeBlock) {

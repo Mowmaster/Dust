@@ -7,37 +7,20 @@
     },
     {
       "apply": {
-        "model": "dust:block/apparatus/dust_tube_arm"
+        "model": "dust:block/apparatus/dust_tube_arm",
+        "x": 90
       },
       "when": {
-        "north": "true"
+        "down": "tube"
       }
     },
     {
       "apply": {
-        "model": "dust:block/apparatus/dust_tube_arm",
-        "y": 90
+        "model": "dust:block/apparatus/dust_tube_reach",
+        "x": 90
       },
       "when": {
-        "east": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dust:block/apparatus/dust_tube_arm",
-        "y": 180
-      },
-      "when": {
-        "south": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "dust:block/apparatus/dust_tube_arm",
-        "y": 270
-      },
-      "when": {
-        "west": "true"
+        "down": "block"
       }
     },
     {
@@ -46,16 +29,86 @@
         "x": 270
       },
       "when": {
-        "up": "true"
+        "up": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach",
+        "x": 270
+      },
+      "when": {
+        "up": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_arm"
+      },
+      "when": {
+        "north": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach"
+      },
+      "when": {
+        "north": "block"
       }
     },
     {
       "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
-        "x": 90
+        "y": 180
       },
       "when": {
-        "down": "true"
+        "south": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach",
+        "y": 180
+      },
+      "when": {
+        "south": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_arm",
+        "y": 270
+      },
+      "when": {
+        "west": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach",
+        "y": 270
+      },
+      "when": {
+        "west": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_arm",
+        "y": 90
+      },
+      "when": {
+        "east": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach",
+        "y": 90
+      },
+      "when": {
+        "east": "block"
       }
     }
   ]

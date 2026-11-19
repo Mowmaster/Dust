@@ -109,7 +109,7 @@ public class DustClient {
         // The alchemical apparatus share one renderer (it draws each one's own moving parts)
         for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
                 DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.ALEMBIC.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
-                DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get())) {
+                DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get(), DustBlockEntityRegistry.DISSOLVING_RETORT.get())) {
             registerApparatusRenderer(event, type);
         }
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_REPLICATOR.get(), com.mowmaster.dust.Features.Machines.Client.ElementReplicatorRenderer::new);
