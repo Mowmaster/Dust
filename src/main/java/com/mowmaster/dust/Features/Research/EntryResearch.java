@@ -77,18 +77,38 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
         ).apply(instance, EffectLevel::new));
     }
 
-    //   maxHealth   a mob's maximum health, once fought (-1 = not known)
+    //   maxHealth   a mob's maximum health, once fought: the largest seen (-1 = not known)
+    //   healths     every maximum health seen, smallest first: mobs that come in sizes (slimes, magma cubes) have one
+    //               for each size, and fighting a size already seen notes nothing new
     //   breeding    items it has been fed to breed
     //   hits        the least and most damage it has dealt to the player in one hit (Hits.NONE = never hit)
-    public record Creature(float maxHealth, List<Identifier> breeding, Hits hits)
+    public record Creature(float maxHealth, List<Float> healths, List<Identifier> breeding, Hits hits)
     {
-        public static final Creature NONE = new Creature(-1F, List.of(), Hits.NONE);
+        public static final Creature NONE = new Creature(-1F, List.of(), List.of(), Hits.NONE);
         // RecordCodecBuilder.mapCodec builds a MapCodec: a set of fields, without saying where the map lives
         public static final MapCodec<Creature> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.FLOAT.optionalFieldOf("max_health", -1F).forGetter(Creature::maxHealth),
+                Codec.FLOAT.listOf().optionalFieldOf("healths", List.of()).forGetter(Creature::healths),
                 Identifier.CODEC.listOf().optionalFieldOf("breeding", List.of()).forGetter(Creature::breeding),
                 Hits.CODEC.optionalFieldOf("hits", Hits.NONE).forGetter(Creature::hits)
         ).apply(instance, Creature::new));
+
+        public Creature
+        {
+            // Saved before sizes were kept: the one health known is the only size seen
+            if (healths.isEmpty() && maxHealth > 0) healths = List.of(maxHealth);
+            healths = List.copyOf(healths);
+        }
+
+        // With this maximum health seen too (unchanged if it's a size already seen)
+        public Creature withHealth(float health)
+        {
+            if (health <= 0 || healths.contains(health)) return this;
+            List<Float> all = new ArrayList<>(healths);
+            all.add(health);
+            all.sort(null);
+            return new Creature(all.getLast(), all, breeding, hits);
+        }
     }
 
     //   saturation    how much saturation it gives when eaten (-1 = not eaten yet)
@@ -156,6 +176,7 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
     // ---- shortcuts into the groups (the names the rest of the code has always used) ----
 
     public float maxHealth() { return creature.maxHealth(); }
+    public List<Float> healths() { return creature.healths(); }
     public List<Identifier> breeding() { return creature.breeding(); }
     public Hits hits() { return creature.hits(); }
     public float saturation() { return food.saturation(); }
@@ -182,19 +203,20 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
         return new EntryResearch(day, time, biomes, add(drops, items), creature, madeFrom, makes, modifiers, madeBy, usedIn, food, levels, dust, processes, notes);
     }
 
+    // A maximum health seen (another size of a mob that comes in sizes is added; one already seen changes nothing)
     public EntryResearch withMaxHealth(float health)
     {
-        return with(new Creature(health, breeding(), hits()));
+        return with(creature.withHealth(health));
     }
 
     public EntryResearch withBreeding(Identifier item)
     {
-        return with(new Creature(maxHealth(), add(breeding(), List.of(item)), hits()));
+        return with(new Creature(maxHealth(), healths(), add(breeding(), List.of(item)), hits()));
     }
 
     public EntryResearch withHit(float damage)
     {
-        return with(new Creature(maxHealth(), breeding(), hits().with(damage)));
+        return with(new Creature(maxHealth(), healths(), breeding(), hits().with(damage)));
     }
 
     public EntryResearch withMadeFrom(List<Identifier> items)

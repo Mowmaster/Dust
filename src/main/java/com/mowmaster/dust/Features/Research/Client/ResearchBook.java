@@ -640,7 +640,10 @@ public final class ResearchBook
         int y = NOTES_TOP;
         int bottom = FOOTER_Y - 2;
         if (research.maxHealth() > 0) {
-            Paper.ink(graphics, font, Component.translatable(label(entry, "health"), Math.round(research.maxHealth()) / 2.0F), RIGHT_X + 4, y, INK);
+            // Each size seen, smallest first ("0.5, 2, 8" for a slime)
+            String healths = research.healths().stream().map(health -> String.valueOf(Math.round(health) / 2.0F))
+                    .collect(java.util.stream.Collectors.joining(", "));
+            Paper.ink(graphics, font, Component.translatable(label(entry, "health"), healths), RIGHT_X + 4, y, INK);
             y += font.lineHeight + 3;
         }
         if (research.hits().known()) {
