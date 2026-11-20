@@ -67,12 +67,31 @@ public final class DustTubeFlows
     }
 
     private static final List<Flow> FLOWS = new ArrayList<>();
+    // The colour of the dust that last ran through each tube (its filled core's tint: DustTubeTint)
+    private static final java.util.Map<BlockPos, Integer> COLORS = new java.util.HashMap<>();
+
+    public static int colorAt(BlockPos pos)
+    {
+        return COLORS.getOrDefault(pos, 0xFFFFFF);
+    }
 
     private DustTubeFlows() {}
 
     public static void onFlow(DustTubeFlow message, IPayloadContext context)
     {
-        if (Minecraft.getInstance().level == null || message.path().size() < 2) return;
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level == null || message.path().size() < 2) return;
+        // A tube's core changes colour: it's drawn again
+        for (BlockPos pos : message.path()) {
+            Integer before = COLORS.put(pos.immutable(), message.color());
+            if (before != null && before == message.color()) continue;
+            net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
+            if (state.getBlock() instanceof com.mowmaster.dust.Features.DustStorage.DustTubeBlock) {
+                level.sendBlockUpdated(pos, state, state, net.minecraft.world.level.block.Block.UPDATE_ALL);
+            } else {
+                COLORS.remove(pos);
+            }
+        }
         if (FLOWS.size() >= MAX_FLOWS) FLOWS.removeFirst();
         FLOWS.add(new Flow(message));
     }
@@ -83,6 +102,7 @@ public final class DustTubeFlows
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {
             FLOWS.clear();
+            COLORS.clear();
             return;
         }
         if (Minecraft.getInstance().isPaused()) return;

@@ -7,6 +7,14 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_core"
+      },
+      "when": {
+        "filled": "true"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
         "x": 90
       },
@@ -30,6 +38,36 @@
       },
       "when": {
         "down": "near"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_arm",
+        "x": 90
+      },
+      "when": {
+        "down": "tube",
+        "filled": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach",
+        "x": 90
+      },
+      "when": {
+        "down": "block",
+        "filled": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach_near",
+        "x": 90
+      },
+      "when": {
+        "down": "near",
+        "filled": "true"
       }
     },
     {
@@ -61,6 +99,36 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_arm",
+        "x": 270
+      },
+      "when": {
+        "filled": "true",
+        "up": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach",
+        "x": 270
+      },
+      "when": {
+        "filled": "true",
+        "up": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach_near",
+        "x": 270
+      },
+      "when": {
+        "filled": "true",
+        "up": "near"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm"
       },
       "when": {
@@ -80,6 +148,33 @@
         "model": "dust:block/apparatus/dust_tube_reach_near"
       },
       "when": {
+        "north": "near"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_arm"
+      },
+      "when": {
+        "filled": "true",
+        "north": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach"
+      },
+      "when": {
+        "filled": "true",
+        "north": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach_near"
+      },
+      "when": {
+        "filled": "true",
         "north": "near"
       }
     },
@@ -112,6 +207,36 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_arm",
+        "y": 180
+      },
+      "when": {
+        "filled": "true",
+        "south": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach",
+        "y": 180
+      },
+      "when": {
+        "filled": "true",
+        "south": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach_near",
+        "y": 180
+      },
+      "when": {
+        "filled": "true",
+        "south": "near"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
         "y": 270
       },
@@ -134,6 +259,36 @@
         "y": 270
       },
       "when": {
+        "west": "near"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_arm",
+        "y": 270
+      },
+      "when": {
+        "filled": "true",
+        "west": "tube"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach",
+        "y": 270
+      },
+      "when": {
+        "filled": "true",
+        "west": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach_near",
+        "y": 270
+      },
+      "when": {
+        "filled": "true",
         "west": "near"
       }
     },
@@ -162,6 +317,36 @@
       },
       "when": {
         "east": "near"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_arm",
+        "y": 90
+      },
+      "when": {
+        "east": "tube",
+        "filled": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach",
+        "y": 90
+      },
+      "when": {
+        "east": "block",
+        "filled": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_fill_reach_near",
+        "y": 90
+      },
+      "when": {
+        "east": "near",
+        "filled": "true"
       }
     }
   ]

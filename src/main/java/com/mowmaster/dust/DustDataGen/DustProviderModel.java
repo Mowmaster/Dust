@@ -502,11 +502,22 @@ public class DustProviderModel extends ModelProvider {
         Map<Direction, VariantMutator> turns = Map.of(
                 Direction.NORTH, BlockModelGenerators.NOP, Direction.EAST, BlockModelGenerators.Y_ROT_90, Direction.SOUTH, BlockModelGenerators.Y_ROT_180,
                 Direction.WEST, BlockModelGenerators.Y_ROT_270, Direction.UP, BlockModelGenerators.X_ROT_270, Direction.DOWN, BlockModelGenerators.X_ROT_90);
+        // Filled (dust running through): a tinted core of flowing dust inside the glass, in the middle and down each arm
+        // (models/block/apparatus/dust_tube_fill_*.json, hand-written; texture block/apparatus/tube_dust, animated)
+        var filled = com.mowmaster.dust.Features.DustStorage.DustTubeBlock.FILLED;
+        MultiVariant fillCore = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_fill_core"));
+        MultiVariant fillArm = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_fill_arm"));
+        MultiVariant fillReach = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_fill_reach"));
+        MultiVariant fillReachNear = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_fill_reach_near"));
+        parts.with(BlockModelGenerators.condition(filled, true), fillCore);
         for (Direction side : Direction.values()) {
             var property = com.mowmaster.dust.Features.DustStorage.DustTubeBlock.CONNECTIONS.get(side);
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.TUBE), arm.with(turns.get(side)));
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK), reach.with(turns.get(side)));
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.NEAR), reachNear.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.TUBE), fillArm.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK), fillReach.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.NEAR), fillReachNear.with(turns.get(side)));
         }
         blockModels.blockStateOutput.accept(parts);
         blockModels.itemModelOutput.accept(tube.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_item")));

@@ -299,6 +299,7 @@ public final class DustNetwork
     private static void showFlow(ServerLevel level, List<BlockPos> path, int color)
     {
         if (path.size() < 2) return;
+        DustTubeBlock.filled(level, path);
         List<BlockPos> shown = path.size() > MAX_FLOW_PATH ? path.subList(0, MAX_FLOW_PATH) : path;
         BlockPos middle = shown.get(shown.size() / 2);
         net.neoforged.neoforge.network.PacketDistributor.sendToPlayersNear(level, null, middle.getX() + 0.5, middle.getY() + 0.5, middle.getZ() + 0.5,

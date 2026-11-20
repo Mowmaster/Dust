@@ -30,6 +30,9 @@ import java.util.Map;
 // .networkElement), or beside a jar of another element, joins only one: the element of what it was placed against
 // (else the first side that has one); the sides of other elements are SEALED. A sealed side stays apart while its
 // neighbour stays; once either is broken, a tube placed there decides afresh.
+// FILLED while dust runs through it (a little after, too: FILL_HOLD ticks): a core of flowing dust shows inside the
+// glass, tinted with the colour of what last ran through (Client/DustTubeTint). Set by the server as it sends a flow
+// (DustNetwork: filled), cleared by a scheduled tick once nothing has run through for FILL_HOLD ticks.
 public class DustTubeBlock extends Block implements DustTubeConnectable
 {
     // How it's joined on each side (named like vanilla's six sides: "north", ...)
@@ -40,6 +43,44 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         Map<Direction, EnumProperty<TubeJoin>> map = new java.util.EnumMap<>(Direction.class);
         for (Direction side : Direction.values()) map.put(side, EnumProperty.create(side.getSerializedName(), TubeJoin.class));
         return java.util.Collections.unmodifiableMap(map);
+    }
+
+    public static final net.minecraft.world.level.block.state.properties.BooleanProperty FILLED = net.minecraft.world.level.block.state.properties.BooleanProperty.create("filled");
+    private static final int FILL_HOLD = 20;
+    // When dust last ran through each tube, by level (server; forgotten with the level)
+    private static final Map<Level, Map<BlockPos, Long>> LAST_FLOW = new java.util.WeakHashMap<>();
+
+    // Dust ran through these places: the tubes among them are FILLED (and stay so FILL_HOLD ticks after the last of it)
+    public static void filled(ServerLevel level, java.util.List<BlockPos> path)
+    {
+        Map<BlockPos, Long> last = LAST_FLOW.computeIfAbsent(level, key -> new java.util.HashMap<>());
+        long now = level.getGameTime();
+        for (BlockPos pos : path) {
+            if (!level.isLoaded(pos)) continue;
+            BlockState state = level.getBlockState(pos);
+            if (!(state.getBlock() instanceof DustTubeBlock)) continue;
+            last.put(pos.immutable(), now);
+            if (state.getValue(FILLED)) continue;
+            // UPDATE_KNOWN_SHAPE: the neighbours needn't look again (only the look changed)
+            level.setBlock(pos, state.setValue(FILLED, true), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+            level.scheduleTick(pos, state.getBlock(), FILL_HOLD);
+        }
+    }
+
+    // Empty again once nothing has run through for FILL_HOLD ticks
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        if (!state.getValue(FILLED)) return;
+        Map<BlockPos, Long> last = LAST_FLOW.computeIfAbsent(level, key -> new java.util.HashMap<>());
+        Long at = last.get(pos);
+        long since = at == null ? FILL_HOLD : level.getGameTime() - at;
+        if (since < FILL_HOLD) {
+            level.scheduleTick(pos, this, (int) (FILL_HOLD - since));
+            return;
+        }
+        last.remove(pos);
+        level.setBlock(pos, state.setValue(FILLED, false), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
     }
 
     // Whether it's joined (to anything) on this side
@@ -75,13 +116,14 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         super(properties);
         BlockState state = stateDefinition.any();
         for (EnumProperty<TubeJoin> property : CONNECTIONS.values()) state = state.setValue(property, TubeJoin.NONE);
-        registerDefaultState(state);
+        registerDefaultState(state.setValue(FILLED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         CONNECTIONS.values().forEach(builder::add);
+        builder.add(FILLED);
     }
 
     // Placed: joined on to whatever round it takes tubes, but kept apart from sides of another element (the server
@@ -187,7 +229,10 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)
     {
         super.onPlace(state, level, pos, oldState, movedByPiston);
-        if (!oldState.equals(state)) DustNetwork.changed(level);
+        // Only a change in how it's joined (not filling or emptying) changes the networks
+        if (!oldState.is(this) || !CONNECTIONS.values().stream().allMatch(property -> oldState.getValue(property) == state.getValue(property))) {
+            DustNetwork.changed(level);
+        }
     }
 
     @Override

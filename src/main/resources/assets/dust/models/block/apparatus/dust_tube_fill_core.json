@@ -1,0 +1,85 @@
+{
+	"parent": "minecraft:block/block",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"dust": "dust:block/apparatus/tube_dust",
+		"particle": "dust:block/apparatus/tube_dust"
+	},
+	"elements": [
+		{
+			"name": "dust_core",
+			"from": [
+				5.75,
+				5.75,
+				5.75
+			],
+			"to": [
+				10.25,
+				10.25,
+				10.25
+			],
+			"faces": {
+				"north": {
+					"uv": [
+						5.75,
+						5.75,
+						10.25,
+						10.25
+					],
+					"texture": "#dust",
+					"tintindex": 0
+				},
+				"south": {
+					"uv": [
+						5.75,
+						5.75,
+						10.25,
+						10.25
+					],
+					"texture": "#dust",
+					"tintindex": 0
+				},
+				"west": {
+					"uv": [
+						5.75,
+						5.75,
+						10.25,
+						10.25
+					],
+					"texture": "#dust",
+					"tintindex": 0
+				},
+				"east": {
+					"uv": [
+						5.75,
+						5.75,
+						10.25,
+						10.25
+					],
+					"texture": "#dust",
+					"tintindex": 0
+				},
+				"up": {
+					"uv": [
+						5.75,
+						5.75,
+						10.25,
+						10.25
+					],
+					"texture": "#dust",
+					"tintindex": 0
+				},
+				"down": {
+					"uv": [
+						5.75,
+						5.75,
+						10.25,
+						10.25
+					],
+					"texture": "#dust",
+					"tintindex": 0
+				}
+			}
+		}
+	]
+}

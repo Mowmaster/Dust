@@ -188,6 +188,8 @@ public class DustClient {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
         // The Dust Jar's lid in its element's colour (tint index 1)
         event.register(com.mowmaster.dust.Features.DustStorage.Client.DustJarTint.all(), DustBlockRegistry.DUST_JAR.get());
+        // A Glass Dust Tube's dust core in the colour that last ran through it (tint index 0)
+        event.register(List.of(new com.mowmaster.dust.Features.DustStorage.Client.DustTubeTint()), DustBlockRegistry.DUST_TUBE.get());
         // A Dust Pile in the mix of its elements' colours (tint index 0)
         event.register(List.of(new com.mowmaster.dust.Features.DustStorage.Client.DustPileTint()), DustBlockRegistry.DUST_PILE.get());
         // The Still Tower's window in its element's colour (tint index 3)
