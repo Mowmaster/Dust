@@ -924,6 +924,7 @@
   "dust.replicator.cost": "Copying %s takes %s",
   "block.dust.dust_tube": "Glass Dust Tube",
   "block.dust.dust_pile": "Dust Pile",
+  "dust.tube.waxed": "This tube is waxed: scrape the wax off with an axe to change it",
   "block.dust.crushing_mill": "Crushing Mill",
   "block.dust.alchemical_separator": "Alchemical Separator",
   "block.dust.evaporating_kettle": "Evaporating Kettle",

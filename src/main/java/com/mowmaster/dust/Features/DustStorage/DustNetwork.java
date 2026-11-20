@@ -242,7 +242,10 @@ public final class DustNetwork
                 if (!DustTubeBlock.isJoined(state, side)) continue;
                 BlockPos next = tube.relative(side);
                 if (next.equals(origin) || cameFrom.containsKey(next) || storesSeen.contains(next) || !level.isLoaded(next)) continue;
-                if (level.getBlockState(next).getBlock() instanceof DustTubeBlock) {
+                BlockState nextState = level.getBlockState(next);
+                if (nextState.getBlock() instanceof DustTubeBlock) {
+                    // Both tubes have to be joined to each other (a waxed tube may keep an arm to one cut off from it)
+                    if (!DustTubeBlock.isJoined(nextState, side.getOpposite())) continue;
                     cameFrom.put(next, tube);
                     depth.put(next, depth.get(tube) + 1);
                     queue.add(next);

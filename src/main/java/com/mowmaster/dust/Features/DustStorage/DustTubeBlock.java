@@ -1,9 +1,20 @@
 package com.mowmaster.dust.Features.DustStorage;
 
-import com.mowmaster.dust.Features.DustComposition.DustElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -26,10 +37,10 @@ import java.util.Map;
 // apparatus, Spell Casters), a block state property for each side (TubeJoin: none, a tube, or a block; the model shows
 // an arm on each joined side, a longer one reaching into a block's space: a multipart blockstate). Tubes have no block
 // entity: the network is found by walking them.
-// One element to a network, so a tube placed between networks set to different elements (their jars: DustNetwork
-// .networkElement), or beside a jar of another element, joins only one: the element of what it was placed against
-// (else the first side that has one); the sides of other elements are SEALED. A sealed side stays apart while its
-// neighbour stays; once either is broken, a tube placed there decides afresh.
+// Shears on a side (the arm clicked, or the face of the middle): a joined side is cut (SEALED, and the tube on the other
+// side with it), a cut side is joined again. A cut side stays cut while its neighbour stays (it lets go once that's
+// gone). Honeycomb waxes a tube (WAXED): it keeps how it's joined on every side, joining nothing new, not even tubes
+// placed beside it (they're cut off from it), until an axe scrapes the wax off. Only a side gone missing lets go.
 // FILLED while dust runs through it: a see-through core of flowing dust shows inside the glass, tinted with the colour
 // of what last ran through (Client/DustTubeTint). Set by the server as it sends a flow (DustNetwork: filled); it stays
 // solid while dust keeps coming, and once it stops the tubes empty one by one from the far end back (a scheduled tick:
@@ -47,6 +58,7 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     }
 
     public static final net.minecraft.world.level.block.state.properties.BooleanProperty FILLED = net.minecraft.world.level.block.state.properties.BooleanProperty.create("filled");
+    public static final net.minecraft.world.level.block.state.properties.BooleanProperty WAXED = net.minecraft.world.level.block.state.properties.BooleanProperty.create("waxed");
     // How long a tube stays filled after dust last ran through (ticks), and how much sooner each tube nearer the far end
     // empties: once nothing runs, the dust drains out from the far end back towards where it came from
     private static final int FILL_HOLD = 100;
@@ -124,76 +136,130 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         super(properties);
         BlockState state = stateDefinition.any();
         for (EnumProperty<TubeJoin> property : CONNECTIONS.values()) state = state.setValue(property, TubeJoin.NONE);
-        registerDefaultState(state.setValue(FILLED, false));
+        registerDefaultState(state.setValue(FILLED, false).setValue(WAXED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         CONNECTIONS.values().forEach(builder::add);
-        builder.add(FILLED);
+        builder.add(FILLED, WAXED);
     }
 
-    // Placed: joined on to whatever round it takes tubes, but kept apart from sides of another element (the server
-    // works that out; the client's guess is put right by it)
+    // Placed: joined on to whatever round it takes tubes (cut off from a waxed tube not joined to this side)
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = defaultBlockState();
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        Map<Direction, DustElement> elements = level instanceof ServerLevel server ? sideElements(server, pos) : Map.of();
-        // The element it takes: what it was placed against, else the first side with one
-        DustElement chosen = elements.get(context.getClickedFace().getOpposite());
-        if (chosen == null) {
-            for (Direction side : Direction.values()) {
-                if (elements.containsKey(side)) {
-                    chosen = elements.get(side);
-                    break;
-                }
-            }
-        }
         for (Direction side : Direction.values()) {
-            TubeJoin join = join(level.getBlockState(pos.relative(side)), side.getOpposite());
-            DustElement element = elements.get(side);
-            if (join.joined() && element != null && !element.equals(chosen)) join = TubeJoin.SEALED;
-            state = state.setValue(CONNECTIONS.get(side), join);
+            state = state.setValue(CONNECTIONS.get(side), sideJoin(level.getBlockState(pos.relative(side)), side, TubeJoin.NONE));
         }
         return state;
     }
 
-    // The element on each side, where there is one: a jar set to one, or a tube whose network's jars are
-    private static Map<Direction, DustElement> sideElements(ServerLevel level, BlockPos pos)
-    {
-        Map<Direction, DustElement> elements = new java.util.EnumMap<>(Direction.class);
-        for (Direction side : Direction.values()) {
-            BlockPos next = pos.relative(side);
-            if (!level.isLoaded(next)) continue;
-            BlockState neighbor = level.getBlockState(next);
-            DustElement element = null;
-            if (neighbor.getBlock() instanceof DustTubeBlock) {
-                DustNetwork.Holds holds = DustNetwork.networkElement(level, next);
-                if (!holds.mixed()) element = holds.element();
-            } else if (joins(neighbor, side.getOpposite()) && level.getBlockEntity(next) instanceof DustJarBlockEntity jar) {
-                element = jar.element();
-            }
-            if (element != null) elements.put(side, element);
-        }
-        return elements;
-    }
-
-    // A neighbour changed: join on to it or let go of it. A sealed side stays sealed while the neighbour is still
-    // something it would join; a new tube beside it is matched (sealed if that tube sealed itself off from it).
+    // A neighbour changed: join on to it or let go of it (a waxed tube only lets go of a side whose neighbour is gone)
     @Override
     protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
                                      BlockPos neighborPos, BlockState neighborState, RandomSource random)
     {
         EnumProperty<TubeJoin> property = CONNECTIONS.get(direction);
-        TubeJoin join = join(neighborState, direction.getOpposite());
-        boolean sealed = state.getValue(property) == TubeJoin.SEALED
-                || (neighborState.getBlock() instanceof DustTubeBlock && neighborState.getValue(CONNECTIONS.get(direction.getOpposite())) == TubeJoin.SEALED);
-        if (join.joined() && sealed) join = TubeJoin.SEALED;
-        return state.setValue(property, join);
+        TubeJoin current = state.getValue(property);
+        if (state.getValue(WAXED)) return join(neighborState, direction.getOpposite()).joined() ? state : state.setValue(property, TubeJoin.NONE);
+        return state.setValue(property, sideJoin(neighborState, direction, current));
+    }
+
+    // How it's joined on one side (side: from it towards the neighbour): as join says, but cut (SEALED) if it was cut,
+    // or if the neighbour is a tube cut off from it (cut, or waxed and not joined to it)
+    private static TubeJoin sideJoin(BlockState neighbor, Direction side, TubeJoin current)
+    {
+        TubeJoin join = join(neighbor, side.getOpposite());
+        if (!join.joined()) return TubeJoin.NONE;
+        if (current == TubeJoin.SEALED) return TubeJoin.SEALED;
+        if (neighbor.getBlock() instanceof DustTubeBlock) {
+            TubeJoin facing = neighbor.getValue(CONNECTIONS.get(side.getOpposite()));
+            if (facing == TubeJoin.SEALED || (neighbor.getValue(WAXED) && !facing.joined())) return TubeJoin.SEALED;
+        }
+        return join;
+    }
+
+    // ---- shears, wax ----
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    {
+        boolean waxed = state.getValue(WAXED);
+        if (stack.is(Items.HONEYCOMB)) {
+            if (waxed) return InteractionResult.PASS;
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            level.setBlock(pos, state.setValue(WAXED, true), Block.UPDATE_ALL);
+            //? if >=26.3 {
+            level.levelEvent(null, LevelEvent.PARTICLES_WAX_ON, pos, 0);
+            //?} else {
+            /*level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+            *///?}
+            level.playSound(null, pos, SoundEvents.HONEYCOMB_WAX_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+            stack.consume(1, player);
+            return InteractionResult.SUCCESS;
+        }
+        if (stack.is(ItemTags.AXES)) {
+            if (!waxed) return InteractionResult.PASS;
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            level.setBlock(pos, state.setValue(WAXED, false), Block.UPDATE_ALL);
+            level.levelEvent(null, LevelEvent.PARTICLES_WAX_OFF, pos, 0);
+            level.playSound(null, pos, SoundEvents.HONEYCOMB_WAX_ON, SoundSource.BLOCKS, 1.0F, 0.6F);
+            stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+            return InteractionResult.SUCCESS;
+        }
+        if (!stack.is(Items.SHEARS) && !stack.is(net.neoforged.neoforge.common.Tags.Items.TOOLS_SHEAR)) return InteractionResult.PASS;
+        Direction side = clickedSide(pos, hit);
+        TubeJoin current = state.getValue(CONNECTIONS.get(side));
+        if (current == TubeJoin.NONE) return InteractionResult.PASS;
+        if (waxed) {
+            if (!level.isClientSide()) player.sendOverlayMessage(Component.translatable("dust.tube.waxed"));
+            return InteractionResult.FAIL;
+        }
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
+        BlockPos nextPos = pos.relative(side);
+        BlockState next = level.getBlockState(nextPos);
+        boolean nextTube = next.getBlock() instanceof DustTubeBlock;
+        EnumProperty<TubeJoin> back = CONNECTIONS.get(side.getOpposite());
+        if (current == TubeJoin.SEALED) {
+            // Joined again (not to a waxed tube that isn't joined to it)
+            TubeJoin join = join(next, side.getOpposite());
+            if (!join.joined()) return InteractionResult.FAIL;
+            if (nextTube) {
+                if (next.getValue(WAXED) && !next.getValue(back).joined()) {
+                    player.sendOverlayMessage(Component.translatable("dust.tube.waxed"));
+                    return InteractionResult.FAIL;
+                }
+                level.setBlock(nextPos, next.setValue(back, TubeJoin.TUBE), Block.UPDATE_ALL);
+            }
+            level.setBlock(pos, level.getBlockState(pos).setValue(CONNECTIONS.get(side), join), Block.UPDATE_ALL);
+        } else {
+            // Cut, the tube beside with it (unless it's waxed: then it keeps its arm, but nothing passes)
+            level.setBlock(pos, state.setValue(CONNECTIONS.get(side), TubeJoin.SEALED), Block.UPDATE_ALL);
+            if (nextTube && !next.getValue(WAXED)) {
+                BlockState nextNow = level.getBlockState(nextPos);
+                if (nextNow.getBlock() instanceof DustTubeBlock) level.setBlock(nextPos, nextNow.setValue(back, TubeJoin.SEALED), Block.UPDATE_ALL);
+            }
+        }
+        level.playSound(null, pos, SoundEvents.SHEARS_SNIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+        stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+        return InteractionResult.SUCCESS;
+    }
+
+    // Which side was clicked: the arm the hit is on (more than the middle's half-width out from the centre), else the
+    // face of the middle that was hit
+    private static Direction clickedSide(BlockPos pos, BlockHitResult hit)
+    {
+        double x = hit.getLocation().x - pos.getX() - 0.5, y = hit.getLocation().y - pos.getY() - 0.5, z = hit.getLocation().z - pos.getZ() - 0.5;
+        double ax = Math.abs(x), ay = Math.abs(y), az = Math.abs(z), core = 3.0 / 16 + 1.0E-3;
+        if (Math.max(ax, Math.max(ay, az)) <= core) return hit.getDirection();
+        if (ax >= ay && ax >= az) return x > 0 ? Direction.EAST : Direction.WEST;
+        if (ay >= az) return y > 0 ? Direction.UP : Direction.DOWN;
+        return z > 0 ? Direction.SOUTH : Direction.NORTH;
     }
 
     // How a tube joins on to this block: to another tube, to a block that takes tubes, or not at all
