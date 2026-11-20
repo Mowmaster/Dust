@@ -37,7 +37,7 @@ import java.util.Map;
 // top) boils one at a time, WORK_TICKS each, while the Burnable Firebox under it burns (it lights fuel as it's needed) and
 // there's a Still Top on the stack:
 //   solids     anything solid in it burns to one Alchemical Soot, pushed every PUSH_TICKS into the containers beside
-//              the pot (and kept in its outputs while none has room; it waits when they're full)
+//              the pot, a hopper feeding it last (and kept in its outputs while none has room; it waits when they're full)
 //   the rest   each gaseous or aqueous element rises into a heated tower (within StillLayout.HEAT_REACH of the firebox):
 //              the tower already set to it, else an empty one. What no tower takes (no tower for it, or full) leaves
 //              through the top into the chunk's aura, as smoke in its colour. So a pot with only a top on it sends
@@ -175,11 +175,20 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
                 top.getX() + 0.5, top.getY() + 1.0, top.getZ() + 0.5, Math.min(8, 2 + amount), 0.08, 0.05, 0.08, 0.01);
     }
 
-    // What's in its outputs into the containers beside it (each side's item handler, as much as each takes)
+    // What's in its outputs into the containers beside it (each side's item handler, as much as each takes). Containers
+    // that don't feed it come first (a chest), and only then a hopper pointing into it (it would only bring the soot
+    // straight back)
     private void pushOutputs(ServerLevel level)
     {
-        boolean moved = false;
+        List<Direction> order = new ArrayList<>();
+        List<Direction> feeders = new ArrayList<>();
         for (Direction side : Direction.Plane.HORIZONTAL) {
+            if (StillPotBlock.feeds(level.getBlockState(worldPosition.relative(side)), side)) feeders.add(side);
+            else order.add(side);
+        }
+        order.addAll(feeders);
+        boolean moved = false;
+        for (Direction side : order) {
             ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, worldPosition.relative(side), side.getOpposite());
             if (handler == null) continue;
             for (int i = 0; i < OUTPUT_SLOTS; i++) {

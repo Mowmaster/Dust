@@ -106,6 +106,8 @@ public class DustClient {
         // The Element Tester: the item on its plate
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_TESTER.get(), ElementTesterRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
+        // The Still's firebox: its flame, coloured by its fuel
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.STILL_FIREBOX.get(), com.mowmaster.dust.Features.Apparatus.still.StillFireboxRenderer::new);
         // The alchemical apparatus share one renderer (it draws each one's own moving parts)
         for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
                 DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
@@ -145,6 +147,7 @@ public class DustClient {
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
         com.mowmaster.dust.Features.Apparatus.Client.ApparatusRenderer.registerModels(event);
+        com.mowmaster.dust.Features.Apparatus.still.StillFireboxRenderer.registerModels(event);
         ResearchCrusherRenderer.registerModels(event);
         com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer.registerModels(event);
         ResearchEvaporationRenderer.registerModels(event);

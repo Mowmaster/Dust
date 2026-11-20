@@ -1,0 +1,18 @@
+{
+	"textures": {"brass": "dust:block/apparatus/brass", "mouth": "minecraft:block/hopper_inside", "particle": "dust:block/apparatus/brass"},
+	"elements": [
+		{
+			"name": "port_up",
+			"from": [5, 14, 5],
+			"to": [11, 16.01, 11],
+			"faces": {
+				"north": {"uv": [5, 0, 11, 2.01], "texture": "#brass"},
+				"south": {"uv": [5, 0, 11, 2.01], "texture": "#brass"},
+				"west": {"uv": [5, 0, 11, 2.01], "texture": "#brass"},
+				"east": {"uv": [5, 0, 11, 2.01], "texture": "#brass"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#mouth"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#brass"}
+			}
+		}
+	]
+}

@@ -1,0 +1,28 @@
+{
+	"render_type": "minecraft:cutout",
+	"textures": {"flame": "dust:block/apparatus/firebox_flame", "particle": "dust:block/apparatus/firebox_flame"},
+	"elements": [
+		{
+			"name": "flame_a",
+			"from": [4.5, 3, 8],
+			"to": [11.5, 10, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 3, 8]},
+			"light_emission": 15,
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#flame", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#flame", "tintindex": 0}
+			}
+		},
+		{
+			"name": "flame_b",
+			"from": [8, 3, 4.5],
+			"to": [8, 10, 11.5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 3, 8]},
+			"light_emission": 15,
+			"faces": {
+				"west": {"uv": [0, 0, 16, 16], "texture": "#flame", "tintindex": 0},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#flame", "tintindex": 0}
+			}
+		}
+	]
+}

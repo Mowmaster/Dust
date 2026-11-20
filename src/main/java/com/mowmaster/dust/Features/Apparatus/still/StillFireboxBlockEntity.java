@@ -39,6 +39,13 @@ public class StillFireboxBlockEntity extends StationBlockEntity
 
     public boolean isBurning() { return burnTime > 0; }
 
+    // How full it is, 0-1: the stack and what's left of the piece burning, out of a full stack (the flame's colour)
+    public float fuelShare()
+    {
+        float burning = burnTotal > 0 ? (float) burnTime / burnTotal : 0;
+        return Math.min(1F, (fuel.getCount() + burning) / FUEL_LIMIT);
+    }
+
     // Whether it burns: something with a burn time, that leaves nothing behind. (26.3 keeps fuel as an item component,
     // cooking_fuel; before, the level's fuel table.)
     private boolean isFuel(ItemStack stack)

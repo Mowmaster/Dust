@@ -451,13 +451,31 @@ public class DustProviderModel extends ModelProvider {
     private void createApparatus(BlockModelGenerators blockModels)
     {
         for (Block block : List.of(DustBlockRegistry.CRUSHING_MILL.get(), DustBlockRegistry.ALCHEMICAL_SEPARATOR.get(), DustBlockRegistry.EVAPORATING_KETTLE.get(),
-                DustBlockRegistry.STILL_POT.get(), DustBlockRegistry.STILL_TOWER.get(), DustBlockRegistry.STILL_TOP.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get(),
+                DustBlockRegistry.STILL_TOWER.get(), DustBlockRegistry.STILL_TOP.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get(),
                 DustBlockRegistry.DISSOLVING_RETORT.get())) {
             Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
                     .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
             blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
         }
+        // The Still Pot: a multipart blockstate, the pot turned by facing, and a brass port toward each hopper feeding it
+        // (still_pot_port.json made pointing north, turned to its side; still_pot_port_up.json for a hopper above)
+        Block pot = DustBlockRegistry.STILL_POT.get();
+        Identifier potModel = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/still_pot");
+        MultiVariant potBody = BlockModelGenerators.plainVariant(potModel);
+        MultiVariant port = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/still_pot_port"));
+        MultiVariant portUp = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/still_pot_port_up"));
+        Map<Direction, VariantMutator> faced = Map.of(
+                Direction.NORTH, BlockModelGenerators.NOP, Direction.EAST, BlockModelGenerators.Y_ROT_90,
+                Direction.SOUTH, BlockModelGenerators.Y_ROT_180, Direction.WEST, BlockModelGenerators.Y_ROT_270);
+        MultiPartGenerator potParts = MultiPartGenerator.multiPart(pot);
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            potParts.with(BlockModelGenerators.condition(com.mowmaster.dust.Features.Machines.StationBlock.FACING, facing), potBody.with(faced.get(facing)));
+            potParts.with(BlockModelGenerators.condition(com.mowmaster.dust.Features.Apparatus.still.StillPotBlock.hopperProperty(facing), true), port.with(faced.get(facing)));
+        }
+        potParts.with(BlockModelGenerators.condition(com.mowmaster.dust.Features.Apparatus.still.StillPotBlock.HOPPER_UP, true), portUp);
+        blockModels.blockStateOutput.accept(potParts);
+        blockModels.itemModelOutput.accept(pot.asItem(), ItemModelUtils.plainModel(potModel));
         // The Still's Burnable Firebox: one model lit or not (LIT gives the light and flames), turned by facing
         Identifier firebox = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/firebox_burnable");
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.STILL_FIREBOX.get(), BlockModelGenerators.plainVariant(firebox))
