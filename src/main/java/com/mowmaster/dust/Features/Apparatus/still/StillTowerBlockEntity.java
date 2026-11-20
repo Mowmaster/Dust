@@ -101,11 +101,10 @@ public class StillTowerBlockEntity extends CBSyncedBlockEntity
         setChanged();
     }
 
-    // Whether its tubes reach jars of another element than its own, or of two different elements (DustNetwork.networkElement)
+    // Whether its tubes have nowhere for its element to go: every tube network on it is set to another element (or mixed)
     private boolean mixedJars(ServerLevel level)
     {
-        DustNetwork.Holds holds = DustNetwork.networkElement(level, worldPosition);
-        return holds.mixed() || (element != null && holds.element() != null && !element.equals(holds.element()));
+        return element != null && !DustNetwork.takes(level, worldPosition, element);
     }
 
     // "Still Tower: 40/100 Fire dust", and why it's stopped if it is

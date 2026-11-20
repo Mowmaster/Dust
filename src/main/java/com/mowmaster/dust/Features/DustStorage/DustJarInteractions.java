@@ -110,6 +110,10 @@ public final class DustJarInteractions
     // A Jar Label onto the clicked side (one of the four around). True if it went on.
     public static boolean stickLabel(DustJarBlockEntity jar, net.minecraft.core.Direction side, ItemStack label, Player player)
     {
+        if (jar.element() == null) {
+            player.sendOverlayMessage(Component.translatable("dust.jar.label_needs_element"));
+            return false;
+        }
         if (!jar.addLabel(side)) return false;
         label.consume(1, player);
         player.level().playSound(null, jar.getBlockPos(), SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 0.8F, 1.2F);

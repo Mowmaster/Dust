@@ -21,7 +21,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 // A Dust Jar's dust: up to DustJarContents.CAPACITY of one element. The first dust in sets the element (the lid takes
-// its colour, Client/DustJarTint); an empty jar keeps it until it's cleared (DustJarBlock: sneak + right-click).
+// its colour, Client/DustJarTint); an empty jar keeps it until it's cleared (DustJarBlock: sneak + right-click). A label
+// only goes on a jar with an element, and locks it to that element: it can't be cleared until the labels are off.
 // What's saved is also what the client gets (CBSyncedBlockEntity), for the lid colour.
 // IPickupableBlock: MowLib's pick-up key (and the jar's own sneak-click) take it as an item, dust and all.
 // IDustHolder: machines (the Dust Grinder, the alchemical apparatus through Glass Dust Tubes) pour dust in and draw it
@@ -55,10 +56,11 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         return java.util.Collections.unmodifiableSet(labels);
     }
 
-    // Sticks a label on this side; false if it isn't one of the four around, or already has one
+    // Sticks a label on this side; false if it isn't one of the four around, already has one, or the jar has no element
+    // to label (a labelled jar is locked to its element: clearElement)
     public boolean addLabel(net.minecraft.core.Direction side)
     {
-        if (!side.getAxis().isHorizontal() || !labels.add(side)) return false;
+        if (element == null || !side.getAxis().isHorizontal() || !labels.add(side)) return false;
         changed();
         return true;
     }
@@ -128,10 +130,11 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         return taken;
     }
 
-    // Clears an empty jar's element (the lid goes plain again); false if it has dust in it or no element anyway
+    // Clears an empty jar's element (the lid goes plain again); false if it has dust in it, no element anyway, or a
+    // label (locked to its element until every label is scraped off)
     public boolean clearElement()
     {
-        if (amount > 0 || element == null) return false;
+        if (amount > 0 || element == null || !labels.isEmpty()) return false;
         element = null;
         changed();
         return true;

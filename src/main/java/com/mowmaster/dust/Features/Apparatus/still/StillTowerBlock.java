@@ -59,6 +59,13 @@ public class StillTowerBlock extends StationBlock implements DustTubeConnectable
         return side.getAxis().isHorizontal();
     }
 
+    // Its element: a tube network set to another won't join on to it
+    @Override
+    public com.mowmaster.dust.Features.DustComposition.@Nullable DustElement tubeElement(net.minecraft.world.level.BlockGetter level, BlockPos pos)
+    {
+        return level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower ? tower.element() : null;
+    }
+
     @Override
     public TubeJoin tubeJoin(BlockState state, Direction side)
     {

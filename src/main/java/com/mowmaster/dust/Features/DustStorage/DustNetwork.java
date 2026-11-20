@@ -28,10 +28,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 //             empty jar takes the first element it's given and keeps it), nearest first each time
 //   extract   draws dust out of the stores holding it, nearest first
 //   available how much of an element the network's stores hold together
-// One element to a network: once its jars are set to two different elements it's mixed, and moves nothing at all until
-// one is unhooked (empty, unset jars don't count). Dust of another element than the one its jars are set to isn't
-// poured in (it would set an empty jar to a second element). networkElement says which a network is.
-// A network with no stores at all spills what's poured in out of its open tube ends (a tube joined on one side only,
+// One element to a network: tubes won't join networks or blocks set to different elements (DustTubeBlock). A machine
+// can have several separate tube networks on it (parts): each only takes its own element from it (one whose jars are
+// set to it, or one with none set yet). A part whose jars are set to two different elements (mixed) moves nothing.
+// networkElement says which a network is.
+// A part with no stores at all spills what's poured in (and no part with stores took) out of its open tube ends (a tube joined on one side only,
 // its other end not pointing up): it falls out and piles up on the ground (DustClouds.deposit: Dust Piles).
 // Each move is shown as the element's dust running along the tubes (DustTubeFlow, drawn by Client/DustTubeFlows).
 // Finding a network walks the tubes (DustTubeBlock's joins; never into chunks that aren't loaded; at most MAX_TUBES
@@ -59,11 +60,13 @@ public final class DustNetwork
     private record Found(List<Endpoint> endpoints, List<OpenEnd> openEnds) {}
 
     // A tube's open end: the tube, the way its open end points, and the way there from the origin (the tube last)
-    public record OpenEnd(BlockPos tube, Direction out, int distance, List<BlockPos> path) {}
+    public record OpenEnd(BlockPos tube, Direction out, int distance, List<BlockPos> path, int part) {}
 
     // One store on the network: where it is, its block entity, how many tubes away it is (0: right against the origin),
-    // and the way there: the origin first, then each tube, the store last
-    public record Endpoint(BlockPos pos, IDustHolder holder, int distance, List<BlockPos> path) {}
+    // and the way there: the origin first, then each tube, the store last; part: which of the origin's separate tube
+    // networks it's on (each set of tubes joined on to the origin that don't meet, and each store right against it, is a
+    // part of its own)
+    public record Endpoint(BlockPos pos, IDustHolder holder, int distance, List<BlockPos> path, int part) {}
 
     private DustNetwork() {}
 
@@ -75,40 +78,51 @@ public final class DustNetwork
 
     // ---- moving dust ----
 
-    // Pours up to amount of this element from origin into the network's stores; returns how much went in
+    // Pours up to amount of this element from origin into the network's stores; returns how much went in. Each part
+    // (a separate tube network joined on to the origin) only takes its own element: one whose jars are set to it, then
+    // one with no jars set yet; a mixed part takes nothing. What's left spills out of parts with no stores at all.
     public static int insert(ServerLevel level, BlockPos origin, DustElement element, int amount)
     {
         if (amount <= 0) return 0;
         int left = amount;
         Found found = network(level, origin);
         List<Endpoint> endpoints = found.endpoints();
-        if (endpoints.isEmpty()) return spill(level, found.openEnds(), element, amount);
-        Holds holds = holds(endpoints);
-        if (holds.mixed() || (holds.element() != null && !holds.element().equals(element))) return 0;
-        // Two passes: the stores set to this element, then any others that will take it
-        for (int pass = 0; pass < 2 && left > 0; pass++) {
-            boolean wantPreferred = pass == 0;
+        Map<Integer, Holds> parts = partHolds(endpoints);
+        // Three passes: stores set to this element in parts set to it, then any store that'll take it in those, then in
+        // parts with nothing set yet
+        for (int pass = 0; pass < 3 && left > 0; pass++) {
             for (Endpoint end : endpoints) {
                 if (left <= 0) break;
-                if (end.holder().prefersDust(element) != wantPreferred) continue;
+                Holds part = parts.get(end.part());
+                if (part.mixed()) continue;
+                boolean partSet = element.equals(part.element());
+                if (pass < 2 ? !partSet : part.element() != null) continue;
+                if (pass == 0 && !end.holder().prefersDust(element)) continue;
                 int moved = end.holder().insertDust(element, left, false);
                 if (moved <= 0) continue;
                 left -= moved;
                 showFlow(level, end.path(), element.color());
             }
         }
+        if (left > 0) {
+            List<OpenEnd> spillable = new ArrayList<>();
+            for (OpenEnd end : found.openEnds()) if (!parts.containsKey(end.part())) spillable.add(end);
+            left -= spill(level, spillable, element, left);
+        }
         return amount - left;
     }
 
-    // Draws up to amount of this element out of the network's stores to origin; returns how much came out
+    // Draws up to amount of this element out of the network's stores to origin (not from a mixed part); returns how much
+    // came out
     public static int extract(ServerLevel level, BlockPos origin, DustElement element, int amount)
     {
         if (amount <= 0) return 0;
         int left = amount;
         List<Endpoint> endpoints = endpoints(level, origin);
-        if (holds(endpoints).mixed()) return 0;
+        Map<Integer, Holds> parts = partHolds(endpoints);
         for (Endpoint end : endpoints) {
             if (left <= 0) break;
+            if (parts.get(end.part()).mixed()) continue;
             int taken = end.holder().extractDust(element, left, false);
             if (taken <= 0) continue;
             left -= taken;
@@ -119,14 +133,69 @@ public final class DustNetwork
         return amount - left;
     }
 
-    // How much of this element the network's stores hold
+    // How much of this element the network's stores hold (not counting a mixed part)
     public static int available(ServerLevel level, BlockPos origin, DustElement element)
     {
         List<Endpoint> endpoints = endpoints(level, origin);
-        if (holds(endpoints).mixed()) return 0;
+        Map<Integer, Holds> parts = partHolds(endpoints);
         int total = 0;
-        for (Endpoint end : endpoints) total += end.holder().dustAmount(element);
+        for (Endpoint end : endpoints) if (!parts.get(end.part()).mixed()) total += end.holder().dustAmount(element);
         return total;
+    }
+
+    // Whether this element could go anywhere from origin: a part set to it or with nothing set (or no stores at all,
+    // when it would spill)
+    public static boolean takes(ServerLevel level, BlockPos origin, DustElement element)
+    {
+        List<Endpoint> endpoints = endpoints(level, origin);
+        if (endpoints.isEmpty()) return true;
+        for (Holds part : partHolds(endpoints).values()) {
+            if (!part.mixed() && (part.element() == null || part.element().equals(element))) return true;
+        }
+        return false;
+    }
+
+    // The element of the tubes joined on to a tube (walking out from it, not along skip): what the blocks they join
+    // hold or give out (DustTubeConnectable.tubeElement: jars, Still Towers). Not remembered (asked as tubes are placed).
+    public static Holds elementFrom(net.minecraft.world.level.LevelReader level, BlockPos start, @org.jspecify.annotations.Nullable Direction skip)
+    {
+        DustElement seen = null;
+        Set<BlockPos> visited = new HashSet<>();
+        ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+        visited.add(start);
+        queue.add(start);
+        while (!queue.isEmpty() && visited.size() <= MAX_TUBES) {
+            BlockPos tube = queue.poll();
+            BlockState state = level.getBlockState(tube);
+            if (!(state.getBlock() instanceof DustTubeBlock)) continue;
+            for (Direction side : Direction.values()) {
+                if ((tube.equals(start) && side == skip) || !DustTubeBlock.isJoined(state, side)) continue;
+                BlockPos next = tube.relative(side);
+                if (!level.hasChunkAt(next) || !visited.add(next)) continue;
+                BlockState nextState = level.getBlockState(next);
+                if (nextState.getBlock() instanceof DustTubeBlock) {
+                    if (DustTubeBlock.isJoined(nextState, side.getOpposite())) queue.add(next);
+                    else visited.remove(next);
+                    continue;
+                }
+                if (!(nextState.getBlock() instanceof DustTubeConnectable connectable)) continue;
+                DustElement element = connectable.tubeElement(level, next);
+                if (element == null) continue;
+                if (seen == null) seen = element;
+                else if (!seen.equals(element)) return new Holds(null, true);
+            }
+        }
+        return new Holds(seen, false);
+    }
+
+    // What each part holds (only the parts with stores)
+    private static Map<Integer, Holds> partHolds(List<Endpoint> endpoints)
+    {
+        Map<Integer, List<Endpoint>> byPart = new HashMap<>();
+        for (Endpoint end : endpoints) byPart.computeIfAbsent(end.part(), key -> new ArrayList<>()).add(end);
+        Map<Integer, Holds> holds = new HashMap<>();
+        byPart.forEach((part, ends) -> holds.put(part, holds(ends)));
+        return holds;
     }
 
     // No stores: pours out of the open ends, nearest first, as much as lands
@@ -216,28 +285,39 @@ public final class DustNetwork
         Map<BlockPos, Integer> depth = new HashMap<>();
         ArrayDeque<BlockPos> queue = new ArrayDeque<>();
 
-        // Right round the origin: stores against it, and the tubes joined on to it
+        // Right round the origin: stores against it (each a part of its own), and the tubes joined on to it, each walked
+        // out in turn (a part of its own, unless an earlier walk already reached it)
+        int part = 0;
         for (Direction side : Direction.values()) {
             BlockPos next = origin.relative(side);
             if (!level.isLoaded(next)) continue;
             BlockState state = level.getBlockState(next);
             if (state.getBlock() instanceof DustTubeBlock) {
-                if (!DustTubeBlock.isJoined(state, side.getOpposite())) continue;
+                if (!DustTubeBlock.isJoined(state, side.getOpposite()) || cameFrom.containsKey(next)) continue;
                 cameFrom.put(next, origin);
                 depth.put(next, 1);
                 queue.add(next);
+                walk(level, origin, queue, cameFrom, depth, found, openEnds, storesSeen, part++);
             }
             else if (state.getBlock() instanceof DustTubeConnectable connectable && connectable.connectsDustTube(state, side.getOpposite())) {
-                addStore(level, next, 0, List.of(origin.immutable(), next), found, storesSeen);
+                addStore(level, next, 0, List.of(origin.immutable(), next), found, storesSeen, part++);
             }
         }
+        found.sort(Comparator.comparingInt(Endpoint::distance));
+        openEnds.sort(Comparator.comparingInt(OpenEnd::distance));
+        return new Found(List.copyOf(found), List.copyOf(openEnds));
+    }
 
+    // One part's walk: breadth-first from the tubes queued, along the tubes' joins
+    private static void walk(ServerLevel level, BlockPos origin, ArrayDeque<BlockPos> queue, Map<BlockPos, BlockPos> cameFrom, Map<BlockPos, Integer> depth,
+                             List<Endpoint> found, List<OpenEnd> openEnds, Set<BlockPos> storesSeen, int part)
+    {
         while (!queue.isEmpty() && cameFrom.size() <= MAX_TUBES) {
             BlockPos tube = queue.poll();
             BlockState state = level.getBlockState(tube);
             if (!(state.getBlock() instanceof DustTubeBlock)) continue;
             Direction open = openEnd(state);
-            if (open != null) openEnds.add(new OpenEnd(tube, open, depth.get(tube), pathTo(tube, cameFrom, origin)));
+            if (open != null) openEnds.add(new OpenEnd(tube, open, depth.get(tube), pathTo(tube, cameFrom, origin), part));
             for (Direction side : Direction.values()) {
                 if (!DustTubeBlock.isJoined(state, side)) continue;
                 BlockPos next = tube.relative(side);
@@ -253,13 +333,11 @@ public final class DustNetwork
                 else {
                     List<BlockPos> path = pathTo(tube, cameFrom, origin);
                     path.add(next);
-                    addStore(level, next, depth.get(tube), path, found, storesSeen);
+                    addStore(level, next, depth.get(tube), path, found, storesSeen, part);
                 }
             }
         }
-        found.sort(Comparator.comparingInt(Endpoint::distance));
-        openEnds.sort(Comparator.comparingInt(OpenEnd::distance));
-        return new Found(List.copyOf(found), List.copyOf(openEnds));
+        queue.clear();
     }
 
     // A tube joined on one side only is an open end, pointing the other way (null: not one, or it points up, where
@@ -276,10 +354,10 @@ public final class DustNetwork
         return joined.getOpposite();
     }
 
-    private static void addStore(ServerLevel level, BlockPos pos, int distance, List<BlockPos> path, List<Endpoint> found, Set<BlockPos> storesSeen)
+    private static void addStore(ServerLevel level, BlockPos pos, int distance, List<BlockPos> path, List<Endpoint> found, Set<BlockPos> storesSeen, int part)
     {
         if (!storesSeen.add(pos.immutable())) return;
-        if (level.getBlockEntity(pos) instanceof IDustHolder holder) found.add(new Endpoint(pos.immutable(), holder, distance, List.copyOf(path)));
+        if (level.getBlockEntity(pos) instanceof IDustHolder holder) found.add(new Endpoint(pos.immutable(), holder, distance, List.copyOf(path), part));
     }
 
     // The way from origin to this tube: origin first, the tube last

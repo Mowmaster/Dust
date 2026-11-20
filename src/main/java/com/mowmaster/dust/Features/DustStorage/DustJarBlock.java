@@ -44,6 +44,24 @@ public class DustJarBlock extends Block implements EntityBlock, DustTubeConnecta
         return new DustJarBlockEntity(pos, state);
     }
 
+    // Placed from an item with dust in it: its element is only known now (after the tubes beside it joined on), so they
+    // look again and let go if their network is set to another element
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity placer, ItemStack stack)
+    {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (level instanceof ServerLevel) {
+            for (net.minecraft.core.Direction side : net.minecraft.core.Direction.values()) DustTubeBlock.recheck(level, pos.relative(side), side.getOpposite());
+        }
+    }
+
+    // Its element: a tube network set to another won't join on to it
+    @Override
+    public @org.jspecify.annotations.Nullable DustElement tubeElement(BlockGetter level, BlockPos pos)
+    {
+        return level.getBlockEntity(pos) instanceof DustJarBlockEntity jar ? jar.element() : null;
+    }
+
     // Element dust pours in; anything else does its own thing (TRY_WITH_EMPTY_HAND: carry on as if the hand were empty)
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
@@ -51,7 +69,7 @@ public class DustJarBlock extends Block implements EntityBlock, DustTubeConnecta
         if (!(level.getBlockEntity(pos) instanceof DustJarBlockEntity jar)) return InteractionResult.TRY_WITH_EMPTY_HAND;
         // Labels on, and off with shears, on the clicked side
         if (stack.is(com.mowmaster.dust.DustRegistries.DustItemRegistry.JAR_LABEL.get())) {
-            if (level.isClientSide()) return jar.labels().contains(hit.getDirection()) || !hit.getDirection().getAxis().isHorizontal()
+            if (level.isClientSide()) return jar.labels().contains(hit.getDirection()) || !hit.getDirection().getAxis().isHorizontal() || jar.element() == null
                     ? InteractionResult.TRY_WITH_EMPTY_HAND : InteractionResult.SUCCESS;
             return DustJarInteractions.stickLabel(jar, hit.getDirection(), stack, player) ? InteractionResult.SUCCESS : InteractionResult.TRY_WITH_EMPTY_HAND;
         }

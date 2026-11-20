@@ -925,6 +925,8 @@
   "block.dust.dust_tube": "Glass Dust Tube",
   "block.dust.dust_pile": "Dust Pile",
   "dust.tube.waxed": "This tube is waxed: scrape the wax off with an axe to change it",
+  "dust.tube.other_element": "That side is set to another element than this tube's network",
+  "dust.jar.label_needs_element": "Only a jar with an element in it can be labelled",
   "block.dust.crushing_mill": "Crushing Mill",
   "block.dust.alchemical_separator": "Alchemical Separator",
   "block.dust.evaporating_kettle": "Evaporating Kettle",
