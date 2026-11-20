@@ -30,9 +30,10 @@ import java.util.Map;
 // .networkElement), or beside a jar of another element, joins only one: the element of what it was placed against
 // (else the first side that has one); the sides of other elements are SEALED. A sealed side stays apart while its
 // neighbour stays; once either is broken, a tube placed there decides afresh.
-// FILLED while dust runs through it (a little after, too: FILL_HOLD ticks): a core of flowing dust shows inside the
-// glass, tinted with the colour of what last ran through (Client/DustTubeTint). Set by the server as it sends a flow
-// (DustNetwork: filled), cleared by a scheduled tick once nothing has run through for FILL_HOLD ticks.
+// FILLED while dust runs through it: a see-through core of flowing dust shows inside the glass, tinted with the colour
+// of what last ran through (Client/DustTubeTint). Set by the server as it sends a flow (DustNetwork: filled); it stays
+// solid while dust keeps coming, and once it stops the tubes empty one by one from the far end back (a scheduled tick:
+// FILL_HOLD, DRAIN_STEP).
 public class DustTubeBlock extends Block implements DustTubeConnectable
 {
     // How it's joined on each side (named like vanilla's six sides: "north", ...)
@@ -46,40 +47,47 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     }
 
     public static final net.minecraft.world.level.block.state.properties.BooleanProperty FILLED = net.minecraft.world.level.block.state.properties.BooleanProperty.create("filled");
-    private static final int FILL_HOLD = 20;
-    // When dust last ran through each tube, by level (server; forgotten with the level)
-    private static final Map<Level, Map<BlockPos, Long>> LAST_FLOW = new java.util.WeakHashMap<>();
+    // How long a tube stays filled after dust last ran through (ticks), and how much sooner each tube nearer the far end
+    // empties: once nothing runs, the dust drains out from the far end back towards where it came from
+    private static final int FILL_HOLD = 100;
+    private static final int DRAIN_STEP = 3;
+    // When each tube empties (game time), by level (server; forgotten with the level)
+    private static final Map<Level, Map<BlockPos, Long>> EMPTY_AT = new java.util.WeakHashMap<>();
 
-    // Dust ran through these places: the tubes among them are FILLED (and stay so FILL_HOLD ticks after the last of it)
+    // Dust ran along this way (where it came from first): its tubes are FILLED, and stay so FILL_HOLD ticks, each one
+    // nearer where it came from DRAIN_STEP longer, so the dust drains back from the far end
     public static void filled(ServerLevel level, java.util.List<BlockPos> path)
     {
-        Map<BlockPos, Long> last = LAST_FLOW.computeIfAbsent(level, key -> new java.util.HashMap<>());
+        Map<BlockPos, Long> emptyAt = EMPTY_AT.computeIfAbsent(level, key -> new java.util.HashMap<>());
         long now = level.getGameTime();
-        for (BlockPos pos : path) {
+        int count = path.size();
+        for (int i = 0; i < count; i++) {
+            BlockPos pos = path.get(i);
             if (!level.isLoaded(pos)) continue;
             BlockState state = level.getBlockState(pos);
             if (!(state.getBlock() instanceof DustTubeBlock)) continue;
-            last.put(pos.immutable(), now);
+            long until = now + FILL_HOLD + (long) (count - 1 - i) * DRAIN_STEP;
+            emptyAt.merge(pos.immutable(), until, Math::max);
             if (state.getValue(FILLED)) continue;
             // UPDATE_KNOWN_SHAPE: the neighbours needn't look again (only the look changed)
             level.setBlock(pos, state.setValue(FILLED, true), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-            level.scheduleTick(pos, state.getBlock(), FILL_HOLD);
+            level.scheduleTick(pos, state.getBlock(), (int) (emptyAt.get(pos) - now));
         }
     }
 
-    // Empty again once nothing has run through for FILL_HOLD ticks
+    // Empty again once its time is up (put off while dust keeps running through)
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (!state.getValue(FILLED)) return;
-        Map<BlockPos, Long> last = LAST_FLOW.computeIfAbsent(level, key -> new java.util.HashMap<>());
-        Long at = last.get(pos);
-        long since = at == null ? FILL_HOLD : level.getGameTime() - at;
-        if (since < FILL_HOLD) {
-            level.scheduleTick(pos, this, (int) (FILL_HOLD - since));
+        Map<BlockPos, Long> emptyAt = EMPTY_AT.computeIfAbsent(level, key -> new java.util.HashMap<>());
+        Long until = emptyAt.get(pos);
+        long now = level.getGameTime();
+        if (until != null && now < until) {
+            level.scheduleTick(pos, this, (int) (until - now));
             return;
         }
-        last.remove(pos);
+        emptyAt.remove(pos);
         level.setBlock(pos, state.setValue(FILLED, false), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
     }
 

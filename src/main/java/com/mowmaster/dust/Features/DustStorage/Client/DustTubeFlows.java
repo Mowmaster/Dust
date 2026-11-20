@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 // Dust running through Glass Dust Tubes (DustTubeFlow), like sand poured down a pipe: a stream of the element's dust
-// TRAIL blocks long running from block centre to block centre along the tubes at SPEED, the glass along it packed with
+// TRAIL blocks long running from block centre to block centre along the tubes at SPEED, the glass along it sprinkled with
 // grains of its colour (each a little lighter or darker, as sand is), until its tail has run out at the far end with a
 // little puff.
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
@@ -30,7 +30,7 @@ public final class DustTubeFlows
     // How long the stream is (blocks), grains a tick for each block of it, how far they stray from the tube's middle
     // (the glass is 5 pixels wide), and how much lighter or darker one can be
     private static final double TRAIL = 2.5;
-    private static final double GRAINS_PER_BLOCK = 6;
+    private static final double GRAINS_PER_BLOCK = 2;
     private static final double JITTER = 0.09;
     private static final float SHADE = 0.18F;
     // The most flows drawn at once (the oldest are dropped first)
@@ -117,7 +117,7 @@ public final class DustTubeFlows
             int grains = (int) (stretch * GRAINS_PER_BLOCK) + (random.nextDouble() < stretch * GRAINS_PER_BLOCK % 1 ? 1 : 0);
             for (int i = 0; i < grains; i++) {
                 Vec3 at = flow.at(tail + stretch * random.nextDouble());
-                DustParticleOptions grain = new DustParticleOptions(shade(flow.color, (random.nextFloat() * 2 - 1) * SHADE), 0.7F + random.nextFloat() * 0.4F);
+                DustParticleOptions grain = new DustParticleOptions(shade(flow.color, (random.nextFloat() * 2 - 1) * SHADE), 0.4F + random.nextFloat() * 0.25F);
                 level.addParticle(grain, at.x + (random.nextDouble() - 0.5) * JITTER * 2, at.y + (random.nextDouble() - 0.5) * JITTER * 2,
                         at.z + (random.nextDouble() - 0.5) * JITTER * 2, 0, 0, 0);
             }
