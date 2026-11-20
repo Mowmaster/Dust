@@ -105,7 +105,7 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     public static TubeJoin join(BlockState neighbor, Direction side)
     {
         if (neighbor.getBlock() instanceof DustTubeBlock) return TubeJoin.TUBE;
-        return joins(neighbor, side) ? TubeJoin.BLOCK : TubeJoin.NONE;
+        return joins(neighbor, side) ? ((DustTubeConnectable) neighbor.getBlock()).tubeJoin(neighbor, side) : TubeJoin.NONE;
     }
 
     // Whether a tube joins on to this block (side: the block's side facing the tube)

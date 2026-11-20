@@ -25,6 +25,15 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach_near",
+        "x": 90
+      },
+      "when": {
+        "down": "near"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
         "x": 270
       },
@@ -43,6 +52,15 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach_near",
+        "x": 270
+      },
+      "when": {
+        "up": "near"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm"
       },
       "when": {
@@ -55,6 +73,14 @@
       },
       "when": {
         "north": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach_near"
+      },
+      "when": {
+        "north": "near"
       }
     },
     {
@@ -77,6 +103,15 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach_near",
+        "y": 180
+      },
+      "when": {
+        "south": "near"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
         "y": 270
       },
@@ -95,6 +130,15 @@
     },
     {
       "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach_near",
+        "y": 270
+      },
+      "when": {
+        "west": "near"
+      }
+    },
+    {
+      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
         "y": 90
       },
@@ -109,6 +153,15 @@
       },
       "when": {
         "east": "block"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_reach_near",
+        "y": 90
+      },
+      "when": {
+        "east": "near"
       }
     }
   ]

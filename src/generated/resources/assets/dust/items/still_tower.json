@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dust:block/apparatus/alembic"
+    "model": "dust:block/apparatus/still_tower"
   }
 }

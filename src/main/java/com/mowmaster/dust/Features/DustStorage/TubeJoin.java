@@ -4,10 +4,11 @@ import net.minecraft.util.StringRepresentable;
 
 // How a Glass Dust Tube is joined on one side (DustTubeBlock): not at all, to another tube (a plain arm to the edge), or
 // to a block that takes tubes (a jar, an apparatus...: a longer arm reaching into that block's space, so it meets the
-// block's body, with its collar there). StringRepresentable: how the value is written in the blockstate ("block").
+// block's body, with its collar there): 3 pixels in (BLOCK), or 2 (NEAR: the Still Tower's barrel). The block says which
+// (DustTubeConnectable.tubeJoin). StringRepresentable: how the value is written in the blockstate ("block").
 public enum TubeJoin implements StringRepresentable
 {
-    NONE("none"), TUBE("tube"), BLOCK("block");
+    NONE("none"), TUBE("tube"), BLOCK("block"), NEAR("near");
 
     private final String name;
 

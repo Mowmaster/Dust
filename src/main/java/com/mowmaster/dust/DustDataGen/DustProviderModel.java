@@ -451,18 +451,25 @@ public class DustProviderModel extends ModelProvider {
     private void createApparatus(BlockModelGenerators blockModels)
     {
         for (Block block : List.of(DustBlockRegistry.CRUSHING_MILL.get(), DustBlockRegistry.ALCHEMICAL_SEPARATOR.get(), DustBlockRegistry.EVAPORATING_KETTLE.get(),
-                DustBlockRegistry.ALEMBIC.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get(),
+                DustBlockRegistry.STILL_POT.get(), DustBlockRegistry.STILL_TOWER.get(), DustBlockRegistry.STILL_TOP.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get(),
                 DustBlockRegistry.DISSOLVING_RETORT.get())) {
             Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
                     .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
             blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
         }
+        // The Still's Burnable Firebox: one model lit or not (LIT gives the light and flames), turned by facing
+        Identifier firebox = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/firebox_burnable");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.STILL_FIREBOX.get(), BlockModelGenerators.plainVariant(firebox))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.STILL_FIREBOX.get().asItem(), ItemModelUtils.plainModel(firebox));
         Block tube = DustBlockRegistry.DUST_TUBE.get();
         MultiVariant core = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_core"));
         MultiVariant arm = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_arm"));
         // A longer arm toward a block that takes tubes (it reaches into that block's space to meet its body)
         MultiVariant reach = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_reach"));
+        // A shorter one for blocks whose body sits nearer their edge (the Still Tower: TubeJoin.NEAR)
+        MultiVariant reachNear = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_reach_near"));
         MultiPartGenerator parts = MultiPartGenerator.multiPart(tube).with(core);
         Map<Direction, VariantMutator> turns = Map.of(
                 Direction.NORTH, BlockModelGenerators.NOP, Direction.EAST, BlockModelGenerators.Y_ROT_90, Direction.SOUTH, BlockModelGenerators.Y_ROT_180,
@@ -471,6 +478,7 @@ public class DustProviderModel extends ModelProvider {
             var property = com.mowmaster.dust.Features.DustStorage.DustTubeBlock.CONNECTIONS.get(side);
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.TUBE), arm.with(turns.get(side)));
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK), reach.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.NEAR), reachNear.with(turns.get(side)));
         }
         blockModels.blockStateOutput.accept(parts);
         blockModels.itemModelOutput.accept(tube.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_item")));

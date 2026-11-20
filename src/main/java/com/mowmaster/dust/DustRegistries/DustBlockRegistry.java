@@ -182,8 +182,16 @@ public class DustBlockRegistry {
             com.mowmaster.dust.Features.Apparatus.SeparatorBlockEntity::new);
     public static final DeferredBlock<Block> EVAPORATING_KETTLE = apparatus("evaporating_kettle", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.KETTLE,
             com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity::new);
-    public static final DeferredBlock<Block> ALEMBIC = apparatus("alembic", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.ALEMBIC,
-            com.mowmaster.dust.Features.Apparatus.AlembicBlockEntity::new);
+    // The Still (Features/Apparatus/still: it replaced the Alembic), stacked: firebox, pot, towers, top
+    public static final DeferredBlock<Block> STILL_FIREBOX = registerBlock("firebox_burnable", properties -> new com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlock(
+            properties.mapColor(MapColor.COLOR_RED).sound(SoundType.STONE).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()
+                    .lightLevel(state -> state.getValue(com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlock.LIT) ? 13 : 0)));
+    public static final DeferredBlock<Block> STILL_POT = registerBlock("still_pot", properties -> new com.mowmaster.dust.Features.Apparatus.still.StillPotBlock(
+            properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    public static final DeferredBlock<Block> STILL_TOWER = registerBlock("still_tower", properties -> new com.mowmaster.dust.Features.Apparatus.still.StillTowerBlock(
+            properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    public static final DeferredBlock<Block> STILL_TOP = registerBlock("still_top", properties -> new com.mowmaster.dust.Features.Apparatus.still.StillTopBlock(
+            properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
     public static final DeferredBlock<Block> TRANSMUTER = apparatus("transmuter", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER,
             com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new);
     public static final DeferredBlock<Block> CONJOINING_CRUCIBLE = apparatus("conjoining_crucible", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE,

@@ -56,8 +56,13 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.SeparatorBlockEntity::new, Set.of(DustBlockRegistry.ALCHEMICAL_SEPARATOR.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity>> EVAPORATING_KETTLE = BLOCK_ENTITIES.register("evaporating_kettle",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity::new, Set.of(DustBlockRegistry.EVAPORATING_KETTLE.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.AlembicBlockEntity>> ALEMBIC = BLOCK_ENTITIES.register("alembic",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.AlembicBlockEntity::new, Set.of(DustBlockRegistry.ALEMBIC.get())));
+    // The Still (Features/Apparatus/still)
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity>> STILL_FIREBOX = BLOCK_ENTITIES.register("firebox_burnable",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity::new, Set.of(DustBlockRegistry.STILL_FIREBOX.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillPotBlockEntity>> STILL_POT = BLOCK_ENTITIES.register("still_pot",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillPotBlockEntity::new, Set.of(DustBlockRegistry.STILL_POT.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillTowerBlockEntity>> STILL_TOWER = BLOCK_ENTITIES.register("still_tower",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillTowerBlockEntity::new, Set.of(DustBlockRegistry.STILL_TOWER.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity>> TRANSMUTER = BLOCK_ENTITIES.register("transmuter",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new, Set.of(DustBlockRegistry.TRANSMUTER.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity>> CONJOINING_CRUCIBLE = BLOCK_ENTITIES.register("conjoining_crucible",

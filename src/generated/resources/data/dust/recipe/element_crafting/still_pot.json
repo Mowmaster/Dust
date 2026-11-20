@@ -2,7 +2,7 @@
   "type": "dust:element_crafting",
   "elements": [
     {
-      "amount": 50,
+      "amount": 30,
       "element": "dust:water"
     },
     {
@@ -11,21 +11,18 @@
     }
   ],
   "result": {
-    "id": "dust:alembic"
+    "id": "dust:still_pot"
   },
   "shaped": {
     "key": {
-      "B": "minecraft:polished_blackstone",
       "C": "minecraft:copper_ingot",
-      "F": "minecraft:furnace",
-      "G": "minecraft:glass",
-      "I": "minecraft:iron_ingot",
+      "K": "minecraft:cauldron",
       "R": "dust:research_distalation"
     },
     "pattern": [
-      "GCG",
-      "IRI",
-      "BFB"
+      "CRC",
+      "CKC",
+      "CCC"
     ]
   }
 }

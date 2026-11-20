@@ -1,0 +1,22 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:air"
+    }
+  ],
+  "result": {
+    "id": "dust:still_top"
+  },
+  "shaped": {
+    "key": {
+      "C": "minecraft:copper_ingot"
+    },
+    "pattern": [
+      " C ",
+      "C C",
+      "CCC"
+    ]
+  }
+}

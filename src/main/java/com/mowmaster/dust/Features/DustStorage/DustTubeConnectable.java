@@ -12,4 +12,10 @@ public interface DustTubeConnectable
     {
         return true;
     }
+
+    // How far a tube's arm reaches into this block to meet it (TubeJoin.BLOCK: 3 pixels; TubeJoin.NEAR: 2)
+    default TubeJoin tubeJoin(BlockState state, Direction side)
+    {
+        return TubeJoin.BLOCK;
+    }
 }

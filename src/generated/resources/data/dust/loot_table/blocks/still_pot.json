@@ -8,11 +8,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:alembic"
+          "name": "dust:still_pot"
         }
       ],
       "rolls": 1
     }
   ],
-  "random_sequence": "dust:blocks/alembic"
+  "random_sequence": "dust:blocks/still_pot"
 }

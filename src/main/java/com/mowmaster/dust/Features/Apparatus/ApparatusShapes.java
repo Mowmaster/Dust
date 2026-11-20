@@ -19,7 +19,6 @@ public final class ApparatusShapes
     public static final VoxelShape CRUSHING_MILL = Shapes.or(BASE, Block.box(1, 3, 1, 15, 13, 15), Block.box(3, 12, 3, 13, 15, 13));
     public static final VoxelShape SEPARATOR = Shapes.or(BASE, Block.box(1, 3, 1, 15, 13, 15), Block.box(3, 13, 3, 13, 16, 13));
     public static final VoxelShape KETTLE = Shapes.or(BASE, Block.box(2, 3, 2, 14, 13, 14), Block.box(4.5, 13, 4.5, 11.5, 16, 11.5));
-    public static final VoxelShape ALEMBIC = Shapes.or(BASE, Block.box(3, 3, 1, 13, 12, 14), Block.box(5, 12, 6, 11, 16, 12));
     public static final VoxelShape TRANSMUTER = Shapes.or(BASE, Block.box(3, 3, 3, 13, 16, 13));
     public static final VoxelShape CRUCIBLE = Shapes.or(BASE, Block.box(2.5, 3, 2.5, 13.5, 13.5, 13.5));
     // The retort's belly with its side outlets, and its neck

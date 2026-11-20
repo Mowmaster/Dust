@@ -223,9 +223,20 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.EVAPORATING_KETTLE.asItem(), "evaporating_kettle", Optional.empty(),
                 java.util.Map.of('C', copperIngot, 'K', cauldron, 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_EVAPORATION.asItem()), 'B', blackstone, 'F', furnace),
                 List.of("CKC", "IRI", "BFB"), cost(DustElements.FIRE, 30), cost(DustElements.WATER, 30));
-        elementShaped(DustBlockRegistry.ALEMBIC.asItem(), "alembic", Optional.empty(),
-                java.util.Map.of('C', copperIngot, 'G', glass, 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_DISTILLATION.asItem()), 'B', blackstone, 'F', furnace),
-                List.of("GCG", "IRI", "BFB"), cost(DustElements.WATER, 50), cost(DustElements.FIRE, 20));
+        // The Still (it replaced the Alembic): the pot is the Distillation Table built into copper; a firebox of bricks
+        // round a furnace; towers of copper and glass; a copper cap
+        elementShaped(DustBlockRegistry.STILL_FIREBOX.asItem(), "still_firebox", Optional.empty(),
+                java.util.Map.of('B', Ingredient.of(Items.BRICKS), 'F', furnace, 'C', Ingredient.of(Items.CHARCOAL)),
+                List.of("BBB", "BFB", "BCB"), cost(DustElements.FIRE, 20));
+        elementShaped(DustBlockRegistry.STILL_POT.asItem(), "still_pot", Optional.empty(),
+                java.util.Map.of('C', copperIngot, 'K', cauldron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_DISTILLATION.asItem())),
+                List.of("CRC", "CKC", "CCC"), cost(DustElements.WATER, 30), cost(DustElements.FIRE, 20));
+        elementShaped(DustBlockRegistry.STILL_TOWER.asItem(), "still_tower", Optional.empty(),
+                java.util.Map.of('C', copperIngot, 'G', glass),
+                List.of("C C", "GCG", "C C"), cost(DustElements.WATER, 10));
+        elementShaped(DustBlockRegistry.STILL_TOP.asItem(), "still_top", Optional.empty(),
+                java.util.Map.of('C', copperIngot),
+                List.of(" C ", "C C", "CCC"), cost(DustElements.AIR, 10));
         elementShaped(DustBlockRegistry.TRANSMUTER.asItem(), "transmuter", Optional.empty(),
                 java.util.Map.of('G', glass, 'A', Ingredient.of(Items.AMETHYST_SHARD), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.asItem()), 'B', blackstone),
                 List.of("GAG", "IRI", "BBB"), cost(DustElements.ORDER, 30), cost(DustElements.CHAOS, 30));

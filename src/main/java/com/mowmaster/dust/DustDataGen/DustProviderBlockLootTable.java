@@ -74,7 +74,7 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         dropSelf(DustBlockRegistry.GROWTH_LAMP.get());
         // The alchemical apparatus and the Glass Dust Tube (what's inside an apparatus drops when it's broken: its block entity)
         for (var block : List.of(DustBlockRegistry.CRUSHING_MILL, DustBlockRegistry.ALCHEMICAL_SEPARATOR, DustBlockRegistry.EVAPORATING_KETTLE,
-                DustBlockRegistry.ALEMBIC, DustBlockRegistry.TRANSMUTER, DustBlockRegistry.CONJOINING_CRUCIBLE, DustBlockRegistry.MIXING_VAT,
+                DustBlockRegistry.STILL_FIREBOX, DustBlockRegistry.STILL_POT, DustBlockRegistry.STILL_TOWER, DustBlockRegistry.STILL_TOP, DustBlockRegistry.TRANSMUTER, DustBlockRegistry.CONJOINING_CRUCIBLE, DustBlockRegistry.MIXING_VAT,
                 DustBlockRegistry.DISSOLVING_RETORT, DustBlockRegistry.DUST_TUBE)) dropSelf(block.get());
         dropSelf(DustBlockRegistry.LOVELY_LAMP.get());
         dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/apparatus/firebox_burnable",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/apparatus/firebox_burnable"
+    },
+    "facing=south": {
+      "model": "dust:block/apparatus/firebox_burnable",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dust:block/apparatus/firebox_burnable",
+      "y": 270
+    }
+  }
+}

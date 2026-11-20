@@ -1,0 +1,24 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:fire"
+    }
+  ],
+  "result": {
+    "id": "dust:firebox_burnable"
+  },
+  "shaped": {
+    "key": {
+      "B": "minecraft:bricks",
+      "C": "minecraft:charcoal",
+      "F": "minecraft:furnace"
+    },
+    "pattern": [
+      "BBB",
+      "BFB",
+      "BCB"
+    ]
+  }
+}

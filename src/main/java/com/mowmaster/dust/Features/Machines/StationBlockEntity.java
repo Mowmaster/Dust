@@ -68,7 +68,7 @@ public abstract class StationBlockEntity extends CBSyncedBlockEntity implements 
                 DustBlockEntityRegistry.RESEARCH_MIXING.get(), DustBlockEntityRegistry.ELEMENT_REPLICATOR.get(),
                 // The alchemical apparatus (Features/Apparatus)
                 DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
-                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.ALEMBIC.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
+                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.STILL_POT.get(), DustBlockEntityRegistry.STILL_FIREBOX.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
                 DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get(), DustBlockEntityRegistry.DISSOLVING_RETORT.get());
     }
 

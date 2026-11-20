@@ -108,7 +108,7 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
         // The alchemical apparatus share one renderer (it draws each one's own moving parts)
         for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
-                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.ALEMBIC.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
+                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
                 DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get(), DustBlockEntityRegistry.DISSOLVING_RETORT.get())) {
             registerApparatusRenderer(event, type);
         }
@@ -185,6 +185,8 @@ public class DustClient {
         event.register(List.of(new GlyphStoneTint()), DustBlockRegistry.GLYPH_STONE.get());
         // The Dust Jar's lid in its element's colour (tint index 1)
         event.register(com.mowmaster.dust.Features.DustStorage.Client.DustJarTint.all(), DustBlockRegistry.DUST_JAR.get());
+        // The Still Tower's window in its element's colour (tint index 3)
+        event.register(com.mowmaster.dust.Features.Apparatus.still.StillTowerTint.all(), DustBlockRegistry.STILL_TOWER.get());
         // Element Tester: crystal colours and gauge lines, one tint source per tint index (see ExaminerLayout)
         event.register(ElementTesterTint.all(), DustBlockRegistry.ELEMENT_TESTER.get());
         // The spell pylons: the Spell Pylon in its element's colour; the others by kind, lockout and upgrade nodes
@@ -220,6 +222,7 @@ public class DustClient {
     public static void registerParticleFactories(RegisterParticleProvidersEvent event)
     {
         event.registerSpriteSet(DustParticleRegistry.DUSTPARTICLES_SPELLS_FIRE.get(), ParticleSpellFire.Provider::new);
+        event.registerSpriteSet(DustParticleRegistry.STILL_SMOKE.get(), com.mowmaster.dust.Features.Apparatus.still.StillSmokeParticle.Provider::new);
     }
 
     // The mana bar and the dust carried (Features/Magic/Client/ManaHud: placement is [mana_hud] in the client config)

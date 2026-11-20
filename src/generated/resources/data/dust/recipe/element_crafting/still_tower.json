@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:water"
+    }
+  ],
+  "result": {
+    "id": "dust:still_tower"
+  },
+  "shaped": {
+    "key": {
+      "C": "minecraft:copper_ingot",
+      "G": "minecraft:glass"
+    },
+    "pattern": [
+      "C C",
+      "GCG",
+      "C C"
+    ]
+  }
+}
