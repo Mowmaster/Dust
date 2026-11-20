@@ -36,6 +36,14 @@ public class DustPileBlockEntity extends CBSyncedBlockEntity
         super(DustBlockEntityRegistry.DUST_PILE.get(), pos, state);
     }
 
+    // What a pile saved (its "held"): for a falling pile's blockData
+    public static Map<DustElement, Integer> readHeld(ServerLevel level, net.minecraft.nbt.CompoundTag saved)
+    {
+        net.minecraft.nbt.Tag tag = saved.get("held");
+        if (tag == null) return Map.of();
+        return HELD_CODEC.parse(level.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE), tag).result().orElse(Map.of());
+    }
+
     public int total() { return total; }
     public int color() { return color; }
     public Map<DustElement, Integer> held() { return held; }

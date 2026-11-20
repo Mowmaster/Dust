@@ -21,7 +21,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 // The dusty air round Dust Piles out in the open (DustClouds), as the player sees it:
 //   motes   specks of a pile's colour drifting about in its cloud, more for a bigger pile (pileTick)
 //   haze    with their eyes in a cloud, the view is washed over in its colour, thicker the more dust there is: half
-//           (50% visibility) at DustClouds.IGNITE, the thickness at which a spark sets it off; at most MAX_HAZE. It fades
+//           (50% visibility) at DustClouds.ignite(), the thickness at which a spark sets it off; at most MAX_HAZE. It fades
 //           in and out (each tick, FADE of the way), drawn over the world just under the HUD as the lamps' hue is.
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
 public final class DustCloudClient
@@ -50,7 +50,7 @@ public final class DustCloudClient
         int count = (int) motes + (random.nextFloat() < motes - (int) motes ? 1 : 0);
         if (count <= 0) return;
         DustParticleOptions mote = new DustParticleOptions(pile.color(), 0.8F);
-        double reach = DustClouds.RADIUS + 0.5;
+        double reach = DustClouds.radius() + 0.5;
         for (int i = 0; i < count; i++) {
             double x = pos.getX() + 0.5 + (random.nextDouble() * 2 - 1) * reach;
             double z = pos.getZ() + 0.5 + (random.nextDouble() * 2 - 1) * reach;
@@ -69,7 +69,7 @@ public final class DustCloudClient
             return;
         }
         DustClouds.Cloud cloud = DustClouds.density(minecraft.level, BlockPos.containing(minecraft.player.getEyePosition()));
-        float target = Math.min(MAX_HAZE, cloud.total() / (2F * DustClouds.IGNITE));
+        float target = Math.min(MAX_HAZE, cloud.total() / (2F * DustClouds.ignite()));
         if (cloud.total() > 0) hazeColor = cloud.color();
         haze += (target - haze) * FADE;
         if (haze < 0.002F) haze = 0;

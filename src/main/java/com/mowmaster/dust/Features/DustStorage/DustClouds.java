@@ -1,10 +1,12 @@
 package com.mowmaster.dust.Features.DustStorage;
 
+import com.mowmaster.dust.DustConfig;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlock;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Spells.effects.SpellExplosions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -25,27 +27,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Spilled dust (Dust Piles) and the dusty air round them.
-//   spilling  deposit: dust poured out of an open tube end falls to the ground and lands in a pile there (onto a pile
-//             already there, of any elements, until it's full, then on top of it)
-//   the cloud each pile out in the open (DustPileBlockEntity.isOpen) fills a 9x9 area round it (RADIUS), from a block
-//             under it to RISE blocks over it, with its dust. How thick the air is at a place (density) is all the dust
+//   spilling  deposit: dust poured out of an open tube end falls to the ground and piles up there, slumping out into
+//             a mound round where it falls (piles of any elements together), no higher than the tube's end
+//   the cloud each pile out in the open (DustPileBlockEntity.isOpen) fills a 9x9 area round it (radius), from RISE
+//             blocks under it to RISE over it (so a heap several blocks high counts whole), with its dust. How thick the air is at a place (density) is all the dust
 //             of the piles whose cloud reaches it: the thicker, the harder to see through (Client/DustCloudClient: half
-//             at IGNITE)
-//   igniting  where the air holds IGNITE dust or more, a spark sets it off (spark): an open flame (fire, dust fire, a lit
+//             at ignite)
+//   igniting  where the air holds ignite() dust or more, a spark sets it off (spark): an open flame (fire, dust fire, a lit
 //             campfire or firebox, lava) or a creeper in the cloud (checked by the piles: DustPileBlockEntity), a spell
 //             cast or landing there, a Magical Flint and Steel struck there. Every pile whose cloud reaches the spark
 //             burns up at once, and with it every pile in reach of one that burns (their clouds touch), on and on: a
 //             chain. They go off as spell explosions (SpellExplosions) that break and drop blocks: one for each group of
 //             piles near together (a cloud's size), its power growing with that group's dust (power).
+// The cloud's size, the dust it takes, the blasts' power and whether there are blasts at all are settings (DustConfig
+// [dust_clouds]).
 public final class DustClouds
 {
-    public static final int RADIUS = 4;
     public static final int RISE = 3;
-    public static final int IGNITE = 500;
-    // Explosion power: BASE_POWER (twice TNT's) at IGNITE dust, growing with the square root of the dust, at most
-    // MAX_POWER
-    private static final float BASE_POWER = 8F;
-    private static final float MAX_POWER = 16F;
     // The most piles one chain sets off
     private static final int MAX_CHAIN = 512;
     // How far dust falls from a tube's end looking for somewhere to land (blocks)
@@ -54,32 +52,108 @@ public final class DustClouds
 
     private DustClouds() {}
 
+    // ---- settings (DustConfig [dust_clouds]; their defaults until it's loaded) ----
+
+    // How far a pile's cloud reaches to each side (cloud_size 9: 4)
+    public static int radius()
+    {
+        return config(DustConfig.DUST_CLOUD_SIZE, 9) / 2;
+    }
+
+    // How much dust in the air a spark sets off
+    public static int ignite()
+    {
+        return config(DustConfig.DUST_TO_EXPLODE, 500);
+    }
+
+    public static boolean explosions()
+    {
+        return !DustConfig.SPEC.isLoaded() || DustConfig.DUST_EXPLOSIONS.getAsBoolean();
+    }
+
+    private static int config(net.neoforged.neoforge.common.ModConfigSpec.IntValue value, int fallback)
+    {
+        return DustConfig.SPEC.isLoaded() ? value.getAsInt() : fallback;
+    }
+
+    private static double config(net.neoforged.neoforge.common.ModConfigSpec.DoubleValue value, double fallback)
+    {
+        return DustConfig.SPEC.isLoaded() ? value.getAsDouble() : fallback;
+    }
+
     // ---- spilling ----
 
-    // Pours up to amount of this element out at start: it falls to the ground and piles up there. Returns how much
-    // landed (0: nowhere to land, as in water, over the void or against a solid block).
+    // Pours up to amount of this element out of a tube's end at start: it falls to the ground and piles up there, no
+    // higher than the tube's end (then the tube backs up). Returns how much landed (0: nowhere to land, as in water,
+    // over the void or against a solid block, or the pile has reached the tube).
     public static int deposit(ServerLevel level, BlockPos start, DustElement element, int amount)
     {
-        BlockPos.MutableBlockPos at = start.mutable();
+        return deposit(level, start, element, amount, start.getY());
+    }
+
+    // The same, piling no higher than maxY. A little at a time (CHUNK), each bit landing on the column under start,
+    // then sliding down to the lowest column beside it while that's SLIDE or more lower (as sand slumps), up to SPREAD
+    // columns out from start: the pile spreads out into a mound rather than standing up as a block.
+    public static int deposit(ServerLevel level, BlockPos start, DustElement element, int amount, int maxY)
+    {
         int left = amount;
-        for (int step = 0; step <= MAX_FALL && left > 0; step++) {
-            if (!level.isLoaded(at) || level.isOutsideBuildHeight(at)) break;
-            BlockState state = level.getBlockState(at);
-            if (level.getBlockEntity(at) instanceof DustPileBlockEntity pile) {
-                left -= pile.add(element, left);
-                // A full pile: the rest lands on top of it
-                if (!pile.isFull()) break;
-                at.move(0, 1, 0);
-                continue;
+        while (left > 0) {
+            Surface at = surface(level, start.getX(), start.getZ(), start.getY());
+            if (at == null) break;
+            for (int step = 0; step < 4 * SPREAD; step++) {
+                Surface lowest = null;
+                for (Direction side : Direction.Plane.HORIZONTAL) {
+                    int x = at.x() + side.getStepX(), z = at.z() + side.getStepZ();
+                    if (Math.max(Math.abs(x - start.getX()), Math.abs(z - start.getZ())) > SPREAD) continue;
+                    // Dust slides sideways at its own height and down, never up over a wall
+                    Surface beside = surface(level, x, z, Math.min(at.y(), start.getY()));
+                    if (beside != null && (lowest == null || beside.height() < lowest.height())) lowest = beside;
+                }
+                if (lowest == null || at.height() - lowest.height() < SLIDE) break;
+                at = lowest;
             }
-            if (!state.canBeReplaced() || !state.getFluidState().isEmpty()) break;
-            if (DustPileBlock.supports(level, at.below())) {
-                left -= placeNew(level, at.immutable(), element, left);
-                break;
-            }
-            at.move(0, -1, 0);
+            int moved = addAt(level, at, element, Math.min(left, CHUNK), maxY);
+            if (moved <= 0) break;
+            left -= moved;
         }
         return amount - left;
+    }
+
+    // Dust falls in this much at a time, and slides on to a column this much lower (a quarter block: two layers), up to
+    // SPREAD columns from where it fell
+    private static final int CHUNK = 5;
+    private static final int SLIDE = DustPileBlockEntity.CAPACITY / 4;
+    private static final int SPREAD = 3;
+
+    // The top of a column: where dust poured in at fromY ends up (a pile at y holding total, or an empty space at y
+    // with total 0), and how high that is in dust (height: y * CAPACITY + total)
+    private record Surface(int x, int y, int z, int total)
+    {
+        int height() { return y * DustPileBlockEntity.CAPACITY + total; }
+    }
+
+    private static @Nullable Surface surface(ServerLevel level, int x, int z, int fromY)
+    {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, fromY, z);
+        for (int fell = 0; fell <= MAX_FALL; fell++, pos.move(0, -1, 0)) {
+            if (!level.isLoaded(pos) || level.isOutsideBuildHeight(pos)) return null;
+            if (level.getBlockEntity(pos) instanceof DustPileBlockEntity pile) return new Surface(x, pos.getY(), z, pile.total());
+            BlockState state = level.getBlockState(pos);
+            if (!state.canBeReplaced() || !state.getFluidState().isEmpty()) return null;
+            if (DustPileBlock.supports(level, pos.below())) return new Surface(x, pos.getY(), z, 0);
+        }
+        return null;
+    }
+
+    // Adds dust to the top of a column: to its pile (a full one: a new pile on top), or a new pile in its empty space;
+    // never above maxY
+    private static int addAt(ServerLevel level, Surface at, DustElement element, int amount, int maxY)
+    {
+        BlockPos pos = new BlockPos(at.x(), at.y(), at.z());
+        if (at.total() >= DustPileBlockEntity.CAPACITY) pos = pos.above();
+        if (pos.getY() > maxY) return 0;
+        if (level.getBlockEntity(pos) instanceof DustPileBlockEntity pile) return pile.add(element, amount);
+        return placeNew(level, pos, element, amount);
     }
 
     // A new pile here, if there's room for one (an empty, dry space on something it can lie on)
@@ -104,10 +178,10 @@ public final class DustClouds
         long red = 0, green = 0, blue = 0;
         List<BlockPos> piles = new ArrayList<>();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        // The piles whose cloud reaches here: up to RADIUS away to the side, from RISE below to one above
-        for (int dx = -RADIUS; dx <= RADIUS; dx++) {
-            for (int dz = -RADIUS; dz <= RADIUS; dz++) {
-                for (int dy = -RISE; dy <= 1; dy++) {
+        // The piles whose cloud reaches here: up to radius() away to the side, RISE above or below
+        for (int dx = -radius(); dx <= radius(); dx++) {
+            for (int dz = -radius(); dz <= radius(); dz++) {
+                for (int dy = -RISE; dy <= RISE; dy++) {
                     pos.set(at.getX() + dx, at.getY() + dy, at.getZ() + dz);
                     if (!level.isLoaded(pos) || !(level.getBlockState(pos).getBlock() instanceof DustPileBlock)) continue;
                     if (!(level.getBlockEntity(pos) instanceof DustPileBlockEntity pile) || pile.total() <= 0 || !pile.isOpen()) continue;
@@ -129,12 +203,13 @@ public final class DustClouds
     // A pile's check (out in the open): any open flame or creeper in its cloud, where the air is thick enough, sets it off
     public static void checkIgnition(ServerLevel level, BlockPos pile)
     {
+        if (!explosions()) return;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         // At most MAX_FLAMES flames tried each check (a lava lake beside a pile has a great many)
         int flames = 0;
-        for (int dx = -RADIUS; dx <= RADIUS; dx++) {
-            for (int dz = -RADIUS; dz <= RADIUS; dz++) {
-                for (int dy = -1; dy <= RISE && flames < MAX_FLAMES; dy++) {
+        for (int dx = -radius(); dx <= radius(); dx++) {
+            for (int dz = -radius(); dz <= radius(); dz++) {
+                for (int dy = -RISE; dy <= RISE && flames < MAX_FLAMES; dy++) {
                     pos.set(pile.getX() + dx, pile.getY() + dy, pile.getZ() + dz);
                     if (!level.isLoaded(pos) || !isFlame(level.getBlockState(pos))) continue;
                     flames++;
@@ -142,7 +217,7 @@ public final class DustClouds
                 }
             }
         }
-        AABB area = new AABB(pile.getX() - RADIUS, pile.getY() - 1, pile.getZ() - RADIUS, pile.getX() + RADIUS + 1, pile.getY() + RISE + 1, pile.getZ() + RADIUS + 1);
+        AABB area = new AABB(pile.getX() - radius(), pile.getY() - 1, pile.getZ() - radius(), pile.getX() + radius() + 1, pile.getY() + RISE + 1, pile.getZ() + radius() + 1);
         for (Creeper creeper : level.getEntitiesOfClass(Creeper.class, area, Entity::isAlive)) {
             if (spark(level, creeper.blockPosition(), creeper)) return;
         }
@@ -157,7 +232,7 @@ public final class DustClouds
         return state.getFluidState().is(FluidTags.LAVA);
     }
 
-    // A spark at a place (a spell, a struck flint and steel, a flame, a creeper): if the air there holds IGNITE dust or
+    // A spark at a place (a spell, a struck flint and steel, a flame, a creeper): if the air there holds ignite() dust or
     // more, it goes up. Returns whether it did.
     public static boolean spark(Level level, Vec3 at, @Nullable Entity source)
     {
@@ -166,9 +241,9 @@ public final class DustClouds
 
     public static boolean spark(ServerLevel level, BlockPos at, @Nullable Entity source)
     {
-        if (!level.isLoaded(at)) return false;
+        if (!explosions() || !level.isLoaded(at)) return false;
         Cloud cloud = density(level, at);
-        if (cloud.total() < IGNITE) return false;
+        if (cloud.total() < ignite()) return false;
         // The chain: the piles in the cloud, then every pile out in the open in reach of one already caught
         java.util.LinkedHashMap<BlockPos, DustPileBlockEntity> caught = new java.util.LinkedHashMap<>();
         java.util.ArrayDeque<BlockPos> queue = new java.util.ArrayDeque<>();
@@ -181,8 +256,8 @@ public final class DustClouds
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         while (!queue.isEmpty() && caught.size() < MAX_CHAIN) {
             BlockPos from = queue.poll();
-            for (int dx = -RADIUS; dx <= RADIUS; dx++) {
-                for (int dz = -RADIUS; dz <= RADIUS; dz++) {
+            for (int dx = -radius(); dx <= radius(); dx++) {
+                for (int dz = -radius(); dz <= radius(); dz++) {
                     for (int dy = -RISE; dy <= RISE; dy++) {
                         pos.set(from.getX() + dx, from.getY() + dy, from.getZ() + dz);
                         if (caught.containsKey(pos) || !level.isLoaded(pos) || !(level.getBlockState(pos).getBlock() instanceof DustPileBlock)) continue;
@@ -204,7 +279,7 @@ public final class DustClouds
             int count = 0;
             for (java.util.Iterator<BlockPos> it = left.iterator(); it.hasNext(); ) {
                 BlockPos pile = it.next();
-                if (Math.abs(pile.getX() - first.getX()) > RADIUS || Math.abs(pile.getZ() - first.getZ()) > RADIUS || Math.abs(pile.getY() - first.getY()) > RISE) continue;
+                if (Math.abs(pile.getX() - first.getX()) > radius() || Math.abs(pile.getZ() - first.getZ()) > radius() || Math.abs(pile.getY() - first.getY()) > RISE) continue;
                 DustPileBlockEntity entity = caught.get(pile);
                 dust += entity.total();
                 x += pile.getX() + 0.5;
@@ -233,6 +308,7 @@ public final class DustClouds
 
     public static float power(int dust)
     {
-        return Math.min(MAX_POWER, BASE_POWER * (float) Math.sqrt(dust / (double) IGNITE));
+        double power = config(DustConfig.DUST_EXPLOSION_POWER, 8.0) * Math.sqrt(dust / (double) ignite());
+        return (float) Math.min(config(DustConfig.DUST_EXPLOSION_MAX_POWER, 16.0), power);
     }
 }

@@ -11,7 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -29,11 +30,12 @@ import org.jspecify.annotations.Nullable;
 // A Dust Pile: element dust spilled out of the open end of a Glass Dust Tube with no jar on it (DustNetwork). Shaped
 // like snow layers (LAYERS: a full block at DustPileBlockEntity.CAPACITY dust), but walked through, and tinted with
 // the mix of the elements in it (Client/DustPileTint). It holds any elements together (DustPileBlockEntity).
-// Broken with a shovel, it gives back what it held as element orbs (they fly to the player and are absorbed into their
+// It falls like sand when what's under it goes (Fallable: a falling block carrying its dust; where it can't land as a
+// pile, its dust is poured out there instead: DustClouds.deposit). Broken with a shovel, it gives back what it held as element orbs (they fly to the player and are absorbed into their
 // element stores, as the orbs mobs drop are: ElementOrbEntity).
 // Out in the open (nothing solid on top), it makes the air round it dusty (DustClouds): a cloud thick enough catches
-// from a flame and blows up. Nothing drops when it's broken; it's lost if what it lies on goes.
-public class DustPileBlock extends Block implements EntityBlock
+// from a flame and blows up. Nothing drops when it's broken (but see the shovel above).
+public class DustPileBlock extends Block implements EntityBlock, net.minecraft.world.level.block.Fallable
 {
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
     private static final VoxelShape[] SHAPES = new VoxelShape[9];
@@ -86,14 +88,15 @@ public class DustPileBlock extends Block implements EntityBlock
         return type == PathComputationType.LAND;
     }
 
-    // A thin pile is replaced by whatever's placed in it (as one layer of snow is)
+    // A thin pile is replaced by a block a player places in it (as one layer of snow is); never by a falling block (a
+    // falling pile breaks on it instead and pours its dust in: onBrokenAfterFall)
     @Override
     protected boolean canBeReplaced(BlockState state, BlockPlaceContext context)
     {
-        return state.getValue(LAYERS) == 1;
+        return state.getValue(LAYERS) == 1 && !context.getItemInHand().isEmpty();
     }
 
-    // It lies on a full top face, or on a full pile
+    // It lies on anything a falling block would stop on, or on a full pile
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
@@ -104,15 +107,47 @@ public class DustPileBlock extends Block implements EntityBlock
     {
         BlockState under = level.getBlockState(below);
         if (under.getBlock() instanceof DustPileBlock) return under.getValue(LAYERS) == 8;
-        return Block.isFaceFull(under.getCollisionShape(level, below), Direction.UP);
+        return !FallingBlock.isFree(under);
     }
 
+    // ---- falling ----
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)
+    {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!oldState.is(this)) level.scheduleTick(pos, this, FALL_DELAY);
+    }
+
+    // Something next to it changed: it checks whether it's lost what holds it up
     @Override
     protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
                                      BlockPos neighborPos, BlockState neighborState, RandomSource random)
     {
-        if (!state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
+        ticks.scheduleTick(pos, this, FALL_DELAY);
         return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+    }
+
+    private static final int FALL_DELAY = 2;
+
+    // Nothing under it: it falls, carrying its dust (the falling block's blockData: what the pile saves)
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        if (pos.getY() < level.getMinY() || supports(level, pos.below()) || !FallingBlock.isFree(level.getBlockState(pos.below()))) return;
+        if (!(level.getBlockEntity(pos) instanceof DustPileBlockEntity pile)) return;
+        net.minecraft.nbt.CompoundTag data = pile.saveCustomOnly(level.registryAccess());
+        FallingBlockEntity falling = FallingBlockEntity.fall(level, pos, state);
+        falling.blockData = data;
+    }
+
+    // It couldn't land as a pile (on another pile, say): its dust is poured out where it stopped
+    @Override
+    public void onBrokenAfterFall(Level level, BlockPos pos, FallingBlockEntity falling)
+    {
+        if (!(level instanceof ServerLevel server) || falling.blockData == null) return;
+        DustPileBlockEntity.readHeld(server, falling.blockData).forEach((element, amount) ->
+                DustClouds.deposit(server, pos, element, amount, server.getMaxY()));
     }
 
     // Broken with a shovel: its dust comes back as orbs, one for each element
