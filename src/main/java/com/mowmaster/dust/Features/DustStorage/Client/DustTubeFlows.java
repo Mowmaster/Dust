@@ -5,7 +5,6 @@ import com.mowmaster.dust.Features.DustStorage.DustTubeFlow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
@@ -19,24 +18,28 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-// Dust running through Glass Dust Tubes (DustTubeFlow): a glowing head of the element's dust racing from block centre
-// to block centre along the tubes at SPEED, leaving a trail of motes that hang in the glass and fade, some paling as
-// they go; a little puff where it pours out at the far end.
+// Dust running through Glass Dust Tubes (DustTubeFlow), like sand poured down a pipe: a stream of the element's dust
+// TRAIL blocks long running from block centre to block centre along the tubes at SPEED, the glass along it packed with
+// grains of its colour (each a little lighter or darker, as sand is), until its tail has run out at the far end with a
+// little puff.
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
 public final class DustTubeFlows
 {
     // Blocks a tick the head travels
     private static final double SPEED = 0.35;
-    // Motes let out a tick along the stretch the head just covered, and how far they stray from the tube's middle
-    private static final int MOTES = 3;
-    private static final double JITTER = 0.06;
+    // How long the stream is (blocks), grains a tick for each block of it, how far they stray from the tube's middle
+    // (the glass is 5 pixels wide), and how much lighter or darker one can be
+    private static final double TRAIL = 2.5;
+    private static final double GRAINS_PER_BLOCK = 6;
+    private static final double JITTER = 0.09;
+    private static final float SHADE = 0.18F;
     // The most flows drawn at once (the oldest are dropped first)
-    private static final int MAX_FLOWS = 256;
+    private static final int MAX_FLOWS = 128;
 
     private static final class Flow
     {
         final List<Vec3> points = new ArrayList<>();
-        final int color, pale;
+        final int color;
         final double length;
         double travelled;
 
@@ -44,7 +47,6 @@ public final class DustTubeFlows
         {
             for (BlockPos pos : message.path()) points.add(Vec3.atCenterOf(pos));
             color = message.color();
-            pale = paler(message.color());
             double total = 0;
             for (int i = 1; i < points.size(); i++) total += points.get(i).distanceTo(points.get(i - 1));
             length = total;
@@ -88,18 +90,18 @@ public final class DustTubeFlows
         Iterator<Flow> flows = FLOWS.iterator();
         while (flows.hasNext()) {
             Flow flow = flows.next();
-            double from = flow.travelled;
-            flow.travelled = Math.min(flow.length, flow.travelled + SPEED);
-            // Motes along the stretch just covered, so the trail has no gaps
-            for (int i = 0; i < MOTES; i++) {
-                Vec3 at = flow.at(from + (flow.travelled - from) * random.nextDouble());
-                boolean fading = random.nextInt(3) == 0;
-                net.minecraft.core.particles.ParticleOptions mote = fading ? new DustColorTransitionOptions(flow.color, flow.pale, 0.5F)
-                        : new DustParticleOptions(flow.color, 0.35F + random.nextFloat() * 0.25F);
-                level.addParticle(mote, at.x + (random.nextDouble() - 0.5) * JITTER * 2, at.y + (random.nextDouble() - 0.5) * JITTER * 2,
+            // The head runs on (stopping at the far end); the tail follows TRAIL behind
+            flow.travelled += SPEED;
+            double head = Math.min(flow.length, flow.travelled), tail = Math.max(0, flow.travelled - TRAIL);
+            double stretch = head - tail;
+            int grains = (int) (stretch * GRAINS_PER_BLOCK) + (random.nextDouble() < stretch * GRAINS_PER_BLOCK % 1 ? 1 : 0);
+            for (int i = 0; i < grains; i++) {
+                Vec3 at = flow.at(tail + stretch * random.nextDouble());
+                DustParticleOptions grain = new DustParticleOptions(shade(flow.color, (random.nextFloat() * 2 - 1) * SHADE), 0.7F + random.nextFloat() * 0.4F);
+                level.addParticle(grain, at.x + (random.nextDouble() - 0.5) * JITTER * 2, at.y + (random.nextDouble() - 0.5) * JITTER * 2,
                         at.z + (random.nextDouble() - 0.5) * JITTER * 2, 0, 0, 0);
             }
-            if (flow.travelled >= flow.length) {
+            if (flow.travelled - TRAIL >= flow.length) {
                 Vec3 end = flow.points.getLast();
                 for (int i = 0; i < 4; i++) {
                     level.addParticle(new DustParticleOptions(flow.color, 0.6F), end.x, end.y, end.z,
@@ -110,10 +112,19 @@ public final class DustTubeFlows
         }
     }
 
-    // A paler shade of a colour: halfway to white
-    private static int paler(int color)
+    // A colour made lighter (amount above 0: that share of the way to white) or darker (below 0: towards black)
+    private static int shade(int color, float amount)
     {
         int red = (color >> 16) & 0xFF, green = (color >> 8) & 0xFF, blue = color & 0xFF;
-        return ((red + 255) / 2 << 16) | ((green + 255) / 2 << 8) | (blue + 255) / 2;
+        if (amount >= 0) {
+            red += (int) ((255 - red) * amount);
+            green += (int) ((255 - green) * amount);
+            blue += (int) ((255 - blue) * amount);
+        } else {
+            red = (int) (red * (1 + amount));
+            green = (int) (green * (1 + amount));
+            blue = (int) (blue * (1 + amount));
+        }
+        return red << 16 | green << 8 | blue;
     }
 }

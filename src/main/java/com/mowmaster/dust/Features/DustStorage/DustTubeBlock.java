@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Features.DustStorage;
 
+import com.mowmaster.dust.Features.DustComposition.DustElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +26,10 @@ import java.util.Map;
 // apparatus, Spell Casters), a block state property for each side (TubeJoin: none, a tube, or a block; the model shows
 // an arm on each joined side, a longer one reaching into a block's space: a multipart blockstate). Tubes have no block
 // entity: the network is found by walking them.
+// One element to a network, so a tube placed between networks set to different elements (their jars: DustNetwork
+// .networkElement), or beside a jar of another element, joins only one: the element of what it was placed against
+// (else the first side that has one); the sides of other elements are SEALED. A sealed side stays apart while its
+// neighbour stays; once either is broken, a tube placed there decides afresh.
 public class DustTubeBlock extends Block implements DustTubeConnectable
 {
     // How it's joined on each side (named like vanilla's six sides: "north", ...)
@@ -79,26 +84,66 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         CONNECTIONS.values().forEach(builder::add);
     }
 
-    // Placed: joined on to whatever round it takes tubes
+    // Placed: joined on to whatever round it takes tubes, but kept apart from sides of another element (the server
+    // works that out; the client's guess is put right by it)
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = defaultBlockState();
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
+        Map<Direction, DustElement> elements = level instanceof ServerLevel server ? sideElements(server, pos) : Map.of();
+        // The element it takes: what it was placed against, else the first side with one
+        DustElement chosen = elements.get(context.getClickedFace().getOpposite());
+        if (chosen == null) {
+            for (Direction side : Direction.values()) {
+                if (elements.containsKey(side)) {
+                    chosen = elements.get(side);
+                    break;
+                }
+            }
+        }
         for (Direction side : Direction.values()) {
-            BlockPos next = pos.relative(side);
-            state = state.setValue(CONNECTIONS.get(side), join(level.getBlockState(next), side.getOpposite()));
+            TubeJoin join = join(level.getBlockState(pos.relative(side)), side.getOpposite());
+            DustElement element = elements.get(side);
+            if (join.joined() && element != null && !element.equals(chosen)) join = TubeJoin.SEALED;
+            state = state.setValue(CONNECTIONS.get(side), join);
         }
         return state;
     }
 
-    // A neighbour changed: join on to it or let go of it
+    // The element on each side, where there is one: a jar set to one, or a tube whose network's jars are
+    private static Map<Direction, DustElement> sideElements(ServerLevel level, BlockPos pos)
+    {
+        Map<Direction, DustElement> elements = new java.util.EnumMap<>(Direction.class);
+        for (Direction side : Direction.values()) {
+            BlockPos next = pos.relative(side);
+            if (!level.isLoaded(next)) continue;
+            BlockState neighbor = level.getBlockState(next);
+            DustElement element = null;
+            if (neighbor.getBlock() instanceof DustTubeBlock) {
+                DustNetwork.Holds holds = DustNetwork.networkElement(level, next);
+                if (!holds.mixed()) element = holds.element();
+            } else if (joins(neighbor, side.getOpposite()) && level.getBlockEntity(next) instanceof DustJarBlockEntity jar) {
+                element = jar.element();
+            }
+            if (element != null) elements.put(side, element);
+        }
+        return elements;
+    }
+
+    // A neighbour changed: join on to it or let go of it. A sealed side stays sealed while the neighbour is still
+    // something it would join; a new tube beside it is matched (sealed if that tube sealed itself off from it).
     @Override
     protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction,
                                      BlockPos neighborPos, BlockState neighborState, RandomSource random)
     {
-        return state.setValue(CONNECTIONS.get(direction), join(neighborState, direction.getOpposite()));
+        EnumProperty<TubeJoin> property = CONNECTIONS.get(direction);
+        TubeJoin join = join(neighborState, direction.getOpposite());
+        boolean sealed = state.getValue(property) == TubeJoin.SEALED
+                || (neighborState.getBlock() instanceof DustTubeBlock && neighborState.getValue(CONNECTIONS.get(direction.getOpposite())) == TubeJoin.SEALED);
+        if (join.joined() && sealed) join = TubeJoin.SEALED;
+        return state.setValue(property, join);
     }
 
     // How a tube joins on to this block: to another tube, to a block that takes tubes, or not at all
