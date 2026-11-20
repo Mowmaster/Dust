@@ -1,0 +1,259 @@
+{
+  "title": {
+    "translate": "guide.dust.dissolving_retort.title"
+  },
+  "items": [
+    "dust:dissolving_retort"
+  ],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dissolving_retort[facing=south]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 6
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.5,
+        3.0
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:air"
+        }
+      }
+    },
+    {
+      "type": "item",
+      "id": "p",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:air"
+        }
+      },
+      "at": [
+        2.5,
+        1.5,
+        3.05
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.4
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dissolving_retort.1"
+      },
+      "ticks": 90,
+      "point": [
+        2.5,
+        1.5,
+        3.05
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 75
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "state": "dust:dust_tube[south=block,north=block]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        0
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "item",
+      "id": "a",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:air"
+        }
+      },
+      "at": [
+        2.5,
+        2.0,
+        0.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.45,
+      "spin": true
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=block,west=block]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "item",
+      "id": "f",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [
+        0.5,
+        2.0,
+        2.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.45,
+      "spin": true
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=block]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "item",
+      "id": "w",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:water"
+        }
+      },
+      "at": [
+        4.5,
+        2.0,
+        2.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.45,
+      "spin": true
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dissolving_retort.2"
+      },
+      "ticks": 110
+    },
+    {
+      "type": "idle",
+      "ticks": 30
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "state": "dust:dust_tube[south=block,north=block,filled=true]"
+    },
+    {
+      "type": "idle",
+      "ticks": 30
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=block,west=block,filled=true]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=block,filled=true]"
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dissolving_retort.3"
+      },
+      "ticks": 100
+    },
+    {
+      "type": "idle",
+      "ticks": 90
+    }
+  ]
+}

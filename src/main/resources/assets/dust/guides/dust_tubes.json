@@ -1,0 +1,278 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_tubes.title"
+  },
+  "items": [
+    "dust:dust_tube",
+    "dust:dust_jar"
+  ],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "state": "dust:crushing_mill[facing=south]",
+      "ticks": 12
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=tube]",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube]",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tubes.1"
+      },
+      "ticks": 90,
+      "point": [
+        2.5,
+        1.7,
+        2.5
+      ],
+      "side": "above"
+    },
+    {
+      "type": "idle",
+      "ticks": 70
+    },
+    {
+      "type": "highlight",
+      "ticks": 60,
+      "color": "#FFE070",
+      "from": [
+        0,
+        1,
+        2
+      ],
+      "to": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "type": "highlight",
+      "ticks": 60,
+      "color": "#FFE070",
+      "pos": [
+        4,
+        1,
+        2
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tubes.2"
+      },
+      "ticks": 80,
+      "point": [
+        4.5,
+        1.8,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=tube,filled=true]"
+    },
+    {
+      "type": "idle",
+      "ticks": 3
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube,filled=true]"
+    },
+    {
+      "type": "idle",
+      "ticks": 3
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block,filled=true]"
+    },
+    {
+      "type": "item",
+      "id": "d",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [
+        4.5,
+        1.9,
+        2.5
+      ],
+      "ticks": 30,
+      "lasts": -1,
+      "scale": 0.4,
+      "from": [
+        0.5,
+        1.9,
+        2.5
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tubes.3"
+      },
+      "ticks": 70,
+      "point": [
+        2.5,
+        1.6,
+        2.5
+      ],
+      "side": "above"
+    },
+    {
+      "type": "idle",
+      "ticks": 70
+    },
+    {
+      "type": "remove",
+      "id": "d"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tubes.4"
+      },
+      "ticks": 70,
+      "point": [
+        4.5,
+        1.8,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]"
+    },
+    {
+      "type": "idle",
+      "ticks": 6
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube]"
+    },
+    {
+      "type": "idle",
+      "ticks": 6
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=tube]"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tubes.5"
+      },
+      "ticks": 70,
+      "point": [
+        2.5,
+        1.6,
+        2.5
+      ],
+      "side": "above"
+    },
+    {
+      "type": "idle",
+      "ticks": 70
+    }
+  ]
+}

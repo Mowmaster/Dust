@@ -1,0 +1,184 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_tube_elements.title"
+  },
+  "items": [
+    "dust:dust_tube",
+    "dust:dust_jar"
+  ],
+  "order": 1,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        0,
+        1,
+        1
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 10
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        1
+      ],
+      "state": "dust:dust_tube[west=block,east=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "state": "dust:dust_tube[west=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "item",
+      "id": "f",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [
+        0.5,
+        2.0,
+        1.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.45,
+      "spin": true
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        3
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 10
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        3
+      ],
+      "state": "dust:dust_tube[east=block,west=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        3
+      ],
+      "state": "dust:dust_tube[east=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "item",
+      "id": "w",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:water"
+        }
+      },
+      "at": [
+        4.5,
+        2.0,
+        3.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.45,
+      "spin": true
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_elements.1"
+      },
+      "ticks": 80
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[north=tube,south=sealed]",
+      "ticks": 10
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "state": "dust:dust_tube[west=tube,south=tube]"
+    },
+    {
+      "type": "highlight",
+      "ticks": 80,
+      "color": "#FFE070",
+      "pos": [
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_elements.2"
+      },
+      "ticks": 110,
+      "point": [
+        2.5,
+        1.6,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 100
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_elements.3"
+      },
+      "ticks": 70
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    }
+  ]
+}

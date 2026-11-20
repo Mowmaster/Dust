@@ -1,0 +1,294 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_tube_shears.title"
+  },
+  "items": [
+    "dust:dust_tube"
+  ],
+  "order": 3,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "click",
+      "point": [
+        2.85,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:shears"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=sealed]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=sealed,east=block]"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_shears.1"
+      },
+      "ticks": 90,
+      "point": [
+        2.85,
+        1.5,
+        2.5
+      ],
+      "side": "above"
+    },
+    {
+      "type": "idle",
+      "ticks": 75
+    },
+    {
+      "type": "click",
+      "point": [
+        2.85,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:shears"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_shears.2"
+      },
+      "ticks": 80,
+      "point": [
+        2.85,
+        1.5,
+        2.5
+      ],
+      "side": "above"
+    },
+    {
+      "type": "idle",
+      "ticks": 65
+    },
+    {
+      "type": "click",
+      "point": [
+        2.85,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:shears"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=sealed]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=sealed,east=block]"
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:honeycomb"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=sealed,waxed=true]"
+    },
+    {
+      "type": "highlight",
+      "ticks": 80,
+      "color": "#FFB030",
+      "pos": [
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_shears.3"
+      },
+      "ticks": 110,
+      "point": [
+        2.5,
+        1.6,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 95
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:iron_axe"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=sealed]"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_shears.4"
+      },
+      "ticks": 60,
+      "point": [
+        2.5,
+        1.6,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    }
+  ]
+}

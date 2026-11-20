@@ -1,0 +1,180 @@
+{
+  "title": {
+    "translate": "guide.dust.jar_labels.title"
+  },
+  "items": [
+    "dust:dust_jar",
+    "dust:jar_label"
+  ],
+  "order": 1,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.4,
+        2.85
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:jar_label"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.jar_labels.1"
+      },
+      "ticks": 70,
+      "point": [
+        2.5,
+        1.4,
+        2.85
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.6,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      }
+    },
+    {
+      "type": "item",
+      "id": "f",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [
+        2.5,
+        2.0,
+        2.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.45,
+      "spin": true
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.4,
+        2.85
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:jar_label"
+    },
+    {
+      "type": "item",
+      "id": "l",
+      "item": "dust:jar_label",
+      "at": [
+        2.5,
+        1.4,
+        2.92
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.4
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.jar_labels.2"
+      },
+      "ticks": 90,
+      "point": [
+        2.5,
+        1.4,
+        2.92
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 75
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.4,
+        2.92
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:shears"
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "remove",
+      "id": "l"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.jar_labels.3"
+      },
+      "ticks": 90,
+      "point": [
+        2.5,
+        1.4,
+        2.92
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 80
+    }
+  ]
+}
