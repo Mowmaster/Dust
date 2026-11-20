@@ -39,7 +39,8 @@ import java.util.Map;
 //   solids     anything solid in it burns to one Alchemical Soot, pushed every PUSH_TICKS into the containers beside
 //              the pot, a hopper feeding it last (and kept in its outputs while none has room; it waits when they're full)
 //   the rest   each gaseous or aqueous element rises into a heated tower (within StillLayout.HEAT_REACH of the firebox):
-//              the tower already set to it, else an empty one. What no tower takes (no tower for it, or full) leaves
+//              the tower already set to it, else an empty one (not one whose tubes reach jars of another element:
+//              StillTowerBlockEntity.isBlocked). What no tower takes (no tower for it, or full) leaves
 //              through the top into the chunk's aura, as smoke in its colour. So a pot with only a top on it sends
 //              everything into the aura.
 //   unknown    an element the owner hasn't discovered always leaves through the top
@@ -84,7 +85,12 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         }
         // Only boils while it's hot (and while it's a still)
         StillFireboxBlockEntity firebox = firebox(level);
-        if (firebox == null || StillLayout.above(level, worldPosition).top() == null || !firebox.heat(level)) return;
+        StillLayout.Stack stack = StillLayout.above(level, worldPosition);
+        if (firebox == null || stack.top() == null || !firebox.heat(level)) return;
+        // Boiling: the towers show their colours
+        for (BlockPos pos : stack.towers()) {
+            if (level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower) tower.keepActive(level.getGameTime());
+        }
         if (++progress < WORK_TICKS) {
             setChanged();
             return;
@@ -144,7 +150,8 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         for (DustElement element : fluids) counts.merge(element, 1, Integer::sum);
         List<StillTowerBlockEntity> towers = new ArrayList<>();
         for (BlockPos pos : stack.towers()) {
-            if (StillLayout.heated(worldPosition, pos) && level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower) towers.add(tower);
+            // A blocked tower (its tubes reach jars of another element) takes nothing
+            if (StillLayout.heated(worldPosition, pos) && level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower && !tower.isBlocked()) towers.add(tower);
         }
         for (Map.Entry<DustElement, Integer> entry : counts.entrySet()) {
             DustElement element = entry.getKey();

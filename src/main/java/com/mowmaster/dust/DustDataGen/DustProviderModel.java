@@ -86,6 +86,7 @@ public class DustProviderModel extends ModelProvider {
         createResearchDistillation(blockModels, itemModels);
         createElementStations(blockModels, itemModels);
         createDustStorage(blockModels);
+        createDustPile(blockModels);
         createLamps(blockModels);
         createApparatus(blockModels);
         createSpellScroll(itemModels);
@@ -235,6 +236,15 @@ public class DustProviderModel extends ModelProvider {
                 BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_grinder_base"))));
         blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_GRINDER.asItem(),
                 ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_grinder")));
+    }
+
+    // The Dust Pile: one hand-written model per height, like snow layers (models/block/dust_pile/dust_pile_height2 ...
+    // _height16.json: "tintindex": 0 on every face, tinted with the mix of its elements by Client/DustPileTint)
+    private void createDustPile(BlockModelGenerators blockModels)
+    {
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_PILE.get()).with(
+                PropertyDispatch.initial(com.mowmaster.dust.Features.DustStorage.DustPileBlock.LAYERS).generate(layers -> BlockModelGenerators.plainVariant(
+                        Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/dust_pile/dust_pile_height" + layers * 2)))));
     }
 
     // The Research Crusher: the block shows its frame and funnel (models/block/station/research_crusher_body.json); its

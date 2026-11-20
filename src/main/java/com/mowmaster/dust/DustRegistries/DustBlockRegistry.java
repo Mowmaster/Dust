@@ -161,6 +161,11 @@ public class DustBlockRegistry {
     public static final DeferredBlock<Block> DUST_TUBE = registerBlock("dust_tube", properties -> new com.mowmaster.dust.Features.DustStorage.DustTubeBlock(
             properties.mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(0.5F).noOcclusion()));
 
+    // A Dust Pile: dust spilled out of an open tube end (DustClouds). No item, nothing drops; walked through.
+    public static final DeferredBlock<Block> DUST_PILE = DUSTBLOCKS.registerBlock("dust_pile", properties -> new com.mowmaster.dust.Features.DustStorage.DustPileBlock(
+            properties.mapColor(MapColor.SAND).noCollision().strength(0.1F).sound(SoundType.SAND).noOcclusion()
+                    .pushReaction(PushReaction.POPPED).noLootTable()));
+
     // Lamps (Features/Lamps): lanterns that burn element dust for an effect on what's round them. Set up as vanilla's
     // lantern is.
     public static final DeferredBlock<Block> GROWTH_LAMP = registerBlock("growth_lamp", properties -> new com.mowmaster.dust.Features.Lamps.GrowthLampBlock(

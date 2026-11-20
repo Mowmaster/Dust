@@ -54,6 +54,8 @@ public final class SpellCast
         this.stats = stats;
         this.origin = origin;
         this.direction = direction;
+        // Cast in dusty air: the spark sets it off (DustClouds)
+        com.mowmaster.dust.Features.DustStorage.DustClouds.spark(level, origin, caster);
     }
 
     // From a living caster: from their eyes, the way they're looking
@@ -179,6 +181,8 @@ public final class SpellCast
     public void applyBlock(BlockPos pos, Direction face)
     {
         Vec3 impact = Vec3.atCenterOf(pos.relative(face));
+        // Landing in dusty air sets it off (DustClouds)
+        com.mowmaster.dust.Features.DustStorage.DustClouds.spark(level, impact, caster);
         if (!secondary && has(SpellRegistries.RUNE.getId())) {
             com.mowmaster.dust.Features.Spells.blocks.RuneBlock.place(this, pos.relative(face), SpellTarget.ENTITY);
             learn(SpellTarget.BLOCK);
@@ -209,6 +213,7 @@ public final class SpellCast
     // modifiers
     public void applyEntity(Entity target)
     {
+        com.mowmaster.dust.Features.DustStorage.DustClouds.spark(level, target.position(), caster);
         if (!secondary && has(SpellRegistries.RUNE.getId())) {
             com.mowmaster.dust.Features.Spells.blocks.RuneBlock.place(this, target.blockPosition(), SpellTarget.ENTITY);
             learn(SpellTarget.ENTITY);

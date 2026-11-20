@@ -18,17 +18,26 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
-// A Still Tower's dust: one element (set by the first that rises into it; it keeps it, so its window keeps the colour,
-// until it's empty and another element needs a tower), up to CAPACITY. Every PUSH_TICKS it pours what it holds into the
-// Dust Jars on its Glass Dust Tube network (DustNetwork.insert). It isn't a store the network draws on: it only gives.
-// What's saved is also what clients get (CBSyncedBlockEntity), for the window's colour.
+// A Still Tower's dust: one element (set by the first that rises into it; it keeps it until it's empty and another
+// element needs a tower), up to CAPACITY. Every PUSH_TICKS it pours what it holds into the Dust Jars on its Glass Dust
+// Tube network (DustNetwork.insert). It isn't a store the network draws on: it only gives.
+//   blocked   its tubes reach jars set to another element (or, with no element of its own yet, jars of two different
+//             elements): it pours nothing, and the still sends nothing up into it, until they're unhooked. Checked
+//             every PUSH_TICKS.
+//   active    the still below is boiling (the pot keeps it marked: keepActive); it goes quiet ACTIVE_FOR ticks after the
+//             pot stops. Its window shows its element's colour only while active (black otherwise: Client/StillTowerTint)
+// What's saved is also what clients get (CBSyncedBlockEntity): the element and whether it's active, for the window.
 public class StillTowerBlockEntity extends CBSyncedBlockEntity
 {
     public static final int CAPACITY = 100;
     public static final int PUSH_TICKS = 10;
+    public static final int ACTIVE_FOR = 60;
 
     private @Nullable DustElement element;
     private int amount;
+    private boolean blocked;
+    private boolean active;
+    private long activeUntil;
 
     public StillTowerBlockEntity(BlockPos pos, BlockState state)
     {
@@ -37,6 +46,18 @@ public class StillTowerBlockEntity extends CBSyncedBlockEntity
 
     public @Nullable DustElement element() { return element; }
     public int amount() { return amount; }
+    public boolean isBlocked() { return blocked; }
+    public boolean isActive() { return active; }
+
+    // The pot is boiling: active for ACTIVE_FOR more ticks
+    public void keepActive(long now)
+    {
+        activeUntil = now + ACTIVE_FOR;
+        if (!active) {
+            active = true;
+            sync();
+        }
+    }
 
     // How much of this element it would take now (0: it's set to another element, or full)
     public int room(DustElement dust)
@@ -67,18 +88,32 @@ public class StillTowerBlockEntity extends CBSyncedBlockEntity
 
     public void serverTick(ServerLevel level)
     {
-        if (element == null || amount <= 0 || (level.getGameTime() + worldPosition.asLong()) % PUSH_TICKS != 0) return;
+        if (active && level.getGameTime() > activeUntil) {
+            active = false;
+            sync();
+        }
+        if ((level.getGameTime() + worldPosition.asLong()) % PUSH_TICKS != 0) return;
+        blocked = mixedJars(level);
+        if (blocked || element == null || amount <= 0) return;
         int poured = DustNetwork.insert(level, worldPosition, element, amount);
         if (poured <= 0) return;
         amount -= poured;
         setChanged();
     }
 
-    // "Still Tower: 40/100 Fire dust"
+    // Whether its tubes reach jars of another element than its own, or of two different elements (DustNetwork.networkElement)
+    private boolean mixedJars(ServerLevel level)
+    {
+        DustNetwork.Holds holds = DustNetwork.networkElement(level, worldPosition);
+        return holds.mixed() || (element != null && holds.element() != null && !element.equals(holds.element()));
+    }
+
+    // "Still Tower: 40/100 Fire dust", and why it's stopped if it is
     public Component status(Player player)
     {
-        if (element == null) return Component.translatable("dust.still.tower_empty");
-        return Component.translatable("dust.lamp.fuel", getBlockState().getBlock().getName(), amount, CAPACITY, ElementNames.forViewer(element, player));
+        Component held = element == null ? Component.translatable("dust.still.tower_empty")
+                : Component.translatable("dust.lamp.fuel", getBlockState().getBlock().getName(), amount, CAPACITY, ElementNames.forViewer(element, player));
+        return blocked ? Component.empty().append(held).append(" | ").append(Component.translatable("dust.still.tower_blocked")) : held;
     }
 
     @Override
@@ -87,6 +122,8 @@ public class StillTowerBlockEntity extends CBSyncedBlockEntity
         super.saveAdditional(output);
         if (element != null) output.store("element", DustElements.CODEC, element);
         output.putInt("amount", amount);
+        output.putBoolean("active", active);
+        output.putLong("active_until", activeUntil);
     }
 
     @Override
@@ -94,10 +131,13 @@ public class StillTowerBlockEntity extends CBSyncedBlockEntity
     {
         super.loadAdditional(input);
         DustElement before = element;
+        boolean wasActive = active;
         element = input.read("element", DustElements.CODEC).orElse(null);
         amount = input.getIntOr("amount", 0);
+        active = input.getBooleanOr("active", false);
+        activeUntil = input.getLongOr("active_until", 0L);
         // The window's colour changed: draw the block again (on the client the block state stayed the same)
-        if (level != null && level.isClientSide() && !Objects.equals(before, element)) {
+        if (level != null && level.isClientSide() && (!Objects.equals(before, element) || wasActive != active)) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
     }

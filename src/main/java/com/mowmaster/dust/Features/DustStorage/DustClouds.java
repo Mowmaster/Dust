@@ -1,0 +1,183 @@
+package com.mowmaster.dust.Features.DustStorage;
+
+import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
+import com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlock;
+import com.mowmaster.dust.Features.DustComposition.DustElement;
+import com.mowmaster.dust.Features.Spells.effects.SpellExplosions;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Spilled dust (Dust Piles) and the dusty air round them.
+//   spilling  deposit: dust poured out of an open tube end falls to the ground and lands in a pile there (onto a pile
+//             already there, of any elements, until it's full, then on top of it)
+//   the cloud each pile out in the open (DustPileBlockEntity.isOpen) fills a 5x5 area round it (RADIUS), from a block
+//             under it to RISE blocks over it, with its dust. How thick the air is at a place (density) is all the dust
+//             of the piles whose cloud reaches it: the thicker, the harder to see through (Client/DustCloudClient: half
+//             at IGNITE)
+//   igniting  where the air holds IGNITE dust or more, a spark sets it off (spark): an open flame (fire, dust fire, a lit
+//             campfire or firebox, lava) or a creeper in the cloud (checked by the piles: DustPileBlockEntity), a spell
+//             cast or landing there, a Magical Flint and Steel struck there. Every pile whose cloud reaches the spark
+//             burns up at once: a spell explosion (SpellExplosions) that breaks and drops blocks, its power growing with
+//             the dust that went up (power).
+public final class DustClouds
+{
+    public static final int RADIUS = 2;
+    public static final int RISE = 3;
+    public static final int IGNITE = 200;
+    // Explosion power: 2 at IGNITE dust, growing with the square root of the dust (TNT's 4 at four times that), at most
+    // MAX_POWER
+    private static final float MAX_POWER = 8F;
+    // How far dust falls from a tube's end looking for somewhere to land (blocks)
+    private static final int MAX_FALL = 24;
+    private static final int MAX_FLAMES = 4;
+
+    private DustClouds() {}
+
+    // ---- spilling ----
+
+    // Pours up to amount of this element out at start: it falls to the ground and piles up there. Returns how much
+    // landed (0: nowhere to land, as in water, over the void or against a solid block).
+    public static int deposit(ServerLevel level, BlockPos start, DustElement element, int amount)
+    {
+        BlockPos.MutableBlockPos at = start.mutable();
+        int left = amount;
+        for (int step = 0; step <= MAX_FALL && left > 0; step++) {
+            if (!level.isLoaded(at) || level.isOutsideBuildHeight(at)) break;
+            BlockState state = level.getBlockState(at);
+            if (level.getBlockEntity(at) instanceof DustPileBlockEntity pile) {
+                left -= pile.add(element, left);
+                // A full pile: the rest lands on top of it
+                if (!pile.isFull()) break;
+                at.move(0, 1, 0);
+                continue;
+            }
+            if (!state.canBeReplaced() || !state.getFluidState().isEmpty()) break;
+            if (DustPileBlock.supports(level, at.below())) {
+                left -= placeNew(level, at.immutable(), element, left);
+                break;
+            }
+            at.move(0, -1, 0);
+        }
+        return amount - left;
+    }
+
+    // A new pile here, if there's room for one (an empty, dry space on something it can lie on)
+    private static int placeNew(ServerLevel level, BlockPos pos, DustElement element, int amount)
+    {
+        if (!level.isLoaded(pos) || level.isOutsideBuildHeight(pos)) return 0;
+        BlockState state = level.getBlockState(pos);
+        if (!state.canBeReplaced() || !state.getFluidState().isEmpty() || state.getBlock() instanceof DustPileBlock) return 0;
+        BlockState pile = DustBlockRegistry.DUST_PILE.get().defaultBlockState();
+        if (!pile.canSurvive(level, pos) || !level.setBlock(pos, pile, Block.UPDATE_ALL)) return 0;
+        return level.getBlockEntity(pos) instanceof DustPileBlockEntity placed ? placed.add(element, amount) : 0;
+    }
+
+    // ---- the cloud ----
+
+    // The dust in the air at a place: how much, its colour (weighed by amount) and the piles it comes from
+    public record Cloud(int total, int color, List<BlockPos> piles) {}
+
+    public static Cloud density(Level level, BlockPos at)
+    {
+        int total = 0;
+        long red = 0, green = 0, blue = 0;
+        List<BlockPos> piles = new ArrayList<>();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        // The piles whose cloud reaches here: up to RADIUS away to the side, from RISE below to one above
+        for (int dx = -RADIUS; dx <= RADIUS; dx++) {
+            for (int dz = -RADIUS; dz <= RADIUS; dz++) {
+                for (int dy = -RISE; dy <= 1; dy++) {
+                    pos.set(at.getX() + dx, at.getY() + dy, at.getZ() + dz);
+                    if (!level.isLoaded(pos) || !(level.getBlockState(pos).getBlock() instanceof DustPileBlock)) continue;
+                    if (!(level.getBlockEntity(pos) instanceof DustPileBlockEntity pile) || pile.total() <= 0 || !pile.isOpen()) continue;
+                    int amount = pile.total(), c = pile.color();
+                    total += amount;
+                    red += (long) ((c >> 16) & 0xFF) * amount;
+                    green += (long) ((c >> 8) & 0xFF) * amount;
+                    blue += (long) (c & 0xFF) * amount;
+                    piles.add(pos.immutable());
+                }
+            }
+        }
+        int color = total <= 0 ? 0xFFFFFF : (int) ((red / total) << 16 | (green / total) << 8 | (blue / total));
+        return new Cloud(total, color, piles);
+    }
+
+    // ---- igniting ----
+
+    // A pile's check (out in the open): any open flame or creeper in its cloud, where the air is thick enough, sets it off
+    public static void checkIgnition(ServerLevel level, BlockPos pile)
+    {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        // At most MAX_FLAMES flames tried each check (a lava lake beside a pile has a great many)
+        int flames = 0;
+        for (int dx = -RADIUS; dx <= RADIUS; dx++) {
+            for (int dz = -RADIUS; dz <= RADIUS; dz++) {
+                for (int dy = -1; dy <= RISE && flames < MAX_FLAMES; dy++) {
+                    pos.set(pile.getX() + dx, pile.getY() + dy, pile.getZ() + dz);
+                    if (!level.isLoaded(pos) || !isFlame(level.getBlockState(pos))) continue;
+                    flames++;
+                    if (spark(level, pos.immutable(), null)) return;
+                }
+            }
+        }
+        AABB area = new AABB(pile.getX() - RADIUS, pile.getY() - 1, pile.getZ() - RADIUS, pile.getX() + RADIUS + 1, pile.getY() + RISE + 1, pile.getZ() + RADIUS + 1);
+        for (Creeper creeper : level.getEntitiesOfClass(Creeper.class, area, Entity::isAlive)) {
+            if (spark(level, creeper.blockPosition(), creeper)) return;
+        }
+    }
+
+    // An open flame: fire of any kind (vanilla's, soul fire, dust fire), a lit campfire, a lit Still firebox, lava
+    public static boolean isFlame(BlockState state)
+    {
+        if (state.getBlock() instanceof BaseFireBlock) return true;
+        if (state.is(BlockTags.CAMPFIRES) && state.hasProperty(CampfireBlock.LIT) && state.getValue(CampfireBlock.LIT)) return true;
+        if (state.getBlock() instanceof StillFireboxBlock && state.getValue(StillFireboxBlock.LIT)) return true;
+        return state.getFluidState().is(FluidTags.LAVA);
+    }
+
+    // A spark at a place (a spell, a struck flint and steel, a flame, a creeper): if the air there holds IGNITE dust or
+    // more, it goes up. Returns whether it did.
+    public static boolean spark(Level level, Vec3 at, @Nullable Entity source)
+    {
+        return level instanceof ServerLevel server && spark(server, BlockPos.containing(at), source);
+    }
+
+    public static boolean spark(ServerLevel level, BlockPos at, @Nullable Entity source)
+    {
+        if (!level.isLoaded(at)) return false;
+        Cloud cloud = density(level, at);
+        if (cloud.total() < IGNITE) return false;
+        // The dust burns up: every pile in the cloud goes, with a flash of its colour
+        DustParticleOptions flash = new DustParticleOptions(cloud.color(), 2.0F);
+        for (BlockPos pile : cloud.piles()) {
+            level.removeBlock(pile, false);
+            level.sendParticles(flash, pile.getX() + 0.5, pile.getY() + 1.0, pile.getZ() + 0.5, 12, RADIUS, 1.0, RADIUS, 0);
+            level.sendParticles(ParticleTypes.FLAME, pile.getX() + 0.5, pile.getY() + 1.0, pile.getZ() + 0.5, 10, RADIUS, 1.0, RADIUS, 0.05);
+        }
+        SpellExplosions.explode(level, source, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5, power(cloud.total()), Level.ExplosionInteraction.TNT);
+        return true;
+    }
+
+    public static float power(int dust)
+    {
+        return Math.min(MAX_POWER, 2F * (float) Math.sqrt(dust / (double) IGNITE));
+    }
+}

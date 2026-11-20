@@ -56,6 +56,8 @@ public class MagicalFlintAndSteelItem extends Item
         BlockPos firePos = context.getClickedPos().relative(context.getClickedFace());
         DustFireBlock fire = (DustFireBlock) DustBlockRegistry.DUST_FIRE.get();
         if (!level.getBlockState(firePos).canBeReplaced() || !fire.defaultBlockState().canSurvive(level, firePos)) {
+            // No fire, but the strike still sparks
+            if (level instanceof ServerLevel serverLevel) com.mowmaster.dust.Features.DustStorage.DustClouds.spark(serverLevel, firePos, player);
             return InteractionResult.FAIL;
         }
 
@@ -146,6 +148,8 @@ public class MagicalFlintAndSteelItem extends Item
     private static void struck(Level level, @Nullable Player player, BlockPos firePos, ItemStack tool, InteractionHand hand)
     {
         level.playSound(null, firePos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+        // Struck in dusty air: the spark sets it off (DustClouds)
+        if (level instanceof ServerLevel serverLevel) com.mowmaster.dust.Features.DustStorage.DustClouds.spark(serverLevel, firePos, player);
         level.gameEvent(player, GameEvent.BLOCK_PLACE, firePos);
         if (player != null) {
             EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -158,6 +162,7 @@ public class MagicalFlintAndSteelItem extends Item
     {
         level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 0.6F, 1.6F);
         if (level instanceof ServerLevel serverLevel) {
+            com.mowmaster.dust.Features.DustStorage.DustClouds.spark(serverLevel, pos, player);
             serverLevel.sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, 6, 0.2, 0.1, 0.2, 0.01);
         }
     }

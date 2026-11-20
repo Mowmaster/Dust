@@ -57,6 +57,8 @@ public class DustBlockEntityRegistry
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity>> EVAPORATING_KETTLE = BLOCK_ENTITIES.register("evaporating_kettle",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity::new, Set.of(DustBlockRegistry.EVAPORATING_KETTLE.get())));
     // The Still (Features/Apparatus/still)
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustPileBlockEntity>> DUST_PILE = BLOCK_ENTITIES.register("dust_pile",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustPileBlockEntity::new, Set.of(DustBlockRegistry.DUST_PILE.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity>> STILL_FIREBOX = BLOCK_ENTITIES.register("firebox_burnable",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity::new, Set.of(DustBlockRegistry.STILL_FIREBOX.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillPotBlockEntity>> STILL_POT = BLOCK_ENTITIES.register("still_pot",

@@ -9,7 +9,8 @@ import java.util.List;
 
 // The Still Tower's colours in the world, one tint source per model tintindex (registered in DustClient):
 //   0-2  nothing tinted (white): the barrel, straps and inside
-//   3    the window (element_tint): the colour of the element the tower is set to, black with none
+//   3    the window (element_tint): the colour of the element the tower is set to while the still is boiling; black
+//        with none, or while it isn't
 // Colours are 0xAARRGGBB.
 public class StillTowerTint implements BlockTintSource
 {
@@ -31,7 +32,7 @@ public class StillTowerTint implements BlockTintSource
     @Override
     public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos)
     {
-        if (level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower && tower.element() != null) return 0xFF000000 | tower.element().color();
+        if (level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower && tower.isActive() && tower.element() != null) return 0xFF000000 | tower.element().color();
         return BLACK;
     }
 
