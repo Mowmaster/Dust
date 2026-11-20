@@ -23,6 +23,7 @@ public class DustTagProviderBlock extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(DustBlockRegistry.DUST_PILE.key());
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(DustBlockRegistry.SPELL_CASTER.key())
                 .add(DustBlockRegistry.ELEMENT_CRAFTER.key())

@@ -27,23 +27,27 @@ import java.util.List;
 // Spilled dust (Dust Piles) and the dusty air round them.
 //   spilling  deposit: dust poured out of an open tube end falls to the ground and lands in a pile there (onto a pile
 //             already there, of any elements, until it's full, then on top of it)
-//   the cloud each pile out in the open (DustPileBlockEntity.isOpen) fills a 5x5 area round it (RADIUS), from a block
+//   the cloud each pile out in the open (DustPileBlockEntity.isOpen) fills a 9x9 area round it (RADIUS), from a block
 //             under it to RISE blocks over it, with its dust. How thick the air is at a place (density) is all the dust
 //             of the piles whose cloud reaches it: the thicker, the harder to see through (Client/DustCloudClient: half
 //             at IGNITE)
 //   igniting  where the air holds IGNITE dust or more, a spark sets it off (spark): an open flame (fire, dust fire, a lit
 //             campfire or firebox, lava) or a creeper in the cloud (checked by the piles: DustPileBlockEntity), a spell
 //             cast or landing there, a Magical Flint and Steel struck there. Every pile whose cloud reaches the spark
-//             burns up at once: a spell explosion (SpellExplosions) that breaks and drops blocks, its power growing with
-//             the dust that went up (power).
+//             burns up at once, and with it every pile in reach of one that burns (their clouds touch), on and on: a
+//             chain. They go off as spell explosions (SpellExplosions) that break and drop blocks: one for each group of
+//             piles near together (a cloud's size), its power growing with that group's dust (power).
 public final class DustClouds
 {
-    public static final int RADIUS = 2;
+    public static final int RADIUS = 4;
     public static final int RISE = 3;
-    public static final int IGNITE = 200;
-    // Explosion power: 2 at IGNITE dust, growing with the square root of the dust (TNT's 4 at four times that), at most
+    public static final int IGNITE = 500;
+    // Explosion power: BASE_POWER (twice TNT's) at IGNITE dust, growing with the square root of the dust, at most
     // MAX_POWER
-    private static final float MAX_POWER = 8F;
+    private static final float BASE_POWER = 8F;
+    private static final float MAX_POWER = 16F;
+    // The most piles one chain sets off
+    private static final int MAX_CHAIN = 512;
     // How far dust falls from a tube's end looking for somewhere to land (blocks)
     private static final int MAX_FALL = 24;
     private static final int MAX_FLAMES = 4;
@@ -165,19 +169,70 @@ public final class DustClouds
         if (!level.isLoaded(at)) return false;
         Cloud cloud = density(level, at);
         if (cloud.total() < IGNITE) return false;
-        // The dust burns up: every pile in the cloud goes, with a flash of its colour
-        DustParticleOptions flash = new DustParticleOptions(cloud.color(), 2.0F);
+        // The chain: the piles in the cloud, then every pile out in the open in reach of one already caught
+        java.util.LinkedHashMap<BlockPos, DustPileBlockEntity> caught = new java.util.LinkedHashMap<>();
+        java.util.ArrayDeque<BlockPos> queue = new java.util.ArrayDeque<>();
         for (BlockPos pile : cloud.piles()) {
-            level.removeBlock(pile, false);
-            level.sendParticles(flash, pile.getX() + 0.5, pile.getY() + 1.0, pile.getZ() + 0.5, 12, RADIUS, 1.0, RADIUS, 0);
-            level.sendParticles(ParticleTypes.FLAME, pile.getX() + 0.5, pile.getY() + 1.0, pile.getZ() + 0.5, 10, RADIUS, 1.0, RADIUS, 0.05);
+            if (level.getBlockEntity(pile) instanceof DustPileBlockEntity entity) {
+                caught.put(pile, entity);
+                queue.add(pile);
+            }
         }
-        SpellExplosions.explode(level, source, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + 0.5, power(cloud.total()), Level.ExplosionInteraction.TNT);
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        while (!queue.isEmpty() && caught.size() < MAX_CHAIN) {
+            BlockPos from = queue.poll();
+            for (int dx = -RADIUS; dx <= RADIUS; dx++) {
+                for (int dz = -RADIUS; dz <= RADIUS; dz++) {
+                    for (int dy = -RISE; dy <= RISE; dy++) {
+                        pos.set(from.getX() + dx, from.getY() + dy, from.getZ() + dz);
+                        if (caught.containsKey(pos) || !level.isLoaded(pos) || !(level.getBlockState(pos).getBlock() instanceof DustPileBlock)) continue;
+                        if (!(level.getBlockEntity(pos) instanceof DustPileBlockEntity entity) || entity.total() <= 0 || !entity.isOpen()) continue;
+                        BlockPos found = pos.immutable();
+                        caught.put(found, entity);
+                        queue.add(found);
+                    }
+                }
+            }
+        }
+        // Grouped a cloud's size at a time, each group one explosion at its middle
+        List<BlockPos> left = new ArrayList<>(caught.keySet());
+        List<Blast> blasts = new ArrayList<>();
+        while (!left.isEmpty()) {
+            BlockPos first = left.getFirst();
+            int dust = 0;
+            double x = 0, y = 0, z = 0;
+            int count = 0;
+            for (java.util.Iterator<BlockPos> it = left.iterator(); it.hasNext(); ) {
+                BlockPos pile = it.next();
+                if (Math.abs(pile.getX() - first.getX()) > RADIUS || Math.abs(pile.getZ() - first.getZ()) > RADIUS || Math.abs(pile.getY() - first.getY()) > RISE) continue;
+                DustPileBlockEntity entity = caught.get(pile);
+                dust += entity.total();
+                x += pile.getX() + 0.5;
+                y += pile.getY() + 0.5;
+                z += pile.getZ() + 0.5;
+                count++;
+                // A flash of its colour as it burns
+                DustParticleOptions flash = new DustParticleOptions(entity.color(), 2.0F);
+                level.sendParticles(flash, pile.getX() + 0.5, pile.getY() + 1.0, pile.getZ() + 0.5, 12, 2.0, 1.0, 2.0, 0);
+                level.sendParticles(ParticleTypes.FLAME, pile.getX() + 0.5, pile.getY() + 1.0, pile.getZ() + 0.5, 10, 2.0, 1.0, 2.0, 0.05);
+                it.remove();
+            }
+            blasts.add(new Blast(x / count, y / count, z / count, power(dust)));
+        }
+        // Every pile goes before any blast, so none is blown apart without burning
+        for (BlockPos pile : caught.keySet()) level.removeBlock(pile, false);
+        boolean firstBlast = true;
+        for (Blast blast : blasts) {
+            SpellExplosions.explode(level, firstBlast ? source : null, blast.x(), blast.y(), blast.z(), blast.power(), Level.ExplosionInteraction.TNT);
+            firstBlast = false;
+        }
         return true;
     }
 
+    private record Blast(double x, double y, double z, float power) {}
+
     public static float power(int dust)
     {
-        return Math.min(MAX_POWER, 2F * (float) Math.sqrt(dust / (double) IGNITE));
+        return Math.min(MAX_POWER, BASE_POWER * (float) Math.sqrt(dust / (double) IGNITE));
     }
 }

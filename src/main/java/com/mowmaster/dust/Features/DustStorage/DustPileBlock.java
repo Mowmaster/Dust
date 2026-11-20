@@ -27,8 +27,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 // A Dust Pile: element dust spilled out of the open end of a Glass Dust Tube with no jar on it (DustNetwork). Shaped
-// like snow layers (LAYERS: one for every DustPileBlockEntity.PER_LAYER of dust), but walked through, and tinted with
+// like snow layers (LAYERS: a full block at DustPileBlockEntity.CAPACITY dust), but walked through, and tinted with
 // the mix of the elements in it (Client/DustPileTint). It holds any elements together (DustPileBlockEntity).
+// Broken with a shovel, it gives back what it held as element orbs (they fly to the player and are absorbed into their
+// element stores, as the orbs mobs drop are: ElementOrbEntity).
 // Out in the open (nothing solid on top), it makes the air round it dusty (DustClouds): a cloud thick enough catches
 // from a flame and blows up. Nothing drops when it's broken; it's lost if what it lies on goes.
 public class DustPileBlock extends Block implements EntityBlock
@@ -111,6 +113,20 @@ public class DustPileBlock extends Block implements EntityBlock
     {
         if (!state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
         return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
+    }
+
+    // Broken with a shovel: its dust comes back as orbs, one for each element
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, net.minecraft.world.entity.player.Player player)
+    {
+        if (level instanceof ServerLevel server && player.getMainHandItem().is(net.minecraft.tags.ItemTags.SHOVELS)
+                && level.getBlockEntity(pos) instanceof DustPileBlockEntity pile) {
+            net.minecraft.world.phys.Vec3 at = net.minecraft.world.phys.Vec3.atCenterOf(pos);
+            pile.held().forEach((element, amount) -> {
+                if (amount > 0) com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity.spawn(server, element, amount, at);
+            });
+        }
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

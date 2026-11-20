@@ -30,7 +30,7 @@ public final class DustCloudClient
     private static final float FADE = 0.15F;
     private static final double MOTE_DISTANCE = 40;
     // Motes a tick: a pile's dust / MOTES_PER on average
-    private static final float MOTES_PER = 300F;
+    private static final float MOTES_PER = 60F;
 
     private static float haze;
     private static int hazeColor = 0xFFFFFF;

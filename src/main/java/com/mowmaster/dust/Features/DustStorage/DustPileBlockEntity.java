@@ -15,16 +15,15 @@ import net.minecraft.world.level.storage.ValueOutput;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-// What a Dust Pile holds: so much of each element (any mix), up to CAPACITY in all. Its height is one layer for every
-// PER_LAYER of dust; its colour the mix of its elements, weighed by how much of each (Client/DustPileTint). Sent to
+// What a Dust Pile holds: so much of each element (any mix), up to CAPACITY in all (a full block's height). Its height
+// grows with it, a layer for every eighth of CAPACITY (started layers count); its colour the mix of its elements, weighed by how much of each (Client/DustPileTint). Sent to
 // clients (they tint it and work out the cloud from it: DustClouds, Client/DustCloudClient).
 //   server  every CHECK_TICKS (each pile at its own moment), out in the open: a flame, or a creeper, in its cloud where
 //           the cloud is thick enough sets the dust off (DustClouds.checkIgnition)
 //   client  out in the open: motes of its colour drift about in its cloud, more for a bigger pile
 public class DustPileBlockEntity extends CBSyncedBlockEntity
 {
-    public static final int PER_LAYER = 50;
-    public static final int CAPACITY = PER_LAYER * 8;
+    public static final int CAPACITY = 100;
     private static final int CHECK_TICKS = 10;
     private static final Codec<Map<DustElement, Integer>> HELD_CODEC = Codec.unboundedMap(DustElements.CODEC, Codec.INT);
 
@@ -64,7 +63,7 @@ public class DustPileBlockEntity extends CBSyncedBlockEntity
 
     public static int layers(int total)
     {
-        return Math.clamp((total + PER_LAYER - 1) / PER_LAYER, 1, 8);
+        return Math.clamp((total * 8 + CAPACITY - 1) / CAPACITY, 1, 8);
     }
 
     // Whether it's out in the open: nothing solid lies on it (air, plants, fire... above), so its dust is in the air
