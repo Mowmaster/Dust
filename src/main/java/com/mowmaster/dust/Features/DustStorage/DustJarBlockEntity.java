@@ -56,13 +56,31 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         return java.util.Collections.unmodifiableSet(labels);
     }
 
-    // Sticks a label on this side; false if it isn't one of the four around, already has one, or the jar has no element
-    // to label (a labelled jar is locked to its element: clearElement)
+    // Sticks a label on this side; false if it isn't one of the four around, the jar has a label already (one is all it
+    // needs), or the jar has no element to label (a labelled jar is locked to its element: clearElement)
     public boolean addLabel(net.minecraft.core.Direction side)
     {
-        if (element == null || !side.getAxis().isHorizontal() || !labels.add(side)) return false;
+        if (element == null || !labels.isEmpty() || !side.getAxis().isHorizontal() || !labels.add(side)) return false;
         changed();
         return true;
+    }
+
+    // A labelled jar just placed: its label turns to face whoever placed it
+    public void faceLabel(net.minecraft.core.Direction side)
+    {
+        if (labels.isEmpty() || !side.getAxis().isHorizontal()) return;
+        labels.clear();
+        labels.add(side);
+        changed();
+    }
+
+    // Keeps only one label (jars from before one was all a jar took)
+    private void oneLabel()
+    {
+        if (labels.size() <= 1) return;
+        net.minecraft.core.Direction first = labels.iterator().next();
+        labels.clear();
+        labels.add(first);
     }
 
     // Scrapes this side's label off; false if there wasn't one
@@ -187,6 +205,7 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         amount = held.amount();
         labels.clear();
         labels.addAll(held.labels());
+        oneLabel();
     }
 
     // ---- saving ----
@@ -208,6 +227,7 @@ public class DustJarBlockEntity extends CBSyncedBlockEntity implements IPickupab
         amount = saved.amount();
         labels.clear();
         labels.addAll(saved.labels());
+        oneLabel();
         // On the client the block state didn't change, so ask for the block to be drawn again when the lid's colour has
         if (level != null && level.isClientSide() && !Objects.equals(before, element)) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);

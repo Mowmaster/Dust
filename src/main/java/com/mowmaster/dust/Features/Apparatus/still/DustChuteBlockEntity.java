@@ -17,7 +17,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Objects;
 
 // A Dust Chute's filter: the one element it lets out (null: any). Sent to clients for the symbol on it.
-public class DustChuteBlockEntity extends CBSyncedBlockEntity
+public class DustChuteBlockEntity extends CBSyncedBlockEntity implements ElementFilterable
 {
     private @Nullable DustElement filter;
 
@@ -29,6 +29,7 @@ public class DustChuteBlockEntity extends CBSyncedBlockEntity
     public @Nullable DustElement filter() { return filter; }
 
     // Sets (or with null, clears) the filter; the block switches to its filtered look and back
+    @Override
     public void setFilter(@Nullable DustElement element)
     {
         filter = element;

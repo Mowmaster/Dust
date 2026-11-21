@@ -85,8 +85,8 @@ public class DustChuteBlock extends Block implements EntityBlock
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         if (!(level.getBlockEntity(pos) instanceof DustChuteBlockEntity chute)) return InteractionResult.TRY_WITH_EMPTY_HAND;
-        // Research Notes: the element page open on the client
-        if (stack.is(DustItemRegistry.RESEARCH_NOTES.get())) {
+        // Research Notes or a Shared Research Guide: the element page open on the client
+        if (stack.getItem() instanceof com.mowmaster.dust.Features.Research.ResearchBookItem) {
             if (level.isClientSide()) com.mowmaster.dust.Features.Apparatus.still.Client.DustChuteClient.filterFromNotes(pos);
             return InteractionResult.SUCCESS;
         }

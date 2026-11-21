@@ -943,6 +943,7 @@
   "dust.still.upper_pot": "holding dust for the pot below",
   "dust.still.soot_held": "%s Alchemical Soot waiting",
   "dust.still.label_needs_element": "Only a pot holding an element can be labelled",
+  "dust.still.pot_filter": "filtered to %s",
   "dust.chute.unfiltered": "Dust Chute: lets out any element",
   "dust.chute.filtered": "Dust Chute: only lets out %s",
   "dust.chute.open_element_page": "Open your Research Notes at an element's page first",

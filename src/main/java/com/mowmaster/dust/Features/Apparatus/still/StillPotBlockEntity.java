@@ -50,8 +50,9 @@ import java.util.Map;
 // pushed into the containers beside the pot, a hopper feeding it last.)
 // A pot's dust comes out of the Dust Chutes on its sides, as Dust Piles under them (DustChuteBlockEntity), CHUTE_RATE
 // every CHUTE_TICKS. Its filter: a Jar Label on it (only on a pot holding an element: it's kept to that element, even
-// empty), or a filtered chute on it; then it holds and lets out nothing else.
-public class StillPotBlockEntity extends ApparatusBlockEntity
+// empty), a filter set by hand (right-click with Research Notes open at an element's page; shears clear it), or a
+// filtered chute on it; then it holds and lets out nothing else.
+public class StillPotBlockEntity extends ApparatusBlockEntity implements ElementFilterable
 {
     public static final int WORK_TICKS = 20;
     public static final int INPUT_LIMIT = 64;
@@ -68,6 +69,8 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
     private @Nullable DustElement stored;
     private int storedAmount;
     private final java.util.EnumSet<Direction> labels = java.util.EnumSet.noneOf(Direction.class);
+    // A filter set by hand from Research Notes (ElementFilterable); shears clear it
+    private @Nullable DustElement manualFilter;
 
     public StillPotBlockEntity(BlockPos pos, BlockState state)
     {
@@ -81,10 +84,12 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
 
     // ---- the dust it holds ----
 
-    // What it's kept to: its element while it has a label, else a filtered chute's element (null: anything)
+    // What it's kept to: its element while it has a label, else a filter set by hand, else a filtered chute's element
+    // (null: anything)
     public @Nullable DustElement filter()
     {
         if (!labels.isEmpty() && stored != null) return stored;
+        if (manualFilter != null) return manualFilter;
         if (level == null) return null;
         for (Direction side : Direction.Plane.HORIZONTAL) {
             DustChuteBlockEntity chute = chute(level, side);
@@ -101,6 +106,15 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         if (!(state.getBlock() instanceof DustChuteBlock) || state.getValue(DustChuteBlock.FACING) != side) return null;
         return level.getBlockEntity(pos) instanceof DustChuteBlockEntity chute ? chute : null;
     }
+
+    @Override
+    public void setFilter(@Nullable DustElement element)
+    {
+        manualFilter = element;
+        sync();
+    }
+
+    public @Nullable DustElement manualFilter() { return manualFilter; }
 
     // Whether it would take this solid element: its filter lets it in, and it's empty or holding it already with room
     public boolean takes(DustElement element)
@@ -405,7 +419,10 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         Component held = stored == null ? null : Component.translatable(labels.isEmpty() ? "dust.still.pot_holds" : "dust.still.pot_holds_labelled",
                 storedAmount, POT_CAPACITY, stored.name());
         Component doing = doing();
-        return held == null ? doing : Component.empty().append(doing).append(" | ").append(held);
+        net.minecraft.network.chat.MutableComponent line = Component.empty().append(doing);
+        if (held != null) line.append(" | ").append(held);
+        if (manualFilter != null) line.append(" | ").append(Component.translatable("dust.still.pot_filter", manualFilter.name()));
+        return line;
     }
 
     private Component doing()
@@ -434,6 +451,7 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         if (stored != null) output.store("stored", com.mowmaster.dust.Features.DustComposition.DustElements.CODEC, stored);
         output.putInt("stored_amount", storedAmount);
         output.store("labels", Direction.CODEC.listOf(), List.copyOf(labels));
+        if (manualFilter != null) output.store("filter", com.mowmaster.dust.Features.DustComposition.DustElements.CODEC, manualFilter);
     }
 
     @Override
@@ -447,6 +465,7 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         storedAmount = in.getIntOr("stored_amount", 0);
         labels.clear();
         labels.addAll(in.read("labels", Direction.CODEC.listOf()).orElse(List.of()));
+        manualFilter = in.read("filter", com.mowmaster.dust.Features.DustComposition.DustElements.CODEC).orElse(null);
     }
 
     @Override

@@ -15,8 +15,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-// Client -> server: the player right-clicked a Dust Chute with Research Notes open at an element's page (only the client
-// knows which page is open: Client/DustChuteClient). Only within reach, holding the notes, and an element they know.
+// Client -> server: the player right-clicked something with an element filter (ElementFilterable: a Dust Chute, a Still
+// Pot) with Research Notes or a Shared Research Guide open at an element's page (only the client knows which page is
+// open: Client/DustChuteClient). Only within reach, holding the book, and an element they know.
 public record DustChuteFilterPayload(BlockPos pos, Identifier element) implements CustomPacketPayload
 {
     public static final Type<DustChuteFilterPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_chute_filter"));
@@ -35,12 +36,13 @@ public record DustChuteFilterPayload(BlockPos pos, Identifier element) implement
     public static void handle(DustChuteFilterPayload payload, IPayloadContext context)
     {
         if (!(context.player() instanceof ServerPlayer player)) return;
-        if (!player.getMainHandItem().is(DustItemRegistry.RESEARCH_NOTES.get()) && !player.getOffhandItem().is(DustItemRegistry.RESEARCH_NOTES.get())) return;
+        if (!(player.getMainHandItem().getItem() instanceof com.mowmaster.dust.Features.Research.ResearchBookItem)
+                && !(player.getOffhandItem().getItem() instanceof com.mowmaster.dust.Features.Research.ResearchBookItem)) return;
         if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(payload.pos())) > 64) return;
         DustElement element = DustElements.get(payload.element());
         if (element == null || !Compounds.knows(player, element)) return;
-        if (!(player.level().getBlockEntity(payload.pos()) instanceof DustChuteBlockEntity chute)) return;
-        chute.setFilter(element);
+        if (!(player.level().getBlockEntity(payload.pos()) instanceof ElementFilterable filterable)) return;
+        filterable.setFilter(element);
         player.level().playSound(null, payload.pos(), SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.0F);
     }
 }

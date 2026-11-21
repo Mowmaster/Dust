@@ -85,6 +85,18 @@ public class StillPotBlock extends ApparatusBlock
     {
         if (level.getBlockEntity(pos) instanceof StillPotBlockEntity pot) {
             Direction side = hit.getDirection();
+            // Research Notes open at an element's page: its filter (the client says which; nothing is used up)
+            if (stack.getItem() instanceof com.mowmaster.dust.Features.Research.ResearchBookItem) {
+                if (level.isClientSide()) com.mowmaster.dust.Features.Apparatus.still.Client.DustChuteClient.filterFromNotes(pos);
+                return net.minecraft.world.InteractionResult.SUCCESS;
+            }
+            if (stack.getItem() instanceof net.minecraft.world.item.ShearsItem && !pot.labels().contains(side) && pot.manualFilter() != null) {
+                if (level.isClientSide()) return net.minecraft.world.InteractionResult.SUCCESS;
+                pot.setFilter(null);
+                stack.hurtAndBreak(1, player, hand.asEquipmentSlot());
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.SHEEP_SHEAR, net.minecraft.sounds.SoundSource.BLOCKS, 0.8F, 1.2F);
+                return net.minecraft.world.InteractionResult.SUCCESS;
+            }
             if (stack.is(com.mowmaster.dust.DustRegistries.DustItemRegistry.JAR_LABEL.get()) && side.getAxis().isHorizontal()) {
                 if (level.isClientSide()) return net.minecraft.world.InteractionResult.SUCCESS;
                 if (pot.stored() == null) {

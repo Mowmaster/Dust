@@ -29,8 +29,8 @@ import java.util.Map;
 // The Dust Mixer's cycle (the phase is sent to clients, which play it out: Client/DustMixerRenderer):
 //   OPEN       the grate is open: dust piped in falls in, two solid elements that mix into another (ElementCombining),
 //              up to SLOT_CAPACITY of each (it's an IDustHolder on its tube networks, taking dust only now). It gives
-//              the tubes time to fill it: once both are full, or FILL_TICKS after the first dust came in (as long as
-//              a full load takes at the tubes' rate) with no more coming for SETTLE_TICKS, the grate closes
+//              the tubes time to fill it: once both are full (and a moment more: FULL_SETTLE_TICKS), or once it has
+//              some of both and nothing has come in for SETTLE_TICKS, the grate closes
 //   CLOSING    the grate swings shut (GRATE_TICKS); it takes an even amount of each (as much as it has of the less)
 //   MIXING     the paddles turn, MIX_TICKS_PER_DUST for each dust it'll make
 //   OPENING    the grate swings open again
@@ -47,9 +47,9 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
     public static final int GRATE_TICKS = 10;
     public static final int TIP_TICKS = 20;
     public static final float TIP_DEGREES = 105F;
-    // A full load at the rate tubes bring dust (20 every 10 ticks), and a little more
-    private static final int FILL_TICKS = SLOT_CAPACITY / 20 * 10 + 10;
-    private static final int SETTLE_TICKS = 20;
+    // Nothing coming in for this long (tubes bring dust every 10 ticks), it starts; full of both, a moment after
+    private static final int SETTLE_TICKS = 30;
+    private static final int FULL_SETTLE_TICKS = 10;
     private static final int DUMP_RATE = 10;
     private static final Codec<Map<DustElement, Integer>> AMOUNTS_CODEC = Codec.unboundedMap(DustElements.CODEC, Codec.INT);
 
@@ -152,8 +152,7 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
         switch (phase) {
             case OPEN -> {
                 if (firstAmount > 0 && secondAmount > 0 && first != null && second != null
-                        && ((firstAmount >= SLOT_CAPACITY && secondAmount >= SLOT_CAPACITY)
-                        || (fillStart >= 0 && level.getGameTime() - fillStart >= FILL_TICKS && level.getGameTime() - lastInput >= SETTLE_TICKS))) {
+                        && level.getGameTime() - lastInput >= ((firstAmount >= SLOT_CAPACITY && secondAmount >= SLOT_CAPACITY) ? FULL_SETTLE_TICKS : SETTLE_TICKS)) {
                     enter(Phase.CLOSING);
                     level.playSound(null, worldPosition, SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5F, 1.2F);
                 }

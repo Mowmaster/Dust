@@ -50,6 +50,8 @@ public class DustJarBlock extends Block implements EntityBlock, DustTubeConnecta
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity placer, ItemStack stack)
     {
         super.setPlacedBy(level, pos, state, placer, stack);
+        // A labelled jar's label faces whoever placed it
+        if (!level.isClientSide() && placer != null && level.getBlockEntity(pos) instanceof DustJarBlockEntity jar) jar.faceLabel(placer.getDirection().getOpposite());
         if (level instanceof ServerLevel) {
             for (net.minecraft.core.Direction side : net.minecraft.core.Direction.values()) DustTubeBlock.recheck(level, pos.relative(side), side.getOpposite());
         }

@@ -90,7 +90,9 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
             if (state.getValue(FILLED)) continue;
             // UPDATE_KNOWN_SHAPE: the neighbours needn't look again (only the look changed)
             level.setBlock(pos, state.setValue(FILLED, true), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-            level.scheduleTick(pos, state.getBlock(), (int) (emptyAt.get(pos) - now));
+            // A pulling tube already ticks every PULL_TICKS and empties itself then (a tube has one scheduled tick at a
+            // time: a later one asked for would be refused, and its pulling would stall until this one came round)
+            if (!pulls(state)) level.scheduleTick(pos, state.getBlock(), (int) (emptyAt.get(pos) - now));
         }
     }
 
