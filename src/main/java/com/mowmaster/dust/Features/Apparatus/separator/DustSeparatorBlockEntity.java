@@ -33,9 +33,11 @@ import java.util.Map;
 // crush blocks first; hoppers and pipes reach it there only: slotsFor) tumble in the
 // drum one at a time, WORK_TICKS each, and fall apart into their elements, every element whole:
 //   solids     each drum section (this one, then each extension out to the open end: up to
-//              DustSeparatorBlock.MAX_EXTENSIONS) catches one solid element, up to DrumSection.CAPACITY: a section set
-//              to it, else a free one (empty and unlabelled). Each section sends its dust down the tubes under it
-//              (DustNetwork.insert, PUSH_AMOUNT every PUSH_TICKS)
+//              DustSeparatorBlock.MAX_EXTENSIONS) sends one solid element down the tubes under it (DustNetwork.insert,
+//              PUSH_AMOUNT every PUSH_TICKS), holding up to DrumSection.CAPACITY on its way. A section only takes an
+//              element its tubes have somewhere for: first a section whose tube network's jars are set to it (a
+//              labelled jar keeps it so: that section is filtered to it), then one whose jars aren't set yet. A section
+//              whose tubes have lost their way for what it holds (its jar broken) tips it on to the open end
 //   the rest   everything else (and solids no section can take) falls out of the open end of the drum as Dust Piles
 //              (DustClouds.deposit; no higher than the drum). While EXCESS_LIMIT of it is waiting there (nowhere to
 //              land), it stops taking things in
@@ -180,7 +182,12 @@ public class DustSeparatorBlockEntity extends ApparatusBlockEntity implements Se
                     for (SectionHolder holder : sections) {
                         if (left <= 0) break;
                         DrumSection drum = holder.section();
-                        if (pass == 0 ? !drum.holds(element) : !drum.free()) continue;
+                        if (!drum.takes(element)) continue;
+                        BlockPos pos = ((net.minecraft.world.level.block.entity.BlockEntity) holder).getBlockPos();
+                        // Pass 0: tubes set to this element; pass 1: tubes with jars not set yet
+                        DustNetwork.Holds tubes = DustNetwork.networkElement(level, pos);
+                        if (tubes.mixed() || !DustNetwork.routes(level, pos, element)) continue;
+                        if (pass == 0 ? !element.equals(tubes.element()) : tubes.element() != null) continue;
                         int moved = drum.add(element, left);
                         if (moved > 0) {
                             left -= moved;
@@ -193,14 +200,21 @@ public class DustSeparatorBlockEntity extends ApparatusBlockEntity implements Se
         }
     }
 
-    // Each section's dust down the tubes under it
+    // Each section's dust down the tubes under it; a section whose tubes have nowhere for it any more tips it on to the
+    // open end
     private void pushSections(ServerLevel level, List<SectionHolder> sections)
     {
         for (SectionHolder holder : sections) {
             DrumSection drum = holder.section();
-            if (drum.element() == null || drum.amount() <= 0) continue;
+            DustElement element = drum.element();
+            if (element == null || drum.amount() <= 0) continue;
             BlockPos pos = ((net.minecraft.world.level.block.entity.BlockEntity) holder).getBlockPos();
-            int went = DustNetwork.insert(level, pos, drum.element(), Math.min(PUSH_AMOUNT, drum.amount()));
+            if (!DustNetwork.routes(level, pos, element)) {
+                excess.merge(element, drum.take(drum.amount()), Integer::sum);
+                holder.sectionChanged();
+                continue;
+            }
+            int went = DustNetwork.insert(level, pos, element, Math.min(PUSH_AMOUNT, drum.amount()));
             if (went > 0) {
                 drum.take(went);
                 holder.sectionChanged();

@@ -25,7 +25,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 // A Dust Separator Extension (models/block/apparatus/dust_seperator_extension.json; the block draws its base, the drum
 // is drawn turning with the separator's: Client/DustSeparatorRenderer): one more drum section, placed against the open
 // end of a separator (or of the extension before it), up to DustSeparatorBlock.MAX_EXTENSIONS. It takes the facing of
-// the drum it's added to. Tubes join on underneath only. A Jar Label under it keeps its section to its element.
+// the drum it's added to. Tubes join on underneath only.
 public class DustSeparatorExtensionBlock extends Block implements EntityBlock, DustTubeConnectable
 {
     public static final net.minecraft.world.level.block.state.properties.EnumProperty<Direction> FACING = StationBlock.FACING;
@@ -78,12 +78,6 @@ public class DustSeparatorExtensionBlock extends Block implements EntityBlock, D
         return side == Direction.DOWN;
     }
 
-    @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-    {
-        InteractionResult labelled = SectionLabels.use(stack, level, pos, player, hand);
-        return labelled != null ? labelled : InteractionResult.TRY_WITH_EMPTY_HAND;
-    }
 
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)

@@ -28,8 +28,9 @@ import java.util.Map;
 
 // The Dust Mixer's cycle (the phase is sent to clients, which play it out: Client/DustMixerRenderer):
 //   OPEN       the grate is open: dust piped in falls in, two solid elements that mix into another (ElementCombining),
-//              up to SLOT_CAPACITY of each (it's an IDustHolder on its tube networks, taking dust only now). Once it has
-//              some of both and no more has come for SETTLE_TICKS (or both are full), the grate closes
+//              up to SLOT_CAPACITY of each (it's an IDustHolder on its tube networks, taking dust only now). It gives
+//              the tubes time to fill it: once both are full, or FILL_TICKS after the first dust came in (as long as
+//              a full load takes at the tubes' rate) with no more coming for SETTLE_TICKS, the grate closes
 //   CLOSING    the grate swings shut (GRATE_TICKS); it takes an even amount of each (as much as it has of the less)
 //   MIXING     the paddles turn, MIX_TICKS_PER_DUST for each dust it'll make
 //   OPENING    the grate swings open again
@@ -46,7 +47,9 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
     public static final int GRATE_TICKS = 10;
     public static final int TIP_TICKS = 20;
     public static final float TIP_DEGREES = 105F;
-    private static final int SETTLE_TICKS = 40;
+    // A full load at the rate tubes bring dust (20 every 10 ticks), and a little more
+    private static final int FILL_TICKS = SLOT_CAPACITY / 20 * 10 + 10;
+    private static final int SETTLE_TICKS = 20;
     private static final int DUMP_RATE = 10;
     private static final Codec<Map<DustElement, Integer>> AMOUNTS_CODEC = Codec.unboundedMap(DustElements.CODEC, Codec.INT);
 
@@ -62,6 +65,8 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
     private int mixed;
     private final Map<DustElement, Integer> dumping = new LinkedHashMap<>();
     private long lastInput;
+    // When the first dust of this load came in (-1: none yet)
+    private long fillStart = -1;
     private boolean powered;
 
     public DustMixerBlockEntity(BlockPos pos, BlockState state)
@@ -99,7 +104,10 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
             return 0;
         }
         if (moved > 0 && !simulate) {
-            if (level != null) lastInput = level.getGameTime();
+            if (level != null) {
+                lastInput = level.getGameTime();
+                if (fillStart < 0) fillStart = lastInput;
+            }
             sync();
         }
         return Math.max(0, moved);
@@ -144,13 +152,15 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
         switch (phase) {
             case OPEN -> {
                 if (firstAmount > 0 && secondAmount > 0 && first != null && second != null
-                        && ((firstAmount >= SLOT_CAPACITY && secondAmount >= SLOT_CAPACITY) || level.getGameTime() - lastInput >= SETTLE_TICKS)) {
+                        && ((firstAmount >= SLOT_CAPACITY && secondAmount >= SLOT_CAPACITY)
+                        || (fillStart >= 0 && level.getGameTime() - fillStart >= FILL_TICKS && level.getGameTime() - lastInput >= SETTLE_TICKS))) {
                     enter(Phase.CLOSING);
                     level.playSound(null, worldPosition, SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.5F, 1.2F);
                 }
             }
             case CLOSING -> {
                 if (phaseTicks < GRATE_TICKS) return;
+                fillStart = -1;
                 batch = Math.min(firstAmount, secondAmount);
                 firstAmount -= batch;
                 secondAmount -= batch;
@@ -223,6 +233,7 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
         if (second != null && secondAmount > 0) dumping.merge(second, secondAmount, Integer::sum);
         firstAmount = 0;
         secondAmount = 0;
+        fillStart = -1;
         forgetEmpty();
     }
 

@@ -540,16 +540,16 @@ public class DustProviderModel extends ModelProvider {
         MultiVariant fillReach = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_fill_reach"));
         MultiVariant fillReachNear = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_fill_reach_near"));
         parts.with(BlockModelGenerators.condition(filled, true), fillCore);
-        // Pulling (redstone on it): a red band round its middle (dust_tube_redstone.json)
-        parts.with(BlockModelGenerators.condition(com.mowmaster.dust.Features.DustStorage.DustTubeBlock.PULLING, true),
-                BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_redstone")));
+        // A pulling end (redstone on it): the reach arm, with a red band by its collar (dust_tube_redstone.json)
+        MultiVariant redstone = BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_tube_redstone"));
         for (Direction side : Direction.values()) {
             var property = com.mowmaster.dust.Features.DustStorage.DustTubeBlock.CONNECTIONS.get(side);
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.TUBE), arm.with(turns.get(side)));
-            parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK), reach.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK, com.mowmaster.dust.Features.DustStorage.TubeJoin.PULL), reach.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.PULL), redstone.with(turns.get(side)));
             parts.with(BlockModelGenerators.condition(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.NEAR), reachNear.with(turns.get(side)));
             parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.TUBE), fillArm.with(turns.get(side)));
-            parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK), fillReach.with(turns.get(side)));
+            parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.BLOCK, com.mowmaster.dust.Features.DustStorage.TubeJoin.PULL), fillReach.with(turns.get(side)));
             parts.with(BlockModelGenerators.condition().term(filled, true).term(property, com.mowmaster.dust.Features.DustStorage.TubeJoin.NEAR), fillReachNear.with(turns.get(side)));
         }
         blockModels.blockStateOutput.accept(parts);

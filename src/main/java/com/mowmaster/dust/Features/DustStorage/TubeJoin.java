@@ -6,11 +6,12 @@ import net.minecraft.util.StringRepresentable;
 // to a block that takes tubes (a jar, an apparatus...: a longer arm reaching into that block's space, so it meets the
 // block's body, with its collar there): 3 pixels in (BLOCK), or 2 (NEAR: the Still Tower's barrel). The block says which
 // (DustTubeConnectable.tubeJoin). SEALED: something it would join is there, but it's been cut off from it (shears, or
-// a waxed tube beside it: DustTubeBlock); drawn and walked as NONE, and kept while that neighbour stays.
+// a waxed tube beside it: DustTubeBlock); drawn and walked as NONE, and kept while that neighbour stays. PULL: joined to
+// a jar as BLOCK is, with redstone on that end: the tube pulls dust out of the jar there (DustTubeBlock).
 // StringRepresentable: how the value is written in the blockstate ("block").
 public enum TubeJoin implements StringRepresentable
 {
-    NONE("none"), TUBE("tube"), BLOCK("block"), NEAR("near"), SEALED("sealed");
+    NONE("none"), TUBE("tube"), BLOCK("block"), NEAR("near"), SEALED("sealed"), PULL("pull");
 
     private final String name;
 

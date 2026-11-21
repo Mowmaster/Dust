@@ -40,9 +40,10 @@ import java.util.Map;
 // One element to a tube network: a tube won't join on to a tube network, jar or Still Tower set to another element than
 // its own network (it's cut off from it: SEALED). Machines join any (each of a machine's tube networks takes only its
 // own element from it: DustNetwork.insert).
-// Redstone on a tube makes it pull: every PULL_TICKS it draws dust out of the jars it's joined to and along its network
-// to the other stores (other jars, a Dust Mixer...; never back into that jar, never spilled); sneak + right-click with an
-// empty hand takes the redstone off. A red band shows on it (PULLING).
+// Redstone on the end of a tube joined to a jar (right-click that end with redstone: TubeJoin.PULL, a red band on its
+// collar) makes it pull from that jar: every PULL_TICKS it draws dust out and along its network to the other stores
+// (other jars, a Dust Mixer...; never back into that jar, never spilled). Each end can pull from its own jar. Sneak +
+// right-click an end with an empty hand takes its redstone off.
 // Shears on a side (the arm clicked, or the face of the middle): a joined side is cut (SEALED, and the tube on the other
 // side with it), a cut side is joined again (unless it's set to another element). A cut side stays cut while its neighbour stays (it lets go once that's
 // gone). Honeycomb waxes a tube (WAXED): it keeps how it's joined on every side, joining nothing new, not even tubes
@@ -100,7 +101,7 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         long next = Long.MAX_VALUE;
-        if (state.getValue(PULLING)) {
+        if (pulls(state)) {
             pull(level, pos, state);
             next = PULL_TICKS;
         }
@@ -122,15 +123,22 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
 
     // ---- pulling (redstone on it) ----
 
-    public static final net.minecraft.world.level.block.state.properties.BooleanProperty PULLING = net.minecraft.world.level.block.state.properties.BooleanProperty.create("pulling");
     private static final int PULL_TICKS = 10;
     private static final int PULL_AMOUNT = 20;
 
-    // Out of each jar it's joined to and along its network to the other stores (never back into that jar, never spilled)
+    // Whether any of its ends pulls
+    public static boolean pulls(BlockState state)
+    {
+        for (Direction side : Direction.values()) if (state.getValue(CONNECTIONS.get(side)) == TubeJoin.PULL) return true;
+        return false;
+    }
+
+    // Out of the jar at each pulling end and along its network to the other stores (never back into that jar, never
+    // spilled)
     private static void pull(ServerLevel level, BlockPos pos, BlockState state)
     {
         for (Direction side : Direction.values()) {
-            if (!isJoined(state, side)) continue;
+            if (state.getValue(CONNECTIONS.get(side)) != TubeJoin.PULL) continue;
             BlockPos jarPos = pos.relative(side);
             if (!level.isLoaded(jarPos) || !(level.getBlockEntity(jarPos) instanceof DustJarBlockEntity jar)) continue;
             com.mowmaster.dust.Features.DustComposition.DustElement element = jar.element();
@@ -173,14 +181,14 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         super(properties);
         BlockState state = stateDefinition.any();
         for (EnumProperty<TubeJoin> property : CONNECTIONS.values()) state = state.setValue(property, TubeJoin.NONE);
-        registerDefaultState(state.setValue(FILLED, false).setValue(WAXED, false).setValue(PULLING, false));
+        registerDefaultState(state.setValue(FILLED, false).setValue(WAXED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         CONNECTIONS.values().forEach(builder::add);
-        builder.add(FILLED, WAXED, PULLING);
+        builder.add(FILLED, WAXED);
     }
 
     // Placed: joined on to whatever round it takes tubes (cut off from a waxed tube not joined to this side). One element
@@ -251,6 +259,10 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         EnumProperty<TubeJoin> property = CONNECTIONS.get(direction);
         TubeJoin current = state.getValue(property);
         if (state.getValue(WAXED)) return join(neighborState, direction.getOpposite()).joined() ? state : state.setValue(property, TubeJoin.NONE);
+        // A pulling end stays pulling while there's still a jar there
+        if (current == TubeJoin.PULL && join(neighborState, direction.getOpposite()) == TubeJoin.BLOCK && neighborState.getBlock() instanceof DustJarBlock) return state;
+        // The jar's gone: the redstone drops
+        if (current == TubeJoin.PULL && level instanceof ServerLevel server) Block.popResource(server, pos, new ItemStack(Items.REDSTONE));
         TubeJoin join = sideJoin(neighborState, direction, current);
         // Something new to join on to: cut off from it if it's set to another element than this tube's network
         if (current == TubeJoin.NONE && join.joined() && level instanceof ServerLevel
@@ -277,10 +289,13 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        // Redstone on it: it pulls out of the jars it's joined to
-        if (stack.is(Items.REDSTONE) && !state.getValue(PULLING)) {
+        // Redstone on an end joined to a jar: that end pulls out of the jar
+        if (stack.is(Items.REDSTONE)) {
+            Direction side = clickedSide(pos, hit);
+            EnumProperty<TubeJoin> property = CONNECTIONS.get(side);
+            if (state.getValue(property) != TubeJoin.BLOCK || !(level.getBlockEntity(pos.relative(side)) instanceof DustJarBlockEntity)) return InteractionResult.PASS;
             if (level.isClientSide()) return InteractionResult.SUCCESS;
-            level.setBlock(pos, state.setValue(PULLING, true), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+            level.setBlock(pos, state.setValue(property, TubeJoin.PULL), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
             level.scheduleTick(pos, this, PULL_TICKS);
             stack.consume(1, player);
             level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.6F, 1.4F);
@@ -339,7 +354,9 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
             }
             level.setBlock(pos, level.getBlockState(pos).setValue(CONNECTIONS.get(side), join), Block.UPDATE_ALL);
         } else {
-            // Cut, the tube beside with it (unless it's waxed: then it keeps its arm, but nothing passes)
+            // Cut, the tube beside with it (unless it's waxed: then it keeps its arm, but nothing passes); a pulling end's
+            // redstone drops
+            if (current == TubeJoin.PULL) Block.popResource(level, pos, new ItemStack(Items.REDSTONE));
             level.setBlock(pos, state.setValue(CONNECTIONS.get(side), TubeJoin.SEALED), Block.UPDATE_ALL);
             if (nextTube && !next.getValue(WAXED)) {
                 BlockState nextNow = level.getBlockState(nextPos);
@@ -416,16 +433,19 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
         DustNetwork.changed(level);
         // Its redstone comes back
-        if (state.getValue(PULLING)) Block.popResource(level, pos, new ItemStack(Items.REDSTONE));
+        for (Direction side : Direction.values()) {
+            if (state.getValue(CONNECTIONS.get(side)) == TubeJoin.PULL) Block.popResource(level, pos, new ItemStack(Items.REDSTONE));
+        }
     }
 
-    // Sneak + right-click with an empty hand: the redstone comes off (it stops pulling)
+    // Sneak + right-click an end with an empty hand: its redstone comes off (that end stops pulling)
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit)
     {
-        if (!player.isShiftKeyDown() || !state.getValue(PULLING)) return InteractionResult.PASS;
+        EnumProperty<TubeJoin> property = CONNECTIONS.get(clickedSide(pos, hit));
+        if (!player.isShiftKeyDown() || state.getValue(property) != TubeJoin.PULL) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
-        level.setBlock(pos, state.setValue(PULLING, false), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+        level.setBlock(pos, state.setValue(property, TubeJoin.BLOCK), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
         if (!player.getInventory().add(new ItemStack(Items.REDSTONE))) Block.popResource(level, pos, new ItemStack(Items.REDSTONE));
         level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.6F, 1.4F);
         return InteractionResult.SUCCESS;

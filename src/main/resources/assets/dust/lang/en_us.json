@@ -949,7 +949,6 @@
   "block.dust.dust_seperator": "Dust Separator",
   "block.dust.dust_seperator_extension": "Dust Separator Extension",
   "block.dust.dust_mixer": "Dust Mixer",
-  "dust.separator.label_needs_element": "Only a drum section holding an element can be labelled",
   "dust.separator.end_blocked": "the drum's open end is blocked",
   "dust.separator.sections": "%s drum sections",
   "dust.mixer.open": "open, waiting for dust",

@@ -16,8 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 // and Client/DustSeparatorRenderer its turning drum): a tumbling drum that separates what's fed into it
 // (DustSeparatorBlockEntity). Fed from its sides and top (the blue crystal marks its intake end, to the left of its
 // front); tubes join on underneath only (the red crystal), where each drum section's element goes; up to
-// MAX_EXTENSIONS Dust Separator Extensions lengthen the drum from its open end, to the right of its front.
-// A Jar Label under a section keeps it to its element; shears scrape it off.
+// MAX_EXTENSIONS Dust Separator Extensions lengthen the drum from its open end, to the right of its front. Which element
+// each section sends is up to the tubes under it (a labelled jar there filters it).
 public class DustSeparatorBlock extends ApparatusBlock
 {
     public static final int MAX_EXTENSIONS = 5;
@@ -39,10 +39,4 @@ public class DustSeparatorBlock extends ApparatusBlock
         return side == Direction.DOWN;
     }
 
-    @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-    {
-        InteractionResult labelled = SectionLabels.use(stack, level, pos, player, hand);
-        return labelled != null ? labelled : super.useItemOn(stack, state, level, pos, player, hand, hit);
-    }
 }
