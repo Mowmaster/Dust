@@ -15,14 +15,6 @@
     },
     {
       "apply": {
-        "model": "dust:block/apparatus/dust_tube_redstone"
-      },
-      "when": {
-        "pulling": "true"
-      }
-    },
-    {
-      "apply": {
         "model": "dust:block/apparatus/dust_tube_arm",
         "x": 90
       },
@@ -36,7 +28,16 @@
         "x": 90
       },
       "when": {
-        "down": "block"
+        "down": "block|pull"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_redstone",
+        "x": 90
+      },
+      "when": {
+        "down": "pull"
       }
     },
     {
@@ -64,7 +65,7 @@
         "x": 90
       },
       "when": {
-        "down": "block",
+        "down": "block|pull",
         "filled": "true"
       }
     },
@@ -93,7 +94,16 @@
         "x": 270
       },
       "when": {
-        "up": "block"
+        "up": "block|pull"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_redstone",
+        "x": 270
+      },
+      "when": {
+        "up": "pull"
       }
     },
     {
@@ -122,7 +132,7 @@
       },
       "when": {
         "filled": "true",
-        "up": "block"
+        "up": "block|pull"
       }
     },
     {
@@ -148,7 +158,15 @@
         "model": "dust:block/apparatus/dust_tube_reach"
       },
       "when": {
-        "north": "block"
+        "north": "block|pull"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_redstone"
+      },
+      "when": {
+        "north": "pull"
       }
     },
     {
@@ -174,7 +192,7 @@
       },
       "when": {
         "filled": "true",
-        "north": "block"
+        "north": "block|pull"
       }
     },
     {
@@ -201,7 +219,16 @@
         "y": 180
       },
       "when": {
-        "south": "block"
+        "south": "block|pull"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_redstone",
+        "y": 180
+      },
+      "when": {
+        "south": "pull"
       }
     },
     {
@@ -230,7 +257,7 @@
       },
       "when": {
         "filled": "true",
-        "south": "block"
+        "south": "block|pull"
       }
     },
     {
@@ -258,7 +285,16 @@
         "y": 270
       },
       "when": {
-        "west": "block"
+        "west": "block|pull"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_redstone",
+        "y": 270
+      },
+      "when": {
+        "west": "pull"
       }
     },
     {
@@ -287,7 +323,7 @@
       },
       "when": {
         "filled": "true",
-        "west": "block"
+        "west": "block|pull"
       }
     },
     {
@@ -315,7 +351,16 @@
         "y": 90
       },
       "when": {
-        "east": "block"
+        "east": "block|pull"
+      }
+    },
+    {
+      "apply": {
+        "model": "dust:block/apparatus/dust_tube_redstone",
+        "y": 90
+      },
+      "when": {
+        "east": "pull"
       }
     },
     {
@@ -343,7 +388,7 @@
         "y": 90
       },
       "when": {
-        "east": "block",
+        "east": "block|pull",
         "filled": "true"
       }
     },
