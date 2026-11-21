@@ -33,27 +33,40 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// The Still Pot: runs the Still (StillLayout). What goes in (hoppers and pipes from the top and sides, or right-click its
-// top) boils one at a time, WORK_TICKS each, while the Burnable Firebox under it burns (it lights fuel as it's needed) and
-// there's a Still Top on the stack:
-//   solids     anything solid in it burns to one Alchemical Soot, pushed every PUSH_TICKS into the containers beside
-//              the pot, a hopper feeding it last (and kept in its outputs while none has room; it waits when they're full)
+// A Still Pot. The bottom one (on the Burnable Firebox) runs the Still (StillLayout): what goes into any of its pots
+// (hoppers and pipes from the top and sides, or right-click their tops) boils one at a time, WORK_TICKS each, while the
+// firebox burns (it lights fuel as it's needed) and there's a Still Top on the stack:
+//   solids     each pot holds one solid element as dust, up to POT_CAPACITY: a pot already holding it, else an empty
+//              one (that its filter lets in). A solid no pot can take makes an extra Alchemical Soot, which the firebox
+//              gives out with its own (StillFireboxBlockEntity.addSoot)
 //   the rest   each gaseous or aqueous element rises into a heated tower (within StillLayout.HEAT_REACH of the firebox):
-//              the tower already set to it, else an empty one (not one whose tubes reach jars of another element:
+//              the tower already set to it, else an empty one (not one whose tubes can't take it:
 //              StillTowerBlockEntity.isBlocked). What no tower takes (no tower for it, or full) leaves
 //              through the top into the chunk's aura, as smoke in its colour. So a pot with only a top on it sends
 //              everything into the aura.
 //   unknown    an element the owner hasn't discovered always leaves through the top
-// Blocks (crush them in a Crushing Mill first) and things with no elements pass straight through to the outputs.
+// Blocks (crush them in a Crushing Mill first) and things with no elements pass straight through to the outputs (pushed
+// into the containers beside the pot, a hopper feeding it last).
+// A pot's dust comes out of the Dust Chutes on its sides, as Dust Piles under them (DustChuteBlockEntity), CHUTE_RATE
+// every CHUTE_TICKS. Its filter: a Jar Label on it (only on a pot holding an element: it's kept to that element, even
+// empty), or a filtered chute on it; then it holds and lets out nothing else.
 public class StillPotBlockEntity extends ApparatusBlockEntity
 {
     public static final int WORK_TICKS = 20;
     public static final int INPUT_LIMIT = 64;
     public static final int SOOT_PUSH_TICKS = 10;
 
+    public static final int POT_CAPACITY = 100;
+    public static final int CHUTE_TICKS = 10;
+    public static final int CHUTE_RATE = 5;
+
     private ItemStack input = ItemStack.EMPTY;
     private ItemStack working = ItemStack.EMPTY;
     private int progress = -1;
+    // The solid element it holds, how much, and the sides with a Jar Label (any label keeps it to its element)
+    private @Nullable DustElement stored;
+    private int storedAmount;
+    private final java.util.EnumSet<Direction> labels = java.util.EnumSet.noneOf(Direction.class);
 
     public StillPotBlockEntity(BlockPos pos, BlockState state)
     {
@@ -61,6 +74,113 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
     }
 
     public boolean isWorking() { return progress >= 0; }
+    public @Nullable DustElement stored() { return stored; }
+    public int storedAmount() { return storedAmount; }
+    public java.util.Set<Direction> labels() { return java.util.Collections.unmodifiableSet(labels); }
+
+    // ---- the dust it holds ----
+
+    // What it's kept to: its element while it has a label, else a filtered chute's element (null: anything)
+    public @Nullable DustElement filter()
+    {
+        if (!labels.isEmpty() && stored != null) return stored;
+        if (level == null) return null;
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            DustChuteBlockEntity chute = chute(level, side);
+            if (chute != null && chute.filter() != null) return chute.filter();
+        }
+        return null;
+    }
+
+    // The chute on this side, if one is fixed to the pot there
+    private @Nullable DustChuteBlockEntity chute(Level level, Direction side)
+    {
+        BlockPos pos = worldPosition.relative(side);
+        BlockState state = level.getBlockState(pos);
+        if (!(state.getBlock() instanceof DustChuteBlock) || state.getValue(DustChuteBlock.FACING) != side) return null;
+        return level.getBlockEntity(pos) instanceof DustChuteBlockEntity chute ? chute : null;
+    }
+
+    // Whether it would take this solid element: its filter lets it in, and it's empty or holding it already with room
+    public boolean takes(DustElement element)
+    {
+        DustElement filter = filter();
+        if (filter != null && !filter.equals(element)) return false;
+        return (stored == null || stored.equals(element)) && storedAmount < POT_CAPACITY;
+    }
+
+    // Puts up to amount of it in; returns how much went
+    public int store(DustElement element, int amount)
+    {
+        if (amount <= 0 || !takes(element)) return 0;
+        int moved = Math.min(amount, POT_CAPACITY - storedAmount);
+        stored = element;
+        storedAmount += moved;
+        sync();
+        return moved;
+    }
+
+    // Takes up to amount out; an unlabelled pot forgets its element once it's empty
+    public int take(int amount)
+    {
+        int taken = Math.min(amount, storedAmount);
+        if (taken <= 0) return 0;
+        storedAmount -= taken;
+        if (storedAmount <= 0 && labels.isEmpty()) stored = null;
+        sync();
+        return taken;
+    }
+
+    // A Jar Label on this side: only on a pot holding an element (it's then kept to it)
+    public boolean addLabel(Direction side)
+    {
+        if (stored == null || !side.getAxis().isHorizontal() || !labels.add(side)) return false;
+        sync();
+        return true;
+    }
+
+    public boolean removeLabel(Direction side)
+    {
+        if (!labels.remove(side)) return false;
+        if (labels.isEmpty() && storedAmount <= 0) stored = null;
+        sync();
+        return true;
+    }
+
+    // Out of the chutes on its sides as Dust Piles under them
+    private void pourChutes(ServerLevel level)
+    {
+        if (stored == null || storedAmount <= 0) return;
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            if (storedAmount <= 0 || stored == null) return;
+            DustChuteBlockEntity chute = chute(level, side);
+            if (chute == null || (chute.filter() != null && !chute.filter().equals(stored))) continue;
+            int amount = Math.min(CHUTE_RATE, storedAmount);
+            BlockPos under = worldPosition.relative(side).below();
+            int landed = com.mowmaster.dust.Features.DustStorage.DustClouds.deposit(level, under, stored, amount, under.getY());
+            if (landed > 0) {
+                DustElement element = stored;
+                take(landed);
+                level.sendParticles(new net.minecraft.core.particles.DustParticleOptions(element.color(), 1.0F),
+                        under.getX() + 0.5, under.getY() + 0.9, under.getZ() + 0.5, 4, 0.12, 0.2, 0.12, 0);
+            }
+        }
+    }
+
+    // Whether it's the bottom pot, the one running the still (on the firebox)
+    private boolean isBottom(Level level)
+    {
+        return level.getBlockState(worldPosition.below()).getBlock() instanceof StillFireboxBlock;
+    }
+
+    // Takes the next thing to boil out of a pot's input (for the bottom pot, from the pots above)
+    private ItemStack splitInput()
+    {
+        ItemStack one = input.split(1);
+        if (input.isEmpty()) input = ItemStack.EMPTY;
+        sync();
+        return one;
+    }
 
     @Override
     protected List<StationSlot> machineSlots()
@@ -79,6 +199,9 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
     protected void work(ServerLevel level)
     {
         if ((level.getGameTime() + worldPosition.asLong()) % SOOT_PUSH_TICKS == 0) pushOutputs(level);
+        if ((level.getGameTime() + worldPosition.asLong()) % CHUTE_TICKS == 0) pourChutes(level);
+        // Only the bottom pot runs the still (the others hold dust and take things in for it)
+        if (!isBottom(level)) return;
         if (progress < 0) {
             tryStart(level);
             return;
@@ -100,7 +223,24 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
 
     private void tryStart(ServerLevel level)
     {
-        if (input.isEmpty()) return;
+        // Its own input first, then the pots above's
+        StillPotBlockEntity source = this;
+        if (input.isEmpty()) {
+            source = null;
+            for (BlockPos pos : StillLayout.above(level, worldPosition).pots()) {
+                if (level.getBlockEntity(pos) instanceof StillPotBlockEntity pot && !pot.input.isEmpty()) {
+                    source = pot;
+                    break;
+                }
+            }
+            if (source == null) return;
+        }
+        source.startFrom(level, this);
+    }
+
+    // Starts boiling the next thing in this pot's input, in the bottom pot (or passes it through to this pot's outputs)
+    private void startFrom(ServerLevel level, StillPotBlockEntity bottom)
+    {
         ItemStack one = input.copyWithCount(1);
         List<DustElement> elements = ItemApparatusBlockEntity.elementsOf(one);
         if (ItemApparatusBlockEntity.isBlock(one) || elements.isEmpty()) {
@@ -113,19 +253,12 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
             sync();
             return;
         }
-        if (!ItemApparatusBlockEntity.solids(elements).isEmpty() && !outputsFit(soot())) return;
-        StillFireboxBlockEntity firebox = firebox(level);
-        if (firebox == null || StillLayout.above(level, worldPosition).top() == null || !firebox.heat(level)) return;
-        working = input.split(1);
-        if (input.isEmpty()) input = ItemStack.EMPTY;
-        progress = 0;
-        level.playSound(null, worldPosition, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 0.4F, 1.0F);
-        sync();
-    }
-
-    private static ItemStack soot()
-    {
-        return new ItemStack(DustItemRegistry.ALCHEMICAL_SOOT.get());
+        StillFireboxBlockEntity firebox = bottom.firebox(level);
+        if (firebox == null || StillLayout.above(level, bottom.worldPosition).top() == null || !firebox.heat(level)) return;
+        bottom.working = splitInput();
+        bottom.progress = 0;
+        level.playSound(null, bottom.worldPosition, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 0.4F, 1.0F);
+        bottom.sync();
     }
 
     private void finish(ServerLevel level)
@@ -133,14 +266,42 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         StillLayout.Stack stack = StillLayout.above(level, worldPosition);
         if (stack.top() == null) return;
         List<DustElement> elements = ItemApparatusBlockEntity.elementsOf(working);
-        if (!ItemApparatusBlockEntity.solids(elements).isEmpty()) {
-            if (!outputsFit(soot())) return;
-            addOutput(soot());
-        }
+        settle(level, ItemApparatusBlockEntity.solids(elements), stack);
         rise(level, ItemApparatusBlockEntity.fluids(elements), stack);
         working = ItemStack.EMPTY;
         progress = -1;
         sync();
+    }
+
+    // The solid elements into the pots: one holding it already, then an empty one that lets it in. What no pot takes makes
+    // one extra Alchemical Soot (the firebox gives it out); what the owner doesn't know leaves through the top.
+    private void settle(ServerLevel level, List<DustElement> solids, StillLayout.Stack stack)
+    {
+        if (solids.isEmpty()) return;
+        Map<DustElement, Integer> counts = new LinkedHashMap<>();
+        for (DustElement element : solids) counts.merge(element, 1, Integer::sum);
+        List<StillPotBlockEntity> pots = new ArrayList<>();
+        pots.add(this);
+        for (BlockPos pos : stack.pots()) if (level.getBlockEntity(pos) instanceof StillPotBlockEntity pot) pots.add(pot);
+        boolean leftOver = false;
+        for (Map.Entry<DustElement, Integer> entry : counts.entrySet()) {
+            DustElement element = entry.getKey();
+            int left = entry.getValue();
+            if (!knows(element)) {
+                release(level, stack.top(), element, left);
+                continue;
+            }
+            for (int pass = 0; pass < 2 && left > 0; pass++) {
+                for (StillPotBlockEntity pot : pots) {
+                    if (left <= 0) break;
+                    if ((pass == 0) != element.equals(pot.stored)) continue;
+                    left -= pot.store(element, left);
+                }
+            }
+            if (left > 0) leftOver = true;
+        }
+        StillFireboxBlockEntity firebox = firebox(level);
+        if (leftOver && firebox != null) firebox.addSoot(level, 1);
     }
 
     // The gaseous and aqueous elements up into the towers, the rest out of the top
@@ -233,6 +394,16 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
     @Override
     protected Component activity()
     {
+        Component held = stored == null ? null : Component.translatable(labels.isEmpty() ? "dust.still.pot_holds" : "dust.still.pot_holds_labelled",
+                storedAmount, POT_CAPACITY, stored.name());
+        Component doing = doing();
+        return held == null ? doing : Component.empty().append(doing).append(" | ").append(held);
+    }
+
+    private Component doing()
+    {
+        if (level != null && !isBottom(level)) return input.isEmpty() ? Component.translatable("dust.still.upper_pot")
+                : Component.translatable("dust.apparatus.waiting", input.getCount(), input.getHoverName());
         if (progress >= 0) return Component.translatable("dust.apparatus.evaporating", working.getHoverName(), Math.round(Math.min(1F, progress / (float) WORK_TICKS) * 100));
         if (level == null) return Component.translatable("dust.apparatus.idle");
         StillFireboxBlockEntity firebox = firebox(level);
@@ -252,6 +423,9 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         store(output, "input", input);
         store(output, "working", working);
         output.putInt("progress", progress);
+        if (stored != null) output.store("stored", com.mowmaster.dust.Features.DustComposition.DustElements.CODEC, stored);
+        output.putInt("stored_amount", storedAmount);
+        output.store("labels", Direction.CODEC.listOf(), List.copyOf(labels));
     }
 
     @Override
@@ -261,6 +435,10 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
         input = read(in, "input");
         working = read(in, "working");
         progress = in.getIntOr("progress", -1);
+        stored = in.read("stored", com.mowmaster.dust.Features.DustComposition.DustElements.CODEC).orElse(null);
+        storedAmount = in.getIntOr("stored_amount", 0);
+        labels.clear();
+        labels.addAll(in.read("labels", Direction.CODEC.listOf()).orElse(List.of()));
     }
 
     @Override

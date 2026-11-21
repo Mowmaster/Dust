@@ -59,6 +59,16 @@ public class DustBlockEntityRegistry
     // The Still (Features/Apparatus/still)
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustPileBlockEntity>> DUST_PILE = BLOCK_ENTITIES.register("dust_pile",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustPileBlockEntity::new, Set.of(DustBlockRegistry.DUST_PILE.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.DustChuteBlockEntity>> DUST_CHUTE = BLOCK_ENTITIES.register("dust_chute",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.DustChuteBlockEntity::new, Set.of(DustBlockRegistry.DUST_CHUTE.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustCollectorBlockEntity>> DUST_COLLECTOR = BLOCK_ENTITIES.register("dust_collector",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustCollectorBlockEntity::new, Set.of(DustBlockRegistry.DUST_COLLECTOR.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorBlockEntity>> DUST_SEPARATOR = BLOCK_ENTITIES.register("dust_seperator",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorBlockEntity::new, Set.of(DustBlockRegistry.DUST_SEPARATOR.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorExtensionBlockEntity>> DUST_SEPARATOR_EXTENSION = BLOCK_ENTITIES.register("dust_seperator_extension",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorExtensionBlockEntity::new, Set.of(DustBlockRegistry.DUST_SEPARATOR_EXTENSION.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlockEntity>> DUST_MIXER = BLOCK_ENTITIES.register("dust_mixer",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlockEntity::new, Set.of(DustBlockRegistry.DUST_MIXER.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity>> STILL_FIREBOX = BLOCK_ENTITIES.register("firebox_burnable",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity::new, Set.of(DustBlockRegistry.STILL_FIREBOX.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillPotBlockEntity>> STILL_POT = BLOCK_ENTITIES.register("still_pot",

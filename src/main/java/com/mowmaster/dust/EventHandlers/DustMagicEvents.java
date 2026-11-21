@@ -51,6 +51,8 @@ public class DustMagicEvents {
         registrar.playToServer(com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload.TYPE,
                 com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload.STREAM_CODEC, com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload::handle);
         registrar.playToServer(RemoveProcessPayload.TYPE, RemoveProcessPayload.STREAM_CODEC, RemoveProcessPayload::handle);
+        registrar.playToServer(com.mowmaster.dust.Features.Apparatus.still.DustChuteFilterPayload.TYPE,
+                com.mowmaster.dust.Features.Apparatus.still.DustChuteFilterPayload.STREAM_CODEC, com.mowmaster.dust.Features.Apparatus.still.DustChuteFilterPayload::handle);
         registrar.playToServer(PacketOfDustAuraC2S.TYPE, PacketOfDustAuraC2S.STREAM_CODEC, PacketReceiverServer::handleTestPacket);
         registrar.playToClient(PacketOfDustAuraS2C.TYPE, PacketOfDustAuraS2C.STREAM_CODEC, PacketReceiverClient::handleClientPacket);
 

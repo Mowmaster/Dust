@@ -188,6 +188,18 @@ public final class DustNetwork
         return new Holds(seen, false);
     }
 
+    // Whether this element has stores to go to from origin: a part with stores that's set to it or to nothing yet (not
+    // just tubes that would spill it)
+    public static boolean routes(ServerLevel level, BlockPos origin, DustElement element)
+    {
+        List<Endpoint> endpoints = endpoints(level, origin);
+        if (endpoints.isEmpty()) return false;
+        for (Holds part : partHolds(endpoints).values()) {
+            if (!part.mixed() && (part.element() == null || part.element().equals(element))) return true;
+        }
+        return false;
+    }
+
     // What each part holds (only the parts with stores)
     private static Map<Integer, Holds> partHolds(List<Endpoint> endpoints)
     {

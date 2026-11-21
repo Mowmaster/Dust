@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/apparatus/dust_mixer_base",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "dust:block/apparatus/dust_mixer_base",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "dust:block/apparatus/dust_mixer_base"
+    },
+    "facing=west": {
+      "model": "dust:block/apparatus/dust_mixer_base",
+      "y": 90
+    }
+  }
+}

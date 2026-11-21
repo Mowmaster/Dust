@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,filtered=false": {
+      "model": "dust:block/apparatus/dust_chute",
+      "y": 270
+    },
+    "facing=east,filtered=true": {
+      "model": "dust:block/apparatus/dust_chute_filtered",
+      "y": 270
+    },
+    "facing=north,filtered=false": {
+      "model": "dust:block/apparatus/dust_chute",
+      "y": 180
+    },
+    "facing=north,filtered=true": {
+      "model": "dust:block/apparatus/dust_chute_filtered",
+      "y": 180
+    },
+    "facing=south,filtered=false": {
+      "model": "dust:block/apparatus/dust_chute"
+    },
+    "facing=south,filtered=true": {
+      "model": "dust:block/apparatus/dust_chute_filtered"
+    },
+    "facing=west,filtered=false": {
+      "model": "dust:block/apparatus/dust_chute",
+      "y": 90
+    },
+    "facing=west,filtered=true": {
+      "model": "dust:block/apparatus/dust_chute_filtered",
+      "y": 90
+    }
+  }
+}

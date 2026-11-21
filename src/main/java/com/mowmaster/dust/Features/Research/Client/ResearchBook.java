@@ -113,6 +113,12 @@ public final class ResearchBook
 
     private ResearchBook() {}
 
+    // The element whose page is open (null: not at an element's page): for things set from the book, like a Dust Chute
+    public static @Nullable Identifier openElement()
+    {
+        return selected != null && selected.tab() == ResearchTabs.ELEMENTS ? selected.id() : null;
+    }
+
     static ResearchTab tab()
     {
         if (tab == null || ResearchTabs.byId(tab.id()) == null) tab = ResearchTabs.all().getFirst();

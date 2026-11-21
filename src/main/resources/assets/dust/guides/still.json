@@ -128,7 +128,7 @@
       "type": "show",
       "pos": [
         3,
-        2,
+        1,
         2
       ],
       "state": "minecraft:chest[facing=south]",
@@ -140,7 +140,7 @@
       "color": "#FFE070",
       "pos": [
         3,
-        2,
+        1,
         2
       ]
     },
@@ -150,7 +150,7 @@
       "item": "dust:alchemical_soot",
       "at": [
         3.5,
-        3.1,
+        2.1,
         2.5
       ],
       "ticks": 15,
@@ -158,7 +158,7 @@
       "scale": 0.45,
       "from": [
         2.5,
-        2.6,
+        1.6,
         2.5
       ]
     },
@@ -167,11 +167,42 @@
       "text": {
         "translate": "guide.dust.still.3"
       },
-      "ticks": 100,
+      "ticks": 120,
       "point": [
         3.5,
-        2.8,
+        1.8,
         2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 85
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        3
+      ],
+      "state": "dust:dust_chute[facing=south]",
+      "ticks": 10
+    },
+    {
+      "type": "idle",
+      "ticks": 5
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still.7"
+      },
+      "ticks": 100,
+      "point": [
+        2.5,
+        2.5,
+        3.2
       ],
       "side": "right"
     },

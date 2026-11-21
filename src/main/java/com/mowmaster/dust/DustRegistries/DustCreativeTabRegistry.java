@@ -52,6 +52,11 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.STILL_POT.asItem());
                         output.accept(DustBlockRegistry.STILL_TOWER.asItem());
                         output.accept(DustBlockRegistry.STILL_TOP.asItem());
+                        output.accept(DustBlockRegistry.DUST_CHUTE.asItem());
+                        output.accept(DustBlockRegistry.DUST_COLLECTOR.asItem());
+                        output.accept(DustBlockRegistry.DUST_SEPARATOR.asItem());
+                        output.accept(DustBlockRegistry.DUST_SEPARATOR_EXTENSION.asItem());
+                        output.accept(DustBlockRegistry.DUST_MIXER.asItem());
                         output.accept(DustBlockRegistry.TRANSMUTER.asItem());
                         output.accept(DustBlockRegistry.CONJOINING_CRUCIBLE.asItem());
                         output.accept(DustBlockRegistry.MIXING_VAT.asItem());

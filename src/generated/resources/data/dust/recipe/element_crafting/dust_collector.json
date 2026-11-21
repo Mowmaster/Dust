@@ -1,0 +1,28 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:earth"
+    },
+    {
+      "amount": 10,
+      "element": "dust:air"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_collector"
+  },
+  "shaped": {
+    "key": {
+      "H": "minecraft:hopper",
+      "I": "minecraft:iron_bars",
+      "S": "minecraft:smooth_stone"
+    },
+    "pattern": [
+      "SIS",
+      "SHS",
+      "SSS"
+    ]
+  }
+}

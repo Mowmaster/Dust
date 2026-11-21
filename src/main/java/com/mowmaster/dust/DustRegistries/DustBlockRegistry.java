@@ -197,6 +197,19 @@ public class DustBlockRegistry {
             properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
     public static final DeferredBlock<Block> STILL_TOP = registerBlock("still_top", properties -> new com.mowmaster.dust.Features.Apparatus.still.StillTopBlock(
             properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    // A Still Pot's Dust Chute: lets the pot's dust out as Dust Piles (filtered: one element)
+    public static final DeferredBlock<Block> DUST_CHUTE = registerBlock("dust_chute", properties -> new com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(1.5F, 6.0F).noOcclusion()));
+    // The Dust Collector: gathers Dust Piles off its top into its tubes
+    public static final DeferredBlock<Block> DUST_COLLECTOR = registerBlock("dust_collector", properties -> new com.mowmaster.dust.Features.DustStorage.DustCollectorBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    // The Dust Separator (a tumbling drum) and its extensions, and the Dust Mixer
+    public static final DeferredBlock<Block> DUST_SEPARATOR = registerBlock("dust_seperator", properties -> new com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorBlock(
+            properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    public static final DeferredBlock<Block> DUST_SEPARATOR_EXTENSION = registerBlock("dust_seperator_extension", properties -> new com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorExtensionBlock(
+            properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    public static final DeferredBlock<Block> DUST_MIXER = registerBlock("dust_mixer", properties -> new com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlock(
+            properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
     public static final DeferredBlock<Block> TRANSMUTER = apparatus("transmuter", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER,
             com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new);
     public static final DeferredBlock<Block> CONJOINING_CRUCIBLE = apparatus("conjoining_crucible", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE,

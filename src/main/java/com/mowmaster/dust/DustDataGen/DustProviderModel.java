@@ -486,6 +486,36 @@ public class DustProviderModel extends ModelProvider {
         potParts.with(BlockModelGenerators.condition(com.mowmaster.dust.Features.Apparatus.still.StillPotBlock.HOPPER_UP, true), portUp);
         blockModels.blockStateOutput.accept(potParts);
         blockModels.itemModelOutput.accept(pot.asItem(), ItemModelUtils.plainModel(potModel));
+        // The Dust Chute (made facing south: its back on the north edge), plain or filtered (dust_chute_filtered.json: a
+        // brass plaque for the element symbol, drawn by Client/DustChuteRenderer), turned by facing
+        Identifier chute = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_chute");
+        Identifier chuteFiltered = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_chute_filtered");
+        Map<Direction, VariantMutator> fromSouth = Map.of(
+                Direction.SOUTH, BlockModelGenerators.NOP, Direction.WEST, BlockModelGenerators.Y_ROT_90,
+                Direction.NORTH, BlockModelGenerators.Y_ROT_180, Direction.EAST, BlockModelGenerators.Y_ROT_270);
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_CHUTE.get()).with(
+                PropertyDispatch.initial(com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.FACING, com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.FILTERED)
+                        .generate((facing, filtered) -> BlockModelGenerators.plainVariant(filtered ? chuteFiltered : chute).with(fromSouth.get(facing)))));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_CHUTE.asItem(), ItemModelUtils.plainModel(chute));
+        // The Dust Separator and its extension: the block draws the base (the drum turns, drawn by
+        // separator/Client/DrumRendering), turned by facing; the item is the whole thing (dust_seperator.json)
+        for (Block block : List.of(DustBlockRegistry.DUST_SEPARATOR.get(), DustBlockRegistry.DUST_SEPARATOR_EXTENSION.get())) {
+            String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
+                    BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + name + "_base")))
+                    .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+            blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + name)));
+        }
+        // The Dust Mixer (made with its front to the south): the block draws its frame (the bowl, grate and paddles move:
+        // mixer/Client/DustMixerRenderer); the item is the whole thing
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_MIXER.get()).with(
+                PropertyDispatch.initial(com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlock.FACING).generate(facing ->
+                        BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_mixer_base")).with(fromSouth.get(facing)))));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_MIXER.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_mixer")));
+        // The Dust Collector: one model, the same every way round
+        Identifier collector = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_collector");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_COLLECTOR.get(), BlockModelGenerators.plainVariant(collector)));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_COLLECTOR.asItem(), ItemModelUtils.plainModel(collector));
         // The Still's Burnable Firebox: one model lit or not (LIT gives the light and flames), turned by facing
         Identifier firebox = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/firebox_burnable");
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.STILL_FIREBOX.get(), BlockModelGenerators.plainVariant(firebox))

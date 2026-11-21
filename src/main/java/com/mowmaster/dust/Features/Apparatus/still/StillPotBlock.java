@@ -19,7 +19,8 @@ import java.util.List;
 
 // The Still Pot (models/block/apparatus/still_pot.json): the still's working block (StillPotBlockEntity), an apparatus
 // like the others (intake on top, status with an empty hand, a redstone signal pauses it), but tubes don't join on: its
-// dust goes up into the towers, and its soot into the containers beside it.
+// dust goes up into the towers, its solids are held in the pots (let out through Dust Chutes on their sides). A Jar Label
+// on a side keeps it to the element it holds (shears scrape it off).
 // A hopper pointing into it from a side or from above gets a brass port on the pot reaching out to meet its spout
 // (still_pot_port.json / still_pot_port_up.json, drawn on that side by the multipart blockstate): one state property per
 // side, set as hoppers come and go (updateShape).
@@ -75,6 +76,35 @@ public class StillPotBlock extends ApparatusBlock
     {
         BlockState updated = super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
         return FED_FROM.contains(direction) ? updated.setValue(hopperProperty(direction), feeds(neighborState, direction)) : updated;
+    }
+
+    // A Jar Label on the clicked side keeps the pot to the element it holds; shears scrape it off
+    @Override
+    protected net.minecraft.world.InteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, net.minecraft.world.level.Level level, BlockPos pos,
+                                                            net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand, net.minecraft.world.phys.BlockHitResult hit)
+    {
+        if (level.getBlockEntity(pos) instanceof StillPotBlockEntity pot) {
+            Direction side = hit.getDirection();
+            if (stack.is(com.mowmaster.dust.DustRegistries.DustItemRegistry.JAR_LABEL.get()) && side.getAxis().isHorizontal()) {
+                if (level.isClientSide()) return net.minecraft.world.InteractionResult.SUCCESS;
+                if (pot.stored() == null) {
+                    player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("dust.still.label_needs_element"));
+                    return net.minecraft.world.InteractionResult.FAIL;
+                }
+                if (!pot.addLabel(side)) return net.minecraft.world.InteractionResult.FAIL;
+                stack.consume(1, player);
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.BOOK_PAGE_TURN, net.minecraft.sounds.SoundSource.BLOCKS, 0.8F, 1.2F);
+                return net.minecraft.world.InteractionResult.SUCCESS;
+            }
+            if (stack.getItem() instanceof net.minecraft.world.item.ShearsItem && pot.labels().contains(side)) {
+                if (level.isClientSide()) return net.minecraft.world.InteractionResult.SUCCESS;
+                pot.removeLabel(side);
+                stack.hurtAndBreak(1, player, hand.asEquipmentSlot());
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.SHEEP_SHEAR, net.minecraft.sounds.SoundSource.BLOCKS, 0.8F, 1.2F);
+                return net.minecraft.world.InteractionResult.SUCCESS;
+            }
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hit);
     }
 
     @Override

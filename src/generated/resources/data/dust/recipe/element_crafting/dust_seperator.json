@@ -1,0 +1,24 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 40,
+      "element": "dust:order"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_seperator"
+  },
+  "shaped": {
+    "key": {
+      "C": "minecraft:copper_ingot",
+      "R": "dust:research_separation",
+      "S": "minecraft:smooth_stone"
+    },
+    "pattern": [
+      "SCC",
+      "SRC",
+      "SSS"
+    ]
+  }
+}

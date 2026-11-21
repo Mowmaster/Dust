@@ -64,6 +64,28 @@ public class DustPileBlockEntity extends CBSyncedBlockEntity
         return moved;
     }
 
+    // Takes up to amount of this element out (a Dust Collector); the pile shrinks to match, and goes once it's empty
+    public int take(DustElement element, int amount)
+    {
+        int has = held.getOrDefault(element, 0);
+        int taken = Math.min(amount, has);
+        if (taken <= 0) return 0;
+        if (has - taken <= 0) held.remove(element);
+        else held.put(element, has - taken);
+        recount();
+        if (level != null) {
+            if (total <= 0) {
+                level.removeBlock(worldPosition, false);
+                return taken;
+            }
+            BlockState state = getBlockState();
+            int layers = layers(total);
+            if (state.getValue(DustPileBlock.LAYERS) != layers) level.setBlock(worldPosition, state.setValue(DustPileBlock.LAYERS, layers), Block.UPDATE_ALL);
+        }
+        sync();
+        return taken;
+    }
+
     public boolean isFull()
     {
         return total >= CAPACITY;

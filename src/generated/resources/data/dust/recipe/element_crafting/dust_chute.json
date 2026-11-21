@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:earth"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_chute"
+  },
+  "shaped": {
+    "key": {
+      "C": "minecraft:copper_ingot",
+      "S": "minecraft:smooth_stone"
+    },
+    "pattern": [
+      "S  ",
+      "SC ",
+      "S C"
+    ]
+  }
+}

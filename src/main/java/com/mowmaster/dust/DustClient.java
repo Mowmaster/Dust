@@ -108,6 +108,13 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_CRAFTER.get(), com.mowmaster.dust.Features.Crafting.Client.ElementCrafterRenderer::new);
         // The Still's firebox: its flame, coloured by its fuel
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.STILL_FIREBOX.get(), com.mowmaster.dust.Features.Apparatus.still.StillFireboxRenderer::new);
+        // A Still Pot's labels, and a filtered Dust Chute's element symbol
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.STILL_POT.get(), com.mowmaster.dust.Features.Apparatus.still.Client.StillPotRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_CHUTE.get(), com.mowmaster.dust.Features.Apparatus.still.Client.DustChuteRenderer::new);
+        // The Dust Separator's turning drum (and its extensions'), and the Dust Mixer's bowl, grate and paddles
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_SEPARATOR.get(), com.mowmaster.dust.Features.Apparatus.separator.Client.DustSeparatorRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_SEPARATOR_EXTENSION.get(), com.mowmaster.dust.Features.Apparatus.separator.Client.DustSeparatorExtensionRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_MIXER.get(), com.mowmaster.dust.Features.Apparatus.mixer.Client.DustMixerRenderer::new);
         // The alchemical apparatus share one renderer (it draws each one's own moving parts)
         for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
                 DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
@@ -148,6 +155,8 @@ public class DustClient {
     {
         com.mowmaster.dust.Features.Apparatus.Client.ApparatusRenderer.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.still.StillFireboxRenderer.registerModels(event);
+        com.mowmaster.dust.Features.Apparatus.separator.Client.DrumRendering.registerModels(event);
+        com.mowmaster.dust.Features.Apparatus.mixer.Client.DustMixerRenderer.registerModels(event);
         ResearchCrusherRenderer.registerModels(event);
         com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer.registerModels(event);
         ResearchEvaporationRenderer.registerModels(event);
