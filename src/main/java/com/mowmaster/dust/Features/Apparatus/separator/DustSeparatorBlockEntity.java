@@ -29,8 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// The Dust Separator's working: things fed in at its intake side (anything with elements but a block: crush blocks
-// first; hoppers and pipes reach it there only: slotsFor) tumble in the
+// The Dust Separator's working: things fed in at its intake side (only things made of solid elements alone, not blocks:
+// crush blocks first; hoppers and pipes reach it there only: slotsFor) tumble in the
 // drum one at a time, WORK_TICKS each, and fall apart into their elements, every element whole:
 //   solids     each drum section (this one, then each extension out to the open end: up to
 //              DustSeparatorBlock.MAX_EXTENSIONS) catches one solid element, up to DrumSection.CAPACITY: a section set
@@ -87,10 +87,13 @@ public class DustSeparatorBlockEntity extends ApparatusBlockEntity implements Se
         return getBlockState().getValue(com.mowmaster.dust.Features.Machines.StationBlock.FACING).getCounterClockWise();
     }
 
-    // Anything with elements in it, but not a block
-    private static boolean accepts(ItemStack stack)
+    // Only things made of solid elements alone (not a block: crush those first); anything with a gaseous or aqueous
+    // element in it is for the Still
+    public static boolean accepts(ItemStack stack)
     {
-        return !ItemApparatusBlockEntity.isBlock(stack) && !ItemApparatusBlockEntity.elementsOf(stack).isEmpty();
+        if (ItemApparatusBlockEntity.isBlock(stack)) return false;
+        List<DustElement> elements = ItemApparatusBlockEntity.elementsOf(stack);
+        return !elements.isEmpty() && elements.stream().allMatch(Separation::isSolid);
     }
 
     // ---- the drum ----

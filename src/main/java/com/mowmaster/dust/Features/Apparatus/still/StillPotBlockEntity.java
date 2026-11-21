@@ -45,8 +45,9 @@ import java.util.Map;
 //              through the top into the chunk's aura, as smoke in its colour. So a pot with only a top on it sends
 //              everything into the aura.
 //   unknown    an element the owner hasn't discovered always leaves through the top
-// Blocks (crush them in a Crushing Mill first) and things with no elements pass straight through to the outputs (pushed
-// into the containers beside the pot, a hopper feeding it last).
+// It only takes things with a gaseous or aqueous element in them (accepts): things of solids alone go to the Dust
+// Separator, blocks to a Crushing Mill first. (Anything already in it that it can't boil passes through to its outputs,
+// pushed into the containers beside the pot, a hopper feeding it last.)
 // A pot's dust comes out of the Dust Chutes on its sides, as Dust Piles under them (DustChuteBlockEntity), CHUTE_RATE
 // every CHUTE_TICKS. Its filter: a Jar Label on it (only on a pot holding an element: it's kept to that element, even
 // empty), or a filtered chute on it; then it holds and lets out nothing else.
@@ -185,7 +186,14 @@ public class StillPotBlockEntity extends ApparatusBlockEntity
     @Override
     protected List<StationSlot> machineSlots()
     {
-        return List.of(StationSlot.ofStack(ApparatusLayout.INTAKE, stack -> true, INPUT_LIMIT, () -> input, stack -> input = stack, this::sync));
+        return List.of(StationSlot.ofStack(ApparatusLayout.INTAKE, StillPotBlockEntity::accepts, INPUT_LIMIT, () -> input, stack -> input = stack, this::sync));
+    }
+
+    // Only things with a gaseous or aqueous element in them (not blocks: crush those first); things made of solids alone
+    // are for the Dust Separator
+    public static boolean accepts(ItemStack stack)
+    {
+        return !ItemApparatusBlockEntity.isBlock(stack) && !ItemApparatusBlockEntity.fluids(ItemApparatusBlockEntity.elementsOf(stack)).isEmpty();
     }
 
     private @Nullable StillFireboxBlockEntity firebox(Level level)

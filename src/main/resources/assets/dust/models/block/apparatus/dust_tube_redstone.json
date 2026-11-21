@@ -1,0 +1,78 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {
+		"redstone": "minecraft:block/redstone_block",
+		"particle": "minecraft:block/redstone_block"
+	},
+	"elements": [
+		{
+			"name": "band",
+			"from": [
+				5.25,
+				7.25,
+				5.25
+			],
+			"to": [
+				10.75,
+				8.75,
+				10.75
+			],
+			"faces": {
+				"north": {
+					"uv": [
+						5.25,
+						7.25,
+						10.75,
+						8.75
+					],
+					"texture": "#redstone"
+				},
+				"south": {
+					"uv": [
+						5.25,
+						7.25,
+						10.75,
+						8.75
+					],
+					"texture": "#redstone"
+				},
+				"east": {
+					"uv": [
+						5.25,
+						7.25,
+						10.75,
+						8.75
+					],
+					"texture": "#redstone"
+				},
+				"west": {
+					"uv": [
+						5.25,
+						7.25,
+						10.75,
+						8.75
+					],
+					"texture": "#redstone"
+				},
+				"up": {
+					"uv": [
+						5.25,
+						5.25,
+						10.75,
+						10.75
+					],
+					"texture": "#redstone"
+				},
+				"down": {
+					"uv": [
+						5.25,
+						5.25,
+						10.75,
+						10.75
+					],
+					"texture": "#redstone"
+				}
+			}
+		}
+	]
+}

@@ -83,10 +83,18 @@ public final class DustNetwork
     // one with no jars set yet; a mixed part takes nothing. What's left spills out of parts with no stores at all.
     public static int insert(ServerLevel level, BlockPos origin, DustElement element, int amount)
     {
+        return insert(level, origin, element, amount, null);
+    }
+
+    // The same, but never into the store at except (a tube pulling out of a jar doesn't pour back into it), and never
+    // spilling (only into stores)
+    public static int insert(ServerLevel level, BlockPos origin, DustElement element, int amount, @org.jspecify.annotations.Nullable BlockPos except)
+    {
         if (amount <= 0) return 0;
         int left = amount;
         Found found = network(level, origin);
         List<Endpoint> endpoints = found.endpoints();
+        if (except != null) endpoints = endpoints.stream().filter(end -> !end.pos().equals(except)).toList();
         Map<Integer, Holds> parts = partHolds(endpoints);
         // Three passes: stores set to this element in parts set to it, then any store that'll take it in those, then in
         // parts with nothing set yet
@@ -104,7 +112,7 @@ public final class DustNetwork
                 showFlow(level, end.path(), element.color());
             }
         }
-        if (left > 0) {
+        if (left > 0 && except == null) {
             List<OpenEnd> spillable = new ArrayList<>();
             for (OpenEnd end : found.openEnds()) if (!parts.containsKey(end.part())) spillable.add(end);
             left -= spill(level, spillable, element, left);
