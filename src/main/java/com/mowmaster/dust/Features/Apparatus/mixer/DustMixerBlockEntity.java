@@ -78,6 +78,10 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
     public int phaseTicks() { return phaseTicks; }
     public @Nullable DustElement first() { return first; }
     public @Nullable DustElement second() { return second; }
+    public int firstAmount() { return firstAmount; }
+    public int secondAmount() { return secondAmount; }
+    public int batch() { return batch; }
+    public Map<DustElement, Integer> dumping() { return dumping; }
 
     // ---- dust coming in (IDustHolder: it's a store on its tube networks, but only takes, and only while open) ----
 
@@ -261,7 +265,8 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
         else dumping.put(entry.getKey(), entry.getValue() - landed);
         level.sendParticles(new net.minecraft.core.particles.DustParticleOptions(entry.getKey().color(), 1.0F),
                 front.getX() + 0.5, front.getY() + 0.6, front.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0);
-        setChanged();
+        // Sent to clients: the dust in the bowl goes down as it pours out
+        sync();
     }
 
     // ---- the client ----

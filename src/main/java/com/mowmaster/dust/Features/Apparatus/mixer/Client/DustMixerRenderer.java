@@ -34,6 +34,9 @@ import java.util.List;
 //   the grate (dust_mixer_grate.json)   rides on the bowl, swinging open about its back edge (y 14, z 2.9) to let dust
 //                                        in and out, shut while it mixes
 //   the paddles (dust_mixer_paddles.json) ride in the bowl, turning about its middle while it mixes
+//   the dust in the bowl (the white dust block's texture tinted): the two elements side by side as they pour in, each
+//     half full at SLOT_CAPACITY; while it mixes both turn to the colour of what they're making; then it goes down as
+//     it's tipped out
 // Played out from the block entity's phase and how far into it it is (DustMixerBlockEntity).
 public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEntity, DustMixerRenderer.State>
 {
@@ -42,6 +45,10 @@ public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEnti
     public static final StandaloneModelKey<BlockStateModelPart> PADDLES = new StandaloneModelKey<>(() -> "dust:dust_mixer_paddles");
     private static final float GRATE_OPEN_DEGREES = 100F;
     private static final float PADDLE_SPEED = 18F;
+    private static final net.minecraft.client.renderer.rendertype.RenderType DUST = net.minecraft.client.renderer.rendertype.RenderTypes.entityCutout(
+            Identifier.fromNamespaceAndPath(DustReferences.MODID, "textures/block/blockofdust_white.png"));
+    // The bowl's inside (pixels, front to the south): across, front to back, and from its floor up to half full
+    private static final double IN_X0 = 3.1, IN_X1 = 12.9, IN_Z0 = 4.2, IN_Z1 = 11.8, FLOOR = 2.2, HALF = 10.9;
 
     public static void registerModels(ModelEvent.RegisterStandalone event)
     {
@@ -58,6 +65,9 @@ public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEnti
         float tip;
         float grate;
         float paddles;
+        // The dust in the bowl: left half and right half (heights in pixels, FLOOR: none) and their colours (0xAARRGGBB)
+        double leftHeight = FLOOR, rightHeight = FLOOR;
+        int leftColor = 0xFFFFFFFF, rightColor = 0xFFFFFFFF;
     }
 
     @Override
@@ -87,8 +97,56 @@ public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEnti
         };
         state.grate = ease(grateShare) * GRATE_OPEN_DEGREES;
         state.tip = ease(tipShare) * DustMixerBlockEntity.TIP_DEGREES;
+        dust(mixer, phase, t, state);
         var level = mixer.getLevel();
         state.paddles = phase == Phase.MIXING && level != null ? ((level.getGameTime() % 360) + partialTick) * PADDLE_SPEED % 360 : 0;
+    }
+
+    // What's in the bowl to draw, for this phase
+    private static void dust(DustMixerBlockEntity mixer, Phase phase, float t, State state)
+    {
+        state.leftHeight = state.rightHeight = FLOOR;
+        var first = mixer.first();
+        var second = mixer.second();
+        switch (phase) {
+            case OPEN, CLOSING, RETURNING -> {
+                if (first != null) { state.leftHeight = height(mixer.firstAmount()); state.leftColor = 0xFF000000 | first.color(); }
+                if (second != null) { state.rightHeight = height(mixer.secondAmount()); state.rightColor = 0xFF000000 | second.color(); }
+            }
+            case MIXING -> {
+                // Both halves the batch, turning to the colour of what they make
+                int total = Math.max(1, mixer.batch() * DustMixerBlockEntity.MIX_TICKS_PER_DUST);
+                float share = Math.min(1, t / total);
+                var child = first == null || second == null ? null : com.mowmaster.dust.Features.Machines.ElementCombining.combine(first, second);
+                int target = child == null ? 0xFFFFFF : child.color();
+                state.leftHeight = state.rightHeight = height(mixer.batch());
+                state.leftColor = 0xFF000000 | StationRendering.lerpColor(first == null ? target : first.color(), target, share);
+                state.rightColor = 0xFF000000 | StationRendering.lerpColor(second == null ? target : second.color(), target, share);
+            }
+            case OPENING, TIPPING, DUMPING, HELD -> {
+                // What's tipped out, going down as it pours
+                int amount = 0;
+                long red = 0, green = 0, blue = 0;
+                for (var entry : mixer.dumping().entrySet()) {
+                    int c = entry.getKey().color(), n = entry.getValue();
+                    amount += n;
+                    red += (long) ((c >> 16) & 0xFF) * n;
+                    green += (long) ((c >> 8) & 0xFF) * n;
+                    blue += (long) (c & 0xFF) * n;
+                }
+                if (amount > 0) {
+                    state.leftHeight = state.rightHeight = height(amount);
+                    state.leftColor = state.rightColor = 0xFF000000 | (int) ((red / amount) << 16 | (green / amount) << 8 | (blue / amount));
+                }
+            }
+        }
+    }
+
+    // How high this much dust stands in the bowl: half full at SLOT_CAPACITY (a thin layer at least)
+    private static double height(int amount)
+    {
+        if (amount <= 0) return FLOOR;
+        return FLOOR + Math.max(0.3, (HALF - FLOOR) * Math.min(1.0, amount / (double) DustMixerBlockEntity.SLOT_CAPACITY));
     }
 
     // Smooth in and out
@@ -109,6 +167,12 @@ public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEnti
         // The bowl tips toward the front (+z in the model): the top swings forward and down
         pivotX(poseStack, 8.85, 8, state.tip);
         part(models.getStandaloneModel(BODY), state, poseStack, collector);
+        // The dust in it, tipping with it
+        double middle = (IN_X0 + IN_X1) / 2;
+        if (state.leftHeight > FLOOR) StationRendering.box(DUST, IN_X0, FLOOR, IN_Z0, middle, state.leftHeight, IN_Z1,
+                state.leftColor, state.lightCoords, Direction.NORTH, poseStack, collector);
+        if (state.rightHeight > FLOOR) StationRendering.box(DUST, middle, FLOOR, IN_Z0, IN_X1, state.rightHeight, IN_Z1,
+                state.rightColor, state.lightCoords, Direction.NORTH, poseStack, collector);
         // The paddles turn in the bowl
         poseStack.pushPose();
         pivotX(poseStack, 8.85, 8, state.paddles);
