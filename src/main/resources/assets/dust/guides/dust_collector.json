@@ -1,0 +1,260 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_collector.title"
+  },
+  "items": [
+    "dust:dust_collector"
+  ],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_collector",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 5
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=block]",
+      "ticks": 6
+    },
+    {
+      "type": "idle",
+      "ticks": 5
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        2,
+        1
+      ],
+      "state": "dust:dust_pile[layers=3]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "state": "dust:dust_pile[layers=5]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        2,
+        3
+      ],
+      "state": "dust:dust_pile[layers=2]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_pile[layers=4]",
+      "ticks": 6
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "highlight",
+      "ticks": 80,
+      "color": "#FFE070",
+      "from": [
+        1,
+        2,
+        1
+      ],
+      "to": [
+        4,
+        3,
+        4
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_collector.1"
+      },
+      "ticks": 100,
+      "point": [
+        2.5,
+        2.5,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 50
+    },
+    {
+      "type": "hide",
+      "pos": [
+        1,
+        2,
+        1
+      ],
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "state": "dust:dust_pile[layers=2]"
+    },
+    {
+      "type": "hide",
+      "pos": [
+        3,
+        2,
+        3
+      ],
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "hide",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "ticks": 8
+    },
+    {
+      "type": "hide",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=block,filled=true]"
+    },
+    {
+      "type": "item",
+      "id": "d",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:earth"
+        }
+      },
+      "at": [
+        4.5,
+        1.9,
+        2.5
+      ],
+      "ticks": 20,
+      "lasts": 25,
+      "scale": 0.4,
+      "from": [
+        2.5,
+        1.9,
+        2.5
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_collector.2"
+      },
+      "ticks": 120,
+      "point": [
+        3.5,
+        1.6,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 105
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        1.5,
+        3.0
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:dust_jar"
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_collector.3"
+      },
+      "ticks": 90,
+      "point": [
+        2.5,
+        1.5,
+        3.0
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 80
+    }
+  ]
+}

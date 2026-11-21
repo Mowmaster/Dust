@@ -1,0 +1,218 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_tube_pulling.title"
+  },
+  "items": [
+    "dust:dust_tube"
+  ],
+  "order": 4,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]",
+      "ticks": 6
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_pulling.1"
+      },
+      "ticks": 90
+    },
+    {
+      "type": "idle",
+      "ticks": 50
+    },
+    {
+      "type": "click",
+      "point": [
+        1.15,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "minecraft:redstone"
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube]"
+    },
+    {
+      "type": "highlight",
+      "ticks": 80,
+      "color": "#FFE070",
+      "from": [
+        0.8,
+        1.3,
+        2.3
+      ],
+      "to": [
+        1.3,
+        1.7,
+        2.7
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_pulling.2"
+      },
+      "ticks": 120,
+      "point": [
+        1.15,
+        1.5,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube,filled=true]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block,filled=true]"
+    },
+    {
+      "type": "idle",
+      "ticks": 105
+    },
+    {
+      "type": "click",
+      "point": [
+        1.15,
+        1.5,
+        2.5
+      ],
+      "button": "right",
+      "ticks": 40,
+      "sneak": true
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=tube]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=tube]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_tube_pulling.3"
+      },
+      "ticks": 80,
+      "point": [
+        1.15,
+        1.5,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 70
+    }
+  ]
+}

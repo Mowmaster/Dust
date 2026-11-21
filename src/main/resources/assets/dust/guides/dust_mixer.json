@@ -1,0 +1,231 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_mixer.title"
+  },
+  "items": [
+    "dust:dust_mixer"
+  ],
+  "order": 0,
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:dust_mixer[facing=south]",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 5
+    },
+    {
+      "type": "show",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=block]",
+      "ticks": 6
+    },
+    {
+      "type": "item",
+      "id": "a",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:fire"
+        }
+      },
+      "at": [
+        0.5,
+        1.95,
+        2.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.4,
+      "spin": true
+    },
+    {
+      "type": "show",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=block]",
+      "ticks": 6
+    },
+    {
+      "type": "item",
+      "id": "b",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:earth"
+        }
+      },
+      "at": [
+        4.5,
+        1.95,
+        2.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.4,
+      "spin": true
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_mixer.1"
+      },
+      "ticks": 110
+    },
+    {
+      "type": "idle",
+      "ticks": 50
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=block,filled=true]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=block,filled=true]"
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_mixer.2"
+      },
+      "ticks": 130,
+      "point": [
+        2.5,
+        1.95,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 115
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=block]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=block]"
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        3
+      ],
+      "state": "dust:dust_pile[layers=3]",
+      "ticks": 10
+    },
+    {
+      "type": "item",
+      "id": "m",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:metal"
+        }
+      },
+      "at": [
+        2.5,
+        1.7,
+        3.5
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.4,
+      "spin": true
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_mixer.3"
+      },
+      "ticks": 100,
+      "point": [
+        2.5,
+        1.5,
+        3.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 90
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_mixer.4"
+      },
+      "ticks": 110
+    },
+    {
+      "type": "idle",
+      "ticks": 95
+    }
+  ]
+}

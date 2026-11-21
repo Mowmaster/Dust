@@ -1,0 +1,305 @@
+{
+  "title": {
+    "translate": "guide.dust.still_pots.title"
+  },
+  "items": [
+    "dust:still_pot",
+    "dust:dust_chute"
+  ],
+  "order": 1,
+  "camera": {
+    "yaw": 45,
+    "pitch": 20,
+    "zoom": 1.0
+  },
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "dust:firebox_burnable[facing=south,lit=true]",
+      "ticks": 10
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "state": "dust:still_pot[facing=south]",
+      "ticks": 10
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        3,
+        2
+      ],
+      "state": "dust:still_tower[facing=south]",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        4,
+        2
+      ],
+      "state": "dust:still_top[facing=south]",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still_pots.1"
+      },
+      "ticks": 80,
+      "point": [
+        2.5,
+        2.6,
+        3.0
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "hide",
+      "pos": [
+        2,
+        3,
+        2
+      ],
+      "ticks": 6,
+      "to": [
+        2,
+        4,
+        2
+      ]
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        3,
+        2
+      ],
+      "state": "dust:still_pot[facing=south]",
+      "ticks": 10
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        4,
+        2
+      ],
+      "state": "dust:still_tower[facing=south]",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        5,
+        2
+      ],
+      "state": "dust:still_top[facing=south]",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "highlight",
+      "ticks": 90,
+      "color": "#FFE070",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        3,
+        4,
+        3
+      ]
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still_pots.2"
+      },
+      "ticks": 110,
+      "point": [
+        2.5,
+        3.6,
+        3.0
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 95
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        3
+      ],
+      "state": "dust:dust_chute[facing=south]",
+      "ticks": 10
+    },
+    {
+      "type": "idle",
+      "ticks": 5
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still_pots.3"
+      },
+      "ticks": 80,
+      "point": [
+        2.5,
+        2.6,
+        3.2
+      ],
+      "side": "right"
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        3
+      ],
+      "state": "dust:dust_pile[layers=2]",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        3
+      ],
+      "state": "dust:dust_pile[layers=5]"
+    },
+    {
+      "type": "idle",
+      "ticks": 45
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        2.6,
+        3.0
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:research_notes"
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        3
+      ],
+      "state": "dust:dust_chute[facing=south,filtered=true]"
+    },
+    {
+      "type": "item",
+      "id": "f",
+      "item": {
+        "id": "dust:alchemical_dust",
+        "count": 1,
+        "components": {
+          "dust:alchemical_element": "dust:earth"
+        }
+      },
+      "at": [
+        2.5,
+        3.1,
+        3.2
+      ],
+      "ticks": 0,
+      "lasts": -1,
+      "scale": 0.4,
+      "spin": true
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still_pots.4"
+      },
+      "ticks": 130,
+      "point": [
+        2.5,
+        2.6,
+        3.2
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 115
+    },
+    {
+      "type": "click",
+      "point": [
+        2.5,
+        3.5,
+        3.0
+      ],
+      "button": "right",
+      "ticks": 40,
+      "item": "dust:jar_label"
+    },
+    {
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still_pots.5"
+      },
+      "ticks": 90,
+      "point": [
+        2.5,
+        3.5,
+        3.0
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 80
+    }
+  ]
+}

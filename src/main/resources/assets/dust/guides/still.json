@@ -73,60 +73,6 @@
     {
       "type": "show",
       "pos": [
-        2,
-        2,
-        2
-      ],
-      "state": "dust:still_pot[facing=south]",
-      "ticks": 12
-    },
-    {
-      "type": "idle",
-      "ticks": 5
-    },
-    {
-      "type": "text",
-      "text": {
-        "translate": "guide.dust.still.2"
-      },
-      "ticks": 90,
-      "point": [
-        2.5,
-        2.8,
-        2.5
-      ],
-      "side": "right"
-    },
-    {
-      "type": "idle",
-      "ticks": 40
-    },
-    {
-      "type": "show",
-      "pos": [
-        1,
-        2,
-        2
-      ],
-      "state": "minecraft:hopper[facing=east]",
-      "ticks": 10
-    },
-    {
-      "type": "place",
-      "pos": [
-        2,
-        2,
-        2
-      ],
-      "state": "dust:still_pot[facing=south,west=true]"
-    },
-    {
-      "type": "idle",
-      "ticks": 50
-    },
-    {
-      "type": "show",
-      "pos": [
         3,
         1,
         2
@@ -165,7 +111,7 @@
     {
       "type": "text",
       "text": {
-        "translate": "guide.dust.still.3"
+        "translate": "guide.dust.still.2"
       },
       "ticks": 120,
       "point": [
@@ -177,17 +123,17 @@
     },
     {
       "type": "idle",
-      "ticks": 85
+      "ticks": 100
     },
     {
       "type": "show",
       "pos": [
         2,
         2,
-        3
+        2
       ],
-      "state": "dust:dust_chute[facing=south]",
-      "ticks": 10
+      "state": "dust:still_pot[facing=south]",
+      "ticks": 12
     },
     {
       "type": "idle",
@@ -196,19 +142,42 @@
     {
       "type": "text",
       "text": {
-        "translate": "guide.dust.still.7"
+        "translate": "guide.dust.still.3"
       },
-      "ticks": 100,
+      "ticks": 110,
       "point": [
         2.5,
-        2.5,
-        3.2
+        2.8,
+        2.5
       ],
       "side": "right"
     },
     {
       "type": "idle",
-      "ticks": 85
+      "ticks": 50
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        2,
+        2
+      ],
+      "state": "minecraft:hopper[facing=east]",
+      "ticks": 10
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "state": "dust:still_pot[facing=south,west=true]"
+    },
+    {
+      "type": "idle",
+      "ticks": 55
     },
     {
       "type": "show",
@@ -342,6 +311,17 @@
     {
       "type": "idle",
       "ticks": 105
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.still.7"
+      },
+      "ticks": 60
+    },
+    {
+      "type": "idle",
+      "ticks": 55
     }
   ]
 }

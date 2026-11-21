@@ -128,7 +128,7 @@
       "text": {
         "translate": "guide.dust.jar_labels.2"
       },
-      "ticks": 90,
+      "ticks": 100,
       "point": [
         2.5,
         1.4,
@@ -138,7 +138,18 @@
     },
     {
       "type": "idle",
-      "ticks": 75
+      "ticks": 85
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.jar_labels.3"
+      },
+      "ticks": 70
+    },
+    {
+      "type": "idle",
+      "ticks": 55
     },
     {
       "type": "click",
@@ -162,7 +173,7 @@
     {
       "type": "text",
       "text": {
-        "translate": "guide.dust.jar_labels.3"
+        "translate": "guide.dust.jar_labels.4"
       },
       "ticks": 90,
       "point": [
