@@ -29,7 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// The Dust Separator's working: things fed in (anything with elements but a block: crush blocks first) tumble in the
+// The Dust Separator's working: things fed in at its intake side (anything with elements but a block: crush blocks
+// first; hoppers and pipes reach it there only: slotsFor) tumble in the
 // drum one at a time, WORK_TICKS each, and fall apart into their elements, every element whole:
 //   solids     each drum section (this one, then each extension out to the open end: up to
 //              DustSeparatorBlock.MAX_EXTENSIONS) catches one solid element, up to DrumSection.CAPACITY: a section set
@@ -70,6 +71,20 @@ public class DustSeparatorBlockEntity extends ApparatusBlockEntity implements Se
     protected List<StationSlot> machineSlots()
     {
         return List.of(StationSlot.ofStack(ApparatusLayout.INTAKE, DustSeparatorBlockEntity::accepts, INPUT_LIMIT, () -> input, stack -> input = stack, this::sync));
+    }
+
+    // Hoppers and pipes reach it from its intake side only (the blue crystal, to the left of its front: the right as it
+    // was placed); every other side has no slots for them
+    @Override
+    public com.mowmaster.dust.Features.Machines.StationSlotHandler slotsFor(@org.jspecify.annotations.Nullable Direction side)
+    {
+        if (side == null || side == intakeSide()) return super.slotsFor(Direction.UP);
+        return null;
+    }
+
+    public Direction intakeSide()
+    {
+        return getBlockState().getValue(com.mowmaster.dust.Features.Machines.StationBlock.FACING).getCounterClockWise();
     }
 
     // Anything with elements in it, but not a block
