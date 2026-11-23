@@ -35,8 +35,8 @@ import java.util.List;
 //   the arms (dust_centrifuge_spinner.json) and the four vials (dust_centrifuge_vial_<side>.json: corks and glass) spin
 //     about the block's middle (x 8, z 8 pixels); each vial swings out from its top as it goes faster (to MAX_TILT)
 //   the dust in each vial (the white dust block's texture tinted, a box inside its glass): the element filling all four
-//     as it's piped in; once it's come apart, the north and south vials the first part, the east and west the second,
-//     each going down as it drains
+//     as it's piped in; while it spins it slowly turns, the north and south vials to the colour of the first part, the
+//     east and west to the second, all the way there as it stops; then each goes down as it drains
 public class DustCentrifugeRenderer implements BlockEntityRenderer<DustCentrifugeBlockEntity, DustCentrifugeRenderer.State>
 {
     public static final StandaloneModelKey<BlockStateModelPart> SPINNER = new StandaloneModelKey<>(() -> "dust:dust_centrifuge_spinner");
@@ -101,17 +101,47 @@ public class DustCentrifugeRenderer implements BlockEntityRenderer<DustCentrifug
         state.angle = centrifuge.angle(partialTick);
         float speed = centrifuge.speedShare(partialTick);
         state.tilt = speed * speed * (3 - 2 * speed) * DustCentrifugeBlockEntity.MAX_TILT;
+        float capacity = DustCentrifugeBlockEntity.CAPACITY;
         if (centrifuge.phase() == Phase.DRAINING) {
-            float made = Math.max(1, centrifuge.made());
-            set(state, 0, centrifuge.firstLeft() / made, centrifuge.first() == null ? 0xFFFFFF : centrifuge.first().color());
-            set(state, 1, centrifuge.firstLeft() / made, centrifuge.first() == null ? 0xFFFFFF : centrifuge.first().color());
-            set(state, 2, centrifuge.secondLeft() / made, centrifuge.second() == null ? 0xFFFFFF : centrifuge.second().color());
-            set(state, 3, centrifuge.secondLeft() / made, centrifuge.second() == null ? 0xFFFFFF : centrifuge.second().color());
+            // Drained against the same full mark it filled to, so the dust doesn't jump as it stops
+            int firstColor = centrifuge.first() == null ? 0xFFFFFF : centrifuge.first().color();
+            int secondColor = centrifuge.second() == null ? 0xFFFFFF : centrifuge.second().color();
+            set(state, 0, centrifuge.firstLeft() / capacity, firstColor);
+            set(state, 1, centrifuge.firstLeft() / capacity, firstColor);
+            set(state, 2, centrifuge.secondLeft() / capacity, secondColor);
+            set(state, 3, centrifuge.secondLeft() / capacity, secondColor);
         } else {
-            float share = centrifuge.input() == null ? 0 : centrifuge.amount() / (float) DustCentrifugeBlockEntity.CAPACITY;
+            float share = centrifuge.input() == null ? 0 : centrifuge.amount() / capacity;
             int color = centrifuge.input() == null ? 0xFFFFFF : centrifuge.input().color();
-            for (int i = 0; i < 4; i++) set(state, i, share, color);
+            var input = centrifuge.input();
+            float turned = spunShare(centrifuge, partialTick);
+            if (input != null && input.parts().size() == 2 && turned > 0) {
+                // Turning from the element's colour to its parts' as it spins
+                int first = StationRendering.lerpColor(color, input.parts().get(0).color(), turned);
+                int second = StationRendering.lerpColor(color, input.parts().get(1).color(), turned);
+                set(state, 0, share, first);
+                set(state, 1, share, first);
+                set(state, 2, share, second);
+                set(state, 3, share, second);
+            } else {
+                for (int i = 0; i < 4; i++) set(state, i, share, color);
+            }
         }
+    }
+
+    // How far through its spin it is (0 before it starts, 1 as it stops): spinning up, at speed and slowing down together
+    private static float spunShare(DustCentrifugeBlockEntity centrifuge, float partialTick)
+    {
+        float t = centrifuge.phaseTicks() + partialTick;
+        float total = DustCentrifugeBlockEntity.SPIN_UP_TICKS + DustCentrifugeBlockEntity.SPIN_TICKS + DustCentrifugeBlockEntity.SPIN_DOWN_TICKS;
+        float done = switch (centrifuge.phase()) {
+            case SPIN_UP -> t;
+            case SPINNING -> DustCentrifugeBlockEntity.SPIN_UP_TICKS + t;
+            case SPIN_DOWN -> DustCentrifugeBlockEntity.SPIN_UP_TICKS + DustCentrifugeBlockEntity.SPIN_TICKS + t;
+            default -> 0;
+        };
+        float share = Math.clamp(done / total, 0F, 1F);
+        return share * share * (3 - 2 * share);
     }
 
     private static void set(State state, int vial, float fill, int color)

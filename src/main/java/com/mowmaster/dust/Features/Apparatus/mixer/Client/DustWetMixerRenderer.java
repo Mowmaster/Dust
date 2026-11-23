@@ -37,8 +37,8 @@ import java.util.List;
 //   the head (dust_mixer_wet_stand.json)     tilts back about the top of the column (y 9, z 14.5 pixels) while it
 //                                             fills, and down over the pot to mix
 //   the beater (dust_mixer_wet_beater.json)   rides on the head, turning about its shaft (x 8, z 6) while it mixes
-//   the pot (dust_mixer_wet_pot.json)        tips forward about its front bottom edge (y 2, z 0) to pour out what it
-//                                             made, and back
+//   the pot (dust_mixer_wet_pot.json)        tips forward about its middle, where the stand's arms hold it (y 7.5,
+//                                             z 6), to pour out what it made, and back
 //   the dust in the pot (the white dust block's texture tinted: MixerContents) rides in it, up to 75% full
 // Played out from the block entity's phase and how far into it it is (DustMixerBlockEntity).
 public class DustWetMixerRenderer implements BlockEntityRenderer<DustWetMixerBlockEntity, DustWetMixerRenderer.State>
@@ -47,7 +47,9 @@ public class DustWetMixerRenderer implements BlockEntityRenderer<DustWetMixerBlo
     public static final StandaloneModelKey<BlockStateModelPart> STAND = new StandaloneModelKey<>(() -> "dust:dust_mixer_wet_stand");
     public static final StandaloneModelKey<BlockStateModelPart> BEATER = new StandaloneModelKey<>(() -> "dust:dust_mixer_wet_beater");
     private static final float HEAD_TILT_DEGREES = 60F;
-    private static final float POT_TIP_DEGREES = 100F;
+    private static final float POT_TIP_DEGREES = 105F;
+    // Where the pot turns: its middle, between the stand's arms (pixels)
+    private static final double POT_PIVOT_Y = 7.5, POT_PIVOT_Z = 6;
     private static final float BEATER_SPEED = 24F;
     private static final RenderType DUST = RenderTypes.entityCutout(Identifier.fromNamespaceAndPath(DustReferences.MODID, "textures/block/blockofdust_white.png"));
     // The pot's inside (pixels, facing north): across, front to back, and from its floor up to 75% full
@@ -131,9 +133,9 @@ public class DustWetMixerRenderer implements BlockEntityRenderer<DustWetMixerBlo
         poseStack.rotate(Axis.YP.rotationDegrees(StationRendering.yaw(state.facing)));
         poseStack.translate(-0.5, 0, -0.5);
 
-        // The pot tips forward (toward -z in the model) about its front bottom edge, with the dust in it
+        // The pot tips forward (its top toward -z in the model) about its middle, on the stand's arms, with the dust in it
         poseStack.pushPose();
-        pivotX(poseStack, 2, 0, -state.pot);
+        pivotX(poseStack, POT_PIVOT_Y, POT_PIVOT_Z, -state.pot);
         part(models.getStandaloneModel(POT), state, poseStack, collector);
         double middle = (IN_X0 + IN_X1) / 2;
         if (state.leftHeight > FLOOR) StationRendering.box(DUST, IN_X0, FLOOR, IN_Z0, middle, state.leftHeight, IN_Z1, state.leftColor, state.lightCoords,
