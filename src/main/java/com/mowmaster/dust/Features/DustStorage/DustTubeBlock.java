@@ -262,7 +262,7 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         TubeJoin current = state.getValue(property);
         if (state.getValue(WAXED)) return join(neighborState, direction.getOpposite()).joined() ? state : state.setValue(property, TubeJoin.NONE);
         // A pulling end stays pulling while there's still a jar there
-        if (current == TubeJoin.PULL && join(neighborState, direction.getOpposite()) == TubeJoin.BLOCK && neighborState.getBlock() instanceof DustJarBlock) return state;
+        if (current == TubeJoin.PULL && join(neighborState, direction.getOpposite()).joined() && neighborState.getBlock() instanceof DustJarBlock) return state;
         // The jar's gone: the redstone drops
         if (current == TubeJoin.PULL && level instanceof ServerLevel server) Block.popResource(server, pos, new ItemStack(Items.REDSTONE));
         TubeJoin join = sideJoin(neighborState, direction, current);
@@ -295,7 +295,9 @@ public class DustTubeBlock extends Block implements DustTubeConnectable
         if (stack.is(Items.REDSTONE)) {
             Direction side = clickedSide(pos, hit);
             EnumProperty<TubeJoin> property = CONNECTIONS.get(side);
-            if (state.getValue(property) != TubeJoin.BLOCK || !(level.getBlockEntity(pos.relative(side)) instanceof DustJarBlockEntity)) return InteractionResult.PASS;
+            TubeJoin end = state.getValue(property);
+            // Any end joined on to a jar (on any side of it), not one already pulling or cut off
+            if (!end.joined() || end == TubeJoin.PULL || !(level.getBlockEntity(pos.relative(side)) instanceof DustJarBlockEntity)) return InteractionResult.PASS;
             if (level.isClientSide()) return InteractionResult.SUCCESS;
             level.setBlock(pos, state.setValue(property, TubeJoin.PULL), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
             level.scheduleTick(pos, this, PULL_TICKS);

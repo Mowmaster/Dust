@@ -57,6 +57,14 @@ public class DustJarBlock extends Block implements EntityBlock, DustTubeConnecta
         }
     }
 
+    // Tubes reach 3 pixels into it on every side (its glass is 3 in from its sides; from above and below too, so a
+    // tube's end at a jar is always the same, and redstone can go on it to pull: DustTubeBlock)
+    @Override
+    public double attachInset(BlockState state, net.minecraft.core.Direction side)
+    {
+        return 3;
+    }
+
     // Its element: a tube network set to another won't join on to it
     @Override
     public @org.jspecify.annotations.Nullable DustElement tubeElement(BlockGetter level, BlockPos pos)
