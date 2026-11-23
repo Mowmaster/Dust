@@ -5,6 +5,7 @@ import com.mowmaster.dust.Features.Machines.StationBlock;
 import com.mowmaster.mowlib.blockentity.CBSyncedBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -26,7 +27,7 @@ public class DustSeparatorExtensionBlockEntity extends CBSyncedBlockEntity imple
     @Override public void sectionChanged() { sync(); }
 
     // The separator this extension's drum belongs to (back along the drum toward its intake), or null
-    public @Nullable DustSeparatorBlockEntity separator(Level level)
+    public @Nullable DustSeparatorBlockEntity separator(BlockGetter level)
     {
         Direction facing = getBlockState().getValue(DustSeparatorExtensionBlock.FACING);
         Direction back = facing.getCounterClockWise();

@@ -40,7 +40,7 @@ import java.util.Map;
 //   RETURNING  the bowl tips back, and it's OPEN again (what's left over of either element waits for the next batch)
 // A redstone signal stops it: mixing stops (it makes as much as it's mixed so far; the rest of the batch comes out as
 // it went in), it tips out everything it has, and stays tipped (HELD) until the signal goes.
-public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHolder
+public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHolder, com.mowmaster.dust.Features.Guide.GuideAnimated
 {
     public static final int SLOT_CAPACITY = 100;
     public static final int MIX_TICKS_PER_DUST = 2;
@@ -292,6 +292,56 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
     public void clientTick()
     {
         phaseTicks++;
+    }
+
+    // In a guide scene (Guide/GuideAnimated) nothing comes from the server, so once the scene shuts it (a "data" step
+    // setting the phase to CLOSING, with what's in it) the cycle plays on by itself as the server runs it: it mixes,
+    // tips out what it made (DUMP_RATE a tick, onto nothing: the scene shows the pile), and tips back
+    @Override
+    public void guideTick()
+    {
+        phaseTicks++;
+        switch (phase) {
+            case CLOSING -> {
+                if (phaseTicks < GRATE_TICKS) return;
+                batch = Math.min(firstAmount, secondAmount);
+                firstAmount -= batch;
+                secondAmount -= batch;
+                mixed = 0;
+                guideEnter(Phase.MIXING);
+            }
+            case MIXING -> {
+                mixed++;
+                if (mixed < batch * MIX_TICKS_PER_DUST) return;
+                finishBatch(batch);
+                guideEnter(Phase.OPENING);
+            }
+            case OPENING -> {
+                if (phaseTicks >= GRATE_TICKS) guideEnter(Phase.TIPPING);
+            }
+            case TIPPING -> {
+                if (phaseTicks >= TIP_TICKS) guideEnter(Phase.DUMPING);
+            }
+            case DUMPING -> {
+                var pouring = dumping.entrySet().iterator();
+                if (pouring.hasNext()) {
+                    Map.Entry<DustElement, Integer> entry = pouring.next();
+                    if (entry.getValue() <= DUMP_RATE) pouring.remove();
+                    else entry.setValue(entry.getValue() - DUMP_RATE);
+                }
+                if (dumping.isEmpty()) guideEnter(Phase.RETURNING);
+            }
+            case RETURNING -> {
+                if (phaseTicks >= TIP_TICKS) guideEnter(Phase.OPEN);
+            }
+            default -> { }
+        }
+    }
+
+    private void guideEnter(Phase next)
+    {
+        phase = next;
+        phaseTicks = 0;
     }
 
     // "Dust Mixer: mixing (40%) | 60 Stone, 60 Fire"

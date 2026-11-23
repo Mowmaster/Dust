@@ -31,7 +31,7 @@ import org.jspecify.annotations.Nullable;
 //              one, two of the other)
 //   DRAINING   it drains out of the Dust Chutes on its sides (DRAIN_RATE a chute every DRAIN_TICKS; a filtered chute only
 //              lets out its element), waiting while there's no chute for one; empty, it fills again
-public class DustCentrifugeBlockEntity extends CBSyncedBlockEntity implements IDustHolder
+public class DustCentrifugeBlockEntity extends CBSyncedBlockEntity implements IDustHolder, com.mowmaster.dust.Features.Guide.GuideAnimated
 {
     public static final int CAPACITY = 100;
     public static final int SPIN_UP_TICKS = 30;
@@ -208,6 +208,51 @@ public class DustCentrifugeBlockEntity extends CBSyncedBlockEntity implements ID
             angle -= 360;
             lastAngle -= 360;
         }
+    }
+
+    // In a guide scene (Guide/GuideAnimated) nothing comes from the server, so once the scene starts it spinning (a
+    // "data" step setting the phase to SPIN_UP) the cycle plays on by itself as the server runs it: up to speed, spinning,
+    // down, then it drains as if through a chute for each element (DRAIN_RATE every DRAIN_TICKS), and fills again
+    @Override
+    public void guideTick()
+    {
+        clientTick();
+        switch (phase) {
+            case SPIN_UP -> {
+                if (phaseTicks >= SPIN_UP_TICKS) guideEnter(Phase.SPINNING);
+            }
+            case SPINNING -> {
+                if (phaseTicks >= SPIN_TICKS) guideEnter(Phase.SPIN_DOWN);
+            }
+            case SPIN_DOWN -> {
+                if (phaseTicks < SPIN_DOWN_TICKS) return;
+                if (input != null && input.parts().size() == 2) {
+                    first = input.parts().get(0);
+                    second = input.parts().get(1);
+                    firstLeft = secondLeft = made = amount;
+                }
+                input = null;
+                amount = 0;
+                guideEnter(Phase.DRAINING);
+            }
+            case DRAINING -> {
+                if (phaseTicks % DRAIN_TICKS != 0) return;
+                firstLeft = Math.max(0, firstLeft - DRAIN_RATE);
+                secondLeft = Math.max(0, secondLeft - DRAIN_RATE);
+                if (firstLeft <= 0 && secondLeft <= 0) {
+                    first = second = null;
+                    made = 0;
+                    guideEnter(Phase.FILLING);
+                }
+            }
+            default -> { }
+        }
+    }
+
+    private void guideEnter(Phase next)
+    {
+        phase = next;
+        phaseTicks = 0;
     }
 
     // "Dust Centrifuge: filling 40/100 Air" / "spinning" / "draining 30 Fire, 30 Water"

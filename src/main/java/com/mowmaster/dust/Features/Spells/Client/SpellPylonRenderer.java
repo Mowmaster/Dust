@@ -79,7 +79,7 @@ public class SpellPylonRenderer implements BlockEntityRenderer<SpellPylonBlockEn
         BlockEntityRenderer.super.extractRenderState(pylon, state, partialTick, cameraPos, crumblingOverlay);
         state.places.clear();
         List<BlockPos> ghosts = pylon.ghostPositions();
-        state.time = pylon.getLevel() == null ? 0 : (pylon.getLevel().getGameTime() % 24000) + partialTick;
+        state.time = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(pylon.getLevel(), partialTick);
         extractIcons(pylon, state, partialTick);
         state.ghostAppear = pylon.ghostAppear(partialTick);
         state.facing = pylon.connection();

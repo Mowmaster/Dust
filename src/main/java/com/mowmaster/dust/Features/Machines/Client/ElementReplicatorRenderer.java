@@ -76,7 +76,7 @@ public class ElementReplicatorRenderer implements BlockEntityRenderer<ElementRep
         BlockEntityRenderer.super.extractRenderState(replicator, state, partialTick, cameraPos, crumblingOverlay);
         state.facing = replicator.getBlockState().getValue(StationBlock.FACING);
         state.progress = replicator.progress(partialTick);
-        state.time = replicator.getLevel() == null ? 0 : replicator.getLevel().getGameTime() + partialTick;
+        state.time = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(replicator.getLevel(), partialTick);
         state.scanLift = scanLift(state.progress);
         state.printed = printed(state.progress);
         state.printing = state.progress >= PRINT_START;

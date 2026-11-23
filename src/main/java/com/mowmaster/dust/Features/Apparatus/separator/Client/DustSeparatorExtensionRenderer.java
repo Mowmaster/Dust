@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import com.mowmaster.dust.Features.Guide.Client.GuideContext;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -36,8 +38,10 @@ public class DustSeparatorExtensionRenderer implements BlockEntityRenderer<DustS
     {
         BlockEntityRenderer.super.extractRenderState(extension, state, partialTick, cameraPos, crumblingOverlay);
         state.facing = extension.getBlockState().getValue(DustSeparatorExtensionBlock.FACING);
-        DustSeparatorBlockEntity separator = extension.getLevel() == null ? null : extension.separator(extension.getLevel());
-        state.angle = DrumRendering.angle(separator != null && separator.isSpinning(), partialTick);
+        // Its separator, looked for in the world (or the guide scene it's drawn in)
+        BlockGetter world = GuideContext.blocks(extension.getLevel());
+        DustSeparatorBlockEntity separator = world == null ? null : extension.separator(world);
+        state.angle = DrumRendering.angle(extension.getLevel(), separator != null && separator.isSpinning(), partialTick);
     }
 
     @Override

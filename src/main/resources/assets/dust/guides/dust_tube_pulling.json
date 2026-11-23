@@ -15,7 +15,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 300
+        }
+      }
     },
     {
       "type": "show",
@@ -55,7 +61,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 20
+        }
+      }
     },
     {
       "type": "idle",
@@ -116,7 +128,7 @@
       "text": {
         "translate": "guide.dust.dust_tube_pulling.2"
       },
-      "ticks": 120,
+      "ticks": 130,
       "point": [
         1.15,
         1.5,
@@ -131,7 +143,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=pull,east=tube,filled=true]"
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "place",
@@ -140,7 +153,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=tube,east=tube,filled=true]"
+      "state": "dust:dust_tube[west=tube,east=tube,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "place",
@@ -149,11 +163,162 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=tube,east=block,filled=true]"
+      "state": "dust:dust_tube[west=tube,east=block,filled=true]",
+      "tint": "#FF0000"
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 280
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 40
+        }
+      }
     },
     {
       "type": "idle",
-      "ticks": 105
+      "ticks": 20
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 260
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 60
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 240
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 80
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 220
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 100
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 200
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 120
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "idle",
+      "ticks": 15
     },
     {
       "type": "click",

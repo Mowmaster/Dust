@@ -5,6 +5,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.StringRepresentable;
@@ -20,10 +21,12 @@ import java.util.Optional;
 // text box and a highlight can show while the blocks after them appear. Positions are in blocks: the base plate is
 // y = 0, from x = 0 and z = 0; a block at [2, 1, 2] stands on the plate; [2.5, 2, 2.5] is the middle of its top.
 //   idle       {"ticks": 20}                                         just wait
-//   show       {"pos": [x,y,z], "to": [x,y,z]?, "state": "...", "ticks": 10}
+//   show       {"pos": [x,y,z], "to": [x,y,z]?, "state": "...", "data": {...}?, "tint": "#RRGGBB"?, "ticks": 10}
 //                                                                    blocks drop into place (the box pos..to)
 //   hide       {"pos", "to"?, "ticks": 10}                            blocks lift away
-//   place      {"pos", "to"?, "state"}                               blocks change at once (no wait)
+//   place      {"pos", "to"?, "state", "data"?, "tint"?}             blocks change at once (no wait)
+//   data       {"pos", "to"?, "data": {...}}                         changes what block entities hold (merged into
+//                                                                    their data: only the keys given change); no wait
 //   item       {"id": "name", "item": ..., "at": [x,y,z], "from": [x,y,z]?, "ticks": 0, "lasts": -1, "spin": false,
 //               "scale": 0.6}                                       an item, sliding from "from" to "at" over ticks;
 //                                                                    shown for "lasts" ticks (-1: until removed)
@@ -36,7 +39,10 @@ import java.util.Optional;
 //                                                                    shows a click there (with the held item); no wait
 //   rotate     {"degrees": 90, "ticks": 30}                          turns the view round
 // Text is a text component: "plain words", or {"translate": "lang.key"} (so it can be translated).
-public sealed interface GuideStep permits GuideStep.Idle, GuideStep.Show, GuideStep.Hide, GuideStep.Place, GuideStep.ShowItem,
+// "data" is what a block's block entity holds, as it saves it (GuideCodecs.DATA): its block entity renderer draws it (a
+// jar's dust, a machine's moving parts), played on from when it was set (GuideAnimated). "tint": the colour every tinted
+// part of the block's model is drawn (a filled Glass Dust Tube's dust); without it, a block is tinted as in the world.
+public sealed interface GuideStep permits GuideStep.Idle, GuideStep.Show, GuideStep.Hide, GuideStep.Place, GuideStep.Data, GuideStep.ShowItem,
         GuideStep.RemoveItem, GuideStep.Text, GuideStep.Highlight, GuideStep.Click, GuideStep.Rotate
 {
     // "wait" not given: the step's own default
@@ -84,12 +90,15 @@ public sealed interface GuideStep permits GuideStep.Idle, GuideStep.Show, GuideS
         public int length() { return ticks; }
     }
 
-    record Show(BlockPos pos, Optional<BlockPos> to, BlockState state, int ticks, int waitTicks) implements GuideStep
+    record Show(BlockPos pos, Optional<BlockPos> to, BlockState state, Optional<CompoundTag> data, Optional<Integer> tint, int ticks, int waitTicks)
+            implements GuideStep
     {
         static final MapCodec<Show> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
                 BlockPos.CODEC.fieldOf("pos").forGetter(Show::pos),
                 BlockPos.CODEC.optionalFieldOf("to").forGetter(Show::to),
                 GuideCodecs.BLOCK_STATE.fieldOf("state").forGetter(Show::state),
+                GuideCodecs.DATA.optionalFieldOf("data").forGetter(Show::data),
+                GuideCodecs.COLOR.optionalFieldOf("tint").forGetter(Show::tint),
                 Codec.INT.optionalFieldOf("ticks", 10).forGetter(Show::ticks),
                 waitField().forGetter(Show::waitTicks)
         ).apply(i, Show::new));
@@ -111,15 +120,30 @@ public sealed interface GuideStep permits GuideStep.Idle, GuideStep.Show, GuideS
         public int length() { return ticks; }
     }
 
-    record Place(BlockPos pos, Optional<BlockPos> to, BlockState state, int waitTicks) implements GuideStep
+    record Place(BlockPos pos, Optional<BlockPos> to, BlockState state, Optional<CompoundTag> data, Optional<Integer> tint, int waitTicks) implements GuideStep
     {
         static final MapCodec<Place> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
                 BlockPos.CODEC.fieldOf("pos").forGetter(Place::pos),
                 BlockPos.CODEC.optionalFieldOf("to").forGetter(Place::to),
                 GuideCodecs.BLOCK_STATE.fieldOf("state").forGetter(Place::state),
+                GuideCodecs.DATA.optionalFieldOf("data").forGetter(Place::data),
+                GuideCodecs.COLOR.optionalFieldOf("tint").forGetter(Place::tint),
                 waitField().forGetter(Place::waitTicks)
         ).apply(i, Place::new));
         public String type() { return "place"; }
+        public int delay() { return or(waitTicks, 0); }
+        public int length() { return 0; }
+    }
+
+    record Data(BlockPos pos, Optional<BlockPos> to, CompoundTag data, int waitTicks) implements GuideStep
+    {
+        static final MapCodec<Data> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+                BlockPos.CODEC.fieldOf("pos").forGetter(Data::pos),
+                BlockPos.CODEC.optionalFieldOf("to").forGetter(Data::to),
+                GuideCodecs.DATA.fieldOf("data").forGetter(Data::data),
+                waitField().forGetter(Data::waitTicks)
+        ).apply(i, Data::new));
+        public String type() { return "data"; }
         public int delay() { return or(waitTicks, 0); }
         public int length() { return 0; }
     }
@@ -219,9 +243,10 @@ public sealed interface GuideStep permits GuideStep.Idle, GuideStep.Show, GuideS
         public int length() { return ticks; }
     }
 
-    Map<String, MapCodec<? extends GuideStep>> TYPES = Map.of(
-            "idle", Idle.CODEC, "show", Show.CODEC, "hide", Hide.CODEC, "place", Place.CODEC, "item", ShowItem.CODEC,
-            "remove", RemoveItem.CODEC, "text", Text.CODEC, "highlight", Highlight.CODEC, "click", Click.CODEC, "rotate", Rotate.CODEC);
+    Map<String, MapCodec<? extends GuideStep>> TYPES = Map.ofEntries(
+            Map.entry("idle", Idle.CODEC), Map.entry("show", Show.CODEC), Map.entry("hide", Hide.CODEC), Map.entry("place", Place.CODEC),
+            Map.entry("data", Data.CODEC), Map.entry("item", ShowItem.CODEC), Map.entry("remove", RemoveItem.CODEC), Map.entry("text", Text.CODEC),
+            Map.entry("highlight", Highlight.CODEC), Map.entry("click", Click.CODEC), Map.entry("rotate", Rotate.CODEC));
 
     // dispatch: reads "type", then the rest of the object with that type's codec
     Codec<GuideStep> CODEC = Codec.STRING

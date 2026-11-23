@@ -15,9 +15,12 @@ public class DustTubeTint implements BlockTintSource
         return 0xFFFFFFFF;
     }
 
+    // In a guide scene the scene gives the colour (its "tint"); without one, white, not whatever ran through a tube at the
+    // same spot in the world
     @Override
     public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos)
     {
+        if (level instanceof com.mowmaster.dust.Features.Guide.Client.GuideSceneBlocks) return 0xFFFFFFFF;
         return 0xFF000000 | DustTubeFlows.colorAt(pos);
     }
 }

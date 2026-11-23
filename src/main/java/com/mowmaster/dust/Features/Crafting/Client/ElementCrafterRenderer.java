@@ -82,7 +82,7 @@ public class ElementCrafterRenderer implements BlockEntityRenderer<ElementCrafte
         }
         ghostRenderer.extract(state.ghosts, crafter.getGhosts(), crafter.getLevel(), crafter.getBlockPos(), ElementCrafterLayout.CELLS);
         state.facing = crafter.getBlockState().getValue(StationBlock.FACING);
-        state.spin = crafter.getLevel() == null ? 0 : ((crafter.getLevel().getGameTime() + partialTick) * 2F) % 360F;
+        state.spin = (com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(crafter.getLevel(), partialTick) * 2F) % 360F;
     }
 
     @Override

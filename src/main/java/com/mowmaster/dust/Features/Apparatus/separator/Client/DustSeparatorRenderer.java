@@ -35,7 +35,7 @@ public class DustSeparatorRenderer implements BlockEntityRenderer<DustSeparatorB
     {
         BlockEntityRenderer.super.extractRenderState(separator, state, partialTick, cameraPos, crumblingOverlay);
         state.facing = separator.getBlockState().getValue(StationBlock.FACING);
-        state.angle = DrumRendering.angle(separator.isSpinning(), partialTick);
+        state.angle = DrumRendering.angle(separator.getLevel(), separator.isSpinning(), partialTick);
     }
 
     @Override

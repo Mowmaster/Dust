@@ -6,6 +6,7 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlock;
 import com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlockEntity;
 import com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlockEntity.Phase;
+import com.mowmaster.dust.Features.Guide.Client.GuideContext;
 import com.mowmaster.dust.Features.Machines.Client.StationRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
@@ -98,8 +99,7 @@ public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEnti
         state.grate = ease(grateShare) * GRATE_OPEN_DEGREES;
         state.tip = ease(tipShare) * DustMixerBlockEntity.TIP_DEGREES;
         dust(mixer, phase, t, state);
-        var level = mixer.getLevel();
-        state.paddles = phase == Phase.MIXING && level != null ? ((level.getGameTime() % 360) + partialTick) * PADDLE_SPEED % 360 : 0;
+        state.paddles = phase == Phase.MIXING ? GuideContext.ticks(mixer.getLevel(), partialTick) * PADDLE_SPEED % 360 : 0;
     }
 
     // What's in the bowl to draw (MixerContents), as heights in the bowl

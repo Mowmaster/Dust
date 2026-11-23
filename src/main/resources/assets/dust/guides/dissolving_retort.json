@@ -39,30 +39,33 @@
       }
     },
     {
-      "type": "item",
-      "id": "p",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:air"
-        }
-      },
-      "at": [
-        2.5,
-        1.5,
-        3.05
+      "type": "idle",
+      "ticks": 10
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        2
       ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.4
+      "state": "dust:dissolving_retort[facing=south]",
+      "data": {
+        "pattern": {
+          "id": "dust:alchemical_dust",
+          "count": 1,
+          "components": {
+            "dust:alchemical_element": "dust:air"
+          }
+        }
+      }
     },
     {
       "type": "text",
       "text": {
         "translate": "guide.dust.dissolving_retort.1"
       },
-      "ticks": 90,
+      "ticks": 85,
       "point": [
         2.5,
         1.5,
@@ -72,7 +75,7 @@
     },
     {
       "type": "idle",
-      "ticks": 75
+      "ticks": 65
     },
     {
       "type": "show",
@@ -92,27 +95,13 @@
         0
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
-    },
-    {
-      "type": "item",
-      "id": "a",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:air"
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:air",
+          "amount": 200
         }
-      },
-      "at": [
-        2.5,
-        2.0,
-        0.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
+      }
     },
     {
       "type": "show",
@@ -121,7 +110,7 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[east=block,west=block]",
+      "state": "dust:dust_tube[east=near,west=block]",
       "ticks": 6
     },
     {
@@ -132,27 +121,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
-    },
-    {
-      "type": "item",
-      "id": "f",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 20
         }
-      },
-      "at": [
-        0.5,
-        2.0,
-        2.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
+      }
     },
     {
       "type": "show",
@@ -161,7 +136,7 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=block]",
+      "state": "dust:dust_tube[west=near,east=block]",
       "ticks": 6
     },
     {
@@ -172,27 +147,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
-    },
-    {
-      "type": "item",
-      "id": "w",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:water"
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:water",
+          "amount": 20
         }
-      },
-      "at": [
-        4.5,
-        2.0,
-        2.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
+      }
     },
     {
       "type": "idle",
@@ -216,7 +177,8 @@
         1,
         1
       ],
-      "state": "dust:dust_tube[south=block,north=block,filled=true]"
+      "state": "dust:dust_tube[south=block,north=block,filled=true]",
+      "tint": "#FF00FF"
     },
     {
       "type": "idle",
@@ -229,7 +191,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[east=block,west=block,filled=true]"
+      "state": "dust:dust_tube[east=near,west=block,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "place",
@@ -238,18 +201,187 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=block,filled=true]"
+      "state": "dust:dust_tube[west=near,east=block,filled=true]",
+      "tint": "#0000FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        0
+      ],
+      "data": {
+        "contents": {
+          "amount": 192
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 28
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 28
+        }
+      }
     },
     {
       "type": "idle",
-      "ticks": 60
+      "ticks": 15
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        0
+      ],
+      "data": {
+        "contents": {
+          "amount": 184
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 36
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 36
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        0
+      ],
+      "data": {
+        "contents": {
+          "amount": 176
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 44
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 44
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 15
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        0
+      ],
+      "data": {
+        "contents": {
+          "amount": 168
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 52
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 52
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 15
     },
     {
       "type": "text",
       "text": {
         "translate": "guide.dust.dissolving_retort.3"
       },
-      "ticks": 100
+      "ticks": 110
     },
     {
       "type": "idle",

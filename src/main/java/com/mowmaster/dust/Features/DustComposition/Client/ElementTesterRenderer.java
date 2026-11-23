@@ -55,8 +55,7 @@ public class ElementTesterRenderer implements BlockEntityRenderer<ElementTesterB
         itemModelResolver.updateForTopItem(state.item, tester.getItem(), ItemDisplayContext.GROUND, tester.getLevel(), null, 0);
         ExaminerLayout layout = ExaminerLayout.of(tester.getBlockState().getValue(ElementTesterBlock.CRYSTALS));
         state.plate = layout == null ? new Vec3(0.5, 0.75, 0.5) : ExaminerLayout.turned(layout.plate(), tester.getBlockState().getValue(ElementTesterBlock.FACING));
-        long gameTime = tester.getLevel() != null ? tester.getLevel().getGameTime() : 0;
-        state.angle = ((gameTime % 360) + partialTick) % 360F;
+        state.angle = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(tester.getLevel(), partialTick) % 360F;
     }
 
     @Override

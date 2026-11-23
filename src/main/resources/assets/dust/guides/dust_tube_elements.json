@@ -16,7 +16,13 @@
         1
       ],
       "state": "dust:dust_jar",
-      "ticks": 10
+      "ticks": 10,
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 200
+        }
+      }
     },
     {
       "type": "show",
@@ -39,26 +45,6 @@
       "ticks": 6
     },
     {
-      "type": "item",
-      "id": "f",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
-        }
-      },
-      "at": [
-        0.5,
-        2.0,
-        1.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
-    },
-    {
       "type": "show",
       "pos": [
         4,
@@ -66,7 +52,13 @@
         3
       ],
       "state": "dust:dust_jar",
-      "ticks": 10
+      "ticks": 10,
+      "data": {
+        "contents": {
+          "element": "dust:water",
+          "amount": 200
+        }
+      }
     },
     {
       "type": "show",
@@ -87,26 +79,6 @@
       ],
       "state": "dust:dust_tube[east=tube]",
       "ticks": 6
-    },
-    {
-      "type": "item",
-      "id": "w",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:water"
-        }
-      },
-      "at": [
-        4.5,
-        2.0,
-        3.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
     },
     {
       "type": "idle",

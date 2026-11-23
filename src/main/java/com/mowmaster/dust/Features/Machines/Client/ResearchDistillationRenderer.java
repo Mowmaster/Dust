@@ -85,7 +85,7 @@ public class ResearchDistillationRenderer implements BlockEntityRenderer<Researc
         state.bottlesGhost = table.getBottles().isEmpty();
         state.bowlsGhost = table.getBowls().isEmpty();
         state.paperGhost = table.getPaper().isEmpty();
-        state.time = table.getLevel() == null ? 0 : table.getLevel().getGameTime() + partialTick;
+        state.time = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(table.getLevel(), partialTick);
         itemModelResolver.updateForTopItem(state.bottles, StationRendering.padStack(table.getBottles(), Items.GLASS_BOTTLE), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
         itemModelResolver.updateForTopItem(state.bowls, StationRendering.padStack(table.getBowls(), Items.BOWL), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
         itemModelResolver.updateForTopItem(state.sootOut, table.getSootOut(), ItemDisplayContext.GROUND, table.getLevel(), null, 3);

@@ -35,27 +35,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
-    },
-    {
-      "type": "item",
-      "id": "f",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 30
         }
-      },
-      "at": [
-        0.5,
-        2.0,
-        2.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
+      }
     },
     {
       "type": "show",
@@ -75,27 +61,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
-    },
-    {
-      "type": "item",
-      "id": "w",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:water"
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:water",
+          "amount": 30
         }
-      },
-      "at": [
-        4.5,
-        2.0,
-        2.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
+      }
     },
     {
       "type": "idle",
@@ -119,31 +91,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[east=block,west=block,filled=true]"
-    },
-    {
-      "type": "item",
-      "id": "d1",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
-        }
-      },
-      "at": [
-        0.5,
-        1.8,
-        2.5
-      ],
-      "ticks": 20,
-      "lasts": 25,
-      "scale": 0.35,
-      "from": [
-        2.0,
-        1.8,
-        2.5
-      ]
+      "state": "dust:dust_tube[east=block,west=block,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "text",
@@ -156,11 +105,50 @@
         1.6,
         2.5
       ],
-      "side": "left"
+      "side": "right"
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 45
+        }
+      }
     },
     {
       "type": "idle",
-      "ticks": 50
+      "ticks": 25
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 60
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=block,west=block]"
     },
     {
       "type": "place",
@@ -169,31 +157,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=block,filled=true]"
-    },
-    {
-      "type": "item",
-      "id": "d2",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:water"
-        }
-      },
-      "at": [
-        4.5,
-        1.8,
-        2.5
-      ],
-      "ticks": 20,
-      "lasts": 25,
-      "scale": 0.35,
-      "from": [
-        3.0,
-        1.8,
-        2.5
-      ]
+      "state": "dust:dust_tube[west=block,east=block,filled=true]",
+      "tint": "#0000FF"
     },
     {
       "type": "text",
@@ -209,8 +174,47 @@
       "side": "right"
     },
     {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 45
+        }
+      }
+    },
+    {
       "type": "idle",
-      "ticks": 70
+      "ticks": 25
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 60
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 45
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=block,east=block]"
     },
     {
       "type": "text",

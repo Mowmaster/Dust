@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Features.Apparatus.mixer.Client;
 
+import com.mowmaster.dust.Features.Guide.Client.GuideContext;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mowmaster.dust.DustReferences;
@@ -110,7 +111,7 @@ public class DustWetMixerRenderer implements BlockEntityRenderer<DustWetMixerBlo
         state.head = ease(headShare) * HEAD_TILT_DEGREES;
         state.pot = ease(potShare) * POT_TIP_DEGREES;
         var level = mixer.getLevel();
-        state.beater = phase == Phase.MIXING && level != null ? ((level.getGameTime() % 360) + partialTick) * BEATER_SPEED % 360 : 0;
+        state.beater = phase == Phase.MIXING ? GuideContext.ticks(level, partialTick) * BEATER_SPEED % 360 : 0;
         MixerContents contents = MixerContents.of(mixer, t);
         state.leftHeight = MixerContents.height(contents.left(), FLOOR, FULL);
         state.rightHeight = MixerContents.height(contents.right(), FLOOR, FULL);

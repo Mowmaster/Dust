@@ -4,6 +4,7 @@ import com.mowmaster.dust.Features.Guide.GuideItem;
 import com.mowmaster.dust.Features.Guide.GuideScene;
 import com.mowmaster.dust.Features.Guide.GuideStep;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
@@ -21,6 +22,8 @@ import java.util.function.Consumer;
 // A guide scene's timeline worked out: when each step starts (each waits for the one before's "wait"), how long the
 // whole thing runs, and what's on show at any moment (at). Nothing changes as it plays: at(time) is worked out afresh
 // from the steps each frame, so the screen can pause, replay or jump anywhere on the timeline.
+// A "data" step merges into what the block's block entity held before it: worked out once here, by going through the
+// steps in order (the same order at() goes through them), so each frame hands the renderer the same tags.
 public final class GuidePlayback
 {
     // Ticks the scene stays on its last frame before it counts as finished
@@ -34,6 +37,8 @@ public final class GuidePlayback
     private final List<Integer> keyframes = new ArrayList<>();
     // Item stacks made once, by step (GuideItem.stack)
     private final Map<Integer, ItemStack> stacks = new HashMap<>();
+    // What each "data" step leaves in each block entity it changes, by step
+    private final Map<Integer, Map<BlockPos, CompoundTag>> merged = new HashMap<>();
     // The box everything in the scene sits in, for the camera to fit
     private final Vector3f centre;
     private final float radius;
@@ -52,6 +57,7 @@ public final class GuidePlayback
             time += step.delay();
         }
         length = Math.max(end, time) + TAIL;
+        mergeData();
 
         AABB bounds = null;
         GuideScene.Plate plate = scene.plate();
@@ -67,6 +73,38 @@ public final class GuidePlayback
         centre = new Vector3f((float) middle.x, (float) middle.y, (float) middle.z);
         radius = (float) Math.max(1.5, Math.sqrt(bounds.getXsize() * bounds.getXsize() + bounds.getYsize() * bounds.getYsize()
                 + bounds.getZsize() * bounds.getZsize()) / 2);
+    }
+
+    // Goes through the steps in order, keeping what each block entity holds, to work out what each "data" step leaves
+    private void mergeData()
+    {
+        Map<BlockPos, CompoundTag> held = new HashMap<>();
+        for (GuideScene.Placed placed : scene.blocks()) forEach(placed.pos(), placed.to(), pos -> hold(held, pos, placed.data()));
+        List<GuideStep> steps = scene.steps();
+        for (int i = 0; i < steps.size(); i++) {
+            switch (steps.get(i)) {
+                case GuideStep.Show show -> forEach(show.pos(), show.to(), pos -> hold(held, pos, show.data()));
+                case GuideStep.Place place -> forEach(place.pos(), place.to(), pos -> hold(held, pos, place.data()));
+                case GuideStep.Hide hide -> forEach(hide.pos(), hide.to(), held::remove);
+                case GuideStep.Data data -> {
+                    Map<BlockPos, CompoundTag> left = new HashMap<>();
+                    forEach(data.pos(), data.to(), pos -> {
+                        CompoundTag before = held.get(pos);
+                        CompoundTag after = (before == null ? new CompoundTag() : before.copy()).merge(data.data());
+                        held.put(pos, after);
+                        left.put(pos, after);
+                    });
+                    merged.put(i, left);
+                }
+                default -> {}
+            }
+        }
+    }
+
+    private static void hold(Map<BlockPos, CompoundTag> held, BlockPos pos, Optional<CompoundTag> data)
+    {
+        if (data.isPresent()) held.put(pos, data.get());
+        else held.remove(pos);
     }
 
     private static AABB grow(AABB bounds, AABB box)
@@ -131,11 +169,12 @@ public final class GuidePlayback
         for (int x = 0; x < plate.width(); x++) {
             for (int z = 0; z < plate.depth(); z++) {
                 BlockPos pos = new BlockPos(x, 0, z);
-                blocks.put(pos, new GuideFrame.BlockDraw(pos, (x + z) % 2 == 0 ? plate.block() : plate.alt(), 0, 1));
+                blocks.put(pos, new GuideFrame.BlockDraw(pos, (x + z) % 2 == 0 ? plate.block() : plate.alt(), 0, 1, null, null, 0));
             }
         }
         for (GuideScene.Placed placed : scene.blocks()) {
-            forEach(placed.pos(), placed.to(), pos -> blocks.put(pos, new GuideFrame.BlockDraw(pos, placed.state(), 0, 1)));
+            forEach(placed.pos(), placed.to(), pos -> blocks.put(pos, new GuideFrame.BlockDraw(pos, placed.state(), 0, 1,
+                    placed.data().orElse(null), placed.tint().orElse(null), 0)));
         }
         Map<String, GuideFrame.ItemDraw> items = new LinkedHashMap<>();
         List<GuideFrame.TextDraw> texts = new ArrayList<>();
@@ -147,22 +186,35 @@ public final class GuidePlayback
             float local = time - starts[i];
             // Steps start in order, so nothing after this one has started either
             if (local < 0) break;
+            float start = starts[i];
             // A switch on the step's type: each case names the record type and binds it (pattern matching)
             switch (steps.get(i)) {
                 case GuideStep.Show show -> {
                     float lift = (1 - easeOut(progress(local, show.ticks()))) * DROP;
-                    forEach(show.pos(), show.to(), pos -> blocks.put(pos, new GuideFrame.BlockDraw(pos, show.state(), lift, 1)));
+                    forEach(show.pos(), show.to(), pos -> blocks.put(pos, new GuideFrame.BlockDraw(pos, show.state(), lift, 1,
+                            show.data().orElse(null), show.tint().orElse(null), start)));
                 }
                 case GuideStep.Hide hide -> {
                     float p = progress(local, hide.ticks());
                     forEach(hide.pos(), hide.to(), pos -> {
                         GuideFrame.BlockDraw there = blocks.get(pos);
                         if (p >= 1 || there == null) blocks.remove(pos);
-                        else blocks.put(pos, new GuideFrame.BlockDraw(pos, there.state(), p * p * 0.6F, 1 - p));
+                        else blocks.put(pos, there.moved(p * p * 0.6F, 1 - p));
                     });
                 }
                 case GuideStep.Place place ->
-                        forEach(place.pos(), place.to(), pos -> blocks.put(pos, new GuideFrame.BlockDraw(pos, place.state(), 0, 1)));
+                        forEach(place.pos(), place.to(), pos -> blocks.put(pos, new GuideFrame.BlockDraw(pos, place.state(), 0, 1,
+                                place.data().orElse(null), place.tint().orElse(null), start)));
+                case GuideStep.Data data -> {
+                    Map<BlockPos, CompoundTag> left = merged.getOrDefault(i, Map.of());
+                    forEach(data.pos(), data.to(), pos -> {
+                        GuideFrame.BlockDraw there = blocks.get(pos);
+                        CompoundTag tag = left.get(pos);
+                        if (there != null && tag != null) {
+                            blocks.put(pos, new GuideFrame.BlockDraw(pos, there.state(), there.lift(), there.size(), tag, there.tint(), start));
+                        }
+                    });
+                }
                 case GuideStep.ShowItem item -> {
                     String key = item.id().isEmpty() ? "#" + i : item.id();
                     if (item.lasts() >= 0 && local >= item.lasts()) {
@@ -189,6 +241,6 @@ public final class GuidePlayback
                 case GuideStep.Idle idle -> {}
             }
         }
-        return new GuideFrame(List.copyOf(blocks.values()), List.copyOf(items.values()), texts, boxes, clicks, yaw);
+        return new GuideFrame(List.copyOf(blocks.values()), List.copyOf(items.values()), texts, boxes, clicks, yaw, time);
     }
 }

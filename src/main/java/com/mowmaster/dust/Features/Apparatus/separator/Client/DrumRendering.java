@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.Machines.Client.StationRendering;
+import com.mowmaster.dust.Features.Guide.Client.GuideContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import org.jspecify.annotations.Nullable;
@@ -20,7 +22,8 @@ import java.util.List;
 
 // The Dust Separator's drum, shared by the separator and its extensions: the drum model (dust_seperator_drum.json /
 // dust_seperator_extension_drum.json, made facing north) turning about its axis (along x in the model, through y 9,
-// z 8 pixels), every section by the same angle from the game time so they turn together.
+// z 8 pixels), every section by the same angle from the game time so they turn together (in a guide scene, from the
+// scene's time: GuideContext).
 public final class DrumRendering
 {
     public static final StandaloneModelKey<BlockStateModelPart> DRUM = new StandaloneModelKey<>(() -> "dust:dust_seperator_drum");
@@ -36,12 +39,11 @@ public final class DrumRendering
         event.register(EXTENSION_DRUM, SimpleUnbakedStandaloneModel.simpleModelWrapper(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_seperator_extension_drum")));
     }
 
-    // The drum's angle now (degrees), if it's turning; 0 if not
-    public static float angle(boolean spinning, float partialTick)
+    // The drum's angle now (degrees), if it's turning; 0 if not. level: the block entity's (none in a guide scene)
+    public static float angle(@Nullable Level level, boolean spinning, float partialTick)
     {
-        var level = Minecraft.getInstance().level;
-        if (!spinning || level == null) return 0;
-        return ((level.getGameTime() % 360) + partialTick) * SPEED % 360;
+        if (!spinning) return 0;
+        return GuideContext.ticks(level, partialTick) * SPEED % 360;
     }
 
     public static void submit(StandaloneModelKey<BlockStateModelPart> key, Direction facing, float angle, int light, PoseStack poseStack, SubmitNodeCollector collector)

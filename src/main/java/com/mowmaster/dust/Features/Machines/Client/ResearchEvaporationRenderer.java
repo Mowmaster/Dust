@@ -91,7 +91,7 @@ public class ResearchEvaporationRenderer implements BlockEntityRenderer<Research
         BlockEntityRenderer.super.extractRenderState(table, state, partialTick, cameraPos, crumblingOverlay);
         itemModelResolver.updateForTopItem(state.input, table.getInput(), ItemDisplayContext.GROUND, table.getLevel(), null, 0);
         state.paperGhost = table.getPaper().isEmpty();
-        state.paperTime = table.getLevel() == null ? 0 : table.getLevel().getGameTime() + partialTick;
+        state.paperTime = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(table.getLevel(), partialTick);
         itemModelResolver.updateForTopItem(state.paper, StationRendering.padStack(table.getPaper(), Items.PAPER), ItemDisplayContext.GROUND, table.getLevel(), null, 1);
         itemModelResolver.updateForTopItem(state.output, table.getOutput(), ItemDisplayContext.GROUND, table.getLevel(), null, 2);
         state.facing = table.getBlockState().getValue(ResearchEvaporationBlock.FACING);

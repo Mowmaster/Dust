@@ -1,0 +1,857 @@
+{
+  "title": {
+    "translate": "guide.dust.dust_centrifuge.title"
+  },
+  "items": [
+    "dust:dust_centrifuge"
+  ],
+  "order": 0,
+  "camera": {
+    "yaw": 25,
+    "pitch": 24,
+    "zoom": 1.0
+  },
+  "steps": [
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "state": "minecraft:stone_bricks",
+      "ticks": 8
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "state": "dust:dust_centrifuge[facing=south]",
+      "ticks": 12,
+      "data": {
+        "phase": "FILLING"
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 5
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_centrifuge.1"
+      },
+      "ticks": 100,
+      "point": [
+        2.5,
+        2.8,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 85
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "state": "dust:dust_jar",
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:air",
+          "amount": 300
+        }
+      }
+    },
+    {
+      "type": "show",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube]",
+      "ticks": 6
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_centrifuge.2"
+      },
+      "ticks": 110,
+      "point": [
+        2.5,
+        2.5,
+        1.9
+      ],
+      "side": "right"
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 10
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 290
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 20
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 280
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 30
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 270
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 40
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 260
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 50
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 250
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 60
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 240
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 70
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 230
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 80
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 220
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 90
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 210
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube,filled=true]",
+      "tint": "#FF00FF"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "input": "dust:air",
+        "amount": 100
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        1
+      ],
+      "data": {
+        "contents": {
+          "amount": 200
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 8
+    },
+    {
+      "type": "idle",
+      "ticks": 20
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        2,
+        1
+      ],
+      "state": "dust:dust_tube[down=pull,south=tube]"
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        2,
+        2
+      ],
+      "state": "dust:dust_chute[facing=west,filtered=true,inset=0]",
+      "ticks": 8,
+      "data": {
+        "filter": "dust:water"
+      }
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        2,
+        2
+      ],
+      "state": "dust:dust_chute[facing=east,filtered=true,inset=0]",
+      "ticks": 8,
+      "data": {
+        "filter": "dust:fire"
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 6
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_centrifuge.3"
+      },
+      "ticks": 120,
+      "point": [
+        3.5,
+        2.5,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 110
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        2,
+        2
+      ],
+      "data": {
+        "phase": "SPIN_UP",
+        "phase_ticks": 0
+      }
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_centrifuge.4"
+      },
+      "ticks": 140,
+      "point": [
+        2.5,
+        2.9,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 150
+    },
+    {
+      "type": "show",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=2]",
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:water": 13
+        }
+      }
+    },
+    {
+      "type": "show",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=2]",
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 13
+        }
+      }
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_centrifuge.5"
+      },
+      "ticks": 140,
+      "point": [
+        3.5,
+        1.6,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=3]",
+      "data": {
+        "held": {
+          "dust:water": 26
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=3]",
+      "data": {
+        "held": {
+          "dust:fire": 26
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=4]",
+      "data": {
+        "held": {
+          "dust:water": 39
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=4]",
+      "data": {
+        "held": {
+          "dust:fire": 39
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=5]",
+      "data": {
+        "held": {
+          "dust:water": 52
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=5]",
+      "data": {
+        "held": {
+          "dust:fire": 52
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=6]",
+      "data": {
+        "held": {
+          "dust:water": 65
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=6]",
+      "data": {
+        "held": {
+          "dust:fire": 65
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=7]",
+      "data": {
+        "held": {
+          "dust:water": 78
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=7]",
+      "data": {
+        "held": {
+          "dust:fire": 78
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=8]",
+      "data": {
+        "held": {
+          "dust:water": 91
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=8]",
+      "data": {
+        "held": {
+          "dust:fire": 91
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=8]",
+      "data": {
+        "held": {
+          "dust:water": 100
+        }
+      }
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_pile[layers=8]",
+      "data": {
+        "held": {
+          "dust:fire": 100
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 25
+    },
+    {
+      "type": "idle",
+      "ticks": 40
+    }
+  ]
+}

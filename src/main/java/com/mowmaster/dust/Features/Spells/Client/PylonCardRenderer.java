@@ -61,7 +61,7 @@ public class PylonCardRenderer implements BlockEntityRenderer<PylonBlockEntity, 
                 instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) {
             state.card = com.mowmaster.dust.Features.Spells.pylons.SpellLinks.fusionIcon(modifier);
         }
-        state.time = pylon.getLevel() == null ? 0 : (pylon.getLevel().getGameTime() % 24000) + partialTick;
+        state.time = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(pylon.getLevel(), partialTick);
     }
 
     @Override

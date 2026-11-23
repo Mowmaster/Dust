@@ -105,7 +105,7 @@ public class ApparatusRenderer implements BlockEntityRenderer<ApparatusBlockEnti
     {
         BlockEntityRenderer.super.extractRenderState(apparatus, state, partialTick, cameraPos, crumblingOverlay);
         state.facing = apparatus.getBlockState().getValue(StationBlock.FACING);
-        state.time = apparatus.getLevel() == null ? 0 : (apparatus.getLevel().getGameTime() % 72000L) + partialTick;
+        state.time = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(apparatus.getLevel(), partialTick);
         // A switch on the block entity's class (Java 21's type patterns: the first case it's an instance of)
         state.kind = switch (apparatus) {
             case CrushingMillBlockEntity mill -> Kind.MILL;

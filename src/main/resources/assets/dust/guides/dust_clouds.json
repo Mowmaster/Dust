@@ -15,7 +15,13 @@
         2
       ],
       "state": "dust:dust_pile[layers=8]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 66,
+          "dust:chaos": 34
+        }
+      }
     },
     {
       "type": "show",
@@ -25,7 +31,13 @@
         2
       ],
       "state": "dust:dust_pile[layers=5]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 40,
+          "dust:chaos": 20
+        }
+      }
     },
     {
       "type": "show",
@@ -35,7 +47,13 @@
         2
       ],
       "state": "dust:dust_pile[layers=5]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 40,
+          "dust:chaos": 20
+        }
+      }
     },
     {
       "type": "show",
@@ -45,7 +63,13 @@
         1
       ],
       "state": "dust:dust_pile[layers=5]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 40,
+          "dust:chaos": 20
+        }
+      }
     },
     {
       "type": "show",
@@ -55,7 +79,13 @@
         3
       ],
       "state": "dust:dust_pile[layers=5]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 40,
+          "dust:chaos": 20
+        }
+      }
     },
     {
       "type": "show",
@@ -65,7 +95,13 @@
         1
       ],
       "state": "dust:dust_pile[layers=3]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 23,
+          "dust:chaos": 12
+        }
+      }
     },
     {
       "type": "show",
@@ -75,7 +111,13 @@
         3
       ],
       "state": "dust:dust_pile[layers=3]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 23,
+          "dust:chaos": 12
+        }
+      }
     },
     {
       "type": "show",
@@ -85,7 +127,13 @@
         3
       ],
       "state": "dust:dust_pile[layers=3]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 23,
+          "dust:chaos": 12
+        }
+      }
     },
     {
       "type": "show",
@@ -95,7 +143,13 @@
         1
       ],
       "state": "dust:dust_pile[layers=3]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:fire": 23,
+          "dust:chaos": 12
+        }
+      }
     },
     {
       "type": "idle",

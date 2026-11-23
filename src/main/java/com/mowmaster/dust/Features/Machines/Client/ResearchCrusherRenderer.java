@@ -86,9 +86,9 @@ public class ResearchCrusherRenderer implements BlockEntityRenderer<ResearchCrus
         itemModelResolver.updateForTopItem(state.tray, crusher.getOutput(), ItemDisplayContext.GROUND, crusher.getLevel(), null, 1);
         state.facing = crusher.getBlockState().getValue(ResearchCrusherBlock.FACING);
         state.descent = crusher.progress(partialTick);
-        long gameTime = crusher.getLevel() != null ? crusher.getLevel().getGameTime() : 0;
+        float ticks = com.mowmaster.dust.Features.Guide.Client.GuideContext.ticks(crusher.getLevel(), partialTick);
         // Only turning while there's a block in; % 360 keeps the number small so the float stays precise
-        state.wheelAngle = crusher.isRunning() ? ((gameTime % 360) + partialTick) * WHEEL_SPEED % 360F : 0F;
+        state.wheelAngle = crusher.isRunning() ? ticks * WHEEL_SPEED % 360F : 0F;
     }
 
     @Override

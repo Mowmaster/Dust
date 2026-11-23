@@ -40,7 +40,7 @@ resource pack can rewrite any scene. Scenes load with the client's resources: pr
 | `items`  | (required)                 | The item ids it's shown for. Items of mods that aren't installed are skipped |
 | `order`  | `0`                        | An item with several scenes shows them by `order`, then by id |
 | `plate`  | 5 x 5, smooth stone / polished andesite | The floor at y = 0: `{"width": 5, "depth": 5, "block": "...", "alt": "..."}` (a checker of `block` and `alt`; width 0: no floor) |
-| `blocks` | none                       | Blocks there from the start: `[{"pos": [x, y, z], "to": [x, y, z], "state": "..."}]` (`to` fills the box) |
+| `blocks` | none                       | Blocks there from the start: `[{"pos": [x, y, z], "to": [x, y, z], "state": "...", "data": {...}, "tint": "#RRGGBB"}]` (`to` fills the box; `data` and `tint`: see "Block entities and tints" below) |
 | `camera` | `{"yaw": 45, "pitch": 30, "zoom": 1}` | `yaw`: degrees turned round from looking at the south side (45 = from the south-east). `pitch`: degrees looking down. `zoom`: 1 fits the scene to the view |
 | `steps`  | none                       | The timeline (below) |
 
@@ -64,9 +64,10 @@ default to no wait, so they stay on screen while the steps after them play.
 | `type`      | Fields (defaults)                                                                                      | Default `wait` | What it does |
 |-------------|--------------------------------------------------------------------------------------------------------|----------------|--------------|
 | `idle`      | `ticks` (20)                                                                                           | `ticks`        | Waits |
-| `show`      | `pos`, `to` (none), `state`, `ticks` (10)                                                              | `ticks`        | Blocks drop into place (the box from `pos` to `to`) |
+| `show`      | `pos`, `to` (none), `state`, `data` (none), `tint` (none), `ticks` (10)                                | `ticks`        | Blocks drop into place (the box from `pos` to `to`) |
 | `hide`      | `pos`, `to` (none), `ticks` (10)                                                                       | `ticks`        | Blocks lift away |
-| `place`     | `pos`, `to` (none), `state`                                                                            | 0              | Blocks change at once (a machine switching on, a crop growing) |
+| `place`     | `pos`, `to` (none), `state`, `data` (none), `tint` (none)                                              | 0              | Blocks change at once (a machine switching on, a crop growing) |
+| `data`      | `pos`, `to` (none), `data`                                                                             | 0              | Changes what block entities hold, without changing the blocks: merged into their data, so only the keys given change (a jar filling up, a machine moving on to its next phase) |
 | `item`      | `id` (none), `item`, `at`, `from` (none), `ticks` (0), `lasts` (-1), `spin` (false), `scale` (0.6)     | `ticks`        | An item at a point, sliding from `from` to `at` over `ticks`. It stays for `lasts` ticks (-1: until removed). Name it with `id` to move it later (a new `item` step with the same id replaces it) or remove it |
 | `remove`    | `id`                                                                                                   | 0              | Takes a named item away |
 | `text`      | `text`, `point` (none), `side` (`right`), `ticks` (80)                                                 | 0              | A text box for `ticks`, with a line to `point` if given (`side`: `right`, `left`, `above`, `below`). Without a point it sits in the view's top left corner |
@@ -74,8 +75,26 @@ default to no wait, so they stay on screen while the steps after them play.
 | `click`     | `point`, `button` (`right`), `item` (none), `sneak` (false), `ticks` (40)                             | 0              | Shows a click there: a pulsing ring, a mouse with the button lit, the held item and "Right-click" |
 | `rotate`    | `degrees`, `ticks` (30)                                                                                | `ticks`        | Turns the view round |
 
-Block entity renderers aren't drawn, so the contents a machine shows (items on its pads, liquid in a pot) are shown
-with `item` steps instead.
+### Block entities and tints
+
+A block with a block entity gets one in the scene, drawn by its own block entity renderer, as in the world: a chest's
+lid, a machine's moving parts, what a jar holds. `data` is what it holds, written as the block entity saves it (as for
+`/setblock`): a JSON object, or the same as SNBT text.
+
+```json
+{"type": "show", "pos": [2, 1, 2], "state": "dust:dust_jar", "data": {"contents": {"element": "dust:fire", "amount": 300}}}
+{"type": "data", "pos": [2, 1, 2], "data": {"contents": {"amount": 250}}}
+{"type": "show", "pos": [3, 1, 2], "state": "minecraft:chest[facing=south]", "data": "{Items: [{Slot: 0b, id: \"minecraft:apple\", count: 3}]}"}
+```
+
+Each `show`, `place` or `data` step sets its blocks' block entities up afresh from their data, and they play on from
+there (see "Block entities that move", below). Jumping back along the timeline sets them up again.
+
+A block is tinted as in the world (grass and leaves as in plains, a jar's lid the colour of what's in it), worked out
+from the scene's own blocks and block entities. `tint` (`"#RRGGBB"`) draws every tinted part of its model that colour
+instead: the dust in a filled Glass Dust Tube (`"state": "dust:dust_tube[west=tube,east=tube,filled=true]", "tint": "#FF0000"`).
+
+`item` steps are still there for things that aren't blocks: what's held, what's thrown, an item on its way somewhere.
 
 Keep the words in your lang file (`{"translate": "..."}`) so they can be translated. Dust's own scenes are in
 `src/main/resources/assets/dust/guides/` as examples.
@@ -108,3 +127,22 @@ The builder has a method for each step type. `step(GuideStep)` adds any step wit
 
 To open a guide from your own code (a button in a book, say), call `GuideClient.open(stack, currentScreen)`.
 Closing the guide goes back to `currentScreen`.
+
+## Block entities that move
+
+In a guide a block entity has no level: it's made with `EntityBlock.newBlockEntity`, loaded from the scene's `data`, and
+drawn by its renderer at full light. Most renderers work as they are. Two things need a word in yours:
+
+- **Time and neighbours.** A renderer that animates by `level.getGameTime()`, or looks at the blocks round it, asks
+  `GuideContext` instead: `GuideContext.ticks(blockEntity.getLevel(), partialTick)` is the game time in the world and
+  the scene's time in a guide (so it pauses, replays and jumps with the scene), and
+  `GuideContext.blocks(blockEntity.getLevel())` is the level, or the scene's blocks and block entities.
+- **Playing on.** Nothing comes from the server in a guide. A block entity that moves by counting ticks on the client
+  (how far into a phase it is) implements `GuideAnimated`: the guide calls `guideTick()` once for every tick since the
+  scene set it up. It can just count as on the client, or run its whole cycle as the server would, without the world
+  (no particles, sounds or level). Dust's mixers and centrifuge run their cycle that way: a scene fills them with
+  `data` steps, then starts them with one more (`{"phase": "CLOSING"}`), and they mix, tip out and tip back by
+  themselves.
+
+A block entity that can't be made, loaded or drawn without a level is left out of the scene (and logged), never
+crashing the guide.

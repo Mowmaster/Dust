@@ -29,7 +29,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:earth",
+          "amount": 10
+        }
+      }
     },
     {
       "type": "show",
@@ -38,7 +44,7 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=block]",
+      "state": "dust:dust_tube[west=tube,east=block]",
       "ticks": 6
     },
     {
@@ -53,7 +59,12 @@
         1
       ],
       "state": "dust:dust_pile[layers=3]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:earth": 35
+        }
+      }
     },
     {
       "type": "show",
@@ -63,7 +74,12 @@
         2
       ],
       "state": "dust:dust_pile[layers=5]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:earth": 60
+        }
+      }
     },
     {
       "type": "show",
@@ -73,7 +89,12 @@
         3
       ],
       "state": "dust:dust_pile[layers=2]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:earth": 20
+        }
+      }
     },
     {
       "type": "show",
@@ -83,7 +104,12 @@
         1
       ],
       "state": "dust:dust_pile[layers=4]",
-      "ticks": 6
+      "ticks": 6,
+      "data": {
+        "held": {
+          "dust:earth": 45
+        }
+      }
     },
     {
       "type": "idle",
@@ -141,7 +167,12 @@
         2,
         2
       ],
-      "state": "dust:dust_pile[layers=2]"
+      "state": "dust:dust_pile[layers=2]",
+      "data": {
+        "held": {
+          "dust:earth": 20
+        }
+      }
     },
     {
       "type": "hide",
@@ -181,31 +212,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=block,filled=true]"
-    },
-    {
-      "type": "item",
-      "id": "d",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:earth"
-        }
-      },
-      "at": [
-        4.5,
-        1.9,
-        2.5
-      ],
-      "ticks": 20,
-      "lasts": 25,
-      "scale": 0.4,
-      "from": [
-        2.5,
-        1.9,
-        2.5
-      ]
+      "state": "dust:dust_tube[west=tube,east=block,filled=true]",
+      "tint": "#00FF00"
     },
     {
       "type": "text",
@@ -221,8 +229,102 @@
       "side": "right"
     },
     {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 30
+        }
+      }
+    },
+    {
       "type": "idle",
-      "ticks": 105
+      "ticks": 18
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 50
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 18
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 70
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 18
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 90
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 18
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 110
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 18
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=tube,east=block]"
+    },
+    {
+      "type": "idle",
+      "ticks": 15
     },
     {
       "type": "click",

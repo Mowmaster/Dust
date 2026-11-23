@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
@@ -24,7 +25,9 @@ import java.util.Optional;
 //   title     what it's about (a text component)
 //   items     the items it's shown for
 //   plate     the floor: width x depth blocks at y = 0, a checker of two blocks ("block", "alt"); width 0: none
-//   blocks    blocks there from the start: {"pos": [x,y,z], "to": [x,y,z]?, "state": "..."}
+//   blocks    blocks there from the start: {"pos": [x,y,z], "to": [x,y,z]?, "state": "...", "data": {...}?, "tint": "#RRGGBB"?}
+//             data: what its block entity holds (as it saves it: a jar's dust, a machine's phase), drawn by its block
+//             entity renderer; tint: the colour every tinted part of its model is drawn (a filled Glass Dust Tube's dust)
 //   camera    how it's looked at: yaw (turned this far round from looking at its south side; 45: from the south-east),
 //             pitch (looking down this far), zoom (1: fits the view)
 //   steps     the timeline (GuideStep)
@@ -42,12 +45,14 @@ public record GuideScene(Component title, List<Identifier> items, int order, Pla
         ).apply(i, Plate::new));
     }
 
-    public record Placed(BlockPos pos, Optional<BlockPos> to, BlockState state)
+    public record Placed(BlockPos pos, Optional<BlockPos> to, BlockState state, Optional<CompoundTag> data, Optional<Integer> tint)
     {
         public static final Codec<Placed> CODEC = RecordCodecBuilder.create(i -> i.group(
                 BlockPos.CODEC.fieldOf("pos").forGetter(Placed::pos),
                 BlockPos.CODEC.optionalFieldOf("to").forGetter(Placed::to),
-                GuideCodecs.BLOCK_STATE.fieldOf("state").forGetter(Placed::state)
+                GuideCodecs.BLOCK_STATE.fieldOf("state").forGetter(Placed::state),
+                GuideCodecs.DATA.optionalFieldOf("data").forGetter(Placed::data),
+                GuideCodecs.COLOR.optionalFieldOf("tint").forGetter(Placed::tint)
         ).apply(i, Placed::new));
     }
 
@@ -106,17 +111,22 @@ public record GuideScene(Component title, List<Identifier> items, int order, Pla
         public Builder plate(int width, int depth, BlockState block, BlockState alt) { this.plate = new Plate(width, depth, block, alt); return this; }
         public Builder noPlate() { this.plate = new Plate(0, 0, plate.block(), plate.alt()); return this; }
         public Builder camera(float yaw, float pitch, float zoom) { this.camera = new Camera(yaw, pitch, zoom); return this; }
-        // A block there from the start
-        public Builder block(BlockPos pos, BlockState state) { blocks.add(new Placed(pos, Optional.empty(), state)); return this; }
-        public Builder blocks(BlockPos from, BlockPos to, BlockState state) { blocks.add(new Placed(from, Optional.of(to), state)); return this; }
+        // A block there from the start (with its block entity's data)
+        public Builder block(BlockPos pos, BlockState state) { blocks.add(new Placed(pos, Optional.empty(), state, Optional.empty(), Optional.empty())); return this; }
+        public Builder block(BlockPos pos, BlockState state, CompoundTag data) { blocks.add(new Placed(pos, Optional.empty(), state, Optional.of(data), Optional.empty())); return this; }
+        public Builder blocks(BlockPos from, BlockPos to, BlockState state) { blocks.add(new Placed(from, Optional.of(to), state, Optional.empty(), Optional.empty())); return this; }
 
         // ---- steps ----
         public Builder step(GuideStep step) { steps.add(step); return this; }
         public Builder idle(int ticks) { return step(new GuideStep.Idle(ticks)); }
-        public Builder show(BlockPos pos, BlockState state) { return step(new GuideStep.Show(pos, Optional.empty(), state, 10, GuideStep.DEFAULT)); }
-        public Builder show(BlockPos from, BlockPos to, BlockState state) { return step(new GuideStep.Show(from, Optional.of(to), state, 10, GuideStep.DEFAULT)); }
+        public Builder show(BlockPos pos, BlockState state) { return step(new GuideStep.Show(pos, Optional.empty(), state, Optional.empty(), Optional.empty(), 10, GuideStep.DEFAULT)); }
+        public Builder show(BlockPos pos, BlockState state, CompoundTag data) { return step(new GuideStep.Show(pos, Optional.empty(), state, Optional.of(data), Optional.empty(), 10, GuideStep.DEFAULT)); }
+        public Builder show(BlockPos from, BlockPos to, BlockState state) { return step(new GuideStep.Show(from, Optional.of(to), state, Optional.empty(), Optional.empty(), 10, GuideStep.DEFAULT)); }
         public Builder hide(BlockPos pos) { return step(new GuideStep.Hide(pos, Optional.empty(), 10, GuideStep.DEFAULT)); }
-        public Builder place(BlockPos pos, BlockState state) { return step(new GuideStep.Place(pos, Optional.empty(), state, GuideStep.DEFAULT)); }
+        public Builder place(BlockPos pos, BlockState state) { return step(new GuideStep.Place(pos, Optional.empty(), state, Optional.empty(), Optional.empty(), GuideStep.DEFAULT)); }
+        public Builder place(BlockPos pos, BlockState state, CompoundTag data) { return step(new GuideStep.Place(pos, Optional.empty(), state, Optional.of(data), Optional.empty(), GuideStep.DEFAULT)); }
+        // Changes what a block entity holds (merged into its data: only the keys given change)
+        public Builder data(BlockPos pos, CompoundTag data) { return step(new GuideStep.Data(pos, Optional.empty(), data, GuideStep.DEFAULT)); }
         // An item resting at a point until removed
         public Builder item(String id, Item item, Vec3 at) { return step(new GuideStep.ShowItem(id, new GuideItem(item, 1), at, Optional.empty(), 0, -1, false, 0.6F, GuideStep.DEFAULT)); }
         // An item sliding from one point to another over ticks, then resting there until removed

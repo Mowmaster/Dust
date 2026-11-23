@@ -15,7 +15,10 @@
         2
       ],
       "state": "dust:dust_mixer[facing=south]",
-      "ticks": 12
+      "ticks": 12,
+      "data": {
+        "phase": "OPEN"
+      }
     },
     {
       "type": "idle",
@@ -29,7 +32,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 300
+        }
+      }
     },
     {
       "type": "show",
@@ -38,28 +47,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=pull,east=block]",
+      "state": "dust:dust_tube[west=pull,east=tube]",
       "ticks": 6
-    },
-    {
-      "type": "item",
-      "id": "a",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
-        }
-      },
-      "at": [
-        0.5,
-        1.95,
-        2.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.4,
-      "spin": true
     },
     {
       "type": "show",
@@ -69,7 +58,13 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 8
+      "ticks": 8,
+      "data": {
+        "contents": {
+          "element": "dust:earth",
+          "amount": 300
+        }
+      }
     },
     {
       "type": "show",
@@ -78,28 +73,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[east=pull,west=block]",
+      "state": "dust:dust_tube[east=pull,west=tube]",
       "ticks": 6
-    },
-    {
-      "type": "item",
-      "id": "b",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:earth"
-        }
-      },
-      "at": [
-        4.5,
-        1.95,
-        2.5
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.4,
-      "spin": true
     },
     {
       "type": "idle",
@@ -114,7 +89,7 @@
     },
     {
       "type": "idle",
-      "ticks": 50
+      "ticks": 60
     },
     {
       "type": "place",
@@ -123,7 +98,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=pull,east=block,filled=true]"
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "place",
@@ -132,7 +108,48 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[east=pull,west=block,filled=true]"
+      "state": "dust:dust_tube[east=pull,west=tube,filled=true]",
+      "tint": "#00FF00"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "first": "dust:fire",
+        "second": "dust:earth",
+        "first_amount": 10,
+        "second_amount": 10
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 290
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 290
+        }
+      }
     },
     {
       "type": "text",
@@ -149,7 +166,7 @@
     },
     {
       "type": "idle",
-      "ticks": 115
+      "ticks": 12
     },
     {
       "type": "place",
@@ -158,7 +175,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=pull,east=block]"
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "place",
@@ -167,7 +185,363 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[east=pull,west=block]"
+      "state": "dust:dust_tube[east=pull,west=tube,filled=true]",
+      "tint": "#00FF00"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "first": "dust:fire",
+        "second": "dust:earth",
+        "first_amount": 20,
+        "second_amount": 20
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 280
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 280
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=tube,filled=true]",
+      "tint": "#00FF00"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "first": "dust:fire",
+        "second": "dust:earth",
+        "first_amount": 30,
+        "second_amount": 30
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 270
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 270
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=tube,filled=true]",
+      "tint": "#00FF00"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "first": "dust:fire",
+        "second": "dust:earth",
+        "first_amount": 40,
+        "second_amount": 40
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 260
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 260
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=tube,filled=true]",
+      "tint": "#00FF00"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "first": "dust:fire",
+        "second": "dust:earth",
+        "first_amount": 50,
+        "second_amount": 50
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 250
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 250
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube,filled=true]",
+      "tint": "#FF0000"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=tube,filled=true]",
+      "tint": "#00FF00"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "first": "dust:fire",
+        "second": "dust:earth",
+        "first_amount": 60,
+        "second_amount": 60
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        0,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 240
+        }
+      }
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 240
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "idle",
+      "ticks": 60
+    },
+    {
+      "type": "place",
+      "pos": [
+        1,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[west=pull,east=tube]"
+    },
+    {
+      "type": "place",
+      "pos": [
+        3,
+        1,
+        2
+      ],
+      "state": "dust:dust_tube[east=pull,west=tube]"
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "phase": "CLOSING",
+        "phase_ticks": 0
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "text",
+      "text": {
+        "translate": "guide.dust.dust_mixer.3"
+      },
+      "ticks": 100,
+      "point": [
+        2.5,
+        1.95,
+        2.5
+      ],
+      "side": "right"
+    },
+    {
+      "type": "idle",
+      "ticks": 148
     },
     {
       "type": "show",
@@ -176,33 +550,36 @@
         1,
         3
       ],
-      "state": "dust:dust_pile[layers=3]",
-      "ticks": 10
+      "state": "dust:dust_pile[layers=2]",
+      "ticks": 4,
+      "data": {
+        "held": {
+          "dust:metal": 20
+        }
+      }
     },
     {
-      "type": "item",
-      "id": "m",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:metal"
-        }
-      },
-      "at": [
-        2.5,
-        1.7,
-        3.5
+      "type": "idle",
+      "ticks": 3
+    },
+    {
+      "type": "place",
+      "pos": [
+        2,
+        1,
+        3
       ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.4,
-      "spin": true
+      "state": "dust:dust_pile[layers=5]",
+      "data": {
+        "held": {
+          "dust:metal": 60
+        }
+      }
     },
     {
       "type": "text",
       "text": {
-        "translate": "guide.dust.dust_mixer.3"
+        "translate": "guide.dust.dust_mixer.4"
       },
       "ticks": 100,
       "point": [
@@ -214,12 +591,12 @@
     },
     {
       "type": "idle",
-      "ticks": 90
+      "ticks": 95
     },
     {
       "type": "text",
       "text": {
-        "translate": "guide.dust.dust_mixer.4"
+        "translate": "guide.dust.dust_mixer.5"
       },
       "ticks": 110
     },

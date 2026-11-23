@@ -6,12 +6,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.world.level.block.state.BlockState;
 
 // Small codecs for guide scene files (GuideScene), written to be easy to type by hand:
 //   BLOCK_STATE   "minecraft:oak_stairs[facing=east,half=top]" (as in commands), or vanilla's
 //                 {"Name": "minecraft:oak_stairs", "Properties": {"facing": "east"}}
 //   COLOR         "#RRGGBB" or "#AARRGGBB" (no alpha: opaque), or a plain number
+//   DATA          block entity data, as a block entity saves it: a JSON object, {"contents": {"amount": 60}}, or the
+//                 same as SNBT text (as in /setblock): "{contents: {amount: 60}}"
 // A Codec turns a value to and from JSON (or NBT); Codec.either tries the first form, then the second.
 public final class GuideCodecs
 {
@@ -43,4 +47,6 @@ public final class GuideCodecs
 
     public static final Codec<Integer> COLOR = Codec.either(Codec.STRING.comapFlatMap(GuideCodecs::parseColor, color -> String.format("#%08X", color)), Codec.INT)
             .xmap(either -> either.map(color -> color, color -> color), Either::left);
+
+    public static final Codec<CompoundTag> DATA = TagParser.LENIENT_CODEC;
 }

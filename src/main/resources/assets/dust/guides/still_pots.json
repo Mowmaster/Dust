@@ -31,7 +31,11 @@
         2
       ],
       "state": "dust:still_pot[facing=south]",
-      "ticks": 10
+      "ticks": 10,
+      "data": {
+        "stored": "dust:earth",
+        "stored_amount": 60
+      }
     },
     {
       "type": "show",
@@ -161,7 +165,7 @@
         2,
         3
       ],
-      "state": "dust:dust_chute[facing=south]",
+      "state": "dust:dust_chute[facing=south,inset=2]",
       "ticks": 10
     },
     {
@@ -189,7 +193,12 @@
         3
       ],
       "state": "dust:dust_pile[layers=2]",
-      "ticks": 8
+      "ticks": 8,
+      "data": {
+        "held": {
+          "dust:earth": 20
+        }
+      }
     },
     {
       "type": "idle",
@@ -202,7 +211,12 @@
         1,
         3
       ],
-      "state": "dust:dust_pile[layers=5]"
+      "state": "dust:dust_pile[layers=5]",
+      "data": {
+        "held": {
+          "dust:earth": 55
+        }
+      }
     },
     {
       "type": "idle",
@@ -230,27 +244,10 @@
         2,
         3
       ],
-      "state": "dust:dust_chute[facing=south,filtered=true]"
-    },
-    {
-      "type": "item",
-      "id": "f",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:earth"
-        }
-      },
-      "at": [
-        2.5,
-        3.1,
-        3.2
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.4,
-      "spin": true
+      "state": "dust:dust_chute[facing=south,filtered=true,inset=2]",
+      "data": {
+        "filter": "dust:earth"
+      }
     },
     {
       "type": "text",
@@ -274,7 +271,7 @@
       "point": [
         2.5,
         3.5,
-        3.0
+        2.95
       ],
       "button": "right",
       "ticks": 40,
@@ -285,6 +282,22 @@
       "ticks": 10
     },
     {
+      "type": "place",
+      "pos": [
+        2,
+        3,
+        2
+      ],
+      "state": "dust:still_pot[facing=south]",
+      "data": {
+        "stored": "dust:metal",
+        "stored_amount": 40,
+        "labels": [
+          "south"
+        ]
+      }
+    },
+    {
       "type": "text",
       "text": {
         "translate": "guide.dust.still_pots.5"
@@ -293,7 +306,7 @@
       "point": [
         2.5,
         3.5,
-        3.0
+        2.95
       ],
       "side": "right"
     },

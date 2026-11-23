@@ -72,28 +72,26 @@
       }
     },
     {
-      "type": "item",
-      "id": "f",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
-        }
-      },
-      "at": [
-        2.5,
-        2.0,
-        2.5
+      "type": "idle",
+      "ticks": 12
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
       ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.45,
-      "spin": true
+      "data": {
+        "contents": {
+          "element": "dust:fire",
+          "amount": 250
+        }
+      }
     },
     {
       "type": "idle",
-      "ticks": 25
+      "ticks": 13
     },
     {
       "type": "click",
@@ -107,21 +105,23 @@
       "item": "dust:jar_label"
     },
     {
-      "type": "item",
-      "id": "l",
-      "item": "dust:jar_label",
-      "at": [
-        2.5,
-        1.4,
-        2.92
-      ],
-      "ticks": 0,
-      "lasts": -1,
-      "scale": 0.4
-    },
-    {
       "type": "idle",
       "ticks": 10
+    },
+    {
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "labels": [
+            "south"
+          ]
+        }
+      }
     },
     {
       "type": "text",
@@ -167,8 +167,17 @@
       "ticks": 12
     },
     {
-      "type": "remove",
-      "id": "l"
+      "type": "data",
+      "pos": [
+        2,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "labels": []
+        }
+      }
     },
     {
       "type": "text",

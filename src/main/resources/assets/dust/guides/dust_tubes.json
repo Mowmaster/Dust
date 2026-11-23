@@ -26,7 +26,12 @@
         2
       ],
       "state": "dust:dust_jar",
-      "ticks": 12
+      "ticks": 12,
+      "data": {
+        "contents": {
+          "element": "dust:fire"
+        }
+      }
     },
     {
       "type": "idle",
@@ -39,7 +44,7 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=tube]",
+      "state": "dust:dust_tube[west=near,east=tube]",
       "ticks": 8
     },
     {
@@ -77,7 +82,7 @@
         1.7,
         2.5
       ],
-      "side": "above"
+      "side": "right"
     },
     {
       "type": "idle",
@@ -132,7 +137,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=tube,filled=true]"
+      "state": "dust:dust_tube[west=near,east=tube,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "idle",
@@ -145,7 +151,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=tube,east=tube,filled=true]"
+      "state": "dust:dust_tube[west=tube,east=tube,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "idle",
@@ -158,31 +165,8 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=tube,east=block,filled=true]"
-    },
-    {
-      "type": "item",
-      "id": "d",
-      "item": {
-        "id": "dust:alchemical_dust",
-        "count": 1,
-        "components": {
-          "dust:alchemical_element": "dust:fire"
-        }
-      },
-      "at": [
-        4.5,
-        1.9,
-        2.5
-      ],
-      "ticks": 30,
-      "lasts": -1,
-      "scale": 0.4,
-      "from": [
-        0.5,
-        1.9,
-        2.5
-      ]
+      "state": "dust:dust_tube[west=tube,east=block,filled=true]",
+      "tint": "#FF0000"
     },
     {
       "type": "text",
@@ -195,15 +179,75 @@
         1.6,
         2.5
       ],
-      "side": "above"
+      "side": "right"
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 25
+        }
+      }
     },
     {
       "type": "idle",
-      "ticks": 70
+      "ticks": 17
     },
     {
-      "type": "remove",
-      "id": "d"
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 50
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 17
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 75
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 17
+    },
+    {
+      "type": "data",
+      "pos": [
+        4,
+        1,
+        2
+      ],
+      "data": {
+        "contents": {
+          "amount": 100
+        }
+      }
+    },
+    {
+      "type": "idle",
+      "ticks": 17
     },
     {
       "type": "text",
@@ -255,7 +299,7 @@
         1,
         2
       ],
-      "state": "dust:dust_tube[west=block,east=tube]"
+      "state": "dust:dust_tube[west=near,east=tube]"
     },
     {
       "type": "text",
@@ -268,7 +312,7 @@
         1.6,
         2.5
       ],
-      "side": "above"
+      "side": "right"
     },
     {
       "type": "idle",
