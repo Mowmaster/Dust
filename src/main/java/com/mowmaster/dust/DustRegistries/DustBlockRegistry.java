@@ -181,11 +181,11 @@ public class DustBlockRegistry {
 
     // The alchemical apparatus (Features/Apparatus): factory machines of copper, brass and iron, one for each research
     // station, that work without stopping and pour the dust they make along Glass Dust Tubes into Dust Jars
-    public static final DeferredBlock<Block> CRUSHING_MILL = apparatus("crushing_mill", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUSHING_MILL,
+    public static final DeferredBlock<Block> CRUSHING_MILL = apparatus("crushing_mill", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUSHING_MILL, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUSHING_MILL_INSETS,
             com.mowmaster.dust.Features.Apparatus.CrushingMillBlockEntity::new);
-    public static final DeferredBlock<Block> ALCHEMICAL_SEPARATOR = apparatus("alchemical_separator", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.SEPARATOR,
+    public static final DeferredBlock<Block> ALCHEMICAL_SEPARATOR = apparatus("alchemical_separator", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.SEPARATOR, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.SEPARATOR_INSETS,
             com.mowmaster.dust.Features.Apparatus.SeparatorBlockEntity::new);
-    public static final DeferredBlock<Block> EVAPORATING_KETTLE = apparatus("evaporating_kettle", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.KETTLE,
+    public static final DeferredBlock<Block> EVAPORATING_KETTLE = apparatus("evaporating_kettle", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.KETTLE, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.KETTLE_INSETS,
             com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity::new);
     // The Still (Features/Apparatus/still: it replaced the Alembic), stacked: firebox, pot, towers, top
     public static final DeferredBlock<Block> STILL_FIREBOX = registerBlock("firebox_burnable", properties -> new com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlock(
@@ -210,23 +210,34 @@ public class DustBlockRegistry {
             properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
     public static final DeferredBlock<Block> DUST_MIXER = registerBlock("dust_mixer", properties -> new com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlock(
             properties.mapColor(MapColor.COLOR_ORANGE).sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
-    public static final DeferredBlock<Block> TRANSMUTER = apparatus("transmuter", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER,
+    // The Wet Dust Mixer (for gaseous and aqueous mixes), the Dust Cyclone over its hopper (spins solids apart), and the
+    // Dust Centrifuge (spins gaseous and aqueous elements apart)
+    public static final DeferredBlock<Block> DUST_MIXER_WET = registerBlock("dust_mixer_wet", properties -> new com.mowmaster.dust.Features.Apparatus.mixer.DustWetMixerBlock(
+            properties.mapColor(MapColor.METAL).sound(SoundType.METAL).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    public static final DeferredBlock<Block> DUST_CYCLONE = registerBlock("dust_cyclone", properties -> new com.mowmaster.dust.Features.Apparatus.cyclone.DustCycloneBlock(
+            properties.mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(2.0F, 6.0F).noOcclusion()));
+    public static final DeferredBlock<Block> DUST_CYCLONE_HOPPER = registerBlock("dust_cyclone_hopper", properties -> new com.mowmaster.dust.Features.Apparatus.cyclone.DustCycloneHopperBlock(
+            properties.mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(2.0F, 6.0F).noOcclusion()));
+    public static final DeferredBlock<Block> DUST_CENTRIFUGE = registerBlock("dust_centrifuge", properties -> new com.mowmaster.dust.Features.Apparatus.centrifuge.DustCentrifugeBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.5F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    public static final DeferredBlock<Block> TRANSMUTER = apparatus("transmuter", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER_INSETS,
             com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new);
-    public static final DeferredBlock<Block> CONJOINING_CRUCIBLE = apparatus("conjoining_crucible", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE,
+    public static final DeferredBlock<Block> CONJOINING_CRUCIBLE = apparatus("conjoining_crucible", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE_INSETS,
             com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity::new);
-    public static final DeferredBlock<Block> MIXING_VAT = apparatus("mixing_vat", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.MIXING_VAT,
+    public static final DeferredBlock<Block> MIXING_VAT = apparatus("mixing_vat", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.MIXING_VAT, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.MIXING_VAT_INSETS,
             com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity::new);
-    public static final DeferredBlock<Block> DISSOLVING_RETORT = apparatus("dissolving_retort", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.RETORT,
+    public static final DeferredBlock<Block> DISSOLVING_RETORT = apparatus("dissolving_retort", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.RETORT, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.RETORT_INSETS,
             com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity::new);
 
     // One apparatus: copper, brass and iron (mined with a pickaxe; tool needed for it to drop), its own shape and block
     // entity (ApparatusBlock)
     private static DeferredBlock<Block> apparatus(String name, net.minecraft.world.phys.shapes.VoxelShape shape,
+                                                  com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets insets,
                                                   java.util.function.BiFunction<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState,
                                                           ? extends com.mowmaster.dust.Features.Apparatus.ApparatusBlockEntity> factory)
     {
         return registerBlock(name, properties -> new com.mowmaster.dust.Features.Apparatus.ApparatusBlock(properties.mapColor(MapColor.COLOR_ORANGE)
-                .sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion(), shape, factory));
+                .sound(SoundType.COPPER).strength(3.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion(), shape, insets, factory));
     }
 
     // The Spell Caster (Features/Spells/caster): casts a scroll's spell on a redstone pulse, on dust and energy crystals

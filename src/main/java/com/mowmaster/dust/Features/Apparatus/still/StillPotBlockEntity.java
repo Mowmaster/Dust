@@ -101,10 +101,7 @@ public class StillPotBlockEntity extends ApparatusBlockEntity implements Element
     // The chute on this side, if one is fixed to the pot there
     private @Nullable DustChuteBlockEntity chute(Level level, Direction side)
     {
-        BlockPos pos = worldPosition.relative(side);
-        BlockState state = level.getBlockState(pos);
-        if (!(state.getBlock() instanceof DustChuteBlock) || state.getValue(DustChuteBlock.FACING) != side) return null;
-        return level.getBlockEntity(pos) instanceof DustChuteBlockEntity chute ? chute : null;
+        return level instanceof ServerLevel server ? DustChutes.chute(server, worldPosition, side) : null;
     }
 
     @Override
@@ -166,20 +163,8 @@ public class StillPotBlockEntity extends ApparatusBlockEntity implements Element
     private void pourChutes(ServerLevel level)
     {
         if (stored == null || storedAmount <= 0) return;
-        for (Direction side : Direction.Plane.HORIZONTAL) {
-            if (storedAmount <= 0 || stored == null) return;
-            DustChuteBlockEntity chute = chute(level, side);
-            if (chute == null || (chute.filter() != null && !chute.filter().equals(stored))) continue;
-            int amount = Math.min(CHUTE_RATE, storedAmount);
-            BlockPos under = worldPosition.relative(side).below();
-            int landed = com.mowmaster.dust.Features.DustStorage.DustClouds.deposit(level, under, stored, amount, under.getY());
-            if (landed > 0) {
-                DustElement element = stored;
-                take(landed);
-                level.sendParticles(new net.minecraft.core.particles.DustParticleOptions(element.color(), 1.0F),
-                        under.getX() + 0.5, under.getY() + 0.9, under.getZ() + 0.5, 4, 0.12, 0.2, 0.12, 0);
-            }
-        }
+        int landed = DustChutes.pour(level, worldPosition, stored, CHUTE_RATE, storedAmount);
+        if (landed > 0) take(landed);
     }
 
     // Whether it's the bottom pot, the one running the still (on the firebox)

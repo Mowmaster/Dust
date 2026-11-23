@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dust:block/apparatus/dust_cyclone_hopper"
+    }
+  }
+}

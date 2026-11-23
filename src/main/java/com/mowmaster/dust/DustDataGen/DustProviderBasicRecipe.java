@@ -255,6 +255,20 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.DUST_MIXER.asItem(), "dust_mixer", Optional.empty(),
                 java.util.Map.of('I', iron, 'S', Ingredient.of(Items.SMOOTH_STONE), 'B', Ingredient.of(Items.IRON_BARS), 'R', Ingredient.of(DustBlockRegistry.RESEARCH_COMBINATION.asItem())),
                 List.of("SBS", "IRI", "SIS"), cost(DustElements.FIRE, 30), cost(DustElements.EARTH, 30));
+        // The Wet Dust Mixer: a metal pot under a stone stand; the Dust Cyclone and its hopper: glass barrels in stone
+        // straps; the Dust Centrifuge: glass vials on a brass spinner over a stone base
+        elementShaped(DustBlockRegistry.DUST_MIXER_WET.asItem(), "dust_mixer_wet", Optional.empty(),
+                java.util.Map.of('S', Ingredient.of(Items.SMOOTH_STONE), 'I', iron, 'C', cauldron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_MIXING.asItem())),
+                List.of("SSS", "IRS", "CIS"), cost(DustElements.WATER, 30), cost(DustElements.CHAOS, 30));
+        elementShaped(DustBlockRegistry.DUST_CYCLONE.asItem(), "dust_cyclone", Optional.empty(),
+                java.util.Map.of('S', Ingredient.of(Items.SMOOTH_STONE), 'G', glass, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_SEPARATION.asItem())),
+                List.of("SGS", "GRG", "SGS"), cost(DustElements.ORDER, 30), cost(DustElements.EARTH, 20));
+        elementShaped(DustBlockRegistry.DUST_CYCLONE_HOPPER.asItem(), "dust_cyclone_hopper", Optional.empty(),
+                java.util.Map.of('S', Ingredient.of(Items.SMOOTH_STONE), 'G', glass),
+                List.of("SGS", "G G", " G "), cost(DustElements.EARTH, 10));
+        elementShaped(DustBlockRegistry.DUST_CENTRIFUGE.asItem(), "dust_centrifuge", Optional.empty(),
+                java.util.Map.of('S', Ingredient.of(Items.SMOOTH_STONE), 'G', Ingredient.of(Items.GLASS_BOTTLE), 'C', copperIngot, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_SEPARATION.asItem())),
+                List.of("GCG", "CRC", "SSS"), cost(DustElements.WATER, 30), cost(DustElements.CHAOS, 20));
         elementShaped(DustBlockRegistry.TRANSMUTER.asItem(), "transmuter", Optional.empty(),
                 java.util.Map.of('G', glass, 'A', Ingredient.of(Items.AMETHYST_SHARD), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.asItem()), 'B', blackstone),
                 List.of("GAG", "IRI", "BBB"), cost(DustElements.ORDER, 30), cost(DustElements.CHAOS, 30));

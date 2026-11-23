@@ -20,9 +20,17 @@ public interface DustTubeConnectable
         return null;
     }
 
-    // How far a tube's arm reaches into this block to meet it (TubeJoin.BLOCK: 3 pixels; TubeJoin.NEAR: 2)
+    // How far in from the block's edge its body is on this side (pixels), for tubes and other things fixed to it
+    // (AttachInsets). By default worked out from its shape; a block can say, measured off its model.
+    default double attachInset(BlockState state, Direction side)
+    {
+        return AttachInsets.fromShape(state, side);
+    }
+
+    // How a tube's arm reaches into this block to meet it: as far as its body is in (TubeJoin.reaching: flush, 2 pixels
+    // or 3)
     default TubeJoin tubeJoin(BlockState state, Direction side)
     {
-        return TubeJoin.BLOCK;
+        return TubeJoin.reaching(attachInset(state, side));
     }
 }

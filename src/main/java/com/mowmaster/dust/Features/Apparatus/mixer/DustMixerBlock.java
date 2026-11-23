@@ -67,7 +67,6 @@ public class DustMixerBlock extends Block implements EntityBlock, DustTubeConnec
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type)
     {
-        if (type != DustBlockEntityRegistry.DUST_MIXER.get()) return null;
         return (tickLevel, pos, tickState, blockEntity) -> {
             if (!(blockEntity instanceof DustMixerBlockEntity mixer)) return;
             if (tickLevel instanceof ServerLevel server) mixer.serverTick(server);

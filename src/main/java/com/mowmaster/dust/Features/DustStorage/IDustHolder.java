@@ -20,4 +20,10 @@ public interface IDustHolder extends IDustReceiver
     {
         return dustAmount(element) > 0;
     }
+
+    // Whether tubes can pour dust in at this side of it (a machine's input side); every side by default
+    default boolean takesDustFrom(net.minecraft.core.Direction side)
+    {
+        return true;
+    }
 }

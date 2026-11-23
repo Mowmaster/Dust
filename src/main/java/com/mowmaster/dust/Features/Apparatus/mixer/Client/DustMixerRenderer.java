@@ -102,51 +102,14 @@ public class DustMixerRenderer implements BlockEntityRenderer<DustMixerBlockEnti
         state.paddles = phase == Phase.MIXING && level != null ? ((level.getGameTime() % 360) + partialTick) * PADDLE_SPEED % 360 : 0;
     }
 
-    // What's in the bowl to draw, for this phase
+    // What's in the bowl to draw (MixerContents), as heights in the bowl
     private static void dust(DustMixerBlockEntity mixer, Phase phase, float t, State state)
     {
-        state.leftHeight = state.rightHeight = FLOOR;
-        var first = mixer.first();
-        var second = mixer.second();
-        switch (phase) {
-            case OPEN, CLOSING, RETURNING -> {
-                if (first != null) { state.leftHeight = height(mixer.firstAmount()); state.leftColor = 0xFF000000 | first.color(); }
-                if (second != null) { state.rightHeight = height(mixer.secondAmount()); state.rightColor = 0xFF000000 | second.color(); }
-            }
-            case MIXING -> {
-                // Both halves the batch, turning to the colour of what they make
-                int total = Math.max(1, mixer.batch() * DustMixerBlockEntity.MIX_TICKS_PER_DUST);
-                float share = Math.min(1, t / total);
-                var child = first == null || second == null ? null : com.mowmaster.dust.Features.Machines.ElementCombining.combine(first, second);
-                int target = child == null ? 0xFFFFFF : child.color();
-                state.leftHeight = state.rightHeight = height(mixer.batch());
-                state.leftColor = 0xFF000000 | StationRendering.lerpColor(first == null ? target : first.color(), target, share);
-                state.rightColor = 0xFF000000 | StationRendering.lerpColor(second == null ? target : second.color(), target, share);
-            }
-            case OPENING, TIPPING, DUMPING, HELD -> {
-                // What's tipped out, going down as it pours
-                int amount = 0;
-                long red = 0, green = 0, blue = 0;
-                for (var entry : mixer.dumping().entrySet()) {
-                    int c = entry.getKey().color(), n = entry.getValue();
-                    amount += n;
-                    red += (long) ((c >> 16) & 0xFF) * n;
-                    green += (long) ((c >> 8) & 0xFF) * n;
-                    blue += (long) (c & 0xFF) * n;
-                }
-                if (amount > 0) {
-                    state.leftHeight = state.rightHeight = height(amount);
-                    state.leftColor = state.rightColor = 0xFF000000 | (int) ((red / amount) << 16 | (green / amount) << 8 | (blue / amount));
-                }
-            }
-        }
-    }
-
-    // How high this much dust stands in the bowl: half full at SLOT_CAPACITY (a thin layer at least)
-    private static double height(int amount)
-    {
-        if (amount <= 0) return FLOOR;
-        return FLOOR + Math.max(0.3, (HALF - FLOOR) * Math.min(1.0, amount / (double) DustMixerBlockEntity.SLOT_CAPACITY));
+        MixerContents contents = MixerContents.of(mixer, t);
+        state.leftHeight = MixerContents.height(contents.left(), FLOOR, HALF);
+        state.rightHeight = MixerContents.height(contents.right(), FLOOR, HALF);
+        state.leftColor = contents.leftColor();
+        state.rightColor = contents.rightColor();
     }
 
     // Smooth in and out

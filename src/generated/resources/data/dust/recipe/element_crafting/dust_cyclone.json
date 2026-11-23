@@ -1,0 +1,28 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 30,
+      "element": "dust:order"
+    },
+    {
+      "amount": 20,
+      "element": "dust:earth"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_cyclone"
+  },
+  "shaped": {
+    "key": {
+      "G": "minecraft:glass",
+      "R": "dust:research_separation",
+      "S": "minecraft:smooth_stone"
+    },
+    "pattern": [
+      "SGS",
+      "GRG",
+      "SGS"
+    ]
+  }
+}

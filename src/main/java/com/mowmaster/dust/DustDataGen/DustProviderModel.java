@@ -493,9 +493,13 @@ public class DustProviderModel extends ModelProvider {
         Map<Direction, VariantMutator> fromSouth = Map.of(
                 Direction.SOUTH, BlockModelGenerators.NOP, Direction.WEST, BlockModelGenerators.Y_ROT_90,
                 Direction.NORTH, BlockModelGenerators.Y_ROT_180, Direction.EAST, BlockModelGenerators.Y_ROT_270);
+        // Sat back INSET pixels to meet the block it's fixed to: dust_chute(_filtered)_inset<n>.json, the same moved back
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_CHUTE.get()).with(
-                PropertyDispatch.initial(com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.FACING, com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.FILTERED)
-                        .generate((facing, filtered) -> BlockModelGenerators.plainVariant(filtered ? chuteFiltered : chute).with(fromSouth.get(facing)))));
+                PropertyDispatch.initial(com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.FACING, com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.FILTERED,
+                                com.mowmaster.dust.Features.Apparatus.still.DustChuteBlock.INSET)
+                        .generate((facing, filtered, inset) -> BlockModelGenerators.plainVariant(inset == 0 ? (filtered ? chuteFiltered : chute)
+                                : Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_chute" + (filtered ? "_filtered" : "") + "_inset" + inset))
+                                .with(fromSouth.get(facing)))));
         blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_CHUTE.asItem(), ItemModelUtils.plainModel(chute));
         // The Dust Separator and its extension: the block draws the base (the drum turns, drawn by
         // separator/Client/DrumRendering), turned by facing; the item is the whole thing (dust_seperator.json)
@@ -512,6 +516,23 @@ public class DustProviderModel extends ModelProvider {
                 PropertyDispatch.initial(com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlock.FACING).generate(facing ->
                         BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_mixer_base")).with(fromSouth.get(facing)))));
         blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_MIXER.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_mixer")));
+        // The Wet Dust Mixer and the Dust Centrifuge: the block draws the part that stays still (dust_mixer_wet_base.json,
+        // dust_centrifuge_base.json: the moving parts are drawn by their renderers), turned by facing; the item is the
+        // whole thing. The Dust Cyclone (dust_cyclone_top.json) turned by facing; its hopper the same every way round.
+        for (String name : List.of("dust_mixer_wet", "dust_centrifuge")) {
+            Block block = BuiltInRegistries.BLOCK.getValue(Identifier.fromNamespaceAndPath(DustReferences.MODID, name));
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block,
+                    BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + name + "_base")))
+                    .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+            blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + name)));
+        }
+        Identifier cyclone = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_cyclone_top");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_CYCLONE.get(), BlockModelGenerators.plainVariant(cyclone))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_CYCLONE.asItem(), ItemModelUtils.plainModel(cyclone));
+        Identifier cycloneHopper = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_cyclone_hopper");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_CYCLONE_HOPPER.get(), BlockModelGenerators.plainVariant(cycloneHopper)));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_CYCLONE_HOPPER.asItem(), ItemModelUtils.plainModel(cycloneHopper));
         // The Dust Collector: one model, the same every way round
         Identifier collector = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/dust_collector");
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_COLLECTOR.get(), BlockModelGenerators.plainVariant(collector)));

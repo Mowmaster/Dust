@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/apparatus/dust_cyclone_top",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/apparatus/dust_cyclone_top"
+    },
+    "facing=south": {
+      "model": "dust:block/apparatus/dust_cyclone_top",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dust:block/apparatus/dust_cyclone_top",
+      "y": 270
+    }
+  }
+}

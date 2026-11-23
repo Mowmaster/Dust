@@ -32,8 +32,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 
 // The Dust Chute (models/block/apparatus/dust_chute.json; filtered: dust_chute_filtered.json): fixed to a side of a Still
-// Pot (FACING: away from the pot, its back against it), it lets the pot's dust out as Dust Piles under it
-// (StillPotBlockEntity.pourChutes). Filtered (FILTERED, the element kept on its block entity, its symbol drawn on it:
+// Pot or a Dust Centrifuge (FACING: away from it, its back against it), it lets that block's dust out as Dust Piles
+// under it (DustChutes.pour). It sits back to meet the block's body (INSET: AttachInsets). Filtered (FILTERED, the element kept on its block entity, its symbol drawn on it:
 // Client/DustChuteRenderer): it only lets that element out, and keeps the pot to it. Filter it by right-clicking it with
 // Research Notes open at an element's page (the client says which: DustChuteFilterPayload), or with an element's
 // crystal, dust or Alchemical Dust; shears take the filter off.
@@ -41,6 +41,10 @@ public class DustChuteBlock extends Block implements EntityBlock
 {
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty FILTERED = BooleanProperty.create("filtered");
+    // How far back it sits into the block it's fixed to (pixels), to meet its body (AttachInsets): its model is moved
+    // back that far (dust_chute_inset<n>.json)
+    public static final int MAX_INSET = 4;
+    public static final net.minecraft.world.level.block.state.properties.IntegerProperty INSET = net.minecraft.world.level.block.state.properties.IntegerProperty.create("inset", 0, MAX_INSET);
     // Its back plate and flap, for a chute facing south (the back on the north edge), turned for the others
     private static final Map<Direction, VoxelShape> SHAPES = Map.of(
             Direction.SOUTH, Block.box(3, 2, 0, 13, 11, 5),
@@ -51,13 +55,13 @@ public class DustChuteBlock extends Block implements EntityBlock
     public DustChuteBlock(Properties properties)
     {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.SOUTH).setValue(FILTERED, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.SOUTH).setValue(FILTERED, false).setValue(INSET, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING, FILTERED);
+        builder.add(FACING, FILTERED, INSET);
     }
 
     // Placed against a block's side: facing out from it
@@ -66,7 +70,24 @@ public class DustChuteBlock extends Block implements EntityBlock
     {
         Direction face = context.getClickedFace();
         Direction facing = face.getAxis().isHorizontal() ? face : context.getHorizontalDirection().getOpposite();
-        return defaultBlockState().setValue(FACING, facing);
+        BlockPos behind = context.getClickedPos().relative(facing.getOpposite());
+        return defaultBlockState().setValue(FACING, facing).setValue(INSET, insetFor(context.getLevel().getBlockState(behind), facing));
+    }
+
+    // How far back to sit to meet the body of the block behind (its side facing the chute)
+    private static int insetFor(BlockState behind, Direction facing)
+    {
+        if (behind.isAir()) return 0;
+        return Math.clamp(Math.round(com.mowmaster.dust.Features.DustStorage.AttachInsets.of(behind, facing)), 0, MAX_INSET);
+    }
+
+    // The block behind changed: it sits back to meet its body
+    @Override
+    protected BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess ticks, BlockPos pos,
+                                     Direction direction, BlockPos neighborPos, BlockState neighborState, net.minecraft.util.RandomSource random)
+    {
+        if (direction == state.getValue(FACING).getOpposite()) return state.setValue(INSET, insetFor(neighborState, state.getValue(FACING)));
+        return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override

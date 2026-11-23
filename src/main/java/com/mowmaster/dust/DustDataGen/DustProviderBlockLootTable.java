@@ -76,7 +76,8 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         for (var block : List.of(DustBlockRegistry.CRUSHING_MILL, DustBlockRegistry.ALCHEMICAL_SEPARATOR, DustBlockRegistry.EVAPORATING_KETTLE,
                 DustBlockRegistry.STILL_FIREBOX, DustBlockRegistry.STILL_POT, DustBlockRegistry.STILL_TOWER, DustBlockRegistry.STILL_TOP, DustBlockRegistry.TRANSMUTER, DustBlockRegistry.CONJOINING_CRUCIBLE, DustBlockRegistry.MIXING_VAT,
                 DustBlockRegistry.DISSOLVING_RETORT, DustBlockRegistry.DUST_TUBE, DustBlockRegistry.DUST_CHUTE, DustBlockRegistry.DUST_COLLECTOR,
-                DustBlockRegistry.DUST_SEPARATOR, DustBlockRegistry.DUST_SEPARATOR_EXTENSION, DustBlockRegistry.DUST_MIXER)) dropSelf(block.get());
+                DustBlockRegistry.DUST_SEPARATOR, DustBlockRegistry.DUST_SEPARATOR_EXTENSION, DustBlockRegistry.DUST_MIXER,
+                DustBlockRegistry.DUST_MIXER_WET, DustBlockRegistry.DUST_CYCLONE, DustBlockRegistry.DUST_CYCLONE_HOPPER, DustBlockRegistry.DUST_CENTRIFUGE)) dropSelf(block.get());
         dropSelf(DustBlockRegistry.LOVELY_LAMP.get());
         dropSelf(DustBlockRegistry.RESEARCH_CRUSHER.get());
         dropSelf(DustBlockRegistry.RESEARCH_SEPARATION.get());

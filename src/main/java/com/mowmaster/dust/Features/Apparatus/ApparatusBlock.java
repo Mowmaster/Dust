@@ -41,11 +41,30 @@ public class ApparatusBlock extends StationBlock implements DustTubeConnectable
     // Its shape turned to each facing (ApparatusShapes.turned)
     private final java.util.Map<net.minecraft.core.Direction, VoxelShape> shapes;
 
+    // How far in its body is on each side, measured off its model (facing north): where tubes meet it (AttachInsets).
+    // null: worked out from its shape
+    private final com.mowmaster.dust.Features.DustStorage.AttachInsets.@Nullable Insets insets;
+
     public ApparatusBlock(Properties properties, VoxelShape shape, BiFunction<BlockPos, BlockState, ? extends ApparatusBlockEntity> factory)
+    {
+        this(properties, shape, null, factory);
+    }
+
+    public ApparatusBlock(Properties properties, VoxelShape shape, com.mowmaster.dust.Features.DustStorage.AttachInsets.@Nullable Insets insets,
+                          BiFunction<BlockPos, BlockState, ? extends ApparatusBlockEntity> factory)
     {
         super(properties, shape);
         this.factory = factory;
         this.shapes = ApparatusShapes.turned(shape);
+        this.insets = insets;
+    }
+
+    // Its insets on its sides (measured off its model, turned with it); the bottom and top from its shape
+    @Override
+    public double attachInset(BlockState state, net.minecraft.core.Direction side)
+    {
+        if (insets == null || !side.getAxis().isHorizontal()) return com.mowmaster.dust.Features.DustStorage.AttachInsets.fromShape(state, side);
+        return insets.turned(state.getValue(FACING), side);
     }
 
     @Override

@@ -24,6 +24,7 @@ public class DustChuteRenderer implements BlockEntityRenderer<DustChuteBlockEnti
     {
         @Nullable Identifier icon;
         Direction facing = Direction.SOUTH;
+        int inset;
     }
 
     @Override
@@ -38,6 +39,7 @@ public class DustChuteRenderer implements BlockEntityRenderer<DustChuteBlockEnti
         BlockEntityRenderer.super.extractRenderState(chute, state, partialTick, cameraPos, crumblingOverlay);
         state.icon = LabelQuads.iconFor(chute.filter());
         state.facing = chute.getBlockState().getValue(DustChuteBlock.FACING);
+        state.inset = chute.getBlockState().getValue(DustChuteBlock.INSET);
     }
 
     @Override
@@ -46,6 +48,6 @@ public class DustChuteRenderer implements BlockEntityRenderer<DustChuteBlockEnti
         if (state.icon == null) return;
         // Drawn on the face looking out the way the chute faces: as on a north face 1.3 pixels in from... the facing side
         // is the far side of the plaque, so it's drawn turned to the facing at depth 16 - 1.3
-        LabelQuads.icon(state.facing, state.icon, 6.5F, 8.5F, 9.5F, 10.75F, 16 - 1.3F, state.lightCoords, poseStack, collector);
+        LabelQuads.icon(state.facing, state.icon, 6.5F, 8.5F, 9.5F, 10.75F, 16 - 1.3F + state.inset, state.lightCoords, poseStack, collector);
     }
 }

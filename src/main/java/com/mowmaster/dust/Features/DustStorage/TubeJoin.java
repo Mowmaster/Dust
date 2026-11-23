@@ -20,6 +20,15 @@ public enum TubeJoin implements StringRepresentable
         this.name = name;
     }
 
+    // The join that reaches as far into a block as its body is in (pixels: AttachInsets): flush (a plain arm to the
+    // edge), 2 pixels (NEAR) or 3 (BLOCK), whichever's nearest
+    public static TubeJoin reaching(double inset)
+    {
+        if (inset < 0.75) return TUBE;
+        if (inset < 2.5) return NEAR;
+        return BLOCK;
+    }
+
     public boolean joined()
     {
         return this != NONE && this != SEALED;

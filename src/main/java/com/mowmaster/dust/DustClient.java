@@ -115,6 +115,9 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_SEPARATOR.get(), com.mowmaster.dust.Features.Apparatus.separator.Client.DustSeparatorRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_SEPARATOR_EXTENSION.get(), com.mowmaster.dust.Features.Apparatus.separator.Client.DustSeparatorExtensionRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_MIXER.get(), com.mowmaster.dust.Features.Apparatus.mixer.Client.DustMixerRenderer::new);
+        // The Wet Dust Mixer's tilting head, beater and pot; the Dust Centrifuge's spinning arms and vials
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_MIXER_WET.get(), com.mowmaster.dust.Features.Apparatus.mixer.Client.DustWetMixerRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_CENTRIFUGE.get(), com.mowmaster.dust.Features.Apparatus.centrifuge.Client.DustCentrifugeRenderer::new);
         // The alchemical apparatus share one renderer (it draws each one's own moving parts)
         for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
                 DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
@@ -157,6 +160,8 @@ public class DustClient {
         com.mowmaster.dust.Features.Apparatus.still.StillFireboxRenderer.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.separator.Client.DrumRendering.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.mixer.Client.DustMixerRenderer.registerModels(event);
+        com.mowmaster.dust.Features.Apparatus.mixer.Client.DustWetMixerRenderer.registerModels(event);
+        com.mowmaster.dust.Features.Apparatus.centrifuge.Client.DustCentrifugeRenderer.registerModels(event);
         ResearchCrusherRenderer.registerModels(event);
         com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer.registerModels(event);
         ResearchEvaporationRenderer.registerModels(event);

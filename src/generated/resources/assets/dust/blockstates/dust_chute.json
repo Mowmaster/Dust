@@ -1,33 +1,153 @@
 {
   "variants": {
-    "facing=east,filtered=false": {
+    "facing=east,filtered=false,inset=0": {
       "model": "dust:block/apparatus/dust_chute",
       "y": 270
     },
-    "facing=east,filtered=true": {
+    "facing=east,filtered=false,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_inset1",
+      "y": 270
+    },
+    "facing=east,filtered=false,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_inset2",
+      "y": 270
+    },
+    "facing=east,filtered=false,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_inset3",
+      "y": 270
+    },
+    "facing=east,filtered=false,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_inset4",
+      "y": 270
+    },
+    "facing=east,filtered=true,inset=0": {
       "model": "dust:block/apparatus/dust_chute_filtered",
       "y": 270
     },
-    "facing=north,filtered=false": {
+    "facing=east,filtered=true,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset1",
+      "y": 270
+    },
+    "facing=east,filtered=true,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset2",
+      "y": 270
+    },
+    "facing=east,filtered=true,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset3",
+      "y": 270
+    },
+    "facing=east,filtered=true,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset4",
+      "y": 270
+    },
+    "facing=north,filtered=false,inset=0": {
       "model": "dust:block/apparatus/dust_chute",
       "y": 180
     },
-    "facing=north,filtered=true": {
+    "facing=north,filtered=false,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_inset1",
+      "y": 180
+    },
+    "facing=north,filtered=false,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_inset2",
+      "y": 180
+    },
+    "facing=north,filtered=false,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_inset3",
+      "y": 180
+    },
+    "facing=north,filtered=false,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_inset4",
+      "y": 180
+    },
+    "facing=north,filtered=true,inset=0": {
       "model": "dust:block/apparatus/dust_chute_filtered",
       "y": 180
     },
-    "facing=south,filtered=false": {
+    "facing=north,filtered=true,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset1",
+      "y": 180
+    },
+    "facing=north,filtered=true,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset2",
+      "y": 180
+    },
+    "facing=north,filtered=true,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset3",
+      "y": 180
+    },
+    "facing=north,filtered=true,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset4",
+      "y": 180
+    },
+    "facing=south,filtered=false,inset=0": {
       "model": "dust:block/apparatus/dust_chute"
     },
-    "facing=south,filtered=true": {
+    "facing=south,filtered=false,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_inset1"
+    },
+    "facing=south,filtered=false,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_inset2"
+    },
+    "facing=south,filtered=false,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_inset3"
+    },
+    "facing=south,filtered=false,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_inset4"
+    },
+    "facing=south,filtered=true,inset=0": {
       "model": "dust:block/apparatus/dust_chute_filtered"
     },
-    "facing=west,filtered=false": {
+    "facing=south,filtered=true,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset1"
+    },
+    "facing=south,filtered=true,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset2"
+    },
+    "facing=south,filtered=true,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset3"
+    },
+    "facing=south,filtered=true,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset4"
+    },
+    "facing=west,filtered=false,inset=0": {
       "model": "dust:block/apparatus/dust_chute",
       "y": 90
     },
-    "facing=west,filtered=true": {
+    "facing=west,filtered=false,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_inset1",
+      "y": 90
+    },
+    "facing=west,filtered=false,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_inset2",
+      "y": 90
+    },
+    "facing=west,filtered=false,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_inset3",
+      "y": 90
+    },
+    "facing=west,filtered=false,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_inset4",
+      "y": 90
+    },
+    "facing=west,filtered=true,inset=0": {
       "model": "dust:block/apparatus/dust_chute_filtered",
+      "y": 90
+    },
+    "facing=west,filtered=true,inset=1": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset1",
+      "y": 90
+    },
+    "facing=west,filtered=true,inset=2": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset2",
+      "y": 90
+    },
+    "facing=west,filtered=true,inset=3": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset3",
+      "y": 90
+    },
+    "facing=west,filtered=true,inset=4": {
+      "model": "dust:block/apparatus/dust_chute_filtered_inset4",
       "y": 90
     }
   }

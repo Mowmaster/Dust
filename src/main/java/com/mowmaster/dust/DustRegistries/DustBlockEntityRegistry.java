@@ -69,6 +69,12 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.separator.DustSeparatorExtensionBlockEntity::new, Set.of(DustBlockRegistry.DUST_SEPARATOR_EXTENSION.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlockEntity>> DUST_MIXER = BLOCK_ENTITIES.register("dust_mixer",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.mixer.DustMixerBlockEntity::new, Set.of(DustBlockRegistry.DUST_MIXER.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.mixer.DustWetMixerBlockEntity>> DUST_MIXER_WET = BLOCK_ENTITIES.register("dust_mixer_wet",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.mixer.DustWetMixerBlockEntity::new, Set.of(DustBlockRegistry.DUST_MIXER_WET.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.cyclone.DustCycloneBlockEntity>> DUST_CYCLONE = BLOCK_ENTITIES.register("dust_cyclone",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.cyclone.DustCycloneBlockEntity::new, Set.of(DustBlockRegistry.DUST_CYCLONE.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.centrifuge.DustCentrifugeBlockEntity>> DUST_CENTRIFUGE = BLOCK_ENTITIES.register("dust_centrifuge",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.centrifuge.DustCentrifugeBlockEntity::new, Set.of(DustBlockRegistry.DUST_CENTRIFUGE.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity>> STILL_FIREBOX = BLOCK_ENTITIES.register("firebox_burnable",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillFireboxBlockEntity::new, Set.of(DustBlockRegistry.STILL_FIREBOX.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillPotBlockEntity>> STILL_POT = BLOCK_ENTITIES.register("still_pot",

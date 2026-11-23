@@ -66,7 +66,8 @@ public final class DustNetwork
     // and the way there: the origin first, then each tube, the store last; part: which of the origin's separate tube
     // networks it's on (each set of tubes joined on to the origin that don't meet, and each store right against it, is a
     // part of its own)
-    public record Endpoint(BlockPos pos, IDustHolder holder, int distance, List<BlockPos> path, int part) {}
+    // side: the store's side the dust comes in at (toward the tube before it, or the origin)
+    public record Endpoint(BlockPos pos, IDustHolder holder, int distance, List<BlockPos> path, int part, Direction side) {}
 
     private DustNetwork() {}
 
@@ -90,12 +91,30 @@ public final class DustNetwork
     // spilling (only into stores)
     public static int insert(ServerLevel level, BlockPos origin, DustElement element, int amount, @org.jspecify.annotations.Nullable BlockPos except)
     {
+        return insert(level, origin, element, amount, except, null);
+    }
+
+    // The same, but only along the tubes (or into the store) on this side of the origin: a machine with an output side
+    // (the Dust Cyclone)
+    public static int insertFrom(ServerLevel level, BlockPos origin, Direction side, DustElement element, int amount)
+    {
+        return insert(level, origin, element, amount, null, side);
+    }
+
+    private static int insert(ServerLevel level, BlockPos origin, DustElement element, int amount, @org.jspecify.annotations.Nullable BlockPos except,
+                              @org.jspecify.annotations.Nullable Direction onlySide)
+    {
         if (amount <= 0) return 0;
         int left = amount;
         Found found = network(level, origin);
         List<Endpoint> endpoints = found.endpoints();
         if (except != null) endpoints = endpoints.stream().filter(end -> !end.pos().equals(except)).toList();
+        BlockPos sideStart = onlySide == null ? null : origin.relative(onlySide);
+        if (sideStart != null) endpoints = endpoints.stream().filter(end -> end.path().size() >= 2 && end.path().get(1).equals(sideStart)).toList();
         Map<Integer, Holds> parts = partHolds(endpoints);
+        // A store that only takes dust in at some of its sides (a machine's input) takes none in at the others (its part
+        // still counts as having stores: nothing spills there)
+        endpoints = endpoints.stream().filter(end -> end.holder().takesDustFrom(end.side())).toList();
         // Three passes: stores set to this element in parts set to it, then any store that'll take it in those, then in
         // parts with nothing set yet
         for (int pass = 0; pass < 3 && left > 0; pass++) {
@@ -114,7 +133,11 @@ public final class DustNetwork
         }
         if (left > 0 && except == null) {
             List<OpenEnd> spillable = new ArrayList<>();
-            for (OpenEnd end : found.openEnds()) if (!parts.containsKey(end.part())) spillable.add(end);
+            for (OpenEnd end : found.openEnds()) {
+                if (parts.containsKey(end.part())) continue;
+                if (sideStart != null && (end.path().size() < 2 || !end.path().get(1).equals(sideStart))) continue;
+                spillable.add(end);
+            }
             left -= spill(level, spillable, element, left);
         }
         return amount - left;
@@ -377,7 +400,14 @@ public final class DustNetwork
     private static void addStore(ServerLevel level, BlockPos pos, int distance, List<BlockPos> path, List<Endpoint> found, Set<BlockPos> storesSeen, int part)
     {
         if (!storesSeen.add(pos.immutable())) return;
-        if (level.getBlockEntity(pos) instanceof IDustHolder holder) found.add(new Endpoint(pos.immutable(), holder, distance, List.copyOf(path), part));
+        if (!(level.getBlockEntity(pos) instanceof IDustHolder holder)) return;
+        // The side of the store facing what's before it on the way (a tube, or the origin)
+        BlockPos before = path.size() >= 2 ? path.get(path.size() - 2) : pos;
+        Direction side = Direction.UP;
+        for (Direction direction : Direction.values()) {
+            if (pos.relative(direction).equals(before)) side = direction;
+        }
+        found.add(new Endpoint(pos.immutable(), holder, distance, List.copyOf(path), part, side));
     }
 
     // The way from origin to this tube: origin first, the tube last

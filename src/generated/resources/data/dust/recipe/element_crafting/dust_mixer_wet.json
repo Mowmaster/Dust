@@ -1,0 +1,29 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 30,
+      "element": "dust:water"
+    },
+    {
+      "amount": 30,
+      "element": "dust:chaos"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_mixer_wet"
+  },
+  "shaped": {
+    "key": {
+      "C": "minecraft:cauldron",
+      "I": "minecraft:iron_ingot",
+      "R": "dust:research_mixing",
+      "S": "minecraft:smooth_stone"
+    },
+    "pattern": [
+      "SSS",
+      "IRS",
+      "CIS"
+    ]
+  }
+}

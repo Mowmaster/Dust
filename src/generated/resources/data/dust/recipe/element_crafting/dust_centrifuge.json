@@ -1,0 +1,29 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 30,
+      "element": "dust:water"
+    },
+    {
+      "amount": 20,
+      "element": "dust:chaos"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_centrifuge"
+  },
+  "shaped": {
+    "key": {
+      "C": "minecraft:copper_ingot",
+      "G": "minecraft:glass_bottle",
+      "R": "dust:research_separation",
+      "S": "minecraft:smooth_stone"
+    },
+    "pattern": [
+      "GCG",
+      "CRC",
+      "SSS"
+    ]
+  }
+}

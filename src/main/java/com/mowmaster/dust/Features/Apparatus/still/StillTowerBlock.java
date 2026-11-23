@@ -66,6 +66,13 @@ public class StillTowerBlock extends StationBlock implements DustTubeConnectable
         return level.getBlockEntity(pos) instanceof StillTowerBlockEntity tower ? tower.element() : null;
     }
 
+    // Its barrel is 2 pixels in from its edges
+    @Override
+    public double attachInset(BlockState state, Direction side)
+    {
+        return side.getAxis().isHorizontal() ? 2 : 0;
+    }
+
     @Override
     public TubeJoin tubeJoin(BlockState state, Direction side)
     {

@@ -71,7 +71,25 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
 
     public DustMixerBlockEntity(BlockPos pos, BlockState state)
     {
-        super(DustBlockEntityRegistry.DUST_MIXER.get(), pos, state);
+        this(DustBlockEntityRegistry.DUST_MIXER.get(), pos, state);
+    }
+
+    // For a mixer of another kind (the Wet Dust Mixer: DustWetMixerBlockEntity)
+    protected DustMixerBlockEntity(net.minecraft.world.level.block.entity.BlockEntityType<?> type, BlockPos pos, BlockState state)
+    {
+        super(type, pos, state);
+    }
+
+    // Whether this element can go in at all (the first of a pair): this one only mixes solids
+    protected boolean takesAlone(DustElement dust)
+    {
+        return Separation.isSolid(dust);
+    }
+
+    // Whether these two go together in it: they mix into an element (both solid, as takesAlone says)
+    protected boolean pairs(DustElement first, DustElement second)
+    {
+        return ElementCombining.combine(first, second) != null;
     }
 
     public Phase phase() { return phase; }
@@ -88,7 +106,7 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
     @Override
     public int insertDust(DustElement dust, int count, boolean simulate)
     {
-        if (phase != Phase.OPEN || powered || count <= 0 || !Separation.isSolid(dust)) return 0;
+        if (phase != Phase.OPEN || powered || count <= 0 || !takesAlone(dust)) return 0;
         int moved;
         if (dust.equals(first) || (first == null && !dust.equals(second))) {
             moved = Math.min(count, SLOT_CAPACITY - firstAmount);
@@ -98,7 +116,7 @@ public class DustMixerBlockEntity extends CBSyncedBlockEntity implements IDustHo
             }
         } else if (dust.equals(second) || second == null) {
             DustElement other = first;
-            if (other == null || ElementCombining.combine(other, dust) == null) return 0;
+            if (other == null || !pairs(other, dust)) return 0;
             moved = Math.min(count, SLOT_CAPACITY - secondAmount);
             if (moved > 0 && !simulate) {
                 second = dust;

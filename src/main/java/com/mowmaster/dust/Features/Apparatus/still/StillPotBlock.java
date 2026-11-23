@@ -119,6 +119,13 @@ public class StillPotBlock extends ApparatusBlock
         return super.useItemOn(stack, state, level, pos, player, hand, hit);
     }
 
+    // Its belly is 2 pixels in from its edges (where Dust Chutes meet it: AttachInsets)
+    @Override
+    public double attachInset(BlockState state, Direction side)
+    {
+        return side.getAxis().isHorizontal() ? 2 : 0;
+    }
+
     @Override
     public boolean connectsDustTube(BlockState state, Direction side)
     {
