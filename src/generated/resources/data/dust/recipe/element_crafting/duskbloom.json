@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:chaos"
+    }
+  ],
+  "ingredients": [
+    "minecraft:allium"
+  ],
+  "research": {
+    "entry": "dust:duskbloom",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:duskbloom"
+  }
+}

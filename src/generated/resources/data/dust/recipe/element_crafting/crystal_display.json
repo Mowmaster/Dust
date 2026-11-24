@@ -1,0 +1,29 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:magic"
+    },
+    {
+      "amount": 20,
+      "element": "dust:order"
+    }
+  ],
+  "result": {
+    "id": "dust:crystal_display"
+  },
+  "shaped": {
+    "key": {
+      "A": "minecraft:amethyst_block",
+      "B": "minecraft:smooth_stone_slab",
+      "G": "minecraft:gold_ingot",
+      "S": "minecraft:polished_andesite"
+    },
+    "pattern": [
+      "GAG",
+      " S ",
+      "BSB"
+    ]
+  }
+}

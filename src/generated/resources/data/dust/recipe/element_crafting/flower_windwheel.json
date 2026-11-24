@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:air"
+    }
+  ],
+  "ingredients": [
+    "minecraft:pink_tulip"
+  ],
+  "research": {
+    "entry": "dust:flower_windwheel",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:flower_windwheel"
+  }
+}

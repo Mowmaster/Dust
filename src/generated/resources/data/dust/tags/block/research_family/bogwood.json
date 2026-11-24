@@ -1,0 +1,19 @@
+{
+  "values": [
+    "dust:bogwood_log",
+    "dust:bogwood_wood",
+    "dust:stripped_bogwood_log",
+    "dust:stripped_bogwood_wood",
+    "dust:bogwood_planks",
+    "dust:bogwood_stairs",
+    "dust:bogwood_slab",
+    "dust:bogwood_vertical_slab",
+    "dust:bogwood_fence",
+    "dust:bogwood_fence_gate",
+    "dust:bogwood_button",
+    "dust:bogwood_pressure_plate",
+    "dust:bogwood_chest",
+    "dust:bogwood_leaves",
+    "dust:bogwood_sapling"
+  ]
+}

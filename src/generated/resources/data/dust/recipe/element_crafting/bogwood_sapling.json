@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:mud"
+    }
+  ],
+  "ingredients": [
+    "minecraft:oak_sapling"
+  ],
+  "research": {
+    "entry": "dust:bogwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:bogwood_sapling"
+  }
+}

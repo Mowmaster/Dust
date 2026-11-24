@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_abyss_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:abyss_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:abyss_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_abyss_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:abyss_crystal_block"
+    ]
+  }
+}

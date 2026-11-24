@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "dust:block/umbralwood_log_top",
+    "side": "dust:block/umbralwood_log"
+  }
+}

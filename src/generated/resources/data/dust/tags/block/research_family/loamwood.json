@@ -1,0 +1,19 @@
+{
+  "values": [
+    "dust:loamwood_log",
+    "dust:loamwood_wood",
+    "dust:stripped_loamwood_log",
+    "dust:stripped_loamwood_wood",
+    "dust:loamwood_planks",
+    "dust:loamwood_stairs",
+    "dust:loamwood_slab",
+    "dust:loamwood_vertical_slab",
+    "dust:loamwood_fence",
+    "dust:loamwood_fence_gate",
+    "dust:loamwood_button",
+    "dust:loamwood_pressure_plate",
+    "dust:loamwood_chest",
+    "dust:loamwood_leaves",
+    "dust:loamwood_sapling"
+  ]
+}

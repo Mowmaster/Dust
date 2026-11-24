@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dust:block/bogwood_slab"
+    },
+    "type=double": {
+      "model": "dust:block/bogwood_planks"
+    },
+    "type=top": {
+      "model": "dust:block/bogwood_slab_top"
+    }
+  }
+}

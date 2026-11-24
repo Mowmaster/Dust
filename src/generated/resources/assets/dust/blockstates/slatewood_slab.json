@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dust:block/slatewood_slab"
+    },
+    "type=double": {
+      "model": "dust:block/slatewood_planks"
+    },
+    "type=top": {
+      "model": "dust:block/slatewood_slab_top"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "cherry_red_charcoal",
+  "ingredient": "#dust:emberwood_logs",
+  "result": {
+    "id": "dust:cherry_red_charcoal"
+  }
+}

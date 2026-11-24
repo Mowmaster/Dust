@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:life"
+    }
+  ],
+  "ingredients": [
+    "minecraft:white_tulip"
+  ],
+  "research": {
+    "entry": "dust:dewcup",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:dewcup"
+  }
+}

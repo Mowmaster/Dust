@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flesh_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:flesh_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:flesh_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_flesh_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:flesh_crystal_block"
+    ]
+  }
+}

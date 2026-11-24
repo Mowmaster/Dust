@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "dust:block/stripped_verdantwood_log",
+    "side": "dust:block/stripped_verdantwood_log"
+  }
+}

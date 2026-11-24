@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:blue_charcoal_from_verdantwood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_verdantwood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:verdantwood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_verdantwood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:blue_charcoal_from_verdantwood"
+    ]
+  }
+}

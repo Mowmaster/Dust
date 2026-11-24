@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "double=false,facing=east": {
+      "model": "dust:block/loamwood_vertical_slab",
+      "uvlock": true,
+      "y": 90
+    },
+    "double=false,facing=north": {
+      "model": "dust:block/loamwood_vertical_slab"
+    },
+    "double=false,facing=south": {
+      "model": "dust:block/loamwood_vertical_slab",
+      "uvlock": true,
+      "y": 180
+    },
+    "double=false,facing=west": {
+      "model": "dust:block/loamwood_vertical_slab",
+      "uvlock": true,
+      "y": 270
+    },
+    "double=true,facing=east": {
+      "model": "dust:block/loamwood_planks"
+    },
+    "double=true,facing=north": {
+      "model": "dust:block/loamwood_planks"
+    },
+    "double=true,facing=south": {
+      "model": "dust:block/loamwood_planks"
+    },
+    "double=true,facing=west": {
+      "model": "dust:block/loamwood_planks"
+    }
+  }
+}

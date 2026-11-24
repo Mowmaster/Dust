@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:stone"
+    }
+  ],
+  "ingredients": [
+    "minecraft:oxeye_daisy"
+  ],
+  "research": {
+    "entry": "dust:jadeleaf",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:jadeleaf"
+  }
+}

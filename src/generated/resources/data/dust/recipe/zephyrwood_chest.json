@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#dust:zephyrwood_logs",
+    "P": "dust:zephyrwood_planks"
+  },
+  "pattern": [
+    "PPP",
+    "PLP",
+    "PPP"
+  ],
+  "result": {
+    "id": "dust:zephyrwood_chest"
+  }
+}

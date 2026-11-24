@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#dust:gildwood_logs",
+    "P": "dust:gildwood_planks"
+  },
+  "pattern": [
+    "PPP",
+    "PLP",
+    "PPP"
+  ],
+  "result": {
+    "id": "dust:gildwood_chest"
+  }
+}

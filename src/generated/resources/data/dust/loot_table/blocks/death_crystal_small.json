@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": "minecraft:tool/can_silk_touch",
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "dust:death_crystal"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "dust:blocks/death_crystal_small"
+}

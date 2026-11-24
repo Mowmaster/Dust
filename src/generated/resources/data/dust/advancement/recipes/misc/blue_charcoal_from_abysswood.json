@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_abysswood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:abysswood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:blue_charcoal_from_abysswood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_abysswood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:blue_charcoal_from_abysswood"
+    ]
+  }
+}

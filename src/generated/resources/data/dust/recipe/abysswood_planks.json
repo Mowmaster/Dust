@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "#dust:abysswood_logs"
+  ],
+  "result": {
+    "count": 4,
+    "id": "dust:abysswood_planks"
+  }
+}

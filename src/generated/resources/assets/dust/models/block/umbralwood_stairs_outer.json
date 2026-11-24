@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "dust:block/umbralwood_planks",
+    "side": "dust:block/umbralwood_planks",
+    "top": "dust:block/umbralwood_planks"
+  }
+}

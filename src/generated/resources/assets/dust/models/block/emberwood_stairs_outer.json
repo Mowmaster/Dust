@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "dust:block/emberwood_planks",
+    "side": "dust:block/emberwood_planks",
+    "top": "dust:block/emberwood_planks"
+  }
+}

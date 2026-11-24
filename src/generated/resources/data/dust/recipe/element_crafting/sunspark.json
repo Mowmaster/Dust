@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:energy"
+    }
+  ],
+  "ingredients": [
+    "minecraft:dandelion"
+  ],
+  "research": {
+    "entry": "dust:sunspark",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:sunspark"
+  }
+}

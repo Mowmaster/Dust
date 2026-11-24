@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fracture_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:fracture_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:fracture_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fracture_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:fracture_crystal_block"
+    ]
+  }
+}

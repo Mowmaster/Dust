@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dust:item/fruit/cluster",
+    "layer1": "dust:item/fruit/cluster_stem"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_motion_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:motion_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:motion_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_motion_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:motion_crystal_block"
+    ]
+  }
+}

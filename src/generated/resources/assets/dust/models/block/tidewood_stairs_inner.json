@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "dust:block/tidewood_planks",
+    "side": "dust:block/tidewood_planks",
+    "top": "dust:block/tidewood_planks"
+  }
+}

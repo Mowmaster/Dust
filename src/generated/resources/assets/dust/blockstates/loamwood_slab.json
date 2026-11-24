@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dust:block/loamwood_slab"
+    },
+    "type=double": {
+      "model": "dust:block/loamwood_planks"
+    },
+    "type=top": {
+      "model": "dust:block/loamwood_slab_top"
+    }
+  }
+}

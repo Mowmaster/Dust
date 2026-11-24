@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_death_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:death_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:death_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_death_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:death_crystal_block"
+    ]
+  }
+}

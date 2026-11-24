@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_growth_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:growth_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:growth_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_growth_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:growth_crystal_block"
+    ]
+  }
+}

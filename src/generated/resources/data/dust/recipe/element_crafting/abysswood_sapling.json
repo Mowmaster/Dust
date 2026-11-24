@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:abyss"
+    }
+  ],
+  "ingredients": [
+    "minecraft:azalea"
+  ],
+  "research": {
+    "entry": "dust:abysswood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:abysswood_sapling"
+  }
+}

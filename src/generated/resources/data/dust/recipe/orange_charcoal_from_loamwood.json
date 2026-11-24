@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "orange_charcoal",
+  "ingredient": "#dust:loamwood_logs",
+  "result": {
+    "id": "dust:orange_charcoal"
+  }
+}

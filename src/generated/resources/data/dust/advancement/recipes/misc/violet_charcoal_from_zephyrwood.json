@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:violet_charcoal_from_zephyrwood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zephyrwood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:zephyrwood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_zephyrwood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:violet_charcoal_from_zephyrwood"
+    ]
+  }
+}

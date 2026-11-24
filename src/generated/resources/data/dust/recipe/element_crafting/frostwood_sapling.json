@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:ice"
+    }
+  ],
+  "ingredients": [
+    "minecraft:spruce_sapling"
+  ],
+  "research": {
+    "entry": "dust:frostwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:frostwood_sapling"
+  }
+}

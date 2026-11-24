@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wooden_pressure_plate",
+  "key": {
+    "#": "dust:abysswood_planks"
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "id": "dust:abysswood_pressure_plate"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "wooden_vertical_slab",
+  "key": {
+    "P": "dust:slatewood_planks"
+  },
+  "pattern": [
+    "P",
+    "P",
+    "P"
+  ],
+  "result": {
+    "count": 6,
+    "id": "dust:slatewood_vertical_slab"
+  }
+}

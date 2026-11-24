@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gem_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:gem_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:gem_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_gem_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:gem_crystal_block"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_explosion_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:explosion_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:explosion_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_explosion_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:explosion_crystal_block"
+    ]
+  }
+}

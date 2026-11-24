@@ -1,0 +1,19 @@
+{
+  "values": [
+    "dust:tidewood_log",
+    "dust:tidewood_wood",
+    "dust:stripped_tidewood_log",
+    "dust:stripped_tidewood_wood",
+    "dust:tidewood_planks",
+    "dust:tidewood_stairs",
+    "dust:tidewood_slab",
+    "dust:tidewood_vertical_slab",
+    "dust:tidewood_fence",
+    "dust:tidewood_fence_gate",
+    "dust:tidewood_button",
+    "dust:tidewood_pressure_plate",
+    "dust:tidewood_chest",
+    "dust:tidewood_leaves",
+    "dust:tidewood_sapling"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:tidewood_chest"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tidewood_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:tidewood_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tidewood_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:tidewood_chest"
+    ]
+  }
+}

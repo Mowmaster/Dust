@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:fire"
+    }
+  ],
+  "ingredients": [
+    "minecraft:acacia_sapling"
+  ],
+  "research": {
+    "entry": "dust:emberwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:emberwood_sapling"
+  }
+}

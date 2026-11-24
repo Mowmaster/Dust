@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#dust:verdantwood_logs",
+    "P": "dust:verdantwood_planks"
+  },
+  "pattern": [
+    "PPP",
+    "PLP",
+    "PPP"
+  ],
+  "result": {
+    "id": "dust:verdantwood_chest"
+  }
+}

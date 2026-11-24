@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:chaos"
+    }
+  ],
+  "ingredients": [
+    "minecraft:azalea"
+  ],
+  "research": {
+    "entry": "dust:umbralwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:umbralwood_sapling"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:warp_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_warp_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:warp_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_warp_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:warp_crystal_block"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "dust:loamwood_fruit_pod",
+            "state": {
+              "age": "2"
+            }
+          },
+          {
+            "type": "minecraft:survives_explosion"
+          }
+        ]
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "dust:loamwood_fruit"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "dust:blocks/loamwood_fruit_pod"
+}

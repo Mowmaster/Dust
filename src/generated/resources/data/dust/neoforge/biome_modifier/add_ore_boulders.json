@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "dust:ore_boulder",
+  "step": "local_modifications"
+}

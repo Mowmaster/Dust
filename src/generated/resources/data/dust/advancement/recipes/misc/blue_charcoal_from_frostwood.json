@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_frostwood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:frostwood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:blue_charcoal_from_frostwood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_frostwood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:blue_charcoal_from_frostwood"
+    ]
+  }
+}

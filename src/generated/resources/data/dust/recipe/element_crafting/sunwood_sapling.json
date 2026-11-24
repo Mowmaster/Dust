@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:energy"
+    }
+  ],
+  "ingredients": [
+    "minecraft:oak_sapling"
+  ],
+  "research": {
+    "entry": "dust:sunwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:sunwood_sapling"
+  }
+}

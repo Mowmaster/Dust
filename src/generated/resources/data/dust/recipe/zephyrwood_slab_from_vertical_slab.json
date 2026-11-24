@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "dust:zephyrwood_vertical_slab"
+  ],
+  "result": {
+    "id": "dust:zephyrwood_slab"
+  }
+}

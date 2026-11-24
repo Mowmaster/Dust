@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "violet_charcoal",
+  "ingredient": "#dust:umbralwood_logs",
+  "result": {
+    "id": "dust:violet_charcoal"
+  }
+}

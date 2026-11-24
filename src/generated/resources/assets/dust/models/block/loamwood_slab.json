@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "dust:block/loamwood_planks",
+    "side": "dust:block/loamwood_planks",
+    "top": "dust:block/loamwood_planks"
+  }
+}

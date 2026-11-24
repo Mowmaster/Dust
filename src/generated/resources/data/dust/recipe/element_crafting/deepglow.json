@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:abyss"
+    }
+  ],
+  "ingredients": [
+    "minecraft:cornflower"
+  ],
+  "research": {
+    "entry": "dust:deepglow",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:deepglow"
+  }
+}

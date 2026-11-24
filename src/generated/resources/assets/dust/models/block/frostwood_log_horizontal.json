@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "dust:block/frostwood_log_top",
+    "side": "dust:block/frostwood_log"
+  }
+}

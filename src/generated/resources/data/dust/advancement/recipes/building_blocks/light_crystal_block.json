@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_light_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:light_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:light_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_light_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:light_crystal_block"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_frostwood_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:frostwood_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:frostwood_chest"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_frostwood_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:frostwood_chest"
+    ]
+  }
+}

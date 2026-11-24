@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:order"
+    }
+  ],
+  "ingredients": [
+    "minecraft:lily_of_the_valley"
+  ],
+  "research": {
+    "entry": "dust:peakwhite",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:peakwhite"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bogwood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:bogwood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:dark_red_charcoal_from_bogwood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_bogwood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:dark_red_charcoal_from_bogwood"
+    ]
+  }
+}

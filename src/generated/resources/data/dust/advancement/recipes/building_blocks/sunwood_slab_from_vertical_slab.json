@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sunwood_vertical_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:sunwood_vertical_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:sunwood_slab_from_vertical_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sunwood_vertical_slab"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:sunwood_slab_from_vertical_slab"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "dust:block/template_vertical_slab",
+  "textures": {
+    "bottom": "dust:block/pearlwood_planks",
+    "side": "dust:block/pearlwood_planks",
+    "top": "dust:block/pearlwood_planks"
+  }
+}

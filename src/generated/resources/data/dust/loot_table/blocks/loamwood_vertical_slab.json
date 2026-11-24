@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": [
+            {
+              "type": "minecraft:set_count",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "dust:loamwood_vertical_slab",
+                "state": {
+                  "double": "true"
+                }
+              },
+              "count": 2
+            },
+            {
+              "type": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "dust:loamwood_vertical_slab"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "dust:blocks/loamwood_vertical_slab"
+}

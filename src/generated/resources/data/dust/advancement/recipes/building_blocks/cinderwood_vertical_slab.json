@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cinderwood_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:cinderwood_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:cinderwood_vertical_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cinderwood_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:cinderwood_vertical_slab"
+    ]
+  }
+}

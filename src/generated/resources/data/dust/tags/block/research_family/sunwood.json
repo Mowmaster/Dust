@@ -1,0 +1,19 @@
+{
+  "values": [
+    "dust:sunwood_log",
+    "dust:sunwood_wood",
+    "dust:stripped_sunwood_log",
+    "dust:stripped_sunwood_wood",
+    "dust:sunwood_planks",
+    "dust:sunwood_stairs",
+    "dust:sunwood_slab",
+    "dust:sunwood_vertical_slab",
+    "dust:sunwood_fence",
+    "dust:sunwood_fence_gate",
+    "dust:sunwood_button",
+    "dust:sunwood_pressure_plate",
+    "dust:sunwood_chest",
+    "dust:sunwood_leaves",
+    "dust:sunwood_sapling"
+  ]
+}

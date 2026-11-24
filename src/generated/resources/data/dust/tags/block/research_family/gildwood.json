@@ -1,0 +1,19 @@
+{
+  "values": [
+    "dust:gildwood_log",
+    "dust:gildwood_wood",
+    "dust:stripped_gildwood_log",
+    "dust:stripped_gildwood_wood",
+    "dust:gildwood_planks",
+    "dust:gildwood_stairs",
+    "dust:gildwood_slab",
+    "dust:gildwood_vertical_slab",
+    "dust:gildwood_fence",
+    "dust:gildwood_fence_gate",
+    "dust:gildwood_button",
+    "dust:gildwood_pressure_plate",
+    "dust:gildwood_chest",
+    "dust:gildwood_leaves",
+    "dust:gildwood_sapling"
+  ]
+}

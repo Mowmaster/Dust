@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "dust:block/umbralwood_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "dust:block/umbralwood_wood"
+    },
+    "axis=z": {
+      "model": "dust:block/umbralwood_wood",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:metal"
+    }
+  ],
+  "ingredients": [
+    "minecraft:oak_sapling"
+  ],
+  "research": {
+    "entry": "dust:gildwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:gildwood_sapling"
+  }
+}

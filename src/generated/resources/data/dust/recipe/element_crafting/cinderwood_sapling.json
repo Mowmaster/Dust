@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:explosion"
+    }
+  ],
+  "ingredients": [
+    "minecraft:acacia_sapling"
+  ],
+  "research": {
+    "entry": "dust:cinderwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:cinderwood_sapling"
+  }
+}

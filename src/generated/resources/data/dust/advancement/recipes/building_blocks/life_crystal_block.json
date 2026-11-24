@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_life_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:life_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:life_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_life_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:life_crystal_block"
+    ]
+  }
+}

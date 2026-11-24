@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:tool_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tool_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:tool_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tool_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:tool_crystal_block"
+    ]
+  }
+}

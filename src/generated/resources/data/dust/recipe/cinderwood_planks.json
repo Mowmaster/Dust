@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    "#dust:cinderwood_logs"
+  ],
+  "result": {
+    "count": 4,
+    "id": "dust:cinderwood_planks"
+  }
+}

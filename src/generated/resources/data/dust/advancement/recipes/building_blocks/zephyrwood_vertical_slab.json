@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:zephyrwood_vertical_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zephyrwood_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:zephyrwood_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_zephyrwood_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:zephyrwood_vertical_slab"
+    ]
+  }
+}

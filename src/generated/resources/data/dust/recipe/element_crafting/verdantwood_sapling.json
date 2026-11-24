@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:life"
+    }
+  ],
+  "ingredients": [
+    "minecraft:birch_sapling"
+  ],
+  "research": {
+    "entry": "dust:verdantwood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:verdantwood_sapling"
+  }
+}

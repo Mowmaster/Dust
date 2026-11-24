@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "dust:block/cinderwood_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "dust:block/cinderwood_wood"
+    },
+    "axis=z": {
+      "model": "dust:block/cinderwood_wood",
+      "x": 90
+    }
+  }
+}

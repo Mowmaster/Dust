@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:explosion"
+    }
+  ],
+  "ingredients": [
+    "minecraft:red_tulip"
+  ],
+  "research": {
+    "entry": "dust:cinderpod",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:cinderpod"
+  }
+}

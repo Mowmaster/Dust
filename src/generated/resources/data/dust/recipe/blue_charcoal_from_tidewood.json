@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "blue_charcoal",
+  "ingredient": "#dust:tidewood_logs",
+  "result": {
+    "id": "dust:blue_charcoal"
+  }
+}

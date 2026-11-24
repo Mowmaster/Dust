@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "dust:block/emberwood_log_top",
+    "side": "dust:block/emberwood_log"
+  }
+}

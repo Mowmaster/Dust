@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_protection_crystal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:protection_crystal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:protection_crystal_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_protection_crystal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:protection_crystal_block"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    "dust:abysswood_planks"
+  ],
+  "result": {
+    "id": "dust:abysswood_button"
+  }
+}

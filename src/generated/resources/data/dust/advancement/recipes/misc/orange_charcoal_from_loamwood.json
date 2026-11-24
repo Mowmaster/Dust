@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_loamwood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:loamwood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:orange_charcoal_from_loamwood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_loamwood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:orange_charcoal_from_loamwood"
+    ]
+  }
+}

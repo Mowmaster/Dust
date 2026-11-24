@@ -1,0 +1,19 @@
+{
+  "values": [
+    "dust:frostwood_log",
+    "dust:frostwood_wood",
+    "dust:stripped_frostwood_log",
+    "dust:stripped_frostwood_wood",
+    "dust:frostwood_planks",
+    "dust:frostwood_stairs",
+    "dust:frostwood_slab",
+    "dust:frostwood_vertical_slab",
+    "dust:frostwood_fence",
+    "dust:frostwood_fence_gate",
+    "dust:frostwood_button",
+    "dust:frostwood_pressure_plate",
+    "dust:frostwood_chest",
+    "dust:frostwood_leaves",
+    "dust:frostwood_sapling"
+  ]
+}

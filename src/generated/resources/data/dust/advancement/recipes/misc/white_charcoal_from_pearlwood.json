@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_pearlwood_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#dust:pearlwood_logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:white_charcoal_from_pearlwood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_pearlwood_logs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:white_charcoal_from_pearlwood"
+    ]
+  }
+}

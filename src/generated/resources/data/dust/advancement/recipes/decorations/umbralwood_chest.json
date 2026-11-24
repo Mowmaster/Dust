@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:umbralwood_chest"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_umbralwood_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:umbralwood_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_umbralwood_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:umbralwood_chest"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:stone"
+    }
+  ],
+  "ingredients": [
+    "minecraft:spruce_sapling"
+  ],
+  "research": {
+    "entry": "dust:slatewood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:slatewood_sapling"
+  }
+}

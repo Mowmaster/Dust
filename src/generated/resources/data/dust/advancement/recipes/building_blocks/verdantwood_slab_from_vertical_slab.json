@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "dust:verdantwood_slab_from_vertical_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_verdantwood_vertical_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dust:verdantwood_vertical_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_verdantwood_vertical_slab"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dust:verdantwood_slab_from_vertical_slab"
+    ]
+  }
+}

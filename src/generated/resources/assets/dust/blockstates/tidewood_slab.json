@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "dust:block/tidewood_slab"
+    },
+    "type=double": {
+      "model": "dust:block/tidewood_planks"
+    },
+    "type=top": {
+      "model": "dust:block/tidewood_slab_top"
+    }
+  }
+}

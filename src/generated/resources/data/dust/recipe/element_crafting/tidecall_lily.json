@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:water"
+    }
+  ],
+  "ingredients": [
+    "minecraft:blue_orchid"
+  ],
+  "research": {
+    "entry": "dust:tidecall_lily",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:tidecall_lily"
+  }
+}

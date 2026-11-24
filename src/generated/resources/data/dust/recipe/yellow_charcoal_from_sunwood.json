@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "group": "yellow_charcoal",
+  "ingredient": "#dust:sunwood_logs",
+  "result": {
+    "id": "dust:yellow_charcoal"
+  }
+}

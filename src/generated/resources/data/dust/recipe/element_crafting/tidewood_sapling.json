@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:water"
+    }
+  ],
+  "ingredients": [
+    "minecraft:oak_sapling"
+  ],
+  "research": {
+    "entry": "dust:tidewood_sapling",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:tidewood_sapling"
+  }
+}

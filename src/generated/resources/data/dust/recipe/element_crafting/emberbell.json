@@ -1,0 +1,19 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:fire"
+    }
+  ],
+  "ingredients": [
+    "minecraft:poppy"
+  ],
+  "research": {
+    "entry": "dust:emberbell",
+    "tab": "dust:blocks"
+  },
+  "result": {
+    "id": "dust:emberbell"
+  }
+}

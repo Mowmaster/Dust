@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": "#dust:umbralwood_logs",
+    "P": "dust:umbralwood_planks"
+  },
+  "pattern": [
+    "PPP",
+    "PLP",
+    "PPP"
+  ],
+  "result": {
+    "id": "dust:umbralwood_chest"
+  }
+}
