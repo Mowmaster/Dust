@@ -184,6 +184,7 @@ public class DustClient {
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "spell"), com.mowmaster.dust.Features.Spells.Client.SpellTint.MAP_CODEC);
         // "dust:dust_jar": a Dust Jar item's lid in the colour of the dust it carries
         event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "dust_jar"), com.mowmaster.dust.Features.DustStorage.Client.DustJarItemTint.MAP_CODEC);
+        event.register(Identifier.fromNamespaceAndPath(DustReferences.MODID, "fruit_medley"), com.mowmaster.dust.Features.Trees.Client.FruitMedleyTint.MAP_CODEC);
     }
 
     // The element row in item tooltips (ElementTooltip -> ClientElementTooltip)
@@ -210,10 +211,11 @@ public class DustClient {
         event.register(List.of(new com.mowmaster.dust.Features.DustStorage.Client.DustTubeTint()), DustBlockRegistry.DUST_TUBE.get());
         // A Dust Pile in the mix of its elements' colours (tint index 0)
         event.register(List.of(new com.mowmaster.dust.Features.DustStorage.Client.DustPileTint()), DustBlockRegistry.DUST_PILE.get());
-        // Every element's crystals, crystal blocks and budding crystals: their element's colour
+        // Every element's crystals (small, medium, large): their element's colour. Crystal blocks and budding crystals have
+        // their own textures.
         for (var element : com.mowmaster.dust.Features.DustComposition.DustElements.all()) {
             event.register(com.mowmaster.dust.Features.Crystals.Client.ElementCrystalTint.of(element),
-                    com.mowmaster.dust.Features.Crystals.ElementCrystals.allOf(element).toArray(net.minecraft.world.level.block.Block[]::new));
+                    com.mowmaster.dust.Features.Crystals.ElementCrystals.nodesOf(element).toArray(net.minecraft.world.level.block.Block[]::new));
         }
         // Each elemental tree's fruit in its element's colour (tint index 1, as crystals)
         for (var set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {

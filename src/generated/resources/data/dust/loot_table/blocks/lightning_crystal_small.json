@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:lightning_crystal"
+          "name": "dust:lightning_crystal_small"
         }
       ],
       "rolls": 1

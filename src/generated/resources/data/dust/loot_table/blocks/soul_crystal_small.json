@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:soul_crystal"
+          "name": "dust:soul_crystal_small"
         }
       ],
       "rolls": 1

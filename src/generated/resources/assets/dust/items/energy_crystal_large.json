@@ -1,8 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dust:item/crystal_large",
+    "model": "dust:item/crystal/crystal_large",
     "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
       {
         "type": "minecraft:constant",
         "value": -32640

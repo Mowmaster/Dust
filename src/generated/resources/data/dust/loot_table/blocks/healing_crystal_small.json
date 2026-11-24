@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:healing_crystal"
+          "name": "dust:healing_crystal_small"
         }
       ],
       "rolls": 1

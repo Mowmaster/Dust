@@ -2,6 +2,7 @@ package com.mowmaster.dust.Features.Trees;
 
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Magic.AuraShimmer;
 import com.mowmaster.dust.Features.Magic.ChunkAura;
 import com.mowmaster.dust.Features.Magic.ElementAura;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -41,7 +43,8 @@ import java.util.function.Supplier;
 // the fruit itself can't be planted.
 // It ripens (AGE 0 to RIPE) only by drawing its element out of the aura: on a random tick (1 in RIPEN_ODDS), if the chunk
 // holds more than its normal of the fruit's primal (for an element of two primals, of either one), it takes one dust of
-// that primal and grows a stage. Right-click a ripe one to pick it: the fruit (ElementalFruitItem) drops and it starts
+// that primal and grows a stage; while it can ripen like that (checked on each random tick: ACTIVE) it shimmers, and so
+// does the tree round it (AuraShimmer). Right-click a ripe one to pick it: the fruit (ElementalFruitItem) drops and it starts
 // again from the first stage. Broken ripe, it drops its fruit; unripe, nothing. Falls if what holds it goes.
 // Models: models/block/fruit/fruit_{hanging,side}_stage<age>.json, the fruit tinted its element's colour.
 public class ElementalFruitBlock extends Block
@@ -49,6 +52,8 @@ public class ElementalFruitBlock extends Block
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     public static final int RIPE = 2;
     public static final EnumProperty<Direction> FACING = EnumProperty.create("facing", Direction.class, side -> side != Direction.DOWN);
+    // Ripening on the aura (set on random ticks; the client shimmers)
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     private static final int RIPEN_ODDS = 3;
 
     // Shapes for each stage: hanging (support above), and on the side of a trunk to the north (turned for the others)
@@ -75,7 +80,7 @@ public class ElementalFruitBlock extends Block
         super(properties);
         this.wood = wood;
         this.fruit = fruit;
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(AGE, 0));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(AGE, 0).setValue(ACTIVE, false));
     }
 
     public ElementalWood wood()
@@ -102,7 +107,7 @@ public class ElementalFruitBlock extends Block
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING, AGE);
+        builder.add(FACING, AGE, ACTIVE);
     }
 
     @Override
@@ -120,11 +125,15 @@ public class ElementalFruitBlock extends Block
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (random.nextInt(RIPEN_ODDS) != 0) return;
         EnumElement source = feedingPrimal(level, pos, wood.element());
-        if (source == null) return;
+        if (state.getValue(ACTIVE) != (source != null)) {
+            state = state.setValue(ACTIVE, source != null);
+            level.setBlock(pos, state, Block.UPDATE_CLIENTS);
+        }
+        if (source == null || random.nextInt(RIPEN_ODDS) != 0) return;
         ChunkAura.add(level, pos, source, -1);
-        level.setBlock(pos, state.setValue(AGE, state.getValue(AGE) + 1), Block.UPDATE_CLIENTS);
+        int age = state.getValue(AGE) + 1;
+        level.setBlock(pos, state.setValue(AGE, age).setValue(ACTIVE, age < RIPE), Block.UPDATE_CLIENTS);
         level.sendParticles(new DustParticleOptions(wood.element().color(), 0.8F), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                 5, 0.25, 0.25, 0.25, 0);
     }
@@ -164,6 +173,16 @@ public class ElementalFruitBlock extends Block
     {
         if (directionToNeighbour == state.getValue(FACING) && !state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
         return super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
+    }
+
+    // Ripening on the aura: it shimmers, and sparkles drift through the tree round it
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (!state.getValue(ACTIVE)) return;
+        int color = wood.element().color();
+        if (random.nextInt(2) == 0) AuraShimmer.sparkle(level, random, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.3, 0.3, color);
+        if (random.nextInt(3) == 0) AuraShimmer.sparkle(level, random, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 2.5, 1.5, color);
     }
 
     // Picking a ripe fruit

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "dust:block/crystal/motion_crystal_block"
+  }
+}

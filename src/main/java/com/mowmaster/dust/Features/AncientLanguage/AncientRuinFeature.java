@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Features.AncientLanguage;
 
 import com.mojang.serialization.MapCodec;
+import com.mowmaster.dust.DustConfig;
 import com.mowmaster.dust.DustRegistries.DustBlockRegistry;
 import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 *///?}
 
 // A small crumbling stone-brick wall with an ancient word carved across its middle row in glyph stones, sometimes with
-// a chest in front holding an Ancient Tablet. Placed on the surface of overworld biomes now and then (see DustWorldgen).
+// a chest in front holding an Ancient Tablet. Placed on the surface of overworld biomes now and then: about one chunk
+// in DustConfig.RUIN_RARITY (128 by default, half as common as ore boulders; see DustWorldgen).
 //
 //        ##  #  ###            row 2: broken top
 //     # [g][l][y][p][h] #      row 1: the word, read left to right standing in front
@@ -65,6 +67,8 @@ public record AncientRuinFeature() implements Feature
     @Override
     public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin)
     {
+        // About one chunk in DustConfig.RUIN_RARITY (tried in every chunk: DustWorldgen)
+        if (random.nextInt(DustConfig.rarity(DustConfig.RUIN_RARITY)) != 0) return false;
         if (!level.getFluidState(origin).isEmpty() || !level.getFluidState(origin.below()).isEmpty()) {
             return false;
         }

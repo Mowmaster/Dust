@@ -1,16 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dust:block/crystal/crystal_block",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": -1
-      },
-      {
-        "type": "minecraft:constant",
-        "value": -16711808
-      }
-    ]
+    "model": "dust:block/seeds_crystal_block"
   }
 }

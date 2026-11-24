@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:life_crystal"
+          "name": "dust:life_crystal_small"
         }
       ],
       "rolls": 1

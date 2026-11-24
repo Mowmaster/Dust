@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "dust:block/crystal/crystal_block"
+      "model": "dust:block/order_crystal_block"
     }
   }
 }

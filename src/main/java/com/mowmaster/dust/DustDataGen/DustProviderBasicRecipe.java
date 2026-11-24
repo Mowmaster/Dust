@@ -93,6 +93,9 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         // A Spell Scroll + a gold ingot -> locked; a written Spell Scroll alone -> a blank one (code-driven "special" recipe)
         SpecialRecipeBuilder.special(() -> com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE)
                 .save(output, DustReferences.MODID + ":spell_scroll_crafting");
+        // A bowl and six elemental fruits of up to three kinds -> a Fruit Medley of them (code-driven "special" recipe)
+        SpecialRecipeBuilder.special(() -> com.mowmaster.dust.Features.Trees.FruitMedleyRecipe.INSTANCE)
+                .save(output, DustReferences.MODID + ":fruit_medley");
 
     }
 

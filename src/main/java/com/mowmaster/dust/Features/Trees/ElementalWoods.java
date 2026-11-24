@@ -35,6 +35,8 @@ public final class ElementalWoods
 {
     public static final Map<ElementalWood, WoodSet> SETS;
     public static final Map<Charcoal, DeferredItem<CharcoalItem>> CHARCOAL;
+    // A bowl of six elemental fruits (FruitMedleyRecipe)
+    public static final DeferredItem<FruitMedleyItem> MEDLEY;
 
     static {
         Map<ElementalWood, WoodSet> sets = new EnumMap<>(ElementalWood.class);
@@ -45,6 +47,7 @@ public final class ElementalWoods
             charcoal.put(kind, DustItemRegistry.DUSTITEMS.registerItem(kind.itemName(), properties -> new CharcoalItem(kind, charcoalFuel(properties, kind))));
         }
         CHARCOAL = Collections.unmodifiableMap(charcoal);
+        MEDLEY = DustItemRegistry.DUSTITEMS.registerItem("fruit_medley", FruitMedleyItem::new);
     }
 
     private ElementalWoods() {}

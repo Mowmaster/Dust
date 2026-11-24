@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:flight_crystal"
+          "name": "dust:flight_crystal_small"
         }
       ],
       "rolls": 1

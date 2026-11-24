@@ -21,12 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 // Every element's crystal blocks, in element order (registered with Dust's other blocks and items):
-//   <element>_crystal_small / _medium / _large   crystals growing off a face (CrystalNodeBlock). The small one has no
-//                                                item of its own: it's the element's crystal (DustItemRegistry.CRYSTALS),
-//                                                which places it (CrystalPlacing). Medium and large have items; the
-//                                                large one carries its charge for Crystal Displays (LargeCrystalItem).
-//   <element>_crystal_block                      a block of the crystal (CrystalBlock)
-//   budding_<element>_crystal                    grows the crystals (BuddingCrystalBlock), no item
+//   <element>_crystal_small / _medium / _large   crystals growing off a face (CrystalNodeBlock), each with its own item
+//                                                drawn as the crystal itself (the 3D model, not a flat icon), which
+//                                                tells them apart from the alchemical crystals (DustItemRegistry.CRYSTALS).
+//                                                The large one carries its charge for Crystal Displays (LargeCrystalItem).
+//   <element>_crystal_block                      a block of the crystal (CrystalBlock), its own texture per element
+//   budding_<element>_crystal                    grows the crystals (BuddingCrystalBlock), no item; the crystal block's
+//                                                texture with one hole in the middle
 // Names are shared ("Medium Crystal"...); the element shows in the tooltip, as for the crystal items (it may not have
 // been discovered yet).
 public final class ElementCrystals
@@ -36,6 +37,7 @@ public final class ElementCrystals
     private static final Map<DustElement, DeferredBlock<CrystalNodeBlock>> LARGE = new LinkedHashMap<>();
     public static final Map<DustElement, DeferredBlock<CrystalBlock>> BLOCKS;
     public static final Map<DustElement, DeferredBlock<BuddingCrystalBlock>> BUDDING;
+    public static final Map<DustElement, DeferredItem<BlockItem>> SMALL_ITEMS;
     public static final Map<DustElement, DeferredItem<BlockItem>> MEDIUM_ITEMS;
     public static final Map<DustElement, DeferredItem<LargeCrystalItem>> LARGE_ITEMS;
     public static final Map<DustElement, DeferredItem<BlockItem>> BLOCK_ITEMS;
@@ -43,6 +45,7 @@ public final class ElementCrystals
     static {
         Map<DustElement, DeferredBlock<CrystalBlock>> blocks = new LinkedHashMap<>();
         Map<DustElement, DeferredBlock<BuddingCrystalBlock>> budding = new LinkedHashMap<>();
+        Map<DustElement, DeferredItem<BlockItem>> smallItems = new LinkedHashMap<>();
         Map<DustElement, DeferredItem<BlockItem>> mediumItems = new LinkedHashMap<>();
         Map<DustElement, DeferredItem<LargeCrystalItem>> largeItems = new LinkedHashMap<>();
         Map<DustElement, DeferredItem<BlockItem>> blockItems = new LinkedHashMap<>();
@@ -62,8 +65,10 @@ public final class ElementCrystals
                     properties -> new BuddingCrystalBlock(element, properties.mapColor(MapColor.COLOR_PURPLE).randomTicks().strength(1.5F)
                             .sound(SoundType.AMETHYST).requiresCorrectToolForDrops().pushReaction(PushReaction.POPPED)
                             .overrideDescription("block.dust.budding_crystal"))));
-            DeferredBlock<CrystalNodeBlock> medium = MEDIUM.get(element), large = LARGE.get(element);
+            DeferredBlock<CrystalNodeBlock> small = SMALL.get(element), medium = MEDIUM.get(element), large = LARGE.get(element);
             DeferredBlock<CrystalBlock> block = blocks.get(element);
+            smallItems.put(element, DustItemRegistry.DUSTITEMS.registerItem(name + "_crystal_small",
+                    properties -> new BlockItem(small.get(), properties.overrideDescription("block.dust.crystal_small"))));
             mediumItems.put(element, DustItemRegistry.DUSTITEMS.registerItem(name + "_crystal_medium",
                     properties -> new BlockItem(medium.get(), properties.overrideDescription("block.dust.crystal_medium"))));
             largeItems.put(element, DustItemRegistry.DUSTITEMS.registerItem(name + "_crystal_large",
@@ -73,6 +78,7 @@ public final class ElementCrystals
         }
         BLOCKS = Collections.unmodifiableMap(blocks);
         BUDDING = Collections.unmodifiableMap(budding);
+        SMALL_ITEMS = Collections.unmodifiableMap(smallItems);
         MEDIUM_ITEMS = Collections.unmodifiableMap(mediumItems);
         LARGE_ITEMS = Collections.unmodifiableMap(largeItems);
         BLOCK_ITEMS = Collections.unmodifiableMap(blockItems);
@@ -98,7 +104,13 @@ public final class ElementCrystals
         return (size == CrystalSize.SMALL ? SMALL : size == CrystalSize.MEDIUM ? MEDIUM : LARGE).get(element).get();
     }
 
-    // Every crystal block of one element (all sizes, the block, the budding block): for its tint
+    // One element's three crystals (small, medium, large): their models are tinted the element's colour
+    public static List<Block> nodesOf(DustElement element)
+    {
+        return List.of(SMALL.get(element).get(), MEDIUM.get(element).get(), LARGE.get(element).get());
+    }
+
+    // Every crystal block of one element (all sizes, the block, the budding block)
     public static List<Block> allOf(DustElement element)
     {
         return List.of(SMALL.get(element).get(), MEDIUM.get(element).get(), LARGE.get(element).get(),
@@ -113,7 +125,7 @@ public final class ElementCrystals
         return out;
     }
 
-    // The element of a crystal block's item (medium, large, block), or null
+    // The element of a crystal block's item (small, medium, large, block), or null
     public static @Nullable DustElement elementOf(ItemStack stack)
     {
         return stack.getItem() instanceof BlockItem item && item.getBlock() instanceof ElementCrystal crystal ? crystal.element() : null;

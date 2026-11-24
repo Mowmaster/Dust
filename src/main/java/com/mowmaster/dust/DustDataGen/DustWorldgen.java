@@ -35,7 +35,8 @@ import java.util.List;
 
 // Worldgen datapack entries. Each feature takes three steps:
 //   feature        dust:ancient_ruin  - what to build (AncientRuinFeature)
-//   placed feature dust:ancient_ruin  - where: about once every RARITY chunks, at a random spot, on the surface
+//   placed feature dust:ancient_ruin  - where: tried once in every chunk, at a random spot on the surface; the feature
+//                                      itself decides (DustConfig.RUIN_RARITY: half as common as ore boulders)
 //   biome modifier dust:add_ancient_ruins - which biomes get it (all overworld biomes), in the surface structures step
 // and the same three for Inert Crystal Ore (about as common as diamond, in every overworld biome; what it becomes is up
 // to each chunk's aura: Features/Magic/InertCrystalOreBlock):
@@ -50,9 +51,6 @@ import java.util.List;
 // data/dust/neoforge/biome_modifier/.
 public class DustWorldgen
 {
-    // On average one ruin per this many chunks
-    public static final int RARITY = 64;
-
     public static final ResourceKey<Feature> ANCIENT_RUIN = ResourceKey.create(Registries.FEATURE, id("ancient_ruin"));
     public static final ResourceKey<PlacedFeature> ANCIENT_RUIN_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("ancient_ruin"));
     public static final ResourceKey<BiomeModifier> ADD_ANCIENT_RUINS = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_ancient_ruins"));
@@ -164,8 +162,7 @@ public class DustWorldgen
     {
         context.register(ANCIENT_RUIN_PLACED, new PlacedFeature(
                 context.lookup(Registries.FEATURE).getOrThrow(ANCIENT_RUIN),
-                List.of(RarityFilter.onAverageOnceEvery(RARITY),
-                        InSquarePlacement.spread(),
+                List.of(InSquarePlacement.spread(),
                         HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG),
                         BiomeFilter.biome())));
         var features = context.lookup(Registries.FEATURE);

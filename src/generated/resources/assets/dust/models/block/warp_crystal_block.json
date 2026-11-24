@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "dust:block/crystal/warp_crystal_block"
+  }
+}

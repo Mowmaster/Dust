@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "dust:block/crystal/slime_crystal_block"
+  }
+}

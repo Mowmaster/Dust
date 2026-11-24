@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:vacuum_crystal"
+          "name": "dust:vacuum_crystal_small"
         }
       ],
       "rolls": 1

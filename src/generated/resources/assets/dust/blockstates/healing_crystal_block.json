@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "dust:block/crystal/crystal_block"
+      "model": "dust:block/healing_crystal_block"
     }
   }
 }

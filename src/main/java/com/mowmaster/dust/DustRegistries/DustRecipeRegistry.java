@@ -26,6 +26,10 @@ public class DustRecipeRegistry
     public static final Supplier<RecipeSerializer<com.mowmaster.dust.Features.Spells.SpellScrollRecipe>> SPELL_SCROLL_CRAFTING = RECIPE_SERIALIZERS.register("spell_scroll_crafting",
             () -> new RecipeSerializer<>(MapCodec.unit(com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE),
                     StreamCodec.unit(com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE)));
+    // A Fruit Medley: a bowl and six elemental fruits (Features/Trees/FruitMedleyRecipe)
+    public static final Supplier<RecipeSerializer<com.mowmaster.dust.Features.Trees.FruitMedleyRecipe>> FRUIT_MEDLEY = RECIPE_SERIALIZERS.register("fruit_medley",
+            () -> new RecipeSerializer<>(MapCodec.unit(com.mowmaster.dust.Features.Trees.FruitMedleyRecipe.INSTANCE),
+                    StreamCodec.unit(com.mowmaster.dust.Features.Trees.FruitMedleyRecipe.INSTANCE)));
     public static final Supplier<RecipeSerializer<DustRecipe>> DUST_CRAFTING = RECIPE_SERIALIZERS.register("dust_crafting",
             () -> new RecipeSerializer<>(DustRecipe.MAP_CODEC, DustRecipe.STREAM_CODEC));
 

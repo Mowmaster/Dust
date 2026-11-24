@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:plants_crystal"
+          "name": "dust:plants_crystal_small"
         }
       ],
       "rolls": 1

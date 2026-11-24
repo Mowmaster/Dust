@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:damage_crystal"
+          "name": "dust:damage_crystal_small"
         }
       ],
       "rolls": 1

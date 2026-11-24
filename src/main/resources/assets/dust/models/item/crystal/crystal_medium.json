@@ -1,0 +1,45 @@
+{
+  "parent": "dust:block/crystal/crystal_medium",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 4.3, 0],
+      "scale": [1.25, 1.25, 1.25]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 2.0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 4.0, 0],
+      "scale": [1.0, 1.0, 1.0]
+    },
+    "head": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 13, 0],
+      "scale": [1.0, 1.0, 1.0]
+    },
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 3.0, 0],
+      "scale": [0.6, 0.6, 0.6]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [75, 225, 0],
+      "translation": [0, 3.0, 0],
+      "scale": [0.6, 0.6, 0.6]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 3.0, 0],
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 3.0, 0],
+      "scale": [0.7, 0.7, 0.7]
+    }
+  }
+}

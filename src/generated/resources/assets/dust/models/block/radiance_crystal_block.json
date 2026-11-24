@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "dust:block/crystal/radiance_crystal_block"
+  }
+}

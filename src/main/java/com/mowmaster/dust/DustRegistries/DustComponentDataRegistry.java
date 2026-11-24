@@ -46,6 +46,10 @@ public class DustComponentDataRegistry
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CRYSTAL_CHARGE = register("crystal_charge",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    // The fruits in a Fruit Medley (Features/Trees/FruitMedley)
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.mowmaster.dust.Features.Trees.FruitMedley>> FRUIT_MEDLEY = register("fruit_medley",
+            builder -> builder.persistent(com.mowmaster.dust.Features.Trees.FruitMedley.CODEC).networkSynchronized(com.mowmaster.dust.Features.Trees.FruitMedley.STREAM_CODEC));
+
     // A Shared Research Guide's copy of its author's research, and the author's name
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResearchData>> RESEARCH_SNAPSHOT = register("research_snapshot",
             builder -> builder.persistent(ResearchData.CODEC).networkSynchronized(ResearchData.STREAM_CODEC));

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:mud_crystal"
+          "name": "dust:mud_crystal_small"
         }
       ],
       "rolls": 1

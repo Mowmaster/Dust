@@ -2,10 +2,6 @@
   "feature": "dust:ancient_ruin",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 64
-    },
-    {
       "type": "minecraft:in_square"
     },
     {

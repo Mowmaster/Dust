@@ -27,6 +27,7 @@ public final class DustConfig
     public static final ModConfigSpec.IntValue BOULDER_RARITY;
     public static final ModConfigSpec.IntValue FLOWER_RARITY;
     public static final ModConfigSpec.IntValue TREE_RARITY;
+    public static final ModConfigSpec.IntValue RUIN_RARITY;
 
     static {
         BUILDER.push("spells").comment("Metal on a block that isn't an ore: the nugget it drops when broken, by weight").push("metal");
@@ -57,6 +58,8 @@ public final class DustConfig
                 .defineInRange("flower_rarity", 32, 1, 100000);
         TREE_RARITY = BUILDER.comment("Elemental trees, in biomes rich in their element")
                 .defineInRange("tree_rarity", 24, 1, 100000);
+        RUIN_RARITY = BUILDER.comment("Ancient ruins (glyph walls) on the surface, anywhere in the overworld (128: half as common as ore boulders)")
+                .defineInRange("ruin_rarity", 128, 1, 100000);
         BUILDER.pop();
     }
 

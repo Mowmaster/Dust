@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:sound_crystal"
+          "name": "dust:sound_crystal_small"
         }
       ],
       "rolls": 1

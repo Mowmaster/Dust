@@ -18,26 +18,11 @@ public class DustCreativeTabRegistry {
                     .title(Component.translatable("creativetab.dust.dusttab_items"))
                     .displayItems((itemDisplayParameters, output) -> {
 
-                        output.accept(DustItemRegistry.CRYSTAL_INERT.asItem());
-
                         output.accept(DustItemRegistry.ANCIENT_INK.asItem());
                         output.accept(DustItemRegistry.PARCHMENT.asItem());
                         output.accept(DustItemRegistry.ANCIENT_TABLET.asItem());
                         output.accept(DustItemRegistry.RESEARCH_NOTES.asItem());
                         output.accept(DustItemRegistry.MAGICAL_FLINT_AND_STEEL.asItem());
-                        output.accept(DustItemRegistry.GRIMOIRE.asItem());
-                        output.accept(DustItemRegistry.AKASHIC.asItem());
-                        // A Fused Crystal of each fusion
-                        for (var modifier : com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY) {
-                            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) {
-                                var id = com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY.getKey(modifier);
-                                if (id != null) output.accept(com.mowmaster.dust.Features.Spells.FusedCrystalItem.of(id));
-                            }
-                        }
-                        DustItemRegistry.CARDS.values().forEach(card -> output.accept(card.get()));
-                        // A crystal and a dust for every element, in element order
-                        DustItemRegistry.CRYSTALS.values().forEach(item -> output.accept(item.get()));
-                        DustItemRegistry.DUSTS.values().forEach(item -> output.accept(item.get()));
                         output.accept(DustBlockRegistry.ELEMENT_TESTER.asItem());
                         output.accept(DustBlockRegistry.ELEMENT_CRAFTER.asItem());
                         output.accept(DustBlockRegistry.ELEMENT_REPLICATOR.asItem());
@@ -84,8 +69,25 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.GIANT_PYLON.asItem());
                         output.accept(DustBlockRegistry.DAMAGE_PYLON.asItem());
                         output.accept(DustBlockRegistry.EXPERIENCED_PYLON.asItem());
-                        output.accept(DustItemRegistry.SPELL_SCROLL.get());
                         output.accept(DustItemRegistry.ALCHEMICAL_SOOT.asItem());
+                    }).build());
+
+    // Spells: the Akashic, grimoires and scrolls, a Fused Crystal of each fusion, and every modifier card
+    public static final Supplier<CreativeModeTab> DUSTTAB_SPELLS = CREATIVE_MODE_TABS.register("dusttab_spells",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(DustItemRegistry.AKASHIC.get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_spells"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(DustItemRegistry.AKASHIC.asItem());
+                        output.accept(DustItemRegistry.GRIMOIRE.asItem());
+                        output.accept(DustItemRegistry.SPELL_SCROLL.get());
+                        for (var modifier : com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY) {
+                            if (modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier) {
+                                var id = com.mowmaster.dust.Features.Spells.SpellRegistries.MODIFIER_REGISTRY.getKey(modifier);
+                                if (id != null) output.accept(com.mowmaster.dust.Features.Spells.FusedCrystalItem.of(id));
+                            }
+                        }
+                        DustItemRegistry.CARDS.values().forEach(card -> output.accept(card.get()));
                     }).build());
 
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",
@@ -113,15 +115,19 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.SPELL_WAND_EARTH.asItem());
                     }).build());
 
-    // Every element's medium and large crystals and crystal blocks (their small crystal is the element's crystal item)
+    // Dusts and crystals: every element's dust and alchemical crystal (and the inert crystal), in element order; then the
+    // Crystal Display and every element's crystal blocks (small, medium and large crystals, crystal block)
     public static final Supplier<CreativeModeTab> DUSTTAB_CRYSTALS = CREATIVE_MODE_TABS.register("dusttab_crystals",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(com.mowmaster.dust.Features.DustComposition.DustElements.MAGIC).get()))
                     .title(Component.translatable("creativetab.dust.dusttab_crystals"))
                     .displayItems((itemDisplayParameters, output) -> {
+                        DustItemRegistry.DUSTS.values().forEach(item -> output.accept(item.get()));
+                        output.accept(DustItemRegistry.CRYSTAL_INERT.asItem());
+                        DustItemRegistry.CRYSTALS.values().forEach(item -> output.accept(item.get()));
                         output.accept(DustBlockRegistry.CRYSTAL_DISPLAY.asItem());
                         for (var element : com.mowmaster.dust.Features.DustComposition.DustElements.all()) {
-                            output.accept(DustItemRegistry.CRYSTALS.get(element).get());
+                            output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.SMALL_ITEMS.get(element).get());
                             output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.MEDIUM_ITEMS.get(element).get());
                             output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(element).get());
                             output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.get(element).get());
@@ -145,6 +151,16 @@ public class DustCreativeTabRegistry {
                                 if (block != set.sapling() && block != set.leaves()) output.accept(block.get().asItem());
                             }
                             output.accept(set.fruit().get());
+                        }
+                        // Fruit Medleys: one kind (one affinity for 30 minutes), two kinds, three kinds
+                        for (var fruits : java.util.List.of(
+                                java.util.Map.of(com.mowmaster.dust.Features.Trees.ElementalWood.EMBERWOOD, 6),
+                                java.util.Map.of(com.mowmaster.dust.Features.Trees.ElementalWood.TIDEWOOD, 4, com.mowmaster.dust.Features.Trees.ElementalWood.LOAMWOOD, 2),
+                                java.util.Map.of(com.mowmaster.dust.Features.Trees.ElementalWood.EMBERWOOD, 2, com.mowmaster.dust.Features.Trees.ElementalWood.TIDEWOOD, 2,
+                                        com.mowmaster.dust.Features.Trees.ElementalWood.LOAMWOOD, 2))) {
+                            ItemStack medley = new ItemStack(com.mowmaster.dust.Features.Trees.ElementalWoods.MEDLEY.get());
+                            medley.set(DustComponentDataRegistry.FRUIT_MEDLEY.get(), new com.mowmaster.dust.Features.Trees.FruitMedley(fruits));
+                            output.accept(medley);
                         }
                         com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.values().forEach(charcoal -> output.accept(charcoal.get()));
                     }).build());

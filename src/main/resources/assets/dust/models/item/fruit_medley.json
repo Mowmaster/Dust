@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dust:item/fruit_medley",
+    "layer1": "dust:item/fruit_medley_fruit_0",
+    "layer2": "dust:item/fruit_medley_fruit_1",
+    "layer3": "dust:item/fruit_medley_fruit_2"
+  }
+}

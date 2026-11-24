@@ -54,11 +54,11 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
                 block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.of(primal)).get(), 2, 5)));
 
         dropSelf(DustBlockRegistry.CRYSTAL_DISPLAY.get());
-        // Element crystals: with Silk Touch, the crystal (a small one is the element's crystal item); without, nothing
+        // Element crystals: with Silk Touch, the crystal's own item; without, nothing
         // here: CrystalNodeBlock gives an orb of its dust instead. Crystal blocks drop themselves; budding ones nothing.
         for (com.mowmaster.dust.Features.DustComposition.DustElement element : com.mowmaster.dust.Features.DustComposition.DustElements.all()) {
             add(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, com.mowmaster.dust.Features.Crystals.CrystalSize.SMALL),
-                    block -> createSilkTouchOnlyTable(DustItemRegistry.CRYSTALS.get(element).get()));
+                    block -> createSilkTouchOnlyTable(com.mowmaster.dust.Features.Crystals.ElementCrystals.SMALL_ITEMS.get(element).get()));
             add(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, com.mowmaster.dust.Features.Crystals.CrystalSize.MEDIUM),
                     block -> createSilkTouchOnlyTable(com.mowmaster.dust.Features.Crystals.ElementCrystals.MEDIUM_ITEMS.get(element).get()));
             add(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, com.mowmaster.dust.Features.Crystals.CrystalSize.LARGE),

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:magic_crystal"
+          "name": "dust:magic_crystal_small"
         }
       ],
       "rolls": 1

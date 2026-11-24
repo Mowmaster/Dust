@@ -25,7 +25,9 @@ import java.util.List;
 //   Dust store  whole elements, a limited number of different ones (dustTypes) and of each (dustCapacity). An element
 //               not carried yet needs a free type slot.
 //   Attunement  0-3 elements: more dust from orbs, cheaper and (for 1-2) stronger spells of those elements
-//               (MagicConfig.ATTUNEMENT). Only machines and research attune a player.
+//               (MagicConfig.ATTUNEMENT). Only machines and research attune a player. Fruit affinities (eating an
+//               elemental fruit or a Fruit Medley: Features/Trees/FruitAffinity) give the same bonuses on top, by how
+//               many fruit affinities run at once; the two multiply together.
 @EventBusSubscriber(modid = DustReferences.MODID)
 public final class PlayerMagicHelper
 {
@@ -177,23 +179,29 @@ public final class PlayerMagicHelper
         return MagicConfig.ATTUNEMENT[Math.min(attuned.size(), MagicConfig.ATTUNEMENT.length - 1)];
     }
 
-    // How much dust an orb of this element worth value gives the player (more if attuned: 50% / 20% / 10%)
+    // How much dust an orb of this element worth value gives the player (more if attuned: 50% / 20% / 10%; and again
+    // for a fruit affinity)
     public static int orbGain(Player player, DustElement element, int value)
     {
-        return Math.round(value * (1 + attunementBonus(player, element)[0]));
+        float[] fruit = com.mowmaster.dust.Features.Trees.FruitAffinity.bonus(player, element);
+        return Math.round(value * (1 + attunementBonus(player, element)[0]) * (1 + fruit[0]));
     }
 
-    // A spell's dust cost of this element for this player (less if attuned; never below 1 when something's needed)
+    // A spell's dust cost of this element for this player (less if attuned, and with a fruit affinity; never below 1
+    // when something's needed)
     public static int dustCost(Player player, DustElement element, int cost)
     {
         if (cost <= 0) return 0;
-        return Math.max(1, Math.round(cost * (1 - attunementBonus(player, element)[1])));
+        float[] fruit = com.mowmaster.dust.Features.Trees.FruitAffinity.bonus(player, element);
+        return Math.max(1, Math.round(cost * (1 - attunementBonus(player, element)[1]) * (1 - fruit[1])));
     }
 
-    // How much stronger this player's spells of this element are (1.25 for one attunement, 1.1 for two, else 1)
+    // How much stronger this player's spells of this element are (1.25 for one attunement, 1.1 for two, else 1; times
+    // the same for a fruit affinity)
     public static float spellPower(Player player, DustElement element)
     {
-        return 1 + attunementBonus(player, element)[2];
+        float[] fruit = com.mowmaster.dust.Features.Trees.FruitAffinity.bonus(player, element);
+        return (1 + attunementBonus(player, element)[2]) * (1 + fruit[2]);
     }
 
     public static boolean isAwakened(Player player)

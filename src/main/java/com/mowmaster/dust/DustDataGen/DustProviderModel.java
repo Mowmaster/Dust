@@ -236,6 +236,11 @@ public class DustProviderModel extends ModelProvider {
             itemModels.itemModelOutput.accept(set.fruit().get(), ItemModelUtils.tintedModel(fruitModel, new Constant(0xFF000000 | wood.element().color()), new Constant(-1)));
         }
         com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.values().forEach(charcoal -> itemModels.generateFlatItem(charcoal.get(), ModelTemplates.FLAT_ITEM));
+        // The Fruit Medley: models/item/fruit_medley.json (hand-made: the bowl, then three groups of fruit pieces), each
+        // group in the colour of one kind of fruit in it (Client/FruitMedleyTint)
+        itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Trees.ElementalWoods.MEDLEY.get(), ItemModelUtils.tintedModel(id.apply("item/fruit_medley"),
+                new Constant(-1), new com.mowmaster.dust.Features.Trees.Client.FruitMedleyTint(0),
+                new com.mowmaster.dust.Features.Trees.Client.FruitMedleyTint(1), new com.mowmaster.dust.Features.Trees.Client.FruitMedleyTint(2)));
     }
 
     // The dust fire: shaped like soul fire (a floor fire plus four sides, each picking one of a few models at random),
@@ -290,37 +295,42 @@ public class DustProviderModel extends ModelProvider {
         }
     }
 
-    // Every element's crystal blocks (Features/Crystals/ElementCrystals), all sharing a few models tinted with the
-    // element's colour (tint index 1: Client/ElementCrystalTint in the world, a Constant on the items):
-    //   crystals    models/block/crystal/crystal_small / _medium / _large.json, turned to the face they grow from as
-    //               vanilla's amethyst buds are (ROTATIONS_COLUMN_WITH_FACING); the medium and large items are flat
-    //               greyscale icons (item/crystal_medium, item/crystal_large); the small one is the element's crystal item
-    //   blocks      models/block/crystal/crystal_block.json and budding_crystal.json (tinted_cube.json with their texture)
+    // Every element's crystal blocks (Features/Crystals/ElementCrystals):
+    //   crystals    models/block/crystal/crystal_small / _medium / _large.json, shared by every element and tinted with its
+    //               colour (tint index 1: Client/ElementCrystalTint in the world, a Constant on the items), turned to the
+    //               face they grow from as vanilla's amethyst buds are (ROTATIONS_COLUMN_WITH_FACING). Their items show the
+    //               same 3D crystal (models/item/crystal/crystal_<size>.json: the block model, scaled for each display).
+    //   blocks      a cube of the element's own texture (block/crystal/<element>_crystal_block); the budding crystal is the
+    //               same texture with one hole in the middle (block/crystal/budding_<element>_crystal). Not tinted.
     private void createElementCrystals(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
     {
         java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
-        Identifier block = id.apply("block/crystal/crystal_block"), budding = id.apply("block/crystal/budding_crystal");
-        Identifier mediumItem = ModelTemplates.FLAT_ITEM.create(id.apply("item/crystal_medium"),
-                TextureMapping.layer0(new Material(id.apply("item/crystal_medium"))), itemModels.modelOutput);
-        Identifier largeItem = ModelTemplates.FLAT_ITEM.create(id.apply("item/crystal_large"),
-                TextureMapping.layer0(new Material(id.apply("item/crystal_large"))), itemModels.modelOutput);
         for (DustElement element : DustElements.all()) {
             int color = 0xFF000000 | element.color();
+            String name = element.id().getPath();
             for (com.mowmaster.dust.Features.Crystals.CrystalSize size : com.mowmaster.dust.Features.Crystals.CrystalSize.values()) {
                 blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, size),
                                 BlockModelGenerators.plainVariant(id.apply("block/crystal/crystal_" + size.getSerializedName())))
                         .with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING));
             }
-            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCKS.get(element).get(),
-                    BlockModelGenerators.plainVariant(block)));
-            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Crystals.ElementCrystals.BUDDING.get(element).get(),
-                    BlockModelGenerators.plainVariant(budding)));
+            Identifier itemSmall = id.apply("item/crystal/crystal_small"), itemMedium = id.apply("item/crystal/crystal_medium"),
+                    itemLarge = id.apply("item/crystal/crystal_large");
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.SMALL_ITEMS.get(element).get(),
+                    ItemModelUtils.tintedModel(itemSmall, new Constant(-1), new Constant(color)));
             itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.MEDIUM_ITEMS.get(element).get(),
-                    ItemModelUtils.tintedModel(mediumItem, new Constant(color)));
+                    ItemModelUtils.tintedModel(itemMedium, new Constant(-1), new Constant(color)));
             itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(element).get(),
-                    ItemModelUtils.tintedModel(largeItem, new Constant(color)));
+                    ItemModelUtils.tintedModel(itemLarge, new Constant(-1), new Constant(color)));
+            Block crystalBlock = com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCKS.get(element).get();
+            Block budding = com.mowmaster.dust.Features.Crystals.ElementCrystals.BUDDING.get(element).get();
+            Identifier blockModel = ModelTemplates.CUBE_ALL.create(crystalBlock,
+                    TextureMapping.cube(new Material(id.apply("block/crystal/" + name + "_crystal_block"))), blockModels.modelOutput);
+            Identifier buddingModel = ModelTemplates.CUBE_ALL.create(budding,
+                    TextureMapping.cube(new Material(id.apply("block/crystal/budding_" + name + "_crystal"))), blockModels.modelOutput);
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(crystalBlock, BlockModelGenerators.plainVariant(blockModel)));
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(budding, BlockModelGenerators.plainVariant(buddingModel)));
             itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.get(element).get(),
-                    ItemModelUtils.tintedModel(block, new Constant(-1), new Constant(color)));
+                    ItemModelUtils.plainModel(blockModel));
         }
     }
 

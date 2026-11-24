@@ -1,16 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "dust:block/crystal/crystal_block",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": -1
-      },
-      {
-        "type": "minecraft:constant",
-        "value": -16777088
-      }
-    ]
+    "model": "dust:block/abyss_crystal_block"
   }
 }

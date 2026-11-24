@@ -7,6 +7,7 @@ import com.mowmaster.dust.Features.Crystals.ElementCrystals;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.EffectScrolls.DustEntities.ElementalOrbs.ElementOrbEntity;
 import com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement;
+import com.mowmaster.dust.Features.Magic.AuraShimmer;
 import com.mowmaster.dust.Features.Magic.ElementAura;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,9 +18,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AmethystClusterBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.Vec3;
 
 // An elemental flower (ElementalFlower). Besides being a flower (it grows on dirt and grass, and on sand and terracotta
@@ -27,10 +32,13 @@ import net.minecraft.world.phys.Vec3;
 // CRYSTALLIZE_AT times its normal of one of its element's primals (ChunkAura), it draws a dust of its element out of the
 // aura and crystallizes it into a small crystal of its element on the ground beside it (never more than MAX_CRYSTALS of
 // them round it).
+// While the aura round it is full enough for that (checked on each random tick: ACTIVE), it shimmers (AuraShimmer).
 // Broken with shears or Silk Touch it drops itself (loot table); otherwise its dust comes back as an element orb worth
 // ElementalFlower.VALUE.
 public class ElementalFlowerBlock extends FlowerBlock
 {
+    // The aura here is full enough of its element for it to crystallize it (set on random ticks; the client shimmers)
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final float CRYSTALLIZE_AT = 1.25F;
     private static final int CRYSTALLIZE_ODDS = 3;
     private static final int MAX_CRYSTALS = 3;
@@ -42,6 +50,13 @@ public class ElementalFlowerBlock extends FlowerBlock
     {
         super(flower.stewEffect, flower.stewSeconds, properties);
         this.flower = flower;
+        registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        builder.add(ACTIVE);
     }
 
     public ElementalFlower flower()
@@ -64,13 +79,13 @@ public class ElementalFlowerBlock extends FlowerBlock
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (random.nextInt(CRYSTALLIZE_ODDS) != 0) return;
         DustElement element = flower.element();
         boolean overFull = false;
         for (EnumElement primal : ElementAura.primalsOf(element)) {
             if (ElementAura.fullness(level, pos, primal) >= CRYSTALLIZE_AT) overFull = true;
         }
-        if (!overFull) return;
+        if (state.getValue(ACTIVE) != overFull) level.setBlock(pos, state.setValue(ACTIVE, overFull), Block.UPDATE_CLIENTS);
+        if (!overFull || random.nextInt(CRYSTALLIZE_ODDS) != 0) return;
         int crystals = 0;
         for (BlockPos at : BlockPos.betweenClosed(pos.offset(-REACH, -1, -REACH), pos.offset(REACH, 1, REACH))) {
             if (level.getBlockState(at).getBlock() instanceof CrystalNodeBlock) crystals++;
@@ -87,6 +102,15 @@ public class ElementalFlowerBlock extends FlowerBlock
             level.sendParticles(new DustParticleOptions(element.color(), 1.0F), at.getX() + 0.5, at.getY() + 0.3, at.getZ() + 0.5, 8, 0.2, 0.2, 0.2, 0);
             return;
         }
+    }
+
+    // Shimmering while it can crystallize the aura
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (!state.getValue(ACTIVE) || random.nextInt(2) != 0) return;
+        Vec3 offset = state.getOffset(pos);
+        AuraShimmer.sparkle(level, random, pos.getX() + 0.5 + offset.x, pos.getY() + 0.45, pos.getZ() + 0.5 + offset.z, 0.3, 0.3, flower.element().color());
     }
 
     // Broken by hand or with a tool other than shears, without Silk Touch: an orb of its dust
