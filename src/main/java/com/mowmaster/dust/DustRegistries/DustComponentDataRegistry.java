@@ -42,6 +42,10 @@ public class DustComponentDataRegistry
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> DECIPHER_MISTAKES = register("decipher_mistakes",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    // The dust left in a Large Crystal taken off a Crystal Display (Features/Crystals/LargeCrystalItem; none: full)
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CRYSTAL_CHARGE = register("crystal_charge",
+            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     // A Shared Research Guide's copy of its author's research, and the author's name
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResearchData>> RESEARCH_SNAPSHOT = register("research_snapshot",
             builder -> builder.persistent(ResearchData.CODEC).networkSynchronized(ResearchData.STREAM_CODEC));

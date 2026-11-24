@@ -2,6 +2,171 @@
   "values": {
     "dust:flower_windwheel": {
       "chance": 0.3
+    },
+    "dust:emberbell": {
+      "chance": 0.65
+    },
+    "dust:tidecall_lily": {
+      "chance": 0.65
+    },
+    "dust:amberglaze_lily": {
+      "chance": 0.65
+    },
+    "dust:peakwhite": {
+      "chance": 0.65
+    },
+    "dust:duskbloom": {
+      "chance": 0.65
+    },
+    "dust:sunspark": {
+      "chance": 0.65
+    },
+    "dust:cinderpod": {
+      "chance": 0.65
+    },
+    "dust:frostcall": {
+      "chance": 0.65
+    },
+    "dust:deepglow": {
+      "chance": 0.65
+    },
+    "dust:jadeleaf": {
+      "chance": 0.65
+    },
+    "dust:mirecap": {
+      "chance": 0.65
+    },
+    "dust:dewcup": {
+      "chance": 0.65
+    },
+    "dust:gildthorn": {
+      "chance": 0.65
+    },
+    "dust:emberwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:emberwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:emberwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:tidewood_sapling": {
+      "chance": 0.3
+    },
+    "dust:tidewood_leaves": {
+      "chance": 0.3
+    },
+    "dust:tidewood_fruit": {
+      "chance": 0.65
+    },
+    "dust:loamwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:loamwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:loamwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:pearlwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:pearlwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:pearlwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:umbralwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:umbralwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:umbralwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:sunwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:sunwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:sunwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:cinderwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:cinderwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:cinderwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:frostwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:frostwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:frostwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:abysswood_sapling": {
+      "chance": 0.3
+    },
+    "dust:abysswood_leaves": {
+      "chance": 0.3
+    },
+    "dust:abysswood_fruit": {
+      "chance": 0.65
+    },
+    "dust:slatewood_sapling": {
+      "chance": 0.3
+    },
+    "dust:slatewood_leaves": {
+      "chance": 0.3
+    },
+    "dust:slatewood_fruit": {
+      "chance": 0.65
+    },
+    "dust:bogwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:bogwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:bogwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:zephyrwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:zephyrwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:zephyrwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:verdantwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:verdantwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:verdantwood_fruit": {
+      "chance": 0.65
+    },
+    "dust:gildwood_sapling": {
+      "chance": 0.3
+    },
+    "dust:gildwood_leaves": {
+      "chance": 0.3
+    },
+    "dust:gildwood_fruit": {
+      "chance": 0.65
     }
   }
 }

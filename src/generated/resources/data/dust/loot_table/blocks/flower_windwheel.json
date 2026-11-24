@@ -2,13 +2,25 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "condition": {
-        "type": "minecraft:survives_explosion"
-      },
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "dust:flower_windwheel"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "condition": {
+                "type": "minecraft:any_of",
+                "terms": [
+                  "minecraft:tool/can_shear",
+                  "minecraft:tool/can_silk_touch"
+                ]
+              },
+              "name": "dust:flower_windwheel"
+            },
+            {
+              "type": "minecraft:empty"
+            }
+          ]
         }
       ],
       "rolls": 1

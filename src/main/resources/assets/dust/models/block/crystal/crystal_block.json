@@ -1,0 +1,6 @@
+{
+  "parent": "dust:block/crystal/tinted_cube",
+  "textures": {
+    "all": "dust:block/crystal/crystal_block"
+  }
+}

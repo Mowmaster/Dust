@@ -80,6 +80,11 @@ public class DustProviderModel extends ModelProvider {
         // spell_caster_front_vertical), turned by FACING
         blockModels.createDispenserBlock(DustBlockRegistry.SPELL_CASTER.get());
         createElementItems(itemModels);
+        createElementCrystals(blockModels, itemModels);
+        // The Crystal Display: one model (models/block/crystal/crystal_display.json) lit or not, for block and item
+        Identifier display = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/crystal/crystal_display");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.CRYSTAL_DISPLAY.get(), BlockModelGenerators.plainVariant(display)));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.CRYSTAL_DISPLAY.asItem(), ItemModelUtils.plainModel(display));
         createResearchCrusher(blockModels, itemModels);
         createResearchSeparation(blockModels, itemModels);
         createResearchEvaporation(blockModels);
@@ -157,7 +162,80 @@ public class DustProviderModel extends ModelProvider {
                 DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(),
                 BlockModelGenerators.PlantType.TINTED
         );
+        // The other elemental flowers: vanilla's flower models (a cross, and the potted cross) of block/<name>, the item
+        // flat from the same texture
+        for (com.mowmaster.dust.Features.Flora.ElementalFlower flower : com.mowmaster.dust.Features.Flora.ElementalFlower.values()) {
+            if (flower == com.mowmaster.dust.Features.Flora.ElementalFlower.WINDWHEEL) continue;
+            blockModels.createPlantWithDefaultItem(com.mowmaster.dust.Features.Flora.ElementalFlowers.FLOWERS.get(flower).get(),
+                    com.mowmaster.dust.Features.Flora.ElementalFlowers.POTS.get(flower).get(), BlockModelGenerators.PlantType.NOT_TINTED);
+        }
+        createElementalWoods(blockModels, itemModels);
 
+    }
+
+    private static final ModelTemplate VERTICAL_SLAB = dustTemplate("template_vertical_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
+
+    // The elemental woods (Features/Trees), each from its own textures (block/<wood>_log, _log_top, stripped_<wood>_log,
+    // _log_top, <wood>_planks, <wood>_leaves, <wood>_sapling; entity/chest/<wood>):
+    //   logs, wood, planks, stairs, slabs, fences, gates, buttons, pressure plates: vanilla's models, as for oak
+    //   vertical slabs   models/block/template_vertical_slab.json (the half against the north side) turned to its side,
+    //                    or the planks when double
+    //   chests           a particle-only block (the chest is drawn by Client/ElementalChestRenderer); the item is vanilla's
+    //                    chest item model with the wood's chest texture
+    //   leaves           vanilla's leaves model (no tint: the texture is coloured); saplings a cross, potted too
+    //   fruit pods       models/block/fruit/fruit_{hanging,side}_stage<age>.json (hand-made), turned to the trunk they
+    //                    hang from; tinted by Client/ElementCrystalTint. No item.
+    //   fruit            two layers, item/fruit/<shape> tinted the element's colour and <shape>_stem as it is
+    //   charcoal         flat items (item/<colour>_charcoal)
+    private void createElementalWoods(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+        Map<String, Identifier> fruitItems = new java.util.HashMap<>();
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            com.mowmaster.dust.Features.Trees.ElementalWood wood = set.type();
+            blockModels.woodProvider(set.log().get()).logWithHorizontal(set.log().get()).wood(set.wood().get());
+            blockModels.woodProvider(set.strippedLog().get()).logWithHorizontal(set.strippedLog().get()).wood(set.strippedWood().get());
+            Block planks = set.planks().get();
+            blockModels.family(planks).generateFor(DustWoodFamilies.of(set));
+            // Vertical slab
+            Material planksTexture = TextureMapping.getBlockTexture(planks);
+            Identifier half = VERTICAL_SLAB.create(set.verticalSlab().get(), new TextureMapping().put(TextureSlot.BOTTOM, planksTexture)
+                    .put(TextureSlot.TOP, planksTexture).put(TextureSlot.SIDE, planksTexture), blockModels.modelOutput);
+            MultiVariant halfVariant = BlockModelGenerators.plainVariant(half);
+            MultiVariant full = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(planks));
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(set.verticalSlab().get()).with(
+                    PropertyDispatch.initial(com.mowmaster.dust.Features.Trees.VerticalSlabBlock.FACING, com.mowmaster.dust.Features.Trees.VerticalSlabBlock.DOUBLE)
+                            .generate((facing, isDouble) -> isDouble ? full : switch (facing) {
+                                case EAST -> halfVariant.with(BlockModelGenerators.Y_ROT_90).with(BlockModelGenerators.UV_LOCK);
+                                case SOUTH -> halfVariant.with(BlockModelGenerators.Y_ROT_180).with(BlockModelGenerators.UV_LOCK);
+                                case WEST -> halfVariant.with(BlockModelGenerators.Y_ROT_270).with(BlockModelGenerators.UV_LOCK);
+                                default -> halfVariant;
+                            })));
+            blockModels.registerSimpleItemModel(set.verticalSlab().get(), half);
+            // Chest, leaves, sapling
+            blockModels.createChest(set.chest().get(), planks, id.apply(wood.id), false);
+            blockModels.createTrivialBlock(set.leaves().get(), net.minecraft.client.data.models.model.TexturedModel.LEAVES);
+            blockModels.createPlantWithDefaultItem(set.sapling().get(), set.pottedSapling().get(), BlockModelGenerators.PlantType.NOT_TINTED);
+            // Fruit pod: hanging (facing up) or on a trunk's side, by age
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(set.fruitPod().get()).with(
+                    PropertyDispatch.initial(com.mowmaster.dust.Features.Trees.ElementalFruitBlock.FACING, com.mowmaster.dust.Features.Trees.ElementalFruitBlock.AGE)
+                            .generate((facing, age) -> {
+                                if (facing == Direction.UP) return BlockModelGenerators.plainVariant(id.apply("block/fruit/fruit_hanging_stage" + age));
+                                MultiVariant side = BlockModelGenerators.plainVariant(id.apply("block/fruit/fruit_side_stage" + age));
+                                return switch (facing) {
+                                    case EAST -> side.with(BlockModelGenerators.Y_ROT_90);
+                                    case SOUTH -> side.with(BlockModelGenerators.Y_ROT_180);
+                                    case WEST -> side.with(BlockModelGenerators.Y_ROT_270);
+                                    default -> side;
+                                };
+                            })));
+            // Fruit item: its shape's two layers, the fruit in its element's colour
+            String shape = wood.fruitShape();
+            Identifier fruitModel = fruitItems.computeIfAbsent(shape, key -> ModelTemplates.TWO_LAYERED_ITEM.create(id.apply("item/fruit/" + key),
+                    TextureMapping.layered(new Material(id.apply("item/fruit/" + key)), new Material(id.apply("item/fruit/" + key + "_stem"))), itemModels.modelOutput));
+            itemModels.itemModelOutput.accept(set.fruit().get(), ItemModelUtils.tintedModel(fruitModel, new Constant(0xFF000000 | wood.element().color()), new Constant(-1)));
+        }
+        com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.values().forEach(charcoal -> itemModels.generateFlatItem(charcoal.get(), ModelTemplates.FLAT_ITEM));
     }
 
     // The dust fire: shaped like soul fire (a floor fire plus four sides, each picking one of a few models at random),
@@ -209,6 +287,40 @@ public class DustProviderModel extends ModelProvider {
             int color = 0xFF000000 | element.color();
             itemModels.itemModelOutput.accept(DustItemRegistry.CRYSTALS.get(element).get(), ItemModelUtils.tintedModel(crystalModel, new Constant(color)));
             itemModels.itemModelOutput.accept(DustItemRegistry.DUSTS.get(element).get(), ItemModelUtils.tintedModel(dustModel, new Constant(color)));
+        }
+    }
+
+    // Every element's crystal blocks (Features/Crystals/ElementCrystals), all sharing a few models tinted with the
+    // element's colour (tint index 1: Client/ElementCrystalTint in the world, a Constant on the items):
+    //   crystals    models/block/crystal/crystal_small / _medium / _large.json, turned to the face they grow from as
+    //               vanilla's amethyst buds are (ROTATIONS_COLUMN_WITH_FACING); the medium and large items are flat
+    //               greyscale icons (item/crystal_medium, item/crystal_large); the small one is the element's crystal item
+    //   blocks      models/block/crystal/crystal_block.json and budding_crystal.json (tinted_cube.json with their texture)
+    private void createElementCrystals(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+        Identifier block = id.apply("block/crystal/crystal_block"), budding = id.apply("block/crystal/budding_crystal");
+        Identifier mediumItem = ModelTemplates.FLAT_ITEM.create(id.apply("item/crystal_medium"),
+                TextureMapping.layer0(new Material(id.apply("item/crystal_medium"))), itemModels.modelOutput);
+        Identifier largeItem = ModelTemplates.FLAT_ITEM.create(id.apply("item/crystal_large"),
+                TextureMapping.layer0(new Material(id.apply("item/crystal_large"))), itemModels.modelOutput);
+        for (DustElement element : DustElements.all()) {
+            int color = 0xFF000000 | element.color();
+            for (com.mowmaster.dust.Features.Crystals.CrystalSize size : com.mowmaster.dust.Features.Crystals.CrystalSize.values()) {
+                blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, size),
+                                BlockModelGenerators.plainVariant(id.apply("block/crystal/crystal_" + size.getSerializedName())))
+                        .with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING));
+            }
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCKS.get(element).get(),
+                    BlockModelGenerators.plainVariant(block)));
+            blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Crystals.ElementCrystals.BUDDING.get(element).get(),
+                    BlockModelGenerators.plainVariant(budding)));
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.MEDIUM_ITEMS.get(element).get(),
+                    ItemModelUtils.tintedModel(mediumItem, new Constant(color)));
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(element).get(),
+                    ItemModelUtils.tintedModel(largeItem, new Constant(color)));
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.get(element).get(),
+                    ItemModelUtils.tintedModel(block, new Constant(-1), new Constant(color)));
         }
     }
 

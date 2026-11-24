@@ -93,16 +93,10 @@ public class DustBlockRegistry {
     }
 
 
+    // The Windwheel Aster: Air's elemental flower (Features/Flora: the others are registered there)
     public static final DeferredBlock<Block> BLOCK_FLOWER_WHINDWHEEL = registerBlock("flower_windwheel",
-            properties -> new FlowerBlock(
-                    MobEffects.WIND_CHARGED, 10F, properties
-                    .mapColor(MapColor.PLANT)
-                    .noCollision()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .offsetType(BlockBehaviour.OffsetType.XZ)
-                    .pushReaction(PushReaction.POPPED)
-            ),
+            properties -> new com.mowmaster.dust.Features.Flora.ElementalFlowerBlock(com.mowmaster.dust.Features.Flora.ElementalFlower.WINDWHEEL,
+                    com.mowmaster.dust.Features.Flora.ElementalFlowers.plant(properties)),
             // 26.3: composting is an item component now (replaces the COMPOSTABLES data map). COMPOSTABLE_LOW is
             // vanilla's 30% chance to add a layer.
             // 26.1.2 still uses NeoForge's data map: src/main/resources-26.1.2/data/neoforge/data_maps/item/compostables.json
@@ -220,6 +214,10 @@ public class DustBlockRegistry {
             properties.mapColor(MapColor.NONE).sound(SoundType.GLASS).strength(2.0F, 6.0F).noOcclusion()));
     public static final DeferredBlock<Block> DUST_CENTRIFUGE = registerBlock("dust_centrifuge", properties -> new com.mowmaster.dust.Features.Apparatus.centrifuge.DustCentrifugeBlock(
             properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.5F, 6.0F).requiresCorrectToolForDrops().noOcclusion()));
+    // The Crystal Display: a stand for a Large Crystal, giving off its element's effect (Features/Crystals)
+    public static final DeferredBlock<Block> CRYSTAL_DISPLAY = registerBlock("crystal_display", properties -> new com.mowmaster.dust.Features.Crystals.CrystalDisplayBlock(
+            properties.mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2.0F, 6.0F).requiresCorrectToolForDrops().noOcclusion()
+                    .lightLevel(state -> state.getValue(com.mowmaster.dust.Features.Crystals.CrystalDisplayBlock.LIT) ? 9 : 0)));
     public static final DeferredBlock<Block> TRANSMUTER = apparatus("transmuter", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.TRANSMUTER_INSETS,
             com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new);
     public static final DeferredBlock<Block> CONJOINING_CRUCIBLE = apparatus("conjoining_crucible", com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE, com.mowmaster.dust.Features.Apparatus.ApparatusShapes.CRUCIBLE_INSETS,

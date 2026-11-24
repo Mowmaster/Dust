@@ -43,6 +43,9 @@ public class Dust {
         DustSoundRegistry.register(modEventBus);
         // The Research tab's machine discoveries (both sides need the same entries)
         com.mowmaster.dust.Features.Research.ResearchProgress.init();
+        com.mowmaster.dust.Features.Crystals.ElementCrystals.init();
+        com.mowmaster.dust.Features.Flora.ElementalFlowers.init();
+        com.mowmaster.dust.Features.Trees.ElementalWoods.init();
 
         // MowLib's reading HUD: looking at a Spell Pylon shows its deck and pool, helmet or not (SpellPylonReading)
         com.mowmaster.mowlib.reading.ReadingSight.addCondition(com.mowmaster.dust.Features.Spells.pylons.SpellPylonReading::lookingAtSpellPylon);

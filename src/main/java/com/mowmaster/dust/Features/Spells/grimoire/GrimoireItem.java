@@ -172,6 +172,12 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         if (changed) setContents(stack, new com.mowmaster.mowlib.paging.PagedContents(contents.pages(), contents.page(), java.util.List.copyOf(pages)));
     }
 
+    // The spell on a grimoire's open page, if any (for blocks a spell is set on from it: the Crystal Display)
+    public static @Nullable Spell openSpell(ItemStack grimoire)
+    {
+        return grimoire.getItem() instanceof GrimoireItem book ? book.selectedSpell(grimoire) : null;
+    }
+
     // The spell on the open page, if any
     private @Nullable Spell selectedSpell(ItemStack grimoire)
     {

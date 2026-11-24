@@ -1,0 +1,88 @@
+{
+  "values": {
+    "dust:emberwood_log": {
+      "stripped_block": "dust:stripped_emberwood_log"
+    },
+    "dust:emberwood_wood": {
+      "stripped_block": "dust:stripped_emberwood_wood"
+    },
+    "dust:tidewood_log": {
+      "stripped_block": "dust:stripped_tidewood_log"
+    },
+    "dust:tidewood_wood": {
+      "stripped_block": "dust:stripped_tidewood_wood"
+    },
+    "dust:loamwood_log": {
+      "stripped_block": "dust:stripped_loamwood_log"
+    },
+    "dust:loamwood_wood": {
+      "stripped_block": "dust:stripped_loamwood_wood"
+    },
+    "dust:pearlwood_log": {
+      "stripped_block": "dust:stripped_pearlwood_log"
+    },
+    "dust:pearlwood_wood": {
+      "stripped_block": "dust:stripped_pearlwood_wood"
+    },
+    "dust:umbralwood_log": {
+      "stripped_block": "dust:stripped_umbralwood_log"
+    },
+    "dust:umbralwood_wood": {
+      "stripped_block": "dust:stripped_umbralwood_wood"
+    },
+    "dust:sunwood_log": {
+      "stripped_block": "dust:stripped_sunwood_log"
+    },
+    "dust:sunwood_wood": {
+      "stripped_block": "dust:stripped_sunwood_wood"
+    },
+    "dust:cinderwood_log": {
+      "stripped_block": "dust:stripped_cinderwood_log"
+    },
+    "dust:cinderwood_wood": {
+      "stripped_block": "dust:stripped_cinderwood_wood"
+    },
+    "dust:frostwood_log": {
+      "stripped_block": "dust:stripped_frostwood_log"
+    },
+    "dust:frostwood_wood": {
+      "stripped_block": "dust:stripped_frostwood_wood"
+    },
+    "dust:abysswood_log": {
+      "stripped_block": "dust:stripped_abysswood_log"
+    },
+    "dust:abysswood_wood": {
+      "stripped_block": "dust:stripped_abysswood_wood"
+    },
+    "dust:slatewood_log": {
+      "stripped_block": "dust:stripped_slatewood_log"
+    },
+    "dust:slatewood_wood": {
+      "stripped_block": "dust:stripped_slatewood_wood"
+    },
+    "dust:bogwood_log": {
+      "stripped_block": "dust:stripped_bogwood_log"
+    },
+    "dust:bogwood_wood": {
+      "stripped_block": "dust:stripped_bogwood_wood"
+    },
+    "dust:zephyrwood_log": {
+      "stripped_block": "dust:stripped_zephyrwood_log"
+    },
+    "dust:zephyrwood_wood": {
+      "stripped_block": "dust:stripped_zephyrwood_wood"
+    },
+    "dust:verdantwood_log": {
+      "stripped_block": "dust:stripped_verdantwood_log"
+    },
+    "dust:verdantwood_wood": {
+      "stripped_block": "dust:stripped_verdantwood_wood"
+    },
+    "dust:gildwood_log": {
+      "stripped_block": "dust:stripped_gildwood_log"
+    },
+    "dust:gildwood_wood": {
+      "stripped_block": "dust:stripped_gildwood_wood"
+    }
+  }
+}

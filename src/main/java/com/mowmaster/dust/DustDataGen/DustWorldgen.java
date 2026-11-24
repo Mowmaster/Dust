@@ -28,6 +28,9 @@ import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
+
 import java.util.List;
 
 // Worldgen datapack entries. Each feature takes three steps:
@@ -60,6 +63,31 @@ public class DustWorldgen
     public static final ResourceKey<PlacedFeature> INERT_ORE_LARGE_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("ore_inert_crystal_large"));
     public static final ResourceKey<BiomeModifier> ADD_INERT_ORE = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_inert_crystal_ore"));
 
+    // Element geodes (Features/Worldgen/ElementGeodeFeature): tried once in every chunk at a random height from 6 above
+    // the bottom up to 30 (amethyst geodes' range); the feature itself decides whether one forms there (its biome, and
+    // DustConfig.GEODE_RARITY)
+    public static final ResourceKey<Feature> ELEMENT_GEODE = ResourceKey.create(Registries.FEATURE, id("element_geode"));
+    public static final ResourceKey<PlacedFeature> ELEMENT_GEODE_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("element_geode"));
+    public static final ResourceKey<BiomeModifier> ADD_ELEMENT_GEODES = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_element_geodes"));
+
+    // Ore boulders (Features/Worldgen/OreBoulderFeature): tried once in every chunk on the surface; the feature decides
+    // (DustConfig.BOULDER_RARITY, not in water)
+    public static final ResourceKey<Feature> ORE_BOULDER = ResourceKey.create(Registries.FEATURE, id("ore_boulder"));
+    public static final ResourceKey<PlacedFeature> ORE_BOULDER_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("ore_boulder"));
+    public static final ResourceKey<BiomeModifier> ADD_ORE_BOULDERS = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_ore_boulders"));
+
+    // Elemental flowers (Features/Worldgen/ElementalFlowerFeature): tried once in every chunk on the surface
+    public static final ResourceKey<Feature> ELEMENTAL_FLOWERS = ResourceKey.create(Registries.FEATURE, id("elemental_flowers"));
+    public static final ResourceKey<PlacedFeature> ELEMENTAL_FLOWERS_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("elemental_flowers"));
+    public static final ResourceKey<BiomeModifier> ADD_ELEMENTAL_FLOWERS = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_elemental_flowers"));
+
+    // Elemental trees (Features/Worldgen/ElementalTreeFeature): tried once in every chunk on the ground (under any other
+    // trees' leaves); the feature decides (DustConfig.TREE_RARITY, the woods of the biome) and grows that wood's tree
+    // (dust:<wood>_tree, below), the one its sapling grows
+    public static final ResourceKey<Feature> ELEMENTAL_TREES = ResourceKey.create(Registries.FEATURE, id("elemental_trees"));
+    public static final ResourceKey<PlacedFeature> ELEMENTAL_TREES_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("elemental_trees"));
+    public static final ResourceKey<BiomeModifier> ADD_ELEMENTAL_TREES = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_elemental_trees"));
+
     private static Identifier id(String path)
     {
         return Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
@@ -74,6 +102,62 @@ public class DustWorldgen
                 BlockReplacement.replace(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get().defaultBlockState()));
         context.register(INERT_ORE, new OreFeature(targets, 4, 0.5F));
         context.register(INERT_ORE_LARGE, new OreFeature(targets, 12, 0.7F));
+        context.register(ELEMENT_GEODE, com.mowmaster.dust.Features.Worldgen.ElementGeodeFeature.INSTANCE);
+        context.register(ORE_BOULDER, com.mowmaster.dust.Features.Worldgen.OreBoulderFeature.INSTANCE);
+        context.register(ELEMENTAL_FLOWERS, com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature.INSTANCE);
+        context.register(ELEMENTAL_TREES, com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature.INSTANCE);
+        trees(context);
+    }
+
+    // Each elemental wood's tree (ElementalTrees.treeKey: dust:<wood>_tree): its logs and leaves in the shape of a
+    // vanilla tree (TreeShape), with vanilla's numbers for that shape (TreeFeatures), dirt put under the trunk as
+    // vanilla's trees do, and the wood's magical fruit (ElementalFruitDecorator). 26.1.2's copies (the same trees as
+    // configured features) are in src/main/resources-26.1.2/data/dust/worldgen/configured_feature/<wood>_tree.json.
+    private static void trees(BootstrapContext<Feature> context)
+    {
+        net.minecraft.core.Holder<net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider> soil =
+                context.lookup(Registries.BLOCK_STATE_PROVIDER).getOrThrow(net.minecraft.data.worldgen.BlockStateProviders.SOIL_BENEATH_TREE);
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            context.register(com.mowmaster.dust.Features.Trees.ElementalTrees.treeKey(set.type()), tree(set, soil));
+        }
+    }
+
+    private static net.minecraft.world.level.levelgen.feature.TreeFeature tree(com.mowmaster.dust.Features.Trees.WoodSet set,
+            net.minecraft.core.Holder<net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider> soil)
+    {
+        var log = net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider.of(set.log().get());
+        var leaves = net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider.of(set.leaves().get());
+        net.minecraft.world.level.levelgen.feature.TreeFeature.Builder builder = switch (set.type().shape) {
+            case OAK -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer(5, 2, 0), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(1, 0, 1), soil);
+            case TALL -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer(6, 3, 0), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(1, 0, 1), soil);
+            case FANCY -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer(3, 11, 0), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(0, 0, 0, java.util.OptionalInt.of(4)), soil);
+            case ACACIA -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer(5, 2, 2), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(1, 0, 2), soil);
+            case SPRUCE -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer(5, 2, 1), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(1, 2)),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(2, 0, 2), soil);
+            case PINE -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer(6, 4, 0), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1), UniformInt.of(3, 4)),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(2, 0, 2), soil);
+            case AZALEA -> new net.minecraft.world.level.levelgen.feature.TreeFeature.Builder(log,
+                    new net.minecraft.world.level.levelgen.feature.trunkplacers.BendingTrunkPlacer(4, 2, 0, 3, UniformInt.of(1, 2)), leaves,
+                    new net.minecraft.world.level.levelgen.feature.foliageplacers.RandomSpreadFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), ConstantInt.of(2), 50),
+                    new net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize(1, 0, 1), soil);
+        };
+        return builder.ignoreVines().decorators(List.of(new com.mowmaster.dust.Features.Trees.ElementalFruitDecorator(set.type()))).build();
     }
 
     public static void placedFeatures(BootstrapContext<PlacedFeature> context)
@@ -90,6 +174,15 @@ public class DustWorldgen
                 List.of(CountPlacement.of(7), InSquarePlacement.spread(), depth, BiomeFilter.biome())));
         context.register(INERT_ORE_LARGE_PLACED, new PlacedFeature(features.getOrThrow(INERT_ORE_LARGE),
                 List.of(RarityFilter.onAverageOnceEvery(9), InSquarePlacement.spread(), depth, BiomeFilter.biome())));
+        context.register(ELEMENT_GEODE_PLACED, new PlacedFeature(features.getOrThrow(ELEMENT_GEODE),
+                List.of(InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)),
+                        BiomeFilter.biome())));
+        context.register(ORE_BOULDER_PLACED, new PlacedFeature(features.getOrThrow(ORE_BOULDER),
+                List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), BiomeFilter.biome())));
+        context.register(ELEMENTAL_FLOWERS_PLACED, new PlacedFeature(features.getOrThrow(ELEMENTAL_FLOWERS),
+                List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES), BiomeFilter.biome())));
+        context.register(ELEMENTAL_TREES_PLACED, new PlacedFeature(features.getOrThrow(ELEMENTAL_TREES),
+                List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES), BiomeFilter.biome())));
     }
 
     public static void biomeModifiers(BootstrapContext<BiomeModifier> context)
@@ -103,5 +196,21 @@ public class DustWorldgen
                 context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placed.getOrThrow(INERT_ORE_PLACED), placed.getOrThrow(INERT_ORE_LARGE_PLACED)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
+        context.register(ADD_ELEMENT_GEODES, new BiomeModifiers.AddFeaturesBiomeModifier(
+                context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placed.getOrThrow(ELEMENT_GEODE_PLACED)),
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS));
+        context.register(ADD_ORE_BOULDERS, new BiomeModifiers.AddFeaturesBiomeModifier(
+                context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placed.getOrThrow(ORE_BOULDER_PLACED)),
+                GenerationStep.Decoration.LOCAL_MODIFICATIONS));
+        context.register(ADD_ELEMENTAL_FLOWERS, new BiomeModifiers.AddFeaturesBiomeModifier(
+                context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placed.getOrThrow(ELEMENTAL_FLOWERS_PLACED)),
+                GenerationStep.Decoration.VEGETAL_DECORATION));
+        context.register(ADD_ELEMENTAL_TREES, new BiomeModifiers.AddFeaturesBiomeModifier(
+                context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placed.getOrThrow(ELEMENTAL_TREES_PLACED)),
+                GenerationStep.Decoration.VEGETAL_DECORATION));
     }
 }

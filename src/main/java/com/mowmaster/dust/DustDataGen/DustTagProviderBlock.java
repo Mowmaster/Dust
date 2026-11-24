@@ -46,6 +46,7 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.DUST_CYCLONE.key())
                 .add(DustBlockRegistry.DUST_CYCLONE_HOPPER.key())
                 .add(DustBlockRegistry.DUST_CENTRIFUGE.key())
+                .add(DustBlockRegistry.CRYSTAL_DISPLAY.key())
                 .add(DustBlockRegistry.TRANSMUTER.key())
                 .add(DustBlockRegistry.CONJOINING_CRUCIBLE.key())
                 .add(DustBlockRegistry.MIXING_VAT.key())
@@ -74,6 +75,11 @@ public class DustTagProviderBlock extends BlockTagsProvider {
 
         tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.key());
+        // Element crystals: mined with a pickaxe (as amethyst); one research family for all of them
+        for (net.minecraft.world.level.block.Block crystal : com.mowmaster.dust.Features.Crystals.ElementCrystals.all()) {
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(key(crystal));
+            tag(DustTags.Blocks.RESEARCH_FAMILY_CRYSTALS).add(key(crystal));
+        }
 
         // Research's "Found in" biomes: world generation's everyday blocks aren't noted; these crafted ones are
         tag(DustTags.Blocks.NO_BIOME_NOTES)
@@ -103,9 +109,40 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .addTags(BlockTags.MINEABLE_WITH_SHOVEL)
                 .addTags(BlockTags.MINEABLE_WITH_HOE);
 
-        tag(BlockTags.SMALL_FLOWERS)
-                .add(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.key());
-        tag(BlockTags.FLOWER_POTS)
-                .add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.key());
+        // The elemental flowers (the Windwheel Aster among them) and their pots
+        for (com.mowmaster.dust.Features.Flora.ElementalFlower flower : com.mowmaster.dust.Features.Flora.ElementalFlower.values()) {
+            tag(BlockTags.SMALL_FLOWERS).add(com.mowmaster.dust.Features.Flora.ElementalFlowers.FLOWERS.get(flower).key());
+            tag(BlockTags.FLOWER_POTS).add(com.mowmaster.dust.Features.Flora.ElementalFlowers.POTS.get(flower).key());
+        }
+
+        // The elemental woods (Features/Trees), tagged as vanilla's woods are: logs (26.3 has no logs_that_burn block
+        // tag; logs is enough on both versions), planks and their family, leaves, saplings, wooden chests; axes for the
+        // wood, hoes for the leaves. Each wood is one Research family.
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            var logs = tag(DustTags.Blocks.logs(set.type()));
+            set.logs().forEach(log -> logs.add(log.key()));
+            tag(BlockTags.LOGS).addTag(DustTags.Blocks.logs(set.type()));
+            tag(BlockTags.PLANKS).add(set.planks().key());
+            tag(BlockTags.WOODEN_STAIRS).add(set.stairs().key());
+            tag(BlockTags.WOODEN_SLABS).add(set.slab().key());
+            tag(BlockTags.WOODEN_FENCES).add(set.fence().key());
+            tag(net.neoforged.neoforge.common.Tags.BlockItems.FENCES_WOODEN.block()).add(set.fence().key());
+            tag(BlockTags.FENCE_GATES).add(set.fenceGate().key());
+            tag(net.neoforged.neoforge.common.Tags.BlockItems.FENCE_GATES_WOODEN.block()).add(set.fenceGate().key());
+            tag(BlockTags.WOODEN_BUTTONS).add(set.button().key());
+            tag(BlockTags.WOODEN_PRESSURE_PLATES).add(set.pressurePlate().key());
+            tag(net.neoforged.neoforge.common.Tags.BlockItems.CHESTS_WOODEN.block()).add(set.chest().key());
+            tag(BlockTags.GUARDED_BY_PIGLINS).add(set.chest().key());
+            tag(BlockTags.LEAVES).add(set.leaves().key());
+            tag(BlockTags.SAPLINGS).add(set.sapling().key());
+            tag(BlockTags.FLOWER_POTS).add(set.pottedSapling().key());
+            var axe = tag(BlockTags.MINEABLE_WITH_AXE);
+            set.logs().forEach(log -> axe.add(log.key()));
+            axe.add(set.planks().key()).add(set.stairs().key()).add(set.slab().key()).add(set.verticalSlab().key()).add(set.fence().key())
+                    .add(set.fenceGate().key()).add(set.button().key()).add(set.pressurePlate().key()).add(set.chest().key()).add(set.fruitPod().key());
+            tag(BlockTags.MINEABLE_WITH_HOE).add(set.leaves().key());
+            var family = tag(DustTags.Blocks.researchFamily(set.type()));
+            set.itemBlocks().forEach(block -> family.add(block.key()));
+        }
     }
 }

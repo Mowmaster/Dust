@@ -1,0 +1,109 @@
+{
+  "values": {
+    "dust:emberwood_chest": {
+      "burn_time": 300
+    },
+    "dust:emberwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:tidewood_chest": {
+      "burn_time": 300
+    },
+    "dust:tidewood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:loamwood_chest": {
+      "burn_time": 300
+    },
+    "dust:loamwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:pearlwood_chest": {
+      "burn_time": 300
+    },
+    "dust:pearlwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:umbralwood_chest": {
+      "burn_time": 300
+    },
+    "dust:umbralwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:sunwood_chest": {
+      "burn_time": 300
+    },
+    "dust:sunwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:cinderwood_chest": {
+      "burn_time": 300
+    },
+    "dust:cinderwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:frostwood_chest": {
+      "burn_time": 300
+    },
+    "dust:frostwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:abysswood_chest": {
+      "burn_time": 300
+    },
+    "dust:abysswood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:slatewood_chest": {
+      "burn_time": 300
+    },
+    "dust:slatewood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:bogwood_chest": {
+      "burn_time": 300
+    },
+    "dust:bogwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:zephyrwood_chest": {
+      "burn_time": 300
+    },
+    "dust:zephyrwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:verdantwood_chest": {
+      "burn_time": 300
+    },
+    "dust:verdantwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:gildwood_chest": {
+      "burn_time": 300
+    },
+    "dust:gildwood_vertical_slab": {
+      "burn_time": 150
+    },
+    "dust:dark_red_charcoal": {
+      "burn_time": 200
+    },
+    "dust:cherry_red_charcoal": {
+      "burn_time": 400
+    },
+    "dust:orange_charcoal": {
+      "burn_time": 800
+    },
+    "dust:yellow_charcoal": {
+      "burn_time": 1200
+    },
+    "dust:white_charcoal": {
+      "burn_time": 1600
+    },
+    "dust:blue_charcoal": {
+      "burn_time": 3200
+    },
+    "dust:violet_charcoal": {
+      "burn_time": 6400
+    }
+  }
+}

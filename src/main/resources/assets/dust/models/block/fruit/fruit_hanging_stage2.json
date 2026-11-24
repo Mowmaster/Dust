@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "dust:block/fruit/fruit",
+    "fruit": "dust:block/fruit/fruit",
+    "stem": "dust:block/fruit/fruit_stem"
+  },
+  "elements": [
+    {
+      "from": [7.5, 12, 7.5],
+      "to": [8.5, 16, 8.5],
+      "faces": {
+        "down": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+        "north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#stem"}
+      }
+    },
+    {
+      "from": [4.5, 5, 4.5],
+      "to": [11.5, 12, 11.5],
+      "faces": {
+        "down": {"uv": [0, 0, 16, 16], "texture": "#fruit", "tintindex": 1},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#fruit", "tintindex": 1},
+        "north": {"uv": [0, 0, 16, 16], "texture": "#fruit", "tintindex": 1},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#fruit", "tintindex": 1},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#fruit", "tintindex": 1},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#fruit", "tintindex": 1}
+      }
+    }
+  ]
+}

@@ -77,6 +77,8 @@ public class DustProviderBasicRecipe extends RecipeProvider {
 
         // ---- survival recipes ----
         survivalTableRecipes();
+        crystalRecipes();
+        woodRecipes();
         elementCrafterRecipes();
 
         // Parchment, for rubbing glyph walls: paper and a bit of charcoal
@@ -92,6 +94,58 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         SpecialRecipeBuilder.special(() -> com.mowmaster.dust.Features.Spells.SpellScrollRecipe.INSTANCE)
                 .save(output, DustReferences.MODID + ":spell_scroll_crafting");
 
+    }
+
+    // Element crystals: four of an element's crystals make a block of it (as amethyst shards do)
+    private void crystalRecipes() {
+        for (DustElement element : DustElements.all()) {
+            Item crystal = DustItemRegistry.CRYSTALS.get(element).get();
+            shaped(RecipeCategory.BUILDING_BLOCKS, com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.get(element).get())
+                    .pattern("CC").pattern("CC")
+                    .define('C', crystal)
+                    .unlockedBy(getHasName(crystal), has(crystal))
+                    .save(output);
+        }
+    }
+
+    // The elemental woods (Features/Trees), as vanilla's: 4 planks from any of the wood's logs, 3 wood (bark) from 4 logs,
+    // the planks family (stairs, slab, fence, gate, button, pressure plate: DustWoodFamilies), 6 vertical slabs from 3
+    // planks stood in a column, a slab turned on its side and back again, and a chest from 8 planks round one of the
+    // wood's logs (an empty middle is vanilla's chest, which any planks make). Each wood's logs smelt into its charcoal.
+    private void woodRecipes() {
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            com.mowmaster.dust.Features.Trees.ElementalWood wood = set.type();
+            net.minecraft.tags.TagKey<Item> logs = DustTags.Items.logs(wood);
+            Item planks = set.planks().asItem();
+            planksFromLogs(planks, logs, 4);
+            woodFromLogs(set.wood().asItem(), set.log().asItem());
+            woodFromLogs(set.strippedWood().asItem(), set.strippedLog().asItem());
+            generateRecipes(DustWoodFamilies.of(set), net.minecraft.world.flag.FeatureFlags.REGISTRY.allFlags());
+            Item verticalSlab = set.verticalSlab().asItem(), slab = set.slab().asItem();
+            shaped(RecipeCategory.BUILDING_BLOCKS, verticalSlab, 6)
+                    .pattern("P").pattern("P").pattern("P")
+                    .define('P', planks)
+                    .group("wooden_vertical_slab")
+                    .unlockedBy(getHasName(planks), has(planks))
+                    .save(output);
+            shapeless(RecipeCategory.BUILDING_BLOCKS, verticalSlab).requires(slab)
+                    .unlockedBy(getHasName(slab), has(slab))
+                    .save(output, DustReferences.MODID + ":" + getItemName(verticalSlab) + "_from_slab");
+            shapeless(RecipeCategory.BUILDING_BLOCKS, slab).requires(verticalSlab)
+                    .unlockedBy(getHasName(verticalSlab), has(verticalSlab))
+                    .save(output, DustReferences.MODID + ":" + getItemName(slab) + "_from_vertical_slab");
+            shaped(RecipeCategory.DECORATIONS, set.chest().asItem())
+                    .pattern("PPP").pattern("PLP").pattern("PPP")
+                    .define('P', planks)
+                    .define('L', logs)
+                    .unlockedBy(getHasName(planks), has(planks))
+                    .save(output);
+            Item charcoal = com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.get(wood.charcoal).get();
+            SimpleCookingRecipeBuilder.smelting(tag(logs), RecipeCategory.MISC, CookingBookCategory.MISC, charcoal, 0.15F, 200)
+                    .group(getItemName(charcoal))
+                    .unlockedBy("has_" + wood.id + "_logs", has(logs))
+                    .save(output, DustReferences.MODID + ":" + getItemName(charcoal) + "_from_" + wood.id);
+        }
     }
 
     // The crafting table recipes for the dust machines (the Element Tester starts it all; the research tables are the
@@ -269,6 +323,11 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.DUST_CENTRIFUGE.asItem(), "dust_centrifuge", Optional.empty(),
                 java.util.Map.of('S', Ingredient.of(Items.SMOOTH_STONE), 'G', Ingredient.of(Items.GLASS_BOTTLE), 'C', copperIngot, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_SEPARATION.asItem())),
                 List.of("GCG", "CRC", "SSS"), cost(DustElements.WATER, 30), cost(DustElements.CHAOS, 20));
+        // The Crystal Display: a gold-trimmed stand of polished stone round an amethyst block, with Magic and Order dust
+        elementShaped(DustBlockRegistry.CRYSTAL_DISPLAY.asItem(), "crystal_display", Optional.empty(),
+                java.util.Map.of('G', Ingredient.of(Items.GOLD_INGOT), 'A', Ingredient.of(Items.AMETHYST_BLOCK), 'S', Ingredient.of(Items.POLISHED_ANDESITE),
+                        'B', Ingredient.of(Items.SMOOTH_STONE_SLAB)),
+                List.of("GAG", " S ", "BSB"), cost(DustElements.MAGIC, 20), cost(DustElements.ORDER, 20));
         elementShaped(DustBlockRegistry.TRANSMUTER.asItem(), "transmuter", Optional.empty(),
                 java.util.Map.of('G', glass, 'A', Ingredient.of(Items.AMETHYST_SHARD), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.asItem()), 'B', blackstone),
                 List.of("GAG", "IRI", "BBB"), cost(DustElements.ORDER, 30), cost(DustElements.CHAOS, 30));
@@ -297,6 +356,31 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.SPELL_CASTER.asItem(), "spell_caster", Optional.empty(),
                 java.util.Map.of('S', stone, 'A', Ingredient.of(soot), 'C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.ENERGY).get())),
                 List.of("SSS", "SAC", "SSS"), cost(DustElements.ENERGY, 100));
+        // The elemental flowers: a vanilla flower infused with 10 of the element's dust, once the flower has been researched
+        // (seen with Research Notes: its Blocks tab entry)
+        for (com.mowmaster.dust.Features.Flora.ElementalFlower flower : com.mowmaster.dust.Features.Flora.ElementalFlower.values()) {
+            net.minecraft.world.level.block.Block block = com.mowmaster.dust.Features.Flora.ElementalFlowers.FLOWERS.get(flower).get();
+            elementShapeless(block.asItem(), 1, flower.id, Optional.of(new DustRecipe.ResearchKey(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(DustReferences.MODID, "blocks"),
+                            net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(block))),
+                    List.of(Ingredient.of(flower.source.get())), cost(flower.element(), 10));
+        }
+        // The elemental saplings: the vanilla sapling of the same shape of tree infused with 20 of the element's dust, once
+        // the sapling has been researched (its Blocks tab entry), as for the flowers
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            net.minecraft.world.level.block.Block sapling = set.sapling().get();
+            Item source = switch (set.type().shape) {
+                case ACACIA -> Items.ACACIA_SAPLING;
+                case TALL -> Items.BIRCH_SAPLING;
+                case SPRUCE, PINE -> Items.SPRUCE_SAPLING;
+                case AZALEA -> Items.AZALEA;
+                default -> Items.OAK_SAPLING;
+            };
+            elementShapeless(sapling.asItem(), 1, set.type().id + "_sapling", Optional.of(new DustRecipe.ResearchKey(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(DustReferences.MODID, "blocks"),
+                            net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(sapling))),
+                    List.of(Ingredient.of(source)), cost(set.type().element(), 20));
+        }
         // Spell Scroll: shapeless, paper and soot
         elementShapeless(DustItemRegistry.SPELL_SCROLL.get(), 1, "spell_scroll", Optional.empty(),
                 List.of(Ingredient.of(Items.PAPER), Ingredient.of(soot)),

@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 // chance of each is its weight out of the total).
 // [dust_clouds]: the dusty air round spilled dust (Features/DustStorage/DustClouds): whether it explodes, how much dust
 // it takes, how big the blasts are, how far a pile's cloud reaches.
+// [worldgen]: how rare Dust's geodes, ore boulders, flowers and trees are in new terrain (Features/Worldgen).
 public final class DustConfig
 {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -21,6 +22,11 @@ public final class DustConfig
     public static final ModConfigSpec.DoubleValue DUST_EXPLOSION_POWER;
     public static final ModConfigSpec.DoubleValue DUST_EXPLOSION_MAX_POWER;
     public static final ModConfigSpec.IntValue DUST_CLOUD_SIZE;
+
+    public static final ModConfigSpec.IntValue GEODE_RARITY;
+    public static final ModConfigSpec.IntValue BOULDER_RARITY;
+    public static final ModConfigSpec.IntValue FLOWER_RARITY;
+    public static final ModConfigSpec.IntValue TREE_RARITY;
 
     static {
         BUILDER.push("spells").comment("Metal on a block that isn't an ore: the nugget it drops when broken, by weight").push("metal");
@@ -41,9 +47,30 @@ public final class DustConfig
         DUST_CLOUD_SIZE = BUILDER.comment("How wide the cloud round each pile is, in blocks (9: 9x9; even numbers round down to odd)")
                 .defineInRange("cloud_size", 9, 1, 17);
         BUILDER.pop();
+
+        BUILDER.comment("What Dust adds to newly generated terrain (Features/Worldgen): about one in this many chunks, where the biome suits it").push("worldgen");
+        GEODE_RARITY = BUILDER.comment("Element geodes, underground in biomes rich in a primal (vanilla's amethyst geodes are one in 24)")
+                .defineInRange("geode_rarity", 48, 1, 100000);
+        BOULDER_RARITY = BUILDER.comment("Ore boulders on the surface (64: about one in a small biome, 4 in a medium one, 16 in a large one)")
+                .defineInRange("boulder_rarity", 64, 1, 100000);
+        FLOWER_RARITY = BUILDER.comment("Patches of elemental flowers, in biomes rich in their element")
+                .defineInRange("flower_rarity", 32, 1, 100000);
+        TREE_RARITY = BUILDER.comment("Elemental trees, in biomes rich in their element")
+                .defineInRange("tree_rarity", 24, 1, 100000);
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();
+
+    // A worldgen rarity, safe to read before the config has loaded (its default then)
+    public static int rarity(ModConfigSpec.IntValue value)
+    {
+        try {
+            return Math.max(1, value.get());
+        } catch (IllegalStateException notLoaded) {
+            return Math.max(1, value.getDefault());
+        }
+    }
 
     private DustConfig() {}
 }

@@ -48,7 +48,8 @@ stonecutter {
         def dataGen = 'com/mowmaster/dust/DustDataGen/'
         ['DustDataGenerator', 'DustEquipmentAssets', 'DustProviderBasicRecipe', 'DustProviderBlockLootTable',
          'DustProviderGlobalLootModifier', 'DustProviderModel', 'DustProviderSpellConversions',
-         'DustTagProviderBlock', 'DustTagProviderItem', 'DustWorldgen'].each { name ->
+         'DustTagProviderBlock', 'DustTagProviderItem', 'DustWorldgen', 'DustWoodFamilies', 'DustFuels',
+         'DustProviderDataMaps'].each { name ->
             disable(current.parsed.matches('<26.3'), dataGen + name + '.java')
         }
     }
@@ -240,7 +241,8 @@ tasks.withType(JavaCompile).configureEach {
 
 // ---- 26.1.2 data ----
 // Datagen only runs from 26.3, and 26.3 changed some data formats, so the 26.1.2 build adjusts the shared data:
-//  - adds src/main/resources-26.1.2: data only 26.1.2 reads (configured features, NeoForge's compostables data map)
+//  - adds src/main/resources-26.1.2: data only 26.1.2 reads (configured features, NeoForge's compostables, furnace fuels
+//    and strippables data maps)
 //  - leaves out the brewing recipes: 26.1.2 has no data-driven brewing (DustBrewingLegacy adds them in code)
 //  - rewrites the generated loot tables, loot modifiers' conditions and recipe advancements into the 26.1.2 format as
 //    they're copied
@@ -277,6 +279,8 @@ class LegacyData
     // 26.3's named silk touch condition, written out the 26.1.2 way (as vanilla 26.1.2's own loot tables have it)
     static final Map SILK_TOUCH = [condition: 'minecraft:match_tool',
                                    predicate: [predicates: ['minecraft:enchantments': [[enchantments: 'minecraft:silk_touch', levels: [min: 1]]]]]]
+    // and its named shears condition (leaves, flowers)
+    static final Map SHEARS = [condition: 'minecraft:match_tool', predicate: [items: 'minecraft:shears']]
 
     static List listOf(value)
     {
@@ -287,6 +291,7 @@ class LegacyData
     {
         if (value instanceof String) {
             if (value == 'minecraft:tool/can_silk_touch') return SILK_TOUCH
+            if (value == 'minecraft:tool/can_shear') return SHEARS
             throw new org.gradle.api.GradleException("26.1.2 data: no 26.1.2 version of the loot condition '${value}'. Add one to LegacyData in build.gradle.")
         }
         // 26.3's match_block (one block, maybe with a state) was 26.1.2's block_state_property

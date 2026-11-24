@@ -88,5 +88,28 @@ public class DustTagProviderItem extends ItemTagsProvider {
                 .add(DustItemRegistry.CRYSTAL_LEGGINGS.key());
         tag(ItemTags.FOOT_ARMOR)
                 .add(DustItemRegistry.CRYSTAL_BOOTS.key());
+
+        // The elemental woods (Features/Trees): as vanilla's woods' items, except that their logs aren't in
+        // logs_that_burn (that's vanilla's charcoal recipe: each wood smelts into its own charcoal instead, from its
+        // dust:<wood>_logs tag). The fruit are fruit; the charcoals light torches and campfires (coals).
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            var logs = tag(DustTags.Items.logs(set.type()));
+            set.logs().forEach(log -> logs.add(blockItem(log)));
+            tag(ItemTags.LOGS).addTag(DustTags.Items.logs(set.type()));
+            tag(ItemTags.PLANKS).add(blockItem(set.planks()));
+            tag(ItemTags.WOODEN_STAIRS).add(blockItem(set.stairs()));
+            tag(ItemTags.WOODEN_SLABS).add(blockItem(set.slab()));
+            tag(ItemTags.WOODEN_FENCES).add(blockItem(set.fence()));
+            tag(net.neoforged.neoforge.common.Tags.BlockItems.FENCES_WOODEN.item()).add(blockItem(set.fence()));
+            tag(ItemTags.FENCE_GATES).add(blockItem(set.fenceGate()));
+            tag(net.neoforged.neoforge.common.Tags.BlockItems.FENCE_GATES_WOODEN.item()).add(blockItem(set.fenceGate()));
+            tag(ItemTags.WOODEN_BUTTONS).add(blockItem(set.button()));
+            tag(ItemTags.WOODEN_PRESSURE_PLATES).add(blockItem(set.pressurePlate()));
+            tag(net.neoforged.neoforge.common.Tags.BlockItems.CHESTS_WOODEN.item()).add(blockItem(set.chest()));
+            tag(ItemTags.LEAVES).add(blockItem(set.leaves()));
+            tag(ItemTags.SAPLINGS).add(blockItem(set.sapling()));
+            tag(net.neoforged.neoforge.common.Tags.Items.FOODS_FRUIT).add(set.fruit().key());
+        }
+        com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.values().forEach(charcoal -> tag(ItemTags.COALS).add(charcoal.key()));
     }
 }

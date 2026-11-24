@@ -1,5 +1,32 @@
 {
   "values": [
-    "dust:pottedflower_windwheel"
+    "dust:potted_emberbell",
+    "dust:potted_tidecall_lily",
+    "dust:potted_amberglaze_lily",
+    "dust:potted_peakwhite",
+    "dust:potted_duskbloom",
+    "dust:potted_sunspark",
+    "dust:potted_cinderpod",
+    "dust:potted_frostcall",
+    "dust:potted_deepglow",
+    "dust:potted_jadeleaf",
+    "dust:potted_mirecap",
+    "dust:pottedflower_windwheel",
+    "dust:potted_dewcup",
+    "dust:potted_gildthorn",
+    "dust:potted_emberwood_sapling",
+    "dust:potted_tidewood_sapling",
+    "dust:potted_loamwood_sapling",
+    "dust:potted_pearlwood_sapling",
+    "dust:potted_umbralwood_sapling",
+    "dust:potted_sunwood_sapling",
+    "dust:potted_cinderwood_sapling",
+    "dust:potted_frostwood_sapling",
+    "dust:potted_abysswood_sapling",
+    "dust:potted_slatewood_sapling",
+    "dust:potted_bogwood_sapling",
+    "dust:potted_zephyrwood_sapling",
+    "dust:potted_verdantwood_sapling",
+    "dust:potted_gildwood_sapling"
   ]
 }

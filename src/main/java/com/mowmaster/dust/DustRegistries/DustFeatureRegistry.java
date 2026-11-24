@@ -5,6 +5,7 @@ import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.Features.AncientLanguage.AncientRuinFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -22,15 +23,39 @@ public class DustFeatureRegistry
             DeferredRegister.create(Registries.FEATURE_TYPE, DustReferences.MODID);
 
     public static final Supplier<MapCodec<AncientRuinFeature>> ANCIENT_RUIN = FEATURE_TYPES.register("ancient_ruin", () -> AncientRuinFeature.CODEC);
+    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Worldgen.ElementGeodeFeature>> ELEMENT_GEODE =
+            FEATURE_TYPES.register("element_geode", () -> com.mowmaster.dust.Features.Worldgen.ElementGeodeFeature.CODEC);
+    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Worldgen.OreBoulderFeature>> ORE_BOULDER =
+            FEATURE_TYPES.register("ore_boulder", () -> com.mowmaster.dust.Features.Worldgen.OreBoulderFeature.CODEC);
+    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature>> ELEMENTAL_FLOWERS =
+            FEATURE_TYPES.register("elemental_flowers", () -> com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature.CODEC);
+    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature>> ELEMENTAL_TREES =
+            FEATURE_TYPES.register("elemental_trees", () -> com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature.CODEC);
     //?} else {
     /*public static final DeferredRegister<Feature<?>> FEATURE_TYPES =
             DeferredRegister.create(Registries.FEATURE, DustReferences.MODID);
 
     public static final Supplier<AncientRuinFeature> ANCIENT_RUIN = FEATURE_TYPES.register("ancient_ruin", AncientRuinFeature::new);
+    public static final Supplier<com.mowmaster.dust.Features.Worldgen.ElementGeodeFeature> ELEMENT_GEODE =
+            FEATURE_TYPES.register("element_geode", com.mowmaster.dust.Features.Worldgen.ElementGeodeFeature::new);
+    public static final Supplier<com.mowmaster.dust.Features.Worldgen.OreBoulderFeature> ORE_BOULDER =
+            FEATURE_TYPES.register("ore_boulder", com.mowmaster.dust.Features.Worldgen.OreBoulderFeature::new);
+    public static final Supplier<com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature> ELEMENTAL_FLOWERS =
+            FEATURE_TYPES.register("elemental_flowers", com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature::new);
+    public static final Supplier<com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature> ELEMENTAL_TREES =
+            FEATURE_TYPES.register("elemental_trees", com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature::new);
     *///?}
+
+    // Tree decorators (the same on both versions): magical fruit on the elemental trees (Features/Trees)
+    public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATORS =
+            DeferredRegister.create(Registries.TREE_DECORATOR_TYPE, DustReferences.MODID);
+
+    public static final Supplier<TreeDecoratorType<com.mowmaster.dust.Features.Trees.ElementalFruitDecorator>> ELEMENTAL_FRUIT =
+            TREE_DECORATORS.register("elemental_fruit", () -> new TreeDecoratorType<>(com.mowmaster.dust.Features.Trees.ElementalFruitDecorator.CODEC));
 
     public static void register(IEventBus eventBus)
     {
         FEATURE_TYPES.register(eventBus);
+        TREE_DECORATORS.register(eventBus);
     }
 }

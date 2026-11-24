@@ -113,6 +113,42 @@ public class DustCreativeTabRegistry {
                         output.accept(DustItemRegistry.SPELL_WAND_EARTH.asItem());
                     }).build());
 
+    // Every element's medium and large crystals and crystal blocks (their small crystal is the element's crystal item)
+    public static final Supplier<CreativeModeTab> DUSTTAB_CRYSTALS = CREATIVE_MODE_TABS.register("dusttab_crystals",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(com.mowmaster.dust.Features.DustComposition.DustElements.MAGIC).get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_crystals"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(DustBlockRegistry.CRYSTAL_DISPLAY.asItem());
+                        for (var element : com.mowmaster.dust.Features.DustComposition.DustElements.all()) {
+                            output.accept(DustItemRegistry.CRYSTALS.get(element).get());
+                            output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.MEDIUM_ITEMS.get(element).get());
+                            output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(element).get());
+                            output.accept(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.get(element).get());
+                        }
+                    }).build());
+
+    // The elemental flowers and woods (Features/Flora, Features/Trees): flowers, then each wood's sapling, leaves, logs,
+    // planks family, chest and fruit, then the charcoals
+    public static final Supplier<CreativeModeTab> DUSTTAB_NATURE = CREATIVE_MODE_TABS.register("dusttab_nature",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(com.mowmaster.dust.Features.Trees.ElementalWoods.set(com.mowmaster.dust.Features.Trees.ElementalWood.EMBERWOOD).sapling().get()))
+                    .title(Component.translatable("creativetab.dust.dusttab_nature"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        for (var flower : com.mowmaster.dust.Features.Flora.ElementalFlower.values()) {
+                            output.accept(com.mowmaster.dust.Features.Flora.ElementalFlowers.FLOWERS.get(flower).get().asItem());
+                        }
+                        for (var set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+                            output.accept(set.sapling().get().asItem());
+                            output.accept(set.leaves().get().asItem());
+                            for (var block : set.itemBlocks()) {
+                                if (block != set.sapling() && block != set.leaves()) output.accept(block.get().asItem());
+                            }
+                            output.accept(set.fruit().get());
+                        }
+                        com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.values().forEach(charcoal -> output.accept(charcoal.get()));
+                    }).build());
+
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",
             () -> CreativeModeTab.builder()
                     .icon(()-> new ItemStack(DustBlockRegistry.BLOCK_OF_DUST_RED))

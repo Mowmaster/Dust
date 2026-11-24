@@ -53,6 +53,20 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.forEach((primal, ore) -> add(ore.get(),
                 block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTALS.get(com.mowmaster.dust.Features.DustComposition.DustElements.of(primal)).get(), 2, 5)));
 
+        dropSelf(DustBlockRegistry.CRYSTAL_DISPLAY.get());
+        // Element crystals: with Silk Touch, the crystal (a small one is the element's crystal item); without, nothing
+        // here: CrystalNodeBlock gives an orb of its dust instead. Crystal blocks drop themselves; budding ones nothing.
+        for (com.mowmaster.dust.Features.DustComposition.DustElement element : com.mowmaster.dust.Features.DustComposition.DustElements.all()) {
+            add(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, com.mowmaster.dust.Features.Crystals.CrystalSize.SMALL),
+                    block -> createSilkTouchOnlyTable(DustItemRegistry.CRYSTALS.get(element).get()));
+            add(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, com.mowmaster.dust.Features.Crystals.CrystalSize.MEDIUM),
+                    block -> createSilkTouchOnlyTable(com.mowmaster.dust.Features.Crystals.ElementCrystals.MEDIUM_ITEMS.get(element).get()));
+            add(com.mowmaster.dust.Features.Crystals.ElementCrystals.node(element, com.mowmaster.dust.Features.Crystals.CrystalSize.LARGE),
+                    block -> createSilkTouchOnlyTable(com.mowmaster.dust.Features.Crystals.ElementCrystals.LARGE_ITEMS.get(element).get()));
+            dropSelf(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCKS.get(element).get());
+            add(com.mowmaster.dust.Features.Crystals.ElementCrystals.BUDDING.get(element).get(), noDrop());
+        }
+
         // Glyphs crumble when broken: glyph stones give cobblestone (so players can't collect glyphs from ruins)
         add(DustBlockRegistry.GLYPH_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, Items.COBBLESTONE));
 
@@ -98,8 +112,44 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
         dropSelf(DustBlockRegistry.DAMAGE_PYLON.get());
         dropSelf(DustBlockRegistry.EXPERIENCED_PYLON.get());
 
-        dropSelf(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get());
-        add(DustBlockRegistry.BLOCK_POTTEDFLOWER_WINDWHEEL.get(), createPotFlowerItemTable(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.get()));
+        // The elemental flowers (the Windwheel Aster among them): themselves with shears or Silk Touch, else nothing here
+        // (ElementalFlowerBlock gives an orb of its dust instead); their pots give the pot and the flower
+        for (com.mowmaster.dust.Features.Flora.ElementalFlower flower : com.mowmaster.dust.Features.Flora.ElementalFlower.values()) {
+            Block block = com.mowmaster.dust.Features.Flora.ElementalFlowers.FLOWERS.get(flower).get();
+            add(block, createSilkTouchOrShearsDispatchTable(block, net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem()));
+            add(com.mowmaster.dust.Features.Flora.ElementalFlowers.POTS.get(flower).get(), createPotFlowerItemTable(block));
+        }
+
+        // The elemental woods (Features/Trees), as vanilla's oak: each block itself (two for a double slab, standing or
+        // not), a chest keeps its name, leaves give their sapling and sticks now and then (themselves with shears or Silk
+        // Touch), a potted sapling the pot and the sapling. A fruit pod gives its fruit only when ripe.
+        for (com.mowmaster.dust.Features.Trees.WoodSet set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            for (Block block : List.of(set.log().get(), set.wood().get(), set.strippedLog().get(), set.strippedWood().get(), set.planks().get(),
+                    set.stairs().get(), set.fence().get(), set.fenceGate().get(), set.button().get(), set.pressurePlate().get(), set.sapling().get())) {
+                dropSelf(block);
+            }
+            add(set.slab().get(), this::createSlabItemTable);
+            add(set.verticalSlab().get(), block -> doubleWhen(block, com.mowmaster.dust.Features.Trees.VerticalSlabBlock.DOUBLE));
+            add(set.chest().get(), this::createNameableBlockEntityTable);
+            add(set.leaves().get(), block -> createLeavesDrops(block, set.sapling().get(), NORMAL_LEAVES_SAPLING_CHANCES));
+            add(set.pottedSapling().get(), createPotFlowerItemTable(set.sapling().get()));
+            add(set.fruitPod().get(), block -> LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool()
+                    .setRolls(ContextIntProviders.exactly(1))
+                    .add(LootItem.lootTableItem(set.fruit().get()))
+                    .when(net.minecraft.world.level.storage.loot.predicates.MatchBlock.blockMatches(this.blocks, block,
+                            net.minecraft.advancements.predicates.StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(com.mowmaster.dust.Features.Trees.ElementalFruitBlock.AGE, com.mowmaster.dust.Features.Trees.ElementalFruitBlock.RIPE))))));
+        }
+    }
+
+    // A block that drops itself, two of it when this property is true (as a slab when double)
+    private LootTable.Builder doubleWhen(Block block, net.minecraft.world.level.block.state.properties.BooleanProperty property)
+    {
+        return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
+                .add(applyExplosionDecay(block, LootItem.lootTableItem(block)
+                        .apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(2))
+                                .when(net.minecraft.world.level.storage.loot.predicates.MatchBlock.blockMatches(this.blocks, block,
+                                        net.minecraft.advancements.predicates.StatePropertiesPredicate.Builder.properties().hasProperty(property, true)))))));
     }
 
     protected LootTable.Builder createMultipleOreDrops(Block block, Item item, int minDrops, int maxDrops)

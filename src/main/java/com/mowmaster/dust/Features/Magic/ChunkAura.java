@@ -24,8 +24,8 @@ import java.util.Set;
 
 // The aura of dust each chunk holds, as the five primals (ChunkAuraData, attachment CHUNK_AURA).
 //   Normal depends on the biome (baseline): BASELINE of each primal, with more of a biome's own primals (deserts Fire,
-//   oceans Water, plains and forests Earth, snowy biomes Order and Chaos). A chunk nobody has touched stores nothing and
-//   counts as exactly its normal.
+//   oceans Water, plains and forests Earth, snowy biomes Order and Chaos...: BiomeElements). A chunk nobody has touched
+//   stores nothing and counts as exactly its normal.
 //   Dust going back into the world (release: orbs nobody could carry, what an evaporation table boils off...) is broken
 //   down into its primals and added. Things that feed on aura take from it (take).
 //   It evens out: every UPDATE_TICKS, a chunk that isn't at normal shares SPREAD of the difference with each loaded
@@ -38,9 +38,9 @@ import java.util.Set;
 public final class ChunkAura
 {
     public static final float BASELINE = 100;
-    // A biome's own primal: this much instead of BASELINE (snowy biomes have two, a little less each)
-    public static final float BIOME_PRIMAL = 200;
-    public static final float BIOME_PAIR = 175;
+    // A biome's own primal: this much instead of BASELINE (biomes with two have a little less of each): BiomeElements
+    public static final float BIOME_PRIMAL = BiomeElements.RICH;
+    public static final float BIOME_PAIR = BiomeElements.PAIR;
     public static final int UPDATE_TICKS = 200;
     public static final float SPREAD = 0.01F;
     public static final float DRIFT = 0.002F;
@@ -59,23 +59,11 @@ public final class ChunkAura
 
     // ---- reading ----
 
-    // A chunk's normal aura, from the biome at its middle (at sea level)
+    // A chunk's normal aura, from the biome at its middle (at sea level): BiomeElements.innate (c: tags, NeoForge's
+    // Tags.Biomes, cover modded biomes too)
     public static float[] baseline(Level level, ChunkPos pos)
     {
-        float[] values = new float[ChunkAuraData.COUNT];
-        java.util.Arrays.fill(values, BASELINE);
-        // Holder.is(tag): whether the biome is in a biome tag. c: tags (NeoForge's Tags.Biomes) cover modded biomes too.
-        net.minecraft.core.Holder<net.minecraft.world.level.biome.Biome> biome = level.getBiome(pos.getMiddleBlockPosition(level.getSeaLevel()));
-        if (biome.is(net.neoforged.neoforge.common.Tags.Biomes.IS_DESERT)) values[EnumElement.FIRE.ordinal()] = BIOME_PRIMAL;
-        if (biome.is(net.minecraft.tags.BiomeTags.IS_OCEAN)) values[EnumElement.WATER.ordinal()] = BIOME_PRIMAL;
-        if (biome.is(net.neoforged.neoforge.common.Tags.Biomes.IS_PLAINS) || biome.is(net.minecraft.tags.BiomeTags.IS_FOREST)) {
-            values[EnumElement.EARTH.ordinal()] = BIOME_PRIMAL;
-        }
-        if (biome.is(net.neoforged.neoforge.common.Tags.Biomes.IS_SNOWY)) {
-            values[EnumElement.ORDER.ordinal()] = BIOME_PAIR;
-            values[EnumElement.CHAOS.ordinal()] = BIOME_PAIR;
-        }
-        return values;
+        return BiomeElements.innate(level.getBiome(pos.getMiddleBlockPosition(level.getSeaLevel())));
     }
 
     public static float baselineTotal(Level level, ChunkPos pos)

@@ -33,6 +33,7 @@ public class DustDataGenerator {
 
         generator.addProvider(true, new DustProviderGlobalLootModifier(packOutput, lookupProvider));
         generator.addProvider(true, new DustProviderSpellConversions(packOutput, lookupProvider));
+        generator.addProvider(true, new DustProviderDataMaps(packOutput, lookupProvider));
     }
 
     // 26.3: recipes, loot tables and other datapack registry entries (damage types) are no longer DataProviders.
@@ -45,6 +46,7 @@ public class DustDataGenerator {
                 .add(Registries.FEATURE, DustWorldgen::features)
                 .add(Registries.PLACED_FEATURE, DustWorldgen::placedFeatures)
                 .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, DustWorldgen::biomeModifiers)
+                .add(Registries.CONTEXT_INT_PROVIDER, DustFuels::bootstrap)
                 .lootTable(new LootTableProvider.SubProviderEntry(DustProviderBlockLootTable::new, LootContextParamSets.BLOCK));
     }
 }

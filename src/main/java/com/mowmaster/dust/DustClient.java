@@ -118,6 +118,9 @@ public class DustClient {
         // The Wet Dust Mixer's tilting head, beater and pot; the Dust Centrifuge's spinning arms and vials
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_MIXER_WET.get(), com.mowmaster.dust.Features.Apparatus.mixer.Client.DustWetMixerRenderer::new);
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_CENTRIFUGE.get(), com.mowmaster.dust.Features.Apparatus.centrifuge.Client.DustCentrifugeRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.CRYSTAL_DISPLAY.get(), com.mowmaster.dust.Features.Crystals.Client.CrystalDisplayRenderer::new);
+        // The elemental woods' chests, each in its wood's texture
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENTAL_CHEST.get(), com.mowmaster.dust.Features.Trees.Client.ElementalChestRenderer::new);
         // The alchemical apparatus share one renderer (it draws each one's own moving parts)
         for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
                 DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
@@ -162,6 +165,7 @@ public class DustClient {
         com.mowmaster.dust.Features.Apparatus.mixer.Client.DustMixerRenderer.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.mixer.Client.DustWetMixerRenderer.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.centrifuge.Client.DustCentrifugeRenderer.registerModels(event);
+        com.mowmaster.dust.Features.Crystals.Client.CrystalDisplayRenderer.registerModels(event);
         ResearchCrusherRenderer.registerModels(event);
         com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer.registerModels(event);
         ResearchEvaporationRenderer.registerModels(event);
@@ -206,6 +210,15 @@ public class DustClient {
         event.register(List.of(new com.mowmaster.dust.Features.DustStorage.Client.DustTubeTint()), DustBlockRegistry.DUST_TUBE.get());
         // A Dust Pile in the mix of its elements' colours (tint index 0)
         event.register(List.of(new com.mowmaster.dust.Features.DustStorage.Client.DustPileTint()), DustBlockRegistry.DUST_PILE.get());
+        // Every element's crystals, crystal blocks and budding crystals: their element's colour
+        for (var element : com.mowmaster.dust.Features.DustComposition.DustElements.all()) {
+            event.register(com.mowmaster.dust.Features.Crystals.Client.ElementCrystalTint.of(element),
+                    com.mowmaster.dust.Features.Crystals.ElementCrystals.allOf(element).toArray(net.minecraft.world.level.block.Block[]::new));
+        }
+        // Each elemental tree's fruit in its element's colour (tint index 1, as crystals)
+        for (var set : com.mowmaster.dust.Features.Trees.ElementalWoods.all()) {
+            event.register(com.mowmaster.dust.Features.Crystals.Client.ElementCrystalTint.of(set.type().element()), set.fruitPod().get());
+        }
         // The Still Tower's window in its element's colour (tint index 3)
         event.register(com.mowmaster.dust.Features.Apparatus.still.StillTowerTint.all(), DustBlockRegistry.STILL_TOWER.get());
         // Element Tester: crystal colours and gauge lines, one tint source per tint index (see ExaminerLayout)

@@ -73,6 +73,10 @@ instant-effect potions are only researched when drunk (not splash/lingering).
   remember the result per origin until a network block is placed or removed, and send a "flowed along this path"
   particle message. Dust's Glass Dust Tubes do this for element dust (`Features/DustStorage/DustNetwork`,
   `DustTubeFlow`); other mods' pipes would need the same.
+- Suggestion: a wood-set kit in MowLib for mods adding woods: `Flammable` (vanilla's wood fire odds for modded blocks;
+  `FireBlock`'s table is private and NeoForge's defaults only read it), a `VerticalSlabBlock` with its template model,
+  and a chest renderer that takes its texture from the block, so one block entity type serves every wood's chest.
+  Dust has these in `Features/Trees` (`Flammable`, `VerticalSlabBlock`, `Client/ElementalChestRenderer`).
 - Suggestion: move the guide system (`Features/Guide`: scenes as JSON or code, the hold-G viewer, `RegisterGuidesEvent`)
   into MowLib, so any mod can add guides without depending on Dust. Its only Dust ties are the mod id on its event
   subscribers and its `guide.dust.*` / `key.dust.guide` lang keys. Format and API: `GUIDES.md`.
