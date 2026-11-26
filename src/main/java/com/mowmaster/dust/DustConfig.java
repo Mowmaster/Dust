@@ -28,7 +28,6 @@ public final class DustConfig
     public static final ModConfigSpec.IntValue FLOWER_RARITY;
     public static final ModConfigSpec.IntValue TREE_RARITY;
     public static final ModConfigSpec.IntValue RUIN_RARITY;
-    public static final ModConfigSpec.IntValue SANCTUM_RARITY;
     public static final ModConfigSpec.IntValue SPAWNER_COOLDOWN;
     public static final ModConfigSpec.BooleanValue LABYRINTH_KEEP_INVENTORY;
 
@@ -63,8 +62,6 @@ public final class DustConfig
                 .defineInRange("tree_rarity", 24, 1, 100000);
         RUIN_RARITY = BUILDER.comment("Ancient ruins (glyph walls) on the surface, anywhere in the overworld (128: half as common as ore boulders)")
                 .defineInRange("ruin_rarity", 128, 1, 100000);
-        SANCTUM_RARITY = BUILDER.comment("Sanctums (an element's shrine over rooms of Arcane Spawners and a portal to its labyrinth), on dry land in the overworld")
-                .defineInRange("sanctum_rarity", 480, 1, 100000);
         BUILDER.pop();
 
         BUILDER.comment("Sanctums and their labyrinths (Features/Sanctums, Features/Labyrinth)").push("sanctums");

@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.EnumMap;
 import java.util.Map;
 
-// The blocks a sanctum (SanctumFeature) and a labyrinth (Features/Labyrinth) of one element are built from: walls (with
+// The blocks a sanctum (SanctumBuilder) and a labyrinth (Features/Labyrinth) of one element are built from: walls (with
 // a second kind mixed in), floors, the element's crystal blocks as accents (inlays, the portal's frame), its wood's logs
 // as pillars, and a light. Vanilla blocks by id, so a renamed field (26.3's copper) doesn't matter.
 public record SanctumPalette(BlockState wall, BlockState wallAlt, BlockState floor, BlockState accent, BlockState pillar, BlockState light)

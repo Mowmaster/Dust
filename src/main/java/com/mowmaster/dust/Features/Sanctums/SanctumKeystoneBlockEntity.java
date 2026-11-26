@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
-// A sanctum's records, kept by its keystone (set as the sanctum is built: SanctumFeature):
+// A sanctum's records, kept by its keystone (set as the sanctum is built: SanctumBuilder):
 //   set         its element
 //   spawners    where its Arcane Spawners are
 //   portal      the bottom corner of the portal's opening (PORTAL_WIDTH across along axis, PORTAL_HEIGHT up)

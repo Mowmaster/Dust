@@ -6,11 +6,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Function;
 
 // Building in a turned frame: local x to the right, y up, z forward from an origin, facing any horizontal way (the
-// sanctums face every way). Shared by the sanctums (worldgen) and the labyrinth (built in a live level).
+// sanctums face every way). Shared by the sanctums (a structure, built chunk by chunk: clip) and the labyrinth (built
+// in a live level).
 public final class Build
 {
     // Block flags: send to clients, no neighbour updates (nothing around reacts to what's being built)
@@ -20,6 +23,8 @@ public final class Build
     public final BlockPos origin;
     public final Direction forward;
     public final Direction right;
+    // Only blocks in here are set (a structure builds one chunk at a time: SanctumPiece); null: anywhere
+    private @Nullable BoundingBox clip;
 
     public Build(LevelAccessor level, BlockPos origin, Direction forward)
     {
@@ -29,6 +34,19 @@ public final class Build
         this.right = forward.getClockWise();
     }
 
+    // Builds only inside box from now on
+    public Build clip(@Nullable BoundingBox box)
+    {
+        this.clip = box;
+        return this;
+    }
+
+    // Whether a block at pos is built (inside the clip, if there is one)
+    public boolean inside(BlockPos pos)
+    {
+        return clip == null || clip.isInside(pos);
+    }
+
     public BlockPos at(int x, int y, int z)
     {
         return origin.relative(right, x).relative(forward, z).above(y);
@@ -36,7 +54,8 @@ public final class Build
 
     public void set(int x, int y, int z, BlockState state)
     {
-        level.setBlock(at(x, y, z), state, FLAGS);
+        BlockPos pos = at(x, y, z);
+        if (inside(pos)) level.setBlock(pos, state, FLAGS);
     }
 
     // Every block in the box (corners inclusive, any order)
@@ -46,7 +65,7 @@ public final class Build
             for (int y = Math.min(y0, y1); y <= Math.max(y0, y1); y++) {
                 for (int z = Math.min(z0, z1); z <= Math.max(z0, z1); z++) {
                     BlockPos pos = at(x, y, z);
-                    level.setBlock(pos, state.apply(pos), FLAGS);
+                    if (inside(pos)) level.setBlock(pos, state.apply(pos), FLAGS);
                 }
             }
         }

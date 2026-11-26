@@ -45,6 +45,8 @@ public class DustDataGenerator {
                 .add(Registries.DAMAGE_TYPE, DustDamageTypes::bootstrap)
                 .add(Registries.FEATURE, DustWorldgen::features)
                 .add(Registries.PLACED_FEATURE, DustWorldgen::placedFeatures)
+                .add(Registries.STRUCTURE, DustWorldgen::structures)
+                .add(Registries.STRUCTURE_SET, DustWorldgen::structureSets)
                 .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, DustWorldgen::biomeModifiers)
                 .add(Registries.CONTEXT_INT_PROVIDER, DustFuels::bootstrap)
                 .lootTable(new LootTableProvider.SubProviderEntry(DustProviderBlockLootTable::new, LootContextParamSets.BLOCK));

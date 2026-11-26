@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import java.util.Set;
 import java.util.function.Supplier;
 
-// Registers the sanctums' blocks (SanctumFeature builds the sanctums themselves):
+// Registers the sanctums' blocks (SanctumStructure places the sanctums themselves, SanctumBuilder builds them):
 //   dust:arcane_spawner     the trial-spawner-like spawner (with an item, for building your own arena)
 //   dust:arcane_portal      the portal sheet into a labyrinth (and out of one); no item
 //   dust:sanctum_keystone   the stone under a sanctum's portal that keeps its records and opens it; no item

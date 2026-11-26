@@ -6,6 +6,8 @@ import com.mowmaster.dust.Features.AncientLanguage.AncientRuinFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -31,8 +33,6 @@ public class DustFeatureRegistry
             FEATURE_TYPES.register("elemental_flowers", () -> com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature.CODEC);
     public static final Supplier<MapCodec<com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature>> ELEMENTAL_TREES =
             FEATURE_TYPES.register("elemental_trees", () -> com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature.CODEC);
-    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Sanctums.SanctumFeature>> SANCTUM =
-            FEATURE_TYPES.register("sanctum", () -> com.mowmaster.dust.Features.Sanctums.SanctumFeature.CODEC);
     //?} else {
     /*public static final DeferredRegister<Feature<?>> FEATURE_TYPES =
             DeferredRegister.create(Registries.FEATURE, DustReferences.MODID);
@@ -46,8 +46,6 @@ public class DustFeatureRegistry
             FEATURE_TYPES.register("elemental_flowers", com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature::new);
     public static final Supplier<com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature> ELEMENTAL_TREES =
             FEATURE_TYPES.register("elemental_trees", com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature::new);
-    public static final Supplier<com.mowmaster.dust.Features.Sanctums.SanctumFeature> SANCTUM =
-            FEATURE_TYPES.register("sanctum", com.mowmaster.dust.Features.Sanctums.SanctumFeature::new);
     *///?}
 
     // Tree decorators (the same on both versions): magical fruit on the elemental trees (Features/Trees)
@@ -57,9 +55,21 @@ public class DustFeatureRegistry
     public static final Supplier<TreeDecoratorType<com.mowmaster.dust.Features.Trees.ElementalFruitDecorator>> ELEMENTAL_FRUIT =
             TREE_DECORATORS.register("elemental_fruit", () -> new TreeDecoratorType<>(com.mowmaster.dust.Features.Trees.ElementalFruitDecorator.CODEC));
 
+    // Structures (the same on both versions): the sanctums (Features/Sanctums), a structure type and the one piece each
+    // is built from. The structure and its structure set are datapack entries made in datagen (DustWorldgen).
+    public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, DustReferences.MODID);
+    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECES = DeferredRegister.create(Registries.STRUCTURE_PIECE, DustReferences.MODID);
+
+    public static final Supplier<StructureType<com.mowmaster.dust.Features.Sanctums.SanctumStructure>> SANCTUM_STRUCTURE =
+            STRUCTURE_TYPES.register("sanctum", () -> () -> com.mowmaster.dust.Features.Sanctums.SanctumStructure.CODEC);
+    public static final Supplier<StructurePieceType> SANCTUM_PIECE =
+            STRUCTURE_PIECES.register("sanctum", () -> com.mowmaster.dust.Features.Sanctums.SanctumPiece::new);
+
     public static void register(IEventBus eventBus)
     {
         FEATURE_TYPES.register(eventBus);
         TREE_DECORATORS.register(eventBus);
+        STRUCTURE_TYPES.register(eventBus);
+        STRUCTURE_PIECES.register(eventBus);
     }
 }

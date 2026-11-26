@@ -23,6 +23,8 @@ import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
@@ -86,11 +88,14 @@ public class DustWorldgen
     public static final ResourceKey<PlacedFeature> ELEMENTAL_TREES_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("elemental_trees"));
     public static final ResourceKey<BiomeModifier> ADD_ELEMENTAL_TREES = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_elemental_trees"));
 
-    // Sanctums (Features/Sanctums): tried once in every chunk on the surface (the feature moves to the chunk's middle and
-    // decides: DustConfig.SANCTUM_RARITY), every overworld biome, with the surface structures
-    public static final ResourceKey<Feature> SANCTUM = ResourceKey.create(Registries.FEATURE, id("sanctum"));
-    public static final ResourceKey<PlacedFeature> SANCTUM_PLACED = ResourceKey.create(Registries.PLACED_FEATURE, id("sanctum"));
-    public static final ResourceKey<BiomeModifier> ADD_SANCTUMS = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, id("add_sanctums"));
+    // Sanctums (Features/Sanctums) are a structure, so /locate finds them:
+    //   structure      dust:sanctum  - SanctumStructure, in any overworld biome (it turns down water itself), built with
+    //                                  the surface structures, the ground left as it is
+    //   structure set  dust:sanctums - one tried in each 22 x 22 chunk area, at least 8 chunks from the next (about as
+    //                                  common as the old one-in-480-chunks feature)
+    public static final ResourceKey<Structure> SANCTUM = ResourceKey.create(Registries.STRUCTURE, id("sanctum"));
+    public static final ResourceKey<StructureSet> SANCTUMS = ResourceKey.create(Registries.STRUCTURE_SET, id("sanctums"));
+    private static final int SANCTUM_SPACING = 22, SANCTUM_SEPARATION = 8, SANCTUM_SALT = 20941117;
 
     private static Identifier id(String path)
     {
@@ -110,7 +115,6 @@ public class DustWorldgen
         context.register(ORE_BOULDER, com.mowmaster.dust.Features.Worldgen.OreBoulderFeature.INSTANCE);
         context.register(ELEMENTAL_FLOWERS, com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature.INSTANCE);
         context.register(ELEMENTAL_TREES, com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature.INSTANCE);
-        context.register(SANCTUM, com.mowmaster.dust.Features.Sanctums.SanctumFeature.INSTANCE);
         trees(context);
     }
 
@@ -185,10 +189,22 @@ public class DustWorldgen
                 List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), BiomeFilter.biome())));
         context.register(ELEMENTAL_FLOWERS_PLACED, new PlacedFeature(features.getOrThrow(ELEMENTAL_FLOWERS),
                 List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES), BiomeFilter.biome())));
-        context.register(SANCTUM_PLACED, new PlacedFeature(features.getOrThrow(SANCTUM),
-                List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), BiomeFilter.biome())));
         context.register(ELEMENTAL_TREES_PLACED, new PlacedFeature(features.getOrThrow(ELEMENTAL_TREES),
                 List.of(InSquarePlacement.spread(), HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES), BiomeFilter.biome())));
+    }
+
+    public static void structures(BootstrapContext<Structure> context)
+    {
+        context.register(SANCTUM, new com.mowmaster.dust.Features.Sanctums.SanctumStructure(new Structure.StructureSettings(
+                context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD), java.util.Map.of(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES, net.minecraft.world.level.levelgen.structure.TerrainAdjustment.NONE)));
+    }
+
+    public static void structureSets(BootstrapContext<StructureSet> context)
+    {
+        context.register(SANCTUMS, new StructureSet(context.lookup(Registries.STRUCTURE).getOrThrow(SANCTUM),
+                new net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement(SANCTUM_SPACING, SANCTUM_SEPARATION,
+                        net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType.LINEAR, SANCTUM_SALT)));
     }
 
     public static void biomeModifiers(BootstrapContext<BiomeModifier> context)
@@ -214,10 +230,6 @@ public class DustWorldgen
                 context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placed.getOrThrow(ELEMENTAL_FLOWERS_PLACED)),
                 GenerationStep.Decoration.VEGETAL_DECORATION));
-        context.register(ADD_SANCTUMS, new BiomeModifiers.AddFeaturesBiomeModifier(
-                context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placed.getOrThrow(SANCTUM_PLACED)),
-                GenerationStep.Decoration.SURFACE_STRUCTURES));
         context.register(ADD_ELEMENTAL_TREES, new BiomeModifiers.AddFeaturesBiomeModifier(
                 context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placed.getOrThrow(ELEMENTAL_TREES_PLACED)),
