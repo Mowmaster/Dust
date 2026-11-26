@@ -1,0 +1,6 @@
+{
+  "type": "dust:sanctum",
+  "biomes": "#minecraft:is_overworld",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}
