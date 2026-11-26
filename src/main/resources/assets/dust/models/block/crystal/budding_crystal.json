@@ -1,6 +1,0 @@
-{
-  "parent": "dust:block/crystal/tinted_cube",
-  "textures": {
-    "all": "dust:block/crystal/budding_crystal"
-  }
-}
