@@ -170,7 +170,87 @@ public class DustProviderModel extends ModelProvider {
                     com.mowmaster.dust.Features.Flora.ElementalFlowers.POTS.get(flower).get(), BlockModelGenerators.PlantType.NOT_TINTED);
         }
         createElementalWoods(blockModels, itemModels);
+        createElementalArmor(itemModels);
+        createArchonItems(itemModels);
+        createSanctumBlocks(blockModels, itemModels);
 
+    }
+
+    // The elemental armor sets' items (Features/Armor): one icon per kind of piece (item/armor/<piece>_cloth and _trim),
+    // the cloth tinted the set's cloth colour and the trim its trim colour. (Worn, they're 3D: Client/ElementalArmorModels.)
+    private void createElementalArmor(ItemModelGenerators itemModels)
+    {
+        java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+        Map<net.minecraft.world.item.equipment.ArmorType, Identifier> icons = new java.util.EnumMap<>(net.minecraft.world.item.equipment.ArmorType.class);
+        for (net.minecraft.world.item.equipment.ArmorType type : com.mowmaster.dust.Features.Armor.ElementalArmor.PIECES) {
+            String piece = type.getSerializedName();
+            icons.put(type, ModelTemplates.TWO_LAYERED_ITEM.create(id.apply("item/armor/" + piece), TextureMapping.layered(
+                    new Material(id.apply("item/armor/" + piece + "_cloth")), new Material(id.apply("item/armor/" + piece + "_trim"))), itemModels.modelOutput));
+        }
+        for (com.mowmaster.dust.Features.Armor.ElementalArmorSet set : com.mowmaster.dust.Features.Armor.ElementalArmorSet.values()) {
+            for (net.minecraft.world.item.equipment.ArmorType type : com.mowmaster.dust.Features.Armor.ElementalArmor.PIECES) {
+                itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Armor.ElementalArmor.item(set, type), ItemModelUtils.tintedModel(icons.get(type),
+                        new Constant(0xFF000000 | set.clothColor), new Constant(0xFF000000 | set.trimColor)));
+            }
+        }
+    }
+
+    // The Archons' items (Features/Bosses), from greyscale layers in textures/item/boss tinted per set:
+    //   spawn eggs   spawn_egg_base (the set's cloth colour) and spawn_egg_spots (its trim colour)
+    //   loot bags    loot_bag (cloth) and loot_bag_tie (trim)
+    //   sigils       sigil_frame (as it is: tinted white) and sigil_gem (its element's colour)
+    // and the three legendary trinkets, each its own texture (item/<name>).
+    private void createArchonItems(ItemModelGenerators itemModels)
+    {
+        java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+        Identifier egg = ModelTemplates.TWO_LAYERED_ITEM.create(id.apply("item/boss/spawn_egg"), TextureMapping.layered(
+                new Material(id.apply("item/boss/spawn_egg_base")), new Material(id.apply("item/boss/spawn_egg_spots"))), itemModels.modelOutput);
+        Identifier bag = ModelTemplates.TWO_LAYERED_ITEM.create(id.apply("item/boss/loot_bag"), TextureMapping.layered(
+                new Material(id.apply("item/boss/loot_bag")), new Material(id.apply("item/boss/loot_bag_tie"))), itemModels.modelOutput);
+        Identifier sigil = ModelTemplates.TWO_LAYERED_ITEM.create(id.apply("item/boss/sigil"), TextureMapping.layered(
+                new Material(id.apply("item/boss/sigil_frame")), new Material(id.apply("item/boss/sigil_gem"))), itemModels.modelOutput);
+        for (com.mowmaster.dust.Features.Armor.ElementalArmorSet set : com.mowmaster.dust.Features.Armor.ElementalArmorSet.values()) {
+            Constant cloth = new Constant(0xFF000000 | set.clothColor), trim = new Constant(0xFF000000 | set.trimColor);
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Bosses.Archons.EGGS.get(set).get(), ItemModelUtils.tintedModel(egg, cloth, trim));
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Bosses.Archons.BAGS.get(set).get(), ItemModelUtils.tintedModel(bag, cloth, trim));
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Bosses.Archons.SIGILS.get(set).get(), ItemModelUtils.tintedModel(sigil,
+                    new Constant(-1), new Constant(0xFF000000 | gemColor(set.element().color()))));
+        }
+        for (var trinket : com.mowmaster.dust.Features.Bosses.Archons.LEGENDARY) itemModels.generateFlatItem(trinket.get(), ModelTemplates.FLAT_ITEM);
+    }
+
+    // The sanctums' blocks (Features/Sanctums), their models written by hand in models/block/sanctum:
+    //   the Arcane Spawner   a cage with runes (tint index 0: its element's colour); its item tinted arcane violet
+    //   the Arcane Portal    a sheet along x or z, by its axis (tint index 0)
+    //   the Sanctum Keystone
+    private void createSanctumBlocks(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
+    {
+        java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
+        Identifier spawner = id.apply("block/sanctum/arcane_spawner");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_SPAWNER.get(),
+                BlockModelGenerators.plainVariant(spawner)));
+        itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_SPAWNER_ITEM.get(), ItemModelUtils.tintedModel(spawner, new Constant(0xFFB070FF)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_PORTAL.get()).with(
+                PropertyDispatch.initial(com.mowmaster.dust.Features.Sanctums.ArcanePortalBlock.AXIS).generate(axis -> BlockModelGenerators.plainVariant(
+                        id.apply(axis == Direction.Axis.Z ? "block/sanctum/arcane_portal_ew" : "block/sanctum/arcane_portal_ns")))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.SANCTUM_KEYSTONE.get(),
+                BlockModelGenerators.plainVariant(id.apply("block/sanctum/sanctum_keystone"))));
+        // The labyrinth's seal (tint index 0) and runes, unlit or lit (models/block/labyrinth)
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Labyrinth.LabyrinthBlocks.SEAL.get(),
+                BlockModelGenerators.plainVariant(id.apply("block/labyrinth/labyrinth_seal"))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Labyrinth.LabyrinthBlocks.RUNE.get()).with(
+                PropertyDispatch.initial(com.mowmaster.dust.Features.Labyrinth.LabyrinthRuneBlock.LIT).generate(lit -> BlockModelGenerators.plainVariant(
+                        id.apply(lit ? "block/labyrinth/labyrinth_rune_lit" : "block/labyrinth/labyrinth_rune")))));
+    }
+
+    // An element's colour for a gem: dark colours lifted so the gem still reads (Chaos: deep violet)
+    private static int gemColor(int rgb)
+    {
+        int red = (rgb >> 16) & 0xFF, green = (rgb >> 8) & 0xFF, blue = rgb & 0xFF;
+        int max = Math.max(red, Math.max(green, blue));
+        if (max == 0) return 0x5A3A7A;
+        if (max >= 0xC0) return rgb;
+        return (red * 0xE0 / max) << 16 | (green * 0xE0 / max) << 8 | (blue * 0xE0 / max);
     }
 
     private static final ModelTemplate VERTICAL_SLAB = dustTemplate("template_vertical_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);

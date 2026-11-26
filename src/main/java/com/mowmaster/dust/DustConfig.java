@@ -28,6 +28,9 @@ public final class DustConfig
     public static final ModConfigSpec.IntValue FLOWER_RARITY;
     public static final ModConfigSpec.IntValue TREE_RARITY;
     public static final ModConfigSpec.IntValue RUIN_RARITY;
+    public static final ModConfigSpec.IntValue SANCTUM_RARITY;
+    public static final ModConfigSpec.IntValue SPAWNER_COOLDOWN;
+    public static final ModConfigSpec.BooleanValue LABYRINTH_KEEP_INVENTORY;
 
     static {
         BUILDER.push("spells").comment("Metal on a block that isn't an ore: the nugget it drops when broken, by weight").push("metal");
@@ -60,6 +63,15 @@ public final class DustConfig
                 .defineInRange("tree_rarity", 24, 1, 100000);
         RUIN_RARITY = BUILDER.comment("Ancient ruins (glyph walls) on the surface, anywhere in the overworld (128: half as common as ore boulders)")
                 .defineInRange("ruin_rarity", 128, 1, 100000);
+        SANCTUM_RARITY = BUILDER.comment("Sanctums (an element's shrine over rooms of Arcane Spawners and a portal to its labyrinth), on dry land in the overworld")
+                .defineInRange("sanctum_rarity", 480, 1, 100000);
+        BUILDER.pop();
+
+        BUILDER.comment("Sanctums and their labyrinths (Features/Sanctums, Features/Labyrinth)").push("sanctums");
+        SPAWNER_COOLDOWN = BUILDER.comment("Ticks an Arcane Spawner rests once its wave is beaten (36000: half an hour, as a trial spawner)")
+                .defineInRange("spawner_cooldown", 36000, 20, 10000000);
+        LABYRINTH_KEEP_INVENTORY = BUILDER.comment("Whether players who die in a labyrinth keep everything they had (they wake in front of the portal they came through either way)")
+                .define("labyrinth_keep_inventory", true);
         BUILDER.pop();
     }
 

@@ -46,6 +46,10 @@ public class DustComponentDataRegistry
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CRYSTAL_CHARGE = register("crystal_charge",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    // An Archon's loot bag's level, the Archon's (Features/Bosses/LootBags)
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> LOOT_BAG_LEVEL = register("loot_bag_level",
+            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     // The fruits in a Fruit Medley (Features/Trees/FruitMedley)
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.mowmaster.dust.Features.Trees.FruitMedley>> FRUIT_MEDLEY = register("fruit_medley",
             builder -> builder.persistent(com.mowmaster.dust.Features.Trees.FruitMedley.CODEC).networkSynchronized(com.mowmaster.dust.Features.Trees.FruitMedley.STREAM_CODEC));

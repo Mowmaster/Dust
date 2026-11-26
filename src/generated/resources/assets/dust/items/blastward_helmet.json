@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:item/armor/helmet",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -11919596
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -6657478
+      }
+    ]
+  }
+}

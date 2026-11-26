@@ -95,6 +95,10 @@ public final class SpellCasting
         }
         // Creative players, and casts from the Akashic, pay nothing
         boolean free = player.hasInfiniteMaterials() || AKASHIC.get();
+        // Riftborn armor: now and then a cast costs nothing
+        if (!free && com.mowmaster.dust.Features.Armor.ArmorSetBonuses.freeCast(player)) free = true;
+        // The Void Locket (an Archon trinket): now and then free too
+        if (!free && com.mowmaster.dust.Features.Bosses.Trinkets.freeCast(player)) free = true;
 
         // What it costs this player
         Map<DustElement, Integer> cost = new LinkedHashMap<>();

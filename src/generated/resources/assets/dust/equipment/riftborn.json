@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:riftborn"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:riftborn"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:riftborn"
+      }
+    ]
+  }
+}

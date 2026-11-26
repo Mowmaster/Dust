@@ -28,6 +28,12 @@ public class DustEquipmentAssets implements DataProvider {
                         .addLayers(EquipmentClientInfo.LayerType.HORSE_BODY,
                                 new EquipmentClientInfo.Layer(Identifier.fromNamespaceAndPath(DustReferences.MODID, "crystal")))
                 .build());
+        // The elemental armor sets (Features/Armor): drawn with their own 3D models and textures (Client/ElementalArmorModels),
+        // but the armour layer only draws a piece whose asset has layers
+        for (com.mowmaster.dust.Features.Armor.ElementalArmorSet set : com.mowmaster.dust.Features.Armor.ElementalArmorSet.values()) {
+            output.accept(com.mowmaster.dust.Features.Armor.ElementalArmor.assetKey(set), EquipmentClientInfo.builder()
+                    .addHumanoidLayers(Identifier.fromNamespaceAndPath(DustReferences.MODID, set.id), false).build());
+        }
     }
 
     @Override

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:sparkwright"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:sparkwright"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:sparkwright"
+      }
+    ]
+  }
+}

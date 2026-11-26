@@ -111,5 +111,17 @@ public class DustTagProviderItem extends ItemTagsProvider {
             tag(net.neoforged.neoforge.common.Tags.Items.FOODS_FRUIT).add(set.fruit().key());
         }
         com.mowmaster.dust.Features.Trees.ElementalWoods.CHARCOAL.values().forEach(charcoal -> tag(ItemTags.COALS).add(charcoal.key()));
+
+        // The elemental armor sets (Features/Armor): armour of their kind (for enchanting), repaired with their element's
+        // crystal blocks; Rimefrost keeps its wearer from freezing
+        for (com.mowmaster.dust.Features.Armor.ElementalArmorSet set : com.mowmaster.dust.Features.Armor.ElementalArmorSet.values()) {
+            tag(DustTags.Items.armorRepair(set)).add(com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.get(set.element()).key());
+            var pieces = com.mowmaster.dust.Features.Armor.ElementalArmor.ITEMS.get(set);
+            tag(ItemTags.HEAD_ARMOR).add(pieces.get(net.minecraft.world.item.equipment.ArmorType.HELMET).key());
+            tag(ItemTags.CHEST_ARMOR).add(pieces.get(net.minecraft.world.item.equipment.ArmorType.CHESTPLATE).key());
+            tag(ItemTags.LEG_ARMOR).add(pieces.get(net.minecraft.world.item.equipment.ArmorType.LEGGINGS).key());
+            tag(ItemTags.FOOT_ARMOR).add(pieces.get(net.minecraft.world.item.equipment.ArmorType.BOOTS).key());
+            if (set == com.mowmaster.dust.Features.Armor.ElementalArmorSet.RIMEFROST) pieces.values().forEach(piece -> tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(piece.key()));
+        }
     }
 }

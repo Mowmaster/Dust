@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:pyreborn"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:pyreborn"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:pyreborn"
+      }
+    ]
+  }
+}

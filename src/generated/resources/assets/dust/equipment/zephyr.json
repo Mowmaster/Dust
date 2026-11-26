@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:zephyr"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:zephyr"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:zephyr"
+      }
+    ]
+  }
+}

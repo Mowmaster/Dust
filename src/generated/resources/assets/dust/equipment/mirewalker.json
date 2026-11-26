@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:mirewalker"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:mirewalker"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:mirewalker"
+      }
+    ]
+  }
+}

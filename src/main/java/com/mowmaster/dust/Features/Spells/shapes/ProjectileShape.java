@@ -63,7 +63,14 @@ public class ProjectileShape implements SpellShape
         }
         if (entity != null && entity.getEntity() instanceof LivingEntity target) {
             if (cast.stats().impactDamage() > 0) {
-                target.hurtServer(cast.level(), cast.level().damageSources().indirectMagic(target, caster), cast.stats().impactDamage());
+                // While the blow lands, it's this spell landing (an element boss's resistances: SpellCast.landing)
+                SpellCast before = SpellCast.landing;
+                SpellCast.landing = cast;
+                try {
+                    target.hurtServer(cast.level(), cast.level().damageSources().indirectMagic(target, caster), cast.stats().impactDamage());
+                } finally {
+                    SpellCast.landing = before;
+                }
             }
             cast.applyEntity(target);
             return true;

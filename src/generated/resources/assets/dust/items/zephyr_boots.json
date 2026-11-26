@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:item/armor/boots",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1648142
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -986896
+      }
+    ]
+  }
+}

@@ -80,3 +80,12 @@ instant-effect potions are only researched when drunk (not splash/lingering).
 - Suggestion: move the guide system (`Features/Guide`: scenes as JSON or code, the hold-G viewer, `RegisterGuidesEvent`)
   into MowLib, so any mod can add guides without depending on Dust. Its only Dust ties are the mod id on its event
   subscribers and its `guide.dust.*` / `key.dust.guide` lang keys. Format and API: `GUIDES.md`.
+- Suggestion: an instanced-dungeon kit in MowLib: runs built in slots (regions) of one shared dimension and reused
+  once cleared, a player return point (respawn there on death via `PlayerRespawnPositionEvent`), keep-inventory for
+  deaths inside, unbreakable walls with temporary breaks elsewhere, and cleanup of a closed run's entities. Dust has
+  this in `Features/Labyrinth` (`Labyrinth`, `LabyrinthData`, `LabyrinthInstance`).
+- Suggestion: a loot-bag kit in MowLib: a bag item carrying a level, rolls by weighted rarity tier (weights scaling with
+  the level), chat/broadcast for rare finds, and a datapack loot table overriding the built-in rolls. Dust:
+  `Features/Bosses/LootBags`, `LootBagItem`.
+- Suggestion: a wave spawner in MowLib (trial-spawner-like: wakes for nearby players, waves scaled by a player stat,
+  a reward per fighter, then a cooldown). Dust: `Features/Sanctums/ArcaneSpawnerBlockEntity`.

@@ -22,6 +22,12 @@ public class DustTags
         public static final TagKey<Item> CRYSTAL_REPAIRABLES = createTag("crystal_repairables");
         public static final TagKey<Item> CRYSTAL_BLOCK_REPAIRABLES = createTag("crystal_block_repairables");
 
+        // What repairs an elemental armor set (dust:repairs/<set>): its element's crystal blocks
+        public static TagKey<Item> armorRepair(com.mowmaster.dust.Features.Armor.ElementalArmorSet set)
+        {
+            return createTag("repairs/" + set.id);
+        }
+
         // An elemental wood's four logs (dust:<wood>_logs): its planks, chest and charcoal are made from any of them
         public static TagKey<Item> logs(com.mowmaster.dust.Features.Trees.ElementalWood wood)
         {

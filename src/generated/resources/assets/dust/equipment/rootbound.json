@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:rootbound"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:rootbound"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:rootbound"
+      }
+    ]
+  }
+}

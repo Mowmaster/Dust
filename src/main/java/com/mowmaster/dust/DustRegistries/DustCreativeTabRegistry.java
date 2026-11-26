@@ -90,6 +90,25 @@ public class DustCreativeTabRegistry {
                         DustItemRegistry.CARDS.values().forEach(card -> output.accept(card.get()));
                     }).build());
 
+    // Relics: the elemental armor sets (Features/Armor)
+    public static final Supplier<CreativeModeTab> DUSTTAB_RELICS = CREATIVE_MODE_TABS.register("dusttab_relics",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(com.mowmaster.dust.Features.Armor.ElementalArmor.item(com.mowmaster.dust.Features.Armor.ElementalArmorSet.PYREBORN,
+                            net.minecraft.world.item.equipment.ArmorType.HELMET)))
+                    .title(Component.translatable("creativetab.dust.dusttab_relics"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        for (var set : com.mowmaster.dust.Features.Armor.ElementalArmorSet.values()) {
+                            com.mowmaster.dust.Features.Armor.ElementalArmor.ITEMS.get(set).values().forEach(piece -> output.accept(piece.get()));
+                        }
+                        // The Archons (Features/Bosses): their trinkets, loot bags and spawn eggs
+                        com.mowmaster.dust.Features.Bosses.Archons.LEGENDARY.forEach(trinket -> output.accept(trinket.get()));
+                        com.mowmaster.dust.Features.Bosses.Archons.SIGILS.values().forEach(sigil -> output.accept(sigil.get()));
+                        com.mowmaster.dust.Features.Bosses.Archons.BAGS.values().forEach(bag -> output.accept(bag.get()));
+                        com.mowmaster.dust.Features.Bosses.Archons.EGGS.values().forEach(egg -> output.accept(egg.get()));
+                        // The sanctums' Arcane Spawner (Features/Sanctums)
+                        output.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_SPAWNER_ITEM.get());
+                    }).build());
+
     public static final Supplier<CreativeModeTab> DUSTTAB_COMBAT = CREATIVE_MODE_TABS.register("dusttab_combat",
             () -> CreativeModeTab.builder()
                     .icon(()-> new ItemStack(DustItemRegistry.CRYSTAL_SWORD.get()))

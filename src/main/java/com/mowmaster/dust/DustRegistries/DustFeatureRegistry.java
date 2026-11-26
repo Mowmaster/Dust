@@ -31,6 +31,8 @@ public class DustFeatureRegistry
             FEATURE_TYPES.register("elemental_flowers", () -> com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature.CODEC);
     public static final Supplier<MapCodec<com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature>> ELEMENTAL_TREES =
             FEATURE_TYPES.register("elemental_trees", () -> com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature.CODEC);
+    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Sanctums.SanctumFeature>> SANCTUM =
+            FEATURE_TYPES.register("sanctum", () -> com.mowmaster.dust.Features.Sanctums.SanctumFeature.CODEC);
     //?} else {
     /*public static final DeferredRegister<Feature<?>> FEATURE_TYPES =
             DeferredRegister.create(Registries.FEATURE, DustReferences.MODID);
@@ -44,6 +46,8 @@ public class DustFeatureRegistry
             FEATURE_TYPES.register("elemental_flowers", com.mowmaster.dust.Features.Worldgen.ElementalFlowerFeature::new);
     public static final Supplier<com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature> ELEMENTAL_TREES =
             FEATURE_TYPES.register("elemental_trees", com.mowmaster.dust.Features.Worldgen.ElementalTreeFeature::new);
+    public static final Supplier<com.mowmaster.dust.Features.Sanctums.SanctumFeature> SANCTUM =
+            FEATURE_TYPES.register("sanctum", com.mowmaster.dust.Features.Sanctums.SanctumFeature::new);
     *///?}
 
     // Tree decorators (the same on both versions): magical fruit on the elemental trees (Features/Trees)

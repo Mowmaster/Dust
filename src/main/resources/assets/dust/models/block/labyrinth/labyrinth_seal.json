@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "dust:block/labyrinth/labyrinth_seal",
+    "all": "dust:block/labyrinth/labyrinth_seal"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0, "cullface": "north"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0, "cullface": "east"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0, "cullface": "south"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0, "cullface": "west"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0, "cullface": "up"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#all", "tintindex": 0, "cullface": "down"}
+      }
+    }
+  ]
+}

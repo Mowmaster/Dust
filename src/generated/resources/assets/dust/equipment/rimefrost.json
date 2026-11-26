@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:rimefrost"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:rimefrost"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:rimefrost"
+      }
+    ]
+  }
+}

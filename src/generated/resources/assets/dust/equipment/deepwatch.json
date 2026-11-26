@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:deepwatch"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:deepwatch"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:deepwatch"
+      }
+    ]
+  }
+}

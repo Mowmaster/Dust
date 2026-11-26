@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "dust:block/sanctum/arcane_portal_ns"
+    },
+    "axis=z": {
+      "model": "dust:block/sanctum/arcane_portal_ew"
+    }
+  }
+}

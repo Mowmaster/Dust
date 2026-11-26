@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:item/armor/chestplate",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -8774122
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -2513855
+      }
+    ]
+  }
+}

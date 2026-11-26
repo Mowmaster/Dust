@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "dust:verdant"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "dust:verdant"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "dust:verdant"
+      }
+    ]
+  }
+}

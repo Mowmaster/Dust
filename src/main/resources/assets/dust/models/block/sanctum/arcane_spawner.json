@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "dust:block/sanctum/arcane_spawner_cage",
+    "cage": "dust:block/sanctum/arcane_spawner_cage",
+    "top": "dust:block/sanctum/arcane_spawner_top",
+    "runes": "dust:block/sanctum/arcane_spawner_runes"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#cage", "cullface": "north"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#cage", "cullface": "east"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#cage", "cullface": "south"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#cage", "cullface": "west"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#top", "cullface": "up"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#top", "cullface": "down"}
+      }
+    },
+    {
+      "from": [15.998, 0.002, 0.002],
+      "to": [0.002, 15.998, 15.998],
+      "faces": {
+        "north": {"uv": [16, 0, 0, 16], "texture": "#cage", "cullface": "south"},
+        "east": {"uv": [16, 0, 0, 16], "texture": "#cage", "cullface": "west"},
+        "south": {"uv": [16, 0, 0, 16], "texture": "#cage", "cullface": "north"},
+        "west": {"uv": [16, 0, 0, 16], "texture": "#cage", "cullface": "east"},
+        "up": {"uv": [16, 0, 0, 16], "texture": "#top", "cullface": "up"},
+        "down": {"uv": [16, 0, 0, 16], "texture": "#top", "cullface": "down"}
+      }
+    },
+    {
+      "from": [-0.01, -0.01, -0.01],
+      "to": [16.01, 16.01, 16.01],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#runes", "tintindex": 0, "cullface": "north"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#runes", "tintindex": 0, "cullface": "east"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#runes", "tintindex": 0, "cullface": "south"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#runes", "tintindex": 0, "cullface": "west"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#runes", "tintindex": 0, "cullface": "up"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#runes", "tintindex": 0, "cullface": "down"}
+      }
+    }
+  ]
+}

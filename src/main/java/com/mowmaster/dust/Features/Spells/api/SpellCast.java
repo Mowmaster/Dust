@@ -46,6 +46,10 @@ public final class SpellCast
     private @Nullable BlockPos casterBlock;
 
     // caster: null for a block casting it (then origin and direction say where from and which way)
+    // The cast whose effect is landing on an entity right now (set round ElementEffect.onEntity: entityEffect), so damage
+    // and death handlers can tell a spell did it, and which (armor set bonuses, element bosses' resistances). Null otherwise.
+    public static @Nullable SpellCast landing;
+
     public SpellCast(ServerLevel level, @Nullable LivingEntity caster, Spell spell, SpellStats stats, Vec3 origin, Vec3 direction)
     {
         this.level = level;
@@ -180,6 +184,8 @@ public final class SpellCast
     // The block hit (on face), and with size, every block within size of it (a cube); then the shape modifiers
     public void applyBlock(BlockPos pos, Direction face)
     {
+        // A labyrinth puzzle's rune lights up for a spell of its element
+        com.mowmaster.dust.Features.Labyrinth.LabyrinthRooms.onSpellBlock(this, pos);
         Vec3 impact = Vec3.atCenterOf(pos.relative(face));
         // Landing in dusty air sets it off (DustClouds)
         com.mowmaster.dust.Features.DustStorage.DustClouds.spark(level, impact, caster);
@@ -255,15 +261,27 @@ public final class SpellCast
         SpellCast cast = own == stats ? this : withStats(own);
         boolean greedy = com.mowmaster.dust.Features.Spells.modifiers.Sins.greedy(spell);
         if (greedy) com.mowmaster.dust.Features.Spells.radiance.Social.spellBypass = true;
+        SpellCast outer = landing;
+        landing = cast;
         try {
             effect().onEntity(cast, target);
+            com.mowmaster.dust.Features.Armor.ArmorSetBonuses.onSpellHit(cast, target);
+            com.mowmaster.dust.Features.Bosses.ArchonEntity.onSpellHit(cast, target);
         } finally {
+            landing = outer;
             if (greedy) com.mowmaster.dust.Features.Spells.radiance.Social.spellBypass = false;
         }
         if (target instanceof ServerPlayer player && player != caster) SpellKnowledge.unlockShape(player, spell.shape());
         if (stats.size() > 0) {
             for (Entity nearby : around(target.position(), stats.size())) {
-                if (nearby != target) effect().onEntity(this, nearby);
+                if (nearby == target) continue;
+                SpellCast before = landing;
+                landing = this;
+                try {
+                    effect().onEntity(this, nearby);
+                } finally {
+                    landing = before;
+                }
             }
         }
     }

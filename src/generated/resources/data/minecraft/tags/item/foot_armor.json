@@ -1,5 +1,19 @@
 {
   "values": [
-    "dust:crystal_boots"
+    "dust:crystal_boots",
+    "dust:pyreborn_boots",
+    "dust:tidewoven_boots",
+    "dust:rootbound_boots",
+    "dust:lumen_boots",
+    "dust:riftborn_boots",
+    "dust:sparkwright_boots",
+    "dust:blastward_boots",
+    "dust:rimefrost_boots",
+    "dust:deepwatch_boots",
+    "dust:bastion_boots",
+    "dust:mirewalker_boots",
+    "dust:zephyr_boots",
+    "dust:verdant_boots",
+    "dust:gilded_boots"
   ]
 }

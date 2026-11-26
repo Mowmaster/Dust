@@ -47,6 +47,10 @@ public class Dust {
         com.mowmaster.dust.Features.Flora.ElementalFlowers.init();
         com.mowmaster.dust.Features.Trees.ElementalWoods.init();
         com.mowmaster.dust.Features.Trees.FruitAffinity.init();
+        com.mowmaster.dust.Features.Armor.ElementalArmor.init();
+        com.mowmaster.dust.Features.Bosses.Archons.init();
+        com.mowmaster.dust.Features.Sanctums.Sanctums.init();
+        com.mowmaster.dust.Features.Labyrinth.Labyrinth.init();
 
         // MowLib's reading HUD: looking at a Spell Pylon shows its deck and pool, helmet or not (SpellPylonReading)
         com.mowmaster.mowlib.reading.ReadingSight.addCondition(com.mowmaster.dust.Features.Spells.pylons.SpellPylonReading::lookingAtSpellPylon);

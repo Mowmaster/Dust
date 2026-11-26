@@ -1,5 +1,19 @@
 {
   "values": [
-    "dust:crystal_chestplate"
+    "dust:crystal_chestplate",
+    "dust:pyreborn_chestplate",
+    "dust:tidewoven_chestplate",
+    "dust:rootbound_chestplate",
+    "dust:lumen_chestplate",
+    "dust:riftborn_chestplate",
+    "dust:sparkwright_chestplate",
+    "dust:blastward_chestplate",
+    "dust:rimefrost_chestplate",
+    "dust:deepwatch_chestplate",
+    "dust:bastion_chestplate",
+    "dust:mirewalker_chestplate",
+    "dust:zephyr_chestplate",
+    "dust:verdant_chestplate",
+    "dust:gilded_chestplate"
   ]
 }

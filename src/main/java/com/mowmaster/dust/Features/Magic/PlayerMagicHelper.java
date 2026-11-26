@@ -187,21 +187,24 @@ public final class PlayerMagicHelper
         return Math.round(value * (1 + attunementBonus(player, element)[0]) * (1 + fruit[0]));
     }
 
-    // A spell's dust cost of this element for this player (less if attuned, and with a fruit affinity; never below 1
-    // when something's needed)
+    // A spell's dust cost of this element for this player (less if attuned, with a fruit affinity, an armor set or an
+    // Archon's Sigil; never below 1 when something's needed)
     public static int dustCost(Player player, DustElement element, int cost)
     {
         if (cost <= 0) return 0;
         float[] fruit = com.mowmaster.dust.Features.Trees.FruitAffinity.bonus(player, element);
-        return Math.max(1, Math.round(cost * (1 - attunementBonus(player, element)[1]) * (1 - fruit[1])));
+        return Math.max(1, Math.round(cost * (1 - attunementBonus(player, element)[1]) * (1 - fruit[1])
+                * com.mowmaster.dust.Features.Armor.ArmorSetBonuses.costFactor(player, element)
+                * com.mowmaster.dust.Features.Bosses.Trinkets.costFactor(player, element)));
     }
 
     // How much stronger this player's spells of this element are (1.25 for one attunement, 1.1 for two, else 1; times
-    // the same for a fruit affinity)
+    // the same for a fruit affinity, and an armor set's and the Archon trinkets' bonuses)
     public static float spellPower(Player player, DustElement element)
     {
         float[] fruit = com.mowmaster.dust.Features.Trees.FruitAffinity.bonus(player, element);
-        return (1 + attunementBonus(player, element)[2]) * (1 + fruit[2]);
+        return (1 + attunementBonus(player, element)[2]) * (1 + fruit[2]) * com.mowmaster.dust.Features.Armor.ArmorSetBonuses.powerFactor(player, element)
+                * com.mowmaster.dust.Features.Bosses.Trinkets.powerFactor(player, element);
     }
 
     public static boolean isAwakened(Player player)
@@ -272,6 +275,10 @@ public final class PlayerMagicHelper
         int step = surge == null ? 1 : 2 + surge.getAmplifier();
         // A rich chunk's aura (ChunkAura) speeds it up too
         step += AuraEffects.regenBonus(player.level(), player.blockPosition());
+        // Elemental armor: Lumen and Sparkwright speed it up
+        step += com.mowmaster.dust.Features.Armor.ArmorSetBonuses.regenBonus(player);
+        // The Heart of Mana (an Archon trinket) too
+        step += com.mowmaster.dust.Features.Bosses.Trinkets.regenBonus(player);
         int regen = timers.regen() + step, fraction = timers.fraction();
 
         // Regenerates up to the cap (higher while Crystallized): every REGEN_TICKS, REGEN_PERCENT of max mana, kept in

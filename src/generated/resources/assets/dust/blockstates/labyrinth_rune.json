@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "dust:block/labyrinth/labyrinth_rune"
+    },
+    "lit=true": {
+      "model": "dust:block/labyrinth/labyrinth_rune_lit"
+    }
+  }
+}

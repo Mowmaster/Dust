@@ -1,5 +1,19 @@
 {
   "values": [
-    "dust:crystal_helmet"
+    "dust:crystal_helmet",
+    "dust:pyreborn_helmet",
+    "dust:tidewoven_helmet",
+    "dust:rootbound_helmet",
+    "dust:lumen_helmet",
+    "dust:riftborn_helmet",
+    "dust:sparkwright_helmet",
+    "dust:blastward_helmet",
+    "dust:rimefrost_helmet",
+    "dust:deepwatch_helmet",
+    "dust:bastion_helmet",
+    "dust:mirewalker_helmet",
+    "dust:zephyr_helmet",
+    "dust:verdant_helmet",
+    "dust:gilded_helmet"
   ]
 }
