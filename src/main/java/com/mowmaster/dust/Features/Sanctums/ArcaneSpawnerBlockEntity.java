@@ -165,8 +165,11 @@ public class ArcaneSpawnerBlockEntity extends BlockEntity implements ISpinningIt
         for (ServerPlayer player : level.players()) {
             if (player.isSpectator() || player.isCreative() || !player.isAlive()) continue;
             if (player.distanceToSqr(centre) > range * range) continue;
-            if (seen && level.clip(new ClipContext(centre, player.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player))
-                    .getType() == HitResult.Type.BLOCK) continue;
+            // Seen: a line from their eyes reaches the spawner (as vanilla's trial spawner checks; a line starting inside
+            // the spawner would stop at its own cage at once)
+            net.minecraft.world.phys.BlockHitResult sight = seen ? level.clip(new ClipContext(player.getEyePosition(), centre, ClipContext.Block.VISUAL,
+                    ClipContext.Fluid.NONE, net.minecraft.world.phys.shapes.CollisionContext.empty())) : null;
+            if (sight != null && sight.getType() != HitResult.Type.MISS && !sight.getBlockPos().equals(worldPosition)) continue;
             near.add(player);
         }
         return near;
