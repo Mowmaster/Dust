@@ -8,7 +8,9 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 // chance of each is its weight out of the total).
 // [dust_clouds]: the dusty air round spilled dust (Features/DustStorage/DustClouds): whether it explodes, how much dust
 // it takes, how big the blasts are, how far a pile's cloud reaches.
-// [worldgen]: how rare Dust's geodes, ore boulders, flowers and trees are in new terrain (Features/Worldgen).
+// [worldgen]: how rare Dust's geodes, ore boulders, flowers and trees are in new terrain (Features/Worldgen), and whether
+// sanctums generate (off by default).
+// [aura]: how fast chunks' aura changes (Features/Magic/ChunkAura).
 public final class DustConfig
 {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -28,6 +30,8 @@ public final class DustConfig
     public static final ModConfigSpec.IntValue FLOWER_RARITY;
     public static final ModConfigSpec.IntValue TREE_RARITY;
     public static final ModConfigSpec.IntValue RUIN_RARITY;
+    public static final ModConfigSpec.BooleanValue SANCTUM_STRUCTURES;
+    public static final ModConfigSpec.DoubleValue AURA_CHANGE_RATE;
     public static final ModConfigSpec.IntValue SPAWNER_COOLDOWN;
     public static final ModConfigSpec.BooleanValue LABYRINTH_KEEP_INVENTORY;
     public static final ModConfigSpec.DoubleValue SPAWNER_KEY_CHANCE;
@@ -40,7 +44,7 @@ public final class DustConfig
         BUILDER.pop(2);
 
         BUILDER.comment("The dusty air round Dust Piles (spilled out of tubes with no jar)").push("dust_clouds");
-        DUST_EXPLOSIONS = BUILDER.comment("Whether a spark (a flame, a creeper, a spell, a flint and steel) in a thick enough cloud makes it explode")
+        DUST_EXPLOSIONS = BUILDER.comment("Whether a spark (a flame, a burning mob, an exploding creeper, a spell, a flint and steel) in a thick enough cloud makes it explode")
                 .define("explosions", true);
         DUST_TO_EXPLODE = BUILDER.comment("How much dust has to be in the air at a spark for it to explode (the haze is half see-through at this much)")
                 .defineInRange("dust_to_explode", 500, 1, 100000);
@@ -63,6 +67,13 @@ public final class DustConfig
                 .defineInRange("tree_rarity", 24, 1, 100000);
         RUIN_RARITY = BUILDER.comment("Ancient ruins (glyph walls) on the surface, anywhere in the overworld (128: half as common as ore boulders)")
                 .defineInRange("ruin_rarity", 128, 1, 100000);
+        SANCTUM_STRUCTURES = BUILDER.comment("Whether sanctums (with their Arcane Spawners, vaults and portals to the labyrinths) generate in new terrain. Off while they're being worked on")
+                .define("sanctums", false);
+        BUILDER.pop();
+
+        BUILDER.comment("The aura of dust in each chunk (Features/Magic/ChunkAura)").push("aura");
+        AURA_CHANGE_RATE = BUILDER.comment("How fast a chunk's aura evens out with its neighbours and drifts back to normal (1: the original rate; 3: three times as fast)")
+                .defineInRange("change_rate", 3.0, 0.1, 20.0);
         BUILDER.pop();
 
         BUILDER.comment("Sanctums and their labyrinths (Features/Sanctums, Features/Labyrinth)").push("sanctums");
@@ -84,6 +95,25 @@ public final class DustConfig
             return Math.max(1, value.get());
         } catch (IllegalStateException notLoaded) {
             return Math.max(1, value.getDefault());
+        }
+    }
+
+    // A setting read where the config may not have loaded yet (worldgen, the aura's first ticks): its default then
+    public static boolean flag(ModConfigSpec.BooleanValue value)
+    {
+        try {
+            return value.get();
+        } catch (IllegalStateException notLoaded) {
+            return value.getDefault();
+        }
+    }
+
+    public static double number(ModConfigSpec.DoubleValue value)
+    {
+        try {
+            return value.get();
+        } catch (IllegalStateException notLoaded) {
+            return value.getDefault();
         }
     }
 

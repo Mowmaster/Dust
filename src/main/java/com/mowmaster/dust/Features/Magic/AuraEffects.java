@@ -30,7 +30,10 @@ import org.jspecify.annotations.Nullable;
 // normal, so they get more of whichever side they're on.
 //   rich         (1.5+)  crops grow faster; players' mana regenerates faster (PlayerMagicHelper)
 //   overcharged  (3+)    monsters spawning here may come out empowered (more health and damage) or with a twin. Each one
-//                        feeds on the aura, which is how an overcharged chunk calms down. (Rifts come later.)
+//                        feeds on the aura, which is how an overcharged chunk calms down. Every pack of monsters that
+//                        spawns here naturally brings an Archon (Features/Bosses) of the chunk's strongest primal, at the
+//                        level of the nearest player with a Magic Level within ARCHON_REACH blocks (ArchonEntity.levelFor),
+//                        else ARCHON_DEFAULT_LEVEL; not while another Archon is within ARCHON_SPACING. (Rifts come later.)
 //   thin         (0.5-)  crops struggle to grow
 //   barren       (0.25-) crops can wither and die; surface water evaporates; grass dries to dirt, dirt to coarse dirt
 // Corruption also spreads more slowly the thinner the aura is (ChunkAura.spreadFactor).
@@ -41,8 +44,13 @@ public final class AuraEffects
     public static final float OVERCHARGED = 3.0F;
     public static final float THIN = 0.5F;
     public static final float BARREN = 0.25F;
-    // How much aura an empowered or extra monster feeds on
-    public static final float SPAWN_COST = 25;
+    // How much aura an empowered or extra monster feeds on, and an Archon
+    public static final float SPAWN_COST = 25, ARCHON_COST = 100;
+    public static final double ARCHON_REACH = 32, ARCHON_SPACING = 48;
+    public static final int ARCHON_DEFAULT_LEVEL = 5;
+    // The chunks a natural pack has spawned in this tick, per dimension (a pack spawns all at once, in one chunk)
+    private static final java.util.Map<net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>, Long> PACK_TICK = new java.util.HashMap<>();
+    private static final java.util.Map<net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>, java.util.Set<Long>> PACK_CHUNKS = new java.util.HashMap<>();
     // Surface spots looked at per barren chunk per update
     private static final int BARREN_SPOTS = 3;
 
@@ -117,6 +125,7 @@ public final class AuraEffects
         float richness = ChunkAura.richnessAt(level, pos);
         if (richness < OVERCHARGED) return;
         RandomSource random = level.getRandom();
+        if (reason == EntitySpawnReason.NATURAL && firstOfPack(level, pos)) archon(level, pos, mob, random);
         float chance = Math.min(0.6F, 0.15F + (richness - OVERCHARGED) * 0.15F);
         if (random.nextFloat() < chance) {
             empower(mob);
@@ -131,6 +140,72 @@ public final class AuraEffects
                 ChunkAura.take(level, pos, SPAWN_COST);
             }
         }
+    }
+
+    // Whether this is the first monster of a natural pack in its chunk this tick
+    private static boolean firstOfPack(ServerLevel level, BlockPos pos)
+    {
+        long now = level.getGameTime();
+        Long tick = PACK_TICK.get(level.dimension());
+        java.util.Set<Long> chunks = PACK_CHUNKS.computeIfAbsent(level.dimension(), key -> new java.util.HashSet<>());
+        if (tick == null || tick != now) {
+            PACK_TICK.put(level.dimension(), now);
+            chunks.clear();
+        }
+        return chunks.add(net.minecraft.world.level.ChunkPos.containing(pos).pack());
+    }
+
+    // An Archon with the pack, unless another is near
+    private static void archon(ServerLevel level, BlockPos pos, Mob leader, RandomSource random)
+    {
+        if (com.mowmaster.dust.Features.Labyrinth.Labyrinth.is(level)) return;
+        net.minecraft.world.phys.AABB near = new net.minecraft.world.phys.AABB(pos).inflate(ARCHON_SPACING);
+        if (!level.getEntitiesOfClass(com.mowmaster.dust.Features.Bosses.ArchonEntity.class, near, net.minecraft.world.entity.Entity::isAlive).isEmpty()) return;
+        com.mowmaster.dust.Features.Armor.ElementalArmorSet set = strongestSet(level, pos, random);
+        com.mowmaster.dust.Features.Bosses.ArchonEntity archon = com.mowmaster.dust.Features.Bosses.Archons.TYPES.get(set).get().create(level, EntitySpawnReason.EVENT);
+        if (archon == null) return;
+        archon.snapTo(leader.getX(), leader.getY(), leader.getZ(), random.nextFloat() * 360, 0);
+        archon.setBossLevel(archonLevel(level, pos));
+        archon.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+        if (level.addFreshEntity(archon)) ChunkAura.take(level, pos, ARCHON_COST);
+    }
+
+    // The level for the nearest player within ARCHON_REACH who has a Magic Level, else ARCHON_DEFAULT_LEVEL
+    private static int archonLevel(ServerLevel level, BlockPos pos)
+    {
+        net.minecraft.world.entity.player.Player nearest = null;
+        double best = ARCHON_REACH * ARCHON_REACH;
+        net.minecraft.world.phys.Vec3 centre = net.minecraft.world.phys.Vec3.atCenterOf(pos);
+        for (net.minecraft.world.entity.player.Player player : level.players()) {
+            if (player.isSpectator() || PlayerMagicHelper.magicLevel(player) <= 0) continue;
+            double distance = player.distanceToSqr(centre);
+            if (distance <= best) {
+                best = distance;
+                nearest = player;
+            }
+        }
+        return nearest == null ? ARCHON_DEFAULT_LEVEL : com.mowmaster.dust.Features.Bosses.ArchonEntity.levelFor(nearest);
+    }
+
+    // The set of the primal the chunk is fullest of, against its normal (any set if that has none)
+    private static com.mowmaster.dust.Features.Armor.ElementalArmorSet strongestSet(ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        float[] normal = ChunkAura.baseline(level, net.minecraft.world.level.ChunkPos.containing(pos));
+        ChunkAuraData aura = ChunkAura.of(level, pos);
+        com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement strongest = null;
+        float ratio = 0;
+        for (com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement primal : com.mowmaster.dust.Features.EffectScrolls.DustMagic.EnumElement.values()) {
+            float here = aura.get(primal) / Math.max(1, normal[primal.ordinal()]);
+            if (here > ratio) {
+                ratio = here;
+                strongest = primal;
+            }
+        }
+        com.mowmaster.dust.Features.Armor.ElementalArmorSet set = strongest == null ? null
+                : com.mowmaster.dust.Features.Armor.ElementalArmorSet.of(com.mowmaster.dust.Features.DustComposition.DustElements.of(strongest));
+        if (set != null) return set;
+        com.mowmaster.dust.Features.Armor.ElementalArmorSet[] all = com.mowmaster.dust.Features.Armor.ElementalArmorSet.values();
+        return all[random.nextInt(all.length)];
     }
 
     // +50% health, +30% damage, for good

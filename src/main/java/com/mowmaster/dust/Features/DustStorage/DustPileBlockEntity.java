@@ -18,7 +18,7 @@ import java.util.Map;
 // What a Dust Pile holds: so much of each element (any mix), up to CAPACITY in all (a full block's height). Its height
 // grows with it, a layer for every eighth of CAPACITY (started layers count); its colour the mix of its elements, weighed by how much of each (Client/DustPileTint). Sent to
 // clients (they tint it and work out the cloud from it: DustClouds, Client/DustCloudClient).
-//   server  every CHECK_TICKS (each pile at its own moment), out in the open: a flame, or a creeper, in its cloud where
+//   server  every CHECK_TICKS (each pile at its own moment), out in the open: a flame, a burning mob or a creeper starting to explode, in its cloud where
 //           the cloud is thick enough sets the dust off (DustClouds.checkIgnition)
 //   client  out in the open: motes of its colour drift about in its cloud, more for a bigger pile
 public class DustPileBlockEntity extends CBSyncedBlockEntity

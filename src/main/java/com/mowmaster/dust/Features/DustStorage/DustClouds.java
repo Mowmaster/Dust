@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -34,7 +35,8 @@ import java.util.List;
 //             of the piles whose cloud reaches it: the thicker, the harder to see through (Client/DustCloudClient: half
 //             at ignite)
 //   igniting  where the air holds ignite() dust or more, a spark sets it off (spark): an open flame (fire, dust fire, a lit
-//             campfire or firebox, lava) or a creeper in the cloud (checked by the piles: DustPileBlockEntity), a spell
+//             campfire or firebox, lava), a mob on fire or a creeper starting to explode in the cloud (checked by the
+//             piles: DustPileBlockEntity), a spell
 //             cast or landing there, a Magical Flint and Steel struck there. Every pile whose cloud reaches the spark
 //             burns up at once, and with it every pile in reach of one that burns (their clouds touch), on and on: a
 //             chain. They go off as spell explosions (SpellExplosions) that break and drop blocks: one for each group of
@@ -200,7 +202,8 @@ public final class DustClouds
 
     // ---- igniting ----
 
-    // A pile's check (out in the open): any open flame or creeper in its cloud, where the air is thick enough, sets it off
+    // A pile's check (out in the open): any open flame, burning mob or exploding creeper in its cloud, where the air is
+    // thick enough, sets it off
     public static void checkIgnition(ServerLevel level, BlockPos pile)
     {
         if (!explosions()) return;
@@ -218,9 +221,17 @@ public final class DustClouds
             }
         }
         AABB area = new AABB(pile.getX() - radius(), pile.getY() - 1, pile.getZ() - radius(), pile.getX() + radius() + 1, pile.getY() + RISE + 1, pile.getZ() + radius() + 1);
-        for (Creeper creeper : level.getEntitiesOfClass(Creeper.class, area, Entity::isAlive)) {
-            if (spark(level, creeper.blockPosition(), creeper)) return;
+        for (Mob mob : level.getEntitiesOfClass(Mob.class, area, DustClouds::sparks)) {
+            if (spark(level, mob.blockPosition(), mob)) return;
         }
+    }
+
+    // A mob that sets a cloud off: one on fire, or a creeper starting to explode (not one just standing there)
+    private static boolean sparks(Mob mob)
+    {
+        if (!mob.isAlive()) return false;
+        if (mob.isOnFire()) return true;
+        return mob instanceof Creeper creeper && (creeper.getSwellDir() > 0 || creeper.isIgnited());
     }
 
     // An open flame: fire of any kind (vanilla's, soul fire, dust fire), a lit campfire, a lit Still firebox, lava

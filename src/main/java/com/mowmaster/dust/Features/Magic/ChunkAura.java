@@ -1,5 +1,6 @@
 package com.mowmaster.dust.Features.Magic;
 
+import com.mowmaster.dust.DustConfig;
 import com.mowmaster.dust.DustReferences;
 import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
@@ -29,7 +30,7 @@ import java.util.Set;
 //   Dust going back into the world (release: orbs nobody could carry, what an evaporation table boils off...) is broken
 //   down into its primals and added. Things that feed on aura take from it (take).
 //   It evens out: every UPDATE_TICKS, a chunk that isn't at normal shares SPREAD of the difference with each loaded
-//   neighbour, and drifts DRIFT of the way back to normal. It takes days of steady change to move a chunk a long way.
+//   neighbour, and drifts DRIFT of the way back to normal, both times the config's aura.change_rate (3 by default).
 //   Only chunks away from normal are worked on (the active set); one that was unloaded catches up on its drift when
 //   it loads again.
 // Richness: the chunk's total over its normal total (1 = normal). What it does at each level: AuraEffects.
@@ -166,9 +167,20 @@ public final class ChunkAura
         float[] primals = data.copy();
         long steps = Math.max(0, (now - data.updated()) / UPDATE_TICKS);
         if (steps == 0) return primals;
-        float keep = (float) Math.pow(1 - DRIFT, steps);
+        float keep = (float) Math.pow(1 - drift(), steps);
         for (int i = 0; i < primals.length; i++) primals[i] = normal[i] + (primals[i] - normal[i]) * keep;
         return primals;
+    }
+
+    // SPREAD and DRIFT at the configured rate (kept small enough that a step can't overshoot)
+    private static float spread()
+    {
+        return (float) Math.min(0.2, SPREAD * DustConfig.number(DustConfig.AURA_CHANGE_RATE));
+    }
+
+    private static float drift()
+    {
+        return (float) Math.min(0.5, DRIFT * DustConfig.number(DustConfig.AURA_CHANGE_RATE));
     }
 
     private static boolean settled(float[] primals, float[] normal)
@@ -184,6 +196,7 @@ public final class ChunkAura
         Set<Long> active = active(level);
         if (active.isEmpty()) return;
         long now = level.getGameTime();
+        float spread = spread();
         for (long packed : List.copyOf(active)) {
             ChunkPos pos = ChunkPos.unpack(packed);
             LevelChunk chunk = level.getChunkSource().getChunkNow(pos.x(), pos.z());
@@ -200,7 +213,7 @@ public final class ChunkAura
                 float[] theirs = drifted(of(next), baseline(level, next.getPos()), now);
                 boolean moved = false;
                 for (int i = 0; i < primals.length; i++) {
-                    float flow = (primals[i] - theirs[i]) * SPREAD;
+                    float flow = (primals[i] - theirs[i]) * spread;
                     if (Math.abs(flow) < 0.0001F) continue;
                     primals[i] -= flow;
                     theirs[i] += flow;

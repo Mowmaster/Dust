@@ -170,7 +170,7 @@ public class DustPileBlock extends Block implements EntityBlock, net.minecraft.w
         return new DustPileBlockEntity(pos, state);
     }
 
-    // Server: watching for a flame or a creeper in its cloud. Client: motes drifting in its cloud.
+    // Server: watching for a flame, a burning mob or an exploding creeper in its cloud. Client: motes drifting in its cloud.
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type)
     {

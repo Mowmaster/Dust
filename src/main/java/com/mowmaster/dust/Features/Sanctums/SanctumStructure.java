@@ -33,7 +33,8 @@ import java.util.Optional;
 // beach); its element is one whose trees grow in the biome (or any of the fourteen), and its look one of the sanctum
 // templates (SanctumTemplates), turned a random way with its anchor on the ground there. The ground under the
 // template's ground layer mustn't be too steep (each corner within SLOPE blocks of the anchor's), and it must fit
-// between the world's floor and its build limit. SanctumPiece places it.
+// between the world's floor and its build limit. SanctumPiece places it. None generate unless the config's
+// worldgen.sanctums is on (it's off by default).
 public class SanctumStructure extends Structure
 {
     public static final MapCodec<SanctumStructure> CODEC = simpleCodec(SanctumStructure::new);
@@ -53,6 +54,8 @@ public class SanctumStructure extends Structure
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context)
     {
+        // Off unless the config turns them on (worldgen.sanctums)
+        if (!com.mowmaster.dust.DustConfig.flag(com.mowmaster.dust.DustConfig.SANCTUM_STRUCTURES)) return Optional.empty();
         ChunkPos chunk = context.chunkPos();
         ChunkGenerator generator = context.chunkGenerator();
         LevelHeightAccessor heights = context.heightAccessor();
