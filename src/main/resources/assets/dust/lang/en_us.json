@@ -1804,5 +1804,25 @@
   "dust.labyrinth.arena_open": "Every Herald has fallen: the way to the Archon is open",
   "dust.labyrinth.puzzle": "Strike each rune with a spell that holds its element",
   "dust.labyrinth.solved": "The runes blaze, and the room gives up its treasure",
-  "dust.labyrinth.fell": "The pit throws you back"
+  "dust.labyrinth.fell": "The pit throws you back",
+
+  "block.dust.arcane_vault": "Arcane Vault",
+  "item.dust.pyreborn_vault_key": "Pyreborn Vault Key",
+  "item.dust.tidewoven_vault_key": "Tidewoven Vault Key",
+  "item.dust.rootbound_vault_key": "Rootbound Vault Key",
+  "item.dust.lumen_vault_key": "Lumen Vault Key",
+  "item.dust.riftborn_vault_key": "Riftborn Vault Key",
+  "item.dust.sparkwright_vault_key": "Sparkwright Vault Key",
+  "item.dust.blastward_vault_key": "Blastward Vault Key",
+  "item.dust.rimefrost_vault_key": "Rimefrost Vault Key",
+  "item.dust.deepwatch_vault_key": "Deepwatch Vault Key",
+  "item.dust.bastion_vault_key": "Bastion Vault Key",
+  "item.dust.mirewalker_vault_key": "Mirewalker Vault Key",
+  "item.dust.zephyr_vault_key": "Zephyr Vault Key",
+  "item.dust.verdant_vault_key": "Verdant Vault Key",
+  "item.dust.gilded_vault_key": "Gilded Vault Key",
+  "dust.vault_key.opens": "Opens %s Arcane Vaults",
+  "dust.vault.wrong_key": "This vault opens with a %s",
+  "dust.vault.opened": "You've already opened this vault",
+  "dust.vault.broadcast": "%s found %s (%s) in an Arcane Vault!"
 }

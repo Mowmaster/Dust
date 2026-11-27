@@ -50,8 +50,9 @@ import java.util.UUID;
 //   COOLDOWN  rests for the configured time (half an hour by default, as a trial spawner), then waits again
 // The wave: 4 mobs, 2 more for each other player, and one more for every two tiers (at most 14); up to 2 at once, more
 // at higher tiers and for groups. The tier: the strongest nearby player's Magic Level / 10 (SanctumMobs).
-// A reward, for each player who fought: dust and crystals of its element, experience, and a chance of a loot bag of its
-// element's Archon (better at higher tiers).
+// A reward, for each player who fought: dust and crystals of its element, experience, a chance of a loot bag of its
+// element's Archon (better at higher tiers), and a chance (one in five by default: DustConfig) of a Vault Key of its
+// element, which opens the sanctum's Arcane Vaults (ArcaneVaultBlockEntity).
 // Its heart, drawn by MowLib's SpinningItemRenderer (ISpinningItemHolder): its element's crystal floating in the cage,
 // turning slowly while it waits and fast while it fights; gone while it rests. All of it from its block state, which
 // the client has.
@@ -248,6 +249,7 @@ public class ArcaneSpawnerBlockEntity extends BlockEntity implements ISpinningIt
             eject(level, top, new ItemStack(DustItemRegistry.CRYSTALS.get(element).get(), 1 + random.nextInt(3)));
             if (random.nextInt(4) == 0) eject(level, top, new ItemStack(ElementCrystals.SMALL_ITEMS.get(element).get()));
             if (random.nextFloat() < Math.min(0.3F, 0.08F + 0.02F * tier)) eject(level, top, LootBags.bag(set(), 1 + tier));
+            if (random.nextDouble() < DustConfig.SPAWNER_KEY_CHANCE.get()) eject(level, top, new ItemStack(Sanctums.KEYS.get(set()).get()));
             ExperienceOrb.award(level, top, 5 + 3 * tier);
         }
         level.playSound(null, worldPosition, SoundEvents.TRIAL_SPAWNER_EJECT_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);

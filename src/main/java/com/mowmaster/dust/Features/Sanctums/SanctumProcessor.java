@@ -31,8 +31,9 @@ import java.util.function.Function;
 //   yellow concrete       the palette's light
 //   oak blocks, chests    the element's wood: log, wood, stripped log and wood, planks, stairs, slab, fence, fence
 //                         gate, button, pressure plate, leaves, and its chest (same facing, shape and so on)
-// Everything else stays as built. Arcane Spawners take the element and start waiting; what the template saved of the
-// spawners' and the keystone's block entities (from the world they were built in) is dropped, so they start fresh. The
+// Everything else stays as built. Arcane Spawners and Arcane Vaults take the element and start waiting; what the
+// template saved of their block entities and the keystone's (from the world they were built in) is dropped, so they
+// start fresh. The
 // wall choice is seeded by position, so it doesn't change with the chunk being built. Registered as dust:sanctum
 // (DustFeatureRegistry), though only SanctumPiece uses it.
 //? if >=26.3 {
@@ -73,6 +74,10 @@ public class SanctumProcessor implements StructureProcessor
         if (state.is(Sanctums.ARCANE_SPAWNER.get())) {
             return new StructureBlockInfo(current.pos(), state.setValue(ArcaneSpawnerBlock.SET, set)
                     .setValue(ArcaneSpawnerBlock.PHASE, ArcaneSpawnerBlock.Phase.WAITING), null);
+        }
+        if (state.is(Sanctums.ARCANE_VAULT.get())) {
+            return new StructureBlockInfo(current.pos(), state.setValue(ArcaneVaultBlock.SET, set)
+                    .setValue(ArcaneVaultBlock.STATE, ArcaneVaultBlock.State.INACTIVE), null);
         }
         if (state.is(Sanctums.SANCTUM_KEYSTONE.get())) return new StructureBlockInfo(current.pos(), state, null);
         Function<RandomSource, BlockState> forStone = stone.get(state.getBlock());

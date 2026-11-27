@@ -64,7 +64,7 @@ public final class LootBags
         }
 
         // A datapack table's items: how rare they read, from their own rarity
-        static Tier of(ItemStack stack)
+        public static Tier of(ItemStack stack)
         {
             Rarity rarity = stack.getRarity();
             if (rarity == Rarity.EPIC) return EPIC;
@@ -110,7 +110,8 @@ public final class LootBags
         };
     }
 
-    private static Tier rollTier(RandomSource random, int level)
+    // How rare one roll at this level is (also an Arcane Vault's rolls: Features/Sanctums/VaultLoot)
+    public static Tier rollTier(RandomSource random, int level)
     {
         float total = 0;
         for (Tier tier : Tier.values()) total += weight(tier, level);

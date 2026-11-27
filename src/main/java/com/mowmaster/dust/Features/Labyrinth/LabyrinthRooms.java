@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Runs a labyrinth run's rooms (LabyrinthRoom), once a second from Labyrinth's upkeep:
-//   combat     its doors seal while its Arcane Spawner's wave is on and players are in the room; cleared when the wave is
+//   combat     its doors seal while one of its Arcane Spawners' waves is on and players are in the room; cleared when
+//              they've all been beaten
 //   miniboss   a player stepping in wakes its Herald (sealing the doors while anyone's in there); when it falls the room is
 //              cleared (heraldBeaten), and once every Herald has fallen the arena's seal lifts
 //   puzzle     the first player in is told what to do; a spell striking one of its runes lights it if the spell holds
@@ -51,9 +52,15 @@ public final class LabyrinthRooms
                         seal(level, run, room, false);
                         break;
                     }
-                    ArcaneSpawnerBlock.Phase phase = level.getBlockEntity(room.centre) instanceof ArcaneSpawnerBlockEntity spawner ? spawner.phase() : ArcaneSpawnerBlock.Phase.COOLDOWN;
-                    if (phase == ArcaneSpawnerBlock.Phase.COOLDOWN && room.state != LabyrinthRoom.State.CLEARED) room.state = LabyrinthRoom.State.CLEARED;
-                    seal(level, run, room, phase == ArcaneSpawnerBlock.Phase.ACTIVE);
+                    // (a room saved before rooms kept their spawners had its one in the middle)
+                    boolean fighting = false, beaten = true;
+                    for (BlockPos pos : room.spawners.isEmpty() ? List.of(room.centre) : room.spawners) {
+                        ArcaneSpawnerBlock.Phase phase = level.getBlockEntity(pos) instanceof ArcaneSpawnerBlockEntity spawner ? spawner.phase() : ArcaneSpawnerBlock.Phase.COOLDOWN;
+                        if (phase == ArcaneSpawnerBlock.Phase.ACTIVE) fighting = true;
+                        if (phase != ArcaneSpawnerBlock.Phase.COOLDOWN) beaten = false;
+                    }
+                    if (beaten && room.state != LabyrinthRoom.State.CLEARED) room.state = LabyrinthRoom.State.CLEARED;
+                    seal(level, run, room, fighting);
                 }
                 case MINIBOSS -> {
                     if (room.state == LabyrinthRoom.State.DORMANT && !here.isEmpty()) wakeHerald(level, run, room, here);

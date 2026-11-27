@@ -44,7 +44,7 @@ import java.util.List;
 // element's (SanctumProcessor; structure blocks aren't placed). Minecraft builds it a chunk at a time: the template's
 // blocks in that chunk (TemplateStructurePiece), its data markers emptied (handleDataMarker), and then, in the same
 // chunk, the ground layer shored up where the ground dips, empty chests and barrels filled with the element's loot,
-// and the keystone given its spawners, its portal and the return point. Saved as the template's name, where it is, its
+// and the keystone given its spawners, its vaults, its portal and the return point. Saved as the template's name, where it is, its
 // turn and its element, so every chunk builds the same sanctum.
 public class SanctumPiece extends TemplateStructurePiece
 {
@@ -63,7 +63,7 @@ public class SanctumPiece extends TemplateStructurePiece
     {
         super(DustFeatureRegistry.SANCTUM_PIECE.get(), tag, context.structureTemplateManager(), template -> settings(rotation(tag), set(tag)));
         this.set = set(tag);
-        SanctumTemplates.fixLegacy(makeTemplateLocation(), template);
+        TemplateScan.fixLegacy(makeTemplateLocation(), template);
     }
 
     // Turned; structure blocks left out; stand-ins swapped; blocks placed where water was aren't waterlogged (only what
@@ -107,7 +107,7 @@ public class SanctumPiece extends TemplateStructurePiece
     public void postProcess(WorldGenLevel level, StructureManager structures, ChunkGenerator generator, RandomSource random, BoundingBox chunkBox,
                             ChunkPos chunkPos, BlockPos pivot)
     {
-        SanctumTemplates.fixLegacy(makeTemplateLocation(), template);
+        TemplateScan.fixLegacy(makeTemplateLocation(), template);
         super.postProcess(level, structures, generator, random, chunkBox, chunkPos, pivot);
         SanctumTemplates.Layout layout = SanctumTemplates.layout(makeTemplateLocation(), template);
         shoreUp(level, layout, chunkBox, random);
@@ -169,21 +169,23 @@ public class SanctumPiece extends TemplateStructurePiece
         if (random.nextInt(10) == 0) container.setItem(random.nextInt(size), LootBags.bag(set, 1));
     }
 
-    // The keystone, in the chunk that holds it: where its spawners are, its portal's opening (the corner nearest the
-    // start of the axis it runs along: the keystone fills it towards east or south) and the return point, facing away
+    // The keystone, in the chunk that holds it: where its spawners and vaults are, its portal's opening (the corner
+    // nearest the start of the axis it runs along: the keystone fills it towards east or south) and the return point,
+    // facing away
     private void setUpKeystone(WorldGenLevel level, SanctumTemplates.Layout layout, BoundingBox chunkBox)
     {
         SanctumTemplates.Portal portal = layout.portal();
         if (portal == null) return;
         BlockPos at = world(portal.keystone());
         if (!chunkBox.isInside(at) || !(level.getBlockEntity(at) instanceof SanctumKeystoneBlockEntity keystone)) return;
-        List<BlockPos> spawners = new ArrayList<>();
+        List<BlockPos> spawners = new ArrayList<>(), vaults = new ArrayList<>();
         for (BlockPos local : layout.spawners()) spawners.add(world(local));
+        for (BlockPos local : layout.vaults()) vaults.add(world(local));
         Rotation rotation = placeSettings.getRotation();
         Direction.Axis axis = rotation.rotate(Direction.fromAxisAndDirection(portal.axis(), Direction.AxisDirection.POSITIVE)).getAxis();
         BlockPos first = world(portal.first()), second = world(portal.second());
         BlockPos corner = first.get(axis) <= second.get(axis) ? first : second;
         Direction front = rotation.rotate(portal.front());
-        keystone.setup(set, spawners, corner, axis, Vec3.atBottomCenterOf(world(portal.returnPos())), front.toYRot());
+        keystone.setup(set, spawners, vaults, corner, axis, Vec3.atBottomCenterOf(world(portal.returnPos())), front.toYRot());
     }
 }

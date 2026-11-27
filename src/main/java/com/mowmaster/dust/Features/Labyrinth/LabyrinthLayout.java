@@ -21,7 +21,8 @@ import java.util.Set;
 //   3. each room gets a type by how far it is from the start: Heralds in the farthest dead ends, treasure in other dead
 //      ends, then a puzzle or two, a challenge, a sanctuary; the rest are combat rooms (the first and the arena's
 //      doorstep always are)
-// and a size (11, 13 or 15 across). LabyrinthBuilder builds it.
+// LabyrinthBuilder builds it, each room from a template of its type (its size is the template's: at most 23 x 23, so
+// rooms CELL apart leave room for a corridor).
 public final class LabyrinthLayout
 {
     public static final int CELL = 26;
@@ -44,7 +45,6 @@ public final class LabyrinthLayout
     public record Link(Cell a, Cell b) {}
 
     public final Map<Cell, LabyrinthRoom.Type> types = new LinkedHashMap<>();
-    public final Map<Cell, Integer> half = new HashMap<>();
     public final Set<Link> links = new HashSet<>();
     public final Cell start = new Cell(0, 1);
     public Cell boss;
@@ -106,7 +106,6 @@ public final class LabyrinthLayout
             if (cell.z == ROWS && (layout.boss == null || distance.get(cell) > distance.get(layout.boss))) layout.boss = cell;
         }
         layout.assign(ordered, distance, random);
-        for (Cell cell : ordered) layout.half.put(cell, 5 + random.nextInt(3));
         return layout;
     }
 

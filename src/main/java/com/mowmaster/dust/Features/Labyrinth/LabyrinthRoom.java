@@ -13,18 +13,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 // One room of a labyrinth run (LabyrinthLayout places them, LabyrinthBuilder builds them, LabyrinthRooms runs them):
-//   COMBAT     an Arcane Spawner in the middle; its doors seal while its wave is on and players are in the room
+//   COMBAT     Arcane Spawners; its doors seal while a wave is on and players are in the room
 //   MINIBOSS   a Herald (a lesser Archon of the run's element) wakes when a player comes in; the doors seal until it
 //              falls. Every Herald must fall before the arena opens.
 //   PUZZLE     runes in the walls, each of an element: strike every one with a spell holding its element and a chest
 //              appears
 //   CHALLENGE  a pit with a ledge round it and stepping stones out to an island with a chest; falling in sends you
 //              back to the ledge
-//   TREASURE   chests
+//   TREASURE   chests and Arcane Vaults
 //   SANCTUARY  a font that mends whoever stands in the room
-// state: DORMANT (untouched), ACTIVE (its encounter is on), CLEARED (done). centre: the middle of its floor (where the
-// spawner, Herald or chest goes). doors: the openings in its walls (sealed with Labyrinth Seals: sealed). runes: its
-// puzzle's runes. ledge: where a fall in the challenge pit puts you back.
+// state: DORMANT (untouched), ACTIVE (its encounter is on), CLEARED (done). centre: the middle of its floor (its
+// template's "centre" marker: where a Herald wakes or a solved puzzle's chest appears). doors: the openings in its walls
+// (sealed with Labyrinth Seals: sealed). spawners: its Arcane Spawners. runes: its puzzle's runes. ledge: where a fall
+// in the challenge pit puts you back.
 public final class LabyrinthRoom
 {
     public enum Type implements StringRepresentable
@@ -62,7 +63,8 @@ public final class LabyrinthRoom
             UUIDUtil.CODEC.optionalFieldOf("mob").forGetter(room -> Optional.ofNullable(room.mob)),
             BlockPos.CODEC.listOf().optionalFieldOf("runes", List.of()).forGetter(room -> room.runes),
             Codec.BOOL.optionalFieldOf("sealed", false).forGetter(room -> room.sealed),
-            BlockPos.CODEC.optionalFieldOf("ledge").forGetter(room -> Optional.ofNullable(room.ledge))
+            BlockPos.CODEC.optionalFieldOf("ledge").forGetter(room -> Optional.ofNullable(room.ledge)),
+            BlockPos.CODEC.listOf().optionalFieldOf("spawners", List.of()).forGetter(room -> room.spawners)
     ).apply(instance, LabyrinthRoom::new));
 
     public final Type type;
@@ -72,6 +74,7 @@ public final class LabyrinthRoom
     public final BlockPos centre;
     UUID mob;
     final List<BlockPos> runes = new ArrayList<>();
+    final List<BlockPos> spawners = new ArrayList<>();
     boolean sealed;
     BlockPos ledge;
 
@@ -83,7 +86,7 @@ public final class LabyrinthRoom
     }
 
     private LabyrinthRoom(Type type, BoundingBox interior, List<BoundingBox> doors, State state, BlockPos centre, Optional<UUID> mob,
-                          List<BlockPos> runes, boolean sealed, Optional<BlockPos> ledge)
+                          List<BlockPos> runes, boolean sealed, Optional<BlockPos> ledge, List<BlockPos> spawners)
     {
         this(type, interior, centre);
         this.doors.addAll(doors);
@@ -92,6 +95,7 @@ public final class LabyrinthRoom
         this.runes.addAll(runes);
         this.sealed = sealed;
         this.ledge = ledge.orElse(null);
+        this.spawners.addAll(spawners);
     }
 
     public State state()

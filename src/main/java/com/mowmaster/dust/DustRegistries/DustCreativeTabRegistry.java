@@ -105,8 +105,11 @@ public class DustCreativeTabRegistry {
                         com.mowmaster.dust.Features.Bosses.Archons.SIGILS.values().forEach(sigil -> output.accept(sigil.get()));
                         com.mowmaster.dust.Features.Bosses.Archons.BAGS.values().forEach(bag -> output.accept(bag.get()));
                         com.mowmaster.dust.Features.Bosses.Archons.EGGS.values().forEach(egg -> output.accept(egg.get()));
-                        // The sanctums' Arcane Spawner and Sanctum Keystone (Features/Sanctums: for building your own)
+                        // The sanctums (Features/Sanctums): the Vault Keys, and the Arcane Spawner, Arcane Vault and
+                        // Sanctum Keystone for building your own
+                        com.mowmaster.dust.Features.Sanctums.Sanctums.KEYS.values().forEach(key -> output.accept(key.get()));
                         output.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_SPAWNER_ITEM.get());
+                        output.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_VAULT_ITEM.get());
                         output.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.SANCTUM_KEYSTONE_ITEM.get());
                     }).build());
 

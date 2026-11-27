@@ -221,8 +221,11 @@ public class DustProviderModel extends ModelProvider {
 
     // The sanctums' blocks (Features/Sanctums), their models written by hand in models/block/sanctum:
     //   the Arcane Spawner   a cage with runes (tint index 0: its element's colour); its item tinted arcane violet
+    //   the Arcane Vault     a cage with a keyhole in front (north in the model, turned by FACING) and runes (tint index
+    //                        0: its element's colour, dim while nobody near can open it); its item tinted arcane violet
     //   the Arcane Portal    a sheet along x or z, by its axis (tint index 0)
     //   the Sanctum Keystone (its item: the block)
+    // and the Vault Keys: the gold key (item/vault_key, as it is) with its gem (item/vault_key_gem) in its element's colour
     private void createSanctumBlocks(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
     {
         java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
@@ -230,6 +233,16 @@ public class DustProviderModel extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_SPAWNER.get(),
                 BlockModelGenerators.plainVariant(spawner)));
         itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_SPAWNER_ITEM.get(), ItemModelUtils.tintedModel(spawner, new Constant(0xFFB070FF)));
+        Identifier vault = id.apply("block/sanctum/arcane_vault");
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_VAULT.get(),
+                BlockModelGenerators.plainVariant(vault)).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
+        itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_VAULT_ITEM.get(), ItemModelUtils.tintedModel(vault, new Constant(0xFFB070FF)));
+        Identifier key = ModelTemplates.TWO_LAYERED_ITEM.create(id.apply("item/vault_key"), TextureMapping.layered(
+                new Material(id.apply("item/vault_key")), new Material(id.apply("item/vault_key_gem"))), itemModels.modelOutput);
+        for (com.mowmaster.dust.Features.Armor.ElementalArmorSet set : com.mowmaster.dust.Features.Armor.ElementalArmorSet.values()) {
+            itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.KEYS.get(set).get(), ItemModelUtils.tintedModel(key,
+                    new Constant(-1), new Constant(0xFF000000 | gemColor(set.element().color()))));
+        }
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.ARCANE_PORTAL.get()).with(
                 PropertyDispatch.initial(com.mowmaster.dust.Features.Sanctums.ArcanePortalBlock.AXIS).generate(axis -> BlockModelGenerators.plainVariant(
                         id.apply(axis == Direction.Axis.Z ? "block/sanctum/arcane_portal_ew" : "block/sanctum/arcane_portal_ns")))));

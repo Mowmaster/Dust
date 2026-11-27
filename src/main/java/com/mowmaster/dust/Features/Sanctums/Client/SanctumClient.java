@@ -10,8 +10,9 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
 import java.util.List;
 
-// The sanctums' client parts: the Arcane Spawner's crystal (MowLib's SpinningItemRenderer: ArcaneSpawnerBlockEntity is an
-// ISpinningItemHolder) and the element tints (SanctumTint), the labyrinth's seals and runes too
+// The sanctums' client parts: the Arcane Spawner's crystal and what turns inside an Arcane Vault (MowLib's
+// SpinningItemRenderer: both block entities are ISpinningItemHolders), and the element tints (SanctumTint), the
+// labyrinth's seals and runes too
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
 public final class SanctumClient
 {
@@ -21,12 +22,13 @@ public final class SanctumClient
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
         event.registerBlockEntityRenderer(Sanctums.ARCANE_SPAWNER_ENTITY.get(), com.mowmaster.mowlib.client.SpinningItemRenderer::new);
+        event.registerBlockEntityRenderer(Sanctums.ARCANE_VAULT_ENTITY.get(), com.mowmaster.mowlib.client.SpinningItemRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerBlockTints(RegisterColorHandlersEvent.BlockTintSources event)
     {
-        event.register(List.of(new SanctumTint()), Sanctums.ARCANE_SPAWNER.get(), Sanctums.ARCANE_PORTAL.get(),
+        event.register(List.of(new SanctumTint()), Sanctums.ARCANE_SPAWNER.get(), Sanctums.ARCANE_VAULT.get(), Sanctums.ARCANE_PORTAL.get(),
                 com.mowmaster.dust.Features.Labyrinth.LabyrinthBlocks.SEAL.get(), com.mowmaster.dust.Features.Labyrinth.LabyrinthBlocks.RUNE.get());
     }
 }

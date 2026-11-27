@@ -1,11 +1,16 @@
-# Sanctum templates
+# Sanctum and labyrinth templates
 
 Every sanctum is built from one structure template (an `.nbt` file) that you make in-game with a structure block. When
 a sanctum generates, Dust picks a template, turns it a random way, swaps its stand-in blocks for the element's own
 blocks, fills its empty chests and sets up its portal.
 
-The code is in `com.mowmaster.dust.Features.Sanctums` (`SanctumTemplates` reads a template, `SanctumProcessor` swaps the
-blocks, `SanctumPiece` places it, `SanctumStructure` picks where).
+The labyrinths behind the sanctums' portals are built from templates too: an entrance hall, one room template per
+cell of the maze, corridors and an arena (see [Labyrinth templates](#labyrinth-templates) at the end). They use the
+same stand-in blocks, data markers and structure void as sanctums.
+
+The code is in `com.mowmaster.dust.Features.Sanctums` (`TemplateScan` reads a template, `SanctumTemplates` finds a
+sanctum's parts, `SanctumProcessor` swaps the blocks, `SanctumPiece` places it, `SanctumStructure` picks where) and
+`com.mowmaster.dust.Features.Labyrinth` (`LabyrinthBuilder`).
 
 ## Where templates go, and their names
 
@@ -27,7 +32,8 @@ Numbers start at 2 and can't skip: the first missing number ends the list. Each 
 The sets are `pyreborn`, `tidewoven`, `rootbound`, `lumen`, `riftborn`, `sparkwright`, `blastward`, `rimefrost`,
 `deepwatch`, `bastion`, `mirewalker`, `zephyr`, `verdant` and `gilded`.
 
-The mod ships `sanctum.nbt`: the layout the code used to build (27 × 21 × 39).
+The mod ships `sanctum.nbt`: the layout the code used to build (27 × 21 × 39), with two Arcane Vaults in the portal
+chamber.
 
 ## Stand-in blocks
 
@@ -49,7 +55,12 @@ template (armor stands, paintings, item frames) are placed too, so don't save an
 ## Special blocks
 
 **Arcane Spawner** (Dust's creative tab): place them where you like. Each takes the sanctum's element and starts
-waiting. The portal opens once every one of them has been beaten.
+waiting. The portal opens once every one of them has been beaten. Each player who helps beat one has a 1 in 5 chance
+of a Vault Key of its element (`spawner_key_chance` in Dust's config).
+
+**Arcane Vault** (creative tab): place it with its keyhole facing where the loot should come out. It takes the
+sanctum's element. A Vault Key of that element opens it once for each player, and it gives out loot as good as that
+player's Magic Level. When the sanctum resets (after a labyrinth run from it is won), everyone can open its vaults again.
 
 **Sanctum Keystone** (creative tab): use exactly one. It goes in the bottom row of the portal frame, **directly under
 one of the two bottom blocks of the opening**. The opening must be air, 2 blocks wide and 3 tall, with solid frame
@@ -122,3 +133,53 @@ build must be structure void, or the sanctum carves a big empty box out of the g
 26.3 saves templates in a newer format that 26.1.2 can't read directly. The 26.1.2 build converts any 26.3-saved
 sanctum template from the mod or a datapack as it loads (one line in the log). Templates saved in 26.1.2 work in both
 versions. Blocks that only exist in 26.3 become air in 26.1.2.
+
+## Labyrinth templates
+
+A labyrinth run is built when a party first steps through a sanctum's portal. Its plan (which cells of the maze have
+rooms, how they join, and each room's type) is still worked out by the code. Each piece is a template, in
+`data/dust/structure/labyrinth/`:
+
+| Name        | What it is |
+|-------------|------------|
+| `hall`      | Where players arrive. The maze starts through its **south** wall (+Z). |
+| `combat`    | Arcane Spawners. Its doors seal while a wave is on. |
+| `miniboss`  | A Herald wakes at its centre when a player comes in. |
+| `puzzle`    | Labyrinth Runes in its walls; each is given an element as it's built. Lighting them all puts a chest at its centre. |
+| `challenge` | A pit to cross. A fall below its centre's level puts you back at its `ledge` marker. |
+| `treasure`  | Chests and Arcane Vaults. |
+| `sanctuary` | Mends whoever stands in it. |
+| `corridor`  | One length of corridor, running north to south (+Z). It's laid end to end between rooms, the last one cut short. |
+| `arena`     | Where the Archon fights. Its way in is the middle of its **north** wall (-Z). |
+
+As with sanctums, numbered variants (`combat_2`, `combat_3`…) are picked at random, and templates in a folder named after
+an element's set (`labyrinth/pyreborn/combat`, …) are used for that element instead of the shared ones. The mod ships
+defaults for all of them: today's rooms, three combat rooms, two puzzles, and a treasure room with two chests and two
+vaults.
+
+How the pieces fit:
+
+- **Rooms are boxes.** A template's outer layer is its walls, floor and ceiling. Players can't break those, and the
+  next run clears the whole box. Keep rooms within **23 × 23** (cells are 26 apart, leaving room for corridors) and
+  odd-sized, so they have a middle.
+- **The centre.** Each room is turned a random way and placed with its centre on its cell. The centre is the
+  `centre` marker if it has one, otherwise the middle of the template standing on its bottom layer. That's the floor
+  height corridors meet it at. A room whose floor isn't its bottom layer (the challenge's pit) needs a `centre` marker.
+- **Doorways** are cut through the walls wherever a corridor meets a room, in line with its centre, as wide and high as
+  the corridor's inside (3 × 4 by default). Keep the middle of each wall clear: a doorway is cut from the outside in
+  until it reaches the room's inside, at most 4 blocks deep.
+- **The corridor** template's outer layer is walls, floor and ceiling around its inside, and its length is how often
+  it repeats (the default is 5 long with a light in the middle of its ceiling).
+- **Markers:**
+  - `spawn` (hall): where players arrive.
+  - `exit` (hall): stand it in one of the bottom blocks of a 2 × 3 opening in a frame. The opening becomes the way out.
+  - `boss` (arena): where the Archon wakes, and where the way out opens when it falls. It must line up with the middle
+    of the arena's north wall, which is where the way in is cut.
+  - `ledge` (challenge).
+- **In rooms:** Arcane Spawners and Arcane Vaults take the run's element. Empty chests and barrels get the labyrinth's
+  loot (richer in a challenge). Labyrinth Runes are each given an element.
+
+Labyrinth Runes have no item: place one with `/setblock ~ ~ ~ dust:labyrinth_rune`. Edit a labyrinth template the same
+way as a sanctum (load it with a structure block as `dust:labyrinth/combat` and so on, save it again). A change shows
+up in the next run that's built, not in one already going.
+

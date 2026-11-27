@@ -23,18 +23,20 @@ import java.util.List;
 // sanctum template) does nothing until a sanctum sets it up (ready).
 //   set         its element
 //   spawners    where its Arcane Spawners are
+//   vaults      where its Arcane Vaults are
 //   portal      the bottom corner of the portal's opening (PORTAL_WIDTH across along axis, PORTAL_HEIGHT up)
 //   returnPos   where a player comes back to from the labyrinth (in front of the portal, facing away: returnYaw)
 //   slot, run   the labyrinth run its portal leads into now (a party going in together shares one: Labyrinth.enter)
 // Every second it opens the portal when every spawner has been beaten (resting), and closes it when one wakes again.
-// When a run from this sanctum ends with its Archon beaten, the spawners are set waiting again (LabyrinthData's pending
-// resets), so the next run means fighting through the sanctum again.
+// When a run from this sanctum ends with its Archon beaten, the spawners are set waiting again and the vaults may be
+// opened again by everyone (LabyrinthData's pending resets), so the next run means fighting through the sanctum again.
 public class SanctumKeystoneBlockEntity extends BlockEntity
 {
     public static final int PORTAL_WIDTH = 2, PORTAL_HEIGHT = 3;
 
     private ElementalArmorSet set = ElementalArmorSet.PYREBORN;
     private final List<BlockPos> spawners = new ArrayList<>();
+    private final List<BlockPos> vaults = new ArrayList<>();
     private BlockPos portal = BlockPos.ZERO;
     private Direction.Axis axis = Direction.Axis.X;
     private Vec3 returnPos = Vec3.ZERO;
@@ -49,11 +51,13 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
     }
 
     // Set by the sanctum as it's built
-    public void setup(ElementalArmorSet set, List<BlockPos> spawners, BlockPos portal, Direction.Axis axis, Vec3 returnPos, float returnYaw)
+    public void setup(ElementalArmorSet set, List<BlockPos> spawners, List<BlockPos> vaults, BlockPos portal, Direction.Axis axis, Vec3 returnPos, float returnYaw)
     {
         this.set = set;
         this.spawners.clear();
         this.spawners.addAll(spawners);
+        this.vaults.clear();
+        this.vaults.addAll(vaults);
         this.portal = portal;
         this.axis = axis;
         this.returnPos = returnPos;
@@ -83,6 +87,9 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
         if (data.takeReset(GlobalPos.of(level.dimension(), worldPosition))) {
             for (BlockPos pos : spawners) {
                 if (level.getBlockEntity(pos) instanceof ArcaneSpawnerBlockEntity spawner) spawner.reset(level);
+            }
+            for (BlockPos pos : vaults) {
+                if (level.getBlockEntity(pos) instanceof ArcaneVaultBlockEntity vault) vault.reset();
             }
             setRun(-1, -1);
         }
@@ -121,6 +128,7 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
         super.saveAdditional(output);
         output.store("set", ElementalArmorSet.CODEC, set);
         output.store("spawners", BlockPos.CODEC.listOf(), List.copyOf(spawners));
+        output.store("vaults", BlockPos.CODEC.listOf(), List.copyOf(vaults));
         output.store("portal", BlockPos.CODEC, portal);
         output.putString("axis", axis.getSerializedName());
         output.store("return_pos", Vec3.CODEC, returnPos);
@@ -137,6 +145,8 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
         set = input.read("set", ElementalArmorSet.CODEC).orElse(ElementalArmorSet.PYREBORN);
         spawners.clear();
         input.read("spawners", BlockPos.CODEC.listOf()).ifPresent(spawners::addAll);
+        vaults.clear();
+        input.read("vaults", BlockPos.CODEC.listOf()).ifPresent(vaults::addAll);
         portal = input.read("portal", BlockPos.CODEC).orElse(worldPosition.above());
         axis = "z".equals(input.getStringOr("axis", "x")) ? Direction.Axis.Z : Direction.Axis.X;
         returnPos = input.read("return_pos", Vec3.CODEC).orElse(Vec3.atBottomCenterOf(worldPosition.above()));

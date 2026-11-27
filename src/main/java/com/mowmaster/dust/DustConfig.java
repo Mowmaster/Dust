@@ -30,6 +30,7 @@ public final class DustConfig
     public static final ModConfigSpec.IntValue RUIN_RARITY;
     public static final ModConfigSpec.IntValue SPAWNER_COOLDOWN;
     public static final ModConfigSpec.BooleanValue LABYRINTH_KEEP_INVENTORY;
+    public static final ModConfigSpec.DoubleValue SPAWNER_KEY_CHANCE;
 
     static {
         BUILDER.push("spells").comment("Metal on a block that isn't an ore: the nugget it drops when broken, by weight").push("metal");
@@ -67,6 +68,8 @@ public final class DustConfig
         BUILDER.comment("Sanctums and their labyrinths (Features/Sanctums, Features/Labyrinth)").push("sanctums");
         SPAWNER_COOLDOWN = BUILDER.comment("Ticks an Arcane Spawner rests once its wave is beaten (36000: half an hour, as a trial spawner)")
                 .defineInRange("spawner_cooldown", 36000, 20, 10000000);
+        SPAWNER_KEY_CHANCE = BUILDER.comment("The chance that each player who helped beat an Arcane Spawner's wave also gets a Vault Key of its element (0.2: one in five)")
+                .defineInRange("spawner_key_chance", 0.2, 0.0, 1.0);
         LABYRINTH_KEEP_INVENTORY = BUILDER.comment("Whether players who die in a labyrinth keep everything they had (they wake in front of the portal they came through either way)")
                 .define("labyrinth_keep_inventory", true);
         BUILDER.pop();
