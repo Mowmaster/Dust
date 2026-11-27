@@ -6,8 +6,8 @@
 		"2": "dust:block/station/slab_grid_1",
 		"3": "dust:block/station/crystal_stone",
 		"4": "dust:block/station/crystalglass",
-		"base": "dust:block/station/slab_base_tint",
-		"particle": "dust:block/station/crystal_stone"
+		"particle": "dust:block/station/crystal_stone",
+		"base": "dust:block/station/slab_base_tint"
 	},
 	"elements": [
 		{
@@ -694,6 +694,12 @@
 			}
 		}
 	],
+	"display": {
+		"gui": {
+			"rotation": [30, -135, 0],
+			"scale": [0.625, 0.625, 0.625]
+		}
+	},
 	"groups": [
 		{
 			"name": "top",
