@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dust:block/sanctum/arcane_vault",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dust:block/sanctum/arcane_vault"
+    },
+    "facing=south": {
+      "model": "dust:block/sanctum/arcane_vault",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dust:block/sanctum/arcane_vault",
+      "y": 270
+    }
+  }
+}

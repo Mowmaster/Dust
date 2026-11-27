@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "dust:block/sanctum/arcane_vault",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -5213953
+      }
+    ]
+  }
+}
