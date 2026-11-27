@@ -43,20 +43,21 @@ import java.util.List;
 //   stage 1  Crystal          STAGE_TICKS[0] = 100 ticks, costs 1 dust   the element's crystal item, drawn on top
 //   stage 2  Small Crystal    100 more ticks, no dust                    the small crystal block, placed on top of it
 //   stage 3  Medium Crystal   300 more ticks, costs 3 more dust          the block on top grows to the medium one
-//   stage 4  Large Crystal    1200 more ticks, no dust                   then the large one
+//   stage 4  Large Crystal    1200 more ticks, costs 12 more dust        then the large one
 // A stage's dust is used when the stage starts; it waits (keeping its progress) for the dust, and for the space on top to
 // be clear before the small crystal can form. It stops at the Large Crystal until the crystal is taken. The crystal can be
 // taken at any stage (the item of that stage, and the block on top goes): by hand (an empty hand, or left-clicking the
 // top), or by automation from any side (a hopper below, pipes). Breaking the crystal on top also takes it (dropping as
-// that crystal does), and the crystalizer starts again. The element is set by the first dust in, and kept until the
-// crystalizer is empty with nothing grown; it holds at most the dust still to be used (4 at the start).
+// that crystal does), and the crystalizer starts again. In all a small crystal takes 1 dust, a medium 4 and a large 16
+// (each worth what it gives back when broken: CrystalSize.value). The element is set by the first dust in, and kept
+// until the crystalizer is empty with nothing grown; it holds at most the dust still to be used (16 at the start).
 // Comparators read the stage (0-4). It never gives out redstone itself, so a hopper below can be locked by its own
 // redstone without the crystalizer turning it off.
 @EventBusSubscriber(modid = DustReferences.MODID)
 public class DustCrystalizerBlockEntity extends CBSyncedBlockEntity implements IDustHolder, IStationSlots
 {
     public static final int[] STAGE_TICKS = {100, 100, 300, 1200};
-    public static final int[] STAGE_COST = {1, 0, 3, 0};
+    public static final int[] STAGE_COST = {1, 0, 3, 12};
     public static final int LAST_STAGE = 4;
     private static final int DRAW_TICKS = 20;
     // The top, where the crystal sits (left-clicking it takes the crystal)
