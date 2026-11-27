@@ -486,8 +486,8 @@
 			"translation": [0, 4.25, 0]
 		},
 		"gui": {
-			"rotation": [22, 45, 0],
-			"scale": [0.75, 0.75, 0.75]
+			"rotation": [30, -135, 0],
+			"scale": [0.625, 0.625, 0.625]
 		},
 		"head": {
 			"translation": [0, 14, 0]
