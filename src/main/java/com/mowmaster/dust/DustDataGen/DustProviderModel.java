@@ -121,17 +121,7 @@ public class DustProviderModel extends ModelProvider {
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_WHITE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(DustItemRegistry.CRYSTAL_BLACK.get(), ModelTemplates.FLAT_ITEM);
 
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_DUST_RED.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_DUST_GREEN.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_DUST_BLUE.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_DUST_WHITE.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_DUST_BLACK.get());
 
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.get());
-        blockModels.createTrivialCube(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.get());
 
         blockModels.createTrivialCube(DustBlockRegistry.INERT_CRYSTAL_ORE.get());
         blockModels.createTrivialCube(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get());
@@ -453,6 +443,12 @@ public class DustProviderModel extends ModelProvider {
                 BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_grinder_base"))));
         blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_GRINDER.asItem(),
                 ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_grinder")));
+        // The Dust Crystalizer: one model (dust_crystalizer.json) for the block and its item; its first-stage crystal is
+        // drawn by Client/DustCrystalizerRenderer, the bigger ones are crystal blocks on top
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(DustBlockRegistry.DUST_CRYSTALIZER.get(),
+                BlockModelGenerators.plainVariant(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_crystalizer"))));
+        blockModels.itemModelOutput.accept(DustBlockRegistry.DUST_CRYSTALIZER.asItem(),
+                ItemModelUtils.plainModel(Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/station/dust_crystalizer")));
     }
 
     // The Dust Pile: one hand-written model per height, like snow layers (models/block/dust_pile/dust_pile_height2 ...
@@ -677,9 +673,7 @@ public class DustProviderModel extends ModelProvider {
     // a straight run (dust_tube_item.json).
     private void createApparatus(BlockModelGenerators blockModels)
     {
-        for (Block block : List.of(DustBlockRegistry.CRUSHING_MILL.get(), DustBlockRegistry.ALCHEMICAL_SEPARATOR.get(), DustBlockRegistry.EVAPORATING_KETTLE.get(),
-                DustBlockRegistry.STILL_TOWER.get(), DustBlockRegistry.STILL_TOP.get(), DustBlockRegistry.TRANSMUTER.get(), DustBlockRegistry.CONJOINING_CRUCIBLE.get(), DustBlockRegistry.MIXING_VAT.get(),
-                DustBlockRegistry.DISSOLVING_RETORT.get())) {
+        for (Block block : List.of(DustBlockRegistry.STILL_TOWER.get(), DustBlockRegistry.STILL_TOP.get())) {
             Identifier model = Identifier.fromNamespaceAndPath(DustReferences.MODID, "block/apparatus/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
             blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, BlockModelGenerators.plainVariant(model))
                     .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));

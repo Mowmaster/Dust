@@ -36,19 +36,26 @@ public class DustItemRegistry
 {
     public static final DeferredRegister.Items DUSTITEMS = DeferredRegister.createItems(DustReferences.MODID);
 
-    public static final DeferredItem<Item> DUST_RED = DUSTITEMS.registerSimpleItem("dust_red", properties -> properties);
-    public static final DeferredItem<Item> DUST_GREEN = DUSTITEMS.registerSimpleItem("dust_green", properties -> properties);
-    public static final DeferredItem<Item> DUST_BLUE = DUSTITEMS.registerSimpleItem("dust_blue", properties -> properties);
-    public static final DeferredItem<Item> DUST_WHITE = DUSTITEMS.registerSimpleItem("dust_white", properties -> properties);
-    public static final DeferredItem<Item> DUST_BLACK = DUSTITEMS.registerSimpleItem("dust_black", properties -> properties);
+    // The five primals' dust and crystals keep their older ids (dust_red...), but are named and work like every other
+    // element's (ElementItem: "Fire Dust", in the ancient script until the element is discovered)
+    public static final DeferredItem<ElementItem> DUST_RED = primal("dust_red", DustElements.FIRE, ElementItem.Kind.DUST);
+    public static final DeferredItem<ElementItem> DUST_GREEN = primal("dust_green", DustElements.EARTH, ElementItem.Kind.DUST);
+    public static final DeferredItem<ElementItem> DUST_BLUE = primal("dust_blue", DustElements.WATER, ElementItem.Kind.DUST);
+    public static final DeferredItem<ElementItem> DUST_WHITE = primal("dust_white", DustElements.ORDER, ElementItem.Kind.DUST);
+    public static final DeferredItem<ElementItem> DUST_BLACK = primal("dust_black", DustElements.CHAOS, ElementItem.Kind.DUST);
 
 
     public static final DeferredItem<Item> CRYSTAL_INERT = DUSTITEMS.registerSimpleItem("crystal_inert", properties -> properties);
-    public static final DeferredItem<Item> CRYSTAL_RED = DUSTITEMS.registerSimpleItem("crystal_red", properties -> properties);
-    public static final DeferredItem<Item> CRYSTAL_GREEN = DUSTITEMS.registerSimpleItem("crystal_green", properties -> properties);
-    public static final DeferredItem<Item> CRYSTAL_BLUE = DUSTITEMS.registerSimpleItem("crystal_blue", properties -> properties);
-    public static final DeferredItem<Item> CRYSTAL_WHITE = DUSTITEMS.registerSimpleItem("crystal_white", properties -> properties);
-    public static final DeferredItem<Item> CRYSTAL_BLACK = DUSTITEMS.registerSimpleItem("crystal_black", properties -> properties);
+    public static final DeferredItem<ElementItem> CRYSTAL_RED = primal("crystal_red", DustElements.FIRE, ElementItem.Kind.CRYSTAL);
+    public static final DeferredItem<ElementItem> CRYSTAL_GREEN = primal("crystal_green", DustElements.EARTH, ElementItem.Kind.CRYSTAL);
+    public static final DeferredItem<ElementItem> CRYSTAL_BLUE = primal("crystal_blue", DustElements.WATER, ElementItem.Kind.CRYSTAL);
+    public static final DeferredItem<ElementItem> CRYSTAL_WHITE = primal("crystal_white", DustElements.ORDER, ElementItem.Kind.CRYSTAL);
+    public static final DeferredItem<ElementItem> CRYSTAL_BLACK = primal("crystal_black", DustElements.CHAOS, ElementItem.Kind.CRYSTAL);
+
+    private static DeferredItem<ElementItem> primal(String name, DustElement element, ElementItem.Kind kind)
+    {
+        return DUSTITEMS.registerItem(name, properties -> new ElementItem(properties, element, kind));
+    }
 
     // A crystal and a dust for every element (Features/DustComposition/ElementItem): <element>_crystal and
     // <element>_dust, e.g. dust:knowledge_crystal. The five primals use the items above. In element order.
@@ -61,7 +68,7 @@ public class DustItemRegistry
 
     // One item per element, except those already given. (DeferredItem<? extends Item>: a DeferredItem of Item or of
     // any subclass of it, here ElementItem, since the map holds both kinds.)
-    private static Map<DustElement, DeferredItem<? extends Item>> elementItems(ElementItem.Kind kind, Map<DustElement, DeferredItem<Item>> existing)
+    private static Map<DustElement, DeferredItem<? extends Item>> elementItems(ElementItem.Kind kind, Map<DustElement, DeferredItem<ElementItem>> existing)
     {
         Map<DustElement, DeferredItem<? extends Item>> items = new LinkedHashMap<>();
         String suffix = kind == ElementItem.Kind.CRYSTAL ? "_crystal" : "_dust";

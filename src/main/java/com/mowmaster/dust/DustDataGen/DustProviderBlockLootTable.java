@@ -33,17 +33,7 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(DustBlockRegistry.SPELL_CASTER.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_DUST_RED.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_DUST_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_DUST_BLUE.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_DUST_WHITE.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_DUST_BLACK.get());
 
-        dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.get());
-        dropSelf(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.get());
 
         add(DustBlockRegistry.INERT_CRYSTAL_ORE.get(), block -> createOreDrop(block, DustItemRegistry.CRYSTAL_INERT.get()));
         add(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.get(), block -> createMultipleOreDrops(block, DustItemRegistry.CRYSTAL_INERT.get(), 2, 5));
@@ -85,11 +75,11 @@ public class DustProviderBlockLootTable extends BlockLootSubProvider {
                         .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
                                 .include(com.mowmaster.dust.DustRegistries.DustComponentDataRegistry.DUST_JAR.get()))))));
         dropSelf(DustBlockRegistry.DUST_GRINDER.get());
+        dropSelf(DustBlockRegistry.DUST_CRYSTALIZER.get());
         dropSelf(DustBlockRegistry.GROWTH_LAMP.get());
         // The alchemical apparatus and the Glass Dust Tube (what's inside an apparatus drops when it's broken: its block entity)
-        for (var block : List.of(DustBlockRegistry.CRUSHING_MILL, DustBlockRegistry.ALCHEMICAL_SEPARATOR, DustBlockRegistry.EVAPORATING_KETTLE,
-                DustBlockRegistry.STILL_FIREBOX, DustBlockRegistry.STILL_POT, DustBlockRegistry.STILL_TOWER, DustBlockRegistry.STILL_TOP, DustBlockRegistry.TRANSMUTER, DustBlockRegistry.CONJOINING_CRUCIBLE, DustBlockRegistry.MIXING_VAT,
-                DustBlockRegistry.DISSOLVING_RETORT, DustBlockRegistry.DUST_TUBE, DustBlockRegistry.DUST_CHUTE, DustBlockRegistry.DUST_COLLECTOR,
+        for (var block : List.of(DustBlockRegistry.STILL_FIREBOX, DustBlockRegistry.STILL_POT, DustBlockRegistry.STILL_TOWER, DustBlockRegistry.STILL_TOP,
+                DustBlockRegistry.DUST_TUBE, DustBlockRegistry.DUST_CHUTE, DustBlockRegistry.DUST_COLLECTOR,
                 DustBlockRegistry.DUST_SEPARATOR, DustBlockRegistry.DUST_SEPARATOR_EXTENSION, DustBlockRegistry.DUST_MIXER,
                 DustBlockRegistry.DUST_MIXER_WET, DustBlockRegistry.DUST_CYCLONE, DustBlockRegistry.DUST_CYCLONE_HOPPER, DustBlockRegistry.DUST_CENTRIFUGE)) dropSelf(block.get());
         dropSelf(DustBlockRegistry.LOVELY_LAMP.get());

@@ -13,8 +13,7 @@ public final class ApparatusLayout
 {
     public static final CBPixelBox INTAKE = new CBPixelBox(4, 12, 4, 12, 16.5, 12);
     public static final CBPixelBox SPOUT = new CBPixelBox(3, 0, -0.5, 13, 8, 4);
-    // Where a pattern sits on the apparatus that take one (the Transmuter, the Conjoining Crucible, the Mixing Vat): on
-    // the front, above the spout
+    // Where a pattern sits on an apparatus that takes one: on the front, above the spout
     public static final CBPixelBox PATTERN = new CBPixelBox(4, 8, -0.5, 12, 12, 4.5);
     // A slot that's never clicked (automation reaches it; players use another slot standing for it)
     public static final CBPixelBox NOWHERE = new CBPixelBox(-20, -20, -20, -19, -19, -19);

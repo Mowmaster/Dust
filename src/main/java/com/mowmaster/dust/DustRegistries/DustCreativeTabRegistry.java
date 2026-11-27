@@ -14,7 +14,7 @@ public class DustCreativeTabRegistry {
 
     public static final Supplier<CreativeModeTab> DUSTTAB_ITEMS = CREATIVE_MODE_TABS.register("dusttab_items",
             () -> CreativeModeTab.builder()
-                    .icon(()-> new ItemStack(DustItemRegistry.DUST_RED.get()))
+                    .icon(()-> new ItemStack(DustItemRegistry.RESEARCH_NOTES.get()))
                     .title(Component.translatable("creativetab.dust.dusttab_items"))
                     .displayItems((itemDisplayParameters, output) -> {
 
@@ -29,10 +29,8 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.DUST_JAR.asItem());
                         output.accept(DustItemRegistry.JAR_LABEL.asItem());
                         output.accept(DustBlockRegistry.DUST_GRINDER.asItem());
+                        output.accept(DustBlockRegistry.DUST_CRYSTALIZER.asItem());
                         output.accept(DustBlockRegistry.DUST_TUBE.asItem());
-                        output.accept(DustBlockRegistry.CRUSHING_MILL.asItem());
-                        output.accept(DustBlockRegistry.ALCHEMICAL_SEPARATOR.asItem());
-                        output.accept(DustBlockRegistry.EVAPORATING_KETTLE.asItem());
                         output.accept(DustBlockRegistry.STILL_FIREBOX.asItem());
                         output.accept(DustBlockRegistry.STILL_POT.asItem());
                         output.accept(DustBlockRegistry.STILL_TOWER.asItem());
@@ -46,10 +44,6 @@ public class DustCreativeTabRegistry {
                         output.accept(DustBlockRegistry.DUST_CYCLONE.asItem());
                         output.accept(DustBlockRegistry.DUST_CYCLONE_HOPPER.asItem());
                         output.accept(DustBlockRegistry.DUST_CENTRIFUGE.asItem());
-                        output.accept(DustBlockRegistry.TRANSMUTER.asItem());
-                        output.accept(DustBlockRegistry.CONJOINING_CRUCIBLE.asItem());
-                        output.accept(DustBlockRegistry.MIXING_VAT.asItem());
-                        output.accept(DustBlockRegistry.DISSOLVING_RETORT.asItem());
                         output.accept(DustBlockRegistry.GROWTH_LAMP.asItem());
                         output.accept(DustBlockRegistry.LOVELY_LAMP.asItem());
                         output.accept(DustBlockRegistry.SPELL_CASTER.asItem());
@@ -190,27 +184,14 @@ public class DustCreativeTabRegistry {
 
     public static final Supplier<CreativeModeTab> DUSTTAB_BLOCKS = CREATIVE_MODE_TABS.register("dusttab_blocks",
             () -> CreativeModeTab.builder()
-                    .icon(()-> new ItemStack(DustBlockRegistry.BLOCK_OF_DUST_RED))
+                    .icon(()-> new ItemStack(DustBlockRegistry.INERT_CRYSTAL_ORE))
                     .title(Component.translatable("creativetab.dust.dusttab_blocks"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        output.accept(DustBlockRegistry.BLOCK_OF_DUST_RED.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_DUST_GREEN.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_DUST_BLUE.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_DUST_WHITE.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_DUST_BLACK.asItem());
-
-                        output.accept(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.asItem());
-                        output.accept(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.asItem());
-
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE.asItem());
                         output.accept(DustBlockRegistry.INERT_CRYSTAL_ORE_DEEPSLATE.asItem());
                         DustBlockRegistry.PRIMAL_ORES.values().forEach(ore -> output.accept(ore.asItem()));
                         DustBlockRegistry.PRIMAL_ORES_DEEPSLATE.values().forEach(ore -> output.accept(ore.asItem()));
 
-                        output.accept(DustBlockRegistry.BLOCK_FLOWER_WHINDWHEEL.asItem());
                         output.accept(DustBlockRegistry.GLYPH_STONE.asItem());
                     }).build());
 }

@@ -1,0 +1,24 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 20,
+      "element": "dust:crystal"
+    }
+  ],
+  "result": {
+    "id": "dust:dust_crystalizer"
+  },
+  "shaped": {
+    "key": {
+      "A": "minecraft:amethyst_shard",
+      "C": "minecraft:copper_ingot",
+      "J": "dust:dust_jar"
+    },
+    "pattern": [
+      " A ",
+      "CJC",
+      "CCC"
+    ]
+  }
+}

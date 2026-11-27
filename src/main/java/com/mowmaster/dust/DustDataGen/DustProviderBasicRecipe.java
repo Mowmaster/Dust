@@ -254,6 +254,11 @@ public class DustProviderBasicRecipe extends RecipeProvider {
         elementShaped(DustBlockRegistry.DUST_GRINDER.asItem(), "dust_grinder", unlock("dust_grinder"),
                 java.util.Map.of('S', stone, 'A', Ingredient.of(DustItemRegistry.ALCHEMICAL_DUST.get())),
                 List.of("SSS", "AAA", "SSS"), cost(DustElements.FRACTURE, 10));
+        // The Dust Crystalizer: copper round a Dust Jar, an amethyst shard on top where the crystal grows
+        elementShaped(DustBlockRegistry.DUST_CRYSTALIZER.asItem(), "dust_crystalizer", Optional.empty(),
+                java.util.Map.of('C', Ingredient.of(Items.COPPER_INGOT), 'A', Ingredient.of(Items.AMETHYST_SHARD),
+                        'J', Ingredient.of(DustBlockRegistry.DUST_JAR.asItem())),
+                List.of(" A ", "CJC", "CCC"), cost(DustElements.CRYSTAL, 20));
         // The lamps: a lantern with a crystal of what they burn on top, and some of that dust from the jars
         elementShaped(DustBlockRegistry.GROWTH_LAMP.asItem(), "growth_lamp", Optional.empty(),
                 java.util.Map.of('C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.GROWTH).get()), 'L', Ingredient.of(Items.LANTERN)),
@@ -267,19 +272,10 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 java.util.Map.of('A', Ingredient.of(soot), 'P', Ingredient.of(Items.PAPER), 'J', Ingredient.of(DustBlockRegistry.DUST_JAR.asItem()),
                         'K', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.KNOWLEDGE).get())),
                 List.of("APA", "JKJ", "APA"), cost(DustElements.KNOWLEDGE, 50), cost(DustElements.CHANGE, 50));
-        // The alchemical apparatus: each is its research station built into copper, iron and a blackstone plinth (so the
-        // station has to be made, and researched, first), with some dust from the jars
+        // The alchemical apparatus: copper, iron, glass and stone round their research station (so the station has to be
+        // made, and researched, first), with some dust from the jars
         Ingredient copperIngot = Ingredient.of(Items.COPPER_INGOT), iron = Ingredient.of(Items.IRON_INGOT), blackstone = Ingredient.of(Items.POLISHED_BLACKSTONE);
         Ingredient glass = Ingredient.of(Items.GLASS), furnace = Ingredient.of(Items.FURNACE), cauldron = Ingredient.of(Items.CAULDRON);
-        elementShaped(DustBlockRegistry.CRUSHING_MILL.asItem(), "crushing_mill", Optional.empty(),
-                java.util.Map.of('C', copperIngot, 'H', Ingredient.of(Items.HOPPER), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_CRUSHER.asItem()), 'B', blackstone),
-                List.of("CHC", "IRI", "BBB"), cost(DustElements.EARTH, 50));
-        elementShaped(DustBlockRegistry.ALCHEMICAL_SEPARATOR.asItem(), "alchemical_separator", Optional.empty(),
-                java.util.Map.of('C', copperIngot, 'G', glass, 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_SEPARATION.asItem()), 'B', blackstone),
-                List.of("CGC", "IRI", "BBB"), cost(DustElements.ORDER, 50));
-        elementShaped(DustBlockRegistry.EVAPORATING_KETTLE.asItem(), "evaporating_kettle", Optional.empty(),
-                java.util.Map.of('C', copperIngot, 'K', cauldron, 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_EVAPORATION.asItem()), 'B', blackstone, 'F', furnace),
-                List.of("CKC", "IRI", "BFB"), cost(DustElements.FIRE, 30), cost(DustElements.WATER, 30));
         // The Still (it replaced the Alembic): the pot is the Distillation Table built into copper; a firebox of bricks
         // round a furnace; towers of copper and glass; a copper cap
         elementShaped(DustBlockRegistry.STILL_FIREBOX.asItem(), "still_firebox", Optional.empty(),
@@ -331,19 +327,6 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 java.util.Map.of('G', Ingredient.of(Items.GOLD_INGOT), 'A', Ingredient.of(Items.AMETHYST_BLOCK), 'S', Ingredient.of(Items.POLISHED_ANDESITE),
                         'B', Ingredient.of(Items.SMOOTH_STONE_SLAB)),
                 List.of("GAG", " S ", "BSB"), cost(DustElements.MAGIC, 20), cost(DustElements.ORDER, 20));
-        elementShaped(DustBlockRegistry.TRANSMUTER.asItem(), "transmuter", Optional.empty(),
-                java.util.Map.of('G', glass, 'A', Ingredient.of(Items.AMETHYST_SHARD), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_TRANSFORMATION.asItem()), 'B', blackstone),
-                List.of("GAG", "IRI", "BBB"), cost(DustElements.ORDER, 30), cost(DustElements.CHAOS, 30));
-        elementShaped(DustBlockRegistry.CONJOINING_CRUCIBLE.asItem(), "conjoining_crucible", Optional.empty(),
-                java.util.Map.of('I', iron, 'K', cauldron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_COMBINATION.asItem()), 'B', blackstone, 'F', furnace),
-                List.of("IKI", "IRI", "BFB"), cost(DustElements.FIRE, 50));
-        elementShaped(DustBlockRegistry.MIXING_VAT.asItem(), "mixing_vat", Optional.empty(),
-                java.util.Map.of('C', copperIngot, 'V', Ingredient.of(Items.BARREL), 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_MIXING.asItem()), 'B', blackstone),
-                List.of("CVC", "IRI", "BBB"), cost(DustElements.WATER, 50));
-        // The Dissolving Retort breaks elements apart, as the Separation Table breaks compounds down
-        elementShaped(DustBlockRegistry.DISSOLVING_RETORT.asItem(), "dissolving_retort", Optional.empty(),
-                java.util.Map.of('C', copperIngot, 'G', glass, 'I', iron, 'R', Ingredient.of(DustBlockRegistry.RESEARCH_SEPARATION.asItem()), 'B', blackstone, 'F', furnace),
-                List.of("CGC", "IRI", "BFB"), cost(DustElements.CHAOS, 50));
         // The pylons: one pattern, a different element for each
         java.util.Map<Character, Ingredient> pylonKey = java.util.Map.of('S', stone, 'A', Ingredient.of(soot));
         List<String> pylon = List.of("SAS", " S ", "SSS");

@@ -29,10 +29,8 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.ELEMENT_CRAFTER.key())
                 .add(DustBlockRegistry.ELEMENT_REPLICATOR.key())
                 .add(DustBlockRegistry.DUST_GRINDER.key())
+                .add(DustBlockRegistry.DUST_CRYSTALIZER.key())
                 .add(DustBlockRegistry.GROWTH_LAMP.key())
-                .add(DustBlockRegistry.CRUSHING_MILL.key())
-                .add(DustBlockRegistry.ALCHEMICAL_SEPARATOR.key())
-                .add(DustBlockRegistry.EVAPORATING_KETTLE.key())
                 .add(DustBlockRegistry.STILL_FIREBOX.key())
                 .add(DustBlockRegistry.STILL_POT.key())
                 .add(DustBlockRegistry.STILL_TOWER.key())
@@ -47,23 +45,9 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                 .add(DustBlockRegistry.DUST_CYCLONE_HOPPER.key())
                 .add(DustBlockRegistry.DUST_CENTRIFUGE.key())
                 .add(DustBlockRegistry.CRYSTAL_DISPLAY.key())
-                .add(DustBlockRegistry.TRANSMUTER.key())
-                .add(DustBlockRegistry.CONJOINING_CRUCIBLE.key())
-                .add(DustBlockRegistry.MIXING_VAT.key())
-                .add(DustBlockRegistry.DISSOLVING_RETORT.key())
                 .add(DustBlockRegistry.DUST_TUBE.key())
                 .add(DustBlockRegistry.LOVELY_LAMP.key())
-                .add(DustBlockRegistry.BLOCK_OF_DUST_RED.key())
-                .add(DustBlockRegistry.BLOCK_OF_DUST_GREEN.key())
-                .add(DustBlockRegistry.BLOCK_OF_DUST_BLUE.key())
-                .add(DustBlockRegistry.BLOCK_OF_DUST_WHITE.key())
-                .add(DustBlockRegistry.BLOCK_OF_DUST_BLACK.key())
 
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.key())
 
                 .add(DustBlockRegistry.GLYPH_STONE.key())
                 .add(DustBlockRegistry.INERT_CRYSTAL_ORE.key())
@@ -91,12 +75,8 @@ public class DustTagProviderBlock extends BlockTagsProvider {
                         key(net.minecraft.world.level.block.Blocks.TALL_GRASS), key(net.minecraft.world.level.block.Blocks.WATER), key(net.minecraft.world.level.block.Blocks.LAVA));
         tag(DustTags.Blocks.BIOME_NOTES)
                 .add(key(net.minecraft.world.level.block.Blocks.SNOW_BLOCK), key(net.minecraft.world.level.block.Blocks.PACKED_ICE), key(net.minecraft.world.level.block.Blocks.BLUE_ICE));
-        tag(DustTags.Blocks.MAGICAL_CRYSTAL_BLOCKS)
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE.key())
-                .add(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK.key());
+        var magicalCrystalBlocks = tag(DustTags.Blocks.MAGICAL_CRYSTAL_BLOCKS);
+        com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCKS.values().forEach(block -> magicalCrystalBlocks.add(block.key()));
 
         tag(DustTags.Blocks.NEEDS_CRYSTAL_TOOL)
                 .addTags(BlockTags.NEEDS_DIAMOND_TOOL);

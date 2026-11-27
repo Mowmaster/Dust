@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-// A crystal or dust of one element (the five primals keep their own older items: crystal_red, dust_blue...).
+// A crystal or dust of one element (the five primals keep their older ids: crystal_red, dust_blue...).
 // Every element gets one of each (DustItemRegistry.CRYSTALS / DUSTS); their textures are one greyscale crystal and one
 // greyscale dust, tinted with the element's colour by the item model.
 public class ElementItem extends Item

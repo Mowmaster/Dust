@@ -121,15 +121,10 @@ public class DustClient {
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.CRYSTAL_DISPLAY.get(), com.mowmaster.dust.Features.Crystals.Client.CrystalDisplayRenderer::new);
         // The elemental woods' chests, each in its wood's texture
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENTAL_CHEST.get(), com.mowmaster.dust.Features.Trees.Client.ElementalChestRenderer::new);
-        // The alchemical apparatus share one renderer (it draws each one's own moving parts)
-        for (var type : List.of(DustBlockEntityRegistry.CRUSHING_MILL.get(), DustBlockEntityRegistry.ALCHEMICAL_SEPARATOR.get(),
-                DustBlockEntityRegistry.EVAPORATING_KETTLE.get(), DustBlockEntityRegistry.TRANSMUTER.get(),
-                DustBlockEntityRegistry.CONJOINING_CRUCIBLE.get(), DustBlockEntityRegistry.MIXING_VAT.get(), DustBlockEntityRegistry.DISSOLVING_RETORT.get())) {
-            registerApparatusRenderer(event, type);
-        }
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.ELEMENT_REPLICATOR.get(), com.mowmaster.dust.Features.Machines.Client.ElementReplicatorRenderer::new);
         // The Dust Grinder's turning top and the item in its hole
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_GRINDER.get(), com.mowmaster.dust.Features.DustStorage.Client.DustGrinderRenderer::new);
+        event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_CRYSTALIZER.get(), com.mowmaster.dust.Features.Crystals.crystalizer.Client.DustCrystalizerRenderer::new);
         // The dust inside a Dust Jar, filling it as it fills
         event.registerBlockEntityRenderer(DustBlockEntityRegistry.DUST_JAR.get(), com.mowmaster.dust.Features.DustStorage.Client.DustJarRenderer::new);
         // Element orbs: one renderer, tinted with each orb's element colour
@@ -147,19 +142,10 @@ public class DustClient {
         event.registerEntityRenderer(DustEntityRegistry.SOUL_WISP.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
-    // <T extends ApparatusBlockEntity>: a generic method, so each apparatus's block entity type can take the one renderer
-    // written for them all
-    private static <T extends com.mowmaster.dust.Features.Apparatus.ApparatusBlockEntity> void registerApparatusRenderer(EntityRenderersEvent.RegisterRenderers event,
-                                                                                                                       net.minecraft.world.level.block.entity.BlockEntityType<T> type)
-    {
-        event.registerBlockEntityRenderer(type, context -> new com.mowmaster.dust.Features.Apparatus.Client.ApparatusRenderer(context));
-    }
-
     // Models drawn by code rather than placed as blocks (the crusher's wheels)
     @SubscribeEvent
     public static void registerStandaloneModels(ModelEvent.RegisterStandalone event)
     {
-        com.mowmaster.dust.Features.Apparatus.Client.ApparatusRenderer.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.still.StillFireboxRenderer.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.separator.Client.DrumRendering.registerModels(event);
         com.mowmaster.dust.Features.Apparatus.mixer.Client.DustMixerRenderer.registerModels(event);

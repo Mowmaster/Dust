@@ -289,7 +289,7 @@ public abstract class ApparatusBlockEntity extends StationBlockEntity
 
     // ---- the player's view ----
 
-    // "Crushing Mill: crushing Stone (45%) | dust waiting: 6"
+    // "Still Pot: distilling Stone (45%) | dust waiting: 6"
     public Component status()
     {
         MutableComponent line = Component.empty().append(getBlockState().getBlock().getName()).append(": ");

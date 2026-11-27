@@ -22,7 +22,8 @@ import static com.mowmaster.dust.Features.DustComposition.DustElements.*;
 
 // What things are made of, for burning (Magical Flint and Steel), measuring (Elemental Examiner) and dust recipes.
 //   Items     the dust:elements item data map (data/<namespace>/data_maps/item/elements.json), so datapacks and other
-//             mods can add or change items. Dust's own covers every vanilla item.
+//             mods can add or change items. Dust's own covers every vanilla item, and Dust's
+//             items that no recipe makes (logs, armour, keys, cards, ores...); the rest come from their recipes.
 //   Rules     for items whose dust depends on their data (a water bottle is a potion item holding water); checked first
 //   Elements  an element's crystal or dust is that element alone
 //   Compounds an alchemical compound is the elements separated into it

@@ -13,29 +13,6 @@ import java.util.Map;
 // ApparatusBlock turns it to the block's facing (turned), as the blockstate turns the model.
 public final class ApparatusShapes
 {
-    // The blackstone plinth every apparatus stands on
-    private static final VoxelShape BASE = Block.box(0, 0, 0, 16, 3, 16);
-
-    public static final VoxelShape CRUSHING_MILL = Shapes.or(BASE, Block.box(1, 3, 1, 15, 13, 15), Block.box(3, 12, 3, 13, 15, 13));
-    public static final VoxelShape SEPARATOR = Shapes.or(BASE, Block.box(1, 3, 1, 15, 13, 15), Block.box(3, 13, 3, 13, 16, 13));
-    public static final VoxelShape KETTLE = Shapes.or(BASE, Block.box(2, 3, 2, 14, 13, 14), Block.box(4.5, 13, 4.5, 11.5, 16, 11.5));
-    public static final VoxelShape TRANSMUTER = Shapes.or(BASE, Block.box(3, 3, 3, 13, 16, 13));
-    public static final VoxelShape CRUCIBLE = Shapes.or(BASE, Block.box(2.5, 3, 2.5, 13.5, 13.5, 13.5));
-    // The retort's belly with its side outlets, and its neck
-    public static final VoxelShape RETORT = Shapes.or(BASE, Block.box(1, 3, 3, 15, 12, 13), Block.box(6, 12, 6, 10, 15.5, 10));
-    // The vat, and its stirrer's gantry across it (west to east)
-    public static final VoxelShape MIXING_VAT = Shapes.or(BASE, Block.box(1.75, 3, 1.75, 14.25, 12, 14.25), Block.box(0.5, 3, 7, 15.5, 16, 9));
-
-    // How far in each apparatus's body is on its four sides where a tube meets it (pixels, north/east/south/west as for
-    // its model facing north), measured off its model: the tubes' arms reach in that far (AttachInsets)
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets CRUSHING_MILL_INSETS = new com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets(1.5, 1.75, 1.75, 1.75);
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets SEPARATOR_INSETS = new com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets(1.5, 3.25, 3.25, 3.25);
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets KETTLE_INSETS = new com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets(1.5, 1.5, 2, 1.5);
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets TRANSMUTER_INSETS = com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets.all(3);
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets CRUCIBLE_INSETS = new com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets(2.75, 3, 3, 3);
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets MIXING_VAT_INSETS = new com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets(1.75, 0.5, 1.75, 0.5);
-    public static final com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets RETORT_INSETS = new com.mowmaster.dust.Features.DustStorage.AttachInsets.Insets(3, 1, 3, 1);
-
     private ApparatusShapes() {}
 
     // The shape for each facing: turned clockwise (seen from above) a quarter turn for east, two for south, three for

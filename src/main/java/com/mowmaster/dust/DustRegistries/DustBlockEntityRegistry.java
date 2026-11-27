@@ -42,6 +42,8 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustJarBlockEntity::new, Set.of(DustBlockRegistry.DUST_JAR.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustGrinderBlockEntity>> DUST_GRINDER = BLOCK_ENTITIES.register("dust_grinder",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustGrinderBlockEntity::new, Set.of(DustBlockRegistry.DUST_GRINDER.get())));
+    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Crystals.crystalizer.DustCrystalizerBlockEntity>> DUST_CRYSTALIZER = BLOCK_ENTITIES.register("dust_crystalizer",
+            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Crystals.crystalizer.DustCrystalizerBlockEntity::new, Set.of(DustBlockRegistry.DUST_CRYSTALIZER.get())));
 
     // Lamps (Features/Lamps)
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Lamps.GrowthLampBlockEntity>> GROWTH_LAMP = BLOCK_ENTITIES.register("growth_lamp",
@@ -49,13 +51,6 @@ public class DustBlockEntityRegistry
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Lamps.LovelyLampBlockEntity>> LOVELY_LAMP = BLOCK_ENTITIES.register("lovely_lamp",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Lamps.LovelyLampBlockEntity::new, Set.of(DustBlockRegistry.LOVELY_LAMP.get())));
 
-    // The alchemical apparatus (Features/Apparatus)
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.CrushingMillBlockEntity>> CRUSHING_MILL = BLOCK_ENTITIES.register("crushing_mill",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.CrushingMillBlockEntity::new, Set.of(DustBlockRegistry.CRUSHING_MILL.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.SeparatorBlockEntity>> ALCHEMICAL_SEPARATOR = BLOCK_ENTITIES.register("alchemical_separator",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.SeparatorBlockEntity::new, Set.of(DustBlockRegistry.ALCHEMICAL_SEPARATOR.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity>> EVAPORATING_KETTLE = BLOCK_ENTITIES.register("evaporating_kettle",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.EvaporatingKettleBlockEntity::new, Set.of(DustBlockRegistry.EVAPORATING_KETTLE.get())));
     // The Still (Features/Apparatus/still)
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.DustStorage.DustPileBlockEntity>> DUST_PILE = BLOCK_ENTITIES.register("dust_pile",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.DustStorage.DustPileBlockEntity::new, Set.of(DustBlockRegistry.DUST_PILE.get())));
@@ -88,14 +83,6 @@ public class DustBlockEntityRegistry
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillPotBlockEntity::new, Set.of(DustBlockRegistry.STILL_POT.get())));
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.still.StillTowerBlockEntity>> STILL_TOWER = BLOCK_ENTITIES.register("still_tower",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.still.StillTowerBlockEntity::new, Set.of(DustBlockRegistry.STILL_TOWER.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity>> TRANSMUTER = BLOCK_ENTITIES.register("transmuter",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.TransmuterBlockEntity::new, Set.of(DustBlockRegistry.TRANSMUTER.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity>> CONJOINING_CRUCIBLE = BLOCK_ENTITIES.register("conjoining_crucible",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.ConjoiningCrucibleBlockEntity::new, Set.of(DustBlockRegistry.CONJOINING_CRUCIBLE.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity>> MIXING_VAT = BLOCK_ENTITIES.register("mixing_vat",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.MixingVatBlockEntity::new, Set.of(DustBlockRegistry.MIXING_VAT.get())));
-    public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity>> DISSOLVING_RETORT = BLOCK_ENTITIES.register("dissolving_retort",
-            () -> new BlockEntityType<>(com.mowmaster.dust.Features.Apparatus.DissolvingRetortBlockEntity::new, Set.of(DustBlockRegistry.DISSOLVING_RETORT.get())));
 
     public static final Supplier<BlockEntityType<com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity>> SPELL_CASTER = BLOCK_ENTITIES.register("spell_caster",
             () -> new BlockEntityType<>(com.mowmaster.dust.Features.Spells.caster.SpellCasterBlockEntity::new, Set.of(DustBlockRegistry.SPELL_CASTER.get())));

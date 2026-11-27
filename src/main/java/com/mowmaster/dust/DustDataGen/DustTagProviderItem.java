@@ -55,12 +55,9 @@ public class DustTagProviderItem extends ItemTagsProvider {
                 .add(DustItemRegistry.CRYSTAL_WHITE.key())
                 .add(DustItemRegistry.CRYSTAL_BLACK.key());
 
-        tag(DustTags.Items.CRYSTAL_BLOCK_REPAIRABLES)
-                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_RED))
-                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_GREEN))
-                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLUE))
-                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_WHITE))
-                .add(blockItem(DustBlockRegistry.BLOCK_OF_CRYSTAL_BLACK));
+        // The Crystal Hammer is mended with any element's crystal block
+        var crystalBlocks = tag(DustTags.Items.CRYSTAL_BLOCK_REPAIRABLES);
+        com.mowmaster.dust.Features.Crystals.ElementCrystals.BLOCK_ITEMS.values().forEach(item -> crystalBlocks.add(item.key()));
 
         //This is required for specific enchants to work
         tag(ItemTags.SWORDS)

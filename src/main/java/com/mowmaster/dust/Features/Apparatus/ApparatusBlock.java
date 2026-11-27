@@ -35,7 +35,7 @@ import java.util.function.BiFunction;
 // Glass Dust Tubes join on to every side (DustTubeConnectable).
 public class ApparatusBlock extends StationBlock implements DustTubeConnectable
 {
-    // How to make its block entity (a constructor reference such as CrushingMillBlockEntity::new fits a BiFunction:
+    // How to make its block entity (a constructor reference such as StillPotBlockEntity::new fits a BiFunction:
     // a function taking two values, here the position and the block state)
     private final BiFunction<BlockPos, BlockState, ? extends ApparatusBlockEntity> factory;
     // Its shape turned to each facing (ApparatusShapes.turned)

@@ -23,6 +23,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 //   haze    with their eyes in a cloud, the view is washed over in its colour, thicker the more dust there is: half
 //           (50% visibility) at DustClouds.ignite(), the thickness at which a spark sets it off; at most MAX_HAZE. It fades
 //           in and out (each tick, FADE of the way), drawn over the world just under the HUD as the lamps' hue is.
+//           Scaled by the Distortion Effects accessibility option (off at 0%).
 @EventBusSubscriber(modid = DustReferences.MODID, value = Dist.CLIENT)
 public final class DustCloudClient
 {
@@ -84,7 +85,10 @@ public final class DustCloudClient
     private static void renderHaze(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker)
     {
         if (haze <= 0) return;
-        int alpha = Math.round(haze * 255);
+        // Accessibility: the Distortion Effects slider thins the haze, and turns it off at 0%
+        float scale = Minecraft.getInstance().options.screenEffectScale().get().floatValue();
+        int alpha = Math.round(haze * scale * 255);
+        if (alpha <= 0) return;
         graphics.fill(0, 0, graphics.guiWidth(), graphics.guiHeight(), (alpha << 24) | hazeColor);
     }
 }

@@ -5,7 +5,7 @@ import com.mowmaster.dust.DustRegistries.DustItemRegistry;
 import com.mowmaster.dust.DustRegistries.DustParticleRegistry;
 import com.mowmaster.dust.Features.Apparatus.ApparatusBlockEntity;
 import com.mowmaster.dust.Features.Apparatus.ApparatusLayout;
-import com.mowmaster.dust.Features.Apparatus.ItemApparatusBlockEntity;
+import com.mowmaster.dust.Features.Apparatus.ApparatusElements;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.Machines.StationSlot;
 import com.mowmaster.dust.Features.Magic.ChunkAura;
@@ -46,7 +46,7 @@ import java.util.Map;
 //              everything into the aura.
 //   unknown    an element the owner hasn't discovered always leaves through the top
 // It only takes things with a gaseous or aqueous element in them (accepts): things of solids alone go to the Dust
-// Separator, blocks to a Crushing Mill first. (Anything already in it that it can't boil passes through to its outputs,
+// Separator. Blocks go in as they are. (Anything already in it that it can't boil passes through to its outputs,
 // pushed into the containers beside the pot, a hopper feeding it last.)
 // A pot's dust comes out of the Dust Chutes on its sides, as Dust Piles under them (DustChuteBlockEntity), CHUTE_RATE
 // every CHUTE_TICKS. Its filter: a Jar Label on it (only on a pot holding an element: it's kept to that element, even
@@ -188,11 +188,11 @@ public class StillPotBlockEntity extends ApparatusBlockEntity implements Element
         return List.of(StationSlot.ofStack(ApparatusLayout.INTAKE, StillPotBlockEntity::accepts, INPUT_LIMIT, () -> input, stack -> input = stack, this::sync));
     }
 
-    // Only things with a gaseous or aqueous element in them (not blocks: crush those first); things made of solids alone
+    // Only things with a gaseous or aqueous element in them (blocks too, as they are); things made of solids alone
     // are for the Dust Separator
     public static boolean accepts(ItemStack stack)
     {
-        return !ItemApparatusBlockEntity.isBlock(stack) && !ItemApparatusBlockEntity.fluids(ItemApparatusBlockEntity.elementsOf(stack)).isEmpty();
+        return !ApparatusElements.fluids(ApparatusElements.elementsOf(stack)).isEmpty();
     }
 
     private @Nullable StillFireboxBlockEntity firebox(Level level)
@@ -249,8 +249,8 @@ public class StillPotBlockEntity extends ApparatusBlockEntity implements Element
     private void startFrom(ServerLevel level, StillPotBlockEntity bottom)
     {
         ItemStack one = input.copyWithCount(1);
-        List<DustElement> elements = ItemApparatusBlockEntity.elementsOf(one);
-        if (ItemApparatusBlockEntity.isBlock(one) || elements.isEmpty()) {
+        List<DustElement> elements = ApparatusElements.elementsOf(one);
+        if (elements.isEmpty()) {
             // Passed straight through: as many as fit
             int moving = 0;
             while (moving < input.getCount() && outputsFit(input.copyWithCount(moving + 1))) moving++;
@@ -272,9 +272,9 @@ public class StillPotBlockEntity extends ApparatusBlockEntity implements Element
     {
         StillLayout.Stack stack = StillLayout.above(level, worldPosition);
         if (stack.top() == null) return;
-        List<DustElement> elements = ItemApparatusBlockEntity.elementsOf(working);
-        settle(level, ItemApparatusBlockEntity.solids(elements), stack);
-        rise(level, ItemApparatusBlockEntity.fluids(elements), stack);
+        List<DustElement> elements = ApparatusElements.elementsOf(working);
+        settle(level, ApparatusElements.solids(elements), stack);
+        rise(level, ApparatusElements.fluids(elements), stack);
         working = ItemStack.EMPTY;
         progress = -1;
         sync();

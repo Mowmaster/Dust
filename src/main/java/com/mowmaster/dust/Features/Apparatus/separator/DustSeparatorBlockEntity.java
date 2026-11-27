@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mowmaster.dust.DustRegistries.DustBlockEntityRegistry;
 import com.mowmaster.dust.Features.Apparatus.ApparatusBlockEntity;
 import com.mowmaster.dust.Features.Apparatus.ApparatusLayout;
-import com.mowmaster.dust.Features.Apparatus.ItemApparatusBlockEntity;
+import com.mowmaster.dust.Features.Apparatus.ApparatusElements;
 import com.mowmaster.dust.Features.DustComposition.DustElement;
 import com.mowmaster.dust.Features.DustComposition.DustElements;
 import com.mowmaster.dust.Features.DustStorage.DustClouds;
@@ -29,8 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// The Dust Separator's working: things fed in at its intake side (only things made of solid elements alone, not blocks:
-// crush blocks first; hoppers and pipes reach it there only: slotsFor) tumble in the
+// The Dust Separator's working: things fed in at its intake side (only things made of solid elements alone, blocks
+// too, as they are; hoppers and pipes reach it there only: slotsFor) tumble in the
 // drum one at a time, WORK_TICKS each, and fall apart into their elements, every element whole:
 //   solids     each drum section (this one, then each extension out to the open end: up to
 //              DustSeparatorBlock.MAX_EXTENSIONS) sends one solid element down the tubes under it (DustNetwork.insert,
@@ -89,12 +89,11 @@ public class DustSeparatorBlockEntity extends ApparatusBlockEntity implements Se
         return getBlockState().getValue(com.mowmaster.dust.Features.Machines.StationBlock.FACING).getCounterClockWise();
     }
 
-    // Only things made of solid elements alone (not a block: crush those first); anything with a gaseous or aqueous
+    // Only things made of solid elements alone (blocks too); anything with a gaseous or aqueous
     // element in it is for the Still
     public static boolean accepts(ItemStack stack)
     {
-        if (ItemApparatusBlockEntity.isBlock(stack)) return false;
-        List<DustElement> elements = ItemApparatusBlockEntity.elementsOf(stack);
+        List<DustElement> elements = ApparatusElements.elementsOf(stack);
         return !elements.isEmpty() && elements.stream().allMatch(Separation::isSolid);
     }
 
@@ -151,7 +150,7 @@ public class DustSeparatorBlockEntity extends ApparatusBlockEntity implements Se
             setChanged();
             return;
         }
-        separate(level, sections, ItemApparatusBlockEntity.elementsOf(working));
+        separate(level, sections, ApparatusElements.elementsOf(working));
         working = ItemStack.EMPTY;
         progress = -1;
         spinLeft = SPIN_LINGER;

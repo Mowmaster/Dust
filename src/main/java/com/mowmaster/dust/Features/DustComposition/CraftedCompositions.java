@@ -46,7 +46,10 @@ import java.util.Set;
 // 9 plants; a piston is 3 planks, a redstone dust, an iron ingot and 4 cobblestone, so it's all of theirs added up.
 // Worked out on the server from the crafting recipes whenever datapacks load (recipes may change), and sent to each
 // player (the client has no recipes, but tooltips and the research book need these).
-//   - Only plain shaped and shapeless crafting recipes count (not special ones like map cloning or firework stars).
+//   - Plain shaped and shapeless crafting recipes count (not special ones like map cloning or firework stars), and the
+//     Element Crafter's recipes (dust:element_crafting: how Dust's machines are made): their grid items, plus one of
+//     an element for every JAR_DUST of it they take from the jars (at least one), and one for each grid item asked for
+//     by its dust.
 //   - An ingredient that takes several items (any planks) counts as one of them: oak if there's an oak one ("default to
 //     oak"), else a vanilla one, else the first.
 //   - What the grid gives back (the bucket from a milk bucket) is taken off that ingredient's elements.
@@ -64,6 +67,12 @@ public final class CraftedCompositions
     // Item -> what it's made of. Swapped whole when worked out again (or when the server's copy arrives on a client),
     // never changed in place, so reading it from another thread is safe. volatile: every thread sees the newest one.
     private static volatile Map<Item, DustComposition> crafted = Map.of();
+    // Dust an Element Crafter recipe takes from the jars, per element it adds to what's made
+    public static final int JAR_DUST = 10;
+
+    // One way to make an item: the recipe's id, what goes in, the dust it takes besides (an Element Crafter recipe's),
+    // and how many it makes
+    private record Source(Identifier id, List<Ingredient> ingredients, List<DustElement> dust, int made) {}
 
     private CraftedCompositions() {}
 
@@ -95,11 +104,26 @@ public final class CraftedCompositions
 
     private static Map<Item, DustComposition> compute(MinecraftServer server)
     {
-        // Each item made by a plain crafting recipe, with those recipes
-        Map<Item, List<RecipeHolder<CraftingRecipe>>> byResult = new HashMap<>();
+        // Each item made by a plain crafting recipe or an Element Crafter recipe, with those recipes
+        Map<Item, List<Source>> byResult = new HashMap<>();
         for (RecipeHolder<CraftingRecipe> holder : server.getRecipeManager().recipeMap().byType(RecipeType.CRAFTING)) {
             ItemStack result = resultOf(holder.value());
-            if (!result.isEmpty()) byResult.computeIfAbsent(result.getItem(), item -> new ArrayList<>()).add(holder);
+            if (!result.isEmpty()) byResult.computeIfAbsent(result.getItem(), item -> new ArrayList<>())
+                    .add(new Source(holder.id().identifier(), ingredientsOf(holder.value()), List.of(), result.getCount()));
+        }
+        for (RecipeHolder<com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe> holder
+                : server.getRecipeManager().recipeMap().byType(com.mowmaster.dust.DustRegistries.DustRecipeRegistry.ELEMENT_CRAFTING_TYPE.get())) {
+            com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe recipe = holder.value();
+            ItemStack result = recipe.result().create();
+            if (result.isEmpty()) continue;
+            List<Ingredient> ingredients = new ArrayList<>(recipe.ingredients());
+            recipe.shapedPattern().ifPresent(pattern -> pattern.ingredients().forEach(slot -> slot.ifPresent(ingredients::add)));
+            List<DustElement> dust = new ArrayList<>();
+            for (DustRecipe.DustNeed need : recipe.dusts()) dust.add(DustElements.of(need.element()));
+            for (com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost cost : recipe.elements()) {
+                for (int i = 0; i < Math.max(1, Math.round(cost.amount() / (float) JAR_DUST)); i++) dust.add(cost.element());
+            }
+            byResult.computeIfAbsent(result.getItem(), item -> new ArrayList<>()).add(new Source(holder.id().identifier(), ingredients, dust, result.getCount()));
         }
         Solver solver = new Solver(byResult);
         Map<Item, DustComposition> found = new HashMap<>();
@@ -137,13 +161,13 @@ public final class CraftedCompositions
     // every answer
     private static final class Solver
     {
-        private final Map<Item, List<RecipeHolder<CraftingRecipe>>> byResult;
+        private final Map<Item, List<Source>> byResult;
         // Optional.empty(): worked out, and it has no composition
         private final Map<Item, Optional<DustComposition>> done = new HashMap<>();
         // Being worked out right now: a recipe that needs one of these goes round in a circle
         private final Set<Item> working = new HashSet<>();
 
-        Solver(Map<Item, List<RecipeHolder<CraftingRecipe>>> byResult)
+        Solver(Map<Item, List<Source>> byResult)
         {
             this.byResult = byResult;
         }
@@ -153,17 +177,17 @@ public final class CraftedCompositions
         {
             Optional<DustComposition> known = done.get(item);
             if (known != null) return known.orElse(null);
-            List<RecipeHolder<CraftingRecipe>> recipes = byResult.get(item);
+            List<Source> recipes = byResult.get(item);
             if (recipes == null || isLowerTier(item) || !working.add(item)) return null;
             Identifier name = BuiltInRegistries.ITEM.getKey(item);
-            List<RecipeHolder<CraftingRecipe>> ordered = new ArrayList<>(recipes);
+            List<Source> ordered = new ArrayList<>(recipes);
             // Comparator.comparing(...).thenComparing(...): sort by the first thing, ties by the second. false sorts
             // before true, so the recipe named after the item comes first.
-            ordered.sort(Comparator.comparing((RecipeHolder<CraftingRecipe> holder) -> !holder.id().identifier().equals(name))
-                    .thenComparing(holder -> holder.id().identifier().toString()));
+            ordered.sort(Comparator.comparing((Source source) -> !source.id().equals(name))
+                    .thenComparing(source -> source.id().toString()));
             DustComposition result = null;
-            for (RecipeHolder<CraftingRecipe> holder : ordered) {
-                result = fromRecipe(holder.value());
+            for (Source source : ordered) {
+                result = fromRecipe(source);
                 if (result != null) break;
             }
             working.remove(item);
@@ -180,11 +204,12 @@ public final class CraftedCompositions
 
         // The recipe's ingredients added up and shared out between what it makes, or null if one of them can't be
         // worked out (or would go round in a circle)
-        private @Nullable DustComposition fromRecipe(CraftingRecipe recipe)
+        private @Nullable DustComposition fromRecipe(Source recipe)
         {
-            List<Ingredient> ingredients = ingredientsOf(recipe);
-            if (ingredients.isEmpty()) return null;
+            List<Ingredient> ingredients = recipe.ingredients();
+            if (ingredients.isEmpty() && recipe.dust().isEmpty()) return null;
             Map<DustElement, Integer> total = new LinkedHashMap<>();
+            for (DustElement element : recipe.dust()) total.merge(element, 1, Integer::sum);
             for (Ingredient ingredient : ingredients) {
                 Item used = choose(ingredient);
                 if (used == null) return null;
@@ -202,7 +227,7 @@ public final class CraftedCompositions
                 }
                 counts.forEach((element, count) -> total.merge(element, count, Integer::sum));
             }
-            int made = Math.max(1, resultOf(recipe).getCount());
+            int made = Math.max(1, recipe.made());
             List<DustElement> elements = new ArrayList<>();
             total.forEach((element, count) -> {
                 int each = Math.max(1, Math.round(count / (float) made));

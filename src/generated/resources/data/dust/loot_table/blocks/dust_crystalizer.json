@@ -8,11 +8,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dust:blockofdust_green"
+          "name": "dust:dust_crystalizer"
         }
       ],
       "rolls": 1
     }
   ],
-  "random_sequence": "dust:blocks/blockofdust_green"
+  "random_sequence": "dust:blocks/dust_crystalizer"
 }

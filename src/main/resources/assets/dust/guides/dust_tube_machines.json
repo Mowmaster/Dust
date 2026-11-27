@@ -14,7 +14,7 @@
         1,
         2
       ],
-      "state": "dust:alchemical_separator[facing=south]",
+      "state": "dust:dust_seperator[facing=south]",
       "ticks": 12
     },
     {
