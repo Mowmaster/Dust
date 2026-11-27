@@ -89,3 +89,8 @@ instant-effect potions are only researched when drunk (not splash/lingering).
   `Features/Bosses/LootBags`, `LootBagItem`.
 - Suggestion: a wave spawner in MowLib (trial-spawner-like: wakes for nearby players, waves scaled by a player stat,
   a reward per fighter, then a cooldown). Dust: `Features/Sanctums/ArcaneSpawnerBlockEntity`.
+- Suggestion: a structure-template kit in MowLib: a template piece that reads a template's data markers and special
+  blocks once (cached by its palette, so a structure block saving over it is noticed), a stand-in block swap processor
+  (26.3 registers a processor's codec, 26.1.2 a StructureProcessorType), and 26.1.2 reading templates saved by 26.3
+  (block states `id`/`properties` back to `Name`/`Properties`). Dust: `Features/Sanctums` (`SanctumTemplates`,
+  `SanctumProcessor`, `SanctumPiece`; how to make templates: `SANCTUMS.md`).

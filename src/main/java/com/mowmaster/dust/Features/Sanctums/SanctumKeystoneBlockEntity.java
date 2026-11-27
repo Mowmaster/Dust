@@ -19,7 +19,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
-// A sanctum's records, kept by its keystone (set as the sanctum is built: SanctumBuilder):
+// A sanctum's records, kept by its keystone (set as the sanctum is built: SanctumPiece). One placed by hand (to build a
+// sanctum template) does nothing until a sanctum sets it up (ready).
 //   set         its element
 //   spawners    where its Arcane Spawners are
 //   portal      the bottom corner of the portal's opening (PORTAL_WIDTH across along axis, PORTAL_HEIGHT up)
@@ -40,6 +41,7 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
     private float returnYaw;
     private int slot = -1;
     private long run = -1;
+    private boolean ready;
 
     public SanctumKeystoneBlockEntity(BlockPos pos, BlockState state)
     {
@@ -56,6 +58,7 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
         this.axis = axis;
         this.returnPos = returnPos;
         this.returnYaw = returnYaw;
+        this.ready = true;
         setChanged();
     }
 
@@ -74,7 +77,7 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
 
     void serverTick(ServerLevel level)
     {
-        if (level.getGameTime() % 20 != 0) return;
+        if (!ready || level.getGameTime() % 20 != 0) return;
         LabyrinthData data = LabyrinthData.get(level.getServer());
         // A run from here was won: the sanctum must be fought through again
         if (data.takeReset(GlobalPos.of(level.dimension(), worldPosition))) {
@@ -124,6 +127,7 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
         output.putFloat("return_yaw", returnYaw);
         output.putInt("slot", slot);
         output.putLong("run", run);
+        output.putBoolean("ready", ready);
     }
 
     @Override
@@ -139,5 +143,7 @@ public class SanctumKeystoneBlockEntity extends BlockEntity
         returnYaw = input.getFloatOr("return_yaw", 0.0F);
         slot = input.getIntOr("slot", -1);
         run = input.getLongOr("run", -1L);
+        // Saved before "ready" was: a sanctum's (it had a portal)
+        ready = input.getBooleanOr("ready", input.read("portal", BlockPos.CODEC).isPresent());
     }
 }

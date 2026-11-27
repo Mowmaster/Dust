@@ -11,9 +11,9 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.Function;
 
-// Building in a turned frame: local x to the right, y up, z forward from an origin, facing any horizontal way (the
-// sanctums face every way). Shared by the sanctums (a structure, built chunk by chunk: clip) and the labyrinth (built
-// in a live level).
+// Building in a turned frame: local x to the right, y up, z forward from an origin, facing any horizontal way. Used by
+// the labyrinth (built in a live level: Features/Labyrinth/LabyrinthBuilder); clip keeps building inside a box (for
+// building something a chunk at a time).
 public final class Build
 {
     // Block flags: send to clients, no neighbour updates (nothing around reacts to what's being built)
@@ -23,7 +23,7 @@ public final class Build
     public final BlockPos origin;
     public final Direction forward;
     public final Direction right;
-    // Only blocks in here are set (a structure builds one chunk at a time: SanctumPiece); null: anywhere
+    // Only blocks in here are set; null: anywhere
     private @Nullable BoundingBox clip;
 
     public Build(LevelAccessor level, BlockPos origin, Direction forward)

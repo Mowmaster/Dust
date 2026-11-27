@@ -56,7 +56,8 @@ public class DustFeatureRegistry
             TREE_DECORATORS.register("elemental_fruit", () -> new TreeDecoratorType<>(com.mowmaster.dust.Features.Trees.ElementalFruitDecorator.CODEC));
 
     // Structures (the same on both versions): the sanctums (Features/Sanctums), a structure type and the one piece each
-    // is built from. The structure and its structure set are datapack entries made in datagen (DustWorldgen).
+    // is built from (a structure template: SanctumPiece). The structure and its structure set are datapack entries made
+    // in datagen (DustWorldgen).
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, DustReferences.MODID);
     public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECES = DeferredRegister.create(Registries.STRUCTURE_PIECE, DustReferences.MODID);
 
@@ -65,11 +66,26 @@ public class DustFeatureRegistry
     public static final Supplier<StructurePieceType> SANCTUM_PIECE =
             STRUCTURE_PIECES.register("sanctum", () -> com.mowmaster.dust.Features.Sanctums.SanctumPiece::new);
 
+    // Structure processors: the sanctum templates' stand-in blocks swapped for an element's (SanctumProcessor)
+    // Stonecutter: 26.3 registers a processor's codec itself; before, a StructureProcessorType wrapping it
+    //? if >=26.3 {
+    public static final DeferredRegister<MapCodec<? extends net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor>> STRUCTURE_PROCESSORS =
+            DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, DustReferences.MODID);
+    public static final Supplier<MapCodec<com.mowmaster.dust.Features.Sanctums.SanctumProcessor>> SANCTUM_PROCESSOR =
+            STRUCTURE_PROCESSORS.register("sanctum", () -> com.mowmaster.dust.Features.Sanctums.SanctumProcessor.CODEC);
+    //?} else {
+    /*public static final DeferredRegister<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType<?>> STRUCTURE_PROCESSORS =
+            DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, DustReferences.MODID);
+    public static final Supplier<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType<com.mowmaster.dust.Features.Sanctums.SanctumProcessor>> SANCTUM_PROCESSOR =
+            STRUCTURE_PROCESSORS.register("sanctum", () -> () -> com.mowmaster.dust.Features.Sanctums.SanctumProcessor.CODEC);
+    *///?}
+
     public static void register(IEventBus eventBus)
     {
         FEATURE_TYPES.register(eventBus);
         TREE_DECORATORS.register(eventBus);
         STRUCTURE_TYPES.register(eventBus);
         STRUCTURE_PIECES.register(eventBus);
+        STRUCTURE_PROCESSORS.register(eventBus);
     }
 }

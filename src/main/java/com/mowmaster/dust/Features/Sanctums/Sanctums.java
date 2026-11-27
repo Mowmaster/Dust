@@ -14,10 +14,11 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import java.util.Set;
 import java.util.function.Supplier;
 
-// Registers the sanctums' blocks (SanctumStructure places the sanctums themselves, SanctumBuilder builds them):
-//   dust:arcane_spawner     the trial-spawner-like spawner (with an item, for building your own arena)
+// Registers the sanctums' blocks (SanctumStructure places the sanctums themselves, from templates: SanctumPiece):
+//   dust:arcane_spawner     the trial-spawner-like spawner (with an item, for building your own arena or a template)
 //   dust:arcane_portal      the portal sheet into a labyrinth (and out of one); no item
-//   dust:sanctum_keystone   the stone under a sanctum's portal that keeps its records and opens it; no item
+//   dust:sanctum_keystone   the stone under a sanctum's portal that keeps its records and opens it (with an item, for
+//                           building sanctum templates: placed by hand it does nothing)
 // None of them drop anything; the portal and keystone can't be broken at all. Pistons move none of them (unbreakable
 // blocks and blocks with block entities stay put).
 public final class Sanctums
@@ -34,6 +35,8 @@ public final class Sanctums
     public static final DeferredBlock<SanctumKeystoneBlock> SANCTUM_KEYSTONE = DustBlockRegistry.DUSTBLOCKS.registerBlock("sanctum_keystone",
             properties -> new SanctumKeystoneBlock(properties.mapColor(MapColor.COLOR_BLACK).sound(SoundType.DEEPSLATE_TILES).strength(-1.0F, 3600000.0F)
                     .noLootTable().lightLevel(state -> 7)));
+    public static final DeferredItem<BlockItem> SANCTUM_KEYSTONE_ITEM = DustItemRegistry.DUSTITEMS.registerItem("sanctum_keystone",
+            properties -> new BlockItem(SANCTUM_KEYSTONE.get(), properties.useBlockDescriptionPrefix().rarity(Rarity.EPIC)));
 
     public static final Supplier<BlockEntityType<ArcaneSpawnerBlockEntity>> ARCANE_SPAWNER_ENTITY = DustBlockEntityRegistry.BLOCK_ENTITIES.register("arcane_spawner",
             () -> new BlockEntityType<>(ArcaneSpawnerBlockEntity::new, Set.of(ARCANE_SPAWNER.get())));

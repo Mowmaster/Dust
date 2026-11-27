@@ -222,7 +222,7 @@ public class DustProviderModel extends ModelProvider {
     // The sanctums' blocks (Features/Sanctums), their models written by hand in models/block/sanctum:
     //   the Arcane Spawner   a cage with runes (tint index 0: its element's colour); its item tinted arcane violet
     //   the Arcane Portal    a sheet along x or z, by its axis (tint index 0)
-    //   the Sanctum Keystone
+    //   the Sanctum Keystone (its item: the block)
     private void createSanctumBlocks(BlockModelGenerators blockModels, ItemModelGenerators itemModels)
     {
         java.util.function.Function<String, Identifier> id = path -> Identifier.fromNamespaceAndPath(DustReferences.MODID, path);
@@ -235,6 +235,8 @@ public class DustProviderModel extends ModelProvider {
                         id.apply(axis == Direction.Axis.Z ? "block/sanctum/arcane_portal_ew" : "block/sanctum/arcane_portal_ns")))));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Sanctums.Sanctums.SANCTUM_KEYSTONE.get(),
                 BlockModelGenerators.plainVariant(id.apply("block/sanctum/sanctum_keystone"))));
+        itemModels.itemModelOutput.accept(com.mowmaster.dust.Features.Sanctums.Sanctums.SANCTUM_KEYSTONE_ITEM.get(),
+                ItemModelUtils.plainModel(id.apply("block/sanctum/sanctum_keystone")));
         // The labyrinth's seal (tint index 0) and runes, unlit or lit (models/block/labyrinth)
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(com.mowmaster.dust.Features.Labyrinth.LabyrinthBlocks.SEAL.get(),
                 BlockModelGenerators.plainVariant(id.apply("block/labyrinth/labyrinth_seal"))));
