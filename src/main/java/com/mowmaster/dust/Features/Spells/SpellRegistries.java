@@ -444,7 +444,7 @@ public final class SpellRegistries
     // Change + Creature: Beastification (effects/Beastification). Crouch + right-click a creature with the spell to pick it
     // as the form. Self: you become that creature for the spell's duration (drawn as it, its size; casting or striking
     // with a weapon does its attack instead, or makes its sound if it has none); a player hit is turned into it the same
-    // way; any other creature hit is turned into it for good. Blocks: nothing.
+    // way; any other creature hit is turned into it for the duration too, then turns back. Blocks: nothing.
     public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_CHANGE_CREATURE = MODIFIERS.register("fusion_change_creature",
             () -> new FusionModifier(DustElements.CHANGE, DustElements.CREATURE)
                     .self(com.mowmaster.dust.Features.Spells.effects.Beastification::self)

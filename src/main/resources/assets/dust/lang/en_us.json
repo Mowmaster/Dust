@@ -567,7 +567,7 @@
   "spell_modifier.dust.fusion_flight_chaos": "Inversion",
   "spell_modifier.dust.fusion_flight_chaos.desc": "Flight and Chaos fused: turns gravity upside down. On you or a creature it falls up and walks on ceilings, drawn upside down, until it wears off (potency: a stronger pull, duration: longer). On a block it lifts the block, which rises until it meets a ceiling or the top of the world and is placed there, contents and all (potency: it rises faster)",
   "spell_modifier.dust.fusion_change_creature": "Beastification",
-  "spell_modifier.dust.fusion_change_creature.desc": "Change and Creature fused: crouch and right-click a creature with the spell to choose it. On you or another player: you become that creature for the duration, its size, and casting or striking with a weapon does its attack (or makes its sound). Any other creature hit is turned into it for good. Blocks: nothing",
+  "spell_modifier.dust.fusion_change_creature.desc": "Change and Creature fused: crouch and right-click a creature with the spell to choose it. On you or another player: you become that creature for the duration, its size, and casting or striking with a weapon does its attack (or makes its sound). Any other creature hit is turned into it for the duration, then turns back. Blocks: nothing",
   "dust.beast.chosen": "Beastification form: %s",
   "dust.beast.no_form": "Crouch and right-click a creature with this spell to choose a form first",
   "dust.beast.not_allowed": "%s can't be a form",

@@ -43,8 +43,10 @@ import org.jspecify.annotations.Nullable;
 //                      through death). Players, bosses and anything that isn't a mob can't be picked.
 //   self               you become your form for the spell's duration (the Beastified effect)
 //   a player hit       they become the caster's form the same way
-//   any other creature it's turned into the caster's form for good (a new creature of that kind where it stood, keeping
-//                      its name; bosses aren't changed)
+//   any other creature it's turned into the caster's form for the spell's duration (a new creature of that kind where it
+//                      stood, keeping its name; bosses aren't changed), then turns back into just what it was (saved
+//                      whole when it was turned: its variant, health, name...). Killed while turned, it drops what it
+//                      first was would (BEAST_LOOT).
 //   blocks             nothing
 // While a player is a creature (beast_form, synced so everyone sees it):
 //   they're drawn as the creature (Client/BeastificationClient) and take its size (onSize: its box and eye height)
@@ -121,7 +123,7 @@ public final class Beastification
             return;
         }
         if (target instanceof Player player) turnPlayer(cast, player, form);
-        else if (target instanceof Mob mob) turnMob(cast.level(), mob, form);
+        else if (target instanceof Mob mob) turnMob(cast.level(), mob, form, cast.stats().duration());
     }
 
     // A player becomes the form for the spell's duration
@@ -132,10 +134,24 @@ public final class Beastification
         puff(cast.level(), player);
     }
 
-    // Any other creature is turned into the form for good: a new one where it stood, facing the same way, with its name
-    private static void turnMob(ServerLevel level, Mob mob, EntityType<?> form)
+    // Any other creature is turned into the form for the spell's duration: a new one where it stood, facing the same way,
+    // with its name, carrying what it first was (to turn back into, and to drop if it's killed)
+    private static void turnMob(ServerLevel level, Mob mob, EntityType<?> form, int duration)
     {
         if (mob.getType() == form || mob.getType().builtInRegistryHolder().is(Tags.EntityTypes.BOSSES)) return;
+        // What it first was: already turned, the first kind it was (turned back into that: it simply turns back now)
+        String originalType = mob.getData(DustAttachmentTypeRegistry.BEAST_ORIGINAL_TYPE);
+        net.minecraft.nbt.CompoundTag original = mob.getData(DustAttachmentTypeRegistry.BEAST_ORIGINAL);
+        if (originalType.isEmpty()) {
+            originalType = idOf(mob.getType());
+            net.minecraft.world.level.storage.TagValueOutput saved = net.minecraft.world.level.storage.TagValueOutput.createWithContext(
+                    net.minecraft.util.ProblemReporter.DISCARDING, level.registryAccess());
+            mob.saveWithoutId(saved);
+            original = saved.buildResult();
+        } else if (originalType.equals(idOf(form))) {
+            turnBack(level, mob);
+            return;
+        }
         Entity made = form.create(level, EntitySpawnReason.CONVERSION);
         if (made == null) return;
         made.snapTo(mob.getX(), mob.getY(), mob.getZ(), mob.getYRot(), mob.getXRot());
@@ -151,9 +167,42 @@ public final class Beastification
         String loot = mob.getData(DustAttachmentTypeRegistry.BEAST_LOOT);
         if (loot.isEmpty()) loot = mob.getLootTable().map(key -> key.identifier().toString()).orElse("");
         if (!loot.isEmpty()) made.setData(DustAttachmentTypeRegistry.BEAST_LOOT, loot);
+        // ...and turns back into it when the spell's duration is up (onMobTick)
+        made.setData(DustAttachmentTypeRegistry.BEAST_ORIGINAL_TYPE, originalType);
+        made.setData(DustAttachmentTypeRegistry.BEAST_ORIGINAL, original);
+        made.setData(DustAttachmentTypeRegistry.BEAST_UNTIL, level.getGameTime() + Math.max(1, duration));
         puff(level, mob);
         mob.discard();
         level.addFreshEntity(made);
+    }
+
+    // A turned creature's time is up (or it was turned back into what it first was): that creature again, just as it was
+    // saved, where this one stands and facing its way. If it can't be made, this one just stops being turned.
+    private static void turnBack(ServerLevel level, Mob turned)
+    {
+        EntityType<?> type = typeOf(turned.getData(DustAttachmentTypeRegistry.BEAST_ORIGINAL_TYPE));
+        Entity original = type == null ? null : type.create(level, EntitySpawnReason.LOAD);
+        if (original == null) {
+            turned.removeData(DustAttachmentTypeRegistry.BEAST_UNTIL);
+            return;
+        }
+        original.load(net.minecraft.world.level.storage.TagValueInput.create(net.minecraft.util.ProblemReporter.DISCARDING,
+                level.registryAccess(), turned.getData(DustAttachmentTypeRegistry.BEAST_ORIGINAL)));
+        original.snapTo(turned.getX(), turned.getY(), turned.getZ(), turned.getYRot(), turned.getXRot());
+        original.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+        puff(level, turned);
+        turned.discard();
+        level.addFreshEntity(original);
+    }
+
+    // Each tick for a turned creature: when its time is up, it turns back
+    @SubscribeEvent
+    public static void onMobTick(EntityTickEvent.Post event)
+    {
+        if (!(event.getEntity() instanceof Mob mob) || !(mob.level() instanceof ServerLevel level) || !mob.isAlive()) return;
+        if (!mob.hasData(DustAttachmentTypeRegistry.BEAST_UNTIL)) return;
+        long until = mob.getData(DustAttachmentTypeRegistry.BEAST_UNTIL);
+        if (until > 0 && level.getGameTime() >= until) turnBack(level, mob);
     }
 
     private static void puff(ServerLevel level, Entity entity)

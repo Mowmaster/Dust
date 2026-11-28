@@ -51,6 +51,14 @@ public class DustAttachmentTypeRegistry
     // the new kind's); saved with it
     public static final Supplier<AttachmentType<String>> BEAST_LOOT = ATTACHMENT_TYPES.register("beast_loot",
             () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_loot")).build());
+    // A creature Beastification turned into another until a time: what it first was (its kind, and everything about it
+    // as saved), and the game time it turns back; saved with it
+    public static final Supplier<AttachmentType<String>> BEAST_ORIGINAL_TYPE = ATTACHMENT_TYPES.register("beast_original_type",
+            () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_original_type")).build());
+    public static final Supplier<AttachmentType<net.minecraft.nbt.CompoundTag>> BEAST_ORIGINAL = ATTACHMENT_TYPES.register("beast_original",
+            () -> AttachmentType.builder(() -> new net.minecraft.nbt.CompoundTag()).serialize(net.minecraft.nbt.CompoundTag.CODEC.fieldOf("beast_original")).build());
+    public static final Supplier<AttachmentType<Long>> BEAST_UNTIL = ATTACHMENT_TYPES.register("beast_until",
+            () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG.fieldOf("beast_until")).build());
     public static final Supplier<AttachmentType<String>> BEAST_APPLIED = ATTACHMENT_TYPES.register("beast_applied",
             () -> AttachmentType.builder(() -> "").build());
 
