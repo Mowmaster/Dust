@@ -28,6 +28,9 @@ import java.util.List;
 public class ElementCrafterCategory implements IRecipeCategory<RecipeRecord>
 {
     public static final IRecipeType<RecipeRecord> TYPE = IRecipeType.create(DustReferences.MODID, "element_crafting", RecipeRecord.class);
+    // The same page for Dust's own crafting table recipes (dust:dust_crafting: the research tables and the rest), which
+    // JEI's crafting page doesn't know: made at a crafting table, no jar dust
+    public static final IRecipeType<RecipeRecord> DUST_CRAFTING = IRecipeType.create(DustReferences.MODID, "dust_crafting", RecipeRecord.class);
 
     private static final int WIDTH = 176;
     private static final int HEIGHT = 56;
@@ -35,25 +38,42 @@ public class ElementCrafterCategory implements IRecipeCategory<RecipeRecord>
     private static final int COSTS_X = 116;
     private static final int TEXT = 0xFF404040;
 
+    private final IRecipeType<RecipeRecord> type;
+    private final Component title;
     private final IDrawable icon;
     private final IDrawable arrow;
 
-    public ElementCrafterCategory(IGuiHelper guiHelper)
+    // The Element Crafter's page
+    public static ElementCrafterCategory elementCrafter(IGuiHelper guiHelper)
     {
-        this.icon = guiHelper.createDrawableItemLike(DustBlockRegistry.ELEMENT_CRAFTER.get());
+        return new ElementCrafterCategory(guiHelper, TYPE, DustBlockRegistry.ELEMENT_CRAFTER.get(), Component.translatable("block.dust.element_crafter"));
+    }
+
+    // Dust's crafting table recipes' page
+    public static ElementCrafterCategory dustCrafting(IGuiHelper guiHelper)
+    {
+        return new ElementCrafterCategory(guiHelper, DUST_CRAFTING, net.minecraft.world.level.block.Blocks.CRAFTING_TABLE,
+                Component.translatable("jei.dust.dust_crafting"));
+    }
+
+    private ElementCrafterCategory(IGuiHelper guiHelper, IRecipeType<RecipeRecord> type, net.minecraft.world.level.ItemLike station, Component title)
+    {
+        this.type = type;
+        this.title = title;
+        this.icon = guiHelper.createDrawableItemLike(station);
         this.arrow = guiHelper.getRecipeArrow();
     }
 
     @Override
     public IRecipeType<RecipeRecord> getRecipeType()
     {
-        return TYPE;
+        return type;
     }
 
     @Override
     public Component getTitle()
     {
-        return Component.translatable("block.dust.element_crafter");
+        return title;
     }
 
     @Override

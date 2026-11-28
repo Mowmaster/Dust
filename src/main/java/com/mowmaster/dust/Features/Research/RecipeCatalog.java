@@ -60,6 +60,8 @@ public final class RecipeCatalog
     private static volatile Map<Identifier, List<RecipeRecord>> previews = Map.of();
     // The Element Crafter recipes that need a research entry unlocked to be made: the entry (for recipe viewers)
     private static volatile Map<RecipeRecord, DustRecipe.ResearchKey> locks = Map.of();
+    // The crafting table recipes that are Dust's own (dust:dust_crafting, DustRecipe), which recipe viewers don't know
+    private static volatile Set<RecipeRecord> dustTable = Set.of();
 
     private RecipeCatalog() {}
 
@@ -70,6 +72,12 @@ public final class RecipeCatalog
     }
 
     // The research entry a recipe needs unlocked before it can be made, if any (Element Crafter recipes)
+    // Whether a crafting table recipe is one of Dust's own (DustRecipe), for recipe viewers to show themselves
+    public static boolean isDustTableRecipe(RecipeRecord recipe)
+    {
+        return dustTable.contains(recipe);
+    }
+
     public static Optional<DustRecipe.ResearchKey> lockOf(RecipeRecord recipe)
     {
         return Optional.ofNullable(locks.get(recipe));
@@ -99,7 +107,7 @@ public final class RecipeCatalog
     public static void onDatapackSync(OnDatapackSyncEvent event)
     {
         if (event.getPlayer() == null) build(event.getPlayerList().getServer());
-        Sync payload = new Sync(recipes, previews, locks);
+        Sync payload = new Sync(recipes, previews, locks, List.copyOf(dustTable));
         event.getRelevantPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, payload));
     }
 
@@ -112,15 +120,20 @@ public final class RecipeCatalog
         // Sorted by id, so the book lists them the same way every time
         List<RecipeHolder<CraftingRecipe>> crafting = new ArrayList<>(server.getRecipeManager().recipeMap().byType(RecipeType.CRAFTING));
         crafting.sort(Comparator.comparing(holder -> holder.id().identifier().toString()));
+        Map<RecipeRecord, DustRecipe.ResearchKey> lockedBy = new HashMap<>();
+        Set<RecipeRecord> ownTable = new java.util.HashSet<>();
         for (RecipeHolder<CraftingRecipe> holder : crafting) {
             RecipeRecord record = fromCrafting(holder.value(), table);
             if (record == null) continue;
             found.computeIfAbsent(record.output(), id -> new ArrayList<>()).add(record);
+            if (holder.value() instanceof DustRecipe dust) {
+                ownTable.add(record);
+                dust.research().ifPresent(key -> lockedBy.put(record, key));
+            }
             if (!(holder.value() instanceof DustRecipe dust && dust.needsResearch())) open.computeIfAbsent(record.output(), id -> new ArrayList<>()).add(record);
         }
         List<RecipeHolder<ElementCraftingRecipe>> element = new ArrayList<>(server.getRecipeManager().recipeMap().byType(DustRecipeRegistry.ELEMENT_CRAFTING_TYPE.get()));
         element.sort(Comparator.comparing(holder -> holder.id().identifier().toString()));
-        Map<RecipeRecord, DustRecipe.ResearchKey> lockedBy = new HashMap<>();
         for (RecipeHolder<ElementCraftingRecipe> holder : element) {
             RecipeRecord record = fromElementCrafting(holder.value(), crafter);
             if (record == null) continue;
@@ -128,6 +141,7 @@ public final class RecipeCatalog
             holder.value().research().ifPresent(key -> lockedBy.put(record, key));
         }
         locks = Map.copyOf(lockedBy);
+        dustTable = Set.copyOf(ownTable);
         Map<Identifier, List<RecipeRecord>> frozen = new HashMap<>();
         found.forEach((id, list) -> frozen.put(id, List.copyOf(list)));
         recipes = Map.copyOf(frozen);
@@ -197,7 +211,7 @@ public final class RecipeCatalog
     // ---- sending it ----
 
     public record Sync(Map<Identifier, List<RecipeRecord>> recipes, Map<Identifier, List<RecipeRecord>> previews,
-                       Map<RecipeRecord, DustRecipe.ResearchKey> locks) implements CustomPacketPayload
+                       Map<RecipeRecord, DustRecipe.ResearchKey> locks, List<RecipeRecord> dustTable) implements CustomPacketPayload
     {
         public static final Type<Sync> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "recipe_catalog"));
         private static final StreamCodec<RegistryFriendlyByteBuf, RecipeRecord> RECORD = ByteBufCodecs.fromCodecWithRegistries(RecipeRecord.CODEC);
@@ -205,6 +219,7 @@ public final class RecipeCatalog
                 ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, RECORD.apply(ByteBufCodecs.list())), Sync::recipes,
                 ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, RECORD.apply(ByteBufCodecs.list())), Sync::previews,
                 ByteBufCodecs.map(HashMap::new, RECORD, DustRecipe.ResearchKey.STREAM_CODEC), Sync::locks,
+                RECORD.apply(ByteBufCodecs.list()), Sync::dustTable,
                 Sync::new);
 
         @Override
@@ -219,6 +234,7 @@ public final class RecipeCatalog
             RecipeCatalog.recipes = Map.copyOf(payload.recipes());
             RecipeCatalog.previews = Map.copyOf(payload.previews());
             RecipeCatalog.locks = Map.copyOf(payload.locks());
+            RecipeCatalog.dustTable = Set.copyOf(payload.dustTable());
         }
     }
 }

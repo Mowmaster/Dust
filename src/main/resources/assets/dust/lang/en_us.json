@@ -1779,5 +1779,6 @@
   "dust.vault_key.opens": "Opens %s Arcane Vaults",
   "dust.vault.wrong_key": "This vault opens with a %s",
   "dust.vault.opened": "You've already opened this vault",
-  "dust.vault.broadcast": "%s found %s (%s) in an Arcane Vault!"
+  "dust.vault.broadcast": "%s found %s (%s) in an Arcane Vault!",
+  "jei.dust.dust_crafting": "Dust Crafting"
 }

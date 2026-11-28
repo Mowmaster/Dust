@@ -120,6 +120,7 @@ public class DustRecipe extends CustomRecipe
     public List<DustNeed> dusts() { return dusts; }
     public List<Ingredient> ingredients() { return ingredients; }
     public boolean needsResearch() { return research.isPresent(); }
+    public Optional<ResearchKey> research() { return research; }
 
     // ---- matching ----
 
