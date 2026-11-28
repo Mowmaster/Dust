@@ -35,6 +35,7 @@ public final class DustConfig
     public static final ModConfigSpec.IntValue SPAWNER_COOLDOWN;
     public static final ModConfigSpec.BooleanValue LABYRINTH_KEEP_INVENTORY;
     public static final ModConfigSpec.DoubleValue SPAWNER_KEY_CHANCE;
+    public static final ModConfigSpec.BooleanValue ALL_RESEARCH_UNLOCKED;
 
     static {
         BUILDER.push("spells").comment("Metal on a block that isn't an ore: the nugget it drops when broken, by weight").push("metal");
@@ -74,6 +75,13 @@ public final class DustConfig
         BUILDER.comment("The aura of dust in each chunk (Features/Magic/ChunkAura)").push("aura");
         AURA_CHANGE_RATE = BUILDER.comment("How fast a chunk's aura evens out with its neighbours and drifts back to normal (1: the original rate; 3: three times as fast)")
                 .defineInRange("change_rate", 3.0, 0.1, 20.0);
+        BUILDER.pop();
+
+        BUILDER.comment("Research (Features/Research)").push("research");
+        ALL_RESEARCH_UNLOCKED = BUILDER.comment("Whether every research entry counts as unlocked for every player from the start: every element known, every",
+                        "researched recipe craftable, every machine and its recipe available, every book entry open, every Element Crafter recipe shown in",
+                        "JEI. On while research is being reworked; turn off to research things as normal (what players have really researched is kept)")
+                .define("all_unlocked", true);
         BUILDER.pop();
 
         BUILDER.comment("Sanctums and their labyrinths (Features/Sanctums, Features/Labyrinth)").push("sanctums");

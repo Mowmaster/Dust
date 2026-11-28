@@ -53,7 +53,16 @@ public record ResearchData(Map<Identifier, Map<Identifier, EntryResearch>> tabs)
 
     public @Nullable EntryResearch get(ResearchEntry entry)
     {
-        return tabs.getOrDefault(entry.tab().id(), Map.of()).get(entry.id());
+        EntryResearch found = tabs.getOrDefault(entry.tab().id(), Map.of()).get(entry.id());
+        // Everything unlocked (DustConfig.ALL_RESEARCH_UNLOCKED): an entry not really researched reads as a blank one
+        if (found == null && allUnlocked()) return EntryResearch.UNLOCKED;
+        return found;
+    }
+
+    // Whether the config has every entry count as researched (its default, true, before the config has loaded)
+    public static boolean allUnlocked()
+    {
+        return com.mowmaster.dust.DustConfig.flag(com.mowmaster.dust.DustConfig.ALL_RESEARCH_UNLOCKED);
     }
 
     public boolean has(ResearchEntry entry)
@@ -64,6 +73,7 @@ public record ResearchData(Map<Identifier, Map<Identifier, EntryResearch>> tabs)
     // Any member of the group researched?
     public boolean hasAny(ResearchTab tab, List<Identifier> group)
     {
+        if (!group.isEmpty() && allUnlocked()) return true;
         Map<Identifier, EntryResearch> entries = tabs.getOrDefault(tab.id(), Map.of());
         for (Identifier id : group) {
             if (entries.containsKey(id)) return true;
