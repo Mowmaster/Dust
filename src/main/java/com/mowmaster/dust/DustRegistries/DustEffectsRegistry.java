@@ -126,9 +126,10 @@ public class DustEffectsRegistry
     public static final Holder<MobEffect> SHRUNK = MOB_EFFECTS.register("shrunk", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0xA070D8)
             .addAttributeModifier(Attributes.SCALE, id("effect.shrunk"), AttributeModifier.Operation.ADD_VALUE, amplifier -> -Math.min(0.9, 0.25 * (amplifier + 1))));
     // The Flight + Chaos fusion, on yourself or a mob: gravity turned upside down (Features/Spells/effects/GravityInversion).
-    // Gravity times -(1 + 2 + half a level): -0.08 (vanilla's pull, reversed) at level I, 0.04 stronger each level.
-    public static final Holder<MobEffect> INVERTED = MOB_EFFECTS.register("inverted", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x8A4FD8)
-            .addAttributeModifier(Attributes.GRAVITY, id("effect.inverted"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, amplifier -> -(2 + 0.5 * amplifier)));
+    // The same upward pull as a block it lifts (GravityInversion.liftBlock): -0.05 a tick at level I, 0.02 more each level.
+    // Vanilla gravity is 0.08, and ADD_MULTIPLIED_TOTAL multiplies it by (1 + amount): 1 - 1.625 = -0.625, times 0.08 is
+    // -0.05; each level another -0.25 (-0.02).
+    public static final Holder<MobEffect> INVERTED = MOB_EFFECTS.register("inverted", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x8A4FD8).addAttributeModifier(Attributes.GRAVITY, id("effect.inverted"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, amplifier -> -(1.0625 + 0.03125 * amplifier)));
     // Plants on yourself: in sunlight (the sky overhead, daytime, no rain on you) it heals half a heart; under cover (no
     // sky overhead) it feeds a player instead (1 food, and saturation). Every 2 seconds at level I, faster each level.
     public static final Holder<MobEffect> PHOTOSYNTHESIS = MOB_EFFECTS.register("photosynthesis", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0x9ADB4A, 40,
