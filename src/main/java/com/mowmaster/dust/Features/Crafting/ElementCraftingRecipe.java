@@ -159,6 +159,12 @@ public class ElementCraftingRecipe implements Recipe<CraftingInput>
         return result.create();
     }
 
+    // The research entry whoever crafts it must have unlocked, if any
+    public Optional<DustRecipe.ResearchKey> research()
+    {
+        return research;
+    }
+
     // Whether this player may craft it: they've unlocked its research entry (or it needs none)
     public boolean allows(Player player)
     {

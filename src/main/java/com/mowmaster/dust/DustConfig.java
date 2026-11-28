@@ -78,9 +78,10 @@ public final class DustConfig
         BUILDER.pop();
 
         BUILDER.comment("Research (Features/Research)").push("research");
-        ALL_RESEARCH_UNLOCKED = BUILDER.comment("Whether every research entry counts as unlocked for every player from the start: every element known, every",
-                        "researched recipe craftable, every machine and its recipe available, every book entry open, every Element Crafter recipe shown in",
-                        "JEI. On while research is being reworked; turn off to research things as normal (what players have really researched is kept)")
+        ALL_RESEARCH_UNLOCKED = BUILDER.comment("Whether every discovery in the Research Notes' Research tab (Dust's machines, stations and pylons) counts as",
+                        "unlocked for every player from the start: their recipes can be made, and show in JEI, and the Research tab is hidden (the blocks",
+                        "are still in the Blocks tab). Only that tab: blocks, items, creatures and the rest are still researched in the world with Research",
+                        "Notes. On while the Research tab is being reworked; turn off to unlock its discoveries as normal")
                 .define("all_unlocked", true);
         BUILDER.pop();
 

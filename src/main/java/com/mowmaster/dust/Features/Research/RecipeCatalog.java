@@ -58,6 +58,8 @@ public final class RecipeCatalog
     // Item id -> its recipes. Swapped whole, never changed in place (volatile: every thread sees the newest).
     private static volatile Map<Identifier, List<RecipeRecord>> recipes = Map.of();
     private static volatile Map<Identifier, List<RecipeRecord>> previews = Map.of();
+    // The Element Crafter recipes that need a research entry unlocked to be made: the entry (for recipe viewers)
+    private static volatile Map<RecipeRecord, DustRecipe.ResearchKey> locks = Map.of();
 
     private RecipeCatalog() {}
 
@@ -65,6 +67,12 @@ public final class RecipeCatalog
     public static List<RecipeRecord> recipesFor(Identifier item)
     {
         return recipes.getOrDefault(item, List.of());
+    }
+
+    // The research entry a recipe needs unlocked before it can be made, if any (Element Crafter recipes)
+    public static Optional<DustRecipe.ResearchKey> lockOf(RecipeRecord recipe)
+    {
+        return Optional.ofNullable(locks.get(recipe));
     }
 
     // Every item's recipes (item id -> its recipes), as last sent; for recipe viewers (Integration/jei)
@@ -91,7 +99,7 @@ public final class RecipeCatalog
     public static void onDatapackSync(OnDatapackSyncEvent event)
     {
         if (event.getPlayer() == null) build(event.getPlayerList().getServer());
-        Sync payload = new Sync(recipes, previews);
+        Sync payload = new Sync(recipes, previews, locks);
         event.getRelevantPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, payload));
     }
 
@@ -112,10 +120,14 @@ public final class RecipeCatalog
         }
         List<RecipeHolder<ElementCraftingRecipe>> element = new ArrayList<>(server.getRecipeManager().recipeMap().byType(DustRecipeRegistry.ELEMENT_CRAFTING_TYPE.get()));
         element.sort(Comparator.comparing(holder -> holder.id().identifier().toString()));
+        Map<RecipeRecord, DustRecipe.ResearchKey> lockedBy = new HashMap<>();
         for (RecipeHolder<ElementCraftingRecipe> holder : element) {
             RecipeRecord record = fromElementCrafting(holder.value(), crafter);
-            if (record != null) found.computeIfAbsent(record.output(), id -> new ArrayList<>()).add(record);
+            if (record == null) continue;
+            found.computeIfAbsent(record.output(), id -> new ArrayList<>()).add(record);
+            holder.value().research().ifPresent(key -> lockedBy.put(record, key));
         }
+        locks = Map.copyOf(lockedBy);
         Map<Identifier, List<RecipeRecord>> frozen = new HashMap<>();
         found.forEach((id, list) -> frozen.put(id, List.copyOf(list)));
         recipes = Map.copyOf(frozen);
@@ -184,13 +196,15 @@ public final class RecipeCatalog
 
     // ---- sending it ----
 
-    public record Sync(Map<Identifier, List<RecipeRecord>> recipes, Map<Identifier, List<RecipeRecord>> previews) implements CustomPacketPayload
+    public record Sync(Map<Identifier, List<RecipeRecord>> recipes, Map<Identifier, List<RecipeRecord>> previews,
+                       Map<RecipeRecord, DustRecipe.ResearchKey> locks) implements CustomPacketPayload
     {
         public static final Type<Sync> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DustReferences.MODID, "recipe_catalog"));
         private static final StreamCodec<RegistryFriendlyByteBuf, RecipeRecord> RECORD = ByteBufCodecs.fromCodecWithRegistries(RecipeRecord.CODEC);
         public static final StreamCodec<RegistryFriendlyByteBuf, Sync> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, RECORD.apply(ByteBufCodecs.list())), Sync::recipes,
                 ByteBufCodecs.map(HashMap::new, Identifier.STREAM_CODEC, RECORD.apply(ByteBufCodecs.list())), Sync::previews,
+                ByteBufCodecs.map(HashMap::new, RECORD, DustRecipe.ResearchKey.STREAM_CODEC), Sync::locks,
                 Sync::new);
 
         @Override
@@ -204,6 +218,7 @@ public final class RecipeCatalog
         {
             RecipeCatalog.recipes = Map.copyOf(payload.recipes());
             RecipeCatalog.previews = Map.copyOf(payload.previews());
+            RecipeCatalog.locks = Map.copyOf(payload.locks());
         }
     }
 }

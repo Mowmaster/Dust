@@ -167,7 +167,7 @@ public record EntryResearch(long day, int time, List<Identifier> biomes, List<Id
             Codec.STRING.optionalFieldOf("notes", "").forGetter(EntryResearch::notes)
     ).apply(instance, EntryResearch::new));
 
-    // A blank entry: what an entry not really researched reads as while every entry counts as unlocked
+    // A blank entry: what a Research tab discovery not really made reads as while they all count as made
     // (DustConfig.ALL_RESEARCH_UNLOCKED, ResearchData.get)
     public static final EntryResearch UNLOCKED = new EntryResearch(0, 0, List.of(), List.of(), Creature.NONE, List.of(), List.of(), List.of(),
             List.of(), List.of(), Food.NONE, List.of(), Dust.NONE, List.of(), "");

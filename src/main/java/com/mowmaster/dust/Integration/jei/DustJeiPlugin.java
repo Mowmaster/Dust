@@ -7,8 +7,6 @@ import com.mowmaster.dust.Features.Research.RecipeRecord;
 import com.mowmaster.dust.Features.Research.Research;
 import com.mowmaster.dust.Features.Research.ResearchData;
 import com.mowmaster.dust.Features.Research.ResearchEntry;
-import com.mowmaster.dust.Features.Research.ResearchTab;
-import com.mowmaster.dust.Features.Research.ResearchTabs;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.IRecipeManager;
@@ -19,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jspecify.annotations.Nullable;
@@ -30,8 +27,8 @@ import java.util.List;
 import java.util.Set;
 
 // Dust's JEI plugin (26.3 only; JEI is optional, and this class is only loaded by JEI). It adds the Element Crafter's
-// recipes to JEI (ElementCrafterCategory), each shown only once the player has unlocked it: its result's research entry
-// (the same rule as the research book's "Crafted from" pages; a machine's entry is its Research tab discovery).
+// recipes to JEI (ElementCrafterCategory), each shown only once the player may make it: a recipe that needs a research
+// entry (a Research tab discovery, RecipeCatalog.lockOf) shows once that's unlocked; the rest always show.
 // Clients don't get recipes in 26.x, so the recipes are the research book's (RecipeCatalog, sent to every client when
 // they join and when datapacks reload). Once a second (and when JEI starts) it adds any new ones, and hides or shows
 // each as the player's research changes.
@@ -135,15 +132,13 @@ public class DustJeiPlugin implements IModPlugin
         }
     }
 
-    // Whether the player has unlocked what the recipe makes: its entry in any research tab
+    // Whether the player may make the recipe: it needs no research, or they've unlocked the entry it needs (a Research
+    // tab discovery: all of them count while DustConfig.ALL_RESEARCH_UNLOCKED is on)
     private static boolean unlocked(ResearchData research, RecipeRecord recipe)
     {
-        ItemStack result = new ItemStack(BuiltInRegistries.ITEM.getValue(recipe.output()));
-        if (result.isEmpty()) return false;
-        for (ResearchTab tab : ResearchTabs.all()) {
-            Identifier id = tab.entryForItem(result);
-            if (id != null && research.has(new ResearchEntry(tab, id))) return true;
-        }
-        return false;
+        return RecipeCatalog.lockOf(recipe).map(key -> {
+            ResearchEntry entry = Research.byKey(key.tab(), key.entry());
+            return entry != null && research.has(entry);
+        }).orElse(true);
     }
 }

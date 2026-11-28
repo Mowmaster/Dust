@@ -121,7 +121,7 @@ public final class ResearchBook
 
     static ResearchTab tab()
     {
-        if (tab == null || ResearchTabs.byId(tab.id()) == null) tab = ResearchTabs.all().getFirst();
+        if (tab == null || ResearchTabs.byId(tab.id()) == null || hidden(tab)) tab = ResearchTabs.all().getFirst();
         return tab;
     }
 
@@ -269,10 +269,16 @@ public final class ResearchBook
     }
 
     // The tabs along the top (the things found in the world) and along the bottom (bottomTab: Elements, Spell Cards,
-    // Research, Codex). The open one stands out a little further.
+    // Research, Codex; Research left out while hidden). The open one stands out a little further.
     private static List<ResearchTab> tabsOn(boolean bottom)
     {
-        return ResearchTabs.all().stream().filter(each -> each.bottomTab() == bottom).toList();
+        return ResearchTabs.all().stream().filter(each -> each.bottomTab() == bottom && !hidden(each)).toList();
+    }
+
+    // The Research tab isn't shown while its discoveries all count as made (DustConfig.ALL_RESEARCH_UNLOCKED)
+    private static boolean hidden(ResearchTab tab)
+    {
+        return tab == ResearchTabs.RESEARCH && ResearchData.allUnlocked();
     }
 
     private static void drawTabs(GuiGraphicsExtractor graphics)
