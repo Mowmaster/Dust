@@ -51,6 +51,9 @@ stonecutter {
     // Every datagen file goes except DustTags.java, which isn't datagen: the mod's tag keys, used all over the mod.
     files {
         def dataGen = 'com/mowmaster/dust/DustDataGen/'
+        // The JEI plugin: JEI is only a dependency of the 26.3 build (jei_version in versions/26.3/gradle.properties)
+        disable(current.parsed.matches('<26.3'), 'com/mowmaster/dust/Integration/jei/DustJeiPlugin.java')
+        disable(current.parsed.matches('<26.3'), 'com/mowmaster/dust/Integration/jei/ElementCrafterCategory.java')
         ['DustDataGenerator', 'DustEquipmentAssets', 'DustProviderBasicRecipe', 'DustProviderBlockLootTable',
          'DustProviderGlobalLootModifier', 'DustProviderModel', 'DustProviderSpellConversions',
          'DustTagProviderBlock', 'DustTagProviderItem', 'DustWorldgen', 'DustWoodFamilies', 'DustFuels',
@@ -77,6 +80,14 @@ repositories {
     mavenLocal {
         content {
             includeGroup 'com.mowmaster.mowlib'
+        }
+    }
+    // JEI (Just Enough Items, by mezz): an optional dependency, only looked for here
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com'
+        content {
+            includeGroup 'mezz.jei'
         }
     }
 }
@@ -189,6 +200,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     // MowLib is published once per Minecraft version (mowlib-26.3, mowlib-26.1.2): ask for the one matching this mod's
     // minecraft_version (gradle.properties). Double quotes so Groovy fills in ${minecraft_version}.
+    // JEI, optional: compiled against its API, and run in the dev client so its recipe view can be tried. Only for
+    // versions whose gradle.properties give a jei_version (26.3); the plugin (Integration/jei) is left out of the rest.
+    if (project.hasProperty('jei_version')) {
+        compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+        compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+        localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    }
     jarJar(implementation(group: 'com.mowmaster.mowlib', name: "mowlib-${minecraft_version}")) {
         version {
             strictly '[0.0.5,1.0.0)'
@@ -208,6 +226,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            jei_version_range      : jei_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties

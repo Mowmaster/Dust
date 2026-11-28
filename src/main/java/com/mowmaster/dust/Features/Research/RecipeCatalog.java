@@ -67,6 +67,12 @@ public final class RecipeCatalog
         return recipes.getOrDefault(item, List.of());
     }
 
+    // Every item's recipes (item id -> its recipes), as last sent; for recipe viewers (Integration/jei)
+    public static Map<Identifier, List<RecipeRecord>> all()
+    {
+        return recipes;
+    }
+
     // The open crafting table recipes for this item: what an unresearched entry shows (empty if none)
     public static List<RecipeRecord> previewsFor(Identifier item)
     {
