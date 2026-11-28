@@ -88,6 +88,7 @@ repositories {
         url = 'https://maven.blamejared.com'
         content {
             includeGroup 'mezz.jei'
+            includeGroup 'net.mezzdev.config'   // JEI's own config library (mezz_config), which it needs at runtime
         }
     }
 }
