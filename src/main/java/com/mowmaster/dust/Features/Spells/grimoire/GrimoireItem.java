@@ -89,6 +89,13 @@ public class GrimoireItem extends Item implements IPagedStorageItem
         return Component.translatable("dust.grimoire.page", page + 1, getPageCount(stack), what);
     }
 
+    // Turns to the next (+1) or previous (-1) spell (the grimoire keys, GrimoirePayload); what to say over the hotbar
+    public Component turn(ItemStack stack, int direction)
+    {
+        setPage(stack, nextPage(stack, direction));
+        return describe(stack, getPage(stack));
+    }
+
     // ---- reading the pages ----
 
     // The scroll on a page (empty if there's none)

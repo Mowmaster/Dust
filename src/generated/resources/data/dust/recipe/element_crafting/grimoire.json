@@ -1,0 +1,25 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 1000,
+      "element": "dust:fire"
+    },
+    {
+      "amount": 1000,
+      "element": "dust:water"
+    },
+    {
+      "amount": 1000,
+      "element": "dust:earth"
+    }
+  ],
+  "ingredients": [
+    "dust:ancient_ink",
+    "minecraft:feather",
+    "minecraft:book"
+  ],
+  "result": {
+    "id": "dust:grimoire"
+  }
+}

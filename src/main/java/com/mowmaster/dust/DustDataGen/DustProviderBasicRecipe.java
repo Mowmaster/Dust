@@ -335,6 +335,15 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                 cost(DustElements.EARTH, 10));
         elementShaped(DustBlockRegistry.SHAPE_PYLON.asItem(), "shape_pylon", unlock("shape_pylon"), pylonKey, pylon, cost(DustElements.CHANGE, 10));
         elementShaped(DustBlockRegistry.NEUTRAL_PYLON.asItem(), "neutral_pylon", Optional.empty(), pylonKey, pylon, cost(DustElements.ORDER, 10));
+        // The counter pylons: a Neutral Pylon ringed with eight Order (Blessed) or Chaos (Corrupted) crystals, and 10 of that dust
+        List<String> ringed = List.of("CCC", "CPC", "CCC");
+        Ingredient neutralPylon = Ingredient.of(DustBlockRegistry.NEUTRAL_PYLON.asItem());
+        elementShaped(DustBlockRegistry.PYLON_BLESSED.asItem(), "pylon_blessed", Optional.empty(),
+                java.util.Map.of('C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.ORDER).get()), 'P', neutralPylon),
+                ringed, cost(DustElements.ORDER, 10));
+        elementShaped(DustBlockRegistry.PYLON_CORRUPTED.asItem(), "pylon_corrupted", Optional.empty(),
+                java.util.Map.of('C', Ingredient.of(DustItemRegistry.CRYSTALS.get(DustElements.CHAOS).get()), 'P', neutralPylon),
+                ringed, cost(DustElements.CHAOS, 10));
         elementShaped(DustBlockRegistry.DAMAGE_PYLON.asItem(), "damage_pylon", unlock("damage_pylon"), pylonKey, pylon, cost(DustElements.DEATH, 100));
         elementShaped(DustBlockRegistry.EXPERIENCED_PYLON.asItem(), "experienced_pylon", unlock("experienced_pylon"), pylonKey, pylon, cost(DustElements.KNOWLEDGE, 100));
         elementShaped(DustBlockRegistry.THRIFTY_PYLON.asItem(), "thrifty_pylon", unlock("thrifty_pylon"), pylonKey, pylon, cost(DustElements.TOOL, 100));
@@ -367,10 +376,45 @@ public class DustProviderBasicRecipe extends RecipeProvider {
                             net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(sapling))),
                     List.of(Ingredient.of(source)), cost(set.type().element(), 20));
         }
+        // The Grimoire: the Research Notes' recipe (Ancient Ink, a feather, a book) with 1000 each of Fire, Water and Earth dust
+        elementShapeless(DustItemRegistry.GRIMOIRE.get(), 1, "grimoire", Optional.empty(),
+                List.of(Ingredient.of(DustItemRegistry.ANCIENT_INK.get()), Ingredient.of(Items.FEATHER), Ingredient.of(Items.BOOK)),
+                primals(1000));
+        crystalToolRecipes();
         // Spell Scroll: shapeless, paper and soot
         elementShapeless(DustItemRegistry.SPELL_SCROLL.get(), 1, "spell_scroll", Optional.empty(),
                 List.of(Ingredient.of(Items.PAPER), Ingredient.of(soot)),
                 cost(DustElements.TOOL, 10));
+    }
+
+    // The crystal tools: vanilla's diamond tool recipes with any element crystal for the diamonds and diamonds for the sticks,
+    // in the Element Crafter with 1000 each of Fire, Water and Earth dust. The Mattock (a pickaxe and axe in one) and the
+    // Hammer (crystal blocks, mining 3x3) have no vanilla recipe: a pickaxe's head with an axe's blade, and a pickaxe of
+    // crystal blocks.
+    private void crystalToolRecipes() {
+        Ingredient crystal = tag(DustTags.Items.MAGICAL_CRYSTAL_ITEMS);
+        Ingredient block = tag(DustTags.Items.CRYSTAL_BLOCK_REPAIRABLES);
+        Ingredient diamond = Ingredient.of(Items.DIAMOND);
+        java.util.Map<Character, Ingredient> key = java.util.Map.of('C', crystal, 'D', diamond);
+        crystalTool(DustItemRegistry.CRYSTAL_SWORD.get(), key, "C", "C", "D");
+        crystalTool(DustItemRegistry.CRYSTAL_PICKAXE.get(), key, "CCC", " D ", " D ");
+        crystalTool(DustItemRegistry.CRYSTAL_AXE.get(), key, "CC", "CD", " D");
+        crystalTool(DustItemRegistry.CRYSTAL_SHOVEL.get(), key, "C", "D", "D");
+        crystalTool(DustItemRegistry.CRYSTAL_HOE.get(), key, "CC", " D", " D");
+        crystalTool(DustItemRegistry.CRYSTAL_SPEAR.get(), key, "  C", " D ", "D  ");
+        crystalTool(DustItemRegistry.CRYSTAL_MATTOCK.get(), key, "CCC", "CD ", " D ");
+        crystalTool(DustItemRegistry.CRYSTAL_HAMMER.get(), java.util.Map.of('C', block, 'D', diamond), "CCC", " D ", " D ");
+    }
+
+    private void crystalTool(Item tool, java.util.Map<Character, Ingredient> key, String... rows) {
+        String name = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(tool).getPath();
+        elementShaped(tool, name, Optional.empty(), key, List.of(rows), primals(1000));
+    }
+
+    // This much each of Fire, Water and Earth dust
+    private static com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost[] primals(int amount) {
+        return new com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost[] {
+                cost(DustElements.FIRE, amount), cost(DustElements.WATER, amount), cost(DustElements.EARTH, amount)};
     }
 
     private static com.mowmaster.dust.Features.Crafting.ElementCraftingRecipe.ElementCost cost(DustElement element, int amount) {

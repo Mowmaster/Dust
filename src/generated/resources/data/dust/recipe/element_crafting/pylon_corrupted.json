@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:chaos"
+    }
+  ],
+  "result": {
+    "id": "dust:pylon_corrupted"
+  },
+  "shaped": {
+    "key": {
+      "C": "dust:crystal_black",
+      "P": "dust:neutral_pylon"
+    },
+    "pattern": [
+      "CCC",
+      "CPC",
+      "CCC"
+    ]
+  }
+}

@@ -46,6 +46,11 @@ public class DustComponentDataRegistry
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CRYSTAL_CHARGE = register("crystal_charge",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    // The Akashic's every-spell mode (Features/Spells/grimoire/AkashicItem): which of the spells is chosen; -1 once a
+    // Spell Scroll has been put in it, and the every-spell pages are gone for good
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> AKASHIC_SPELL = register("akashic_spell",
+            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     // An Archon's loot bag's level, the Archon's (Features/Bosses/LootBags)
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> LOOT_BAG_LEVEL = register("loot_bag_level",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));

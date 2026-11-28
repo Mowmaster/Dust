@@ -46,8 +46,7 @@ public record GrimoirePayload(int action, int value) implements CustomPacketPayl
             }
             case TURN -> {
                 int direction = payload.value() < 0 ? -1 : 1;
-                grimoire.setPage(stack, grimoire.nextPage(stack, direction));
-                player.sendOverlayMessage(grimoire.describe(stack, grimoire.getPage(stack)));
+                player.sendOverlayMessage(grimoire.turn(stack, direction));
             }
             default -> {}
         }

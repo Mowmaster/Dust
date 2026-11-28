@@ -30,6 +30,10 @@ public class DustAttachmentTypeRegistry
                             .build()
             );
 
+    // Whether this player has been given the Akashic in this world (Features/Spells/grimoire/AkashicItem), kept through death
+    public static final Supplier<AttachmentType<Boolean>> AKASHIC_GIVEN = ATTACHMENT_TYPES.register("akashic_given",
+            () -> AttachmentType.builder(() -> Boolean.FALSE).serialize(Codec.BOOL.fieldOf("akashic_given")).copyOnDeath().build());
+
     //Tutorial Attachment Types (Module 3: #7)
     //This could be a custom data class as well
     public static final Supplier<AttachmentType<Integer>> DUSTMAGIC_MANA = ATTACHMENT_TYPES.register("dustmagic_mana",

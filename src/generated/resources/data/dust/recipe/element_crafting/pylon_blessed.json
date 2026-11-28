@@ -1,0 +1,23 @@
+{
+  "type": "dust:element_crafting",
+  "elements": [
+    {
+      "amount": 10,
+      "element": "dust:order"
+    }
+  ],
+  "result": {
+    "id": "dust:pylon_blessed"
+  },
+  "shaped": {
+    "key": {
+      "C": "dust:crystal_white",
+      "P": "dust:neutral_pylon"
+    },
+    "pattern": [
+      "CCC",
+      "CPC",
+      "CCC"
+    ]
+  }
+}

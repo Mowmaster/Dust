@@ -408,6 +408,8 @@
   "item.dust.akashic.tooltip.xp": "Spells cast from it: 10x spell experience",
   "item.dust.akashic.tooltip.cost": "No dust or mana cost",
   "item.dust.akashic.tooltip.pool": "Held, shows a Spell Pylon's pool",
+  "item.dust.akashic.tooltip.every_spell": "Holds every spell (%s) at its first level until a Spell Scroll is put in",
+  "dust.akashic.spell": "%s - %s",
   "item.dust.card_aoe": "AOE Card",
   "item.dust.card_beam": "Beam Card",
   "item.dust.card_chain": "Chaining Card",
