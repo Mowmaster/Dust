@@ -39,6 +39,17 @@ public class DustAttachmentTypeRegistry
     public static final Supplier<AttachmentType<Boolean>> EYES_FLIPPED = ATTACHMENT_TYPES.register("eyes_flipped",
             () -> AttachmentType.builder(() -> Boolean.FALSE).build());
 
+    // Beastification (Features/Spells/effects/Beastification), each an entity type id or "" for none:
+    //   beast_choice   the creature a player picked as their form (crouch + right-click it with the spell); kept through death
+    //   beast_form     the creature a player is turned into now; synced to them and everyone who can see them (for drawing)
+    //   beast_applied  the form their size was last set to, on each side for itself (not saved, not synced)
+    public static final Supplier<AttachmentType<String>> BEAST_CHOICE = ATTACHMENT_TYPES.register("beast_choice",
+            () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_choice")).copyOnDeath().build());
+    public static final Supplier<AttachmentType<String>> BEAST_FORM = ATTACHMENT_TYPES.register("beast_form",
+            () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_form")).sync(ByteBufCodecs.STRING_UTF8).build());
+    public static final Supplier<AttachmentType<String>> BEAST_APPLIED = ATTACHMENT_TYPES.register("beast_applied",
+            () -> AttachmentType.builder(() -> "").build());
+
     //Tutorial Attachment Types (Module 3: #7)
     //This could be a custom data class as well
     public static final Supplier<AttachmentType<Integer>> DUSTMAGIC_MANA = ATTACHMENT_TYPES.register("dustmagic_mana",

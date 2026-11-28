@@ -84,6 +84,11 @@ public final class SpellCasting
     private static boolean perform(ServerPlayer player, Spell spell, int costReduction, @Nullable ItemStack tool, @Nullable EquipmentSlot slot,
                                    @Nullable Predicate<SpellCast> landing)
     {
+        // Turned into a creature (Beastification): the creature's attack (or its sound) instead of any spell
+        if (com.mowmaster.dust.Features.Spells.effects.Beastification.formOf(player) != null) {
+            com.mowmaster.dust.Features.Spells.effects.BeastAttacks.attack(player, null);
+            return false;
+        }
         SpellShape shape = spell.shapeType();
         if (shape == null && landing == null) {
             player.sendOverlayMessage(Component.translatable("dust.spell.unknown_shape", spell.shape().toString()));

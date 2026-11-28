@@ -48,6 +48,8 @@ public class DustMagicEvents {
         registrar.playToClient(com.mowmaster.dust.Features.Research.RecipeCatalog.Sync.TYPE,
                 com.mowmaster.dust.Features.Research.RecipeCatalog.Sync.STREAM_CODEC, com.mowmaster.dust.Features.Research.RecipeCatalog.Sync::handle);
         registrar.playToServer(ResearchNotesPayload.TYPE, ResearchNotesPayload.STREAM_CODEC, ResearchNotesPayload::handle);
+        registrar.playToServer(com.mowmaster.dust.Features.Spells.effects.BeastAttackPayload.TYPE,
+                com.mowmaster.dust.Features.Spells.effects.BeastAttackPayload.STREAM_CODEC, com.mowmaster.dust.Features.Spells.effects.BeastAttackPayload::handle);
         registrar.playToServer(com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload.TYPE,
                 com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload.STREAM_CODEC, com.mowmaster.dust.Features.Spells.grimoire.GrimoirePayload::handle);
         registrar.playToServer(RemoveProcessPayload.TYPE, RemoveProcessPayload.STREAM_CODEC, RemoveProcessPayload::handle);

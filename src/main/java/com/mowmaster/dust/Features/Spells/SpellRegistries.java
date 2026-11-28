@@ -441,6 +441,17 @@ public final class SpellRegistries
                     .entity(BasicEffect.inflict(DustEffectsRegistry.INVERTED))
                     .types(EffectType.DOT, EffectType.INSTANT, EffectType.DOT));
 
+    // Change + Creature: Beastification (effects/Beastification). Crouch + right-click a creature with the spell to pick it
+    // as the form. Self: you become that creature for the spell's duration (drawn as it, its size; casting or striking
+    // with a weapon does its attack instead, or makes its sound if it has none); a player hit is turned into it the same
+    // way; any other creature hit is turned into it for good. Blocks: nothing.
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_CHANGE_CREATURE = MODIFIERS.register("fusion_change_creature",
+            () -> new FusionModifier(DustElements.CHANGE, DustElements.CREATURE)
+                    .self(com.mowmaster.dust.Features.Spells.effects.Beastification::self)
+                    .block((cast, pos, face) -> {})
+                    .entity(com.mowmaster.dust.Features.Spells.effects.Beastification::entity)
+                    .types(EffectType.DOT, EffectType.INSTANT, EffectType.INSTANT));
+
     // ---- the elements' effects (the rest come in later steps; until then an element does nothing) ----
     public static final DeferredHolder<ElementEffect, ElementEffect> FIRE = ELEMENT_EFFECTS.register(DustElements.FIRE.id().getPath(), FireEffect::new);
     public static final DeferredHolder<ElementEffect, ElementEffect> WATER = ELEMENT_EFFECTS.register(DustElements.WATER.id().getPath(), WaterEffect::new);

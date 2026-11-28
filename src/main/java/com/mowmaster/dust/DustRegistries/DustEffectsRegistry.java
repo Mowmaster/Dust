@@ -129,7 +129,11 @@ public class DustEffectsRegistry
     // The same upward pull as a block it lifts (GravityInversion.liftBlock): -0.05 a tick at level I, 0.02 more each level.
     // Vanilla gravity is 0.08, and ADD_MULTIPLIED_TOTAL multiplies it by (1 + amount): 1 - 1.625 = -0.625, times 0.08 is
     // -0.05; each level another -0.25 (-0.02).
-    public static final Holder<MobEffect> INVERTED = MOB_EFFECTS.register("inverted", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x8A4FD8).addAttributeModifier(Attributes.GRAVITY, id("effect.inverted"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, amplifier -> -(1.0625 + 0.03125 * amplifier)));
+    public static final Holder<MobEffect> INVERTED = MOB_EFFECTS.register("inverted", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x8A4FD8)
+            .addAttributeModifier(Attributes.GRAVITY, id("effect.inverted"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, amplifier -> -(1.625 + 0.25 * amplifier)));
+    // The Change + Creature fusion on a player: turned into a creature for its duration (Features/Spells/effects/Beastification;
+    // the form itself is the player's beast_form attachment, cleared when this ends)
+    public static final Holder<MobEffect> BEASTIFIED = MOB_EFFECTS.register("beastified", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x8B5A2B));
     // Plants on yourself: in sunlight (the sky overhead, daytime, no rain on you) it heals half a heart; under cover (no
     // sky overhead) it feeds a player instead (1 food, and saturation). Every 2 seconds at level I, faster each level.
     public static final Holder<MobEffect> PHOTOSYNTHESIS = MOB_EFFECTS.register("photosynthesis", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0x9ADB4A, 40,
