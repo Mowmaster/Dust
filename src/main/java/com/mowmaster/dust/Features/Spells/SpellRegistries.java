@@ -431,6 +431,16 @@ public final class SpellRegistries
                     .entity(com.mowmaster.dust.Features.Spells.effects.FusionParts::shearMob)
                     .types(EffectType.INSTANT, EffectType.INSTANT, EffectType.INSTANT));
 
+    // Flight + Chaos: Inversion (effects/GravityInversion). Self and creatures: gravity turned upside down (Inverted: they
+    // fall up, stand on ceilings, drawn upside down); on a block it lifts the block, which rises until it stops and is
+    // placed there (block entities and their contents go with it)
+    public static final DeferredHolder<SpellModifier, SpellModifier> FUSION_FLIGHT_CHAOS = MODIFIERS.register("fusion_flight_chaos",
+            () -> new FusionModifier(DustElements.FLIGHT, DustElements.CHAOS)
+                    .self(BasicEffect.give(DustEffectsRegistry.INVERTED))
+                    .block(com.mowmaster.dust.Features.Spells.effects.GravityInversion::liftBlock)
+                    .entity(BasicEffect.inflict(DustEffectsRegistry.INVERTED))
+                    .types(EffectType.DOT, EffectType.INSTANT, EffectType.DOT));
+
     // ---- the elements' effects (the rest come in later steps; until then an element does nothing) ----
     public static final DeferredHolder<ElementEffect, ElementEffect> FIRE = ELEMENT_EFFECTS.register(DustElements.FIRE.id().getPath(), FireEffect::new);
     public static final DeferredHolder<ElementEffect, ElementEffect> WATER = ELEMENT_EFFECTS.register(DustElements.WATER.id().getPath(), WaterEffect::new);

@@ -133,6 +133,7 @@ public class DustClient {
         event.registerEntityRenderer(DustEntityRegistry.SPELL_PROJECTILE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         // Blocks brought to life by spells, drawn as their blocks (the animated one hops as it scurries)
         event.registerEntityRenderer(DustEntityRegistry.FLOATING_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0));
+        event.registerEntityRenderer(DustEntityRegistry.RISING_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0));
         event.registerEntityRenderer(DustEntityRegistry.TELEKINESIS_CUBE.get(), com.mowmaster.dust.Features.Spells.Client.TelekinesisCubeRenderer::new);
         event.registerEntityRenderer(DustEntityRegistry.ANIMATED_BLOCK.get(), context -> new com.mowmaster.dust.Features.Spells.Client.CarriedBlockRenderer<>(context, 0.15F));
         // Void: the winged chest; the rift is only particles (spawned by the entity itself)

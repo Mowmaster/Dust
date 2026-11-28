@@ -125,6 +125,10 @@ public class DustEffectsRegistry
     // The Growth + Chaos fusion, on yourself or a mob: a quarter smaller a level (Grown the other way), down to a tenth
     public static final Holder<MobEffect> SHRUNK = MOB_EFFECTS.register("shrunk", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0xA070D8)
             .addAttributeModifier(Attributes.SCALE, id("effect.shrunk"), AttributeModifier.Operation.ADD_VALUE, amplifier -> -Math.min(0.9, 0.25 * (amplifier + 1))));
+    // The Flight + Chaos fusion, on yourself or a mob: gravity turned upside down (Features/Spells/effects/GravityInversion).
+    // Gravity times -(1 + 2 + half a level): -0.08 (vanilla's pull, reversed) at level I, 0.04 stronger each level.
+    public static final Holder<MobEffect> INVERTED = MOB_EFFECTS.register("inverted", () -> new SpellMobEffect(MobEffectCategory.NEUTRAL, 0x8A4FD8)
+            .addAttributeModifier(Attributes.GRAVITY, id("effect.inverted"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, amplifier -> -(2 + 0.5 * amplifier)));
     // Plants on yourself: in sunlight (the sky overhead, daytime, no rain on you) it heals half a heart; under cover (no
     // sky overhead) it feeds a player instead (1 food, and saturation). Every 2 seconds at level I, faster each level.
     public static final Holder<MobEffect> PHOTOSYNTHESIS = MOB_EFFECTS.register("photosynthesis", () -> new TickingMobEffect(MobEffectCategory.BENEFICIAL, 0x9ADB4A, 40,

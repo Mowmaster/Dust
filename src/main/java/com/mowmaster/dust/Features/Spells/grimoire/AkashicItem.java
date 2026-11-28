@@ -47,7 +47,7 @@ import java.util.function.Consumer;
 // It belongs to one player (OWNER): they're given one the first time they join a world (onLogIn; once per world, kept
 // through death). Anyone else carrying it, unless in creative mode, sees it vanish with a poof (inventoryTick).
 // Every-spell mode: until a Spell Scroll is first put in it, it holds every spell there is at its first level (each
-// element with each shape: everySpell), with no tree (so no experience). The grimoire keys' next / previous turn through
+// element with each shape, then each fusion with each shape: everySpell), with no tree (so no experience). The grimoire keys' next / previous turn through
 // them, saying "Element - Shape" over the hotbar. Once a scroll goes in, those spells are gone for good (AKASHIC_SPELL
 // set to -1) and it works as a Grimoire of its own scrolls.
 @EventBusSubscriber(modid = DustReferences.MODID)
@@ -141,6 +141,13 @@ public class AkashicItem extends GrimoireItem
             for (DustElement element : DustElements.all()) {
                 for (Identifier shape : shapes) spells.add(new Spell(element, shape, Map.of(), List.of()));
             }
+            // Then every fusion with each shape (a fused spell is its first element's, carrying the fusion)
+            for (var modifier : SpellRegistries.MODIFIER_REGISTRY) {
+                if (!(modifier instanceof com.mowmaster.dust.Features.Spells.modifiers.FusionModifier fusion)) continue;
+                Identifier id = SpellRegistries.MODIFIER_REGISTRY.getKey(modifier);
+                if (id == null) continue;
+                for (Identifier shape : shapes) spells.add(new Spell(fusion.first(), shape, Map.of(), List.of(id)));
+            }
             everySpell = List.copyOf(spells);
         }
         return everySpell;
@@ -187,7 +194,9 @@ public class AkashicItem extends GrimoireItem
     {
         if (!codex(stack) || everySpell().isEmpty()) return super.describe(stack, page);
         Spell spell = everySpell().get(chosen(stack));
-        return Component.translatable("dust.akashic.spell", spell.element().name(),
+        Identifier fusion = com.mowmaster.dust.Features.Spells.SpellNames.fusionOf(spell);
+        Component name = fusion != null ? com.mowmaster.dust.Features.Spells.SpellNames.fusionName(fusion) : spell.element().name();
+        return Component.translatable("dust.akashic.spell", name,
                 Component.translatable("spell_shape." + spell.shape().getNamespace() + "." + spell.shape().getPath()));
     }
 
