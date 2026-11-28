@@ -147,6 +147,10 @@ public final class Beastification
             newMob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), EntitySpawnReason.CONVERSION, null);
             if (mob.isPersistenceRequired()) newMob.setPersistenceRequired();
         }
+        // It still drops what it first was (turned again, still the first kind's)
+        String loot = mob.getData(DustAttachmentTypeRegistry.BEAST_LOOT);
+        if (loot.isEmpty()) loot = mob.getLootTable().map(key -> key.identifier().toString()).orElse("");
+        if (!loot.isEmpty()) made.setData(DustAttachmentTypeRegistry.BEAST_LOOT, loot);
         puff(level, mob);
         mob.discard();
         level.addFreshEntity(made);
@@ -156,6 +160,36 @@ public final class Beastification
     {
         level.sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY() + entity.getBbHeight() / 2, entity.getZ(), 20, 0.4, 0.5, 0.4, 0.02);
         level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 0.6F, 1.4F);
+    }
+
+    // A turned creature dies: its drops are rolled from what it first was (BEAST_LOOT) instead of its own kind's. HIGH:
+    // before anything else (Butchered's extra food...) works on the drops.
+    @SubscribeEvent(priority = net.neoforged.bus.api.EventPriority.HIGH)
+    public static void onDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event)
+    {
+        LivingEntity dead = event.getEntity();
+        if (!(dead.level() instanceof ServerLevel level) || !dead.hasData(DustAttachmentTypeRegistry.BEAST_LOOT)) return;
+        Identifier id = Identifier.tryParse(dead.getData(DustAttachmentTypeRegistry.BEAST_LOOT));
+        if (id == null) return;
+        net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> key =
+                net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, id);
+        net.minecraft.world.level.storage.loot.LootTable table = level.getServer().reloadableRegistries().getLootTable(key);
+        if (table == net.minecraft.world.level.storage.loot.LootTable.EMPTY) return;
+        net.minecraft.world.damagesource.DamageSource source = event.getSource();
+        net.minecraft.world.level.storage.loot.LootParams.Builder params = new net.minecraft.world.level.storage.loot.LootParams.Builder(level)
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.THIS_ENTITY, dead)
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN, dead.position())
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.DAMAGE_SOURCE, source)
+                .withOptionalParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ATTACKING_ENTITY, source.getEntity())
+                .withOptionalParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.DIRECT_ATTACKING_ENTITY, source.getDirectEntity());
+        if (source.getEntity() instanceof Player killer) {
+            params.withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.LAST_DAMAGE_PLAYER, killer).withLuck(killer.getLuck());
+        }
+        event.getDrops().clear();
+        for (ItemStack stack : table.getRandomItems(params.create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.ENTITY))) {
+            if (stack.isEmpty()) continue;
+            event.getDrops().add(new net.minecraft.world.entity.item.ItemEntity(level, dead.getX(), dead.getY(), dead.getZ(), stack));
+        }
     }
 
     // ---- picking the form ----

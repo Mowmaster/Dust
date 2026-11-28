@@ -49,6 +49,8 @@ public final class BeastificationClient
     // Each turned player's stand-in. Client side only, where entity ids are unique, so a WeakHashMap keyed by the player
     // is safe; a player that's gone is dropped.
     private static final Map<Player, LivingEntity> STAND_INS = new WeakHashMap<>();
+    // The next stand-in's id (counting down from here)
+    private static int nextId = -100_000;
 
     private BeastificationClient() {}
 
@@ -69,6 +71,9 @@ public final class BeastificationClient
             LivingEntity standIn = STAND_INS.get(player);
             if (standIn == null || standIn.getType() != form) {
                 if (!(form.create(level, EntitySpawnReason.LOAD) instanceof LivingEntity made)) continue;
+                // 26.3 won't draw an entity that has no id; a stand-in is never added to the level, so it gets one of
+                // its own, below zero where no real entity's id ever is
+                made.setId(nextId--);
                 made.snapTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot());
                 standIn = made;
                 STAND_INS.put(player, standIn);

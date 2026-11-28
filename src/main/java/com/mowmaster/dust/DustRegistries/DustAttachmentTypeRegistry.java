@@ -47,6 +47,10 @@ public class DustAttachmentTypeRegistry
             () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_choice")).copyOnDeath().build());
     public static final Supplier<AttachmentType<String>> BEAST_FORM = ATTACHMENT_TYPES.register("beast_form",
             () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_form")).sync(ByteBufCodecs.STRING_UTF8).build());
+    // A creature Beastification turned into another for good: the loot table of what it first was (it drops that, not
+    // the new kind's); saved with it
+    public static final Supplier<AttachmentType<String>> BEAST_LOOT = ATTACHMENT_TYPES.register("beast_loot",
+            () -> AttachmentType.builder(() -> "").serialize(Codec.STRING.fieldOf("beast_loot")).build());
     public static final Supplier<AttachmentType<String>> BEAST_APPLIED = ATTACHMENT_TYPES.register("beast_applied",
             () -> AttachmentType.builder(() -> "").build());
 

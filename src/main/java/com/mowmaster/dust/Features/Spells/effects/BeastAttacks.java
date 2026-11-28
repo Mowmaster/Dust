@@ -65,6 +65,7 @@ public final class BeastAttacks
     private static final Map<UUID, Long> FUSES = new HashMap<>();
     // One creature of each kind per level, never added to it: what makes the sounds (its own sound methods)
     private static final Map<Level, Map<EntityType<?>, Entity>> VOICES = new WeakHashMap<>();
+    private static final java.util.concurrent.atomic.AtomicInteger VOICE_IDS = new java.util.concurrent.atomic.AtomicInteger();
 
     private BeastAttacks() {}
 
@@ -220,7 +221,12 @@ public final class BeastAttacks
     // One of the form's sounds, from the player
     private static void voice(ServerLevel level, ServerPlayer player, EntityType<?> form)
     {
-        Entity voice = VOICES.computeIfAbsent(level, key -> new HashMap<>()).computeIfAbsent(form, type -> type.create(level, EntitySpawnReason.TRIGGERED));
+        Entity voice = VOICES.computeIfAbsent(level, key -> new HashMap<>()).computeIfAbsent(form, type -> {
+            Entity made = type.create(level, EntitySpawnReason.TRIGGERED);
+            // Never added to the level: an id of its own (below zero, where no real entity's is), as 26.3 wants one
+            if (made != null) made.setId(-200_000 - VOICE_IDS.getAndIncrement());
+            return made;
+        });
         if (!(voice instanceof Mob mob)) return;
         mob.setPos(player.getX(), player.getY(), player.getZ());
         mob.playAmbientSound();
