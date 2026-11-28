@@ -34,6 +34,11 @@ public class DustAttachmentTypeRegistry
     public static final Supplier<AttachmentType<Boolean>> AKASHIC_GIVEN = ATTACHMENT_TYPES.register("akashic_given",
             () -> AttachmentType.builder(() -> Boolean.FALSE).serialize(Codec.BOOL.fieldOf("akashic_given")).copyOnDeath().build());
 
+    // Whether a creature's size is set upside down now (its eyes moved: Features/Spells/effects/GravityInversion). Kept on
+    // each side for itself: not saved, not synced.
+    public static final Supplier<AttachmentType<Boolean>> EYES_FLIPPED = ATTACHMENT_TYPES.register("eyes_flipped",
+            () -> AttachmentType.builder(() -> Boolean.FALSE).build());
+
     //Tutorial Attachment Types (Module 3: #7)
     //This could be a custom data class as well
     public static final Supplier<AttachmentType<Integer>> DUSTMAGIC_MANA = ATTACHMENT_TYPES.register("dustmagic_mana",

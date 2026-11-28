@@ -1,6 +1,7 @@
 package com.mowmaster.dust.Features.Spells.effects;
 
 import com.mowmaster.dust.DustReferences;
+import com.mowmaster.dust.DustRegistries.DustAttachmentTypeRegistry;
 import com.mowmaster.dust.Features.Spells.api.SpellCast;
 import com.mowmaster.dust.Features.Spells.entities.RisingBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -19,10 +20,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 // The Flight + Chaos fusion, Inversion: gravity turned upside down.
 //   self, creatures  the Inverted effect (DustEffectsRegistry.INVERTED): their gravity attribute goes negative (Potency:
@@ -46,18 +43,21 @@ public final class GravityInversion
     private static final double BLOCK_LIFT = 0.03;
     private static final double BLOCK_LIFT_PER_POTENCY = 0.02;
 
-    // The creatures whose size is set upside down now (their eyes moved). Weak: a creature that's gone is dropped.
-    // Server and client entities are different objects, so one set serves both sides.
-    private static final Set<Entity> FLIPPED = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
-
     private GravityInversion() {}
 
-    // Whether its gravity pulls it up
+    // Whether its gravity pulls it up. Safe while the creature is still being made (its attributes aren't there yet).
     public static boolean inverted(Entity entity)
     {
-        if (!(entity instanceof LivingEntity living)) return false;
+        if (!(entity instanceof LivingEntity living) || living.getAttributes() == null) return false;
         AttributeInstance gravity = living.getAttribute(Attributes.GRAVITY);
         return gravity != null && gravity.getValue() < 0 && !living.isNoGravity();
+    }
+
+    // Whether its size is set upside down now (an attachment of its own on each side, so nothing is shared between the
+    // server's and the client's copy; hasData first: this is asked while an entity is still being made)
+    private static boolean flipped(Entity entity)
+    {
+        return entity.hasData(DustAttachmentTypeRegistry.EYES_FLIPPED) && entity.getData(DustAttachmentTypeRegistry.EYES_FLIPPED);
     }
 
     // ---- on a block ----
@@ -79,9 +79,8 @@ public final class GravityInversion
         if (!(event.getEntity() instanceof LivingEntity living)) return;
         boolean inverted = inverted(living);
         // Turned over, or back: its eyes move (onSize)
-        if (inverted != FLIPPED.contains(living)) {
-            if (inverted) FLIPPED.add(living);
-            else FLIPPED.remove(living);
+        if (inverted != flipped(living)) {
+            living.setData(DustAttachmentTypeRegistry.EYES_FLIPPED, inverted);
             living.refreshDimensions();
         }
         // Against a ceiling: that's its floor now
@@ -105,7 +104,7 @@ public final class GravityInversion
     @SubscribeEvent
     public static void onSize(EntityEvent.Size event)
     {
-        if (!FLIPPED.contains(event.getEntity())) return;
+        if (!flipped(event.getEntity())) return;
         EntityDimensions size = event.getNewSize();
         event.setNewSize(size.withEyeHeight(Math.max(0.05F, size.height() - size.eyeHeight())));
     }
